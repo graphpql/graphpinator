@@ -66,6 +66,10 @@ final class ArgumentSet implements \Iterator, \ArrayAccess
 
     public function offsetGet($offset) : Argument
     {
+        if (!$this->offsetExists($offset)) {
+            throw new \Exception('Unknown argument.');
+        }
+        
         return $this->arguments[$offset];
     }
 
