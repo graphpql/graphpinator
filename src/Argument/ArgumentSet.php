@@ -18,7 +18,7 @@ final class ArgumentSet implements \Iterator, \ArrayAccess
                 $this->arguments[$argument->getName()] = $argument;
                 $defaultValue = $argument->getDefaultValue();
 
-                if ($defaultValue instanceof \PGQL\Value\InputValue) {
+                if ($defaultValue instanceof \PGQL\Value\ValidatedValue) {
                     $this->defaults[$argument->getName()] = $defaultValue;
                 }
 
@@ -69,7 +69,7 @@ final class ArgumentSet implements \Iterator, \ArrayAccess
         if (!$this->offsetExists($offset)) {
             throw new \Exception('Unknown argument.');
         }
-        
+
         return $this->arguments[$offset];
     }
 

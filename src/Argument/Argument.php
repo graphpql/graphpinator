@@ -10,7 +10,7 @@ final class Argument
 
     private string $name;
     private \PGQL\Type\Inputable $type;
-    private ?\PGQL\Value\InputValue $defaultValue;
+    private ?\PGQL\Value\ValidatedValue $defaultValue;
 
     public function __construct(string $name, \PGQL\Type\Inputable $type, $defaultValue = null)
     {
@@ -18,7 +18,7 @@ final class Argument
         $this->type = $type;
 
         if (\func_num_args() === 3) {
-            $defaultValue = new \PGQL\Value\InputValue($type, $defaultValue);
+            $defaultValue = $type->createValue($defaultValue);
         }
 
         $this->defaultValue = $defaultValue;
@@ -34,7 +34,7 @@ final class Argument
         return $this->type;
     }
 
-    public function getDefaultValue() : ?\PGQL\Value\InputValue
+    public function getDefaultValue() : ?\PGQL\Value\ValidatedValue
     {
         return $this->defaultValue;
     }
