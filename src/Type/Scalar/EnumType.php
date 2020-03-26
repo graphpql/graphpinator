@@ -37,7 +37,7 @@ abstract class EnumType extends ScalarType
 
     protected function validateNonNullValue($rawValue) : void
     {
-        if (\array_key_exists($rawValue, $this->options)) {
+        if (\is_string($rawValue) && \array_key_exists($rawValue, $this->options)) {
             return;
         }
 
