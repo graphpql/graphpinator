@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace PGQL\Field;
 
-final class FieldSet implements \Iterator, \ArrayAccess
+final class FieldSet implements \Iterator, \ArrayAccess, \Countable
 {
     use \Nette\SmartObject;
 
@@ -70,5 +70,10 @@ final class FieldSet implements \Iterator, \ArrayAccess
     public function offsetUnset($offset)
     {
         throw new \Exception();
+    }
+
+    public function count()
+    {
+        return \count($this->fields);
     }
 }
