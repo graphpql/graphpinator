@@ -4,18 +4,15 @@ declare(strict_types = 1);
 
 namespace PGQL\Argument;
 
-final class ArgumentSet implements \Iterator, \ArrayAccess
+final class ArgumentSet extends \Infinityloop\Utils\ImmutableSet
 {
-    use \Nette\SmartObject;
-
-    private array $arguments = [];
     private array $defaults = [];
 
     public function __construct(array $arguments)
     {
         foreach ($arguments as $argument) {
             if ($argument instanceof Argument) {
-                $this->arguments[$argument->getName()] = $argument;
+                $this->array[$argument->getName()] = $argument;
                 $defaultValue = $argument->getDefaultValue();
 
                 if ($defaultValue instanceof \PGQL\Value\ValidatedValue) {
@@ -36,32 +33,7 @@ final class ArgumentSet implements \Iterator, \ArrayAccess
 
     public function current() : Argument
     {
-        return \current($this->arguments);
-    }
-
-    public function next() : void
-    {
-        \next($this->arguments);
-    }
-
-    public function key() : int
-    {
-        return \key($this->arguments);
-    }
-
-    public function valid() : bool
-    {
-        return \key($this->arguments) !== null;
-    }
-
-    public function rewind() : void
-    {
-        \reset($this->arguments);
-    }
-
-    public function offsetExists($offset) : bool
-    {
-        return \array_key_exists($offset, $this->arguments);
+        return parent::current();
     }
 
     public function offsetGet($offset) : Argument
@@ -70,16 +42,6 @@ final class ArgumentSet implements \Iterator, \ArrayAccess
             throw new \Exception('Unknown argument.');
         }
 
-        return $this->arguments[$offset];
-    }
-
-    public function offsetSet($offset, $value)
-    {
-        throw new \Exception();
-    }
-
-    public function offsetUnset($offset)
-    {
-        throw new \Exception();
+        return $this->array[$offset];
     }
 }
