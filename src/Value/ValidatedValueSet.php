@@ -4,27 +4,25 @@ declare(strict_types = 1);
 
 namespace PGQL\Value;
 
-final class ValidatedValueSet implements \ArrayAccess
+final class ValidatedValueSet extends \Infinityloop\Utils\ImmutableSet
 {
-    private array $values = [];
-
     public function __construct(GivenValueSet $givenValueSet, \PGQL\Argument\ArgumentSet $argumentSet)
     {
         foreach ($argumentSet as $argument) {
             if (isset($givenValueSet[$argument->getName()])) {
                 $givenValue = $givenValueSet[$argument->getName()];
-                $this->values[$argument->getName()] = $argument->getType()->createValue($givenValue->getValue());
+                $this->array[$argument->getName()] = $argument->getType()->createValue($givenValue->getValue());
 
                 continue;
             }
 
             if ($argument->getDefaultValue() instanceof ValidatedValue) {
-                $this->values[$argument->getName()] = $argument->getDefaultValue();
+                $this->array[$argument->getName()] = $argument->getDefaultValue();
 
                 continue;
             }
 
-            $this->values[$argument->getName()] = $argument->getType()->createValue(null);
+            $this->array[$argument->getName()] = $argument->getType()->createValue(null);
         }
 
         foreach ($givenValueSet as $givenValue) {
@@ -32,23 +30,13 @@ final class ValidatedValueSet implements \ArrayAccess
         }
     }
 
-    public function offsetExists($name) : bool
+    public function current() : ValidatedValue
     {
-        return \array_key_exists($name, $this->values);
+        return parent::current();
     }
 
     public function offsetGet($offset) : ValidatedValue
     {
-        return $this->values[$offset];
-    }
-
-    public function offsetSet($offset, $value) : void
-    {
-        throw new \Exception();
-    }
-
-    public function offsetUnset($offset) : void
-    {
-        throw new \Exception();
+        return parent::offsetGet($offset);
     }
 }
