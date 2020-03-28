@@ -24,7 +24,7 @@ final class ScalarTypeTest extends \PHPUnit\Framework\TestCase
     public function testResolveFields(): void
     {
         $type = new \PGQL\Type\Scalar\BooleanType();
-        $value = new \PGQL\Value\ValidatedValue(true, $type);
+        $value = new \PGQL\Value\ScalarValue(true, $type);
         $result = \PGQL\Field\ResolveResult::fromValidated($value);
 
         self::assertSame($value, $type->resolveFields(null, $result));
@@ -35,9 +35,9 @@ final class ScalarTypeTest extends \PHPUnit\Framework\TestCase
         $this->expectException(\Exception::class);
 
         $type = new \PGQL\Type\Scalar\BooleanType();
-        $value = new \PGQL\Value\ValidatedValue(true, $type);
+        $value = new \PGQL\Value\ScalarValue(true, $type);
         $result = \PGQL\Field\ResolveResult::fromValidated($value);
 
-        $type->resolveFields([], $result);
+        $type->resolveFields(new \PGQL\Parser\RequestFieldSet([]), $result);
     }
 }

@@ -50,6 +50,13 @@ final class EnumTypeTest extends \PHPUnit\Framework\TestCase
         $enum->validateValue($rawValue);
     }
 
+    public function testGetAll(): void
+    {
+        $enum = $this->createTestEnum();
+
+        self::assertSame($enum->getAll(), ['a', 'b']);
+    }
+
     protected function createTestEnum() : \PGQL\Type\Scalar\EnumType
     {
         return new class extends \PGQL\Type\Scalar\EnumType {

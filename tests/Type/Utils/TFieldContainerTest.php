@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Type\Scalar;
+namespace Tests\Type\Utils;
 
 final class TFieldContainerTest extends \PHPUnit\Framework\TestCase
 {
@@ -18,17 +18,23 @@ final class TFieldContainerTest extends \PHPUnit\Framework\TestCase
             ],
             // field which do not exist
             [
-                [new \PGQL\RequestField('field0')],
+                new \PGQL\Parser\RequestFieldSet([
+                    new \PGQL\Parser\RequestField('field0')
+                ]),
                 \PGQL\Field\ResolveResult::fromRaw(\PGQL\Type\Scalar\ScalarType::String(), self::PARENT_VAL)
             ],
             // argument which do not exist
             [
-                [new \PGQL\RequestField('field1', null, null, new \PGQL\Value\GivenValueSet([new \PGQL\Value\GivenValue('val', 'arg1')]))],
+                new \PGQL\Parser\RequestFieldSet([
+                    new \PGQL\Parser\RequestField('field1', null, null, new \PGQL\Value\GivenValueSet([new \PGQL\Value\GivenValue('val', 'arg1')]))
+                ]),
                 \PGQL\Field\ResolveResult::fromRaw(\PGQL\Type\Scalar\ScalarType::String(), self::PARENT_VAL)
             ],
             // inner fields on leaf type
             [
-                [new \PGQL\RequestField('field1', [new \PGQL\RequestField('innerField')])],
+                new \PGQL\Parser\RequestFieldSet([
+                    new \PGQL\Parser\RequestField('field1', new \PGQL\Parser\RequestFieldSet([new \PGQL\Parser\RequestField('innerField')]))
+                ]),
                 \PGQL\Field\ResolveResult::fromRaw(\PGQL\Type\Scalar\ScalarType::String(), self::PARENT_VAL)
             ],
         ];
@@ -36,11 +42,11 @@ final class TFieldContainerTest extends \PHPUnit\Framework\TestCase
 
     public function testResolveFields(): void
     {
-        $requestFields = [
-            new \PGQL\RequestField('field1'),
-            new \PGQL\RequestField('field2'),
-            new \PGQL\RequestField('field3'),
-        ];
+        $requestFields = new \PGQL\Parser\RequestFieldSet([
+            new \PGQL\Parser\RequestField('field1'),
+            new \PGQL\Parser\RequestField('field2'),
+            new \PGQL\Parser\RequestField('field3'),
+        ]);
         $parentValue = \PGQL\Field\ResolveResult::fromRaw(\PGQL\Type\Scalar\ScalarType::String(), self::PARENT_VAL);
 
         $type = $this->createTestType();
@@ -50,17 +56,17 @@ final class TFieldContainerTest extends \PHPUnit\Framework\TestCase
 
         foreach (['field1' => 'fieldValue', 'field2' => false, 'field3' => null] as $name => $value) {
             self::assertArrayHasKey($name, $result);
-            self::assertSame($value, $result[$name]->getValue());
+            self::assertSame($value, $result[$name]->getRawValue());
         }
     }
 
     public function testResolveFieldsIgnore(): void
     {
-        $requestFields = [
-            new \PGQL\RequestField('field1', null, 'String'),
-            new \PGQL\RequestField('field2', null, 'Int'),
-            new \PGQL\RequestField('field3'),
-        ];
+        $requestFields = new \PGQL\Parser\RequestFieldSet([
+            new \PGQL\Parser\RequestField('field1', null, \PGQL\Type\Scalar\ScalarType::String()),
+            new \PGQL\Parser\RequestField('field2', null, \PGQL\Type\Scalar\ScalarType::Int()),
+            new \PGQL\Parser\RequestField('field3'),
+        ]);
         $parentValue = \PGQL\Field\ResolveResult::fromRaw(\PGQL\Type\Scalar\ScalarType::String(), self::PARENT_VAL);
 
         $type = $this->createTestType();
@@ -70,14 +76,14 @@ final class TFieldContainerTest extends \PHPUnit\Framework\TestCase
 
         foreach (['field1' => 'fieldValue', 'field3' => null] as $name => $value) {
             self::assertArrayHasKey($name, $result);
-            self::assertSame($value, $result[$name]->getValue());
+            self::assertSame($value, $result[$name]->getRawValue());
         }
     }
 
     /**
      * @dataProvider invalidDataProvider
      */
-    public function testResolveFieldsInvalid(?array $requestFields, \PGQL\Field\ResolveResult $parentValue): void
+    public function testResolveFieldsInvalid(?\PGQL\Parser\RequestFieldSet $requestFields, \PGQL\Field\ResolveResult $parentValue): void
     {
         $this->expectException(\Exception::class);
 

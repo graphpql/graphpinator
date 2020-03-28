@@ -15,8 +15,8 @@ final class GivenValueTest extends \PHPUnit\Framework\TestCase
             [true, 'name'],
             [[], 'name'],
             [[123, true], 'name'],
-            [new \PGQL\Value\Value('inner'), 'name'],
-            [[new \PGQL\Value\Value('inner')], 'name'],
+            [new \PGQL\Value\GivenValue('inner', 'a'), 'name'],
+            [[new \PGQL\Value\GivenValue('inner', 'a')], 'name'],
         ];
     }
 
