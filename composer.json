@@ -1,0 +1,35 @@
+ 
+{
+  "name": "infinityloop-dev/graphpinator",
+  "description": "",
+  "homepage": "https://www.infinityloop.dev/",
+  "type": "library",
+  "license": ["MIT"],
+  "authors": [
+    {
+      "name": "Václav Pelíšek",
+      "homepage": "https://www.peldax.com"
+    }
+  ],
+  "require": {
+    "php": ">=7.4",
+    "infinityloop-dev/utils": "^1.1",
+    "nette/utils": "^3.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^9.0"
+  },
+  "scripts": {
+      "phpunit": "phpunit"
+  },
+  "autoload": {
+    "psr-4": {
+      "Infinityloop\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Infinityloop\\Tests\\": "tests/"
+    }
+  }
+}
