@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Tests\Type\Contract;
+namespace Infinityloop\Tests\Graphpinator\Unit\Type\Contract;
 
 final class NamedDefinitionTest extends \PHPUnit\Framework\TestCase
 {
     public function testModifiers() : void
     {
-        $base = \PGQL\Type\Scalar\ScalarType::String();
+        $base = \Infinityloop\Graphpinator\Type\Scalar\ScalarType::String();
 
         self::assertSame('String', $base->getName());
         self::assertSame('String built-in type', $base->getDescription());

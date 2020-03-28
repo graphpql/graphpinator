@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Type\Scalar;
+namespace Infinityloop\Tests\Graphpinator\Unit\Type\Scalar;
 
 final class FloatTypeTest extends \PHPUnit\Framework\TestCase
 {
@@ -31,7 +31,7 @@ final class FloatTypeTest extends \PHPUnit\Framework\TestCase
      */
     public function testValidateValue($rawValue): void
     {
-        $float = new \PGQL\Type\Scalar\FloatType();
+        $float = new \Infinityloop\Graphpinator\Type\Scalar\FloatType();
         $float->validateValue($rawValue);
 
         self::assertSame($float->getName(), 'Float');
@@ -44,7 +44,7 @@ final class FloatTypeTest extends \PHPUnit\Framework\TestCase
     {
         $this->expectException(\Exception::class);
 
-        $float = new \PGQL\Type\Scalar\FloatType();
+        $float = new \Infinityloop\Graphpinator\Type\Scalar\FloatType();
         $float->validateValue($rawValue);
     }
 }

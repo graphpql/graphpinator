@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Type;
+namespace Infinityloop\Tests\Graphpinator\Unit\Type;
 
 final class TypeTest extends \PHPUnit\Framework\TestCase
 {
@@ -10,7 +10,7 @@ final class TypeTest extends \PHPUnit\Framework\TestCase
     {
         $type = self::getTestTypeAbc();
 
-        self::assertInstanceOf(\PGQL\Value\TypeValue::class, $type->createValue(123));
+        self::assertInstanceOf(\Infinityloop\Graphpinator\Value\TypeValue::class, $type->createValue(123));
         self::assertSame(123, $type->createValue(123)->getRawValue());
     }
 
@@ -19,20 +19,20 @@ final class TypeTest extends \PHPUnit\Framework\TestCase
         $type = self::getTestTypeAbc();
 
         self::assertTrue($type->isInstanceOf(self::createTestUnion()));
-        self::assertTrue($type->isInstanceOf(new \PGQL\Type\NotNullType(self::createTestUnion())));
+        self::assertTrue($type->isInstanceOf(new \Infinityloop\Graphpinator\Type\NotNullType(self::createTestUnion())));
         self::assertFalse($type->isInstanceOf(self::createTestEmptyUnion()));
-        self::assertFalse($type->isInstanceOf(new \PGQL\Type\NotNullType(self::createTestEmptyUnion())));
+        self::assertFalse($type->isInstanceOf(new \Infinityloop\Graphpinator\Type\NotNullType(self::createTestEmptyUnion())));
     }
 
-    public static function createTestUnion() : \PGQL\Type\UnionType
+    public static function createTestUnion() : \Infinityloop\Graphpinator\Type\UnionType
     {
-        return new class extends \PGQL\Type\UnionType {
+        return new class extends \Infinityloop\Graphpinator\Type\UnionType {
             protected const NAME = 'Foo';
 
             public function __construct()
             {
                 parent::__construct(
-                    new \PGQL\Type\Utils\ConcreteSet([
+                    new \Infinityloop\Graphpinator\Type\Utils\ConcreteSet([
                         TypeTest::getTestTypeAbc(),
                     ])
                 );
@@ -40,29 +40,29 @@ final class TypeTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    public static function createTestEmptyUnion() : \PGQL\Type\UnionType
+    public static function createTestEmptyUnion() : \Infinityloop\Graphpinator\Type\UnionType
     {
-        return new class extends \PGQL\Type\UnionType {
+        return new class extends \Infinityloop\Graphpinator\Type\UnionType {
             protected const NAME = 'Bar';
 
             public function __construct()
             {
                 parent::__construct(
-                    new \PGQL\Type\Utils\ConcreteSet([
+                    new \Infinityloop\Graphpinator\Type\Utils\ConcreteSet([
                     ])
                 );
             }
         };
     }
 
-    public static function getTestTypeAbc() : \PGQL\Type\Type
+    public static function getTestTypeAbc() : \Infinityloop\Graphpinator\Type\Type
     {
-        return new class extends \PGQL\Type\Type {
+        return new class extends \Infinityloop\Graphpinator\Type\Type {
             protected const NAME = 'Abc';
 
             public function __construct()
             {
-                parent::__construct(new \PGQL\Field\FieldSet([]));
+                parent::__construct(new \Infinityloop\Graphpinator\Field\FieldSet([]));
             }
         };
     }

@@ -20,7 +20,7 @@
     "phpunit/phpunit": "^9.0"
   },
   "scripts": {
-      "phpunit": "phpunit"
+      "phpunit": "phpunit tests"
   },
   "autoload": {
     "psr-4": {
@@ -33,3 +33,4 @@
     }
   }
 }
+

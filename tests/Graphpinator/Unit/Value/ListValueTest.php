@@ -2,19 +2,20 @@
 
 declare(strict_types=1);
 
-namespace Tests\Value;
+namespace Infinityloop\Tests\Graphpinator\Unit\Value;
 
 final class ListValueTest extends \PHPUnit\Framework\TestCase
 {
     public function testApplyDefaults() : void
     {
-        $value = \PGQL\Value\ListValue::create([[], []], new \PGQL\Type\ListType($this->createTestInput()));
+        $type = $this->createTestInput()->list();
+        $value = \Infinityloop\Graphpinator\Value\ListValue::create([[], []], $type);
         self::assertCount(2, $value);
         self::assertCount(2, $value->getRawValue());
 
         foreach ($value as $key => $listValue) {
             self::assertIsInt($key);
-            self::assertInstanceOf(\PGQL\Value\InputValue::class, $listValue);
+            self::assertInstanceOf(\Infinityloop\Graphpinator\Value\InputValue::class, $listValue);
             self::assertSame('random', $listValue['field']->getRawValue());
         }
 
@@ -25,23 +26,30 @@ final class ListValueTest extends \PHPUnit\Framework\TestCase
         }
     }
 
+    public function testApplyDefaultsNull() : void
+    {
+        $type = $this->createTestInput()->list();
+        $value = \Infinityloop\Graphpinator\Value\ListValue::create(null, $type);
+        self::assertInstanceOf(\Infinityloop\Graphpinator\Value\NullValue::class, $value);
+    }
+
     public function testInvalid() : void
     {
         $this->expectException(\Exception::class);
 
-        $value = new \PGQL\Value\ListValue(123, new \PGQL\Type\ListType($this->createTestInput()));
+        $value = new \Infinityloop\Graphpinator\Value\ListValue(123, new \Infinityloop\Graphpinator\Type\ListType($this->createTestInput()));
     }
 
-    protected function createTestInput() : \PGQL\Type\InputType
+    protected function createTestInput() : \Infinityloop\Graphpinator\Type\InputType
     {
-        return new class extends \PGQL\Type\InputType {
+        return new class extends \Infinityloop\Graphpinator\Type\InputType {
             protected const NAME = 'Abc';
 
             public function __construct()
             {
                 parent::__construct(
-                    new \PGQL\Argument\ArgumentSet([new \PGQL\Argument\Argument(
-                        'field', \PGQL\Type\Scalar\ScalarType::String(), 'random',
+                    new \Infinityloop\Graphpinator\Argument\ArgumentSet([new \Infinityloop\Graphpinator\Argument\Argument(
+                        'field', \Infinityloop\Graphpinator\Type\Scalar\ScalarType::String(), 'random',
                     )]),
                 );
             }

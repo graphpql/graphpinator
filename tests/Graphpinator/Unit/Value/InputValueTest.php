@@ -2,22 +2,23 @@
 
 declare(strict_types=1);
 
-namespace Tests\Value;
+namespace Infinityloop\Tests\Graphpinator\Unit\Value;
 
 final class InputValueTest extends \PHPUnit\Framework\TestCase
 {
     public function testApplyDefaults() : void
     {
         $fields = [];
-        $defaults = ['field' => \PGQL\Value\ScalarValue::create('random', \PGQL\Type\Scalar\ScalarType::String())];
+        $defaults = ['field' => \Infinityloop\Graphpinator\Value\ScalarValue::create('random', \Infinityloop\Graphpinator\Type\Scalar\ScalarType::String())];
 
-        $type = $this->createMock(\PGQL\Type\InputType::class);
+        $type = $this->createMock(\Infinityloop\Graphpinator\Type\InputType::class);
         $type->expects($this->exactly(2))->method('getArguments')->willReturn(
-            new \PGQL\Argument\ArgumentSet([new \PGQL\Argument\Argument('field', \PGQL\Type\Scalar\ScalarType::String())])
+            new \Infinityloop\Graphpinator\Argument\ArgumentSet([new \Infinityloop\Graphpinator\Argument\Argument('field', \Infinityloop\Graphpinator\Type\Scalar\ScalarType::String())])
         );
+        $type->expects($this->once())->method('isInputable')->willReturn(true);
         $type->expects($this->once())->method('applyDefaults')->with($fields)->willReturn($defaults);
 
-        $value = \PGQL\Value\InputValue::create($fields, $type);
+        $value = \Infinityloop\Graphpinator\Value\InputValue::create($fields, $type);
         self::assertTrue(isset($value['field']));
         self::assertFalse(isset($value['field0']));
         self::assertSame($defaults['field'], $value['field']);
@@ -27,21 +28,22 @@ final class InputValueTest extends \PHPUnit\Framework\TestCase
     {
         $fields = ['field' => 'random'];
 
-        $type = $this->createMock(\PGQL\Type\InputType::class);
+        $type = $this->createMock(\Infinityloop\Graphpinator\Type\InputType::class);
         $type->expects($this->exactly(2))->method('getArguments')->willReturn(
-            new \PGQL\Argument\ArgumentSet([new \PGQL\Argument\Argument('field', \PGQL\Type\Scalar\ScalarType::String())])
+            new \Infinityloop\Graphpinator\Argument\ArgumentSet([new \Infinityloop\Graphpinator\Argument\Argument('field', \Infinityloop\Graphpinator\Type\Scalar\ScalarType::String())])
         );
+        $type->expects($this->once())->method('isInputable')->willReturn(true);
         $type->expects($this->once())->method('applyDefaults')->with($fields)->willReturn($fields);
 
-        $value = \PGQL\Value\InputValue::create($fields, $type);
+        $value = \Infinityloop\Graphpinator\Value\InputValue::create($fields, $type);
         self::assertSame($fields, $value->getRawValue());
     }
 
     public function testNull() : void
     {
-        $type = $this->createMock(\PGQL\Type\InputType::class);
+        $type = $this->createMock(\Infinityloop\Graphpinator\Type\InputType::class);
 
-        self::assertInstanceOf(\PGQL\Value\NullValue::class, \PGQL\Value\InputValue::create(null, $type));
+        self::assertInstanceOf(\Infinityloop\Graphpinator\Value\NullValue::class, \Infinityloop\Graphpinator\Value\InputValue::create(null, $type));
     }
 
     public function testInvalidField() : void
@@ -50,10 +52,11 @@ final class InputValueTest extends \PHPUnit\Framework\TestCase
 
         $fields = ['field0' => 123];
 
-        $type = $this->createMock(\PGQL\Type\InputType::class);
-        $type->expects($this->exactly(2))->method('getArguments')->willReturn(new \PGQL\Argument\ArgumentSet([]));
+        $type = $this->createMock(\Infinityloop\Graphpinator\Type\InputType::class);
+        $type->expects($this->exactly(2))->method('getArguments')->willReturn(new \Infinityloop\Graphpinator\Argument\ArgumentSet([]));
+        $type->expects($this->once())->method('isInputable')->willReturn(true);
         $type->expects($this->once())->method('applyDefaults')->with($fields)->willReturn($fields);
 
-        $value = \PGQL\Value\InputValue::create($fields, $type);
+        $value = \Infinityloop\Graphpinator\Value\InputValue::create($fields, $type);
     }
 }

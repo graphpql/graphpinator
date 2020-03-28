@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Value;
+namespace Infinityloop\Tests\Graphpinator\Unit\Type;
 
 final class InputTypeTest extends \PHPUnit\Framework\TestCase
 {
@@ -22,33 +22,33 @@ final class InputTypeTest extends \PHPUnit\Framework\TestCase
         $input->createValue(123);
     }
 
-    public static function createTestInput() : \PGQL\Type\InputType
+    public static function createTestInput() : \Infinityloop\Graphpinator\Type\InputType
     {
-        return new class extends \PGQL\Type\InputType {
+        return new class extends \Infinityloop\Graphpinator\Type\InputType {
             protected const NAME = 'Abc';
 
             public function __construct()
             {
                 parent::__construct(
-                    new \PGQL\Argument\ArgumentSet([
-                        new \PGQL\Argument\Argument('field1', InputTypeTest::createTestSubInput(), ['subfield' => 'random']),
-                        new \PGQL\Argument\Argument('field2', InputTypeTest::createTestSubInput(), ['subfield' => 'random']),
+                    new \Infinityloop\Graphpinator\Argument\ArgumentSet([
+                        new \Infinityloop\Graphpinator\Argument\Argument('field1', InputTypeTest::createTestSubInput(), ['subfield' => 'random']),
+                        new \Infinityloop\Graphpinator\Argument\Argument('field2', InputTypeTest::createTestSubInput(), ['subfield' => 'random']),
                     ]),
                 );
             }
         };
     }
 
-    public static function createTestSubInput() : \PGQL\Type\InputType
+    public static function createTestSubInput() : \Infinityloop\Graphpinator\Type\InputType
     {
-        return new class extends \PGQL\Type\InputType {
+        return new class extends \Infinityloop\Graphpinator\Type\InputType {
             protected const NAME = 'Abc';
 
             public function __construct()
             {
                 parent::__construct(
-                    new \PGQL\Argument\ArgumentSet([new \PGQL\Argument\Argument(
-                        'subfield', \PGQL\Type\Scalar\ScalarType::String(), 'random',
+                    new \Infinityloop\Graphpinator\Argument\ArgumentSet([new \Infinityloop\Graphpinator\Argument\Argument(
+                        'subfield', \Infinityloop\Graphpinator\Type\Scalar\ScalarType::String(), 'random',
                     )]),
                 );
             }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Type\Scalar;
+namespace Infinityloop\Tests\Graphpinator\Unit\Type\Scalar;
 
 final class BooleanTypeTest extends \PHPUnit\Framework\TestCase
 {
@@ -30,7 +30,7 @@ final class BooleanTypeTest extends \PHPUnit\Framework\TestCase
      */
     public function testValidateValue($rawValue): void
     {
-        $bool = new \PGQL\Type\Scalar\BooleanType();
+        $bool = new \Infinityloop\Graphpinator\Type\Scalar\BooleanType();
         $bool->validateValue($rawValue);
 
         self::assertSame($bool->getName(), 'Boolean');
@@ -43,7 +43,7 @@ final class BooleanTypeTest extends \PHPUnit\Framework\TestCase
     {
         $this->expectException(\Exception::class);
 
-        $bool = new \PGQL\Type\Scalar\BooleanType();
+        $bool = new \Infinityloop\Graphpinator\Type\Scalar\BooleanType();
         $bool->validateValue($rawValue);
     }
 }

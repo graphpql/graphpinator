@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Type\Scalar;
+namespace Infinityloop\Tests\Graphpinator\Unit\Type\Scalar;
 
 final class IDTypeTest extends \PHPUnit\Framework\TestCase
 {
@@ -29,7 +29,7 @@ final class IDTypeTest extends \PHPUnit\Framework\TestCase
      */
     public function testValidateValue($rawValue): void
     {
-        $id = new \PGQL\Type\Scalar\IdType();
+        $id = new \Infinityloop\Graphpinator\Type\Scalar\IdType();
         $id->validateValue($rawValue);
 
         self::assertSame($id->getName(), 'ID');
@@ -42,7 +42,7 @@ final class IDTypeTest extends \PHPUnit\Framework\TestCase
     {
         $this->expectException(\Exception::class);
 
-        $id = new \PGQL\Type\Scalar\IdType();
+        $id = new \Infinityloop\Graphpinator\Type\Scalar\IdType();
         $id->validateValue($rawValue);
     }
 }

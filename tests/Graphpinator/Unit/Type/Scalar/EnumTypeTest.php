@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Type\Scalar;
+namespace Infinityloop\Tests\Graphpinator\Unit\Type\Scalar;
 
 final class EnumTypeTest extends \PHPUnit\Framework\TestCase
 {
@@ -57,9 +57,9 @@ final class EnumTypeTest extends \PHPUnit\Framework\TestCase
         self::assertSame($enum->getAll(), ['a', 'b']);
     }
 
-    protected function createTestEnum() : \PGQL\Type\Scalar\EnumType
+    protected function createTestEnum() : \Infinityloop\Graphpinator\Type\Scalar\EnumType
     {
-        return new class extends \PGQL\Type\Scalar\EnumType {
+        return new class extends \Infinityloop\Graphpinator\Type\Scalar\EnumType {
             protected const NAME = 'abc';
 
             public const ENUMA = 'a';

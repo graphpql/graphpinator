@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Tests\Value;
+namespace Infinityloop\Tests\Graphpinator\Unit\Value;
 
 final class TypeValueTest extends \PHPUnit\Framework\TestCase
 {
     public function testSimple(): void
     {
-        $value = new \PGQL\Value\TypeValue(123, $this->createTestType());
-        $value2 = \PGQL\Value\TypeValue::create(123, $this->createTestType());
+        $value = new \Infinityloop\Graphpinator\Value\TypeValue(123, $this->createTestType());
+        $value2 = \Infinityloop\Graphpinator\Value\TypeValue::create(123, $this->createTestType());
 
         self::assertSame(123, $value->getRawValue());
         self::assertSame(123, $value2->getRawValue());
@@ -19,17 +19,17 @@ final class TypeValueTest extends \PHPUnit\Framework\TestCase
     {
         $this->expectException(\Exception::class);
 
-        $value = new \PGQL\Value\TypeValue(456, $this->createTestType());
+        $value = new \Infinityloop\Graphpinator\Value\TypeValue(456, $this->createTestType());
     }
 
-    protected function createTestType() : \PGQL\Type\Type
+    protected function createTestType() : \Infinityloop\Graphpinator\Type\Type
     {
-        return new class extends \PGQL\Type\Type {
+        return new class extends \Infinityloop\Graphpinator\Type\Type {
             protected const NAME = 'Abc';
 
             public function __construct()
             {
-                parent::__construct(new \PGQL\Field\FieldSet([]));
+                parent::__construct(new \Infinityloop\Graphpinator\Field\FieldSet([]));
             }
 
             protected function validateNonNullValue($rawValue): void

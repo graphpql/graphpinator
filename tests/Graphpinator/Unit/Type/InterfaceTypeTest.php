@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Type;
+namespace Infinityloop\Tests\Graphpinator\Unit\Type;
 
 final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
 {
@@ -12,35 +12,35 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
         $parent = self::createTestParentInterface();
 
         self::assertTrue($interface->isInstanceOf($interface));
-        self::assertTrue($interface->isInstanceOf(new \PGQL\Type\NotNullType($interface)));
+        self::assertTrue($interface->isInstanceOf(new \Infinityloop\Graphpinator\Type\NotNullType($interface)));
         self::assertTrue($interface->isInstanceOf($parent));
-        self::assertTrue($interface->isInstanceOf(new \PGQL\Type\NotNullType($parent)));
+        self::assertTrue($interface->isInstanceOf(new \Infinityloop\Graphpinator\Type\NotNullType($parent)));
         self::assertFalse($parent->isInstanceOf($interface));
-        self::assertFalse($parent->isInstanceOf(new \PGQL\Type\NotNullType($interface)));
+        self::assertFalse($parent->isInstanceOf(new \Infinityloop\Graphpinator\Type\NotNullType($interface)));
         self::assertFalse($interface->isImplementedBy(self::getTestTypeAbc()));
-        self::assertFalse($interface->isImplementedBy(new \PGQL\Type\NotNullType(self::getTestTypeAbc())));
+        self::assertFalse($interface->isImplementedBy(new \Infinityloop\Graphpinator\Type\NotNullType(self::getTestTypeAbc())));
         self::assertFalse($parent->isImplementedBy(self::getTestTypeAbc()));
-        self::assertFalse($parent->isImplementedBy(new \PGQL\Type\NotNullType(self::getTestTypeAbc())));
+        self::assertFalse($parent->isImplementedBy(new \Infinityloop\Graphpinator\Type\NotNullType(self::getTestTypeAbc())));
         self::assertTrue($interface->isImplementedBy(self::getTestTypeXyz()));
-        self::assertTrue($interface->isImplementedBy(new \PGQL\Type\NotNullType(self::getTestTypeXyz())));
+        self::assertTrue($interface->isImplementedBy(new \Infinityloop\Graphpinator\Type\NotNullType(self::getTestTypeXyz())));
         self::assertTrue($parent->isImplementedBy(self::getTestTypeXyz()));
-        self::assertTrue($parent->isImplementedBy(new \PGQL\Type\NotNullType(self::getTestTypeXyz())));
+        self::assertTrue($parent->isImplementedBy(new \Infinityloop\Graphpinator\Type\NotNullType(self::getTestTypeXyz())));
         self::assertFalse($interface->isImplementedBy(self::getTestTypeZzz()));
-        self::assertFalse($interface->isImplementedBy(new \PGQL\Type\NotNullType(self::getTestTypeZzz())));
+        self::assertFalse($interface->isImplementedBy(new \Infinityloop\Graphpinator\Type\NotNullType(self::getTestTypeZzz())));
         self::assertTrue($parent->isImplementedBy(self::getTestTypeZzz()));
-        self::assertTrue($parent->isImplementedBy(new \PGQL\Type\NotNullType(self::getTestTypeZzz())));
+        self::assertTrue($parent->isImplementedBy(new \Infinityloop\Graphpinator\Type\NotNullType(self::getTestTypeZzz())));
     }
 
-    public static function createTestInterface() : \PGQL\Type\InterfaceType
+    public static function createTestInterface() : \Infinityloop\Graphpinator\Type\InterfaceType
     {
-        return new class extends \PGQL\Type\InterfaceType {
+        return new class extends \Infinityloop\Graphpinator\Type\InterfaceType {
             protected const NAME = 'Foo';
 
             public function __construct()
             {
                 parent::__construct(
-                    new \PGQL\Field\FieldSet([]),
-                    new \PGQL\Type\Utils\InterfaceSet([
+                    new \Infinityloop\Graphpinator\Field\FieldSet([]),
+                    new \Infinityloop\Graphpinator\Type\Utils\InterfaceSet([
                         InterfaceTypeTest::createTestParentInterface(),
                     ])
                 );
@@ -48,44 +48,44 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    public static function createTestParentInterface() : \PGQL\Type\InterfaceType
+    public static function createTestParentInterface() : \Infinityloop\Graphpinator\Type\InterfaceType
     {
-        return new class extends \PGQL\Type\InterfaceType {
+        return new class extends \Infinityloop\Graphpinator\Type\InterfaceType {
             protected const NAME = 'Bar';
 
             public function __construct()
             {
                 parent::__construct(
-                    new \PGQL\Field\FieldSet([]),
+                    new \Infinityloop\Graphpinator\Field\FieldSet([]),
                 );
             }
         };
     }
 
-    public static function getTestTypeAbc() : \PGQL\Type\Type
+    public static function getTestTypeAbc() : \Infinityloop\Graphpinator\Type\Type
     {
-        return new class extends \PGQL\Type\Type {
+        return new class extends \Infinityloop\Graphpinator\Type\Type {
             protected const NAME = 'Abc';
 
             public function __construct()
             {
                 parent::__construct(
-                    new \PGQL\Field\FieldSet([])
+                    new \Infinityloop\Graphpinator\Field\FieldSet([])
                 );
             }
         };
     }
 
-    public static function getTestTypeXyz() : \PGQL\Type\Type
+    public static function getTestTypeXyz() : \Infinityloop\Graphpinator\Type\Type
     {
-        return new class extends \PGQL\Type\Type {
+        return new class extends \Infinityloop\Graphpinator\Type\Type {
             protected const NAME = 'Xyz';
 
             public function __construct()
             {
                 parent::__construct(
-                    new \PGQL\Field\FieldSet([]),
-                    new \PGQL\Type\Utils\InterfaceSet([
+                    new \Infinityloop\Graphpinator\Field\FieldSet([]),
+                    new \Infinityloop\Graphpinator\Type\Utils\InterfaceSet([
                         InterfaceTypeTest::createTestInterface(),
                     ])
                 );
@@ -93,16 +93,16 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    public static function getTestTypeZzz() : \PGQL\Type\Type
+    public static function getTestTypeZzz() : \Infinityloop\Graphpinator\Type\Type
     {
-        return new class extends \PGQL\Type\Type {
+        return new class extends \Infinityloop\Graphpinator\Type\Type {
             protected const NAME = 'Zzz';
 
             public function __construct()
             {
                 parent::__construct(
-                    new \PGQL\Field\FieldSet([]),
-                    new \PGQL\Type\Utils\InterfaceSet([
+                    new \Infinityloop\Graphpinator\Field\FieldSet([]),
+                    new \Infinityloop\Graphpinator\Type\Utils\InterfaceSet([
                         InterfaceTypeTest::createTestParentInterface(),
                     ])
                 );

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Type\Scalar;
+namespace Infinityloop\Tests\Graphpinator\Unit\Type\Scalar;
 
 final class StringTypeTest extends \PHPUnit\Framework\TestCase
 {
@@ -30,7 +30,7 @@ final class StringTypeTest extends \PHPUnit\Framework\TestCase
      */
     public function testValidateValue($rawValue): void
     {
-        $string = new \PGQL\Type\Scalar\StringType();
+        $string = new \Infinityloop\Graphpinator\Type\Scalar\StringType();
         $string->validateValue($rawValue);
 
         self::assertSame($string->getName(), 'String');
@@ -43,7 +43,7 @@ final class StringTypeTest extends \PHPUnit\Framework\TestCase
     {
         $this->expectException(\Exception::class);
 
-        $string = new \PGQL\Type\Scalar\StringType();
+        $string = new \Infinityloop\Graphpinator\Type\Scalar\StringType();
         $string->validateValue($rawValue);
     }
 }
