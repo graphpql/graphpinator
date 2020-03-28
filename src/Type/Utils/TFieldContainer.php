@@ -13,7 +13,7 @@ trait TFieldContainer
         return $this->fields;
     }
 
-    public function resolveFields(?array $requestedFields, \PGQL\Field\ResolveResult $parentValue) : array
+    public function resolveFields(?\PGQL\Parser\RequestFieldSet $requestedFields, \PGQL\Field\ResolveResult $parent) : array
     {
         if ($requestedFields === null) {
             throw new \Exception('Composite type without fields specified.');
@@ -22,10 +22,8 @@ trait TFieldContainer
         $resolved = [];
 
         foreach ($requestedFields as $request) {
-            \assert($request instanceof \PGQL\RequestField);
-
-            if (\is_string($request->getTypeCondition()) &&
-                $request->getTypeCondition() !== $parentValue->getType()->getNamedType()->getName()) {
+            if ($request->getConditionType() instanceof \PGQL\Type\Contract\NamedDefinition &&
+                !$parent->getType()->isInstanceOf($request->getConditionType())) {
                 continue;
             }
 
@@ -34,7 +32,7 @@ trait TFieldContainer
 
             $resolved[$field->getName()] = $field->getType()->resolveFields(
                 $request->getChildren(),
-                $field->resolve($parentValue, $arguments),
+                $field->resolve($parent, $arguments),
             );
         }
 

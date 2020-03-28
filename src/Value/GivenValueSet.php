@@ -10,7 +10,7 @@ final class GivenValueSet extends \Infinityloop\Utils\ImmutableSet
     {
         foreach ($values as $value) {
             if ($value instanceof \PGQL\Value\GivenValue) {
-                $this->array[$value->getName()] = $value;
+                $this->appendUnique($value->getName(), $value);
 
                 continue;
             }

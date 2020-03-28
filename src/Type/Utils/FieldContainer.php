@@ -8,5 +8,5 @@ interface FieldContainer
 {
     public function getFields() : \PGQL\Field\FieldSet;
 
-    public function resolveFields(?array $requestedFields, \PGQL\Field\ResolveResult $parentValue) : array;
+    public function resolveFields(?\PGQL\Parser\RequestFieldSet $requestedFields, \PGQL\Field\ResolveResult $parent) : array;
 }

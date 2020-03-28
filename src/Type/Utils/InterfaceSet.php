@@ -10,7 +10,7 @@ final class InterfaceSet extends \Infinityloop\Utils\ImmutableSet
     {
         foreach ($interfaces as $interface) {
             if ($interface instanceof \PGQL\Type\InterfaceType) {
-                $this->array[$interface->getName()] = $interface;
+                $this->appendUnique($interface->getName(), $interface);
 
                 continue;
             }

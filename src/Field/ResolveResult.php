@@ -8,12 +8,12 @@ final class ResolveResult
 {
     use \Nette\SmartObject;
 
-    private \PGQL\Type\Outputable $type;
+    private \PGQL\Type\Contract\Resolvable $type;
     private \PGQL\Value\ValidatedValue $result;
 
-    private function __construct(\PGQL\Type\Outputable $type, \PGQL\Value\ValidatedValue $value)
+    private function __construct(\PGQL\Type\Contract\Resolvable $type, \PGQL\Value\ValidatedValue $value)
     {
-        if (!$type->getNamedType() instanceof \PGQL\Type\ConcreteDefinition) {
+        if (!$type->getNamedType() instanceof \PGQL\Type\Contract\ConcreteDefinition) {
             throw new \Exception('Abstract type fields need to return ResolveResult with concrete resolution.');
         }
 
@@ -21,7 +21,7 @@ final class ResolveResult
         $this->result = $value;
     }
 
-    public static function fromRaw(\PGQL\Type\Outputable $type, $rawValue) : self
+    public static function fromRaw(\PGQL\Type\Contract\Resolvable $type, $rawValue) : self
     {
         return new self($type, $type->createValue($rawValue));
     }
@@ -31,7 +31,7 @@ final class ResolveResult
         return new self($value->getType(), $value);
     }
 
-    public function getType() : \PGQL\Type\Outputable
+    public function getType() : \PGQL\Type\Contract\Resolvable
     {
         return $this->type;
     }

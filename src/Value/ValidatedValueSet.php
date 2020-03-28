@@ -11,18 +11,18 @@ final class ValidatedValueSet extends \Infinityloop\Utils\ImmutableSet
         foreach ($argumentSet as $argument) {
             if (isset($givenValueSet[$argument->getName()])) {
                 $givenValue = $givenValueSet[$argument->getName()];
-                $this->array[$argument->getName()] = $argument->getType()->createValue($givenValue->getValue());
+                $this->appendUnique($argument->getName(), $argument->getType()->createValue($givenValue->getValue()));
 
                 continue;
             }
 
             if ($argument->getDefaultValue() instanceof ValidatedValue) {
-                $this->array[$argument->getName()] = $argument->getDefaultValue();
+                $this->appendUnique($argument->getName(), $argument->getDefaultValue());
 
                 continue;
             }
 
-            $this->array[$argument->getName()] = $argument->getType()->createValue(null);
+            $this->appendUnique($argument->getName(), new NullValue($argument->getType()));
         }
 
         foreach ($givenValueSet as $givenValue) {

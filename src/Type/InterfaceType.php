@@ -4,6 +4,10 @@ declare(strict_types = 1);
 
 namespace PGQL\Type;
 
+use PGQL\Type\Contract\AbstractDefinition;
+use PGQL\Type\Contract\Definition;
+use PGQL\Type\Contract\Outputable;
+
 abstract class InterfaceType extends AbstractDefinition implements Outputable, \PGQL\Type\Utils\FieldContainer, \PGQL\Type\Utils\InterfaceImplementor
 {
     use \PGQL\Type\Utils\TFieldContainer;
@@ -19,31 +23,21 @@ abstract class InterfaceType extends AbstractDefinition implements Outputable, \
 
     public function isInstanceOf(Definition $type) : bool
     {
-        if ($type instanceof NotNull) {
+        if ($type instanceof NotNullType) {
             return $this->isInstanceOf($type->getInnerType());
         }
 
-        if ($type instanceof self) {
-            if ($this->getName() === $type->getName()) {
-                return true;
-            }
-
-            return $this->implements($type);
-        }
-
-        return false;
+        return $type instanceof static
+            || ($type instanceof self && $this->implements($type));
     }
 
     public function isImplementedBy(Definition $type) : bool
     {
-        if ($type instanceof NotNull) {
+        if ($type instanceof NotNullType) {
             return $this->isImplementedBy($type->getInnerType());
         }
 
-        if (!$type instanceof \PGQL\Type\Utils\InterfaceImplementor) {
-            return false;
-        }
-
-        return $type->implements($this);
+        return $type instanceof \PGQL\Type\Utils\InterfaceImplementor
+            && $type->implements($this);
     }
 }

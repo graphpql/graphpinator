@@ -10,7 +10,7 @@ final class FieldSet extends \Infinityloop\Utils\ImmutableSet
     {
         foreach ($fields as $field) {
             if ($field instanceof Field) {
-                $this->array[$field->getName()] = $field;
+                $this->appendUnique($field->getName(), $field);
 
                 continue;
             }

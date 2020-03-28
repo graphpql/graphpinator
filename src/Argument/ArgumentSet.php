@@ -12,7 +12,7 @@ final class ArgumentSet extends \Infinityloop\Utils\ImmutableSet
     {
         foreach ($arguments as $argument) {
             if ($argument instanceof Argument) {
-                $this->array[$argument->getName()] = $argument;
+                $this->appendUnique($argument->getName(), $argument);
                 $defaultValue = $argument->getDefaultValue();
 
                 if ($defaultValue instanceof \PGQL\Value\ValidatedValue) {

@@ -4,25 +4,40 @@ declare(strict_types = 1);
 
 namespace PGQL\Value;
 
-class ValidatedValue extends \PGQL\Value\Value implements \JsonSerializable
+abstract class ValidatedValue implements \JsonSerializable
 {
-    protected \PGQL\Type\Definition $type;
+    use \Nette\SmartObject;
 
-    public function __construct($value, \PGQL\Type\Definition $type)
+    protected \PGQL\Type\Contract\Definition $type;
+    protected $value;
+
+    protected function __construct($value, \PGQL\Type\Contract\Definition $type)
     {
-        if ($type instanceof \PGQL\Type\Inputable) {
-            $value = $type->applyDefaults($value);
-        }
-
-        $type->validateValue($value);
-
-        parent::__construct($value);
+        $this->value = $value;
         $this->type = $type;
     }
 
-    public function getType() : \PGQL\Type\Definition
+    public static function create($rawValue, \PGQL\Type\Contract\Definition $type)
+    {
+        if ($rawValue === null) {
+            return new \PGQL\Value\NullValue($type);
+        }
+
+        if ($type instanceof \PGQL\Type\Contract\Inputable) {
+            $rawValue = $type->applyDefaults($rawValue);
+        }
+
+        return new static($rawValue, $type);
+    }
+
+    public function getType() : \PGQL\Type\Contract\Definition
     {
         return $this->type;
+    }
+
+    public function getRawValue()
+    {
+        return $this->value;
     }
 
     public function jsonSerialize()

@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace PGQL\Type;
 
-abstract class UnionType extends AbstractDefinition implements Outputable
+abstract class UnionType extends \PGQL\Type\Contract\AbstractDefinition implements \PGQL\Type\Contract\Outputable
 {
     protected \PGQL\Type\Utils\ConcreteSet $types;
 
@@ -13,19 +13,19 @@ abstract class UnionType extends AbstractDefinition implements Outputable
         $this->types = $types;
     }
 
-    public function isInstanceOf(Definition $type) : bool
+    public function isInstanceOf(\PGQL\Type\Contract\Definition $type) : bool
     {
-        if ($type instanceof NotNull) {
+        if ($type instanceof NotNullType) {
             return $this->isInstanceOf($type->getInnerType());
         }
 
-        return $type instanceof static && $this->getName() === $type->getName();
+        return $type instanceof static;
     }
 
-    public function isImplementedBy(Definition $type) : bool
+    public function isImplementedBy(\PGQL\Type\Contract\Definition $type) : bool
     {
         foreach ($this->types as $temp) {
-            if ($type->isInstanceOf($temp)) {
+            if ($temp->isInstanceOf($type)) {
                 return true;
             }
         }

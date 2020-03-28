@@ -9,8 +9,8 @@ final class ConcreteSet extends \Infinityloop\Utils\ImmutableSet
     public function __construct(array $types)
     {
         foreach ($types as $type) {
-            if ($type instanceof \PGQL\Type\ConcreteDefinition) {
-                $this->array[$type->getName()] = $type;
+            if ($type instanceof \PGQL\Type\Contract\ConcreteDefinition) {
+                $this->appendUnique($type->getName(), $type);
 
                 continue;
             }
@@ -19,12 +19,12 @@ final class ConcreteSet extends \Infinityloop\Utils\ImmutableSet
         }
     }
 
-    public function current() : \PGQL\Type\ConcreteDefinition
+    public function current() : \PGQL\Type\Contract\ConcreteDefinition
     {
         return parent::current();
     }
 
-    public function offsetGet($offset) : \PGQL\Type\ConcreteDefinition
+    public function offsetGet($offset) : \PGQL\Type\Contract\ConcreteDefinition
     {
         if (!$this->offsetExists($offset)) {
             throw new \Exception('Unknown type.');

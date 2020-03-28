@@ -4,11 +4,18 @@ declare(strict_types = 1);
 
 namespace PGQL\Type;
 
-final class ListType extends ModifierDefinition implements Inputable, Outputable
+final class ListType extends \PGQL\Type\Contract\ModifierDefinition implements
+    \PGQL\Type\Contract\Inputable,
+    \PGQL\Type\Contract\Outputable
 {
+    public function createValue($rawValue) : \PGQL\Value\ValidatedValue
+    {
+        return \PGQL\Value\ListValue::create($rawValue, $this);
+    }
+
     public function validateValue($rawValue) : void
     {
-        if ($rawValue === null) {
+        if ($rawValue instanceof \PGQL\Value\ValidatedValue || $rawValue === null) {
             return;
         }
 
@@ -23,32 +30,19 @@ final class ListType extends ModifierDefinition implements Inputable, Outputable
         throw new \Exception('Value must be list or null.');
     }
 
-    public function createValue($rawValue) : \PGQL\Value\ValidatedValue
-    {
-        if ($rawValue === null) {
-            return new \PGQL\Value\ValidatedValue($rawValue, $this);
-        }
-
-        if (\is_iterable($rawValue)) {
-            return new \PGQL\Value\ValidatedListValue($rawValue, $this->innerType);
-        }
-
-        throw new \Exception('Value must be list or null.');
-    }
-
-    public function resolveFields(?array $requestedFields, \PGQL\Field\ResolveResult $parentValue) : array
+    public function resolveFields(?\PGQL\Parser\RequestFieldSet $requestedFields, \PGQL\Field\ResolveResult $parent) : array
     {
         if ($requestedFields === null) {
             throw new \Exception('List without fields specified.');
         }
 
-        if (!$parentValue->getResult() instanceof \PGQL\Value\ValidatedListValue) {
+        if (!$parent->getResult() instanceof \PGQL\Value\ListValue) {
             throw new \Exception('Cannot create list');
         }
 
         $return = [];
 
-        foreach ($parentValue->getResult() as $val) {
+        foreach ($parent->getResult() as $val) {
             $return[] = $this->innerType->resolveFields($requestedFields, \PGQL\Field\ResolveResult::fromValidated($val));
         }
 
@@ -57,11 +51,11 @@ final class ListType extends ModifierDefinition implements Inputable, Outputable
 
     public function applyDefaults($value)
     {
-        if (!$this->innerType instanceof Inputable || $value === null) {
+        if ($value === null) {
             return $value;
         }
 
-        if (!\is_iterable($value)) {
+        if (!$this->innerType instanceof \PGQL\Type\Contract\Inputable || !\is_iterable($value)) {
             throw new \Exception('Value has to be list.');
         }
 
@@ -74,16 +68,21 @@ final class ListType extends ModifierDefinition implements Inputable, Outputable
         return $return;
     }
 
-    public function isInstanceOf(Definition $type): bool
+    public function isInstanceOf(\PGQL\Type\Contract\Definition $type): bool
     {
         if ($type instanceof self) {
             return $this->innerType->isInstanceOf($type->getInnerType());
         }
 
-        if ($type instanceof NotNull) {
+        if ($type instanceof NotNullType) {
             return $this->isInstanceOf($type->getInnerType());
         }
 
         return false;
+    }
+
+    public function notNull() : \PGQL\Type\NotNullType
+    {
+        return new \PGQL\Type\NotNullType($this);
     }
 }

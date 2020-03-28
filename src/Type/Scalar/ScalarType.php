@@ -4,20 +4,28 @@ declare(strict_types = 1);
 
 namespace PGQL\Type\Scalar;
 
-abstract class ScalarType extends \PGQL\Type\ConcreteDefinition implements \PGQL\Type\Inputable, \PGQL\Type\Outputable
+abstract class ScalarType extends \PGQL\Type\Contract\ConcreteDefinition implements
+    \PGQL\Type\Contract\Inputable,
+    \PGQL\Type\Contract\Outputable,
+    \PGQL\Type\Contract\Resolvable
 {
-    public function resolveFields(?array $requestedFields, \PGQL\Field\ResolveResult $parentValue) : \PGQL\Value\ValidatedValue
+    public function resolveFields(?\PGQL\Parser\RequestFieldSet $requestedFields, \PGQL\Field\ResolveResult $parent) : \PGQL\Value\ValidatedValue
     {
-        if (\is_array($requestedFields)) {
+        if ($requestedFields instanceof \PGQL\Parser\RequestFieldSet) {
             throw new \Exception('Cannot require fields on leaf type.');
         }
 
-        return $parentValue->getResult();
+        return $parent->getResult();
     }
 
     public function applyDefaults($value)
     {
         return $value;
+    }
+
+    public function createValue($rawValue) : \PGQL\Value\ValidatedValue
+    {
+        return \PGQL\Value\ScalarValue::create($rawValue, $this);
     }
 
     public static function Int() : IntType

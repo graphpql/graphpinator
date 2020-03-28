@@ -9,10 +9,10 @@ final class Argument
     use \Nette\SmartObject;
 
     private string $name;
-    private \PGQL\Type\Inputable $type;
+    private \PGQL\Type\Contract\Inputable $type;
     private ?\PGQL\Value\ValidatedValue $defaultValue;
 
-    public function __construct(string $name, \PGQL\Type\Inputable $type, $defaultValue = null)
+    public function __construct(string $name, \PGQL\Type\Contract\Inputable $type, $defaultValue = null)
     {
         $this->name = $name;
         $this->type = $type;
@@ -29,7 +29,7 @@ final class Argument
         return $this->name;
     }
 
-    public function getType() : \PGQL\Type\Inputable
+    public function getType() : \PGQL\Type\Contract\Inputable
     {
         return $this->type;
     }

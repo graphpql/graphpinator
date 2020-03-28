@@ -9,11 +9,11 @@ final class Field
     use \Nette\SmartObject;
 
     private string $name;
-    private \PGQL\Type\Outputable $type;
+    private \PGQL\Type\Contract\Outputable $type;
     private \PGQL\Argument\ArgumentSet $arguments;
     private $resolveFunction;
 
-    public function __construct(string $name, \PGQL\Type\Outputable $type, callable $resolveFunction, ?\PGQL\Argument\ArgumentSet $arguments = null)
+    public function __construct(string $name, \PGQL\Type\Contract\Outputable $type, callable $resolveFunction, ?\PGQL\Argument\ArgumentSet $arguments = null)
     {
         $this->name = $name;
         $this->type = $type;
@@ -28,7 +28,7 @@ final class Field
         return $this->name;
     }
 
-    public function getType() : \PGQL\Type\Outputable
+    public function getType() : \PGQL\Type\Contract\Outputable
     {
         return $this->type;
     }
@@ -40,7 +40,7 @@ final class Field
 
     public function resolve(ResolveResult $parentValue, \PGQL\Value\ValidatedValueSet $arguments) : ResolveResult
     {
-        $result = \call_user_func($this->resolveFunction, $parentValue->getResult()->getValue(), $arguments);
+        $result = \call_user_func($this->resolveFunction, $parentValue->getResult()->getRawValue(), $arguments);
 
         if (!$result instanceof ResolveResult) {
             $result = ResolveResult::fromRaw($this->type, $result);
