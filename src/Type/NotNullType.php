@@ -4,12 +4,7 @@ declare(strict_types = 1);
 
 namespace PGQL\Type;
 
-use PGQL\Type\Contract\Definition;
-use PGQL\Type\Contract\Inputable;
-use PGQL\Type\Contract\ModifierDefinition;
-use PGQL\Type\Contract\Outputable;
-
-final class NotNullType extends ModifierDefinition implements Inputable, Outputable
+final class NotNullType extends \PGQL\Type\Contract\ModifierDefinition
 {
     public function validateValue($rawValue) : void
     {
@@ -38,14 +33,14 @@ final class NotNullType extends ModifierDefinition implements Inputable, Outputa
 
     public function applyDefaults($value)
     {
-        if (!$this->innerType instanceof Inputable) {
+        if (!$this->innerType instanceof \PGQL\Type\Contract\Inputable) {
             return $value;
         }
 
         return $this->innerType->applyDefaults($value);
     }
 
-    public function isInstanceOf(Definition $type): bool
+    public function isInstanceOf(\PGQL\Type\Contract\Definition $type): bool
     {
         if ($type instanceof self) {
             return $this->innerType->isInstanceOf($type->getInnerType());

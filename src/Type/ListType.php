@@ -4,30 +4,11 @@ declare(strict_types = 1);
 
 namespace PGQL\Type;
 
-final class ListType extends \PGQL\Type\Contract\ModifierDefinition implements
-    \PGQL\Type\Contract\Inputable,
-    \PGQL\Type\Contract\Outputable
+final class ListType extends \PGQL\Type\Contract\ModifierDefinition
 {
     public function createValue($rawValue) : \PGQL\Value\ValidatedValue
     {
         return \PGQL\Value\ListValue::create($rawValue, $this);
-    }
-
-    public function validateValue($rawValue) : void
-    {
-        if ($rawValue instanceof \PGQL\Value\ValidatedValue || $rawValue === null) {
-            return;
-        }
-
-        if (\is_iterable($rawValue)) {
-            foreach ($rawValue as $val) {
-                $this->innerType->validateValue($val);
-            }
-
-            return;
-        }
-
-        throw new \Exception('Value must be list or null.');
     }
 
     public function resolveFields(?\PGQL\Parser\RequestFieldSet $requestedFields, \PGQL\Field\ResolveResult $parent) : array
@@ -49,13 +30,28 @@ final class ListType extends \PGQL\Type\Contract\ModifierDefinition implements
         return $return;
     }
 
+    public function validateValue($rawValue) : void
+    {
+        if ($rawValue === null || $rawValue instanceof \PGQL\Value\ValidatedValue) {
+            return;
+        }
+
+        if (!\is_iterable($rawValue)) {
+            throw new \Exception('Value must be list or null.');
+        }
+
+        foreach ($rawValue as $val) {
+            $this->innerType->validateValue($val);
+        }
+    }
+
     public function applyDefaults($value)
     {
-        if ($value === null) {
+        if ($value === null || !$this->innerType instanceof \PGQL\Type\Contract\Inputable) {
             return $value;
         }
 
-        if (!$this->innerType instanceof \PGQL\Type\Contract\Inputable || !\is_iterable($value)) {
+        if (!\is_iterable($value)) {
             throw new \Exception('Value has to be list.');
         }
 

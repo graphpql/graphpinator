@@ -8,7 +8,10 @@ final class NullValue extends \PGQL\Value\ValidatedValue
 {
     public function __construct(\PGQL\Type\Contract\Definition $type)
     {
-        $type->validateValue(null);
+        if ($type instanceof \PGQL\Type\NotNullType) {
+            throw new \Exception();
+        }
+
         parent::__construct(null, $type);
     }
 }

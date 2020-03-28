@@ -4,10 +4,7 @@ declare(strict_types = 1);
 
 namespace PGQL\Type;
 
-use PGQL\Type\Contract\ConcreteDefinition;
-use PGQL\Type\Contract\Inputable;
-
-abstract class InputType extends ConcreteDefinition implements Inputable
+abstract class InputType extends \PGQL\Type\Contract\ConcreteDefinition implements \PGQL\Type\Contract\Inputable
 {
     protected \PGQL\Argument\ArgumentSet $arguments;
 
@@ -19,11 +16,6 @@ abstract class InputType extends ConcreteDefinition implements Inputable
     public function createValue($rawValue) : \PGQL\Value\ValidatedValue
     {
         return \PGQL\Value\InputValue::create($rawValue, $this);
-    }
-
-    public function validateNonNullValue($rawValue): void
-    {
-        $this->createValue($rawValue);
     }
 
     public function applyDefaults($value) : array
@@ -40,7 +32,7 @@ abstract class InputType extends ConcreteDefinition implements Inputable
         return $this->arguments;
     }
 
-    private static function merge(array $core, array $supplement) : array
+    private static function merge(array $core, iterable $supplement) : array
     {
         foreach ($supplement as $key => $value) {
             if (\array_key_exists($key, $core)) {

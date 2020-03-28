@@ -19,15 +19,6 @@ abstract class NamedDefinition implements \PGQL\Type\Contract\Definition
         return static::DESCRIPTION;
     }
 
-    public function validateValue($rawValue) : void
-    {
-        if ($rawValue === null) {
-            return;
-        }
-
-        $this->validateNonNullValue($rawValue);
-    }
-
     public function getNamedType() : \PGQL\Type\Contract\NamedDefinition
     {
         return $this;

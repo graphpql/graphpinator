@@ -6,9 +6,10 @@ namespace PGQL\Type\Scalar;
 
 abstract class ScalarType extends \PGQL\Type\Contract\ConcreteDefinition implements
     \PGQL\Type\Contract\Inputable,
-    \PGQL\Type\Contract\Outputable,
     \PGQL\Type\Contract\Resolvable
 {
+    use \PGQL\Type\Contract\TResolvable;
+
     public function resolveFields(?\PGQL\Parser\RequestFieldSet $requestedFields, \PGQL\Field\ResolveResult $parent) : \PGQL\Value\ValidatedValue
     {
         if ($requestedFields instanceof \PGQL\Parser\RequestFieldSet) {
@@ -26,6 +27,15 @@ abstract class ScalarType extends \PGQL\Type\Contract\ConcreteDefinition impleme
     public function createValue($rawValue) : \PGQL\Value\ValidatedValue
     {
         return \PGQL\Value\ScalarValue::create($rawValue, $this);
+    }
+
+    public function validateValue($rawValue) : void
+    {
+        if ($rawValue === null) {
+            return;
+        }
+
+        $this->validateNonNullValue($rawValue);
     }
 
     public static function Int() : IntType

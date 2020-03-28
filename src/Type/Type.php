@@ -4,18 +4,12 @@ declare(strict_types = 1);
 
 namespace PGQL\Type;
 
-use PGQL\Type\Contract\AbstractDefinition;
-use PGQL\Type\Contract\ConcreteDefinition;
-use PGQL\Type\Contract\Definition;
-use PGQL\Type\Contract\Outputable;
-use PGQL\Type\Contract\Resolvable;
-
-abstract class Type extends ConcreteDefinition implements
-    Outputable,
-    Resolvable,
+abstract class Type extends \PGQL\Type\Contract\ConcreteDefinition implements
+    \PGQL\Type\Contract\Resolvable,
     \PGQL\Type\Utils\FieldContainer,
     \PGQL\Type\Utils\InterfaceImplementor
 {
+    use \PGQL\Type\Contract\TResolvable;
     use \PGQL\Type\Utils\TFieldContainer;
     use \PGQL\Type\Utils\TInterfaceImplementor;
 
@@ -32,9 +26,9 @@ abstract class Type extends ConcreteDefinition implements
         return \PGQL\Value\TypeValue::create($rawValue, $this);
     }
 
-    public function isInstanceOf(Definition $type) : bool
+    public function isInstanceOf(\PGQL\Type\Contract\Definition $type) : bool
     {
-        if ($type instanceof AbstractDefinition) {
+        if ($type instanceof \PGQL\Type\Contract\AbstractDefinition) {
             return $type->isImplementedBy($this);
         }
 

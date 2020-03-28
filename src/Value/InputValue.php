@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace PGQL\Value;
 
-final class InputValue extends ValidatedValue implements \ArrayAccess
+final class InputValue extends ValidatedValue implements \Iterator, \ArrayAccess
 {
     public function __construct(array $fields, \PGQL\Type\InputType $type)
     {
@@ -41,6 +41,31 @@ final class InputValue extends ValidatedValue implements \ArrayAccess
         }
 
         return $return;
+    }
+
+    public function current() : ValidatedValue
+    {
+        return \current($this->value);
+    }
+
+    public function next() : void
+    {
+        \next($this->value);
+    }
+
+    public function key() : ?string
+    {
+        return \key($this->value);
+    }
+
+    public function valid() : bool
+    {
+        return \key($this->value) !== null;
+    }
+
+    public function rewind() : void
+    {
+        \reset($this->value);
     }
 
     public function offsetExists($name) : bool

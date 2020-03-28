@@ -4,7 +4,9 @@ declare(strict_types = 1);
 
 namespace PGQL\Type\Contract;
 
-abstract class ModifierDefinition implements \PGQL\Type\Contract\Definition
+abstract class ModifierDefinition implements
+    \PGQL\Type\Contract\Inputable,
+    \PGQL\Type\Contract\Resolvable
 {
     protected \PGQL\Type\Contract\Definition $innerType;
 
