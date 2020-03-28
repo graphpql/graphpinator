@@ -9,8 +9,10 @@ final class TypeValueTest extends \PHPUnit\Framework\TestCase
     public function testSimple(): void
     {
         $value = new \PGQL\Value\TypeValue(123, $this->createTestType());
+        $value2 = \PGQL\Value\TypeValue::create(123, $this->createTestType());
 
         self::assertSame(123, $value->getRawValue());
+        self::assertSame(123, $value2->getRawValue());
     }
 
     public function testInvalid(): void
