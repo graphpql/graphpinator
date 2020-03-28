@@ -170,47 +170,17 @@ class Tokenizer implements \Iterator
 
     private function skipWhiteSpace() : void
     {
-        for (; $this->hasNextChar(); ++$this->currentIndex) {
-            if ($this->currentChar() !== \PHP_EOL && \ctype_space($this->currentChar())) {
-                continue;
-            }
-
-            return;
-        }
+        $this->eatChars(function (string $char) : bool { return $char !== \PHP_EOL && \ctype_space($char); });
     }
 
     private function getComment() : string
     {
-        $value = '';
-
-        for (; $this->hasNextChar(); ++$this->currentIndex) {
-            if ($this->currentChar() !== \PHP_EOL) {
-                $value .= $this->currentChar();
-
-                continue;
-            }
-
-            break;
-        }
-
-        return $value;
+        return $this->eatChars(function (string $char) : bool {return $char !== \PHP_EOL; });
     }
 
     private function getString() : string
     {
-        $value = '';
-
-        for (; $this->hasNextChar(); ++$this->currentIndex) {
-            if ($this->currentChar() !== '"') {
-                $value .= $this->currentChar();
-
-                continue;
-            }
-
-            break;
-        }
-
-        return $value;
+        return $this->eatChars(function (string $char) : bool { return $char !== '"'; });
     }
 
     private function getInt(bool $negative = true, bool $leadingZeros = true) : string
@@ -241,15 +211,7 @@ class Tokenizer implements \Iterator
             break;
         }
 
-        for (; $this->hasNextChar(); ++$this->currentIndex) {
-            if (\ctype_digit($this->currentChar())) {
-                $value .= $this->currentChar();
-
-                continue;
-            }
-
-            break;
-        }
+        $value .=  $this->eatChars(function (string $char) : bool { return \ctype_digit($char); });
 
         if (!\is_numeric($value)) {
             throw new \Exception('Invalid numeric value');
@@ -260,10 +222,15 @@ class Tokenizer implements \Iterator
 
     private function getName() : string
     {
+        return $this->eatChars(function (string $char) : bool { return \ctype_alnum($char); });
+    }
+
+    private function eatChars(callable $condition) : string
+    {
         $value = '';
 
         for (; $this->hasNextChar(); ++$this->currentIndex) {
-            if (\ctype_alnum($this->currentChar())) {
+            if ($condition($this->currentChar()) === true) {
                 $value .= $this->currentChar();
 
                 continue;
