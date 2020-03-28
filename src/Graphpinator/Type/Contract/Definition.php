@@ -2,11 +2,19 @@
 
 declare(strict_types = 1);
 
-namespace PGQL\Type\Contract;
+namespace Infinityloop\Graphpinator\Type\Contract;
 
 interface Definition
 {
-    public function getNamedType() : \PGQL\Type\Contract\NamedDefinition;
+    public function getNamedType() : \Infinityloop\Graphpinator\Type\Contract\NamedDefinition;
 
-    public function isInstanceOf(\PGQL\Type\Contract\Definition $type) : bool;
+    public function isInstanceOf(\Infinityloop\Graphpinator\Type\Contract\Definition $type) : bool;
+
+    public function isInputable() : bool;
+
+    public function isOutputable() : bool;
+
+    public function isInstantiable() : bool;
+
+    public function isResolvable() : bool;
 }

@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace PGQL\Type\Contract;
+namespace Infinityloop\Graphpinator\Type\Contract;
 
-interface Inputable extends \PGQL\Type\Contract\Instantiable
+interface Inputable extends \Infinityloop\Graphpinator\Type\Contract\Instantiable
 {
     public function applyDefaults($value);
 }

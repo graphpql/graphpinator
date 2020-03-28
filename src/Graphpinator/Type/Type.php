@@ -2,33 +2,33 @@
 
 declare(strict_types = 1);
 
-namespace PGQL\Type;
+namespace Infinityloop\Graphpinator\Type;
 
-abstract class Type extends \PGQL\Type\Contract\ConcreteDefinition implements
-    \PGQL\Type\Contract\Resolvable,
-    \PGQL\Type\Utils\FieldContainer,
-    \PGQL\Type\Utils\InterfaceImplementor
+abstract class Type extends \Infinityloop\Graphpinator\Type\Contract\ConcreteDefinition implements
+    \Infinityloop\Graphpinator\Type\Contract\Resolvable,
+    \Infinityloop\Graphpinator\Type\Utils\FieldContainer,
+    \Infinityloop\Graphpinator\Type\Utils\InterfaceImplementor
 {
-    use \PGQL\Type\Contract\TResolvable;
-    use \PGQL\Type\Utils\TFieldContainer;
-    use \PGQL\Type\Utils\TInterfaceImplementor;
+    use \Infinityloop\Graphpinator\Type\Contract\TResolvable;
+    use \Infinityloop\Graphpinator\Type\Utils\TFieldContainer;
+    use \Infinityloop\Graphpinator\Type\Utils\TInterfaceImplementor;
 
-    public function __construct(\PGQL\Field\FieldSet $fields, ?\PGQL\Type\Utils\InterfaceSet $implements = null)
+    public function __construct(\Infinityloop\Graphpinator\Field\FieldSet $fields, ?\Infinityloop\Graphpinator\Type\Utils\InterfaceSet $implements = null)
     {
         $this->fields = $fields;
-        $this->implements = $implements instanceof \PGQL\Type\Utils\InterfaceSet
+        $this->implements = $implements instanceof \Infinityloop\Graphpinator\Type\Utils\InterfaceSet
             ? $implements
-            : new \PGQL\Type\Utils\InterfaceSet([]);
+            : new \Infinityloop\Graphpinator\Type\Utils\InterfaceSet([]);
     }
 
-    public function createValue($rawValue) : \PGQL\Value\ValidatedValue
+    public function createValue($rawValue) : \Infinityloop\Graphpinator\Value\ValidatedValue
     {
-        return \PGQL\Value\TypeValue::create($rawValue, $this);
+        return \Infinityloop\Graphpinator\Value\TypeValue::create($rawValue, $this);
     }
 
-    public function isInstanceOf(\PGQL\Type\Contract\Definition $type) : bool
+    public function isInstanceOf(\Infinityloop\Graphpinator\Type\Contract\Definition $type) : bool
     {
-        if ($type instanceof \PGQL\Type\Contract\AbstractDefinition) {
+        if ($type instanceof \Infinityloop\Graphpinator\Type\Contract\AbstractDefinition) {
             return $type->isImplementedBy($this);
         }
 

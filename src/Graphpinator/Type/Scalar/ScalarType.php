@@ -2,17 +2,17 @@
 
 declare(strict_types = 1);
 
-namespace PGQL\Type\Scalar;
+namespace Infinityloop\Graphpinator\Type\Scalar;
 
-abstract class ScalarType extends \PGQL\Type\Contract\ConcreteDefinition implements
-    \PGQL\Type\Contract\Inputable,
-    \PGQL\Type\Contract\Resolvable
+abstract class ScalarType extends \Infinityloop\Graphpinator\Type\Contract\ConcreteDefinition implements
+    \Infinityloop\Graphpinator\Type\Contract\Inputable,
+    \Infinityloop\Graphpinator\Type\Contract\Resolvable
 {
-    use \PGQL\Type\Contract\TResolvable;
+    use \Infinityloop\Graphpinator\Type\Contract\TResolvable;
 
-    public function resolveFields(?\PGQL\Parser\RequestFieldSet $requestedFields, \PGQL\Field\ResolveResult $parent) : \PGQL\Value\ValidatedValue
+    public function resolveFields(?\Infinityloop\Graphpinator\Parser\RequestFieldSet $requestedFields, \Infinityloop\Graphpinator\Field\ResolveResult $parent) : \Infinityloop\Graphpinator\Value\ValidatedValue
     {
-        if ($requestedFields instanceof \PGQL\Parser\RequestFieldSet) {
+        if ($requestedFields instanceof \Infinityloop\Graphpinator\Parser\RequestFieldSet) {
             throw new \Exception('Cannot require fields on leaf type.');
         }
 
@@ -24,18 +24,9 @@ abstract class ScalarType extends \PGQL\Type\Contract\ConcreteDefinition impleme
         return $value;
     }
 
-    public function createValue($rawValue) : \PGQL\Value\ValidatedValue
+    public function createValue($rawValue) : \Infinityloop\Graphpinator\Value\ValidatedValue
     {
-        return \PGQL\Value\ScalarValue::create($rawValue, $this);
-    }
-
-    public function validateValue($rawValue) : void
-    {
-        if ($rawValue === null) {
-            return;
-        }
-
-        $this->validateNonNullValue($rawValue);
+        return \Infinityloop\Graphpinator\Value\ScalarValue::create($rawValue, $this);
     }
 
     public static function Int() : IntType

@@ -2,11 +2,11 @@
 
 declare(strict_types = 1);
 
-namespace PGQL\Type\Contract;
+namespace Infinityloop\Graphpinator\Type\Contract;
 
-interface Resolvable extends \PGQL\Type\Contract\Outputable
+interface Resolvable extends \Infinityloop\Graphpinator\Type\Contract\Outputable
 {
-    public function resolveFields(?\PGQL\Parser\RequestFieldSet $requestedFields, \PGQL\Field\ResolveResult $parent);
+    public function resolveFields(?\Infinityloop\Graphpinator\Parser\RequestFieldSet $requestedFields, \Infinityloop\Graphpinator\Field\ResolveResult $parent);
 
     public function validateValue($rawValue) : void;
 }

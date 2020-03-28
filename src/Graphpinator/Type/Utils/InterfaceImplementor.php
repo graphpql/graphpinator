@@ -2,11 +2,11 @@
 
 declare(strict_types = 1);
 
-namespace PGQL\Type\Utils;
+namespace Infinityloop\Graphpinator\Type\Utils;
 
 interface InterfaceImplementor
 {
     public function getInterfaces() : InterfaceSet;
 
-    public function implements(\PGQL\Type\InterfaceType $interface) : bool;
+    public function implements(\Infinityloop\Graphpinator\Type\InterfaceType $interface) : bool;
 }

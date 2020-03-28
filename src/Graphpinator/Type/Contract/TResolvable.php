@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace PGQL\Type\Contract;
+namespace Infinityloop\Graphpinator\Type\Contract;
 
 trait TResolvable
 {

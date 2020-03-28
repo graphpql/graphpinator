@@ -2,11 +2,11 @@
 
 declare(strict_types = 1);
 
-namespace PGQL\Value;
+namespace Infinityloop\Graphpinator\Value;
 
 final class ValidatedValueSet extends \Infinityloop\Utils\ImmutableSet
 {
-    public function __construct(GivenValueSet $givenValueSet, \PGQL\Argument\ArgumentSet $argumentSet)
+    public function __construct(GivenValueSet $givenValueSet, \Infinityloop\Graphpinator\Argument\ArgumentSet $argumentSet)
     {
         foreach ($argumentSet as $argument) {
             if (isset($givenValueSet[$argument->getName()])) {

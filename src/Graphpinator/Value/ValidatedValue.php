@@ -2,35 +2,35 @@
 
 declare(strict_types = 1);
 
-namespace PGQL\Value;
+namespace Infinityloop\Graphpinator\Value;
 
 abstract class ValidatedValue implements \JsonSerializable
 {
     use \Nette\SmartObject;
 
-    protected \PGQL\Type\Contract\Definition $type;
+    protected \Infinityloop\Graphpinator\Type\Contract\Definition $type;
     protected $value;
 
-    protected function __construct($value, \PGQL\Type\Contract\Definition $type)
+    protected function __construct($value, \Infinityloop\Graphpinator\Type\Contract\Definition $type)
     {
         $this->value = $value;
         $this->type = $type;
     }
 
-    public static function create($rawValue, \PGQL\Type\Contract\Definition $type)
+    public static function create($rawValue, \Infinityloop\Graphpinator\Type\Contract\Definition $type)
     {
         if ($rawValue === null) {
-            return new \PGQL\Value\NullValue($type);
+            return new \Infinityloop\Graphpinator\Value\NullValue($type);
         }
 
-        if ($type instanceof \PGQL\Type\Contract\Inputable) {
+        if ($type->isInputable()) {
             $rawValue = $type->applyDefaults($rawValue);
         }
 
         return new static($rawValue, $type);
     }
 
-    public function getType() : \PGQL\Type\Contract\Definition
+    public function getType() : \Infinityloop\Graphpinator\Type\Contract\Definition
     {
         return $this->type;
     }

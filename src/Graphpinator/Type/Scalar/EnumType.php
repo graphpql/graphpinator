@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace PGQL\Type\Scalar;
+namespace Infinityloop\Graphpinator\Type\Scalar;
 
 abstract class EnumType extends ScalarType
 {

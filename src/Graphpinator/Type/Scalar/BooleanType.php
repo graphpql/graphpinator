@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace PGQL\Type\Scalar;
+namespace Infinityloop\Graphpinator\Type\Scalar;
 
-final class BooleanType extends \PGQL\Type\Scalar\ScalarType
+final class BooleanType extends \Infinityloop\Graphpinator\Type\Scalar\ScalarType
 {
     protected const NAME = 'Boolean';
     protected const DESCRIPTION = 'Boolean built-in type';

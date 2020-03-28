@@ -2,10 +2,21 @@
 
 declare(strict_types = 1);
 
-namespace PGQL\Type;
+namespace Infinityloop\Graphpinator\Type;
 
-final class NotNullType extends \PGQL\Type\Contract\ModifierDefinition
+final class NotNullType extends \Infinityloop\Graphpinator\Type\Contract\ModifierDefinition
 {
+    public function createValue($rawValue) : \Infinityloop\Graphpinator\Value\ValidatedValue
+    {
+        $value = $this->innerType->createValue($rawValue);
+
+        if ($value instanceof \Infinityloop\Graphpinator\Value\NullValue) {
+            throw new \Exception('Value cannot be null.');
+        }
+
+        return $value;
+    }
+
     public function validateValue($rawValue) : void
     {
         if ($rawValue === null) {
@@ -15,32 +26,17 @@ final class NotNullType extends \PGQL\Type\Contract\ModifierDefinition
         $this->innerType->validateValue($rawValue);
     }
 
-    public function createValue($rawValue) : \PGQL\Value\ValidatedValue
-    {
-        $value = $this->innerType->createValue($rawValue);
-
-        if ($value instanceof \PGQL\Value\NullValue) {
-            throw new \Exception('Value cannot be null.');
-        }
-
-        return $value;
-    }
-
-    public function resolveFields(?\PGQL\Parser\RequestFieldSet $requestedFields, \PGQL\Field\ResolveResult $parent)
+    public function resolveFields(?\Infinityloop\Graphpinator\Parser\RequestFieldSet $requestedFields, \Infinityloop\Graphpinator\Field\ResolveResult $parent)
     {
         return $this->innerType->resolveFields($requestedFields, $parent);
     }
 
     public function applyDefaults($value)
     {
-        if (!$this->innerType instanceof \PGQL\Type\Contract\Inputable) {
-            return $value;
-        }
-
         return $this->innerType->applyDefaults($value);
     }
 
-    public function isInstanceOf(\PGQL\Type\Contract\Definition $type): bool
+    public function isInstanceOf(\Infinityloop\Graphpinator\Type\Contract\Definition $type): bool
     {
         if ($type instanceof self) {
             return $this->innerType->isInstanceOf($type->getInnerType());

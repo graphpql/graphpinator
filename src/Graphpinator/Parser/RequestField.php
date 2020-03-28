@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace PGQL\Parser;
+namespace Infinityloop\Graphpinator\Parser;
 
 final class RequestField
 {
@@ -10,21 +10,21 @@ final class RequestField
 
     private string $name;
     private ?RequestFieldSet $children;
-    private ?\PGQL\Type\Contract\NamedDefinition $conditionType;
-    private \PGQL\Value\GivenValueSet $arguments;
+    private ?\Infinityloop\Graphpinator\Type\Contract\NamedDefinition $conditionType;
+    private \Infinityloop\Graphpinator\Value\GivenValueSet $arguments;
 
     public function __construct(
         string $name,
         ?RequestFieldSet $children = null,
-        ?\PGQL\Type\Contract\NamedDefinition $conditionType = null,
-        ?\PGQL\Value\GivenValueSet $arguments = null
+        ?\Infinityloop\Graphpinator\Type\Contract\NamedDefinition $conditionType = null,
+        ?\Infinityloop\Graphpinator\Value\GivenValueSet $arguments = null
     ) {
         $this->name = $name;
         $this->children = $children;
         $this->conditionType = $conditionType;
-        $this->arguments = $arguments instanceof \PGQL\Value\GivenValueSet
+        $this->arguments = $arguments instanceof \Infinityloop\Graphpinator\Value\GivenValueSet
             ? $arguments
-            : new \PGQL\Value\GivenValueSet([]);
+            : new \Infinityloop\Graphpinator\Value\GivenValueSet([]);
     }
 
     public function getName() : string
@@ -37,12 +37,12 @@ final class RequestField
         return $this->children;
     }
 
-    public function getConditionType() : ?\PGQL\Type\Contract\NamedDefinition
+    public function getConditionType() : ?\Infinityloop\Graphpinator\Type\Contract\NamedDefinition
     {
         return $this->conditionType;
     }
 
-    public function getArguments() : \PGQL\Value\GivenValueSet
+    public function getArguments() : \Infinityloop\Graphpinator\Value\GivenValueSet
     {
         return $this->arguments;
     }

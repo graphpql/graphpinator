@@ -2,13 +2,13 @@
 
 declare(strict_types = 1);
 
-namespace PGQL\Value;
+namespace Infinityloop\Graphpinator\Value;
 
-final class NullValue extends \PGQL\Value\ValidatedValue
+final class NullValue extends \Infinityloop\Graphpinator\Value\ValidatedValue
 {
-    public function __construct(\PGQL\Type\Contract\Definition $type)
+    public function __construct(\Infinityloop\Graphpinator\Type\Contract\Definition $type)
     {
-        if ($type instanceof \PGQL\Type\NotNullType) {
+        if ($type instanceof \Infinityloop\Graphpinator\Type\NotNullType) {
             throw new \Exception();
         }
 

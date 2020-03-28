@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace PGQL\Type\Contract;
+namespace Infinityloop\Graphpinator\Type\Contract;
 
-abstract class NamedDefinition implements \PGQL\Type\Contract\Definition
+abstract class NamedDefinition implements \Infinityloop\Graphpinator\Type\Contract\Definition
 {
     protected const NAME = '';
     protected const DESCRIPTION = null;
@@ -19,33 +19,53 @@ abstract class NamedDefinition implements \PGQL\Type\Contract\Definition
         return static::DESCRIPTION;
     }
 
-    public function getNamedType() : \PGQL\Type\Contract\NamedDefinition
+    public function getNamedType() : \Infinityloop\Graphpinator\Type\Contract\NamedDefinition
     {
         return $this;
     }
 
-    public function isInstanceOf(\PGQL\Type\Contract\Definition $type): bool
+    public function isInstanceOf(\Infinityloop\Graphpinator\Type\Contract\Definition $type): bool
     {
-        if ($type instanceof \PGQL\Type\NotNullType) {
+        if ($type instanceof \Infinityloop\Graphpinator\Type\NotNullType) {
             return $this->isInstanceOf($type->getInnerType());
         }
 
         return $type instanceof static;
     }
 
-    public function notNull() : \PGQL\Type\NotNullType
+    public function isInputable() : bool
     {
-        return new \PGQL\Type\NotNullType($this);
+        return $this instanceof Inputable;
     }
 
-    public function notNullList() : \PGQL\Type\NotNullType
+    public function isOutputable() : bool
     {
-        return new \PGQL\Type\NotNullType(new \PGQL\Type\ListType(new \PGQL\Type\NotNullType($this)));
+        return $this instanceof Outputable;
     }
 
-    public function list() : \PGQL\Type\ListType
+    public function isInstantiable() : bool
     {
-        return new \PGQL\Type\ListType($this);
+        return $this instanceof Instantiable;
+    }
+
+    public function isResolvable() : bool
+    {
+        return $this instanceof Resolvable;
+    }
+
+    public function notNull() : \Infinityloop\Graphpinator\Type\NotNullType
+    {
+        return new \Infinityloop\Graphpinator\Type\NotNullType($this);
+    }
+
+    public function notNullList() : \Infinityloop\Graphpinator\Type\NotNullType
+    {
+        return new \Infinityloop\Graphpinator\Type\NotNullType(new \Infinityloop\Graphpinator\Type\ListType(new \Infinityloop\Graphpinator\Type\NotNullType($this)));
+    }
+
+    public function list() : \Infinityloop\Graphpinator\Type\ListType
+    {
+        return new \Infinityloop\Graphpinator\Type\ListType($this);
     }
 
     protected function validateNonNullValue($rawValue) : void

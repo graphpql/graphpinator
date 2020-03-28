@@ -2,14 +2,14 @@
 
 declare(strict_types = 1);
 
-namespace PGQL\Type\Utils;
+namespace Infinityloop\Graphpinator\Type\Utils;
 
 final class ConcreteSet extends \Infinityloop\Utils\ImmutableSet
 {
     public function __construct(array $types)
     {
         foreach ($types as $type) {
-            if ($type instanceof \PGQL\Type\Contract\ConcreteDefinition) {
+            if ($type instanceof \Infinityloop\Graphpinator\Type\Contract\ConcreteDefinition) {
                 $this->appendUnique($type->getName(), $type);
 
                 continue;
@@ -19,12 +19,12 @@ final class ConcreteSet extends \Infinityloop\Utils\ImmutableSet
         }
     }
 
-    public function current() : \PGQL\Type\Contract\ConcreteDefinition
+    public function current() : \Infinityloop\Graphpinator\Type\Contract\ConcreteDefinition
     {
         return parent::current();
     }
 
-    public function offsetGet($offset) : \PGQL\Type\Contract\ConcreteDefinition
+    public function offsetGet($offset) : \Infinityloop\Graphpinator\Type\Contract\ConcreteDefinition
     {
         if (!$this->offsetExists($offset)) {
             throw new \Exception('Unknown type.');

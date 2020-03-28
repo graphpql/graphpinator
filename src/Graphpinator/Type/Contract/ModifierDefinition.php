@@ -2,31 +2,51 @@
 
 declare(strict_types = 1);
 
-namespace PGQL\Type\Contract;
+namespace Infinityloop\Graphpinator\Type\Contract;
 
 abstract class ModifierDefinition implements
-    \PGQL\Type\Contract\Inputable,
-    \PGQL\Type\Contract\Resolvable
+    \Infinityloop\Graphpinator\Type\Contract\Inputable,
+    \Infinityloop\Graphpinator\Type\Contract\Resolvable
 {
-    protected \PGQL\Type\Contract\Definition $innerType;
+    protected \Infinityloop\Graphpinator\Type\Contract\Definition $innerType;
 
-    public function __construct(\PGQL\Type\Contract\Definition $innerType)
+    public function __construct(\Infinityloop\Graphpinator\Type\Contract\Definition $innerType)
     {
         $this->innerType = $innerType;
     }
 
-    public function getInnerType() : \PGQL\Type\Contract\Definition
+    public function getInnerType() : \Infinityloop\Graphpinator\Type\Contract\Definition
     {
         return $this->innerType;
     }
 
-    public function getNamedType() : \PGQL\Type\Contract\NamedDefinition
+    public function getNamedType() : \Infinityloop\Graphpinator\Type\Contract\NamedDefinition
     {
         return $this->innerType->getNamedType();
     }
 
-    public function list() : \PGQL\Type\ListType
+    public function isInputable() : bool
     {
-        return new \PGQL\Type\ListType($this);
+        return $this->innerType->isInputable();
+    }
+
+    public function isOutputable() : bool
+    {
+        return $this->innerType->isOutputable();
+    }
+
+    public function isInstantiable() : bool
+    {
+        return $this->innerType->isInstantiable();
+    }
+
+    public function isResolvable() : bool
+    {
+        return $this->innerType->isResolvable();
+    }
+
+    public function list() : \Infinityloop\Graphpinator\Type\ListType
+    {
+        return new \Infinityloop\Graphpinator\Type\ListType($this);
     }
 }

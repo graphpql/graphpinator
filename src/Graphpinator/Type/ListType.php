@@ -2,29 +2,29 @@
 
 declare(strict_types = 1);
 
-namespace PGQL\Type;
+namespace Infinityloop\Graphpinator\Type;
 
-final class ListType extends \PGQL\Type\Contract\ModifierDefinition
+final class ListType extends \Infinityloop\Graphpinator\Type\Contract\ModifierDefinition
 {
-    public function createValue($rawValue) : \PGQL\Value\ValidatedValue
+    public function createValue($rawValue) : \Infinityloop\Graphpinator\Value\ValidatedValue
     {
-        return \PGQL\Value\ListValue::create($rawValue, $this);
+        return \Infinityloop\Graphpinator\Value\ListValue::create($rawValue, $this);
     }
 
-    public function resolveFields(?\PGQL\Parser\RequestFieldSet $requestedFields, \PGQL\Field\ResolveResult $parent) : array
+    public function resolveFields(?\Infinityloop\Graphpinator\Parser\RequestFieldSet $requestedFields, \Infinityloop\Graphpinator\Field\ResolveResult $parent) : array
     {
         if ($requestedFields === null) {
             throw new \Exception('List without fields specified.');
         }
 
-        if (!$parent->getResult() instanceof \PGQL\Value\ListValue) {
+        if (!$parent->getResult() instanceof \Infinityloop\Graphpinator\Value\ListValue) {
             throw new \Exception('Cannot create list');
         }
 
         $return = [];
 
         foreach ($parent->getResult() as $val) {
-            $return[] = $this->innerType->resolveFields($requestedFields, \PGQL\Field\ResolveResult::fromValidated($val));
+            $return[] = $this->innerType->resolveFields($requestedFields, \Infinityloop\Graphpinator\Field\ResolveResult::fromValidated($val));
         }
 
         return $return;
@@ -32,7 +32,7 @@ final class ListType extends \PGQL\Type\Contract\ModifierDefinition
 
     public function validateValue($rawValue) : void
     {
-        if ($rawValue === null || $rawValue instanceof \PGQL\Value\ValidatedValue) {
+        if ($rawValue === null || $rawValue instanceof \Infinityloop\Graphpinator\Value\ValidatedValue) {
             return;
         }
 
@@ -45,12 +45,8 @@ final class ListType extends \PGQL\Type\Contract\ModifierDefinition
         }
     }
 
-    public function applyDefaults($value)
+    public function applyDefaults($value) : array
     {
-        if ($value === null || !$this->innerType instanceof \PGQL\Type\Contract\Inputable) {
-            return $value;
-        }
-
         if (!\is_iterable($value)) {
             throw new \Exception('Value has to be list.');
         }
@@ -64,7 +60,7 @@ final class ListType extends \PGQL\Type\Contract\ModifierDefinition
         return $return;
     }
 
-    public function isInstanceOf(\PGQL\Type\Contract\Definition $type): bool
+    public function isInstanceOf(\Infinityloop\Graphpinator\Type\Contract\Definition $type) : bool
     {
         if ($type instanceof self) {
             return $this->innerType->isInstanceOf($type->getInnerType());
@@ -77,8 +73,8 @@ final class ListType extends \PGQL\Type\Contract\ModifierDefinition
         return false;
     }
 
-    public function notNull() : \PGQL\Type\NotNullType
+    public function notNull() : \Infinityloop\Graphpinator\Type\NotNullType
     {
-        return new \PGQL\Type\NotNullType($this);
+        return new \Infinityloop\Graphpinator\Type\NotNullType($this);
     }
 }

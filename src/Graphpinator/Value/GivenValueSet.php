@@ -2,14 +2,14 @@
 
 declare(strict_types = 1);
 
-namespace PGQL\Value;
+namespace Infinityloop\Graphpinator\Value;
 
 final class GivenValueSet extends \Infinityloop\Utils\ImmutableSet
 {
     public function __construct(array $values)
     {
         foreach ($values as $value) {
-            if ($value instanceof \PGQL\Value\GivenValue) {
+            if ($value instanceof \Infinityloop\Graphpinator\Value\GivenValue) {
                 $this->appendUnique($value->getName(), $value);
 
                 continue;

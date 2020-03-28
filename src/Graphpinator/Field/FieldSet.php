@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace PGQL\Field;
+namespace Infinityloop\Graphpinator\Field;
 
 final class FieldSet extends \Infinityloop\Utils\ImmutableSet
 {

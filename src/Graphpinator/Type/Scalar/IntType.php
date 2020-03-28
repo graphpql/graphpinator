@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace PGQL\Type\Scalar;
+namespace Infinityloop\Graphpinator\Type\Scalar;
 
-final class IntType extends \PGQL\Type\Scalar\ScalarType
+final class IntType extends \Infinityloop\Graphpinator\Type\Scalar\ScalarType
 {
     protected const NAME = 'Int';
     protected const DESCRIPTION = 'Int built-in type';

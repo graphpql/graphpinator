@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace PGQL\Type\Scalar;
+namespace Infinityloop\Graphpinator\Type\Scalar;
 
-final class StringType extends \PGQL\Type\Scalar\ScalarType
+final class StringType extends \Infinityloop\Graphpinator\Type\Scalar\ScalarType
 {
     protected const NAME = 'String';
     protected const DESCRIPTION = 'String built-in type';

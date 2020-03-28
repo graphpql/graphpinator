@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace PGQL\Parser;
+namespace Infinityloop\Graphpinator\Parser;
 
 final class RequestFieldSet extends \Infinityloop\Utils\ImmutableSet
 {

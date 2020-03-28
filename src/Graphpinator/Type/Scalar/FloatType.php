@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace PGQL\Type\Scalar;
+namespace Infinityloop\Graphpinator\Type\Scalar;
 
 final class FloatType extends ScalarType
 {

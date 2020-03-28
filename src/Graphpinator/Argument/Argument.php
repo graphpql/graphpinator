@@ -2,17 +2,17 @@
 
 declare(strict_types = 1);
 
-namespace PGQL\Argument;
+namespace Infinityloop\Graphpinator\Argument;
 
 final class Argument
 {
     use \Nette\SmartObject;
 
     private string $name;
-    private \PGQL\Type\Contract\Inputable $type;
-    private ?\PGQL\Value\ValidatedValue $defaultValue;
+    private \Infinityloop\Graphpinator\Type\Contract\Inputable $type;
+    private ?\Infinityloop\Graphpinator\Value\ValidatedValue $defaultValue;
 
-    public function __construct(string $name, \PGQL\Type\Contract\Inputable $type, $defaultValue = null)
+    public function __construct(string $name, \Infinityloop\Graphpinator\Type\Contract\Inputable $type, $defaultValue = null)
     {
         $this->name = $name;
         $this->type = $type;
@@ -29,12 +29,12 @@ final class Argument
         return $this->name;
     }
 
-    public function getType() : \PGQL\Type\Contract\Inputable
+    public function getType() : \Infinityloop\Graphpinator\Type\Contract\Inputable
     {
         return $this->type;
     }
 
-    public function getDefaultValue() : ?\PGQL\Value\ValidatedValue
+    public function getDefaultValue() : ?\Infinityloop\Graphpinator\Value\ValidatedValue
     {
         return $this->defaultValue;
     }

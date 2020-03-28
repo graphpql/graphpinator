@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace PGQL\Value;
+namespace Infinityloop\Graphpinator\Value;
 
 final class GivenValue
 {

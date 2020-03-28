@@ -2,11 +2,11 @@
 
 declare(strict_types = 1);
 
-namespace PGQL\Value;
+namespace Infinityloop\Graphpinator\Value;
 
 final class InputValue extends ValidatedValue implements \Iterator, \ArrayAccess
 {
-    public function __construct(array $fields, \PGQL\Type\InputType $type)
+    public function __construct(array $fields, \Infinityloop\Graphpinator\Type\InputType $type)
     {
         $value = [];
 
@@ -14,7 +14,7 @@ final class InputValue extends ValidatedValue implements \Iterator, \ArrayAccess
             $usedValue = $fields[$argument->getName()] ?? $argument->getDefaultValue();
 
             // default values are already validated
-            $value[$argument->getName()] = $usedValue instanceof \PGQL\Value\ValidatedValue
+            $value[$argument->getName()] = $usedValue instanceof \Infinityloop\Graphpinator\Value\ValidatedValue
                 ? $usedValue
                 : $argument->getType()->createValue($usedValue);
         }

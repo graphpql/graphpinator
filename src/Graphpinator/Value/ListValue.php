@@ -2,11 +2,11 @@
 
 declare(strict_types = 1);
 
-namespace PGQL\Value;
+namespace Infinityloop\Graphpinator\Value;
 
 final class ListValue extends ValidatedValue implements \Iterator, \Countable
 {
-    public function __construct($list, \PGQL\Type\ListType $type)
+    public function __construct($list, \Infinityloop\Graphpinator\Type\ListType $type)
     {
         if (!\is_iterable($list)) {
             throw new \Exception('Value must be list or null.');

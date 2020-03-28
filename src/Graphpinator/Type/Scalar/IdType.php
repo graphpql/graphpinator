@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace PGQL\Type\Scalar;
+namespace Infinityloop\Graphpinator\Type\Scalar;
 
-final class IdType extends \PGQL\Type\Scalar\ScalarType
+final class IdType extends \Infinityloop\Graphpinator\Type\Scalar\ScalarType
 {
     protected const NAME = 'ID';
     protected const DESCRIPTION = 'ID built-in type';

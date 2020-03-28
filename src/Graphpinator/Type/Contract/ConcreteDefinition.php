@@ -2,8 +2,8 @@
 
 declare(strict_types = 1);
 
-namespace PGQL\Type\Contract;
+namespace Infinityloop\Graphpinator\Type\Contract;
 
-abstract class ConcreteDefinition extends \PGQL\Type\Contract\NamedDefinition implements \PGQL\Type\Contract\Instantiable
+abstract class ConcreteDefinition extends \Infinityloop\Graphpinator\Type\Contract\NamedDefinition implements \Infinityloop\Graphpinator\Type\Contract\Instantiable
 {
 }

@@ -2,8 +2,8 @@
 
 declare(strict_types = 1);
 
-namespace PGQL\Type\Contract;
+namespace Infinityloop\Graphpinator\Type\Contract;
 
-interface Outputable extends \PGQL\Type\Contract\Definition
+interface Outputable extends \Infinityloop\Graphpinator\Type\Contract\Definition
 {
 }

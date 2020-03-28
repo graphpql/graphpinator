@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace PGQL\Type\Contract;
+namespace Infinityloop\Graphpinator\Type\Contract;
 
-interface Instantiable extends \PGQL\Type\Contract\Definition
+interface Instantiable extends \Infinityloop\Graphpinator\Type\Contract\Definition
 {
-    public function createValue($rawValue) : \PGQL\Value\ValidatedValue;
+    public function createValue($rawValue) : \Infinityloop\Graphpinator\Value\ValidatedValue;
 }

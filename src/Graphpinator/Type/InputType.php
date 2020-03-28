@@ -2,20 +2,20 @@
 
 declare(strict_types = 1);
 
-namespace PGQL\Type;
+namespace Infinityloop\Graphpinator\Type;
 
-abstract class InputType extends \PGQL\Type\Contract\ConcreteDefinition implements \PGQL\Type\Contract\Inputable
+abstract class InputType extends \Infinityloop\Graphpinator\Type\Contract\ConcreteDefinition implements \Infinityloop\Graphpinator\Type\Contract\Inputable
 {
-    protected \PGQL\Argument\ArgumentSet $arguments;
+    protected \Infinityloop\Graphpinator\Argument\ArgumentSet $arguments;
 
-    public function __construct(\PGQL\Argument\ArgumentSet $arguments)
+    public function __construct(\Infinityloop\Graphpinator\Argument\ArgumentSet $arguments)
     {
         $this->arguments = $arguments;
     }
 
-    public function createValue($rawValue) : \PGQL\Value\ValidatedValue
+    public function createValue($rawValue) : \Infinityloop\Graphpinator\Value\ValidatedValue
     {
-        return \PGQL\Value\InputValue::create($rawValue, $this);
+        return \Infinityloop\Graphpinator\Value\InputValue::create($rawValue, $this);
     }
 
     public function applyDefaults($value) : array
@@ -27,7 +27,7 @@ abstract class InputType extends \PGQL\Type\Contract\ConcreteDefinition implemen
         return self::merge($value, $this->arguments->getDefaults());
     }
 
-    public function getArguments() : \PGQL\Argument\ArgumentSet
+    public function getArguments() : \Infinityloop\Graphpinator\Argument\ArgumentSet
     {
         return $this->arguments;
     }

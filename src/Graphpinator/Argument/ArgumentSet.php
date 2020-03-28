@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace PGQL\Argument;
+namespace Infinityloop\Graphpinator\Argument;
 
 final class ArgumentSet extends \Infinityloop\Utils\ImmutableSet
 {
@@ -15,7 +15,7 @@ final class ArgumentSet extends \Infinityloop\Utils\ImmutableSet
                 $this->appendUnique($argument->getName(), $argument);
                 $defaultValue = $argument->getDefaultValue();
 
-                if ($defaultValue instanceof \PGQL\Value\ValidatedValue) {
+                if ($defaultValue instanceof \Infinityloop\Graphpinator\Value\ValidatedValue) {
                     $this->defaults[$argument->getName()] = $defaultValue;
                 }
 

@@ -2,18 +2,18 @@
 
 declare(strict_types = 1);
 
-namespace PGQL\Type\Utils;
+namespace Infinityloop\Graphpinator\Type\Utils;
 
 trait TFieldContainer
 {
-    protected \PGQL\Field\FieldSet $fields;
+    protected \Infinityloop\Graphpinator\Field\FieldSet $fields;
 
-    public function getFields() : \PGQL\Field\FieldSet
+    public function getFields() : \Infinityloop\Graphpinator\Field\FieldSet
     {
         return $this->fields;
     }
 
-    public function resolveFields(?\PGQL\Parser\RequestFieldSet $requestedFields, \PGQL\Field\ResolveResult $parent) : array
+    public function resolveFields(?\Infinityloop\Graphpinator\Parser\RequestFieldSet $requestedFields, \Infinityloop\Graphpinator\Field\ResolveResult $parent) : array
     {
         if ($requestedFields === null) {
             throw new \Exception('Composite type without fields specified.');
@@ -22,13 +22,13 @@ trait TFieldContainer
         $resolved = [];
 
         foreach ($requestedFields as $request) {
-            if ($request->getConditionType() instanceof \PGQL\Type\Contract\NamedDefinition &&
+            if ($request->getConditionType() instanceof \Infinityloop\Graphpinator\Type\Contract\NamedDefinition &&
                 !$parent->getType()->isInstanceOf($request->getConditionType())) {
                 continue;
             }
 
             $field = $this->fields[$request->getName()];
-            $arguments = new \PGQL\Value\ValidatedValueSet($request->getArguments(), $field->getArguments());
+            $arguments = new \Infinityloop\Graphpinator\Value\ValidatedValueSet($request->getArguments(), $field->getArguments());
 
             $resolved[$field->getName()] = $field->getType()->resolveFields(
                 $request->getChildren(),

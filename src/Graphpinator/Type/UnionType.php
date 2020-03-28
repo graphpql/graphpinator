@@ -2,18 +2,18 @@
 
 declare(strict_types = 1);
 
-namespace PGQL\Type;
+namespace Infinityloop\Graphpinator\Type;
 
-abstract class UnionType extends \PGQL\Type\Contract\AbstractDefinition implements \PGQL\Type\Contract\Outputable
+abstract class UnionType extends \Infinityloop\Graphpinator\Type\Contract\AbstractDefinition implements \Infinityloop\Graphpinator\Type\Contract\Outputable
 {
-    protected \PGQL\Type\Utils\ConcreteSet $types;
+    protected \Infinityloop\Graphpinator\Type\Utils\ConcreteSet $types;
 
-    public function __construct(\PGQL\Type\Utils\ConcreteSet $types)
+    public function __construct(\Infinityloop\Graphpinator\Type\Utils\ConcreteSet $types)
     {
         $this->types = $types;
     }
 
-    public function isInstanceOf(\PGQL\Type\Contract\Definition $type) : bool
+    public function isInstanceOf(\Infinityloop\Graphpinator\Type\Contract\Definition $type) : bool
     {
         if ($type instanceof NotNullType) {
             return $this->isInstanceOf($type->getInnerType());
@@ -22,7 +22,7 @@ abstract class UnionType extends \PGQL\Type\Contract\AbstractDefinition implemen
         return $type instanceof static;
     }
 
-    public function isImplementedBy(\PGQL\Type\Contract\Definition $type) : bool
+    public function isImplementedBy(\Infinityloop\Graphpinator\Type\Contract\Definition $type) : bool
     {
         foreach ($this->types as $temp) {
             if ($temp->isInstanceOf($type)) {
