@@ -18,5 +18,14 @@ final class NamedDefinitionTest extends \PHPUnit\Framework\TestCase
         self::assertSame($base, $base->notNullList()->getInnerType()->getInnerType()->getInnerType());
         self::assertSame($base, $base->notNull()->list()->notNull()->getInnerType()->getInnerType()->getInnerType());
         self::assertSame($base, $base->notNullList()->getNamedType());
+
+        self::assertTrue($base->isInputable());
+        self::assertTrue($base->isOutputable());
+        self::assertTrue($base->isInstantiable());
+        self::assertTrue($base->isResolvable());
+        self::assertTrue($base->notNull()->isInputable());
+        self::assertTrue($base->notNull()->isOutputable());
+        self::assertTrue($base->notNull()->isInstantiable());
+        self::assertTrue($base->notNull()->isResolvable());
     }
 }

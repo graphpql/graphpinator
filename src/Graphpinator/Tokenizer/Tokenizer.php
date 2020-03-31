@@ -4,22 +4,54 @@ declare(strict_types = 1);
 
 namespace Infinityloop\Graphpinator\Tokenizer;
 
-class Tokenizer implements \Iterator
+final class Tokenizer implements \Iterator
 {
     use \Nette\SmartObject;
 
     protected array $sourceCharacters;
+    protected int $sourceLength;
     protected bool $skipNotRelevant;
     protected int $tokenStartIndex;
     protected int $currentIndex;
-    protected int $sourceLength;
-    protected bool $valid = true;
     protected ?Token $token;
 
     public function __construct(string $source, bool $skipNotRelevant = true)
     {
-        $this->sourceCharacters = \str_split($source);
+        $this->sourceCharacters = \preg_split('//u', $source, 0, PREG_SPLIT_NO_EMPTY);
+        $this->sourceLength = \count($this->sourceCharacters);
+        $this->currentIndex = 0;
         $this->skipNotRelevant = $skipNotRelevant;
+    }
+
+    public function getNextToken() : Token
+    {
+        $this->loadToken();
+
+        if (!$this->valid()) {
+            throw new \Exception('Unexpected end.');
+        }
+
+        return $this->token;
+    }
+
+    public function peekNextToken() : Token
+    {
+        $index = $this->currentIndex;
+        $token = $this->getNextToken();
+        $this->currentIndex = $index;
+
+        return $token;
+    }
+
+    public function assertNextToken(string $tokenType) : Token
+    {
+        $token = $this->getNextToken();
+
+        if ($token->getType() !== $tokenType) {
+            throw new \Exception('Unexpected token.');
+        }
+
+        return $token;
     }
 
     public function current() : Token
@@ -27,39 +59,94 @@ class Tokenizer implements \Iterator
         return $this->token;
     }
 
+    public function key() : int
+    {
+        return $this->tokenStartIndex;
+    }
+
     public function next() : void
+    {
+        $this->loadToken();
+    }
+
+    public function valid() : bool
+    {
+        if (!$this->token instanceof Token) {
+            return false;
+        }
+
+        if ($this->skipNotRelevant && \array_key_exists($this->token->getType(), TokenType::IGNORABLE)) {
+            $this->loadToken();
+
+            return $this->valid();
+        }
+
+        return true;
+    }
+
+    public function rewind() : void
+    {
+        $this->currentIndex = 0;
+        $this->loadToken();
+    }
+
+    private function loadToken() : void
     {
         $this->skipWhitespace();
         $this->tokenStartIndex = $this->currentIndex;
 
-        if (!$this->hasNextChar()) {
-            $this->valid = false;
+        if (!$this->hasChar()) {
+            $this->token = null;
 
             return;
         }
 
         if (\ctype_alpha($this->currentChar())) {
-            $this->token = new Token(TokenType::NAME, $this->getName());
+            $value = $this->getName();
+            $lower = \strtolower($value);
 
-            return;
+            switch ($lower) {
+                case 'null':
+                    $this->token = new Token(TokenType::NULL);
+
+                    return;
+                case 'true':
+                    $this->token = new Token(TokenType::TRUE);
+
+                    return;
+                case 'false':
+                    $this->token = new Token(TokenType::FALSE);
+
+                    return;
+                case 'fragment':
+                    $this->token = new Token(TokenType::FRAGMENT);
+
+                    return;
+                default:
+                    $this->token = \array_key_exists($lower, TokenOperation::KEYWORDS)
+                        ? new Token(TokenType::OPERATION, $lower)
+                        : new Token(TokenType::NAME, $value);
+
+                    return;
+            }
         }
 
         if ($this->currentChar() === '-' || \ctype_digit($this->currentChar())) {
             $numberVal = $this->getInt(true, false);
 
-            if (!$this->hasNextChar() ||
+            if (!$this->hasChar() ||
                 !\in_array($this->currentChar(), ['.', 'e', 'E'], true)) {
                 $this->token = new Token(TokenType::INT, $numberVal);
 
                 return;
             }
 
-            if ($this->hasNextChar() && $this->currentChar() === '.') {
+            if ($this->hasChar() && $this->currentChar() === '.') {
                 ++$this->currentIndex;
                 $numberVal .= '.' . $this->getInt(false, true);
             }
 
-            if ($this->hasNextChar() && \in_array($this->currentChar(), ['e', 'E'], true)) {
+            if ($this->hasChar() && \in_array($this->currentChar(), ['e', 'E'], true)) {
                 ++$this->currentIndex;
                 $numberVal .= 'e' . $this->getInt(true, true);
             }
@@ -106,17 +193,9 @@ class Tokenizer implements \Iterator
 
                 return;
             case '.':
-                $dotCount = 0;
+                $dots = $this->eatChars(function (string $char) : bool { return $char === '.'; });
 
-                for (; $this->hasNextChar(); ++$this->currentIndex) {
-                    if ($this->currentChar() !== '.') {
-                        break;
-                    }
-
-                    ++$dotCount;
-                }
-
-                if ($dotCount !== 3) {
+                if (\strlen($dots) !== 3) {
                     throw new \Exception();
                 }
 
@@ -125,45 +204,19 @@ class Tokenizer implements \Iterator
                 return;
         }
 
-        throw new \Exception('Invalid token');
-    }
-
-    public function key() : int
-    {
-        return $this->tokenStartIndex;
-    }
-
-    public function valid() : bool
-    {
-        if (!$this->valid || !$this->token instanceof Token) {
-            return false;
-        }
-
-        if ($this->skipNotRelevant && \array_key_exists($this->token->getType(), TokenType::IGNORABLE)) {
-            $this->next();
-            return $this->valid();
-        }
-
-        return true;
-    }
-
-    public function rewind() : void
-    {
-        $this->currentIndex = 0;
-        $this->sourceLength = \count($this->sourceCharacters);
-        $this->next();
+        throw new \Exception('Unknown token');
     }
 
     private function currentChar() : string
     {
-        if ($this->hasNextChar()) {
+        if ($this->hasChar()) {
             return $this->sourceCharacters[$this->currentIndex];
         }
 
         throw new \Exception('Enexpected end');
     }
 
-    private function hasNextChar() : bool
+    private function hasChar() : bool
     {
         return $this->currentIndex < $this->sourceLength;
     }
@@ -197,18 +250,8 @@ class Tokenizer implements \Iterator
             ++$this->currentIndex;
         }
 
-        for (; $this->hasNextChar(); ++$this->currentIndex) {
-            if ($this->currentChar() === '0') {
-                if ($leadingZeros) {
-                    $value .= '0';
-
-                    continue;
-                }
-
-                throw new \Exception();
-            }
-
-            break;
+        if (!$leadingZeros && $this->hasChar() && $this->currentChar() === '0') {
+            throw new \Exception('Leading zeros');
         }
 
         $value .=  $this->eatChars(function (string $char) : bool { return \ctype_digit($char); });
@@ -229,7 +272,7 @@ class Tokenizer implements \Iterator
     {
         $value = '';
 
-        for (; $this->hasNextChar(); ++$this->currentIndex) {
+        for (; $this->hasChar(); ++$this->currentIndex) {
             if ($condition($this->currentChar()) === true) {
                 $value .= $this->currentChar();
 

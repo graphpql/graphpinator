@@ -12,6 +12,9 @@ final class TokenizerTest extends \PHPUnit\Framework\TestCase
     public function simpleDataProvider() : array
     {
         return [
+            ['"ěščřžýá"', [
+                new Token(TokenType::STRING, 'ěščřžýá'),
+            ]],
             ['4', [
                 new Token(TokenType::INT, '4'),
             ]],
@@ -39,15 +42,16 @@ final class TokenizerTest extends \PHPUnit\Framework\TestCase
             ['...', [
                 new Token(TokenType::ELLIP),
             ]],
-            ['... type', [
+            ['... type fragment', [
                 new Token(TokenType::ELLIP),
                 new Token(TokenType::NAME, 'type'),
+                new Token(TokenType::FRAGMENT),
             ]],
             ['-4.024E-10', [
                 new Token(TokenType::FLOAT, '-4.024e-10'),
             ]],
             ['query { field1 { innerField } }', [
-                new Token(TokenType::NAME, 'query'),
+                new Token(TokenType::OPERATION, 'query'),
                 new Token(TokenType::CUR_O),
                 new Token(TokenType::NAME, 'field1'),
                 new Token(TokenType::CUR_O),
@@ -55,8 +59,8 @@ final class TokenizerTest extends \PHPUnit\Framework\TestCase
                 new Token(TokenType::CUR_C),
                 new Token(TokenType::CUR_C),
             ]],
-            ['query { field(argName: 4) }', [
-                new Token(TokenType::NAME, 'query'),
+            ['mutation { field(argName: 4) }', [
+                new Token(TokenType::OPERATION, 'mutation'),
                 new Token(TokenType::CUR_O),
                 new Token(TokenType::NAME, 'field'),
                 new Token(TokenType::PAR_O),
@@ -66,8 +70,8 @@ final class TokenizerTest extends \PHPUnit\Framework\TestCase
                 new Token(TokenType::PAR_C),
                 new Token(TokenType::CUR_C),
             ]],
-            ['query { field(argName: "str") }', [
-                new Token(TokenType::NAME, 'query'),
+            ['subscription { field(argName: "str") }', [
+                new Token(TokenType::OPERATION, 'subscription'),
                 new Token(TokenType::CUR_O),
                 new Token(TokenType::NAME, 'field'),
                 new Token(TokenType::PAR_O),
@@ -78,7 +82,7 @@ final class TokenizerTest extends \PHPUnit\Framework\TestCase
                 new Token(TokenType::CUR_C),
             ]],
             ['query { field(argName: ["str", "str"]) }', [
-                new Token(TokenType::NAME, 'query'),
+                new Token(TokenType::OPERATION, 'query'),
                 new Token(TokenType::CUR_O),
                 new Token(TokenType::NAME, 'field'),
                 new Token(TokenType::PAR_O),
@@ -97,7 +101,7 @@ final class TokenizerTest extends \PHPUnit\Framework\TestCase
                     'innerField' . \PHP_EOL .
                 '}' . \PHP_EOL .
             '}', [
-                new Token(TokenType::NAME, 'query'),
+                new Token(TokenType::OPERATION, 'query'),
                 new Token(TokenType::CUR_O),
                 new Token(TokenType::NEWLINE),
                 new Token(TokenType::NAME, 'field1'),
@@ -115,7 +119,7 @@ final class TokenizerTest extends \PHPUnit\Framework\TestCase
                     'innerField' . \PHP_EOL .
                 '}' . \PHP_EOL .
             '}', [
-                new Token(TokenType::NAME, 'query'),
+                new Token(TokenType::OPERATION, 'query'),
                 new Token(TokenType::CUR_O),
                 new Token(TokenType::NEWLINE),
                 new Token(TokenType::NAME, 'field1'),
@@ -150,8 +154,8 @@ final class TokenizerTest extends \PHPUnit\Framework\TestCase
     public function skipDataProvider() : array
     {
         return [
-            ['query { field(argName: ["str", "str"]) }', [
-                new Token(TokenType::NAME, 'query'),
+            ['query { field(argName: ["str", "str", true, false, null]) }', [
+                new Token(TokenType::OPERATION, 'query'),
                 new Token(TokenType::CUR_O),
                 new Token(TokenType::NAME, 'field'),
                 new Token(TokenType::PAR_O),
@@ -160,6 +164,9 @@ final class TokenizerTest extends \PHPUnit\Framework\TestCase
                 new Token(TokenType::SQU_O),
                 new Token(TokenType::STRING, 'str'),
                 new Token(TokenType::STRING, 'str'),
+                new Token(TokenType::TRUE),
+                new Token(TokenType::FALSE),
+                new Token(TokenType::NULL),
                 new Token(TokenType::SQU_C),
                 new Token(TokenType::PAR_C),
                 new Token(TokenType::CUR_C),
@@ -169,7 +176,7 @@ final class TokenizerTest extends \PHPUnit\Framework\TestCase
                 'innerField' . \PHP_EOL .
                 '}' . \PHP_EOL .
             '}', [
-                new Token(TokenType::NAME, 'query'),
+                new Token(TokenType::OPERATION, 'query'),
                 new Token(TokenType::CUR_O),
                 new Token(TokenType::NAME, 'field1'),
                 new Token(TokenType::CUR_O),
@@ -183,7 +190,7 @@ final class TokenizerTest extends \PHPUnit\Framework\TestCase
                     'innerField' . \PHP_EOL .
                 '}' . \PHP_EOL .
             '}', [
-                new Token(TokenType::NAME, 'query'),
+                new Token(TokenType::OPERATION, 'query'),
                 new Token(TokenType::CUR_O),
                 new Token(TokenType::NAME, 'field1'),
                 new Token(TokenType::CUR_O),
@@ -243,8 +250,8 @@ final class TokenizerTest extends \PHPUnit\Framework\TestCase
 
     public function testSourceIndex() : void
     {
-        $tokenizer = new \Infinityloop\Graphpinator\Tokenizer\Tokenizer('query { }');
-        $indexes = [0, 6, 8];
+        $tokenizer = new \Infinityloop\Graphpinator\Tokenizer\Tokenizer('query { "ěščřžýá" }');
+        $indexes = [0, 6, 8, 18];
         $index = 0;
 
         foreach ($tokenizer as $key => $token) {

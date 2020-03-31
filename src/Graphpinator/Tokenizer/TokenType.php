@@ -12,10 +12,15 @@ final class TokenType
     public const COMMENT = '#';
     public const COMMA = ',';
     # lexical
+    public const OPERATION = 'operation';
+    public const FRAGMENT = 'fragment';
     public const NAME = 'name';
     public const INT = 'int';
     public const FLOAT = 'float';
     public const STRING = 'string';
+    public const NULL = 'null';
+    public const TRUE = 'true';
+    public const FALSE = 'false';
     # punctators
     public const VAR = '$';
     public const AMP = '&';
