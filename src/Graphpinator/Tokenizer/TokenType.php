@@ -15,6 +15,7 @@ final class TokenType
     public const OPERATION = 'operation';
     public const FRAGMENT = 'fragment';
     public const NAME = 'name';
+    public const VARIABLE = 'var';
     public const INT = 'int';
     public const FLOAT = 'float';
     public const STRING = 'string';
@@ -22,7 +23,6 @@ final class TokenType
     public const TRUE = 'true';
     public const FALSE = 'false';
     # punctators
-    public const VAR = '$';
     public const AMP = '&';
     public const PIPE = '|';
     public const EXCL = '!';

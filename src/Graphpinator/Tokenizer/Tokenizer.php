@@ -8,50 +8,15 @@ final class Tokenizer implements \Iterator
 {
     use \Nette\SmartObject;
 
-    protected array $sourceCharacters;
-    protected int $sourceLength;
+    private Source $source;
     protected bool $skipNotRelevant;
-    protected int $tokenStartIndex;
-    protected int $currentIndex;
     protected ?Token $token;
+    protected ?int $tokenStartIndex;
 
     public function __construct(string $source, bool $skipNotRelevant = true)
     {
-        $this->sourceCharacters = \preg_split('//u', $source, 0, PREG_SPLIT_NO_EMPTY);
-        $this->sourceLength = \count($this->sourceCharacters);
-        $this->currentIndex = 0;
+        $this->source = new Source($source);
         $this->skipNotRelevant = $skipNotRelevant;
-    }
-
-    public function getNextToken() : Token
-    {
-        $this->loadToken();
-
-        if (!$this->valid()) {
-            throw new \Exception('Unexpected end.');
-        }
-
-        return $this->token;
-    }
-
-    public function peekNextToken() : Token
-    {
-        $index = $this->currentIndex;
-        $token = $this->getNextToken();
-        $this->currentIndex = $index;
-
-        return $token;
-    }
-
-    public function assertNextToken(string $tokenType) : Token
-    {
-        $token = $this->getNextToken();
-
-        if ($token->getType() !== $tokenType) {
-            throw new \Exception('Unexpected token.');
-        }
-
-        return $token;
     }
 
     public function current() : Token
@@ -86,22 +51,24 @@ final class Tokenizer implements \Iterator
 
     public function rewind() : void
     {
-        $this->currentIndex = 0;
+        $this->source->rewind();
         $this->loadToken();
     }
 
     private function loadToken() : void
     {
         $this->skipWhitespace();
-        $this->tokenStartIndex = $this->currentIndex;
 
-        if (!$this->hasChar()) {
+        if (!$this->source->hasChar()) {
             $this->token = null;
+            $this->tokenStartIndex = null;
 
             return;
         }
 
-        if (\ctype_alpha($this->currentChar())) {
+        $this->tokenStartIndex = $this->source->key();
+
+        if (\ctype_alpha($this->source->getChar())) {
             $value = $this->getName();
             $lower = \strtolower($value);
 
@@ -131,23 +98,23 @@ final class Tokenizer implements \Iterator
             }
         }
 
-        if ($this->currentChar() === '-' || \ctype_digit($this->currentChar())) {
+        if ($this->source->getChar() === '-' || \ctype_digit($this->source->getChar())) {
             $numberVal = $this->getInt(true, false);
 
-            if (!$this->hasChar() ||
-                !\in_array($this->currentChar(), ['.', 'e', 'E'], true)) {
+            if (!$this->source->hasChar() ||
+                !\in_array($this->source->getChar(), ['.', 'e', 'E'], true)) {
                 $this->token = new Token(TokenType::INT, $numberVal);
 
                 return;
             }
 
-            if ($this->hasChar() && $this->currentChar() === '.') {
-                ++$this->currentIndex;
+            if ($this->source->hasChar() && $this->source->getChar() === '.') {
+                $this->source->next();
                 $numberVal .= '.' . $this->getInt(false, true);
             }
 
-            if ($this->hasChar() && \in_array($this->currentChar(), ['e', 'E'], true)) {
-                ++$this->currentIndex;
+            if ($this->source->hasChar() && \in_array($this->source->getChar(), ['e', 'E'], true)) {
+                $this->source->next();
                 $numberVal .= 'e' . $this->getInt(true, true);
             }
 
@@ -157,25 +124,34 @@ final class Tokenizer implements \Iterator
             return;
         }
 
-        switch ($this->currentChar()) {
+        switch ($this->source->getChar()) {
             case '"':
-                ++$this->currentIndex;
+                $this->source->next();
                 $this->token = new Token(TokenType::STRING, $this->getString());
-                ++$this->currentIndex;
+                $this->source->next();
 
                 return;
             case \PHP_EOL:
                 $this->token = new Token(TokenType::NEWLINE);
-                ++$this->currentIndex;
+                $this->source->next();
 
                 return;
+            case '$':
+                $this->source->next();
+
+                if (\ctype_alpha($this->source->getChar())) {
+                    $this->token = new Token(TokenType::VARIABLE, $this->getName());
+
+                    return;
+                }
+
+                throw new \Exception('Invalid variable name');
             case TokenType::COMMENT:
-                ++$this->currentIndex;
+                $this->source->next();
                 $this->token = new Token(TokenType::COMMENT, $this->getComment());
 
                 return;
             case TokenType::COMMA:
-            case TokenType::VAR:
             case TokenType::AMP:
             case TokenType::PIPE:
             case TokenType::EXCL:
@@ -188,8 +164,8 @@ final class Tokenizer implements \Iterator
             case TokenType::COLON:
             case TokenType::EQUAL:
             case TokenType::AT:
-                $this->token = new Token($this->currentChar());
-                ++$this->currentIndex;
+                $this->token = new Token($this->source->getChar());
+                $this->source->next();
 
                 return;
             case '.':
@@ -205,20 +181,6 @@ final class Tokenizer implements \Iterator
         }
 
         throw new \Exception('Unknown token');
-    }
-
-    private function currentChar() : string
-    {
-        if ($this->hasChar()) {
-            return $this->sourceCharacters[$this->currentIndex];
-        }
-
-        throw new \Exception('Enexpected end');
-    }
-
-    private function hasChar() : bool
-    {
-        return $this->currentIndex < $this->sourceLength;
     }
 
     private function skipWhiteSpace() : void
@@ -240,17 +202,17 @@ final class Tokenizer implements \Iterator
     {
         $value = '';
 
-        if ($this->currentChar() === '-') {
+        if ($this->source->getChar() === '-') {
             if ($negative) {
                 $value .= '-';
             } else {
                 throw new \Exception();
             }
 
-            ++$this->currentIndex;
+            $this->source->next();
         }
 
-        if (!$leadingZeros && $this->hasChar() && $this->currentChar() === '0') {
+        if (!$leadingZeros && $this->source->hasChar() && $this->source->getChar() === '0') {
             throw new \Exception('Leading zeros');
         }
 
@@ -272,9 +234,9 @@ final class Tokenizer implements \Iterator
     {
         $value = '';
 
-        for (; $this->hasChar(); ++$this->currentIndex) {
-            if ($condition($this->currentChar()) === true) {
-                $value .= $this->currentChar();
+        for (; $this->source->hasChar(); $this->source->next()) {
+            if ($condition($this->source->getChar()) === true) {
+                $value .= $this->source->getChar();
 
                 continue;
             }
