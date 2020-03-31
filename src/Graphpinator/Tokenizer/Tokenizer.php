@@ -36,7 +36,7 @@ final class Tokenizer implements \Iterator
 
     public function valid() : bool
     {
-        if (!$this->token instanceof Token) {
+        if (!$this->token instanceof Token || !\is_int($this->tokenStartIndex)) {
             return false;
         }
 
@@ -90,7 +90,7 @@ final class Tokenizer implements \Iterator
 
                     return;
                 default:
-                    $this->token = \array_key_exists($lower, TokenOperation::KEYWORDS)
+                    $this->token = \array_key_exists($lower, OperationType::KEYWORDS)
                         ? new Token(TokenType::OPERATION, $lower)
                         : new Token(TokenType::NAME, $value);
 

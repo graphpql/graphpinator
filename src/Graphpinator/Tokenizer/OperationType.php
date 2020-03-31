@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Infinityloop\Graphpinator\Tokenizer;
 
-final class TokenOperation
+final class OperationType
 {
     use \Nette\StaticClass;
 
