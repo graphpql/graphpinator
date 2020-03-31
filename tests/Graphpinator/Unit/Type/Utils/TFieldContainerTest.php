@@ -18,22 +18,22 @@ final class TFieldContainerTest extends \PHPUnit\Framework\TestCase
             ],
             // field which do not exist
             [
-                new \Infinityloop\Graphpinator\Parser\RequestFieldSet([
-                    new \Infinityloop\Graphpinator\Parser\RequestField('field0')
+                new \Infinityloop\Graphpinator\Request\FieldSet([
+                    new \Infinityloop\Graphpinator\Request\Field('field0')
                 ]),
                 \Infinityloop\Graphpinator\Field\ResolveResult::fromRaw(\Infinityloop\Graphpinator\Type\Scalar\ScalarType::String(), self::PARENT_VAL)
             ],
             // argument which do not exist
             [
-                new \Infinityloop\Graphpinator\Parser\RequestFieldSet([
-                    new \Infinityloop\Graphpinator\Parser\RequestField('field1', null, null, new \Infinityloop\Graphpinator\Value\GivenValueSet([new \Infinityloop\Graphpinator\Value\GivenValue('val', 'arg1')]))
+                new \Infinityloop\Graphpinator\Request\FieldSet([
+                    new \Infinityloop\Graphpinator\Request\Field('field1', null, null, new \Infinityloop\Graphpinator\Value\GivenValueSet([new \Infinityloop\Graphpinator\Value\GivenValue('val', 'arg1')]))
                 ]),
                 \Infinityloop\Graphpinator\Field\ResolveResult::fromRaw(\Infinityloop\Graphpinator\Type\Scalar\ScalarType::String(), self::PARENT_VAL)
             ],
             // inner fields on leaf type
             [
-                new \Infinityloop\Graphpinator\Parser\RequestFieldSet([
-                    new \Infinityloop\Graphpinator\Parser\RequestField('field1', null, new \Infinityloop\Graphpinator\Parser\RequestFieldSet([new \Infinityloop\Graphpinator\Parser\RequestField('innerField')]))
+                new \Infinityloop\Graphpinator\Request\FieldSet([
+                    new \Infinityloop\Graphpinator\Request\Field('field1', null, new \Infinityloop\Graphpinator\Request\FieldSet([new \Infinityloop\Graphpinator\Request\Field('innerField')]))
                 ]),
                 \Infinityloop\Graphpinator\Field\ResolveResult::fromRaw(\Infinityloop\Graphpinator\Type\Scalar\ScalarType::String(), self::PARENT_VAL)
             ],
@@ -42,10 +42,10 @@ final class TFieldContainerTest extends \PHPUnit\Framework\TestCase
 
     public function testResolveFields(): void
     {
-        $requestFields = new \Infinityloop\Graphpinator\Parser\RequestFieldSet([
-            new \Infinityloop\Graphpinator\Parser\RequestField('field1'),
-            new \Infinityloop\Graphpinator\Parser\RequestField('field2'),
-            new \Infinityloop\Graphpinator\Parser\RequestField('field3'),
+        $requestFields = new \Infinityloop\Graphpinator\Request\FieldSet([
+            new \Infinityloop\Graphpinator\Request\Field('field1'),
+            new \Infinityloop\Graphpinator\Request\Field('field2'),
+            new \Infinityloop\Graphpinator\Request\Field('field3'),
         ]);
         $parentValue = \Infinityloop\Graphpinator\Field\ResolveResult::fromRaw(\Infinityloop\Graphpinator\Type\Scalar\ScalarType::String(), self::PARENT_VAL);
 
@@ -62,10 +62,10 @@ final class TFieldContainerTest extends \PHPUnit\Framework\TestCase
 
     public function testResolveFieldsIgnore(): void
     {
-        $requestFields = new \Infinityloop\Graphpinator\Parser\RequestFieldSet([
-            new \Infinityloop\Graphpinator\Parser\RequestField('field1', null, null, null, \Infinityloop\Graphpinator\Type\Scalar\ScalarType::String()),
-            new \Infinityloop\Graphpinator\Parser\RequestField('field2', null, null, null, \Infinityloop\Graphpinator\Type\Scalar\ScalarType::Int()),
-            new \Infinityloop\Graphpinator\Parser\RequestField('field3'),
+        $requestFields = new \Infinityloop\Graphpinator\Request\FieldSet([
+            new \Infinityloop\Graphpinator\Request\Field('field1', null, null, null, \Infinityloop\Graphpinator\Type\Scalar\ScalarType::String()),
+            new \Infinityloop\Graphpinator\Request\Field('field2', null, null, null, \Infinityloop\Graphpinator\Type\Scalar\ScalarType::Int()),
+            new \Infinityloop\Graphpinator\Request\Field('field3'),
         ]);
         $parentValue = \Infinityloop\Graphpinator\Field\ResolveResult::fromRaw(\Infinityloop\Graphpinator\Type\Scalar\ScalarType::String(), self::PARENT_VAL);
 
@@ -83,7 +83,7 @@ final class TFieldContainerTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider invalidDataProvider
      */
-    public function testResolveFieldsInvalid(?\Infinityloop\Graphpinator\Parser\RequestFieldSet $requestFields, \Infinityloop\Graphpinator\Field\ResolveResult $parentValue): void
+    public function testResolveFieldsInvalid(?\Infinityloop\Graphpinator\Request\FieldSet $requestFields, \Infinityloop\Graphpinator\Field\ResolveResult $parentValue): void
     {
         $this->expectException(\Exception::class);
 

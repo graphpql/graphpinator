@@ -26,7 +26,7 @@ final class NotNullType extends \Infinityloop\Graphpinator\Type\Contract\Modifie
         $this->innerType->validateValue($rawValue);
     }
 
-    public function resolveFields(?\Infinityloop\Graphpinator\Parser\RequestFieldSet $requestedFields, \Infinityloop\Graphpinator\Field\ResolveResult $parent)
+    public function resolveFields(?\Infinityloop\Graphpinator\Request\FieldSet $requestedFields, \Infinityloop\Graphpinator\Field\ResolveResult $parent)
     {
         return $this->innerType->resolveFields($requestedFields, $parent);
     }

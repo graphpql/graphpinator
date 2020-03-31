@@ -11,7 +11,7 @@ final class ListType extends \Infinityloop\Graphpinator\Type\Contract\ModifierDe
         return \Infinityloop\Graphpinator\Value\ListValue::create($rawValue, $this);
     }
 
-    public function resolveFields(?\Infinityloop\Graphpinator\Parser\RequestFieldSet $requestedFields, \Infinityloop\Graphpinator\Field\ResolveResult $parent) : array
+    public function resolveFields(?\Infinityloop\Graphpinator\Request\FieldSet $requestedFields, \Infinityloop\Graphpinator\Field\ResolveResult $parent) : array
     {
         if ($requestedFields === null) {
             throw new \Exception('List without fields specified.');

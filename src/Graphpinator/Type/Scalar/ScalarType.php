@@ -10,9 +10,9 @@ abstract class ScalarType extends \Infinityloop\Graphpinator\Type\Contract\Concr
 {
     use \Infinityloop\Graphpinator\Type\Contract\TResolvable;
 
-    public function resolveFields(?\Infinityloop\Graphpinator\Parser\RequestFieldSet $requestedFields, \Infinityloop\Graphpinator\Field\ResolveResult $parent) : \Infinityloop\Graphpinator\Value\ValidatedValue
+    public function resolveFields(?\Infinityloop\Graphpinator\Request\FieldSet $requestedFields, \Infinityloop\Graphpinator\Field\ResolveResult $parent) : \Infinityloop\Graphpinator\Value\ValidatedValue
     {
-        if ($requestedFields instanceof \Infinityloop\Graphpinator\Parser\RequestFieldSet) {
+        if ($requestedFields instanceof \Infinityloop\Graphpinator\Request\FieldSet) {
             throw new \Exception('Cannot require fields on leaf type.');
         }
 

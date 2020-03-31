@@ -6,7 +6,7 @@ namespace Infinityloop\Graphpinator\Type\Contract;
 
 interface Resolvable extends \Infinityloop\Graphpinator\Type\Contract\Outputable
 {
-    public function resolveFields(?\Infinityloop\Graphpinator\Parser\RequestFieldSet $requestedFields, \Infinityloop\Graphpinator\Field\ResolveResult $parent);
+    public function resolveFields(?\Infinityloop\Graphpinator\Request\FieldSet $requestedFields, \Infinityloop\Graphpinator\Field\ResolveResult $parent);
 
     public function validateValue($rawValue) : void;
 }

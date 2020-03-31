@@ -38,6 +38,6 @@ final class ScalarTypeTest extends \PHPUnit\Framework\TestCase
         $value = new \Infinityloop\Graphpinator\Value\ScalarValue(true, $type);
         $result = \Infinityloop\Graphpinator\Field\ResolveResult::fromValidated($value);
 
-        $type->resolveFields(new \Infinityloop\Graphpinator\Parser\RequestFieldSet([]), $result);
+        $type->resolveFields(new \Infinityloop\Graphpinator\Request\FieldSet([]), $result);
     }
 }

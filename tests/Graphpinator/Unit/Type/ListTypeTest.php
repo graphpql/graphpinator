@@ -9,8 +9,8 @@ final class ListTypeTest extends \PHPUnit\Framework\TestCase
     public function testResolveFields() : void
     {
         $type = self::getTestTypeAbc()->list();
-        $request = new \Infinityloop\Graphpinator\Parser\RequestFieldSet([
-            new \Infinityloop\Graphpinator\Parser\RequestField('field')
+        $request = new \Infinityloop\Graphpinator\Request\FieldSet([
+            new \Infinityloop\Graphpinator\Request\Field('field')
         ]);
         $parent = \Infinityloop\Graphpinator\Field\ResolveResult::fromRaw($type, [123, 123, 123]);
         $result = $type->resolveFields($request, $parent);
@@ -31,8 +31,8 @@ final class ListTypeTest extends \PHPUnit\Framework\TestCase
         $this->expectException(\Exception::class);
 
         $type = self::getTestTypeAbc()->list();
-        $request = new \Infinityloop\Graphpinator\Parser\RequestFieldSet([
-            new \Infinityloop\Graphpinator\Parser\RequestField('field')
+        $request = new \Infinityloop\Graphpinator\Request\FieldSet([
+            new \Infinityloop\Graphpinator\Request\Field('field')
         ]);
         $parent = \Infinityloop\Graphpinator\Field\ResolveResult::fromRaw($type, [124]);
 
@@ -54,8 +54,8 @@ final class ListTypeTest extends \PHPUnit\Framework\TestCase
         $this->expectException(\Exception::class);
 
         $type = self::getTestTypeAbc()->list();
-        $request = new \Infinityloop\Graphpinator\Parser\RequestFieldSet([
-            new \Infinityloop\Graphpinator\Parser\RequestField('field')
+        $request = new \Infinityloop\Graphpinator\Request\FieldSet([
+            new \Infinityloop\Graphpinator\Request\Field('field')
         ]);
         $parent = \Infinityloop\Graphpinator\Field\ResolveResult::fromRaw(self::getTestTypeAbc(), 124);
 

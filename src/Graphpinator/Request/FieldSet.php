@@ -2,14 +2,14 @@
 
 declare(strict_types = 1);
 
-namespace Infinityloop\Graphpinator\Parser;
+namespace Infinityloop\Graphpinator\Request;
 
-final class RequestFieldSet extends \Infinityloop\Utils\ImmutableSet
+final class FieldSet extends \Infinityloop\Utils\ImmutableSet
 {
     public function __construct(array $fields)
     {
         foreach ($fields as $field) {
-            if ($field instanceof RequestField) {
+            if ($field instanceof Field) {
                 $this->appendUnique($field->getName(), $field);
 
                 continue;
@@ -19,12 +19,12 @@ final class RequestFieldSet extends \Infinityloop\Utils\ImmutableSet
         }
     }
 
-    public function current() : RequestField
+    public function current() : Field
     {
         return parent::current();
     }
 
-    public function offsetGet($offset) : RequestField
+    public function offsetGet($offset) : Field
     {
         parent::offsetGet($offset);
     }

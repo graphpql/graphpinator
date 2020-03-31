@@ -2,20 +2,20 @@
 
 declare(strict_types = 1);
 
-namespace Infinityloop\Graphpinator\Parser;
+namespace Infinityloop\Graphpinator\Request;
 
-final class RequestOperation
+final class Operation
 {
     use \Nette\SmartObject;
 
     private string $operation;
     private ?string $name;
-    private ?RequestFieldSet $children;
+    private ?FieldSet $children;
 
     public function __construct(
         string $operation = 'query',
         ?string $name = null,
-        ?RequestFieldSet $children = null
+        ?FieldSet $children = null
     ) {
         $this->operation = $operation;
         $this->name = $name;
@@ -32,7 +32,7 @@ final class RequestOperation
         return $this->name;
     }
 
-    public function getChildren() : ?RequestFieldSet
+    public function getChildren() : ?FieldSet
     {
         return $this->children;
     }

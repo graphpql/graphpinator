@@ -2,22 +2,22 @@
 
 declare(strict_types = 1);
 
-namespace Infinityloop\Graphpinator\Parser;
+namespace Infinityloop\Graphpinator\Request;
 
-final class RequestField
+final class Field
 {
     use \Nette\SmartObject;
 
     private string $name;
     private string $alias;
-    private ?RequestFieldSet $children;
+    private ?FieldSet $children;
     private \Infinityloop\Graphpinator\Value\GivenValueSet $arguments;
     private ?\Infinityloop\Graphpinator\Type\Contract\NamedDefinition $conditionType;
 
     public function __construct(
         string $name,
         ?string $alias = null,
-        ?RequestFieldSet $children = null,
+        ?FieldSet $children = null,
         ?\Infinityloop\Graphpinator\Value\GivenValueSet $arguments = null,
         ?\Infinityloop\Graphpinator\Type\Contract\NamedDefinition $conditionType = null
     ) {
@@ -40,7 +40,7 @@ final class RequestField
         return $this->alias;
     }
 
-    public function getChildren() : ?RequestFieldSet
+    public function getChildren() : ?FieldSet
     {
         return $this->children;
     }

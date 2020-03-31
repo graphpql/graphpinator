@@ -13,7 +13,7 @@ trait TFieldContainer
         return $this->fields;
     }
 
-    public function resolveFields(?\Infinityloop\Graphpinator\Parser\RequestFieldSet $requestedFields, \Infinityloop\Graphpinator\Field\ResolveResult $parent) : array
+    public function resolveFields(?\Infinityloop\Graphpinator\Request\FieldSet $requestedFields, \Infinityloop\Graphpinator\Field\ResolveResult $parent) : array
     {
         if ($requestedFields === null) {
             throw new \Exception('Composite type without fields specified.');
@@ -30,7 +30,7 @@ trait TFieldContainer
             $field = $this->fields[$request->getName()];
             $arguments = new \Infinityloop\Graphpinator\Value\ValidatedValueSet($request->getArguments(), $field->getArguments());
 
-            $resolved[$field->getName()] = $field->getType()->resolveFields(
+            $resolved[$request->getAlias()] = $field->getType()->resolveFields(
                 $request->getChildren(),
                 $field->resolve($parent, $arguments),
             );
