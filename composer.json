@@ -1,4 +1,3 @@
- 
 {
   "name": "infinityloop-dev/graphpinator",
   "description": "",
@@ -20,17 +19,17 @@
     "phpunit/phpunit": "^9.0"
   },
   "scripts": {
-      "phpunit": "phpunit tests"
+    "phpunit": "phpunit tests",
+    "phpunit-html": "phpunit --coverage-html build --whitelist src tests"
   },
   "autoload": {
     "psr-4": {
-      "Infinityloop\\": "src/"
+      "Graphpinator\\": "src/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Infinityloop\\Tests\\": "tests/"
+      "Graphpinator\\Tests\\": "tests/"
     }
   }
 }
-
