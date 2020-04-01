@@ -99,10 +99,8 @@ final class Parser
         $fields = [];
         $fragments = [];
 
-        while (true) {
+        while ($this->tokenizer->peekNext()->getType() !== TokenType::CUR_C) {
             switch ($this->tokenizer->getNext()->getType()) {
-                case TokenType::CUR_C:
-                    break 2;
                 case TokenType::ELLIP:
                     $fragments[] = $this->parseFragmentSpread();
 
@@ -115,6 +113,8 @@ final class Parser
                     throw new \Exception('Expected field, fragment expansion or }');
             }
         }
+
+        $this->tokenizer->getNext();
 
         return new FieldSet($fields, $fragments);
     }
@@ -215,36 +215,47 @@ final class Parser
         return $type;
     }
 
+    /**
+     * Parses variables definition.
+     *
+     * Expects iterator on previous token
+     * Leaves iterator to last used token
+     */
     private function parseVariableDefinition() : array
     {
         $variables = [];
 
-        while (true) {
-            switch ($this->tokenizer->getNext()->getType()) {
-                case TokenType::PAR_C:
-                    break 2;
-                case TokenType::VARIABLE:
-                    $name = $this->tokenizer->getCurrent()->getValue();
-                    $this->tokenizer->assertNext(TokenType::COLON);
-                    $type = $this->parseType();
-                    $default = null;
+        while ($this->tokenizer->peekNext()->getType() !== TokenType::PAR_C) {
+            $token = $this->tokenizer->getNext();
 
-                    if ($this->tokenizer->peekNext()->getType() === TokenType::EQUAL) {
-                        $this->tokenizer->getNext();
-                        $default = $this->parseLiteral();
-                    }
-
-                    $variables[] = new Variable($name, $type, $default);
-
-                    break;
-                default:
-                    throw new \Exception('Expected variable definition');
+            if ($token->getType() !== TokenType::VARIABLE) {
+                throw new \Exception('Expected variable definition');
             }
+
+            $name = $this->tokenizer->getCurrent()->getValue();
+            $this->tokenizer->assertNext(TokenType::COLON);
+            $type = $this->parseType();
+            $default = null;
+
+            if ($this->tokenizer->peekNext()->getType() === TokenType::EQUAL) {
+                $this->tokenizer->getNext();
+                $default = $this->parseLiteral();
+            }
+
+            $variables[] = new Variable($name, $type, $default);
         }
+
+        $this->tokenizer->getNext();
 
         return $variables;
     }
 
+    /**
+     * Parses literal value.
+     *
+     * Expects iterator on previous token
+     * Leaves iterator to last used token
+     */
     private function parseLiteral() : \Graphpinator\Parser\Value\Value
     {
         switch ($this->tokenizer->getNext()->getType()) {
