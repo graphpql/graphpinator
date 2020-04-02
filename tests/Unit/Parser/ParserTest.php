@@ -110,6 +110,38 @@ final class ParserTest extends \PHPUnit\Framework\TestCase
         self::assertCount(0, $result->getFragments());
     }
 
+    public function testField() : void
+    {
+        $parser = new \Graphpinator\Parser\Parser('query queryName { fieldName }');
+        $result = $parser->parse();
+
+        self::assertCount(0, $result->getFragments());
+    }
+
+    public function testFieldArguments() : void
+    {
+        $parser = new \Graphpinator\Parser\Parser('query queryName { fieldName(argName: "argVal") }');
+        $result = $parser->parse();
+
+        self::assertCount(0, $result->getFragments());
+    }
+
+    public function testFieldSubfield() : void
+    {
+        $parser = new \Graphpinator\Parser\Parser('query queryName { fieldName(argName: "argVal") { innerField } }');
+        $result = $parser->parse();
+
+        self::assertCount(0, $result->getFragments());
+    }
+
+    public function testFieldAlias() : void
+    {
+        $parser = new \Graphpinator\Parser\Parser('query queryName { aliasName: fieldName(argName: "argVal") }');
+        $result = $parser->parse();
+
+        self::assertCount(0, $result->getFragments());
+    }
+
     public function invalidDataProvider() : array
     {
         return [
@@ -128,6 +160,17 @@ final class ParserTest extends \PHPUnit\Framework\TestCase
             ['query queryName { ... on {} }'],
             // invalid variable value
             ['query queryName ($var: Int = $var2) {}'],
+            // missing variable type
+            ['query queryName ($var = 123) {}'],
+            ['query queryName ($var: = 123) {}'],
+            // missing variable name
+            ['query queryName (Int = 5) {}'],
+            ['query queryName (:Int = 5) {}'],
+            // invalid selection set
+            ['query queryName { $var }'],
+            // missing argument name
+            ['query queryName { fieldName(123) }'],
+            ['query queryName { fieldName(: 123) }'],
         ];
     }
 
