@@ -35,7 +35,7 @@ compact objects representing request's operations and fragments.
 
 ***
 
-## Normalizing - validating and comparing parsed result against given schema
+## Normalizing - validating and comparing request against given schema
 
 Normalizing stage is responsible for converting `Parser\ParseResult` into `Request\Operation`, which is a fully validated object that can be executed and resolved in next stage.
 
