@@ -42,10 +42,11 @@ Normalizing stage is responsible for converting `Parser\ParseResult` into `Reque
 Converting `ParseResult` is operation that consist of few sub-operations:
   - Explode fragment spreads into fields.
   - Replace Type references (in fragment Type conditions) with Types from schema.
-  - Replace Variable references with literal values.
+  - Validate Variable values and types.
+  - Replace Variable references with values.
   - Validate that requested fields exist.
   - Validate that given arguments exists and that none of required is missing. 
-  - Validate argument value types.
+  - Validate argument values and types.
 
 ***
 
