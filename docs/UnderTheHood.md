@@ -1,6 +1,6 @@
 # Under the hood
 
-So, how exactly does this library operates under the hood? 
+So, how exactly does this library operate under the hood? 
 
 Lets take a look at following paragraphs, which describe execution process and class responsible for each step.
 
