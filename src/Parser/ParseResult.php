@@ -26,4 +26,12 @@ final class ParseResult
     {
         return $this->fragments;
     }
+
+    public function normalize(
+        \Graphpinator\DI\TypeResolver $typeResolver,
+        \Infinityloop\Utils\Json $variables
+    ) : \Graphpinator\Request\Operation
+    {
+        return $this->operation->normalize($typeResolver, $this->fragments, $variables);
+    }
 }

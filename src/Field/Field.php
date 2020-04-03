@@ -9,11 +9,11 @@ final class Field
     use \Nette\SmartObject;
 
     private string $name;
-    private \Graphpinator\Type\Contract\Outputable $type;
+    private \Graphpinator\Type\Contract\Resolvable $type;
     private \Graphpinator\Argument\ArgumentSet $arguments;
     private $resolveFunction;
 
-    public function __construct(string $name, \Graphpinator\Type\Contract\Outputable $type, callable $resolveFunction, ?\Graphpinator\Argument\ArgumentSet $arguments = null)
+    public function __construct(string $name, \Graphpinator\Type\Contract\Resolvable $type, callable $resolveFunction, ?\Graphpinator\Argument\ArgumentSet $arguments = null)
     {
         $this->name = $name;
         $this->type = $type;
@@ -38,7 +38,7 @@ final class Field
         return $this->arguments;
     }
 
-    public function resolve(ResolveResult $parentValue, \Graphpinator\Value\ValidatedValueSet $arguments) : ResolveResult
+    public function resolve(ResolveResult $parentValue, \Graphpinator\Value\ArgumentValueSet $arguments) : ResolveResult
     {
         $result = \call_user_func($this->resolveFunction, $parentValue->getResult()->getRawValue(), $arguments);
 

@@ -6,27 +6,16 @@ namespace Graphpinator\Value;
 
 final class ValidatedValueSet extends \Infinityloop\Utils\ImmutableSet
 {
-    public function __construct(GivenValueSet $givenValueSet, \Graphpinator\Argument\ArgumentSet $argumentSet)
+    public function __construct(array $values)
     {
-        foreach ($argumentSet as $argument) {
-            if (isset($givenValueSet[$argument->getName()])) {
-                $givenValue = $givenValueSet[$argument->getName()];
-                $this->appendUnique($argument->getName(), $argument->getType()->createValue($givenValue->getValue()));
+        foreach ($values as $value) {
+            if ($value instanceof ValidatedValue) {
+                $this->appendUnique($value->getName(), $value);
 
                 continue;
             }
 
-            if ($argument->getDefaultValue() instanceof ValidatedValue) {
-                $this->appendUnique($argument->getName(), $argument->getDefaultValue());
-
-                continue;
-            }
-
-            $this->appendUnique($argument->getName(), new NullValue($argument->getType()));
-        }
-
-        foreach ($givenValueSet as $givenValue) {
-            $argumentSet[$givenValue->getName()];
+            throw new \Exception();
         }
     }
 

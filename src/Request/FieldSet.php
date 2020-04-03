@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Request;
 
-final class FieldSet extends \Infinityloop\Utils\ImmutableSet
+class FieldSet extends \Infinityloop\Utils\ImmutableSet
 {
     public function __construct(array $fields)
     {

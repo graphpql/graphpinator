@@ -11,22 +11,20 @@ final class Field
     private string $name;
     private string $alias;
     private ?FieldSet $children;
-    private \Graphpinator\Value\GivenValueSet $arguments;
+    private \Graphpinator\Value\ArgumentValueSet $arguments;
     private ?\Graphpinator\Type\Contract\NamedDefinition $conditionType;
 
     public function __construct(
         string $name,
-        ?string $alias = null,
-        ?FieldSet $children = null,
-        ?\Graphpinator\Value\GivenValueSet $arguments = null,
-        ?\Graphpinator\Type\Contract\NamedDefinition $conditionType = null
+        ?string $alias,
+        ?FieldSet $children,
+        ?\Graphpinator\Value\ArgumentValueSet $arguments,
+        ?\Graphpinator\Type\Contract\NamedDefinition $conditionType
     ) {
         $this->name = $name;
         $this->alias = $alias ?? $name;
         $this->children = $children;
-        $this->arguments = $arguments instanceof \Graphpinator\Value\GivenValueSet
-            ? $arguments
-            : new \Graphpinator\Value\GivenValueSet([]);
+        $this->arguments = $arguments;
         $this->conditionType = $conditionType;
     }
 
@@ -50,7 +48,7 @@ final class Field
         return $this->conditionType;
     }
 
-    public function getArguments() : \Graphpinator\Value\GivenValueSet
+    public function getArguments() : \Graphpinator\Value\ArgumentValueSet
     {
         return $this->arguments;
     }

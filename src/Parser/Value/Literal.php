@@ -14,4 +14,9 @@ final class Literal implements Value
     {
         $this->value = $value;
     }
+
+    public function normalize(\Graphpinator\Value\ValidatedValueSet $variables)
+    {
+        return $this->value;
+    }
 }

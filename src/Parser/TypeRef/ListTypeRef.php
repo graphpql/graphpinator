@@ -15,8 +15,8 @@ final class ListTypeRef implements TypeRef
         $this->innerRef = $innerRef;
     }
 
-    public function create(\Graphpinator\DI\TypeResolver $resolver): \Graphpinator\Type\Contract\Definition
+    public function resolve(\Graphpinator\DI\TypeResolver $resolver) : \Graphpinator\Type\ListType
     {
-        return new \Graphpinator\Type\ListType($this->innerRef->create($resolver));
+        return new \Graphpinator\Type\ListType($this->innerRef->resolve($resolver));
     }
 }

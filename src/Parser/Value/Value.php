@@ -6,4 +6,5 @@ namespace Graphpinator\Parser\Value;
 
 interface Value
 {
+    public function normalize(\Graphpinator\Value\ValidatedValueSet $variables);
 }

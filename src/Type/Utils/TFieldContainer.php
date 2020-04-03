@@ -28,11 +28,10 @@ trait TFieldContainer
             }
 
             $field = $this->fields[$request->getName()];
-            $arguments = new \Graphpinator\Value\ValidatedValueSet($request->getArguments(), $field->getArguments());
 
             $resolved[$request->getAlias()] = $field->getType()->resolveFields(
                 $request->getChildren(),
-                $field->resolve($parent, $arguments),
+                $field->resolve($parent, $request->getArguments()),
             );
         }
 

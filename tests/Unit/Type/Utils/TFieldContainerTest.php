@@ -26,7 +26,7 @@ final class TFieldContainerTest extends \PHPUnit\Framework\TestCase
             // argument which do not exist
             [
                 new \Graphpinator\Request\FieldSet([
-                    new \Graphpinator\Request\Field('field1', null, null, new \Graphpinator\Value\GivenValueSet([new \Graphpinator\Value\GivenValue('val', 'arg1')]))
+                    new \Graphpinator\Request\Field('field1', null, null, new \Graphpinator\Value\GivenValueSet([new \Graphpinator\Parser\Value\NamedValue('val', 'arg1')]))
                 ]),
                 \Graphpinator\Field\ResolveResult::fromRaw(\Graphpinator\Type\Scalar\ScalarType::String(), self::PARENT_VAL)
             ],

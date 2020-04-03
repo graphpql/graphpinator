@@ -15,8 +15,8 @@ final class NotNullRef implements TypeRef
         $this->innerRef = $innerRef;
     }
 
-    public function create(\Graphpinator\DI\TypeResolver $resolver): \Graphpinator\Type\Contract\Definition
+    public function resolve(\Graphpinator\DI\TypeResolver $resolver) : \Graphpinator\Type\NotNullType
     {
-        return new \Graphpinator\Type\NotNullType($this->innerRef->create($resolver));
+        return new \Graphpinator\Type\NotNullType($this->innerRef->resolve($resolver));
     }
 }

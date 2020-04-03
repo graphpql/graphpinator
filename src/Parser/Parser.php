@@ -190,16 +190,16 @@ final class Parser
      * Expects iterator on previous token
      * Leaves iterator to last used token - either fragment name or closing brace
      */
-    private function parseFragmentSpread() : FragmentSpread
+    private function parseFragmentSpread() : \Graphpinator\Parser\FragmentSpread\FragmentSpread
     {
         switch ($this->tokenizer->getNext()->getType()) {
             case TokenType::NAME:
-                return new NamedFragmentSpread($this->tokenizer->getCurrent()->getValue());
+                return new \Graphpinator\Parser\FragmentSpread\NamedFragmentSpread($this->tokenizer->getCurrent()->getValue());
             case TokenType::ON:
                 $typeCond = $this->tokenizer->assertNext(TokenType::NAME)->getValue();
                 $this->tokenizer->assertNext(TokenType::CUR_O);
 
-                return new TypeFragmentSpread($typeCond, $this->parseSelectionSet());
+                return new \Graphpinator\Parser\FragmentSpread\TypeFragmentSpread($typeCond, $this->parseSelectionSet());
             default:
                 throw new \Exception('Expected fragment name or type condition.');
         }
@@ -227,7 +227,7 @@ final class Parser
 
             if ($this->tokenizer->peekNext()->getType() === TokenType::EQUAL) {
                 $this->tokenizer->getNext();
-                $default = $this->parseLiteral();
+                $default = $this->parseValue(true);
             }
 
             $variables[] = new Variable($name, $type, $default);
@@ -244,7 +244,7 @@ final class Parser
      * Expects iterator on previous token
      * Leaves iterator to last used token - closing parenthesis
      */
-    private function parseArguments() : array
+    private function parseArguments() : \Graphpinator\Parser\Value\NamedValueSet
     {
         $arguments = [];
 
@@ -255,14 +255,14 @@ final class Parser
 
             $name = $this->tokenizer->getCurrent()->getValue();
             $this->tokenizer->assertNext(TokenType::COLON);
-            $value = $this->parseValue();
+            $value = $this->parseValue(false);
 
-            $arguments[] = new \Graphpinator\Value\GivenValue($value, $name);
+            $arguments[] = new \Graphpinator\Parser\Value\NamedValue($value, $name);
         }
 
         $this->tokenizer->getNext();
 
-        return $arguments;
+        return new \Graphpinator\Parser\Value\NamedValueSet($arguments);
     }
 
     /**
@@ -271,24 +271,15 @@ final class Parser
      * Expects iterator on previous token
      * Leaves iterator to last used token - last token in value definition
      */
-    private function parseValue() : \Graphpinator\Parser\Value\Value
-    {
-        if ($this->tokenizer->peekNext()->getType() === TokenType::VARIABLE) {
-
-        }
-
-        return $this->parseLiteral();
-    }
-
-    /**
-     * Parses literal value.
-     *
-     * Expects iterator on previous token
-     * Leaves iterator to last used token - last token in value definition
-     */
-    private function parseLiteral() : \Graphpinator\Parser\Value\Value
+    private function parseValue(bool $literalOnly = false) : \Graphpinator\Parser\Value\Value
     {
         switch ($this->tokenizer->getNext()->getType()) {
+            case TokenType::VARIABLE:
+                if ($literalOnly) {
+                    throw new \Exception('Only literal values are allowed here.');
+                }
+
+                return new \Graphpinator\Parser\Value\VariableRef($this->tokenizer->getCurrent()->getValue());
             case TokenType::STRING:
             case TokenType::INT:
             case TokenType::FLOAT:
@@ -303,7 +294,7 @@ final class Parser
                 $values = [];
 
                 while ($this->tokenizer->peekNext()->getType() !== TokenType::SQU_C) {
-                    $values[] = $this->parseLiteral();
+                    $values[] = $this->parseValue($literalOnly);
                 }
 
                 $this->tokenizer->getNext();
@@ -315,7 +306,7 @@ final class Parser
                 while ($this->tokenizer->peekNext()->getType() !== TokenType::CUR_C) {
                     $name = $this->tokenizer->assertNext(TokenType::NAME)->getValue();
                     $this->tokenizer->assertNext(TokenType::COLON);
-                    $values[$name] = $this->parseLiteral();
+                    $values[$name] = $this->parseValue($literalOnly);
                 }
 
                 $this->tokenizer->getNext();

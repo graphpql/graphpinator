@@ -15,8 +15,8 @@ final class GivenValueTest extends \PHPUnit\Framework\TestCase
             [true, 'name'],
             [[], 'name'],
             [[123, true], 'name'],
-            [new \Graphpinator\Value\GivenValue('inner', 'a'), 'name'],
-            [[new \Graphpinator\Value\GivenValue('inner', 'a')], 'name'],
+            [new \Graphpinator\Parser\Value\NamedValue('inner', 'a'), 'name'],
+            [[new \Graphpinator\Parser\Value\NamedValue('inner', 'a')], 'name'],
         ];
     }
 
@@ -25,7 +25,7 @@ final class GivenValueTest extends \PHPUnit\Framework\TestCase
      */
     public function testSimple($rawValue, string $name): void
     {
-        $value = new \Graphpinator\Value\GivenValue($rawValue, $name);
+        $value = new \Graphpinator\Parser\Value\NamedValue($rawValue, $name);
 
         self::assertSame($name, $value->getName());
         self::assertSame($rawValue, $value->getValue());

@@ -8,23 +8,23 @@ final class Operation
 {
     use \Nette\SmartObject;
 
-    private string $operation;
+    private string $type;
     private ?string $name;
     private ?FieldSet $children;
 
     public function __construct(
-        string $operation = 'query',
+        string $operation = \Graphpinator\Tokenizer\OperationType::QUERY,
         ?string $name = null,
         ?FieldSet $children = null
     ) {
-        $this->operation = $operation;
+        $this->type = $operation;
         $this->name = $name;
         $this->children = $children;
     }
 
-    public function getOperation() : string
+    public function getType() : string
     {
-        return $this->operation;
+        return $this->type;
     }
 
     public function getName() : ?string
