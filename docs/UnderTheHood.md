@@ -44,9 +44,6 @@ Converting `ParseResult` is operation that consist of few sub-operations:
   - Replace Type references (in fragment Type conditions) with Types from schema.
   - Validate Variable values and types.
   - Replace Variable references with values.
-  - Validate that requested fields exist.
-  - Validate that given arguments exists and that none of required is missing. 
-  - Validate argument values and types.
 
 ***
 
