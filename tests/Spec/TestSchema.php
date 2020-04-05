@@ -25,6 +25,14 @@ final class TestSchema
                         return TestSchema::getInterface();
                     case 'TestUnion':
                         return TestSchema::getUnion();
+                    case 'Int':
+                        return \Graphpinator\Type\Scalar\ScalarType::Int();
+                    case 'Float':
+                        return \Graphpinator\Type\Scalar\ScalarType::Float();
+                    case 'String':
+                        return \Graphpinator\Type\Scalar\ScalarType::String();
+                    case 'Boolean':
+                        return \Graphpinator\Type\Scalar\ScalarType::Boolean();
                     default:
                         throw new \Exception('Cannot resolve type.');
                 }

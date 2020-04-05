@@ -13,7 +13,7 @@ abstract class ClassSet extends \Infinityloop\Utils\ImmutableSet
         $validatedData = [];
 
         foreach ($data as $object) {
-            if (\get_class($object) !== static::INNER_CLASS) {
+            if (!\is_a($object, static::INNER_CLASS)) {
                 throw new \Exception('Invalid input.');
             }
 
