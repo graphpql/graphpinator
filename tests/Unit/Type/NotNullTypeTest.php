@@ -6,37 +6,6 @@ namespace Graphpinator\Tests\Unit\Type;
 
 final class NotNullTypeTest extends \PHPUnit\Framework\TestCase
 {
-    public function testResolveFields() : void
-    {
-        $type = self::getTestTypeAbc()->notNull();
-        $request = new \Graphpinator\Request\FieldSet([
-            new \Graphpinator\Request\Field('field')
-        ]);
-        $parent = \Graphpinator\Field\ResolveResult::fromRaw($type, 123);
-        $result = $type->resolveFields($request, $parent);
-
-        self::assertIsArray($result);
-        self::assertCount(1, $result);
-
-        foreach ($result as $temp) {
-            self::assertInstanceOf(\Graphpinator\Value\ValidatedValue::class, $temp);
-            self::assertSame('foo', $temp->getRawValue());
-        }
-    }
-
-    public function testValuePass() : void
-    {
-        $this->expectException(\Exception::class);
-
-        $type = self::getTestTypeAbc()->notNull();
-        $request = new \Graphpinator\Request\FieldSet([
-            new \Graphpinator\Request\Field('field')
-        ]);
-        $parent = \Graphpinator\Field\ResolveResult::fromRaw($type, 124);
-
-        $result = $type->resolveFields($request, $parent);
-    }
-
     public function testCreateValue() : void
     {
         $type = self::getTestTypeAbc()->notNull();
@@ -86,7 +55,7 @@ final class NotNullTypeTest extends \PHPUnit\Framework\TestCase
 
             public function __construct()
             {
-                parent::__construct(new \Graphpinator\Field\FieldSet([new \Graphpinator\Field\Field(
+                parent::__construct(new \Graphpinator\Field\ResolvableFieldSet([new \Graphpinator\Field\ResolvableField(
                     'field',
                     \Graphpinator\Type\Scalar\ScalarType::String(),
                     static function (int $parent) {

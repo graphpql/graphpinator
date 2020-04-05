@@ -23,4 +23,21 @@ trait TInterfaceImplementor
 
         return false;
     }
+
+    protected function validateInterfaces() : void
+    {
+        foreach ($this->implements as $interface) {
+            foreach ($interface->getFields() as $fieldContract) {
+                if (!$this->fields->offsetExists($fieldContract->getName())) {
+                    throw new \Exception('Type doesnt satisfy interface - missing field');
+                }
+
+                $field = $this->fields->offsetGet($fieldContract->getName());
+
+                if (!$field->getType()->isInstanceOf($fieldContract->getType())) {
+                    throw new \Exception('Type doesnt satisfy interface - invalid field type');
+                }
+            }
+        }
+    }
 }

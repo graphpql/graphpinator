@@ -15,7 +15,7 @@ final class ObjectVal implements Value
         $this->value = $value;
     }
 
-    public function normalize(\Graphpinator\Value\ValidatedValueSet $variables) : array
+    public function normalize(\Graphpinator\Value\ValidatedValueSet $variables) : self
     {
         $return = [];
 
@@ -25,6 +25,19 @@ final class ObjectVal implements Value
             $return[$key] = $value->normalize($variables);
         }
 
-        return [];
+        return new self($return);
+    }
+
+    public function getRawValue() : array
+    {
+        $return = [];
+
+        foreach ($this->value as $key => $value) {
+            \assert($value instanceof Value);
+
+            $return[$key] = $value->getRawValue();
+        }
+
+        return $return;
     }
 }

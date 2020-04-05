@@ -15,6 +15,6 @@ final class IntType extends \Graphpinator\Type\Scalar\ScalarType
             return;
         }
 
-        throw new \Exception();
+        throw new \Exception('Invalid int value.');
     }
 }

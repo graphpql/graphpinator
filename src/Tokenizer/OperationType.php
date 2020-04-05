@@ -17,4 +17,9 @@ final class OperationType
         self::MUTATION => true,
         self::SUBSCRIPTION => true,
     ];
+
+    public static function isOperationKeyword(string $name) : bool
+    {
+        return \array_key_exists(\strtolower($name), self::KEYWORDS);
+    }
 }

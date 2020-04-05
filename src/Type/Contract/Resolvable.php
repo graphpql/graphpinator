@@ -6,7 +6,7 @@ namespace Graphpinator\Type\Contract;
 
 interface Resolvable extends \Graphpinator\Type\Contract\Outputable
 {
-    public function resolveFields(?\Graphpinator\Request\FieldSet $requestedFields, \Graphpinator\Field\ResolveResult $parent);
+    public function resolveFields(?\Graphpinator\Request\FieldSet $requestedFields, \Graphpinator\Field\ResolveResult $result);
 
     public function validateValue($rawValue) : void;
 }

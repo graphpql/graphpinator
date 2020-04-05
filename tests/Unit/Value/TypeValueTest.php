@@ -29,7 +29,7 @@ final class TypeValueTest extends \PHPUnit\Framework\TestCase
 
             public function __construct()
             {
-                parent::__construct(new \Graphpinator\Field\FieldSet([]));
+                parent::__construct(new \Graphpinator\Field\ResolvableFieldSet([]));
             }
 
             protected function validateNonNullValue($rawValue): void

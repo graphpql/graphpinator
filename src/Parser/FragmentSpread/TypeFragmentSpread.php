@@ -8,17 +8,19 @@ final class TypeFragmentSpread implements FragmentSpread
 {
     use \Nette\SmartObject;
 
-    private string $type;
     private \Graphpinator\Parser\FieldSet $fields;
 
-    public function __construct(string $type, \Graphpinator\Parser\FieldSet $fields)
+    public function __construct(\Graphpinator\Parser\TypeRef\NamedTypeRef $typeCond, \Graphpinator\Parser\FieldSet $fields)
     {
-        $this->type = $type;
         $this->fields = $fields;
+
+        foreach ($this->fields as $field) {
+            $field->setTypeCondition($typeCond);
+        }
     }
 
-    public function spread(\Graphpinator\Parser\FieldSet $target, array $fragmentDefinitions): void
+    public function getFields(\Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions) : \Graphpinator\Parser\FieldSet
     {
-        // TODO: Implement spread() method.
+        return $this->fields;
     }
 }

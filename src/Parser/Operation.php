@@ -8,30 +8,50 @@ final class Operation
 {
     use \Nette\SmartObject;
 
-    private FieldSet $children;
     private string $type;
     private ?string $name;
-    private ?array $variables;
+    private \Graphpinator\Parser\FieldSet $children;
+    private \Graphpinator\Parser\Variable\VariableSet $variables;
 
     public function __construct(
-        ?FieldSet $children = null,
+        \Graphpinator\Parser\FieldSet $children,
         string $type = \Graphpinator\Tokenizer\OperationType::QUERY,
         ?string $name = null,
-        ?array $variables = null
+        ?\Graphpinator\Parser\Variable\VariableSet $variables = null
     ) {
         $this->children = $children;
         $this->type = $type;
         $this->name = $name;
-        $this->variables = $variables;
+        $this->variables = $variables ?? new \Graphpinator\Parser\Variable\VariableSet([]);
+    }
+
+    public function getType() : string
+    {
+        return $this->type;
+    }
+
+    public function getName() : ?string
+    {
+        return $this->name;
+    }
+
+    public function getFields() : \Graphpinator\Parser\FieldSet
+    {
+        return $this->children;
+    }
+
+    public function getVariables() : ?\Graphpinator\Parser\Variable\VariableSet
+    {
+        return $this->variables;
     }
 
     public function normalize(
         \Graphpinator\DI\TypeResolver $typeResolver,
-        array $fragmentDefinitions,
-        \Infinityloop\Utils\Json $variableValues
+        \Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions,
+        \Infinityloop\Utils\Json $variables
     ) : \Graphpinator\Request\Operation
     {
-        $validatedVariables = $this->constructVariables($variableValues, $typeResolver);
+        $validatedVariables = $this->constructVariables($variables, $typeResolver);
         $schema = $typeResolver->getSchema();
 
         switch ($this->type) {
@@ -48,13 +68,12 @@ final class Operation
 
                 break;
             default:
-                throw new \Exception();
+                throw new \Exception('Unknown operation type');
         }
 
         return new \Graphpinator\Request\Operation(
-            $this->type,
-            $this->name,
-            $this->children->normalize($typeResolver, $operation, $fragmentDefinitions, $validatedVariables)
+            $operation,
+            $this->children->normalize($typeResolver, $fragmentDefinitions, $validatedVariables)
         );
     }
 
@@ -66,8 +85,6 @@ final class Operation
         $return = [];
 
         foreach ($this->variables as $variable) {
-            \assert($variable instanceof Variable);
-
             $return[$variable->getName()] = $variable->createValue($values, $typeResolver);
         }
 

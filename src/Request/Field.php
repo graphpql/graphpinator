@@ -10,21 +10,21 @@ final class Field
 
     private string $name;
     private string $alias;
-    private ?FieldSet $children;
-    private \Graphpinator\Value\ArgumentValueSet $arguments;
+    private \Graphpinator\Parser\Value\NamedValueSet $arguments;
+    private ?\Graphpinator\Request\FieldSet $children;
     private ?\Graphpinator\Type\Contract\NamedDefinition $conditionType;
 
     public function __construct(
         string $name,
-        ?string $alias,
-        ?FieldSet $children,
-        ?\Graphpinator\Value\ArgumentValueSet $arguments,
-        ?\Graphpinator\Type\Contract\NamedDefinition $conditionType
+        ?string $alias = null,
+        ?\Graphpinator\Parser\Value\NamedValueSet $arguments = null,
+        ?\Graphpinator\Request\FieldSet $children = null,
+        ?\Graphpinator\Type\Contract\NamedDefinition $conditionType = null
     ) {
         $this->name = $name;
         $this->alias = $alias ?? $name;
+        $this->arguments = $arguments ?? new \Graphpinator\Parser\Value\NamedValueSet([]);
         $this->children = $children;
-        $this->arguments = $arguments;
         $this->conditionType = $conditionType;
     }
 
@@ -38,7 +38,12 @@ final class Field
         return $this->alias;
     }
 
-    public function getChildren() : ?FieldSet
+    public function getArguments() : \Graphpinator\Parser\Value\NamedValueSet
+    {
+        return $this->arguments;
+    }
+
+    public function getChildren() : ?\Graphpinator\Request\FieldSet
     {
         return $this->children;
     }
@@ -46,10 +51,5 @@ final class Field
     public function getConditionType() : ?\Graphpinator\Type\Contract\NamedDefinition
     {
         return $this->conditionType;
-    }
-
-    public function getArguments() : \Graphpinator\Value\ArgumentValueSet
-    {
-        return $this->arguments;
     }
 }

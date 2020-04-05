@@ -15,12 +15,12 @@ final class NamedFragmentSpread implements FragmentSpread
         $this->name = $name;
     }
 
-    public function spread(\Graphpinator\Parser\FieldSet $target, array $fragmentDefinitions) : void
+    public function getFields(\Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions) : \Graphpinator\Parser\FieldSet
     {
-        if (!\array_key_exists($this->name, $fragmentDefinitions)) {
-            throw new \Exception('Unknwon fragment');
+        if ($fragmentDefinitions->offsetExists($this->name)) {
+            return $fragmentDefinitions->offsetGet($this->name)->getFields();
         }
 
-
+        throw new \Exception('Unknown fragment');
     }
 }

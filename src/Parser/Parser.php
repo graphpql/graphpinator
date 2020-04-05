@@ -40,8 +40,12 @@ final class Parser
                     $operation = new Operation($this->parseSelectionSet());
 
                     break;
-                case TokenType::OPERATION:
+                case TokenType::NAME:
                     $operationType = $this->tokenizer->getCurrent()->getValue();
+
+                    if (!\array_key_exists($operationType, \Graphpinator\Tokenizer\OperationType::KEYWORDS)) {
+                        throw new \Exception('Unknown operation type');
+                    }
 
                     switch ($this->tokenizer->getNext()->getType()) {
                         case TokenType::CUR_O:
@@ -90,7 +94,7 @@ final class Parser
 
         return new ParseResult(
             $operation,
-            $fragments,
+            new \Graphpinator\Parser\Fragment\FragmentSet($fragments),
         );
     }
 
@@ -100,17 +104,17 @@ final class Parser
      * Expects iterator on previous token
      * Leaves iterator to last used token - closing brace
      */
-    private function parseFragmentDefinition() : Fragment
+    private function parseFragmentDefinition() : \Graphpinator\Parser\Fragment\Fragment
     {
         $fragmentName = $this->tokenizer->assertNext(TokenType::NAME)->getValue();
         $this->tokenizer->assertNext(TokenType::ON);
         $typeCond = $this->tokenizer->assertNext(TokenType::NAME)->getValue();
         $this->tokenizer->assertNext(TokenType::CUR_O);
 
-        return new Fragment(
+        return new \Graphpinator\Parser\Fragment\Fragment(
             $fragmentName,
+            $this->parseSelectionSet(),
             new \Graphpinator\Parser\TypeRef\NamedTypeRef($typeCond),
-            $this->parseSelectionSet()
         );
     }
 
@@ -143,7 +147,7 @@ final class Parser
 
         $this->tokenizer->getNext();
 
-        return new FieldSet($fields, $fragments);
+        return new FieldSet($fields, new \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet($fragments));
     }
 
     /**
@@ -196,7 +200,7 @@ final class Parser
             case TokenType::NAME:
                 return new \Graphpinator\Parser\FragmentSpread\NamedFragmentSpread($this->tokenizer->getCurrent()->getValue());
             case TokenType::ON:
-                $typeCond = $this->tokenizer->assertNext(TokenType::NAME)->getValue();
+                $typeCond = $this->parseType();
                 $this->tokenizer->assertNext(TokenType::CUR_O);
 
                 return new \Graphpinator\Parser\FragmentSpread\TypeFragmentSpread($typeCond, $this->parseSelectionSet());
@@ -211,7 +215,7 @@ final class Parser
      * Expects iterator on previous token
      * Leaves iterator to last used token - closing parenthesis
      */
-    private function parseVariables() : array
+    private function parseVariables() : \Graphpinator\Parser\Variable\VariableSet
     {
         $variables = [];
 
@@ -230,12 +234,12 @@ final class Parser
                 $default = $this->parseValue(true);
             }
 
-            $variables[] = new Variable($name, $type, $default);
+            $variables[] = new \Graphpinator\Parser\Variable\Variable($name, $type, $default);
         }
 
         $this->tokenizer->getNext();
 
-        return $variables;
+        return new \Graphpinator\Parser\Variable\VariableSet($variables);
     }
 
     /**
@@ -281,9 +285,11 @@ final class Parser
 
                 return new \Graphpinator\Parser\Value\VariableRef($this->tokenizer->getCurrent()->getValue());
             case TokenType::STRING:
-            case TokenType::INT:
-            case TokenType::FLOAT:
                 return new \Graphpinator\Parser\Value\Literal($this->tokenizer->getCurrent()->getValue());
+            case TokenType::INT:
+                return new \Graphpinator\Parser\Value\Literal((int) $this->tokenizer->getCurrent()->getValue());
+            case TokenType::FLOAT:
+                return new \Graphpinator\Parser\Value\Literal((float) $this->tokenizer->getCurrent()->getValue());
             case TokenType::TRUE:
                 return new \Graphpinator\Parser\Value\Literal(true);
             case TokenType::FALSE:
@@ -328,13 +334,13 @@ final class Parser
         $type = null;
 
         switch ($this->tokenizer->getNext()->getType()) {
+            case TokenType::NAME:
+                $type = new \Graphpinator\Parser\TypeRef\NamedTypeRef($this->tokenizer->getCurrent()->getValue());
+
+                break;
             case TokenType::SQU_O:
                 $type = new \Graphpinator\Parser\TypeRef\ListTypeRef($this->parseType());
                 $this->tokenizer->assertNext(TokenType::SQU_C);
-
-                break;
-            case TokenType::NAME:
-                $type = new \Graphpinator\Parser\TypeRef\NamedTypeRef($this->tokenizer->getCurrent()->getValue());
 
                 break;
             default:

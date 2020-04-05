@@ -15,16 +15,29 @@ final class ListVal implements Value
         $this->value = $value;
     }
 
-    public function normalize(\Graphpinator\Value\ValidatedValueSet $variables) : array
+    public function normalize(\Graphpinator\Value\ValidatedValueSet $variables) : self
     {
         $return = [];
 
-        foreach ($this->value as $key => $value) {
+        foreach ($this->value as $value) {
             \assert($value instanceof Value);
 
-            $return[$key] = $value->normalize($variables);
+            $return[] = $value->normalize($variables);
         }
 
-        return [];
+        return new self($return);
+    }
+
+    public function getRawValue() : array
+    {
+        $return = [];
+
+        foreach ($this->value as $value) {
+            \assert($value instanceof Value);
+
+            $return[] = $value->getRawValue();
+        }
+
+        return $return;
     }
 }

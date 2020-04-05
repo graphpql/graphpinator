@@ -4,20 +4,9 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Field;
 
-final class FieldSet extends \Infinityloop\Utils\ImmutableSet
+final class FieldSet extends \Graphpinator\ClassSet
 {
-    public function __construct(array $fields)
-    {
-        foreach ($fields as $field) {
-            if ($field instanceof Field) {
-                $this->appendUnique($field->getName(), $field);
-
-                continue;
-            }
-
-            throw new \Exception();
-        }
-    }
+    public const INNER_CLASS = Field::class;
 
     public function current() : Field
     {
@@ -26,10 +15,6 @@ final class FieldSet extends \Infinityloop\Utils\ImmutableSet
 
     public function offsetGet($offset) : Field
     {
-        if (!$this->offsetExists($offset)) {
-            throw new \Exception('Unknown field.');
-        }
-
-        return $this->array[$offset];
+        return parent::offsetGet($offset);
     }
 }

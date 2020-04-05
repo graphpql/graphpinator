@@ -94,9 +94,7 @@ final class Tokenizer implements \Iterator
 
                     return;
                 default:
-                    $this->token = \array_key_exists($lower, OperationType::KEYWORDS)
-                        ? new Token(TokenType::OPERATION, $lower)
-                        : new Token(TokenType::NAME, $value);
+                    $this->token = new Token(TokenType::NAME, $value);
 
                     return;
             }

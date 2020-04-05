@@ -10,13 +10,13 @@ abstract class ScalarType extends \Graphpinator\Type\Contract\ConcreteDefinition
 {
     use \Graphpinator\Type\Contract\TResolvable;
 
-    public function resolveFields(?\Graphpinator\Request\FieldSet $requestedFields, \Graphpinator\Field\ResolveResult $parent) : \Graphpinator\Value\ValidatedValue
+    public function resolveFields(?\Graphpinator\Request\FieldSet $requestedFields, \Graphpinator\Field\ResolveResult $result) : \Graphpinator\Value\ValidatedValue
     {
         if ($requestedFields instanceof \Graphpinator\Request\FieldSet) {
             throw new \Exception('Cannot require fields on leaf type.');
         }
 
-        return $parent->getResult();
+        return $result->getResult();
     }
 
     public function applyDefaults($value)

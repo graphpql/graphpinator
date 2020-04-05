@@ -29,11 +29,14 @@ final class NamedValueSet extends \Infinityloop\Utils\ImmutableSet
         return parent::offsetGet($offset);
     }
 
-    public function normalize(
-        \Graphpinator\Argument\ArgumentSet $arguments,
-        \Graphpinator\Value\ValidatedValueSet $variables
-    ) : \Graphpinator\Value\ArgumentValueSet
+    public function normalize(\Graphpinator\Value\ValidatedValueSet $variables) : self
     {
-        return new \Graphpinator\Value\ArgumentValueSet($this, $arguments, $variables);
+        $return = [];
+
+        foreach ($this as $key => $value) {
+            $return[$key] = $value->normalize($variables);
+        }
+
+        return new self($return);
     }
 }

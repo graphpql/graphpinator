@@ -4,62 +4,59 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Parser;
 
-final class FieldSet
+final class FieldSet extends \Graphpinator\ClassSet
 {
-    use \Nette\SmartObject;
+    public const INNER_CLASS = Field::class;
 
-    private array $children;
-    private array $fragments;
+    private \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet $fragments;
 
-    public function __construct(array $fields, array $fragments)
+    public function __construct(array $fields, \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet $fragments)
     {
-        $this->children = $fields;
+        parent::__construct($fields);
         $this->fragments = $fragments;
     }
 
-    public function addField(Field $field)
+    public function current() : Field
     {
-        if (\array_key_exists($field->getName(), $this->children)) {
-            throw new \Exception('Duplicated field');
-        }
+        return parent::current();
+    }
 
-        $this->children[$field->getName()] = $field;
+    public function offsetGet($offset) : Field
+    {
+        return parent::offsetGet($offset);
     }
 
     public function normalize(
         \Graphpinator\DI\TypeResolver $typeResolver,
-        \Graphpinator\Type\Contract\Definition $parent,
-        array $fragmentDefinitions,
+        \Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions,
         \Graphpinator\Value\ValidatedValueSet $variables
     ) : \Graphpinator\Request\FieldSet
     {
-        if (!$parent instanceof \Graphpinator\Type\Utils\FieldContainer) {
-            throw new \Exception();
-        }
+        $normalizedFields = [];
 
-        $availableFields = $parent->getFields();
-        $this->expandFragments($fragmentDefinitions);
-        $fields = [];
-
-        foreach ($this->children as $field) {
+        foreach ($this->getCombinedFields($fragmentDefinitions) as $field) {
             \assert($field instanceof Field);
 
-            if (!$availableFields->offsetExists($field->getName())) {
-                throw new \Exception('Unknown field.');
-            }
-
-            $fields[] = $field->normalize($typeResolver, $availableFields[$field->getName()], $fragmentDefinitions, $variables);
+            $normalizedFields[] = $field->normalize($typeResolver, $fragmentDefinitions, $variables);
         }
 
-        return new \Graphpinator\Request\FieldSet($fields);
+        return new \Graphpinator\Request\FieldSet($normalizedFields);
     }
 
-    private function expandFragments(array $fragmentDefinitions) : void
+    private function getCombinedFields(\Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions) : array
     {
-        foreach ($this->fragments as $fragment) {
-            \assert($fragment instanceof \Graphpinator\Parser\FragmentSpread\FragmentSpread);
+        $allFields = $this->array;
 
-            $fragment->spread($this, $fragmentDefinitions);
+        foreach ($this->fragments as $fragment) {
+            foreach ($fragment->getFields($fragmentDefinitions) as $fragmentField) {
+                if (\array_key_exists($fragmentField->getName(), $allFields)) {
+                    throw new \Exception('Fragment defines field that already exists.');
+                }
+
+                $allFields[$fragmentField->getName()] = $fragmentField;
+            }
         }
+
+        return $allFields;
     }
 }

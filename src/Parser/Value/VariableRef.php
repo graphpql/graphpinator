@@ -15,12 +15,17 @@ final class VariableRef implements Value
         $this->varName = $name;
     }
 
-    public function normalize(\Graphpinator\Value\ValidatedValueSet $variables)
+    public function normalize(\Graphpinator\Value\ValidatedValueSet $variables) : Literal
     {
         if ($variables->offsetExists($this->varName)) {
-            return $variables->offsetGet($this->varName)->getRawValue();
+            return new Literal($variables->offsetGet($this->varName)->getRawValue());
         }
 
         throw new \Exception('Unknown variable');
+    }
+
+    public function getRawValue(): void
+    {
+        throw new \Exception();
     }
 }

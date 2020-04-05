@@ -51,7 +51,7 @@ final class TokenizerTest extends \PHPUnit\Framework\TestCase
                 new Token(TokenType::FLOAT, '-4.024e-10'),
             ]],
             ['query { field1 { innerField } }', [
-                new Token(TokenType::OPERATION, 'query'),
+                new Token(TokenType::NAME, 'query'),
                 new Token(TokenType::CUR_O),
                 new Token(TokenType::NAME, 'field1'),
                 new Token(TokenType::CUR_O),
@@ -60,7 +60,7 @@ final class TokenizerTest extends \PHPUnit\Framework\TestCase
                 new Token(TokenType::CUR_C),
             ]],
             ['mutation { field(argName: 4) }', [
-                new Token(TokenType::OPERATION, 'mutation'),
+                new Token(TokenType::NAME, 'mutation'),
                 new Token(TokenType::CUR_O),
                 new Token(TokenType::NAME, 'field'),
                 new Token(TokenType::PAR_O),
@@ -71,7 +71,7 @@ final class TokenizerTest extends \PHPUnit\Framework\TestCase
                 new Token(TokenType::CUR_C),
             ]],
             ['subscription { field(argName: "str") }', [
-                new Token(TokenType::OPERATION, 'subscription'),
+                new Token(TokenType::NAME, 'subscription'),
                 new Token(TokenType::CUR_O),
                 new Token(TokenType::NAME, 'field'),
                 new Token(TokenType::PAR_O),
@@ -82,7 +82,7 @@ final class TokenizerTest extends \PHPUnit\Framework\TestCase
                 new Token(TokenType::CUR_C),
             ]],
             ['query { field(argName: ["str", "str", $varName]) @directiveName }', [
-                new Token(TokenType::OPERATION, 'query'),
+                new Token(TokenType::NAME, 'query'),
                 new Token(TokenType::CUR_O),
                 new Token(TokenType::NAME, 'field'),
                 new Token(TokenType::PAR_O),
@@ -104,7 +104,7 @@ final class TokenizerTest extends \PHPUnit\Framework\TestCase
                     'innerField' . \PHP_EOL .
                 '}' . \PHP_EOL .
             '}', [
-                new Token(TokenType::OPERATION, 'query'),
+                new Token(TokenType::NAME, 'query'),
                 new Token(TokenType::CUR_O),
                 new Token(TokenType::NEWLINE),
                 new Token(TokenType::NAME, 'field1'),
@@ -122,7 +122,7 @@ final class TokenizerTest extends \PHPUnit\Framework\TestCase
                     'innerField' . \PHP_EOL .
                 '}' . \PHP_EOL .
             '}', [
-                new Token(TokenType::OPERATION, 'query'),
+                new Token(TokenType::NAME, 'query'),
                 new Token(TokenType::CUR_O),
                 new Token(TokenType::NEWLINE),
                 new Token(TokenType::NAME, 'field1'),
@@ -158,7 +158,7 @@ final class TokenizerTest extends \PHPUnit\Framework\TestCase
     {
         return [
             ['query { field(argName: ["str", "str", true, false, null]) }', [
-                new Token(TokenType::OPERATION, 'query'),
+                new Token(TokenType::NAME, 'query'),
                 new Token(TokenType::CUR_O),
                 new Token(TokenType::NAME, 'field'),
                 new Token(TokenType::PAR_O),
@@ -179,7 +179,7 @@ final class TokenizerTest extends \PHPUnit\Framework\TestCase
                 'innerField' . \PHP_EOL .
                 '}' . \PHP_EOL .
             '}', [
-                new Token(TokenType::OPERATION, 'query'),
+                new Token(TokenType::NAME, 'query'),
                 new Token(TokenType::CUR_O),
                 new Token(TokenType::NAME, 'field1'),
                 new Token(TokenType::CUR_O),
@@ -193,7 +193,7 @@ final class TokenizerTest extends \PHPUnit\Framework\TestCase
                     'innerField' . \PHP_EOL .
                 '}' . \PHP_EOL .
             '}', [
-                new Token(TokenType::OPERATION, 'query'),
+                new Token(TokenType::NAME, 'query'),
                 new Token(TokenType::CUR_O),
                 new Token(TokenType::NAME, 'field1'),
                 new Token(TokenType::CUR_O),

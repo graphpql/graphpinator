@@ -4,20 +4,9 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Request;
 
-class FieldSet extends \Infinityloop\Utils\ImmutableSet
+class FieldSet extends \Graphpinator\ClassSet
 {
-    public function __construct(array $fields)
-    {
-        foreach ($fields as $field) {
-            if ($field instanceof Field) {
-                $this->appendUnique($field->getName(), $field);
-
-                continue;
-            }
-
-            throw new \Exception();
-        }
-    }
+    public const INNER_CLASS = Field::class;
 
     public function current() : Field
     {

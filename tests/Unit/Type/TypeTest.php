@@ -62,7 +62,93 @@ final class TypeTest extends \PHPUnit\Framework\TestCase
 
             public function __construct()
             {
-                parent::__construct(new \Graphpinator\Field\FieldSet([]));
+                parent::__construct(new \Graphpinator\Field\ResolvableFieldSet([]));
+            }
+        };
+    }
+
+    public const PARENT_VAL = '123';
+
+    public function testResolveFields(): void
+    {
+        $type = $this->createTestType();
+        $requestFields = new \Graphpinator\Request\FieldSet([
+            new \Graphpinator\Request\Field('field1', null, new \Graphpinator\Parser\Value\NamedValueSet([])),
+            new \Graphpinator\Request\Field('field2', null, new \Graphpinator\Parser\Value\NamedValueSet([])),
+            new \Graphpinator\Request\Field('field3', null, new \Graphpinator\Parser\Value\NamedValueSet([])),
+        ]);
+        $parentValue = \Graphpinator\Field\ResolveResult::fromRaw(\Graphpinator\Type\Scalar\ScalarType::String(), self::PARENT_VAL);
+        $result = $type->resolveFields($requestFields, $parentValue);
+
+        self::assertCount(3, $result);
+
+        foreach (['field1' => 'fieldValue', 'field2' => false, 'field3' => null] as $name => $value) {
+            self::assertArrayHasKey($name, $result);
+            self::assertSame($value, $result[$name]->getRawValue());
+        }
+    }
+
+    public function testResolveFieldsIgnore(): void
+    {
+        $type = $this->createTestType();
+        $requestFields = new \Graphpinator\Request\FieldSet([
+            new \Graphpinator\Request\Field('field1', null, new \Graphpinator\Parser\Value\NamedValueSet([]), null, \Graphpinator\Type\Scalar\ScalarType::String()),
+            new \Graphpinator\Request\Field('field2', null, new \Graphpinator\Parser\Value\NamedValueSet([]), null, \Graphpinator\Type\Scalar\ScalarType::Int()),
+            new \Graphpinator\Request\Field('field3', null, new \Graphpinator\Parser\Value\NamedValueSet([])),
+        ]);
+        $parentValue = \Graphpinator\Field\ResolveResult::fromRaw(\Graphpinator\Type\Scalar\ScalarType::String(), self::PARENT_VAL);
+        $result = $type->resolveFields($requestFields, $parentValue);
+
+        self::assertCount(2, $result);
+
+        foreach (['field1' => 'fieldValue', 'field3' => null] as $name => $value) {
+            self::assertArrayHasKey($name, $result);
+            self::assertSame($value, $result[$name]->getRawValue());
+        }
+    }
+
+    public function testGetFields(): void
+    {
+        $type = $this->createTestType();
+
+        self::assertCount(3, $type->getFields());
+    }
+
+    protected function createTestType() : \Graphpinator\Type\Type
+    {
+        return new class extends \Graphpinator\Type\Type {
+
+            public function __construct()
+            {
+                $this->fields = new \Graphpinator\Field\ResolvableFieldSet([
+                    new \Graphpinator\Field\ResolvableField(
+                        'field1',
+                        \Graphpinator\Type\Scalar\ScalarType::String(),
+                        static function ($parentValue, \Graphpinator\Value\ArgumentValueSet $arguments) {
+                            TypeTest::assertSame(TypeTest::PARENT_VAL, $parentValue);
+                            TypeTest::assertCount(0, $arguments);
+
+                            return 'fieldValue';
+                        }),
+                    new \Graphpinator\Field\ResolvableField(
+                        'field2',
+                        \Graphpinator\Type\Scalar\ScalarType::Boolean(),
+                        static function ($parentValue, \Graphpinator\Value\ArgumentValueSet $arguments) {
+                            TypeTest::assertSame(TypeTest::PARENT_VAL, $parentValue);
+                            TypeTest::assertCount(0, $arguments);
+
+                            return false;
+                        }),
+                    new \Graphpinator\Field\ResolvableField(
+                        'field3',
+                        \Graphpinator\Type\Scalar\ScalarType::Int(),
+                        static function ($parentValue, \Graphpinator\Value\ArgumentValueSet $arguments) {
+                            TypeTest::assertSame(TypeTest::PARENT_VAL, $parentValue);
+                            TypeTest::assertCount(0, $arguments);
+
+                            return null;
+                        }),
+                ]);
             }
         };
     }

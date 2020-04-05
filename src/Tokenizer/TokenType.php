@@ -22,7 +22,6 @@ final class TokenType
     public const NULL = 'null';
     public const TRUE = 'true';
     public const FALSE = 'false';
-    public const OPERATION = 'operation'; // one of: query, mutation, subscription
     public const FRAGMENT = 'fragment';
     public const ON = 'on'; // type condition
     # punctators

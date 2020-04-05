@@ -13,10 +13,6 @@ final class ResolveResult
 
     private function __construct(\Graphpinator\Type\Contract\Resolvable $type, \Graphpinator\Value\ValidatedValue $value)
     {
-        if (!$type->getNamedType() instanceof \Graphpinator\Type\Contract\ConcreteDefinition) {
-            throw new \Exception('Abstract type fields need to return ResolveResult with concrete resolution.');
-        }
-
         $this->type = $type;
         $this->result = $value;
     }
@@ -28,6 +24,10 @@ final class ResolveResult
 
     public static function fromValidated(\Graphpinator\Value\ValidatedValue $value) : self
     {
+        if (!$value->getType()->getNamedType() instanceof \Graphpinator\Type\Contract\ConcreteDefinition) {
+            throw new \Exception('Abstract type fields need to return ResolveResult with concrete resolution.');
+        }
+
         return new self($value->getType(), $value);
     }
 

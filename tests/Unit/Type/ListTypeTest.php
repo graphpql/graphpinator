@@ -6,39 +6,6 @@ namespace Graphpinator\Tests\Unit\Type;
 
 final class ListTypeTest extends \PHPUnit\Framework\TestCase
 {
-    public function testResolveFields() : void
-    {
-        $type = self::getTestTypeAbc()->list();
-        $request = new \Graphpinator\Request\FieldSet([
-            new \Graphpinator\Request\Field('field')
-        ]);
-        $parent = \Graphpinator\Field\ResolveResult::fromRaw($type, [123, 123, 123]);
-        $result = $type->resolveFields($request, $parent);
-
-        self::assertIsArray($result);
-        self::assertCount(3, $result);
-
-        foreach ($result as $temp) {
-            self::assertIsArray($temp);
-            self::assertArrayHasKey('field', $temp);
-            self::assertInstanceOf(\Graphpinator\Value\ValidatedValue::class, $temp['field']);
-            self::assertSame('foo', $temp['field']->getRawValue());
-        }
-    }
-
-    public function testValuePass() : void
-    {
-        $this->expectException(\Exception::class);
-
-        $type = self::getTestTypeAbc()->list();
-        $request = new \Graphpinator\Request\FieldSet([
-            new \Graphpinator\Request\Field('field')
-        ]);
-        $parent = \Graphpinator\Field\ResolveResult::fromRaw($type, [124]);
-
-        $result = $type->resolveFields($request, $parent);
-    }
-
     public function testNoRequest() : void
     {
         $this->expectException(\Exception::class);
@@ -47,19 +14,6 @@ final class ListTypeTest extends \PHPUnit\Framework\TestCase
         $parent = \Graphpinator\Field\ResolveResult::fromRaw($type, [124]);
 
         $result = $type->resolveFields(null, $parent);
-    }
-
-    public function testInvalidParentValue() : void
-    {
-        $this->expectException(\Exception::class);
-
-        $type = self::getTestTypeAbc()->list();
-        $request = new \Graphpinator\Request\FieldSet([
-            new \Graphpinator\Request\Field('field')
-        ]);
-        $parent = \Graphpinator\Field\ResolveResult::fromRaw(self::getTestTypeAbc(), 124);
-
-        $result = $type->resolveFields($request, $parent);
     }
 
     public function testValidateValue() : void
@@ -101,7 +55,7 @@ final class ListTypeTest extends \PHPUnit\Framework\TestCase
 
             public function __construct()
             {
-                parent::__construct(new \Graphpinator\Field\FieldSet([new \Graphpinator\Field\Field(
+                parent::__construct(new \Graphpinator\Field\ResolvableFieldSet([new \Graphpinator\Field\ResolvableField(
                     'field',
                     \Graphpinator\Type\Scalar\ScalarType::String(),
                     static function (int $parent) {

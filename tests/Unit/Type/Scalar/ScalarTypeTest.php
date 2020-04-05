@@ -29,15 +29,4 @@ final class ScalarTypeTest extends \PHPUnit\Framework\TestCase
 
         self::assertSame($value, $type->resolveFields(null, $result));
     }
-
-    public function testResolveFieldsInvalid(): void
-    {
-        $this->expectException(\Exception::class);
-
-        $type = new \Graphpinator\Type\Scalar\BooleanType();
-        $value = new \Graphpinator\Value\ScalarValue(true, $type);
-        $result = \Graphpinator\Field\ResolveResult::fromValidated($value);
-
-        $type->resolveFields(new \Graphpinator\Request\FieldSet([]), $result);
-    }
 }

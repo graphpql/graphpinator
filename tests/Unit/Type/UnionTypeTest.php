@@ -46,7 +46,7 @@ final class UnionTypeTest extends \PHPUnit\Framework\TestCase
 
             public function __construct()
             {
-                parent::__construct(new \Graphpinator\Field\FieldSet([]));
+                parent::__construct(new \Graphpinator\Field\ResolvableFieldSet([]));
             }
         };
     }
@@ -58,7 +58,7 @@ final class UnionTypeTest extends \PHPUnit\Framework\TestCase
 
             public function __construct()
             {
-                parent::__construct(new \Graphpinator\Field\FieldSet([]));
+                parent::__construct(new \Graphpinator\Field\ResolvableFieldSet([]));
             }
         };
     }
@@ -70,7 +70,7 @@ final class UnionTypeTest extends \PHPUnit\Framework\TestCase
 
             public function __construct()
             {
-                parent::__construct(new \Graphpinator\Field\FieldSet([]));
+                parent::__construct(new \Graphpinator\Field\ResolvableFieldSet([]));
             }
         };
     }

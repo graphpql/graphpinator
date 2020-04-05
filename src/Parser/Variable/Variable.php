@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Parser;
+namespace Graphpinator\Parser\Variable;
 
 final class Variable
 {
@@ -38,14 +38,14 @@ final class Variable
     }
 
     public function createValue(
-        \Infinityloop\Utils\Json $variableValues,
+        \Infinityloop\Utils\Json $variables,
         \Graphpinator\DI\TypeResolver $typeResolver
     ) : \Graphpinator\Value\ValidatedValue
     {
         $value = null;
 
-        if (isset($variableValues[$this->name])) {
-            $value = $variableValues[$this->name];
+        if (isset($variables[$this->name])) {
+            $value = $variables[$this->name];
         } elseif ($this->default instanceof \Graphpinator\Parser\Value\Value) {
             $value = $this->default;
         }
