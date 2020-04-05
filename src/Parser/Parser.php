@@ -43,7 +43,7 @@ final class Parser
                 case TokenType::NAME:
                     $operationType = $this->tokenizer->getCurrent()->getValue();
 
-                    if (!\array_key_exists($operationType, \Graphpinator\Tokenizer\OperationType::KEYWORDS)) {
+                    if (!\Graphpinator\Tokenizer\OperationType::isOperationKeyword($operationType)) {
                         throw new \Exception('Unknown operation type');
                     }
 
