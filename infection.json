@@ -1,0 +1,23 @@
+{
+    "source": {
+        "directories": [
+            "src"
+        ]
+    },
+    "timeout": 10,
+    "logs": {
+        "text": "build/infection.log",
+        "summary": "build/summary.log",
+        "perMutator": "build/per-mutator.md",
+        "badge": {
+            "branch": "master"
+        }
+    },
+    "tmpDir": "/tmp/infection",
+    "minCoveredMsi": 90,
+    "mutators": {
+        "@default": true
+    },
+    "testFramework":"phpunit",
+    "testFrameworkOptions": "-vvv"
+}

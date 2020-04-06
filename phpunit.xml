@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<phpunit colors="true">
+    <testsuites>
+        <testsuite name="unit">
+            <directory>tests/Unit</directory>
+        </testsuite>
+        <testsuite name="integration">
+            <directory>tests/Spec</directory>
+        </testsuite>
+    </testsuites>
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">src</directory>
+        </whitelist>
+    </filter>
+    <logging>
+        <log type="coverage-html" target="build/html" lowUpperBound="50" highLowerBound="90"/>
+        <log type="coverage-text" target="php://stdout" showOnlySummary="true"/>
+        <log type="coverage-clover" target="build/coverage.xml"/>
+        <log type="coverage-php" target="build/coverage.serialized"/>
+        <log type="junit" target="build/logfile.xml"/>
+    </logging>
+</phpunit>

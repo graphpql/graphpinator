@@ -17,11 +17,12 @@
     "ext-json": "*"
   },
   "require-dev": {
-    "phpunit/phpunit": "^9.0"
+    "phpunit/phpunit": "^9.1",
+    "infection/infection": "^0.16"
   },
   "scripts": {
     "phpunit": "phpunit tests",
-    "phpunit-html": "phpunit --coverage-html build --whitelist src tests"
+    "infection": "infection"
   },
   "autoload": {
     "psr-4": {
