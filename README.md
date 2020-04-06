@@ -30,6 +30,6 @@ $result = $graphpinator->runQuery($request, $variables);
 ```
 - For more information [visit the Docs](https://github.com/infinityloop-dev/graphpinator/blob/master/docs/README.md)
 
-## Specification compliance
+## Contributing
 
 This package is relatively new so some features might be missing. If you stumble upon something that is not included or is not compliant with the specs, please inform us by creating an issue. This is not yet another package, where issues and pull-requests lie around for months, so dont hesitate and help us improve the library.
