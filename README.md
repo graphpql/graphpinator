@@ -1,2 +1,3 @@
-# PGQL
-:six_pointed_star: GraphQL implementation written in PHP
+# GraPHPinator
+
+:zap: :globe_with_meridians: :zap: Easy-to-use & Fast GraphQL server implementation for PHP.
