@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\DI;
+namespace Graphpinator\Type;
 
-interface TypeResolver
+interface Resolver
 {
     public function getType(string $name) : \Graphpinator\Type\Contract\NamedDefinition;
 

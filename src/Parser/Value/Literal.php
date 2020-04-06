@@ -15,13 +15,13 @@ final class Literal implements Value
         $this->value = $value;
     }
 
-    public function normalize(\Graphpinator\Value\ValidatedValueSet $variables) : self
-    {
-        return new self($this->value);
-    }
-
     public function getRawValue()
     {
         return $this->value;
+    }
+
+    public function applyVariables(\Graphpinator\Request\VariableValueSet $variables) : Value
+    {
+        return $this;
     }
 }

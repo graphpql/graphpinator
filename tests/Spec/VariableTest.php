@@ -4,33 +4,28 @@ declare(strict_types=1);
 
 namespace Graphpinator\Tests\Spec;
 
-final class FragmentTest extends \PHPUnit\Framework\TestCase
+final class VariableTest extends \PHPUnit\Framework\TestCase
 {
     public function simpleDataProvider() : array
     {
         return [
             [
-                'query queryName { field0 { field1 { ... on Abc { name } } } }',
-                \Infinityloop\Utils\Json::fromArray([]),
-                \Infinityloop\Utils\Json::fromArray(['data' => ['field0' => ['field1' => []]]]),
+                'query queryName ($var1: Int) { field0 { field1(arg1: $var1) { name } } }',
+                \Infinityloop\Utils\Json::fromArray(['var1' => 456]),
+                \Infinityloop\Utils\Json::fromArray(['data' => ['field0' => ['field1' => ['name' => 'Test 456']]]]),
             ],
             [
-                'query queryName { field0 { field1 { ... on Xyz { name } } } }',
-                \Infinityloop\Utils\Json::fromArray([]),
+                'query queryName ($var1: Int) { field0 { field1(arg1: $var1) { name } } }',
+                \Infinityloop\Utils\Json::fromArray(['var1' => 123]),
                 \Infinityloop\Utils\Json::fromArray(['data' => ['field0' => ['field1' => ['name' => 'Test 123']]]]),
             ],
             [
-                'query queryName { ... on Query { field0 { field1 { ... on Xyz { name } } } } }',
+                'query queryName ($var1: Int = 456) { field0 { field1(arg1: $var1) { name } } }',
                 \Infinityloop\Utils\Json::fromArray([]),
-                \Infinityloop\Utils\Json::fromArray(['data' => ['field0' => ['field1' => ['name' => 'Test 123']]]]),
+                \Infinityloop\Utils\Json::fromArray(['data' => ['field0' => ['field1' => ['name' => 'Test 456']]]]),
             ],
             [
-                'query queryName { ... namedFragment } fragment namedFragment on Query { field0 { field1 { name } } }',
-                \Infinityloop\Utils\Json::fromArray([]),
-                \Infinityloop\Utils\Json::fromArray(['data' => ['field0' => ['field1' => ['name' => 'Test 123']]]]),
-            ],
-            [
-                'query queryName { ... namedFragment } fragment namedFragment on Query { field0 { field1 { ... on Xyz { name } } } }',
+                'query queryName ($var1: Int = 123) { field0 { field1(arg1: $var1) { name } } }',
                 \Infinityloop\Utils\Json::fromArray([]),
                 \Infinityloop\Utils\Json::fromArray(['data' => ['field0' => ['field1' => ['name' => 'Test 123']]]]),
             ],
@@ -54,11 +49,22 @@ final class FragmentTest extends \PHPUnit\Framework\TestCase
     {
         return [
             [
-                'query queryName { ... namedFragment }',
+                'query queryName ($var1: Int = "123") { field0 { field1 { name } } }',
                 \Infinityloop\Utils\Json::fromArray([]),
+                \Infinityloop\Utils\Json::fromArray(['data' => ['field0' => ['field1' => ['name' => 'Test 123']]]]),
             ],
             [
-                'query queryName { ... namedFragment ... namedFragment } fragment namedFragment on Query { field0 {} }',
+                'query queryName ($var1: Int = 123) { field0 { field1 { name } } }',
+                \Infinityloop\Utils\Json::fromArray(['var1' => '123']),
+                \Infinityloop\Utils\Json::fromArray(['data' => ['field0' => ['field1' => ['name' => 'Test 123']]]]),
+            ],
+            [
+                'query queryName ($var1: Int!) { field0 { field1 { name } } }',
+                \Infinityloop\Utils\Json::fromArray([]),
+                \Infinityloop\Utils\Json::fromArray(['data' => ['field0' => ['field1' => ['name' => 'Test 123']]]]),
+            ],
+            [
+                'query queryName { field0 { field1(arg1: $varNonExistent) { name } } }',
                 \Infinityloop\Utils\Json::fromArray([]),
                 \Infinityloop\Utils\Json::fromArray(['data' => ['field0' => ['field1' => ['name' => 'Test 123']]]]),
             ],

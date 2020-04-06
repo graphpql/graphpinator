@@ -4,20 +4,9 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Type\Utils;
 
-final class ConcreteSet extends \Infinityloop\Utils\ImmutableSet
+final class ConcreteSet extends \Graphpinator\ClassSet
 {
-    public function __construct(array $types)
-    {
-        foreach ($types as $type) {
-            if ($type instanceof \Graphpinator\Type\Contract\ConcreteDefinition) {
-                $this->appendUnique($type->getName(), $type);
-
-                continue;
-            }
-
-            throw new \Exception();
-        }
-    }
+    public const INNER_CLASS = \Graphpinator\Type\Contract\ConcreteDefinition::class;
 
     public function current() : \Graphpinator\Type\Contract\ConcreteDefinition
     {
@@ -26,10 +15,6 @@ final class ConcreteSet extends \Infinityloop\Utils\ImmutableSet
 
     public function offsetGet($offset) : \Graphpinator\Type\Contract\ConcreteDefinition
     {
-        if (!$this->offsetExists($offset)) {
-            throw new \Exception('Unknown type.');
-        }
-
-        return $this->array[$offset];
+        return parent::offsetGet($offset);
     }
 }

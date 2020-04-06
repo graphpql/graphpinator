@@ -15,7 +15,7 @@ final class NotNullRef implements TypeRef
         $this->innerRef = $innerRef;
     }
 
-    public function resolve(\Graphpinator\DI\TypeResolver $resolver) : \Graphpinator\Type\NotNullType
+    public function resolve(\Graphpinator\Type\Resolver $resolver) : \Graphpinator\Type\NotNullType
     {
         return new \Graphpinator\Type\NotNullType($this->innerRef->resolve($resolver));
     }

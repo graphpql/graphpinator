@@ -6,7 +6,7 @@ namespace Graphpinator\Parser\Value;
 
 interface Value
 {
-    public function normalize(\Graphpinator\Value\ValidatedValueSet $variables) : self;
-
     public function getRawValue();
+
+    public function applyVariables(\Graphpinator\Request\VariableValueSet $variables) : self;
 }

@@ -40,19 +40,17 @@ final class Operation
         return $this->children;
     }
 
-    public function getVariables() : ?\Graphpinator\Parser\Variable\VariableSet
+    public function getVariables() : \Graphpinator\Parser\Variable\VariableSet
     {
         return $this->variables;
     }
 
     public function normalize(
-        \Graphpinator\DI\TypeResolver $typeResolver,
-        \Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions,
-        \Infinityloop\Utils\Json $variables
+        \Graphpinator\Type\Resolver $resolver,
+        \Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions
     ) : \Graphpinator\Request\Operation
     {
-        $validatedVariables = $this->constructVariables($variables, $typeResolver);
-        $schema = $typeResolver->getSchema();
+        $schema = $resolver->getSchema();
 
         switch ($this->type) {
             case \Graphpinator\Tokenizer\OperationType::QUERY:
@@ -73,21 +71,8 @@ final class Operation
 
         return new \Graphpinator\Request\Operation(
             $operation,
-            $this->children->normalize($typeResolver, $fragmentDefinitions, $validatedVariables)
+            $this->children->normalize($resolver, $fragmentDefinitions),
+            $this->variables->normalize($resolver),
         );
-    }
-
-    private function constructVariables(
-        \Infinityloop\Utils\Json $values,
-        \Graphpinator\DI\TypeResolver $typeResolver
-    ) : \Graphpinator\Value\ValidatedValueSet
-    {
-        $return = [];
-
-        foreach ($this->variables as $variable) {
-            $return[$variable->getName()] = $variable->createValue($values, $typeResolver);
-        }
-
-        return new \Graphpinator\Value\ValidatedValueSet($return);
     }
 }

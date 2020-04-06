@@ -17,4 +17,15 @@ class FieldSet extends \Graphpinator\ClassSet
     {
         return parent::offsetGet($offset);
     }
+
+    public function applyVariables(VariableValueSet $variables) : self
+    {
+        $fields = [];
+
+        foreach ($this as $field) {
+            $fields[] = $field->applyVariables($variables);
+        }
+
+        return new self($fields);
+    }
 }

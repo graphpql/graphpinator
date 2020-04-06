@@ -11,20 +11,20 @@ final class ListType extends \Graphpinator\Type\Contract\ModifierDefinition
         return \Graphpinator\Value\ListValue::create($rawValue, $this);
     }
 
-    public function resolveFields(?\Graphpinator\Request\FieldSet $requestedFields, \Graphpinator\Field\ResolveResult $result) : array
+    public function resolveFields(?\Graphpinator\Request\FieldSet $requestedFields, \Graphpinator\Request\ResolveResult $parentResult) : array
     {
         if ($requestedFields === null) {
             throw new \Exception('List without fields specified.');
         }
 
-        if (!$result->getResult() instanceof \Graphpinator\Value\ListValue) {
+        if (!$parentResult->getResult() instanceof \Graphpinator\Value\ListValue) {
             throw new \Exception('Cannot create list');
         }
 
         $return = [];
 
-        foreach ($result->getResult() as $val) {
-            $return[] = $this->innerType->resolveFields($requestedFields, \Graphpinator\Field\ResolveResult::fromValidated($val));
+        foreach ($parentResult->getResult() as $val) {
+            $return[] = $this->innerType->resolveFields($requestedFields, \Graphpinator\Request\ResolveResult::fromValidated($val));
         }
 
         return $return;

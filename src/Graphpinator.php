@@ -8,17 +8,15 @@ final class Graphpinator
 {
     use \Nette\StaticClass;
 
-    private \Graphpinator\DI\TypeResolver $typeResolver;
+    private \Graphpinator\Type\Resolver $resolver;
 
-    public function __construct(\Graphpinator\DI\TypeResolver $typeResolver)
+    public function __construct(\Graphpinator\Type\Resolver $resolver)
     {
-        $this->typeResolver = $typeResolver;
+        $this->resolver = $resolver;
     }
 
     public function runQuery(string $request, \Infinityloop\Utils\Json $variables) : \Graphpinator\Request\ExecutionResult
     {
-        $parser = new \Graphpinator\Parser\Parser($request);
-
-        return $parser->parse()->normalize($this->typeResolver, $variables)->execute();
+        return \Graphpinator\Parser\Parser::parseRequest($request)->normalize($this->resolver)->execute($variables);
     }
 }

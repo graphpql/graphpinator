@@ -27,9 +27,8 @@ final class FieldSet extends \Graphpinator\ClassSet
     }
 
     public function normalize(
-        \Graphpinator\DI\TypeResolver $typeResolver,
-        \Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions,
-        \Graphpinator\Value\ValidatedValueSet $variables
+        \Graphpinator\Type\Resolver $resolver,
+        \Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions
     ) : \Graphpinator\Request\FieldSet
     {
         $normalizedFields = [];
@@ -37,7 +36,7 @@ final class FieldSet extends \Graphpinator\ClassSet
         foreach ($this->getCombinedFields($fragmentDefinitions) as $field) {
             \assert($field instanceof Field);
 
-            $normalizedFields[] = $field->normalize($typeResolver, $fragmentDefinitions, $variables);
+            $normalizedFields[] = $field->normalize($resolver, $fragmentDefinitions);
         }
 
         return new \Graphpinator\Request\FieldSet($normalizedFields);
@@ -50,7 +49,7 @@ final class FieldSet extends \Graphpinator\ClassSet
         foreach ($this->fragments as $fragment) {
             foreach ($fragment->getFields($fragmentDefinitions) as $fragmentField) {
                 if (\array_key_exists($fragmentField->getName(), $allFields)) {
-                    throw new \Exception('Fragment defines field that already exists.');
+                    throw new \Exception('Fragment defines field that already exists in selection.');
                 }
 
                 $allFields[$fragmentField->getName()] = $fragmentField;

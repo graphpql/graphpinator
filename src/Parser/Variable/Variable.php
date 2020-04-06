@@ -37,22 +37,14 @@ final class Variable
         return $this->default;
     }
 
-    public function createValue(
-        \Infinityloop\Utils\Json $variables,
-        \Graphpinator\DI\TypeResolver $typeResolver
-    ) : \Graphpinator\Value\ValidatedValue
+    public function normalize(
+        \Graphpinator\Type\Resolver $resolver
+    ) : \Graphpinator\Request\Variable\Variable
     {
-        $value = null;
-
-        if (isset($variables[$this->name])) {
-            $value = $variables[$this->name];
-        } elseif ($this->default instanceof \Graphpinator\Parser\Value\Value) {
-            $value = $this->default;
-        }
-
-        return \Graphpinator\Value\ValidatedValue::create(
-            $value,
-            $this->type->resolve($typeResolver),
+        return new \Graphpinator\Request\Variable\Variable(
+            $this->name,
+            $this->type->resolve($resolver),
+            $this->default,
         );
     }
 }

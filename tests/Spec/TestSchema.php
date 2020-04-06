@@ -8,9 +8,9 @@ final class TestSchema
 {
     use \Nette\StaticClass;
 
-    public static function getTypeResolver() : \Graphpinator\DI\TypeResolver
+    public static function getTypeResolver() : \Graphpinator\Type\Resolver
     {
-        return new class implements \Graphpinator\DI\TypeResolver
+        return new class implements \Graphpinator\Type\Resolver
         {
             public function getType(string $name): \Graphpinator\Type\Contract\NamedDefinition
             {
@@ -25,6 +25,10 @@ final class TestSchema
                         return TestSchema::getInterface();
                     case 'TestUnion':
                         return TestSchema::getUnion();
+                    case 'TestInput':
+                        return TestSchema::getInput();
+                    case 'TestInnerInput':
+                        return TestSchema::getInnerInput();
                     case 'Int':
                         return \Graphpinator\Type\Scalar\ScalarType::Int();
                     case 'Float':
@@ -55,7 +59,7 @@ final class TestSchema
             {
                 parent::__construct(new \Graphpinator\Field\ResolvableFieldSet([
                     new \Graphpinator\Field\ResolvableField('field0', TestSchema::getUnion(), function () {
-                        return \Graphpinator\Field\ResolveResult::fromRaw(TestSchema::getTypeAbc(), null);
+                        return \Graphpinator\Request\ResolveResult::fromRaw(TestSchema::getTypeAbc(), null);
                     })
                 ]));
             }
@@ -72,13 +76,26 @@ final class TestSchema
             {
                 parent::__construct(new \Graphpinator\Field\ResolvableFieldSet([
                     new \Graphpinator\Field\ResolvableField('field1', TestSchema::getInterface(),
-                        function ($parent, \Graphpinator\Value\ArgumentValueSet $args) {
-                        $object = new \stdClass();
-                        $object->name = $args['arg1']->getRawValue() === 123 ? 'Test name' : 'Test argument';
+                        function ($parent, \Graphpinator\Request\ArgumentValueSet $args) {
+                            $object = new \stdClass();
 
-                        return \Graphpinator\Field\ResolveResult::fromRaw(TestSchema::getTypeXyz(), $object);
+                            if ($args['arg2']->getRawValue() === null) {
+                                $object->name = 'Test ' . $args['arg1']->getRawValue();
+                            } else {
+                                $objectVal = $args['arg2']->getRawValue();
+                                $str = '';
+
+                                \array_walk_recursive($objectVal, function ($item, $key) use (&$str) {
+                                    $str .= $key . ': ' . $item . '; ';
+                                });
+
+                                $object->name = 'Test input: ' . $str;
+                            }
+
+                            return \Graphpinator\Request\ResolveResult::fromRaw(TestSchema::getTypeXyz(), $object);
                     }, new \Graphpinator\Argument\ArgumentSet([
-                        new \Graphpinator\Argument\Argument('arg1', \Graphpinator\Type\Scalar\ScalarType::Int(), 123)
+                        new \Graphpinator\Argument\Argument('arg1', \Graphpinator\Type\Scalar\ScalarType::Int(), 123),
+                        new \Graphpinator\Argument\Argument('arg2', TestSchema::getInput()),
                     ]))
                 ]));
             }
@@ -98,6 +115,41 @@ final class TestSchema
                         return $parent->name;
                     })
                 ]), new \Graphpinator\Type\Utils\InterfaceSet([TestSchema::getInterface()]));
+            }
+        };
+    }
+
+    public static function getInput() : \Graphpinator\Type\InputType
+    {
+        return new class extends \Graphpinator\Type\InputType
+        {
+            protected const NAME = 'TestInput';
+
+            public function __construct()
+            {
+                parent::__construct(new \Graphpinator\Argument\ArgumentSet([
+                    new \Graphpinator\Argument\Argument('name', \Graphpinator\Type\Scalar\ScalarType::String()->notNull()),
+                    new \Graphpinator\Argument\Argument('inner', TestSchema::getInnerInput()),
+                    new \Graphpinator\Argument\Argument('innerList', TestSchema::getInnerInput()->notNullList()),
+                    new \Graphpinator\Argument\Argument('innerNotNull', TestSchema::getInnerInput()->notNull()),
+                ]));
+            }
+        };
+    }
+
+    public static function getInnerInput() : \Graphpinator\Type\InputType
+    {
+        return new class extends \Graphpinator\Type\InputType
+        {
+            protected const NAME = 'TestInnerInput';
+
+            public function __construct()
+            {
+                parent::__construct(new \Graphpinator\Argument\ArgumentSet([
+                    new \Graphpinator\Argument\Argument('name', \Graphpinator\Type\Scalar\ScalarType::String()->notNull()),
+                    new \Graphpinator\Argument\Argument('number', \Graphpinator\Type\Scalar\ScalarType::Int()->notNullList()),
+                    new \Graphpinator\Argument\Argument('bool', \Graphpinator\Type\Scalar\ScalarType::Boolean()),
+                ]));
             }
         };
     }

@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Field;
 
+use Graphpinator\Request\ResolveResult;
+
 final class ResolvableField
 {
     use \Nette\SmartObject;
@@ -36,7 +38,7 @@ final class ResolvableField
         return $this->arguments;
     }
 
-    public function resolve(ResolveResult $parentValue, \Graphpinator\Value\ArgumentValueSet $arguments) : ResolveResult
+    public function resolve(ResolveResult $parentValue, \Graphpinator\Request\ArgumentValueSet $arguments) : ResolveResult
     {
         $result = \call_user_func($this->resolveFunction, $parentValue->getResult()->getRawValue(), $arguments);
 

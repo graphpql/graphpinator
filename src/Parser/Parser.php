@@ -17,6 +17,11 @@ final class Parser
         $this->tokenizer = new \Graphpinator\Tokenizer\TokenContainer($source);
     }
 
+    public static function parseRequest(string $source) : ParseResult
+    {
+        return (new self($source))->parse();
+    }
+
     /**
      * Parses document and produces ParseResult object.
      */

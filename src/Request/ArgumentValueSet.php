@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Value;
+namespace Graphpinator\Request;
 
 final class ArgumentValueSet extends \Infinityloop\Utils\ImmutableSet
 {
@@ -18,27 +18,36 @@ final class ArgumentValueSet extends \Infinityloop\Utils\ImmutableSet
 
         foreach ($argumentSet as $argument) {
             if ($namedValueSet->offsetExists($argument->getName())) {
-                $this->appendUnique($argument->getName(), $namedValueSet[$argument->getName()]->validate($argument->getType()));
+                $this->appendUnique(
+                    $argument->getName(),
+                    $argument->getType()->createValue($namedValueSet[$argument->getName()]->getRawValue())
+                );
 
                 continue;
             }
 
-            if ($argument->getDefaultValue() instanceof ValidatedValue) {
-                $this->appendUnique($argument->getName(), $argument->getDefaultValue());
+            if ($argument->getDefaultValue() instanceof \Graphpinator\Value\ValidatedValue) {
+                $this->appendUnique(
+                    $argument->getName(),
+                    $argument->getDefaultValue()
+                );
 
                 continue;
             }
 
-            $this->appendUnique($argument->getName(), new NullValue($argument->getType()));
+            $this->appendUnique(
+                $argument->getName(),
+                new \Graphpinator\Value\NullValue($argument->getType())
+            );
         }
     }
 
-    public function current() : ValidatedValue
+    public function current() : \Graphpinator\Value\ValidatedValue
     {
         return parent::current();
     }
 
-    public function offsetGet($offset) : ValidatedValue
+    public function offsetGet($offset) : \Graphpinator\Value\ValidatedValue
     {
         return parent::offsetGet($offset);
     }

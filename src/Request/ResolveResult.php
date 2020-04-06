@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Field;
+namespace Graphpinator\Request;
 
 final class ResolveResult
 {

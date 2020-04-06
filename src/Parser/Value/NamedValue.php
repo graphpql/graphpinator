@@ -22,9 +22,9 @@ final class NamedValue
         return $this->value;
     }
 
-    public function validate(\Graphpinator\Type\Contract\Inputable $type) : \Graphpinator\Value\ValidatedValue
+    public function getRawValue()
     {
-        return $type->createValue($this->value->getRawValue());
+        return $this->value->getRawValue();
     }
 
     public function getName() : string
@@ -32,8 +32,11 @@ final class NamedValue
         return $this->name;
     }
 
-    public function normalize(\Graphpinator\Value\ValidatedValueSet $variables) : self
+    public function applyVariables(\Graphpinator\Request\VariableValueSet $variables) : self
     {
-        return new self($this->value->normalize($variables), $this->name);
+        return new self(
+            $this->value->applyVariables($variables),
+            $this->name,
+        );
     }
 }

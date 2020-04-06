@@ -6,5 +6,5 @@ namespace Graphpinator\Parser\TypeRef;
 
 interface TypeRef
 {
-    public function resolve(\Graphpinator\DI\TypeResolver $resolver) : \Graphpinator\Type\Contract\Definition;
+    public function resolve(\Graphpinator\Type\Resolver $resolver) : \Graphpinator\Type\Contract\Definition;
 }

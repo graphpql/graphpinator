@@ -4,20 +4,9 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Parser\Value;
 
-final class NamedValueSet extends \Infinityloop\Utils\ImmutableSet
+final class NamedValueSet extends \Graphpinator\ClassSet
 {
-    public function __construct(array $values)
-    {
-        foreach ($values as $value) {
-            if ($value instanceof \Graphpinator\Parser\Value\NamedValue) {
-                $this->appendUnique($value->getName(), $value);
-
-                continue;
-            }
-
-            throw new \Exception();
-        }
-    }
+    public const INNER_CLASS = NamedValue::class;
 
     public function current() : NamedValue
     {
@@ -29,14 +18,14 @@ final class NamedValueSet extends \Infinityloop\Utils\ImmutableSet
         return parent::offsetGet($offset);
     }
 
-    public function normalize(\Graphpinator\Value\ValidatedValueSet $variables) : self
+    public function applyVariables(\Graphpinator\Request\VariableValueSet $variables) : self
     {
-        $return = [];
+        $values = [];
 
-        foreach ($this as $key => $value) {
-            $return[$key] = $value->normalize($variables);
+        foreach ($this as $value) {
+            $values[] = $value->applyVariables($variables);
         }
 
-        return new self($return);
+        return new self($values);
     }
 }

@@ -20,7 +20,8 @@ final class Field
         ?\Graphpinator\Parser\Value\NamedValueSet $arguments = null,
         ?\Graphpinator\Request\FieldSet $children = null,
         ?\Graphpinator\Type\Contract\NamedDefinition $conditionType = null
-    ) {
+    )
+    {
         $this->name = $name;
         $this->alias = $alias ?? $name;
         $this->arguments = $arguments ?? new \Graphpinator\Parser\Value\NamedValueSet([]);
@@ -28,28 +29,50 @@ final class Field
         $this->conditionType = $conditionType;
     }
 
-    public function getName() : string
+    public function getName(): string
     {
         return $this->name;
     }
 
-    public function getAlias() : string
+    public function getAlias(): string
     {
         return $this->alias;
     }
 
-    public function getArguments() : \Graphpinator\Parser\Value\NamedValueSet
+    public function getArguments(): \Graphpinator\Parser\Value\NamedValueSet
     {
         return $this->arguments;
     }
 
-    public function getChildren() : ?\Graphpinator\Request\FieldSet
+    public function getChildren(): ?\Graphpinator\Request\FieldSet
     {
         return $this->children;
     }
 
-    public function getConditionType() : ?\Graphpinator\Type\Contract\NamedDefinition
+    public function getConditionType(): ?\Graphpinator\Type\Contract\NamedDefinition
     {
         return $this->conditionType;
+    }
+
+    public function typeMatches(\Graphpinator\Type\Contract\Definition $type): bool
+    {
+        if ($this->conditionType instanceof \Graphpinator\Type\Contract\NamedDefinition) {
+            return $type->isInstanceOf($this->conditionType);
+        }
+
+        return true;
+    }
+
+    public function applyVariables(VariableValueSet $variables) : self
+    {
+        return new self(
+            $this->name,
+            $this->alias,
+            $this->arguments->applyVariables($variables),
+            $this->children instanceof FieldSet
+                ? $this->children->applyVariables($variables)
+                : null,
+            $this->conditionType,
+        );
     }
 }

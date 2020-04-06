@@ -15,7 +15,7 @@ final class NamedTypeRef implements TypeRef
         $this->name = $name;
     }
 
-    public function resolve(\Graphpinator\DI\TypeResolver $resolver): \Graphpinator\Type\Contract\NamedDefinition
+    public function resolve(\Graphpinator\Type\Resolver $resolver): \Graphpinator\Type\Contract\NamedDefinition
     {
         return $resolver->getType($this->name);
     }

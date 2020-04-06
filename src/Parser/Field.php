@@ -59,22 +59,19 @@ final class Field
     }
 
     public function normalize(
-        \Graphpinator\DI\TypeResolver $typeResolver,
-        \Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions,
-        \Graphpinator\Value\ValidatedValueSet $variables
+        \Graphpinator\Type\Resolver $resolver,
+        \Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions
     ) : \Graphpinator\Request\Field
     {
         return new \Graphpinator\Request\Field(
             $this->name,
             $this->alias,
-            $this->arguments instanceof \Graphpinator\Parser\Value\NamedValueSet
-                ? $this->arguments->normalize($variables)
-                : null,
+            $this->arguments,
             $this->children instanceof \Graphpinator\Parser\FieldSet
-                ? $this->children->normalize($typeResolver, $fragmentDefinitions, $variables)
+                ? $this->children->normalize($resolver, $fragmentDefinitions)
                 : null,
             $this->typeCond instanceof \Graphpinator\Parser\TypeRef\NamedTypeRef
-                ? $this->typeCond->resolve($typeResolver)
+                ? $this->typeCond->resolve($resolver)
                 : null,
         );
     }

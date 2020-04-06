@@ -40,7 +40,7 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
         return $this->fields;
     }
 
-    public function resolveFields(?\Graphpinator\Request\FieldSet $requestedFields, \Graphpinator\Field\ResolveResult $result) : array
+    public function resolveFields(?\Graphpinator\Request\FieldSet $requestedFields, \Graphpinator\Request\ResolveResult $parentResult) : array
     {
         if ($requestedFields === null) {
             throw new \Exception('Composite type without fields specified.');
@@ -49,14 +49,13 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
         $resolved = [];
 
         foreach ($requestedFields as $request) {
-            if ($request->getConditionType() instanceof \Graphpinator\Type\Contract\NamedDefinition &&
-                !$result->getType()->isInstanceOf($request->getConditionType())) {
+            if (!$request->typeMatches($parentResult->getType())) {
                 continue;
             }
 
             $field = $this->fields[$request->getName()];
-            $arguments = new \Graphpinator\Value\ArgumentValueSet($request->getArguments(), $field->getArguments());
-            $innerResult = $field->resolve($result, $arguments);
+            $arguments = new \Graphpinator\Request\ArgumentValueSet($request->getArguments(), $field->getArguments());
+            $innerResult = $field->resolve($parentResult, $arguments);
 
             $resolved[$request->getAlias()] = $innerResult->getType()->resolveFields($request->getChildren(), $innerResult);
         }
