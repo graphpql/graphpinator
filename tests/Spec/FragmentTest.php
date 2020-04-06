@@ -54,13 +54,16 @@ final class FragmentTest extends \PHPUnit\Framework\TestCase
     {
         return [
             [
-                'query queryName { ... namedFragment }',
+                'query queryName { ...namedFragment }',
                 \Infinityloop\Utils\Json::fromArray([]),
             ],
             [
-                'query queryName { ... namedFragment ... namedFragment } fragment namedFragment on Query { field0 {} }',
+                'query queryName { ...namedFragment ...namedFragment } fragment namedFragment on Query { field0 {} }',
                 \Infinityloop\Utils\Json::fromArray([]),
-                \Infinityloop\Utils\Json::fromArray(['data' => ['field0' => ['field1' => ['name' => 'Test 123']]]]),
+            ],
+            [
+                'query queryName { ...namedFragment } fragment namedFragment on Query { ...cycleFragment field0 } fragment cycleFragment on Query { ...namedFragment }',
+                \Infinityloop\Utils\Json::fromArray([]),
             ],
         ];
     }
