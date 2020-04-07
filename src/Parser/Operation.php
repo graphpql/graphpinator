@@ -69,6 +69,10 @@ final class Operation
                 throw new \Exception('Unknown operation type');
         }
 
+        if (!$operation instanceof \Graphpinator\Type\Type) {
+            throw new \Exception('Unsupported operation type.');
+        }
+
         return new \Graphpinator\Request\Operation(
             $operation,
             $this->children->normalize($resolver, $fragmentDefinitions),

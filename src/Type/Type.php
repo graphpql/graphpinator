@@ -57,7 +57,7 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
             $arguments = new \Graphpinator\Request\ArgumentValueSet($request->getArguments(), $field->getArguments());
             $innerResult = $field->resolve($parentResult, $arguments);
 
-            $resolved[$request->getAlias()] = $innerResult->getType()->resolveFields($request->getChildren(), $innerResult);
+            $resolved[$request->getAlias()] = $innerResult->getType()->resolveFields($request->getFields(), $innerResult);
         }
 
         return $resolved;

@@ -12,21 +12,21 @@ final class Field
     private string $alias;
     private \Graphpinator\Parser\Value\NamedValueSet $arguments;
     private ?\Graphpinator\Request\FieldSet $children;
-    private ?\Graphpinator\Type\Contract\NamedDefinition $conditionType;
+    private ?\Graphpinator\Type\Contract\NamedDefinition $typeCond;
 
     public function __construct(
         string $name,
         ?string $alias = null,
         ?\Graphpinator\Parser\Value\NamedValueSet $arguments = null,
         ?\Graphpinator\Request\FieldSet $children = null,
-        ?\Graphpinator\Type\Contract\NamedDefinition $conditionType = null
+        ?\Graphpinator\Type\Contract\NamedDefinition $typeCond = null
     )
     {
         $this->name = $name;
         $this->alias = $alias ?? $name;
         $this->arguments = $arguments ?? new \Graphpinator\Parser\Value\NamedValueSet([]);
         $this->children = $children;
-        $this->conditionType = $conditionType;
+        $this->typeCond = $typeCond;
     }
 
     public function getName(): string
@@ -44,20 +44,20 @@ final class Field
         return $this->arguments;
     }
 
-    public function getChildren(): ?\Graphpinator\Request\FieldSet
+    public function getFields(): ?\Graphpinator\Request\FieldSet
     {
         return $this->children;
     }
 
-    public function getConditionType(): ?\Graphpinator\Type\Contract\NamedDefinition
+    public function getTypeCondition(): ?\Graphpinator\Type\Contract\NamedDefinition
     {
-        return $this->conditionType;
+        return $this->typeCond;
     }
 
     public function typeMatches(\Graphpinator\Type\Contract\Definition $type): bool
     {
-        if ($this->conditionType instanceof \Graphpinator\Type\Contract\NamedDefinition) {
-            return $type->isInstanceOf($this->conditionType);
+        if ($this->typeCond instanceof \Graphpinator\Type\Contract\NamedDefinition) {
+            return $type->isInstanceOf($this->typeCond);
         }
 
         return true;
@@ -72,7 +72,7 @@ final class Field
             $this->children instanceof FieldSet
                 ? $this->children->applyVariables($variables)
                 : null,
-            $this->conditionType,
+            $this->typeCond,
         );
     }
 }
