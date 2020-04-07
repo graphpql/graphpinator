@@ -19,4 +19,9 @@ final class NamedTypeRef implements TypeRef
     {
         return $resolver->getType($this->name);
     }
+
+    public function getName() : string
+    {
+        return $this->name;
+    }
 }

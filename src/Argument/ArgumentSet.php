@@ -38,10 +38,6 @@ final class ArgumentSet extends \Infinityloop\Utils\ImmutableSet
 
     public function offsetGet($offset) : Argument
     {
-        if (!$this->offsetExists($offset)) {
-            throw new \Exception('Unknown argument.');
-        }
-
-        return $this->array[$offset];
+        return parent::offsetGet($offset);
     }
 }

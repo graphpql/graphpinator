@@ -9,14 +9,18 @@ final class Fragment
     use \Nette\SmartObject;
 
     private string $name;
-    private \Graphpinator\Parser\FieldSet $fields;
     private \Graphpinator\Parser\TypeRef\NamedTypeRef $typeCond;
+    private \Graphpinator\Parser\FieldSet $fields;
 
-    public function __construct(string $name, \Graphpinator\Parser\FieldSet $fields, \Graphpinator\Parser\TypeRef\NamedTypeRef $typeCond)
+    public function __construct(string $name, \Graphpinator\Parser\TypeRef\NamedTypeRef $typeCond, \Graphpinator\Parser\FieldSet $fields)
     {
         $this->name = $name;
-        $this->fields = $fields;
         $this->typeCond = $typeCond;
+        $this->fields = $fields;
+
+        foreach ($this->fields as $field) {
+            $field->setTypeCondition($typeCond);
+        }
     }
 
     public function getName() : string
@@ -27,5 +31,10 @@ final class Fragment
     public function getFields() : \Graphpinator\Parser\FieldSet
     {
         return $this->fields;
+    }
+
+    public function getTypeCond() : \Graphpinator\Parser\TypeRef\NamedTypeRef
+    {
+        return $this->typeCond;
     }
 }

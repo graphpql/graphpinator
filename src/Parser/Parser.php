@@ -118,8 +118,8 @@ final class Parser
 
         return new \Graphpinator\Parser\Fragment\Fragment(
             $fragmentName,
-            $this->parseSelectionSet(),
             new \Graphpinator\Parser\TypeRef\NamedTypeRef($typeCond),
+            $this->parseSelectionSet(),
         );
     }
 

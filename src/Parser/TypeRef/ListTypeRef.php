@@ -15,6 +15,11 @@ final class ListTypeRef implements TypeRef
         $this->innerRef = $innerRef;
     }
 
+    public function getInnerRef() : TypeRef
+    {
+        return $this->innerRef;
+    }
+
     public function resolve(\Graphpinator\Type\Resolver $resolver) : \Graphpinator\Type\ListType
     {
         return new \Graphpinator\Type\ListType($this->innerRef->resolve($resolver));

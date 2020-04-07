@@ -15,6 +15,11 @@ final class NamedFragmentSpread implements FragmentSpread
         $this->name = $name;
     }
 
+    public function getName() : string
+    {
+        return $this->name;
+    }
+
     public function getFields(\Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions) : \Graphpinator\Parser\FieldSet
     {
         if ($fragmentDefinitions->offsetExists($this->name)) {

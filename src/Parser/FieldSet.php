@@ -16,14 +16,9 @@ final class FieldSet extends \Graphpinator\ClassSet
         $this->fragments = $fragments;
     }
 
-    public function current() : Field
+    public function getFragmentSpreads() : \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet
     {
-        return parent::current();
-    }
-
-    public function offsetGet($offset) : Field
-    {
-        return parent::offsetGet($offset);
+        return $this->fragments;
     }
 
     public function normalize(
@@ -40,6 +35,16 @@ final class FieldSet extends \Graphpinator\ClassSet
         }
 
         return new \Graphpinator\Request\FieldSet($normalizedFields);
+    }
+
+    public function current() : Field
+    {
+        return parent::current();
+    }
+
+    public function offsetGet($offset) : Field
+    {
+        return parent::offsetGet($offset);
     }
 
     private function getCombinedFields(\Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions) : array
