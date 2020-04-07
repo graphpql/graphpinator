@@ -8,14 +8,14 @@ final class Tokenizer implements \Iterator
 {
     use \Nette\SmartObject;
 
-    private Source $source;
+    private \Graphpinator\Source\Source $source;
     protected bool $skipNotRelevant;
     protected ?Token $token;
     protected ?int $tokenStartIndex;
 
-    public function __construct(string $source, bool $skipNotRelevant = true)
+    public function __construct(\Graphpinator\Source\Source $source, bool $skipNotRelevant = true)
     {
-        $this->source = new Source($source);
+        $this->source = $source;
         $this->skipNotRelevant = $skipNotRelevant;
     }
 

@@ -12,14 +12,17 @@ final class Parser
 
     private \Graphpinator\Tokenizer\TokenContainer $tokenizer;
 
-    public function __construct(string $source)
+    public function __construct(\Graphpinator\Source\Source $source)
     {
         $this->tokenizer = new \Graphpinator\Tokenizer\TokenContainer($source);
     }
 
-    public static function parseRequest(string $source) : ParseResult
+    /**
+     * Static shortcut.
+     */
+    public static function parseString(string $source) : ParseResult
     {
-        return (new self($source))->parse();
+        return (new self(new \Graphpinator\Source\StringSource($source)))->parse();
     }
 
     /**

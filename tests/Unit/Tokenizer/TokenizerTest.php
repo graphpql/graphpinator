@@ -144,6 +144,7 @@ final class TokenizerTest extends \PHPUnit\Framework\TestCase
      */
     public function testSimple(string $source, array $tokens) : void
     {
+        $source = new \Graphpinator\Source\StringSource($source);
         $tokenizer = new \Graphpinator\Tokenizer\Tokenizer($source, false);
         $index = 0;
 
@@ -209,6 +210,7 @@ final class TokenizerTest extends \PHPUnit\Framework\TestCase
      */
     public function testSkip(string $source, array $tokens) : void
     {
+        $source = new \Graphpinator\Source\StringSource($source);
         $tokenizer = new \Graphpinator\Tokenizer\Tokenizer($source);
         $index = 0;
 
@@ -252,6 +254,7 @@ final class TokenizerTest extends \PHPUnit\Framework\TestCase
     {
         $this->expectException(\Exception::class);
 
+        $source = new \Graphpinator\Source\StringSource($source);
         $tokenizer = new \Graphpinator\Tokenizer\Tokenizer($source);
 
         foreach ($tokenizer as $token) {
@@ -260,7 +263,8 @@ final class TokenizerTest extends \PHPUnit\Framework\TestCase
 
     public function testSourceIndex() : void
     {
-        $tokenizer = new \Graphpinator\Tokenizer\Tokenizer('query { "ěščřžýá" }');
+        $source = new \Graphpinator\Source\StringSource('query { "ěščřžýá" }');
+        $tokenizer = new \Graphpinator\Tokenizer\Tokenizer($source);
         $indexes = [0, 6, 8, 18];
         $index = 0;
 

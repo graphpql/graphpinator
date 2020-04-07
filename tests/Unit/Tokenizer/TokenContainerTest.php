@@ -10,7 +10,8 @@ final class TokenContainerTest extends \PHPUnit\Framework\TestCase
 {
     public function testSimple() : void
     {
-        $tokenizer = new \Graphpinator\Tokenizer\TokenContainer('{}[]()');
+        $source = new \Graphpinator\Source\StringSource('{}[]()');
+        $tokenizer = new \Graphpinator\Tokenizer\TokenContainer($source);
 
         self::assertFalse($tokenizer->hasPrev());
         self::assertSame($tokenizer->getCurrent()->getType(), TokenType::CUR_O);
@@ -24,7 +25,9 @@ final class TokenContainerTest extends \PHPUnit\Framework\TestCase
 
     public function testIterator() : void
     {
-        foreach (new \Graphpinator\Tokenizer\TokenContainer('{}[]()') as $token) {
+        $source = new \Graphpinator\Source\StringSource('{}[]()');
+
+        foreach (new \Graphpinator\Tokenizer\TokenContainer($source) as $token) {
             self::assertInstanceOf(\Graphpinator\Tokenizer\Token::class, $token);
         }
     }
@@ -33,7 +36,8 @@ final class TokenContainerTest extends \PHPUnit\Framework\TestCase
     {
         $this->expectException(\Exception::class);
 
-        $tokenizer = new \Graphpinator\Tokenizer\TokenContainer('{}[]()');
+        $source = new \Graphpinator\Source\StringSource('{}[]()');
+        $tokenizer = new \Graphpinator\Tokenizer\TokenContainer($source);
         $tokenizer->getPrev();
     }
 
@@ -41,7 +45,8 @@ final class TokenContainerTest extends \PHPUnit\Framework\TestCase
     {
         $this->expectException(\Exception::class);
 
-        $tokenizer = new \Graphpinator\Tokenizer\TokenContainer('}');
+        $source = new \Graphpinator\Source\StringSource('{');
+        $tokenizer = new \Graphpinator\Tokenizer\TokenContainer($source);
         $tokenizer->getNext();
     }
 
@@ -49,7 +54,8 @@ final class TokenContainerTest extends \PHPUnit\Framework\TestCase
     {
         $this->expectException(\Exception::class);
 
-        $tokenizer = new \Graphpinator\Tokenizer\TokenContainer('{');
+        $source = new \Graphpinator\Source\StringSource('{');
+        $tokenizer = new \Graphpinator\Tokenizer\TokenContainer($source);
         $tokenizer->peekNext();
     }
 
@@ -57,7 +63,8 @@ final class TokenContainerTest extends \PHPUnit\Framework\TestCase
     {
         $this->expectException(\Exception::class);
 
-        $tokenizer = new \Graphpinator\Tokenizer\TokenContainer('{}[]()');
+        $source = new \Graphpinator\Source\StringSource('{}[]()');
+        $tokenizer = new \Graphpinator\Tokenizer\TokenContainer($source);
         $tokenizer->assertNext(TokenType::VARIABLE);
     }
 }

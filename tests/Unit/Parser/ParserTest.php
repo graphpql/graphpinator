@@ -8,8 +8,7 @@ final class ParserTest extends \PHPUnit\Framework\TestCase
 {
     public function testQuery() : void
     {
-        $parser = new \Graphpinator\Parser\Parser('query queryName {}');
-        $result = $parser->parse();
+        $result = \Graphpinator\Parser\Parser::parseString('query queryName {}');
 
         self::assertCount(0, $result->getFragments());
         self::assertCount(0, $result->getOperation()->getVariables());
@@ -20,8 +19,7 @@ final class ParserTest extends \PHPUnit\Framework\TestCase
 
     public function testMutation() : void
     {
-        $parser = new \Graphpinator\Parser\Parser('mutation mutName {}');
-        $result = $parser->parse();
+        $result = \Graphpinator\Parser\Parser::parseString('mutation mutName {}');
 
         self::assertCount(0, $result->getFragments());
         self::assertCount(0, $result->getOperation()->getVariables());
@@ -32,8 +30,7 @@ final class ParserTest extends \PHPUnit\Framework\TestCase
 
     public function testSubscription() : void
     {
-        $parser = new \Graphpinator\Parser\Parser('subscription subName {}');
-        $result = $parser->parse();
+        $result = \Graphpinator\Parser\Parser::parseString('subscription subName {}');
 
         self::assertCount(0, $result->getFragments());
         self::assertCount(0, $result->getOperation()->getVariables());
@@ -44,8 +41,7 @@ final class ParserTest extends \PHPUnit\Framework\TestCase
 
     public function testQueryNoName() : void
     {
-        $parser = new \Graphpinator\Parser\Parser('query {}');
-        $result = $parser->parse();
+        $result = \Graphpinator\Parser\Parser::parseString('query {}');
 
         self::assertCount(0, $result->getFragments());
         self::assertCount(0, $result->getOperation()->getVariables());
@@ -56,8 +52,7 @@ final class ParserTest extends \PHPUnit\Framework\TestCase
 
     public function testQueryShorthand() : void
     {
-        $parser = new \Graphpinator\Parser\Parser('{}');
-        $result = $parser->parse();
+        $result = \Graphpinator\Parser\Parser::parseString('{}');
 
         self::assertCount(0, $result->getFragments());
         self::assertCount(0, $result->getOperation()->getVariables());
@@ -68,8 +63,7 @@ final class ParserTest extends \PHPUnit\Framework\TestCase
 
     public function testQueryMultiple() : void
     {
-        $parser = new \Graphpinator\Parser\Parser('query {} mutation {}');
-        $result = $parser->parse();
+        $result = \Graphpinator\Parser\Parser::parseString('query {} mutation {}');
 
         // TODO
         self::assertCount(0, $result->getFragments());
@@ -79,8 +73,7 @@ final class ParserTest extends \PHPUnit\Framework\TestCase
     {
         $this->expectException(\Exception::class);
 
-        $parser = new \Graphpinator\Parser\Parser('query { field @directive(arg1: 123) }');
-        $result = $parser->parse();
+        $result = \Graphpinator\Parser\Parser::parseString('query { field @directive(arg1: 123) }');
 
         // TODO
         self::assertCount(0, $result->getFragments());
@@ -89,8 +82,7 @@ final class ParserTest extends \PHPUnit\Framework\TestCase
 
     public function testFragment() : void
     {
-        $parser = new \Graphpinator\Parser\Parser('fragment fragmentName on TypeName {} query queryName {}');
-        $result = $parser->parse();
+        $result = \Graphpinator\Parser\Parser::parseString('fragment fragmentName on TypeName {} query queryName {}');
 
         self::assertCount(1, $result->getFragments());
         self::assertArrayHasKey('fragmentName', $result->getFragments());
@@ -106,8 +98,7 @@ final class ParserTest extends \PHPUnit\Framework\TestCase
 
     public function testNamedFragmentSpread() : void
     {
-        $parser = new \Graphpinator\Parser\Parser('query { ... fragmentName } ');
-        $result = $parser->parse();
+        $result = \Graphpinator\Parser\Parser::parseString('query { ... fragmentName } ');
 
         self::assertCount(0, $result->getFragments());
         self::assertCount(1, $result->getOperation()->getFields()->getFragmentSpreads());
@@ -119,8 +110,7 @@ final class ParserTest extends \PHPUnit\Framework\TestCase
 
     public function testTypeFragmentSpread() : void
     {
-        $parser = new \Graphpinator\Parser\Parser('query { ... on TypeName {} }');
-        $result = $parser->parse();
+        $result = \Graphpinator\Parser\Parser::parseString('query { ... on TypeName {} }');
 
         self::assertCount(0, $result->getFragments());
         self::assertCount(1, $result->getOperation()->getFields()->getFragmentSpreads());
@@ -132,8 +122,7 @@ final class ParserTest extends \PHPUnit\Framework\TestCase
 
     public function testVariable() : void
     {
-        $parser = new \Graphpinator\Parser\Parser('query queryName ($varName: Int) {}');
-        $result = $parser->parse();
+        $result = \Graphpinator\Parser\Parser::parseString('query queryName ($varName: Int) {}');
 
         self::assertCount(0, $result->getFragments());
         self::assertCount(0, $result->getOperation()->getFields());
@@ -147,8 +136,7 @@ final class ParserTest extends \PHPUnit\Framework\TestCase
 
     public function testVariableDefault() : void
     {
-        $parser = new \Graphpinator\Parser\Parser('query queryName ($varName: Int = 3) {}');
-        $result = $parser->parse();
+        $result = \Graphpinator\Parser\Parser::parseString('query queryName ($varName: Int = 3) {}');
 
         self::assertCount(0, $result->getFragments());
         self::assertCount(0, $result->getOperation()->getFields());
@@ -162,8 +150,7 @@ final class ParserTest extends \PHPUnit\Framework\TestCase
 
     public function testVariableComplexType() : void
     {
-        $parser = new \Graphpinator\Parser\Parser('query queryName ($varName: [Int!]!) {}');
-        $result = $parser->parse();
+        $result = \Graphpinator\Parser\Parser::parseString('query queryName ($varName: [Int!]!) {}');
 
         self::assertCount(0, $result->getFragments());
         self::assertCount(0, $result->getOperation()->getFields());
@@ -179,8 +166,7 @@ final class ParserTest extends \PHPUnit\Framework\TestCase
 
     public function testVariableMultiple() : void
     {
-        $parser = new \Graphpinator\Parser\Parser('query queryName ($varName: Boolean = true, $varName2: Boolean!) {}');
-        $result = $parser->parse();
+        $result = \Graphpinator\Parser\Parser::parseString('query queryName ($varName: Boolean = true, $varName2: Boolean!) {}');
 
         self::assertCount(0, $result->getFragments());
         self::assertCount(0, $result->getOperation()->getFields());
@@ -200,8 +186,7 @@ final class ParserTest extends \PHPUnit\Framework\TestCase
 
     public function testVariableDefaultList() : void
     {
-        $parser = new \Graphpinator\Parser\Parser('query queryName ($varName: [Bool] = [true, false]) {}');
-        $result = $parser->parse();
+        $result = \Graphpinator\Parser\Parser::parseString('query queryName ($varName: [Bool] = [true, false]) {}');
 
         self::assertCount(0, $result->getFragments());
         self::assertCount(0, $result->getOperation()->getFields());
@@ -216,8 +201,7 @@ final class ParserTest extends \PHPUnit\Framework\TestCase
 
     public function testVariableDefaultObject() : void
     {
-        $parser = new \Graphpinator\Parser\Parser('query queryName ($varName: InputType = {fieldName: null, fieldName2: {}}) {}');
-        $result = $parser->parse();
+        $result = \Graphpinator\Parser\Parser::parseString('query queryName ($varName: InputType = {fieldName: null, fieldName2: {}}) {}');
 
         self::assertCount(0, $result->getFragments());
         self::assertCount(0, $result->getOperation()->getFields());
@@ -231,8 +215,7 @@ final class ParserTest extends \PHPUnit\Framework\TestCase
 
     public function testField() : void
     {
-        $parser = new \Graphpinator\Parser\Parser('query queryName { fieldName }');
-        $result = $parser->parse();
+        $result = \Graphpinator\Parser\Parser::parseString('query queryName { fieldName }');
 
         self::assertCount(0, $result->getFragments());
         self::assertCount(1, $result->getOperation()->getFields());
@@ -247,8 +230,7 @@ final class ParserTest extends \PHPUnit\Framework\TestCase
 
     public function testFieldArguments() : void
     {
-        $parser = new \Graphpinator\Parser\Parser('query queryName { fieldName(argName: "argVal") }');
-        $result = $parser->parse();
+        $result = \Graphpinator\Parser\Parser::parseString('query queryName { fieldName(argName: "argVal") }');
 
         self::assertCount(0, $result->getFragments());
         self::assertCount(0, $result->getOperation()->getVariables());
@@ -266,8 +248,7 @@ final class ParserTest extends \PHPUnit\Framework\TestCase
 
     public function testFieldSubfield() : void
     {
-        $parser = new \Graphpinator\Parser\Parser('query queryName { fieldName { innerField } }');
-        $result = $parser->parse();
+        $result = \Graphpinator\Parser\Parser::parseString('query queryName { fieldName { innerField } }');
 
         self::assertCount(0, $result->getFragments());
         self::assertCount(0, $result->getOperation()->getVariables());
@@ -288,8 +269,7 @@ final class ParserTest extends \PHPUnit\Framework\TestCase
 
     public function testFieldAlias() : void
     {
-        $parser = new \Graphpinator\Parser\Parser('query queryName { aliasName: fieldName }');
-        $result = $parser->parse();
+        $result = \Graphpinator\Parser\Parser::parseString('query queryName { aliasName: fieldName }');
 
         self::assertCount(0, $result->getFragments());
         self::assertCount(1, $result->getOperation()->getFields());
@@ -304,8 +284,7 @@ final class ParserTest extends \PHPUnit\Framework\TestCase
 
     public function testFieldAll() : void
     {
-        $parser = new \Graphpinator\Parser\Parser('query queryName { aliasName: fieldName(argName: "argVal") { innerField(argName: 12.34) }}');
-        $result = $parser->parse();
+        $result = \Graphpinator\Parser\Parser::parseString('query queryName { aliasName: fieldName(argName: "argVal") { innerField(argName: 12.34) }}');
 
         self::assertCount(0, $result->getFragments());
         self::assertCount(0, $result->getOperation()->getVariables());
@@ -370,7 +349,6 @@ final class ParserTest extends \PHPUnit\Framework\TestCase
     {
         $this->expectException(\Exception::class);
 
-        $parser = new \Graphpinator\Parser\Parser($input);
-        $parser->parse();
+        $result = \Graphpinator\Parser\Parser::parseString($input);
     }
 }

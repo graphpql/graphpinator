@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Tokenizer;
+namespace Graphpinator\Source;
 
-final class Source implements \Iterator
+final class StringSource implements Source
 {
     use \Nette\SmartObject;
 

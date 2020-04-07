@@ -11,7 +11,7 @@ final class TokenContainer implements \IteratorAggregate
     private array $tokens = [];
     private int $currentIndex = 0;
 
-    public function __construct(string $source, bool $skipNotRelevant = true)
+    public function __construct(\Graphpinator\Source\Source $source, bool $skipNotRelevant = true)
     {
         $tokenizer = new \Graphpinator\Tokenizer\Tokenizer($source, $skipNotRelevant);
 
