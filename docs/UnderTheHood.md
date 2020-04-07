@@ -10,10 +10,13 @@ Lets take a look at following paragraphs, which describe execution process and c
 
 Parsing stage is responsible for understanding the request and validation of GraphQL syntax, without any knowledge about Schema itself. Result of parsing is object representing the request in a compact way.
 
-### Tokenizer\Source
+### Source\Source
 
-Simple class which takes raw request as `string` and splits it into array of characters. \
-It is able to iterate over it and detect end of stream.
+Interface for character container. It is able to iterate over characters and detect end of stream.
+
+#### Source\StringSource
+
+Simple implementation which takes raw request as `string` and splits it into array of characters.
 
 ### Tokenizer\Tokenizer
 
