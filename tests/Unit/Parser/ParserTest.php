@@ -6,6 +6,19 @@ namespace Graphpinator\Tests\Unit\Parser;
 
 final class ParserTest extends \PHPUnit\Framework\TestCase
 {
+    public function testConstructor() : void
+    {
+        $source = new \Graphpinator\Source\StringSource('query queryName {}');
+        $parser = new \Graphpinator\Parser\Parser($source);
+        $result = $parser->parse();
+
+        self::assertCount(0, $result->getFragments());
+        self::assertCount(0, $result->getOperation()->getVariables());
+        self::assertCount(0, $result->getOperation()->getFields());
+        self::assertSame('query', $result->getOperation()->getType());
+        self::assertSame('queryName', $result->getOperation()->getName());
+    }
+
     public function testQuery() : void
     {
         $result = \Graphpinator\Parser\Parser::parseString('query queryName {}');
@@ -230,7 +243,7 @@ final class ParserTest extends \PHPUnit\Framework\TestCase
 
     public function testFieldArguments() : void
     {
-        $result = \Graphpinator\Parser\Parser::parseString('query queryName { fieldName(argName: "argVal") }');
+        $result = \Graphpinator\Parser\Parser::parseString('QUERY queryName { fieldName(argName: "argVal") }');
 
         self::assertCount(0, $result->getFragments());
         self::assertCount(0, $result->getOperation()->getVariables());

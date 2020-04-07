@@ -29,4 +29,15 @@ final class SourceTest extends \PHPUnit\Framework\TestCase
             ++$index;
         }
     }
+
+    /**
+     * @dataProvider simpleDataProvider
+     */
+    public function testInitialization(string $source) : void
+    {
+        $source = new \Graphpinator\Source\StringSource($source);
+
+        self::assertTrue($source->valid());
+        self::assertSame(0, $source->key());
+    }
 }

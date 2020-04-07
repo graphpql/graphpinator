@@ -39,8 +39,21 @@ final class TokenizerTest extends \PHPUnit\Framework\TestCase
             ['-4e-10', [
                 new Token(TokenType::FLOAT, '-4e-10'),
             ]],
-            ['...', [
-                new Token(TokenType::ELLIP),
+            ['null', [
+                new Token(TokenType::NULL),
+            ]],
+            ['NULL', [
+                new Token(TokenType::NULL),
+            ]],
+            ['Name', [
+                new Token(TokenType::NAME, 'Name'),
+            ]],
+            ['NAME', [
+                new Token(TokenType::NAME, 'NAME'),
+            ]],
+            ['FALSE true', [
+                new Token(TokenType::FALSE),
+                new Token(TokenType::TRUE),
             ]],
             ['... type fragment', [
                 new Token(TokenType::ELLIP),
