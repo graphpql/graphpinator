@@ -59,7 +59,7 @@ final class TestSchema
             {
                 parent::__construct(new \Graphpinator\Field\ResolvableFieldSet([
                     new \Graphpinator\Field\ResolvableField('field0', TestSchema::getUnion(), function () {
-                        return \Graphpinator\Request\ResolveResult::fromRaw(TestSchema::getTypeAbc(), null);
+                        return \Graphpinator\Resolver\FieldResult::fromRaw(TestSchema::getTypeAbc(), null);
                     })
                 ]));
             }
@@ -76,7 +76,7 @@ final class TestSchema
             {
                 parent::__construct(new \Graphpinator\Field\ResolvableFieldSet([
                     new \Graphpinator\Field\ResolvableField('field1', TestSchema::getInterface(),
-                        function ($parent, \Graphpinator\Request\ArgumentValueSet $args) {
+                        function ($parent, \Graphpinator\Normalizer\ArgumentValueSet $args) {
                             $object = new \stdClass();
 
                             if ($args['arg2']->getRawValue() === null) {
@@ -92,7 +92,7 @@ final class TestSchema
                                 $object->name = 'Test input: ' . $str;
                             }
 
-                            return \Graphpinator\Request\ResolveResult::fromRaw(TestSchema::getTypeXyz(), $object);
+                            return \Graphpinator\Resolver\FieldResult::fromRaw(TestSchema::getTypeXyz(), $object);
                     }, new \Graphpinator\Argument\ArgumentSet([
                         new \Graphpinator\Argument\Argument('arg1', \Graphpinator\Type\Scalar\ScalarType::Int(), 123),
                         new \Graphpinator\Argument\Argument('arg2', TestSchema::getInput()),

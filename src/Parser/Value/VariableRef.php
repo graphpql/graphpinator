@@ -20,7 +20,7 @@ final class VariableRef implements Value
         throw new \Exception('Invalid state.');
     }
 
-    public function applyVariables(\Graphpinator\Request\VariableValueSet $variables) : Value
+    public function applyVariables(\Graphpinator\Resolver\VariableValueSet $variables) : Value
     {
         if ($variables->offsetExists($this->varName)) {
             $value = $variables[$this->varName];

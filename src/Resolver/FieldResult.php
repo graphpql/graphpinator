@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Request;
+namespace Graphpinator\Resolver;
 
-final class ResolveResult
+final class FieldResult
 {
     use \Nette\SmartObject;
 

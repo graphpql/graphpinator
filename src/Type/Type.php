@@ -40,7 +40,7 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
         return $this->fields;
     }
 
-    public function resolveFields(?\Graphpinator\Request\FieldSet $requestedFields, \Graphpinator\Request\ResolveResult $parentResult) : array
+    public function resolveFields(?\Graphpinator\Normalizer\FieldSet $requestedFields, \Graphpinator\Resolver\FieldResult $parentResult) : array
     {
         if ($requestedFields === null) {
             throw new \Exception('Composite type without fields specified.');
@@ -54,7 +54,7 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
             }
 
             $field = $this->fields[$request->getName()];
-            $arguments = new \Graphpinator\Request\ArgumentValueSet($request->getArguments(), $field->getArguments());
+            $arguments = new \Graphpinator\Normalizer\ArgumentValueSet($request->getArguments(), $field->getArguments());
             $innerResult = $field->resolve($parentResult, $arguments);
 
             $resolved[$request->getAlias()] = $innerResult->getType()->resolveFields($request->getFields(), $innerResult);

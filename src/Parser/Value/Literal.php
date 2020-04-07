@@ -20,7 +20,7 @@ final class Literal implements Value
         return $this->value;
     }
 
-    public function applyVariables(\Graphpinator\Request\VariableValueSet $variables) : Value
+    public function applyVariables(\Graphpinator\Resolver\VariableValueSet $variables) : Value
     {
         return $this;
     }

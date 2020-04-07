@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Request;
+namespace Graphpinator\Normalizer;
 
 final class ArgumentValueSet extends \Infinityloop\Utils\ImmutableSet
 {

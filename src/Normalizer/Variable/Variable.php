@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Request\Variable;
+namespace Graphpinator\Normalizer\Variable;
 
 final class Variable
 {

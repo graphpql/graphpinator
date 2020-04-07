@@ -28,7 +28,7 @@ final class ObjectVal implements Value
         return $return;
     }
 
-    public function applyVariables(\Graphpinator\Request\VariableValueSet $variables) : Value
+    public function applyVariables(\Graphpinator\Resolver\VariableValueSet $variables) : Value
     {
         $return = [];
 

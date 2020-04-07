@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Request;
+namespace Graphpinator\Resolver;
 
-final class ExecutionResult implements \JsonSerializable
+final class OperationResult implements \JsonSerializable
 {
     use \Nette\SmartObject;
 

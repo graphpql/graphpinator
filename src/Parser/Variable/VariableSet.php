@@ -18,7 +18,7 @@ final class VariableSet extends \Graphpinator\ClassSet
         return parent::offsetGet($offset);
     }
 
-    public function normalize(\Graphpinator\Type\Resolver $resolver) : \Graphpinator\Request\Variable\VariableSet
+    public function normalize(\Graphpinator\Type\Resolver $resolver) : \Graphpinator\Normalizer\Variable\VariableSet
     {
         $variables = [];
 
@@ -26,6 +26,6 @@ final class VariableSet extends \Graphpinator\ClassSet
             $variables[] = $variable->normalize($resolver);
         }
 
-        return new \Graphpinator\Request\Variable\VariableSet($variables);
+        return new \Graphpinator\Normalizer\Variable\VariableSet($variables);
     }
 }

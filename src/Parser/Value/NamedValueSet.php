@@ -18,7 +18,7 @@ final class NamedValueSet extends \Graphpinator\ClassSet
         return parent::offsetGet($offset);
     }
 
-    public function applyVariables(\Graphpinator\Request\VariableValueSet $variables) : self
+    public function applyVariables(\Graphpinator\Resolver\VariableValueSet $variables) : self
     {
         $values = [];
 

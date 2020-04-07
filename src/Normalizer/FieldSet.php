@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Request;
+namespace Graphpinator\Normalizer;
 
-class FieldSet extends \Graphpinator\ClassSet
+final class FieldSet extends \Graphpinator\ClassSet
 {
     public const INNER_CLASS = Field::class;
 
@@ -18,7 +18,7 @@ class FieldSet extends \Graphpinator\ClassSet
         return parent::offsetGet($offset);
     }
 
-    public function applyVariables(VariableValueSet $variables) : self
+    public function applyVariables(\Graphpinator\Resolver\VariableValueSet $variables) : self
     {
         $fields = [];
 

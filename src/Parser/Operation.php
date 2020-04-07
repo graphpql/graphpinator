@@ -48,7 +48,7 @@ final class Operation
     public function normalize(
         \Graphpinator\Type\Resolver $resolver,
         \Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions
-    ) : \Graphpinator\Request\Operation
+    ) : \Graphpinator\Normalizer\Operation
     {
         $schema = $resolver->getSchema();
 
@@ -73,7 +73,7 @@ final class Operation
             throw new \Exception('Unsupported operation type.');
         }
 
-        return new \Graphpinator\Request\Operation(
+        return new \Graphpinator\Normalizer\Operation(
             $operation,
             $this->children->normalize($resolver, $fragmentDefinitions),
             $this->variables->normalize($resolver),

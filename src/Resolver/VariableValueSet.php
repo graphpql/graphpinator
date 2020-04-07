@@ -2,12 +2,12 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Request;
+namespace Graphpinator\Resolver;
 
 final class VariableValueSet extends \Infinityloop\Utils\ImmutableSet
 {
     public function __construct(
-        \Graphpinator\Request\Variable\VariableSet $definedVariables,
+        \Graphpinator\Normalizer\Variable\VariableSet $definedVariables,
         \Infinityloop\Utils\Json $providedValues
     ) {
         $data = [];

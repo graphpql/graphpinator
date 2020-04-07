@@ -15,7 +15,7 @@ final class Graphpinator
         $this->resolver = $resolver;
     }
 
-    public function runQuery(string $request, \Infinityloop\Utils\Json $variables) : \Graphpinator\Request\ExecutionResult
+    public function runQuery(string $request, \Infinityloop\Utils\Json $variables) : \Graphpinator\Resolver\OperationResult
     {
         return \Graphpinator\Parser\Parser::parseString($request)->normalize($this->resolver)->execute($variables);
     }

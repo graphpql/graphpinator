@@ -24,7 +24,7 @@ final class FieldSet extends \Graphpinator\ClassSet
     public function normalize(
         \Graphpinator\Type\Resolver $resolver,
         \Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions
-    ) : \Graphpinator\Request\FieldSet
+    ) : \Graphpinator\Normalizer\FieldSet
     {
         $normalizedFields = [];
 
@@ -34,7 +34,7 @@ final class FieldSet extends \Graphpinator\ClassSet
             $normalizedFields[] = $field->normalize($resolver, $fragmentDefinitions);
         }
 
-        return new \Graphpinator\Request\FieldSet($normalizedFields);
+        return new \Graphpinator\Normalizer\FieldSet($normalizedFields);
     }
 
     public function current() : Field

@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Field;
 
-use Graphpinator\Request\ResolveResult;
+use Graphpinator\Resolver\FieldResult;
 
 final class ResolvableField
 {
@@ -38,22 +38,22 @@ final class ResolvableField
         return $this->arguments;
     }
 
-    public function resolve(ResolveResult $parentValue, \Graphpinator\Request\ArgumentValueSet $arguments) : ResolveResult
+    public function resolve(FieldResult $parentValue, \Graphpinator\Normalizer\ArgumentValueSet $arguments) : FieldResult
     {
         $result = \call_user_func($this->resolveFunction, $parentValue->getResult()->getRawValue(), $arguments);
 
-        if (!$result instanceof ResolveResult) {
+        if (!$result instanceof FieldResult) {
             if (!$this->type->getNamedType() instanceof \Graphpinator\Type\Contract\ConcreteDefinition) {
                 throw new \Exception('Abstract type fields need to return ResolveResult with concrete resolution.');
             }
 
-            $result = ResolveResult::fromRaw($this->type, $result);
+            $result = FieldResult::fromRaw($this->type, $result);
         }
 
-        if (!$result->getType()->isInstanceOf($this->type)) {
-            throw new \Exception('Incorrect type of resolved field.');
+        if ($result->getType()->isInstanceOf($this->type)) {
+            return $result;
         }
 
-        return $result;
+        throw new \Exception('Incorrect type of resolved field.');
     }
 }

@@ -11,7 +11,7 @@ final class ListType extends \Graphpinator\Type\Contract\ModifierDefinition
         return \Graphpinator\Value\ListValue::create($rawValue, $this);
     }
 
-    public function resolveFields(?\Graphpinator\Request\FieldSet $requestedFields, \Graphpinator\Request\ResolveResult $parentResult) : array
+    public function resolveFields(?\Graphpinator\Normalizer\FieldSet $requestedFields, \Graphpinator\Resolver\FieldResult $parentResult) : array
     {
         if ($requestedFields === null) {
             throw new \Exception('List without fields specified.');
@@ -24,7 +24,7 @@ final class ListType extends \Graphpinator\Type\Contract\ModifierDefinition
         $return = [];
 
         foreach ($parentResult->getResult() as $val) {
-            $return[] = $this->innerType->resolveFields($requestedFields, \Graphpinator\Request\ResolveResult::fromValidated($val));
+            $return[] = $this->innerType->resolveFields($requestedFields, \Graphpinator\Resolver\FieldResult::fromValidated($val));
         }
 
         return $return;

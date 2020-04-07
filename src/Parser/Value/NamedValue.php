@@ -32,7 +32,7 @@ final class NamedValue
         return $this->name;
     }
 
-    public function applyVariables(\Graphpinator\Request\VariableValueSet $variables) : self
+    public function applyVariables(\Graphpinator\Resolver\VariableValueSet $variables) : self
     {
         return new self(
             $this->value->applyVariables($variables),

@@ -39,9 +39,9 @@ final class Variable
 
     public function normalize(
         \Graphpinator\Type\Resolver $resolver
-    ) : \Graphpinator\Request\Variable\Variable
+    ) : \Graphpinator\Normalizer\Variable\Variable
     {
-        return new \Graphpinator\Request\Variable\Variable(
+        return new \Graphpinator\Normalizer\Variable\Variable(
             $this->name,
             $this->type->resolve($resolver),
             $this->default,

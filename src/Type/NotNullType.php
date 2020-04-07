@@ -26,7 +26,7 @@ final class NotNullType extends \Graphpinator\Type\Contract\ModifierDefinition
         $this->innerType->validateValue($rawValue);
     }
 
-    public function resolveFields(?\Graphpinator\Request\FieldSet $requestedFields, \Graphpinator\Request\ResolveResult $parentResult)
+    public function resolveFields(?\Graphpinator\Normalizer\FieldSet $requestedFields, \Graphpinator\Resolver\FieldResult $parentResult)
     {
         return $this->innerType->resolveFields($requestedFields, $parentResult);
     }

@@ -61,9 +61,9 @@ final class Field
     public function normalize(
         \Graphpinator\Type\Resolver $resolver,
         \Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions
-    ) : \Graphpinator\Request\Field
+    ) : \Graphpinator\Normalizer\Field
     {
-        return new \Graphpinator\Request\Field(
+        return new \Graphpinator\Normalizer\Field(
             $this->name,
             $this->alias,
             $this->arguments,

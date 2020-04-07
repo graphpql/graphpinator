@@ -25,7 +25,7 @@ final class ScalarTypeTest extends \PHPUnit\Framework\TestCase
     {
         $type = new \Graphpinator\Type\Scalar\BooleanType();
         $value = new \Graphpinator\Value\ScalarValue(true, $type);
-        $result = \Graphpinator\Request\ResolveResult::fromValidated($value);
+        $result = \Graphpinator\Resolver\FieldResult::fromValidated($value);
 
         self::assertSame($value, $type->resolveFields(null, $result));
     }

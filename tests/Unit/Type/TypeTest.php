@@ -72,12 +72,12 @@ final class TypeTest extends \PHPUnit\Framework\TestCase
     public function testResolveFields(): void
     {
         $type = $this->createTestType();
-        $requestFields = new \Graphpinator\Request\FieldSet([
-            new \Graphpinator\Request\Field('field1', null, new \Graphpinator\Parser\Value\NamedValueSet([])),
-            new \Graphpinator\Request\Field('field2', null, new \Graphpinator\Parser\Value\NamedValueSet([])),
-            new \Graphpinator\Request\Field('field3', null, new \Graphpinator\Parser\Value\NamedValueSet([])),
+        $requestFields = new \Graphpinator\Normalizer\FieldSet([
+            new \Graphpinator\Normalizer\Field('field1', null, new \Graphpinator\Parser\Value\NamedValueSet([])),
+            new \Graphpinator\Normalizer\Field('field2', null, new \Graphpinator\Parser\Value\NamedValueSet([])),
+            new \Graphpinator\Normalizer\Field('field3', null, new \Graphpinator\Parser\Value\NamedValueSet([])),
         ]);
-        $parentValue = \Graphpinator\Request\ResolveResult::fromRaw(\Graphpinator\Type\Scalar\ScalarType::String(), self::PARENT_VAL);
+        $parentValue = \Graphpinator\Resolver\FieldResult::fromRaw(\Graphpinator\Type\Scalar\ScalarType::String(), self::PARENT_VAL);
         $result = $type->resolveFields($requestFields, $parentValue);
 
         self::assertCount(3, $result);
@@ -91,12 +91,12 @@ final class TypeTest extends \PHPUnit\Framework\TestCase
     public function testResolveFieldsIgnore(): void
     {
         $type = $this->createTestType();
-        $requestFields = new \Graphpinator\Request\FieldSet([
-            new \Graphpinator\Request\Field('field1', null, new \Graphpinator\Parser\Value\NamedValueSet([]), null, \Graphpinator\Type\Scalar\ScalarType::String()),
-            new \Graphpinator\Request\Field('field2', null, new \Graphpinator\Parser\Value\NamedValueSet([]), null, \Graphpinator\Type\Scalar\ScalarType::Int()),
-            new \Graphpinator\Request\Field('field3', null, new \Graphpinator\Parser\Value\NamedValueSet([])),
+        $requestFields = new \Graphpinator\Normalizer\FieldSet([
+            new \Graphpinator\Normalizer\Field('field1', null, new \Graphpinator\Parser\Value\NamedValueSet([]), null, \Graphpinator\Type\Scalar\ScalarType::String()),
+            new \Graphpinator\Normalizer\Field('field2', null, new \Graphpinator\Parser\Value\NamedValueSet([]), null, \Graphpinator\Type\Scalar\ScalarType::Int()),
+            new \Graphpinator\Normalizer\Field('field3', null, new \Graphpinator\Parser\Value\NamedValueSet([])),
         ]);
-        $parentValue = \Graphpinator\Request\ResolveResult::fromRaw(\Graphpinator\Type\Scalar\ScalarType::String(), self::PARENT_VAL);
+        $parentValue = \Graphpinator\Resolver\FieldResult::fromRaw(\Graphpinator\Type\Scalar\ScalarType::String(), self::PARENT_VAL);
         $result = $type->resolveFields($requestFields, $parentValue);
 
         self::assertCount(2, $result);
@@ -124,7 +124,7 @@ final class TypeTest extends \PHPUnit\Framework\TestCase
                     new \Graphpinator\Field\ResolvableField(
                         'field1',
                         \Graphpinator\Type\Scalar\ScalarType::String(),
-                        static function ($parentValue, \Graphpinator\Request\ArgumentValueSet $arguments) {
+                        static function ($parentValue, \Graphpinator\Normalizer\ArgumentValueSet $arguments) {
                             TypeTest::assertSame(TypeTest::PARENT_VAL, $parentValue);
                             TypeTest::assertCount(0, $arguments);
 
@@ -133,7 +133,7 @@ final class TypeTest extends \PHPUnit\Framework\TestCase
                     new \Graphpinator\Field\ResolvableField(
                         'field2',
                         \Graphpinator\Type\Scalar\ScalarType::Boolean(),
-                        static function ($parentValue, \Graphpinator\Request\ArgumentValueSet $arguments) {
+                        static function ($parentValue, \Graphpinator\Normalizer\ArgumentValueSet $arguments) {
                             TypeTest::assertSame(TypeTest::PARENT_VAL, $parentValue);
                             TypeTest::assertCount(0, $arguments);
 
@@ -142,7 +142,7 @@ final class TypeTest extends \PHPUnit\Framework\TestCase
                     new \Graphpinator\Field\ResolvableField(
                         'field3',
                         \Graphpinator\Type\Scalar\ScalarType::Int(),
-                        static function ($parentValue, \Graphpinator\Request\ArgumentValueSet $arguments) {
+                        static function ($parentValue, \Graphpinator\Normalizer\ArgumentValueSet $arguments) {
                             TypeTest::assertSame(TypeTest::PARENT_VAL, $parentValue);
                             TypeTest::assertCount(0, $arguments);
 

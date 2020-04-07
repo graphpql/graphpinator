@@ -11,7 +11,7 @@ final class ListTypeTest extends \PHPUnit\Framework\TestCase
         $this->expectException(\Exception::class);
 
         $type = self::getTestTypeAbc()->list();
-        $parent = \Graphpinator\Request\ResolveResult::fromRaw($type, [124]);
+        $parent = \Graphpinator\Resolver\FieldResult::fromRaw($type, [124]);
 
         $result = $type->resolveFields(null, $parent);
     }

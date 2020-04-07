@@ -8,5 +8,5 @@ interface Value
 {
     public function getRawValue();
 
-    public function applyVariables(\Graphpinator\Request\VariableValueSet $variables) : self;
+    public function applyVariables(\Graphpinator\Resolver\VariableValueSet $variables) : self;
 }
