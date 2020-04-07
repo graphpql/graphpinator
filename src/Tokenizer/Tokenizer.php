@@ -69,59 +69,13 @@ final class Tokenizer implements \Iterator
         $this->tokenStartIndex = $this->source->key();
 
         if (\ctype_alpha($this->source->getChar())) {
-            $value = $this->getName();
-            $lower = \strtolower($value);
+            $this->createWordToken();
 
-            switch ($lower) {
-                case 'null':
-                    $this->token = new Token(TokenType::NULL);
-
-                    return;
-                case 'true':
-                    $this->token = new Token(TokenType::TRUE);
-
-                    return;
-                case 'false':
-                    $this->token = new Token(TokenType::FALSE);
-
-                    return;
-                case 'fragment':
-                    $this->token = new Token(TokenType::FRAGMENT);
-
-                    return;
-                case 'on':
-                    $this->token = new Token(TokenType::ON);
-
-                    return;
-                default:
-                    $this->token = new Token(TokenType::NAME, $value);
-
-                    return;
-            }
+            return;
         }
 
         if ($this->source->getChar() === '-' || \ctype_digit($this->source->getChar())) {
-            $numberVal = $this->getInt(true, false);
-
-            if (!$this->source->hasChar() ||
-                !\in_array($this->source->getChar(), ['.', 'e', 'E'], true)) {
-                $this->token = new Token(TokenType::INT, $numberVal);
-
-                return;
-            }
-
-            if ($this->source->hasChar() && $this->source->getChar() === '.') {
-                $this->source->next();
-                $numberVal .= '.' . $this->getInt(false, true);
-            }
-
-            if ($this->source->hasChar() && \in_array($this->source->getChar(), ['e', 'E'], true)) {
-                $this->source->next();
-                $numberVal .= 'e' . $this->getInt(true, true);
-            }
-
-
-            $this->token = new Token(TokenType::FLOAT, $numberVal);
+            $this->createNumericToken();
 
             return;
         }
@@ -129,7 +83,7 @@ final class Tokenizer implements \Iterator
         switch ($this->source->getChar()) {
             case '"':
                 $this->source->next();
-                $this->token = new Token(TokenType::STRING, $this->getString());
+                $this->token = new Token(TokenType::STRING, $this->eatString());
                 $this->source->next();
 
                 return;
@@ -142,7 +96,7 @@ final class Tokenizer implements \Iterator
                 $this->source->next();
 
                 if (\ctype_alpha($this->source->getChar())) {
-                    $this->token = new Token(TokenType::VARIABLE, $this->getName());
+                    $this->token = new Token(TokenType::VARIABLE, $this->eatName());
 
                     return;
                 }
@@ -152,7 +106,7 @@ final class Tokenizer implements \Iterator
                 $this->source->next();
 
                 if (\ctype_alpha($this->source->getChar())) {
-                    $this->token = new Token(TokenType::DIRECTIVE, $this->getName());
+                    $this->token = new Token(TokenType::DIRECTIVE, $this->eatName());
 
                     return;
                 }
@@ -160,7 +114,7 @@ final class Tokenizer implements \Iterator
                 throw new \Exception('Missing directive name');
             case TokenType::COMMENT:
                 $this->source->next();
-                $this->token = new Token(TokenType::COMMENT, $this->getComment());
+                $this->token = new Token(TokenType::COMMENT, $this->eatComment());
 
                 return;
             case TokenType::COMMA:
@@ -180,7 +134,7 @@ final class Tokenizer implements \Iterator
 
                 return;
             case '.':
-                $dots = $this->eatChars(function (string $char) : bool { return $char === '.'; });
+                $dots = $this->eatChars(static function (string $char) : bool { return $char === '.'; });
 
                 if (\strlen($dots) !== 3) {
                     throw new \Exception();
@@ -194,22 +148,80 @@ final class Tokenizer implements \Iterator
         throw new \Exception('Unknown token');
     }
 
+    private function createWordToken() : void
+    {
+        $value = $this->eatName();
+        $lower = \strtolower($value);
+
+        switch ($lower) {
+            case 'null':
+                $this->token = new Token(TokenType::NULL);
+
+                return;
+            case 'true':
+                $this->token = new Token(TokenType::TRUE);
+
+                return;
+            case 'false':
+                $this->token = new Token(TokenType::FALSE);
+
+                return;
+            case 'fragment':
+                $this->token = new Token(TokenType::FRAGMENT);
+
+                return;
+            case 'on':
+                $this->token = new Token(TokenType::ON);
+
+                return;
+            default:
+                $this->token = new Token(TokenType::NAME, $value);
+
+                return;
+        }
+    }
+
+    private function createNumericToken() : void
+    {
+        $numberVal = $this->eatInt(true, false);
+
+        if ($this->source->hasChar() && \in_array($this->source->getChar(), ['.', 'e', 'E'], true)) {
+            if ($this->source->getChar() === '.') {
+                $this->source->next();
+                $numberVal .= '.' . $this->eatInt(false, true);
+            }
+
+            if ($this->source->hasChar() && \in_array($this->source->getChar(), ['e', 'E'], true)) {
+                $this->source->next();
+                $numberVal .= 'e' . $this->eatInt(true, true);
+            }
+
+            $this->token = new Token(TokenType::FLOAT, $numberVal);
+        } else {
+            $this->token = new Token(TokenType::INT, $numberVal);
+        }
+
+        if ($this->source->hasChar() && \ctype_alpha($this->source->getChar())) {
+            throw new \Exception('Invalid number literal');
+        }
+    }
+
     private function skipWhiteSpace() : void
     {
-        $this->eatChars(function (string $char) : bool { return $char !== \PHP_EOL && \ctype_space($char); });
+        $this->eatChars(static function (string $char) : bool { return $char !== \PHP_EOL && \ctype_space($char); });
     }
 
-    private function getComment() : string
+    private function eatComment() : string
     {
-        return $this->eatChars(function (string $char) : bool {return $char !== \PHP_EOL; });
+        return $this->eatChars(static function (string $char) : bool {return $char !== \PHP_EOL; });
     }
 
-    private function getString() : string
+    private function eatString() : string
     {
-        return $this->eatChars(function (string $char) : bool { return $char !== '"'; });
+        return $this->eatChars(static function (string $char) : bool { return $char !== '"'; });
     }
 
-    private function getInt(bool $negative = true, bool $leadingZeros = true) : string
+    private function eatInt(bool $negative = true, bool $leadingZeros = true) : string
     {
         $value = '';
 
@@ -227,7 +239,7 @@ final class Tokenizer implements \Iterator
             throw new \Exception('Leading zeros');
         }
 
-        $value .=  $this->eatChars(function (string $char) : bool { return \ctype_digit($char); });
+        $value .=  $this->eatChars(static function (string $char) : bool { return \ctype_digit($char); });
 
         if (!\is_numeric($value)) {
             throw new \Exception('Invalid numeric value');
@@ -236,9 +248,9 @@ final class Tokenizer implements \Iterator
         return $value;
     }
 
-    private function getName() : string
+    private function eatName() : string
     {
-        return $this->eatChars(function (string $char) : bool { return \ctype_alnum($char); });
+        return $this->eatChars(static function (string $char) : bool { return \ctype_alnum($char); });
     }
 
     private function eatChars(callable $condition) : string
