@@ -75,6 +75,18 @@ final class ParserTest extends \PHPUnit\Framework\TestCase
         self::assertCount(0, $result->getFragments());
     }
 
+    public function testDirective() : void
+    {
+        $this->expectException(\Exception::class);
+
+        $parser = new \Graphpinator\Parser\Parser('query { field @directive(arg1: 123) }');
+        $result = $parser->parse();
+
+        // TODO
+        self::assertCount(0, $result->getFragments());
+    }
+
+
     public function testFragment() : void
     {
         $parser = new \Graphpinator\Parser\Parser('fragment fragmentName on TypeName {} query queryName {}');
@@ -292,7 +304,7 @@ final class ParserTest extends \PHPUnit\Framework\TestCase
 
     public function testFieldAll() : void
     {
-        $parser = new \Graphpinator\Parser\Parser('query queryName { aliasName: fieldName(argName: "argVal") { innerField(argName: "argVal") }}');
+        $parser = new \Graphpinator\Parser\Parser('query queryName { aliasName: fieldName(argName: "argVal") { innerField(argName: 12.34) }}');
         $result = $parser->parse();
 
         self::assertCount(0, $result->getFragments());
@@ -323,6 +335,8 @@ final class ParserTest extends \PHPUnit\Framework\TestCase
             ['$var'],
             // no operation
             ['fragment fragmentName on TypeName {}'],
+            // no type condition
+            ['fragment fragmentName {}'],
             // missing operation type
             ['queryName {}'],
             // missing operation name
@@ -333,6 +347,7 @@ final class ParserTest extends \PHPUnit\Framework\TestCase
             ['query queryName { ... {} }'],
             ['query queryName { ... on {} }'],
             // invalid variable value
+            ['query queryName ($var: Int = @dir) {}'],
             ['query queryName ($var: Int = $var2) {}'],
             // missing variable type
             ['query queryName ($var = 123) {}'],
