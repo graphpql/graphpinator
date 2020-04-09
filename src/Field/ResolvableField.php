@@ -6,36 +6,14 @@ namespace Graphpinator\Field;
 
 use Graphpinator\Resolver\FieldResult;
 
-final class ResolvableField
+final class ResolvableField extends Field
 {
-    use \Nette\SmartObject;
-
-    private string $name;
-    private \Graphpinator\Type\Contract\Outputable $type;
-    private \Graphpinator\Argument\ArgumentSet $arguments;
     private $resolveFunction;
 
     public function __construct(string $name, \Graphpinator\Type\Contract\Outputable $type, callable $resolveFunction, ?\Graphpinator\Argument\ArgumentSet $arguments = null)
     {
-        $this->name = $name;
-        $this->type = $type;
+        parent::__construct($name, $type, $arguments);
         $this->resolveFunction = $resolveFunction;
-        $this->arguments = $arguments ?? new \Graphpinator\Argument\ArgumentSet([]);
-    }
-
-    public function getName() : string
-    {
-        return $this->name;
-    }
-
-    public function getType() : \Graphpinator\Type\Contract\Outputable
-    {
-        return $this->type;
-    }
-
-    public function getArguments() : \Graphpinator\Argument\ArgumentSet
-    {
-        return $this->arguments;
     }
 
     public function resolve(FieldResult $parentValue, \Graphpinator\Normalizer\ArgumentValueSet $arguments) : FieldResult

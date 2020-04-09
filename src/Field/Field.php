@@ -4,14 +4,14 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Field;
 
-final class Field
+class Field
 {
     use \Nette\SmartObject;
 
-    private string $name;
-    private \Graphpinator\Type\Contract\Outputable $type;
-    private \Graphpinator\Argument\ArgumentSet $arguments;
+    protected string $name;
     protected ?string $description;
+    protected \Graphpinator\Type\Contract\Outputable $type;
+    protected \Graphpinator\Argument\ArgumentSet $arguments;
 
     public function __construct(string $name, \Graphpinator\Type\Contract\Outputable $type, ?\Graphpinator\Argument\ArgumentSet $arguments = null)
     {

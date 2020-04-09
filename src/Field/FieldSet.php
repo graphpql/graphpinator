@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Field;
 
-final class FieldSet extends \Graphpinator\ClassSet
+class FieldSet extends \Graphpinator\ClassSet
 {
     public const INNER_CLASS = Field::class;
 
@@ -16,5 +16,10 @@ final class FieldSet extends \Graphpinator\ClassSet
     public function offsetGet($offset) : Field
     {
         return parent::offsetGet($offset);
+    }
+
+    public function offsetSet($offset, $value) : void
+    {
+        $this->appendUnique($offset, $value);
     }
 }
