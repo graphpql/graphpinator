@@ -11,6 +11,7 @@ final class Schema
     private Type $query;
     private ?Type $mutation;
     private ?Type $subscription;
+    private ?string $description;
 
     public function __construct(
         Type $query,
@@ -36,5 +37,10 @@ final class Schema
     public function getSubscription() : ?Type
     {
         return $this->subscription;
+    }
+}
+    public function getDescription() : ?string
+    {
+        return $this->description;
     }
 }
