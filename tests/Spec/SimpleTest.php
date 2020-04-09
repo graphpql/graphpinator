@@ -22,7 +22,7 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
      */
     public function testSimple(string $request, \Infinityloop\Utils\Json $variables, \Infinityloop\Utils\Json $result) : void
     {
-        $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getTypeResolver());
+        $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
 
         self::assertSame(
             $result->toString(),
@@ -55,7 +55,7 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
     {
         $this->expectException(\Exception::class);
 
-        $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getTypeResolver());
+        $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
         $graphpinator->runQuery($request, $variables);
     }
 }

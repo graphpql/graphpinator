@@ -59,7 +59,7 @@ final class Field
     }
 
     public function normalize(
-        \Graphpinator\Type\Resolver $resolver,
+        \Graphpinator\Type\Container\Container $typeContainer,
         \Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions
     ) : \Graphpinator\Normalizer\Field
     {
@@ -68,10 +68,10 @@ final class Field
             $this->alias,
             $this->arguments,
             $this->children instanceof \Graphpinator\Parser\FieldSet
-                ? $this->children->normalize($resolver, $fragmentDefinitions)
+                ? $this->children->normalize($typeContainer, $fragmentDefinitions)
                 : null,
             $this->typeCond instanceof \Graphpinator\Parser\TypeRef\NamedTypeRef
-                ? $this->typeCond->resolve($resolver)
+                ? $this->typeCond->resolve($typeContainer)
                 : null,
         );
     }

@@ -20,8 +20,8 @@ final class ListTypeRef implements TypeRef
         return $this->innerRef;
     }
 
-    public function resolve(\Graphpinator\Type\Resolver $resolver) : \Graphpinator\Type\ListType
+    public function resolve(\Graphpinator\Type\Container\Container $typeContainer) : \Graphpinator\Type\ListType
     {
-        return new \Graphpinator\Type\ListType($this->innerRef->resolve($resolver));
+        return new \Graphpinator\Type\ListType($this->innerRef->resolve($typeContainer));
     }
 }

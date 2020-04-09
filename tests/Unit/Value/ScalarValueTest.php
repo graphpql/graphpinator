@@ -15,8 +15,8 @@ final class ScalarValueTest extends \PHPUnit\Framework\TestCase
             [true],
             [[]],
             [[123, true]],
-            [new \Graphpinator\Value\ScalarValue('inner', \Graphpinator\Type\Scalar\ScalarType::String())],
-            [[new \Graphpinator\Value\ScalarValue('inner', \Graphpinator\Type\Scalar\ScalarType::String())]],
+            [new \Graphpinator\Value\ScalarValue('inner', \Graphpinator\Type\Container\Container::String())],
+            [[new \Graphpinator\Value\ScalarValue('inner', \Graphpinator\Type\Container\Container::String())]],
         ];
     }
 

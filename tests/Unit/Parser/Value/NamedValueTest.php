@@ -33,7 +33,7 @@ final class NamedValueTest extends \PHPUnit\Framework\TestCase
     {
         $variables = new \Graphpinator\Resolver\VariableValueSet(
             new \Graphpinator\Normalizer\Variable\VariableSet([
-                new \Graphpinator\Normalizer\Variable\Variable('var1', \Graphpinator\Type\Scalar\ScalarType::String())
+                new \Graphpinator\Normalizer\Variable\Variable('var1', \Graphpinator\Type\Container\Container::String())
             ]),
             \Infinityloop\Utils\Json::fromArray(['var1' => 'val1']),
         );

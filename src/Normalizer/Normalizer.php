@@ -8,15 +8,15 @@ final class Normalizer
 {
     use \Nette\SmartObject;
 
-    private \Graphpinator\Type\Resolver $resolver;
+    private \Graphpinator\Type\Schema $schema;
 
-    public function __construct(\Graphpinator\Type\Resolver $resolver)
+    public function __construct(\Graphpinator\Type\Schema $schema)
     {
-        $this->resolver = $resolver;
+        $this->schema = $schema;
     }
 
     public function normalize(\Graphpinator\Parser\ParseResult $parseResult) : Operation
     {
-        return $parseResult->normalize($this->resolver);
+        return $parseResult->normalize($this->schema);
     }
 }

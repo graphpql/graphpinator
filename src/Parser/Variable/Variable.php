@@ -38,12 +38,12 @@ final class Variable
     }
 
     public function normalize(
-        \Graphpinator\Type\Resolver $resolver
+        \Graphpinator\Type\Container\Container $typeContainer
     ) : \Graphpinator\Normalizer\Variable\Variable
     {
         return new \Graphpinator\Normalizer\Variable\Variable(
             $this->name,
-            $this->type->resolve($resolver),
+            $this->type->resolve($typeContainer),
             $this->default,
         );
     }

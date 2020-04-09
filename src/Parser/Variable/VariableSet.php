@@ -18,12 +18,12 @@ final class VariableSet extends \Graphpinator\ClassSet
         return parent::offsetGet($offset);
     }
 
-    public function normalize(\Graphpinator\Type\Resolver $resolver) : \Graphpinator\Normalizer\Variable\VariableSet
+    public function normalize(\Graphpinator\Type\Container\Container $typeContainer) : \Graphpinator\Normalizer\Variable\VariableSet
     {
         $variables = [];
 
         foreach ($this as $variable) {
-            $variables[] = $variable->normalize($resolver);
+            $variables[] = $variable->normalize($typeContainer);
         }
 
         return new \Graphpinator\Normalizer\Variable\VariableSet($variables);

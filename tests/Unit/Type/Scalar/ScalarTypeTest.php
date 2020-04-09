@@ -8,11 +8,11 @@ final class ScalarTypeTest extends \PHPUnit\Framework\TestCase
 {
     public function testCreate(): void
     {
-        $int = \Graphpinator\Type\Scalar\ScalarType::Int();
-        $float = \Graphpinator\Type\Scalar\ScalarType::Float();
-        $string = \Graphpinator\Type\Scalar\ScalarType::String();
-        $boolean = \Graphpinator\Type\Scalar\ScalarType::Boolean();
-        $id = \Graphpinator\Type\Scalar\ScalarType::ID();
+        $int = \Graphpinator\Type\Container\Container::Int();
+        $float = \Graphpinator\Type\Container\Container::Float();
+        $string = \Graphpinator\Type\Container\Container::String();
+        $boolean = \Graphpinator\Type\Container\Container::Boolean();
+        $id = \Graphpinator\Type\Container\Container::ID();
 
         self::assertInstanceOf(\Graphpinator\Type\Scalar\ScalarType::class, $int);
         self::assertInstanceOf(\Graphpinator\Type\Scalar\ScalarType::class, $float);

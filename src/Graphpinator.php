@@ -6,17 +6,17 @@ namespace Graphpinator;
 
 final class Graphpinator
 {
-    use \Nette\StaticClass;
+    use \Nette\SmartObject;
 
-    private \Graphpinator\Type\Resolver $resolver;
+    private \Graphpinator\Type\Schema $schema;
 
-    public function __construct(\Graphpinator\Type\Resolver $resolver)
+    public function __construct(\Graphpinator\Type\Schema $schema)
     {
-        $this->resolver = $resolver;
+        $this->schema = $schema;
     }
 
     public function runQuery(string $request, \Infinityloop\Utils\Json $variables) : \Graphpinator\Resolver\OperationResult
     {
-        return \Graphpinator\Parser\Parser::parseString($request)->normalize($this->resolver)->execute($variables);
+        return \Graphpinator\Parser\Parser::parseString($request)->normalize($this->schema)->execute($variables);
     }
 }

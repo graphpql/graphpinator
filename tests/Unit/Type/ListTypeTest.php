@@ -18,7 +18,7 @@ final class ListTypeTest extends \PHPUnit\Framework\TestCase
 
     public function testValidateValue() : void
     {
-        $type = \Graphpinator\Type\Scalar\ScalarType::String()->list();
+        $type = \Graphpinator\Type\Container\Container::String()->list();
         self::assertNull($type->validateValue(['123', '123']));
         self::assertNull($type->validateValue(null));
     }
@@ -27,7 +27,7 @@ final class ListTypeTest extends \PHPUnit\Framework\TestCase
     {
         $this->expectException(\Exception::class);
 
-        $type = \Graphpinator\Type\Scalar\ScalarType::String()->list();
+        $type = \Graphpinator\Type\Container\Container::String()->list();
         $type->validateValue(['123', 123]);
     }
 
@@ -35,17 +35,17 @@ final class ListTypeTest extends \PHPUnit\Framework\TestCase
     {
         $this->expectException(\Exception::class);
 
-        $type = \Graphpinator\Type\Scalar\ScalarType::String()->list();
+        $type = \Graphpinator\Type\Container\Container::String()->list();
         $type->validateValue(123);
     }
 
     public function testInstanceOf() : void
     {
-        $type = \Graphpinator\Type\Scalar\ScalarType::String()->list();
+        $type = \Graphpinator\Type\Container\Container::String()->list();
 
         self::assertTrue($type->isInstanceOf($type));
         self::assertTrue($type->isInstanceOf($type->notNull()));
-        self::assertFalse($type->isInstanceOf(\Graphpinator\Type\Scalar\ScalarType::String()));
+        self::assertFalse($type->isInstanceOf(\Graphpinator\Type\Container\Container::String()));
     }
 
     public static function getTestTypeAbc() : \Graphpinator\Type\Type
@@ -57,7 +57,7 @@ final class ListTypeTest extends \PHPUnit\Framework\TestCase
             {
                 parent::__construct(new \Graphpinator\Field\ResolvableFieldSet([new \Graphpinator\Field\ResolvableField(
                     'field',
-                    \Graphpinator\Type\Scalar\ScalarType::String(),
+                    \Graphpinator\Type\Container\Container::String(),
                     static function (int $parent) {
                         if ($parent !== 123) {
                             throw new \Exception();

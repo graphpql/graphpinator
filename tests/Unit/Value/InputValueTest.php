@@ -9,11 +9,11 @@ final class InputValueTest extends \PHPUnit\Framework\TestCase
     public function testApplyDefaults() : void
     {
         $fields = [];
-        $defaults = ['field' => \Graphpinator\Value\ScalarValue::create('random', \Graphpinator\Type\Scalar\ScalarType::String())];
+        $defaults = ['field' => \Graphpinator\Value\ScalarValue::create('random', \Graphpinator\Type\Container\Container::String())];
 
         $type = $this->createMock(\Graphpinator\Type\InputType::class);
         $type->expects($this->exactly(2))->method('getArguments')->willReturn(
-            new \Graphpinator\Argument\ArgumentSet([new \Graphpinator\Argument\Argument('field', \Graphpinator\Type\Scalar\ScalarType::String())])
+            new \Graphpinator\Argument\ArgumentSet([new \Graphpinator\Argument\Argument('field', \Graphpinator\Type\Container\Container::String())])
         );
         $type->expects($this->once())->method('isInputable')->willReturn(true);
         $type->expects($this->once())->method('applyDefaults')->with($fields)->willReturn($defaults);
@@ -30,7 +30,7 @@ final class InputValueTest extends \PHPUnit\Framework\TestCase
 
         $type = $this->createMock(\Graphpinator\Type\InputType::class);
         $type->expects($this->exactly(2))->method('getArguments')->willReturn(
-            new \Graphpinator\Argument\ArgumentSet([new \Graphpinator\Argument\Argument('field', \Graphpinator\Type\Scalar\ScalarType::String())])
+            new \Graphpinator\Argument\ArgumentSet([new \Graphpinator\Argument\Argument('field', \Graphpinator\Type\Container\Container::String())])
         );
         $type->expects($this->once())->method('isInputable')->willReturn(true);
         $type->expects($this->once())->method('applyDefaults')->with($fields)->willReturn($fields);

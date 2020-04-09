@@ -22,13 +22,13 @@ final class NotNullTypeTest extends \PHPUnit\Framework\TestCase
 
     public function testValidateValue() : void
     {
-        $type = \Graphpinator\Type\Scalar\ScalarType::String()->notNull();
+        $type = \Graphpinator\Type\Container\Container::String()->notNull();
         self::assertNull($type->validateValue('123'));
     }
 
     public function testApplyDefaults() : void
     {
-        $type = \Graphpinator\Type\Scalar\ScalarType::String()->notNull();
+        $type = \Graphpinator\Type\Container\Container::String()->notNull();
         self::assertSame('123', $type->applyDefaults('123'));
     }
 
@@ -36,13 +36,13 @@ final class NotNullTypeTest extends \PHPUnit\Framework\TestCase
     {
         $this->expectException(\Exception::class);
 
-        $type = \Graphpinator\Type\Scalar\ScalarType::String()->notNull();
+        $type = \Graphpinator\Type\Container\Container::String()->notNull();
         $type->validateValue(null);
     }
 
     public function testInstanceOf() : void
     {
-        $type = \Graphpinator\Type\Scalar\ScalarType::String()->notNull();
+        $type = \Graphpinator\Type\Container\Container::String()->notNull();
 
         self::assertTrue($type->isInstanceOf($type));
         self::assertFalse($type->isInstanceOf($type->getInnerType()));
@@ -57,7 +57,7 @@ final class NotNullTypeTest extends \PHPUnit\Framework\TestCase
             {
                 parent::__construct(new \Graphpinator\Field\ResolvableFieldSet([new \Graphpinator\Field\ResolvableField(
                     'field',
-                    \Graphpinator\Type\Scalar\ScalarType::String(),
+                    \Graphpinator\Type\Container\Container::String(),
                     static function (int $parent) {
                         if ($parent !== 123) {
                             throw new \Exception();

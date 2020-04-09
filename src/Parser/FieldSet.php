@@ -22,7 +22,7 @@ final class FieldSet extends \Graphpinator\ClassSet
     }
 
     public function normalize(
-        \Graphpinator\Type\Resolver $resolver,
+        \Graphpinator\Type\Container\Container $typeContainer,
         \Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions
     ) : \Graphpinator\Normalizer\FieldSet
     {
@@ -31,7 +31,7 @@ final class FieldSet extends \Graphpinator\ClassSet
         foreach ($this->getCombinedFields($fragmentDefinitions) as $field) {
             \assert($field instanceof Field);
 
-            $normalizedFields[] = $field->normalize($resolver, $fragmentDefinitions);
+            $normalizedFields[] = $field->normalize($typeContainer, $fragmentDefinitions);
         }
 
         return new \Graphpinator\Normalizer\FieldSet($normalizedFields);

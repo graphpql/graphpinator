@@ -29,7 +29,7 @@ final class NormalizerTest extends \PHPUnit\Framework\TestCase
             ]),
         );
 
-        $normalizer = new \Graphpinator\Normalizer\Normalizer(\Graphpinator\Tests\Spec\TestSchema::getTypeResolver());
+        $normalizer = new \Graphpinator\Normalizer\Normalizer(\Graphpinator\Tests\Spec\TestSchema::getSchema());
         $operation = $normalizer->normalize($parseResult);
 
         self::assertCount(0, $operation->getVariables());
@@ -69,7 +69,7 @@ final class NormalizerTest extends \PHPUnit\Framework\TestCase
             new \Graphpinator\Parser\Fragment\FragmentSet([]),
         );
 
-        $normalizer = new \Graphpinator\Normalizer\Normalizer(\Graphpinator\Tests\Spec\TestSchema::getTypeResolver());
+        $normalizer = new \Graphpinator\Normalizer\Normalizer(\Graphpinator\Tests\Spec\TestSchema::getSchema());
         $operation = $normalizer->normalize($parseResult);
 
         self::assertCount(0, $operation->getChildren());
@@ -131,7 +131,7 @@ final class NormalizerTest extends \PHPUnit\Framework\TestCase
     {
         $this->expectException(\Exception::class);
 
-        $normalizer = new \Graphpinator\Normalizer\Normalizer(\Graphpinator\Tests\Spec\TestSchema::getTypeResolver());
+        $normalizer = new \Graphpinator\Normalizer\Normalizer(\Graphpinator\Tests\Spec\TestSchema::getSchema());
         $operation = $operation = $normalizer->normalize($parseResult);
     }
 }

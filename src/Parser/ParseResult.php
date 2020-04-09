@@ -27,8 +27,8 @@ final class ParseResult
         return $this->fragments;
     }
 
-    public function normalize(\Graphpinator\Type\Resolver $resolver) : \Graphpinator\Normalizer\Operation
+    public function normalize(\Graphpinator\Type\Schema $schema) : \Graphpinator\Normalizer\Operation
     {
-        return $this->operation->normalize($resolver, $this->fragments);
+        return $this->operation->normalize($schema, $this->fragments);
     }
 }

@@ -46,12 +46,10 @@ final class Operation
     }
 
     public function normalize(
-        \Graphpinator\Type\Resolver $resolver,
+        \Graphpinator\Type\Schema $schema,
         \Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions
     ) : \Graphpinator\Normalizer\Operation
     {
-        $schema = $resolver->getSchema();
-
         switch ($this->type) {
             case \Graphpinator\Tokenizer\OperationType::QUERY:
                 $operation = $schema->getQuery();
@@ -75,8 +73,8 @@ final class Operation
 
         return new \Graphpinator\Normalizer\Operation(
             $operation,
-            $this->children->normalize($resolver, $fragmentDefinitions),
-            $this->variables->normalize($resolver),
+            $this->children->normalize($schema->getTypeContainer(), $fragmentDefinitions),
+            $this->variables->normalize($schema->getTypeContainer()),
         );
     }
 }

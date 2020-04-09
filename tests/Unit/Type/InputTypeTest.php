@@ -48,7 +48,7 @@ final class InputTypeTest extends \PHPUnit\Framework\TestCase
             {
                 parent::__construct(
                     new \Graphpinator\Argument\ArgumentSet([new \Graphpinator\Argument\Argument(
-                        'subfield', \Graphpinator\Type\Scalar\ScalarType::String(), 'random',
+                        'subfield', \Graphpinator\Type\Container\Container::String(), 'random',
                     )]),
                 );
             }

@@ -49,7 +49,7 @@ final class ListValueTest extends \PHPUnit\Framework\TestCase
             {
                 parent::__construct(
                     new \Graphpinator\Argument\ArgumentSet([new \Graphpinator\Argument\Argument(
-                        'field', \Graphpinator\Type\Scalar\ScalarType::String(), 'random',
+                        'field', \Graphpinator\Type\Container\Container::String(), 'random',
                     )]),
                 );
             }

@@ -29,28 +29,6 @@ abstract class ScalarType extends \Graphpinator\Type\Contract\ConcreteDefinition
         return \Graphpinator\Value\ScalarValue::create($rawValue, $this);
     }
 
-    public static function Int() : IntType
     {
-        return new IntType();
-    }
-
-    public static function Float() : FloatType
-    {
-        return new FloatType();
-    }
-
-    public static function String() : StringType
-    {
-        return new StringType();
-    }
-
-    public static function Boolean() : BooleanType
-    {
-        return new BooleanType();
-    }
-
-    public static function ID() : IdType
-    {
-        return new IdType();
     }
 }
