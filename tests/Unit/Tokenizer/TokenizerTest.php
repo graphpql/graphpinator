@@ -51,6 +51,9 @@ final class TokenizerTest extends \PHPUnit\Framework\TestCase
             ['NAME', [
                 new Token(TokenType::NAME, 'NAME'),
             ]],
+            ['__Name', [
+                new Token(TokenType::NAME, '__Name'),
+            ]],
             ['FALSE true', [
                 new Token(TokenType::FALSE),
                 new Token(TokenType::TRUE),

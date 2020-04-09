@@ -68,7 +68,7 @@ final class Tokenizer implements \Iterator
 
         $this->tokenStartIndex = $this->source->key();
 
-        if (\ctype_alpha($this->source->getChar())) {
+        if ($this->source->getChar() === '_' || \ctype_alpha($this->source->getChar())) {
             $this->createWordToken();
 
             return;
@@ -250,7 +250,7 @@ final class Tokenizer implements \Iterator
 
     private function eatName() : string
     {
-        return $this->eatChars(static function (string $char) : bool { return \ctype_alnum($char); });
+        return $this->eatChars(static function (string $char) : bool { return $char === '_' || \ctype_alnum($char); });
     }
 
     private function eatChars(callable $condition) : string
