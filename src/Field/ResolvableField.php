@@ -8,7 +8,7 @@ use Graphpinator\Resolver\FieldResult;
 
 final class ResolvableField extends Field
 {
-    private $resolveFunction;
+    private \Closure $resolveFunction;
 
     public function __construct(string $name, \Graphpinator\Type\Contract\Outputable $type, callable $resolveFunction, ?\Graphpinator\Argument\ArgumentSet $arguments = null)
     {
