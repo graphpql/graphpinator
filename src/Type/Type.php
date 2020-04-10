@@ -49,7 +49,9 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
             $arguments = new \Graphpinator\Normalizer\ArgumentValueSet($request->getArguments(), $field->getArguments());
             $innerResult = $field->resolve($parentResult, $arguments);
 
-            $resolved[$request->getAlias()] = $innerResult->getType()->resolveFields($request->getFields(), $innerResult);
+            $resolved[$request->getAlias()] = $innerResult->getResult() instanceof \Graphpinator\Value\NullValue
+                ? $innerResult->getResult()
+                : $innerResult->getType()->resolveFields($request->getFields(), $innerResult);
         }
 
         return $resolved;

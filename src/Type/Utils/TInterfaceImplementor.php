@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace Graphpinator\Type\Utils;
 
 /**
- * Trait TInterfaceImplementor which is implementation of InterfaceImplemenor interface.
+ * Trait TInterfaceImplementor which is implementation of InterfaceImplementor interface.
  */
 trait TInterfaceImplementor
 {

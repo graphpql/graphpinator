@@ -16,7 +16,7 @@ final class Type extends \Graphpinator\Type\Type
 
     public function validateNonNullValue($rawValue): void
     {
-        if (!$rawValue instanceof \Graphpinator\Type\Type) {
+        if (!$rawValue instanceof \Graphpinator\Type\Contract\Definition) {
             throw new \Exception('Invalid resolve value for type __Type');
         }
     }

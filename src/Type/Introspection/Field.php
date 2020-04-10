@@ -33,9 +33,9 @@ final class Field extends \Graphpinator\Type\Type
             ),
             new \Graphpinator\Field\ResolvableField(
                 'description',
-                \Graphpinator\Type\Container\Container::String()->notNull(),
+                \Graphpinator\Type\Container\Container::String(),
                 static function (\Graphpinator\Field\Field $field) : ?string {
-                    return null;
+                    return $field->getDescription();
                 },
             ),
             new \Graphpinator\Field\ResolvableField(

@@ -33,7 +33,7 @@ final class InputValue extends \Graphpinator\Type\Type
             ),
             new \Graphpinator\Field\ResolvableField(
                 'description',
-                \Graphpinator\Type\Container\Container::String()->notNull(),
+                \Graphpinator\Type\Container\Container::String(),
                 static function (\Graphpinator\Argument\Argument $argument) : ?string {
                     return $argument->getDescription();
                 },

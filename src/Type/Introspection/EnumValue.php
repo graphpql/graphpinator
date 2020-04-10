@@ -17,6 +17,13 @@ final class EnumValue extends \Graphpinator\Type\Type
     protected function getFieldDefinition(): \Graphpinator\Field\ResolvableFieldSet
     {
         return new \Graphpinator\Field\ResolvableFieldSet([
+            new \Graphpinator\Field\ResolvableField(
+                'name',
+                \Graphpinator\Type\Container\Container::String()->notNull(),
+                static function (string $item) : string {
+                    return $item;
+                },
+            ),
         ]);
     }
 }

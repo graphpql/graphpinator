@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace Graphpinator\Type\Utils;
 
 /**
- * Interface InterfaceImplementor which marks types which can implement interface - currently Type and Interface
+ * Interface InterfaceImplementor which marks types which can implement interface - currently Type and Interface.
  */
 interface InterfaceImplementor
 {

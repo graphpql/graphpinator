@@ -62,7 +62,7 @@ final class TestSchema
             {
                 return new \Graphpinator\Field\ResolvableFieldSet([
                     new \Graphpinator\Field\ResolvableField('field0', TestSchema::getUnion(), function () {
-                        return \Graphpinator\Resolver\FieldResult::fromRaw(TestSchema::getTypeAbc(), null);
+                        return \Graphpinator\Resolver\FieldResult::fromRaw(TestSchema::getTypeAbc(), 1);
                     })
                 ]);
             }
@@ -76,11 +76,18 @@ final class TestSchema
             protected const NAME = 'Abc';
             protected const DESCRIPTION = 'Test Abc description';
 
+            public function validateNonNullValue($rawValue) : void
+            {
+                if ($rawValue !== 1) {
+                    throw new \Exception('Invalid resolve');
+                }
+            }
+
             protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
             {
                 return new \Graphpinator\Field\ResolvableFieldSet([
                     new \Graphpinator\Field\ResolvableField('field1', TestSchema::getInterface(),
-                        function ($parent, \Graphpinator\Normalizer\ArgumentValueSet $args) {
+                        static function (int $parent, \Graphpinator\Normalizer\ArgumentValueSet $args) {
                             $object = new \stdClass();
 
                             if ($args['arg2']->getRawValue() === null) {
@@ -121,7 +128,7 @@ final class TestSchema
             protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
             {
                 return new \Graphpinator\Field\ResolvableFieldSet([
-                    new \Graphpinator\Field\ResolvableField('name', \Graphpinator\Type\Container\Container::String(), function (\stdClass $parent) {
+                    new \Graphpinator\Field\ResolvableField('name', \Graphpinator\Type\Container\Container::String()->notNull(), function (\stdClass $parent) {
                         return $parent->name;
                     })
                 ]);
@@ -173,7 +180,7 @@ final class TestSchema
             protected function getFieldDefinition(): \Graphpinator\Field\FieldSet
             {
                 return new \Graphpinator\Field\FieldSet([
-                    new \Graphpinator\Field\Field('name', \Graphpinator\Type\Container\Container::String()),
+                    new \Graphpinator\Field\Field('name', \Graphpinator\Type\Container\Container::String()->notNull()),
                 ]);
             }
         };

@@ -10,11 +10,11 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
     {
         return [
             [
-                'query queryName { __typename }',
+                '{ __typename }',
                 \Infinityloop\Utils\Json::fromArray(['data' => ['__typename' => 'Query']]),
             ],
             [
-                'query queryName { field0 { __typename } }',
+                '{ field0 { __typename } }',
                 \Infinityloop\Utils\Json::fromArray(['data' => ['field0' => ['__typename' => 'Abc']]]),
             ],
         ];
@@ -37,11 +37,11 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
     {
         return [
             [
-                'query queryName { __typename }',
+                '{ __typename }',
                 \Infinityloop\Utils\Json::fromArray(['data' => ['__typename' => 'Query']]),
             ],
             [
-                'query queryName { field0 { __typename } }',
+                '{ field0 { __typename } }',
                 \Infinityloop\Utils\Json::fromArray(['data' => ['field0' => ['__typename' => 'Abc']]]),
             ],
         ];
@@ -64,8 +64,92 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
     {
         return [
             [
-                'query queryName { __type(name: "Abc") { kind name description } }',
-                \Infinityloop\Utils\Json::fromArray(['data' => ['__type' => ['kind' => 'OBJECT', 'name' => 'Abc', 'description' => 'Test Abc description']]]),
+                '{ __type(name: "Abc") { kind name description fields{name} interfaces{name} possibleTypes{name} inputFields{name} enumValues{name} ofType{name} } }',
+                \Infinityloop\Utils\Json::fromArray([
+                    'data' => ['__type' => [
+                        'kind' => 'OBJECT',
+                        'name' => 'Abc',
+                        'description' => 'Test Abc description',
+                        'fields' => [['name' => 'field1']],
+                        'interfaces' => [],
+                        'possibleTypes' => null,
+                        'inputFields' => null,
+                        'enumValues' => null,
+                        'ofType' => null,
+                    ]],
+                ]),
+            ],
+            [
+                '{ __type(name: "Xyz") { kind name description fields{name} interfaces{name} possibleTypes{name} inputFields{name} enumValues{name} ofType{name} } }',
+                \Infinityloop\Utils\Json::fromArray([
+                    'data' => ['__type' => [
+                        'kind' => 'OBJECT',
+                        'name' => 'Xyz',
+                        'description' => null,
+                        'fields' => [['name' => 'name']],
+                        'interfaces' => [['name' => 'TestInterface']],
+                        'possibleTypes' => null,
+                        'inputFields' => null,
+                        'enumValues' => null,
+                        'ofType' => null,
+                    ]],
+                ]),
+            ],
+            [
+                '{ __type(name: "TestInterface") { kind name description fields{name} interfaces{name} possibleTypes{name} inputFields{name} enumValues{name} ofType{name} } }',
+                \Infinityloop\Utils\Json::fromArray([
+                    'data' => ['__type' => [
+                        'kind' => 'INTERFACE',
+                        'name' => 'TestInterface',
+                        'description' => null,
+                        'fields' => [['name' => 'name']],
+                        'interfaces' => [],
+                        'possibleTypes' => null,
+                        'inputFields' => null,
+                        'enumValues' => null,
+                        'ofType' => null,
+                    ]],
+                ]),
+            ],
+            [
+                '{ __type(name: "TestUnion") { kind name description fields{name} interfaces{name} possibleTypes{name} inputFields{name} enumValues{name} ofType{name} } }',
+                \Infinityloop\Utils\Json::fromArray([
+                    'data' => ['__type' => [
+                        'kind' => 'UNION',
+                        'name' => 'TestUnion',
+                        'description' => null,
+                        'fields' => null,
+                        'interfaces' => null,
+                        'possibleTypes' => [['name' => 'Abc'], ['name' => 'Xyz']],
+                        'inputFields' => null,
+                        'enumValues' => null,
+                        'ofType' => null,
+                    ]],
+                ]),
+            ],
+            [
+                '{ __type(name: "TestInnerInput") { kind name description fields{name} interfaces{name} possibleTypes{name} inputFields{name} enumValues{name} ofType{name} } }',
+                \Infinityloop\Utils\Json::fromArray([
+                    'data' => ['__type' => [
+                        'kind' => 'INPUT_OBJECT',
+                        'name' => 'TestInnerInput',
+                        'description' => null,
+                        'fields' => null,
+                        'interfaces' => null,
+                        'possibleTypes' => null,
+                        'inputFields' => [['name' => 'name'], ['name' => 'number'], ['name' => 'bool']],
+                        'enumValues' => null,
+                        'ofType' => null,
+                    ]],
+                ]),
+            ],
+            [
+                '{ __type(name: "TestInterface") { fields{name type {kind name ofType {name}} } } }',
+                \Infinityloop\Utils\Json::fromArray([
+                    'data' => ['__type' => [
+                        'fields' => [['name' => 'name', 'type' => ['kind' => 'NON_NULL', 'name' => null, 'ofType' => ['name' => 'String']]]],
+                    ]],
+                ]),
             ],
         ];
     }
