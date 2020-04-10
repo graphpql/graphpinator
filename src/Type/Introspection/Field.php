@@ -56,7 +56,7 @@ final class Field extends \Graphpinator\Type\Type
                 'isDeprecated',
                 \Graphpinator\Type\Container\Container::Boolean()->notNull(),
                 static function (\Graphpinator\Field\Field $field) : bool {
-                    return null;
+                    return false;
                 },
             ),
             new \Graphpinator\Field\ResolvableField(

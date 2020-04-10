@@ -37,12 +37,37 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
     {
         return [
             [
-                '{ __typename }',
-                \Infinityloop\Utils\Json::fromArray(['data' => ['__typename' => 'Query']]),
+                '{ __schema { description } }',
+                \Infinityloop\Utils\Json::fromArray(['data' => ['__schema' => ['description' => null]]]),
             ],
             [
-                '{ field0 { __typename } }',
-                \Infinityloop\Utils\Json::fromArray(['data' => ['field0' => ['__typename' => 'Abc']]]),
+                '{ __schema { queryType {name} } }',
+                \Infinityloop\Utils\Json::fromArray(['data' => ['__schema' => ['queryType' => ['name' => 'Query']]]]),
+            ],
+            [
+                '{ __schema { mutationType {name} } }',
+                \Infinityloop\Utils\Json::fromArray(['data' => ['__schema' => ['mutationType' => null]]]),
+            ],
+            [
+                '{ __schema { subscriptionType {name} } }',
+                \Infinityloop\Utils\Json::fromArray(['data' => ['__schema' => ['subscriptionType' => null]]]),
+            ],
+            [
+                '{ __schema { types {name} } }',
+                \Infinityloop\Utils\Json::fromArray(['data' => ['__schema' => ['types' => [
+                    ['name' => 'Query'],
+                    ['name' => 'Abc'],
+                    ['name' => 'Xyz'],
+                    ['name' => 'TestInterface'],
+                    ['name' => 'TestUnion'],
+                    ['name' => 'TestInput'],
+                    ['name' => 'TestInnerInput'],
+                    ['name' => 'TestEnum'],
+                    ['name' => 'Int'],
+                    ['name' => 'Float'],
+                    ['name' => 'String'],
+                    ['name' => 'Boolean'],
+                ]]]]),
             ],
         ];
     }
@@ -139,6 +164,27 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                         'possibleTypes' => null,
                         'inputFields' => [['name' => 'name'], ['name' => 'number'], ['name' => 'bool']],
                         'enumValues' => null,
+                        'ofType' => null,
+                    ]],
+                ]),
+            ],
+            [
+                '{ __type(name: "TestEnum") { kind name description fields{name} interfaces{name} possibleTypes{name} inputFields{name} enumValues{name description isDeprecated deprecationReason} ofType{name} } }',
+                \Infinityloop\Utils\Json::fromArray([
+                    'data' => ['__type' => [
+                        'kind' => 'ENUM',
+                        'name' => 'TestEnum',
+                        'description' => null,
+                        'fields' => null,
+                        'interfaces' => null,
+                        'possibleTypes' => null,
+                        'inputFields' => null,
+                        'enumValues' => [
+                            ['name' => 'A', 'description' => null, 'isDeprecated' => false, 'deprecationReason' => null],
+                            ['name' => 'B', 'description' => null, 'isDeprecated' => false, 'deprecationReason' => null],
+                            ['name' => 'C', 'description' => null, 'isDeprecated' => false, 'deprecationReason' => null],
+                            ['name' => 'D', 'description' => null, 'isDeprecated' => false, 'deprecationReason' => null],
+                        ],
                         'ofType' => null,
                     ]],
                 ]),

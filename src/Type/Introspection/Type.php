@@ -85,9 +85,9 @@ final class Type extends \Graphpinator\Type\Type
             new \Graphpinator\Field\ResolvableField(
                 'enumValues',
                 \Graphpinator\Type\Container\Container::introspectionEnumValue()->notNull()->list(),
-                static function (\Graphpinator\Type\Contract\Definition $definition) {
+                static function (\Graphpinator\Type\Contract\Definition $definition) : ?\Graphpinator\Type\Scalar\EnumItemSet {
                     return $definition instanceof \Graphpinator\Type\Scalar\EnumType
-                        ? $definition->getAll()
+                        ? $definition->getItems()
                         : null;
                 },
             ),

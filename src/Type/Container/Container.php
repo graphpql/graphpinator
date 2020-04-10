@@ -4,12 +4,20 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Type\Container;
 
+/**
+ * Class Container which is responsible for fetching instances of type classes.
+ */
 abstract class Container
 {
     /**
      * Core function to find type by its name.
      */
     abstract public function getType(string $name) : \Graphpinator\Type\Contract\NamedDefinition;
+
+    /**
+     * Function to return all types.
+     */
+    abstract public function getAllTypes() : array;
 
     /**
      * Built-in Int type.

@@ -22,32 +22,25 @@ final class TestSchema
         {
             public function getType(string $name): \Graphpinator\Type\Contract\NamedDefinition
             {
-                switch ($name) {
-                    case 'Query':
-                        return TestSchema::getQuery();
-                    case 'Abc':
-                        return TestSchema::getTypeAbc();
-                    case 'Xyz':
-                        return TestSchema::getTypeXyz();
-                    case 'TestInterface':
-                        return TestSchema::getInterface();
-                    case 'TestUnion':
-                        return TestSchema::getUnion();
-                    case 'TestInput':
-                        return TestSchema::getInput();
-                    case 'TestInnerInput':
-                        return TestSchema::getInnerInput();
-                    case 'Int':
-                        return \Graphpinator\Type\Container\Container::Int();
-                    case 'Float':
-                        return \Graphpinator\Type\Container\Container::Float();
-                    case 'String':
-                        return \Graphpinator\Type\Container\Container::String();
-                    case 'Boolean':
-                        return \Graphpinator\Type\Container\Container::Boolean();
-                    default:
-                        throw new \Exception('Cannot resolve type.');
-                }
+                return $this->getAllTypes()[$name];
+            }
+
+            public function getAllTypes() : array
+            {
+                return [
+                    'Query' => TestSchema::getQuery(),
+                    'Abc' => TestSchema::getTypeAbc(),
+                    'Xyz' => TestSchema::getTypeXyz(),
+                    'TestInterface' => TestSchema::getInterface(),
+                    'TestUnion' => TestSchema::getUnion(),
+                    'TestInput' => TestSchema::getInput(),
+                    'TestInnerInput' => TestSchema::getInnerInput(),
+                    'TestEnum' => TestSchema::getEnum(),
+                    'Int' => \Graphpinator\Type\Container\Container::Int(),
+                    'Float' => \Graphpinator\Type\Container\Container::Float(),
+                    'String' => \Graphpinator\Type\Container\Container::String(),
+                    'Boolean' => \Graphpinator\Type\Container\Container::Boolean(),
+                ];
             }
         };
     }
@@ -198,6 +191,24 @@ final class TestSchema
                     TestSchema::getTypeAbc(),
                     TestSchema::getTypeXyz(),
                 ]));
+            }
+        };
+    }
+
+    public static function getEnum() : \Graphpinator\Type\Scalar\EnumType
+    {
+        return new class extends \Graphpinator\Type\Scalar\EnumType
+        {
+            protected const NAME = 'TestEnum';
+
+            public const A = 'a';
+            public const B = 'b';
+            public const C = 'c';
+            public const D = 'd';
+
+            public function __construct()
+            {
+                parent::__construct(self::fromConstants());
             }
         };
     }

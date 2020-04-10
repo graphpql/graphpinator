@@ -26,16 +26,16 @@ final class Schema extends \Graphpinator\Type\Type
         return new \Graphpinator\Field\ResolvableFieldSet([
             new \Graphpinator\Field\ResolvableField(
                 'description',
-                \Graphpinator\Type\Container\Container::String()->notNull(),
+                \Graphpinator\Type\Container\Container::String(),
                 static function (\Graphpinator\Type\Schema $schema) : ?string {
                     return $schema->getDescription();
                 },
             ),
             new \Graphpinator\Field\ResolvableField(
                 'types',
-                \Graphpinator\Type\Container\Container::String()->notNullList(),
-                static function (\Graphpinator\Type\Schema $schema) {
-                    return null;
+                \Graphpinator\Type\Container\Container::introspectionType()->notNullList(),
+                static function (\Graphpinator\Type\Schema $schema) : array {
+                    return $schema->getTypeContainer()->getAllTypes();
                 },
             ),
             new \Graphpinator\Field\ResolvableField(
@@ -61,7 +61,7 @@ final class Schema extends \Graphpinator\Type\Type
             ),
             new \Graphpinator\Field\ResolvableField(
                 'directives',
-                \Graphpinator\Type\Container\Container::Boolean()->notNull(),
+                \Graphpinator\Type\Container\Container::introspectionDirective()->notNullList(),
                 static function (\Graphpinator\Type\Schema $schema) : array {
                     return [];
                 },

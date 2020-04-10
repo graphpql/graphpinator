@@ -9,22 +9,9 @@ final class EnumTypeTest extends \PHPUnit\Framework\TestCase
     public function simpleDataProvider() : array
     {
         return [
-            ['a'],
-            ['b'],
+            ['A'],
+            ['B'],
             [null],
-        ];
-    }
-
-    public function invalidDataProvider() : array
-    {
-        return [
-            [123],
-            [123.123],
-            ['123'],
-            ['c'],
-            ['d'],
-            [true],
-            [[]],
         ];
     }
 
@@ -39,6 +26,19 @@ final class EnumTypeTest extends \PHPUnit\Framework\TestCase
         self::assertSame($enum->getName(), 'abc');
     }
 
+    public function invalidDataProvider() : array
+    {
+        return [
+            [123],
+            [123.123],
+            ['123'],
+            ['C'],
+            ['D'],
+            [true],
+            [[]],
+        ];
+    }
+
     /**
      * @dataProvider invalidDataProvider
      */
@@ -50,11 +50,21 @@ final class EnumTypeTest extends \PHPUnit\Framework\TestCase
         $enum->validateValue($rawValue);
     }
 
-    public function testGetAll(): void
+    public function testGetItems(): void
     {
         $enum = $this->createTestEnum();
 
-        self::assertSame($enum->getAll(), ['a', 'b']);
+        self::assertCount(2, $enum->getItems());
+        self::assertArrayHasKey('A', $enum->getItems());
+        self::assertArrayHasKey('B', $enum->getItems());
+        self::assertSame('A', $enum->getItems()['A']->getName());
+        self::assertNull($enum->getItems()['A']->getDescription());
+        self::assertFalse($enum->getItems()['A']->isDeprecated());
+        self::assertNull($enum->getItems()['A']->getDeprecationReason());
+        self::assertSame('B', $enum->getItems()['B']->getName());
+        self::assertNull($enum->getItems()['B']->getDescription());
+        self::assertFalse($enum->getItems()['B']->isDeprecated());
+        self::assertNull($enum->getItems()['B']->getDeprecationReason());
     }
 
     protected function createTestEnum() : \Graphpinator\Type\Scalar\EnumType

@@ -18,13 +18,15 @@ final class Schema
         \Graphpinator\Type\Container\Container $typeContainer,
         \Graphpinator\Type\Type $query,
         ?\Graphpinator\Type\Type $mutation = null,
-        ?\Graphpinator\Type\Type $subscription = null
+        ?\Graphpinator\Type\Type $subscription = null,
+        ?string $description = null
     )
     {
         $this->typeContainer = $typeContainer;
         $this->query = $query;
         $this->mutation = $mutation;
         $this->subscription = $subscription;
+        $this->description = $description;
 
         $this->query->addMetaField(new \Graphpinator\Field\ResolvableField(
             '__schema',

@@ -6,14 +6,14 @@ namespace Graphpinator\Type\Scalar;
 
 abstract class EnumType extends ScalarType
 {
-    protected array $options;
+    protected EnumItemSet $options;
 
-    public function __construct(array $options)
+    public function __construct(EnumItemSet $options)
     {
         $this->options = $options;
     }
 
-    public static function fromConstants() : array
+    public static function fromConstants() : EnumItemSet
     {
         $values = [];
 
@@ -24,20 +24,20 @@ abstract class EnumType extends ScalarType
                 continue;
             }
 
-            $values[$value] = \strtoupper($value);
+            $values[] = new EnumItem(\strtoupper($value));
         }
 
-        return $values;
+        return new EnumItemSet($values);
     }
 
-    public function getAll() : array
+    public function getItems() : EnumItemSet
     {
-        return \array_keys($this->options);
+        return $this->options;
     }
 
     protected function validateNonNullValue($rawValue) : void
     {
-        if (\is_string($rawValue) && \array_key_exists($rawValue, $this->options)) {
+        if (\is_string($rawValue) && $this->options->offsetExists($rawValue)) {
             return;
         }
 
