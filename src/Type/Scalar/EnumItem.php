@@ -7,37 +7,18 @@ namespace Graphpinator\Type\Scalar;
 final class EnumItem
 {
     use \Nette\SmartObject;
+    use \Graphpinator\Utils\TOptionalDescription;
+    use \Graphpinator\Utils\TDeprecatable;
 
     private string $name;
-    private ?string $description;
-    private bool $isDeprecated;
-    private ?string $deprecationReason;
 
-    public function __construct(string $name, ?string $description = null, bool $isDeprecated = false, ?string $deprecationReason = null)
+    public function __construct(string $name)
     {
         $this->name = $name;
-        $this->description = $description;
-        $this->isDeprecated = $isDeprecated;
-        $this->deprecationReason = $deprecationReason;
     }
 
     public function getName() : string
     {
         return $this->name;
-    }
-
-    public function getDescription() : ?string
-    {
-        return $this->description;
-    }
-
-    public function isDeprecated() : bool
-    {
-        return $this->isDeprecated;
-    }
-
-    public function getDeprecationReason() : ?string
-    {
-        return $this->deprecationReason;
     }
 }

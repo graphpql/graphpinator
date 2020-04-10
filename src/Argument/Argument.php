@@ -7,9 +7,9 @@ namespace Graphpinator\Argument;
 final class Argument
 {
     use \Nette\SmartObject;
+    use \Graphpinator\Utils\TOptionalDescription;
 
     private string $name;
-    private ?string $description;
     private \Graphpinator\Type\Contract\Inputable $type;
     private ?\Graphpinator\Value\ValidatedValue $defaultValue;
 
@@ -28,11 +28,6 @@ final class Argument
     public function getName() : string
     {
         return $this->name;
-    }
-
-    public function getDescription() : ?string
-    {
-        return $this->description;
     }
 
     public function getType() : \Graphpinator\Type\Contract\Inputable

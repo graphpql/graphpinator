@@ -7,9 +7,10 @@ namespace Graphpinator\Field;
 class Field
 {
     use \Nette\SmartObject;
+    use \Graphpinator\Utils\TOptionalDescription;
+    use \Graphpinator\Utils\TDeprecatable;
 
     protected string $name;
-    protected ?string $description;
     protected \Graphpinator\Type\Contract\Outputable $type;
     protected \Graphpinator\Argument\ArgumentSet $arguments;
 
@@ -23,11 +24,6 @@ class Field
     public function getName() : string
     {
         return $this->name;
-    }
-
-    public function getDescription() : ?string
-    {
-        return $this->description;
     }
 
     public function getType() : \Graphpinator\Type\Contract\Outputable
