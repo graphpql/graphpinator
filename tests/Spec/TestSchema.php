@@ -31,6 +31,7 @@ final class TestSchema
                     'Query' => TestSchema::getQuery(),
                     'Abc' => TestSchema::getTypeAbc(),
                     'Xyz' => TestSchema::getTypeXyz(),
+                    'Zzz' => TestSchema::getTypeZzz(),
                     'TestInterface' => TestSchema::getInterface(),
                     'TestUnion' => TestSchema::getUnion(),
                     'TestInput' => TestSchema::getInput(),
@@ -77,7 +78,7 @@ final class TestSchema
             protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
             {
                 return new \Graphpinator\Field\ResolvableFieldSet([
-                    new \Graphpinator\Field\ResolvableField('field1', TestSchema::getInterface(),
+                    (new \Graphpinator\Field\ResolvableField('field1', TestSchema::getInterface(),
                         static function (int $parent, \Graphpinator\Normalizer\ArgumentValueSet $args) {
                             $object = new \stdClass();
 
@@ -95,10 +96,11 @@ final class TestSchema
                             }
 
                             return \Graphpinator\Resolver\FieldResult::fromRaw(TestSchema::getTypeXyz(), $object);
-                    }, new \Graphpinator\Argument\ArgumentSet([
+                    },
+                    new \Graphpinator\Argument\ArgumentSet([
                         new \Graphpinator\Argument\Argument('arg1', \Graphpinator\Type\Container\Container::Int(), 123),
                         new \Graphpinator\Argument\Argument('arg2', TestSchema::getInput()),
-                    ]))
+                    ])))->setDeprecated(true)->setDeprecationReason('Test deprecation reason')
                 ]);
             }
         };
@@ -121,6 +123,24 @@ final class TestSchema
                 return new \Graphpinator\Field\ResolvableFieldSet([
                     new \Graphpinator\Field\ResolvableField('name', \Graphpinator\Type\Container\Container::String()->notNull(), function (\stdClass $parent) {
                         return $parent->name;
+                    })
+                ]);
+            }
+        };
+    }
+
+    public static function getTypeZzz() : \Graphpinator\Type\Type
+    {
+        return new class extends \Graphpinator\Type\Type
+        {
+            protected const NAME = 'Zzz';
+            protected const DESCRIPTION = null;
+
+            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+            {
+                return new \Graphpinator\Field\ResolvableFieldSet([
+                    new \Graphpinator\Field\ResolvableField('enumList', TestSchema::getEnum()->list(), function () {
+                        return ['A', 'B'];
                     })
                 ]);
             }

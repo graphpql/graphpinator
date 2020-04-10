@@ -38,7 +38,7 @@ final class InputValue extends \Graphpinator\Type\Type
             ),
             new \Graphpinator\Field\ResolvableField(
                 'type',
-                \Graphpinator\Type\Container\Container::String()->notNull(),
+                \Graphpinator\Type\Container\Container::introspectionType()->notNull(),
                 static function (\Graphpinator\Argument\Argument $argument) : \Graphpinator\Type\Contract\Definition {
                     return $argument->getType();
                 },

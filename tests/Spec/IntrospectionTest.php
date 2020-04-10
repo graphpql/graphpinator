@@ -38,7 +38,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
         return [
             [
                 '{ __schema { description } }',
-                \Infinityloop\Utils\Json::fromArray(['data' => ['__schema' => ['description' => null]]]),
+                \Infinityloop\Utils\Json::fromArray(['data' => ['__schema' => ['description' => 'Test schema description']]]),
             ],
             [
                 '{ __schema { queryType {name} } }',
@@ -58,6 +58,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                     ['name' => 'Query'],
                     ['name' => 'Abc'],
                     ['name' => 'Xyz'],
+                    ['name' => 'Zzz'],
                     ['name' => 'TestInterface'],
                     ['name' => 'TestUnion'],
                     ['name' => 'TestInput'],
@@ -69,6 +70,10 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                     ['name' => 'Boolean'],
                 ]]]]),
             ],
+            [
+                '{ __schema { directives {name} } }',
+                \Infinityloop\Utils\Json::fromArray(['data' => ['__schema' => ['directives' => []]]]),
+            ],
         ];
     }
 
@@ -77,7 +82,9 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
      */
     public function testSchema(string $request, \Infinityloop\Utils\Json $result) : void
     {
-        $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
+        $schema = TestSchema::getSchema();
+        $schema->setDescription('Test schema description');
+        $graphpinator = new \Graphpinator\Graphpinator($schema);
 
         self::assertSame(
             $result->toString(),
@@ -190,10 +197,70 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                 ]),
             ],
             [
-                '{ __type(name: "TestInterface") { fields{name type {kind name ofType {name}} } } }',
+                '{ __type(name: "TestInterface") { fields{name description args{name} isDeprecated deprecationReason type {kind name ofType {name}} } } }',
                 \Infinityloop\Utils\Json::fromArray([
                     'data' => ['__type' => [
-                        'fields' => [['name' => 'name', 'type' => ['kind' => 'NON_NULL', 'name' => null, 'ofType' => ['name' => 'String']]]],
+                        'fields' => [[
+                            'name' => 'name',
+                            'description' => null,
+                            'args' => [],
+                            'isDeprecated' => false,
+                            'deprecationReason' => null,
+                            'type' => ['kind' => 'NON_NULL', 'name' => null, 'ofType' => ['name' => 'String']],
+                        ]],
+                    ]],
+                ]),
+            ],
+            [
+                '{ __type(name: "Abc") { fields{name description isDeprecated deprecationReason type{name} args{name description type{name} defaultValue} } } }',
+                \Infinityloop\Utils\Json::fromArray([
+                    'data' => ['__type' => [
+                        'fields' => [[
+                            'name' => 'field1',
+                            'description' => null,
+                            'isDeprecated' => true,
+                            'deprecationReason' => 'Test deprecation reason',
+                            'type' => ['name' => 'TestInterface'],
+                            'args' => [
+                                [
+                                    'name' => 'arg1',
+                                    'description' => null,
+                                    'type' => ['name' => 'Int'],
+                                    'defaultValue' => '123',
+                                ], [
+                                    'name' => 'arg2',
+                                    'description' => null,
+                                    'type' => ['name' => 'TestInput'],
+                                    'defaultValue' => null,
+                                ]
+                            ],
+                        ]],
+                    ]],
+                ]),
+            ],
+            [
+                '{ __type(name: "String") { name kind } }',
+                \Infinityloop\Utils\Json::fromArray([
+                    'data' => ['__type' => [
+                        'name' => 'String',
+                        'kind' => 'SCALAR',
+                    ]],
+                ]),
+            ],
+            [
+                '{ __type(name: "Zzz") { fields {name type{name kind ofType{name}}}}}',
+                \Infinityloop\Utils\Json::fromArray([
+                    'data' => ['__type' => [
+                        'fields' => [[
+                            'name' => 'enumList',
+                            'type' => [
+                                'name' => null,
+                                'kind' => 'LIST',
+                                'ofType' => [
+                                    'name' => 'TestEnum',
+                                ],
+                            ],
+                       ]],
                     ]],
                 ]),
             ],

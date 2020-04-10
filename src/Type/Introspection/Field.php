@@ -54,14 +54,14 @@ final class Field extends \Graphpinator\Type\Type
                 'isDeprecated',
                 \Graphpinator\Type\Container\Container::Boolean()->notNull(),
                 static function (\Graphpinator\Field\Field $field) : bool {
-                    return false;
+                    return $field->isDeprecated();
                 },
             ),
             new \Graphpinator\Field\ResolvableField(
                 'deprecationReason',
                 \Graphpinator\Type\Container\Container::String(),
                 static function (\Graphpinator\Field\Field $field) : ?string {
-                    return null;
+                    return $field->getDeprecationReason();
                 },
             ),
         ]);

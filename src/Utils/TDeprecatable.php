@@ -17,9 +17,11 @@ trait TDeprecatable
         return $this->deprecated;
     }
 
-    public function setDeprecated(bool $deprecated) : void
+    public function setDeprecated(bool $deprecated) : self
     {
         $this->deprecated = $deprecated;
+
+        return $this;
     }
 
     public function getDeprecationReason() : ?string
@@ -27,8 +29,10 @@ trait TDeprecatable
         return $this->deprecationReason;
     }
 
-    public function setDeprecationReason(string $reason) : void
+    public function setDeprecationReason(string $reason) : self
     {
         $this->deprecationReason = $reason;
+
+        return $this;
     }
 }

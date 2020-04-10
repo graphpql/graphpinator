@@ -73,11 +73,7 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
 
     public function addMetaField(\Graphpinator\Field\ResolvableField $field) : void
     {
-        if ($this->getMetaFields()->offsetExists($field->getName())) {
-            throw new \Exception('This metafield already exists');
-        }
-
-        $this->metaFields->offsetSet($field->getName(), $field);
+        $this->getMetaFields()->offsetSet($field->getName(), $field);
     }
 
     abstract protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet;
