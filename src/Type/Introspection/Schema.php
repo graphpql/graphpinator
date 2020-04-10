@@ -14,11 +14,9 @@ final class Schema extends \Graphpinator\Type\Type
         parent::__construct();
     }
 
-    public function validateNonNullValue($rawValue): void
+    public function validateNonNullValue($rawValue) : bool
     {
-        if (!$rawValue instanceof \Graphpinator\Type\Schema) {
-            throw new \Exception('Invalid resolve value for type __Schema');
-        }
+        return $rawValue instanceof \Graphpinator\Type\Schema;
     }
 
     protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet

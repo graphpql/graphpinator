@@ -35,13 +35,9 @@ abstract class EnumType extends ScalarType
         return $this->options;
     }
 
-    protected function validateNonNullValue($rawValue) : void
+    protected function validateNonNullValue($rawValue) : bool
     {
-        if (\is_string($rawValue) && $this->options->offsetExists($rawValue)) {
-            return;
-        }
-
-        throw new \Exception('Unkwown enum value');
+        return is_string($rawValue) && $this->options->offsetExists($rawValue);
     }
 
     public function getTypeKind() : string

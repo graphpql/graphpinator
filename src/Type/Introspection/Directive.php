@@ -11,8 +11,9 @@ final class Directive extends \Graphpinator\Type\Type
         parent::__construct();
     }
 
-    public function validateNonNullValue($rawValue): void
+    public function validateNonNullValue($rawValue) : bool
     {
+        return true;
     }
 
     protected function getFieldDefinition(): \Graphpinator\Field\ResolvableFieldSet

@@ -27,13 +27,9 @@ final class TypeValueTest extends \PHPUnit\Framework\TestCase
         return new class extends \Graphpinator\Type\Type {
             protected const NAME = 'Abc';
 
-            protected function validateNonNullValue($rawValue): void
+            protected function validateNonNullValue($rawValue) : bool
             {
-                if ($rawValue === 123) {
-                    return;
-                }
-
-                throw new \Exception();
+                return $rawValue === 123;
             }
 
             protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet

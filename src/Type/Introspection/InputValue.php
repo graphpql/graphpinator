@@ -14,11 +14,9 @@ final class InputValue extends \Graphpinator\Type\Type
         parent::__construct();
     }
 
-    public function validateNonNullValue($rawValue): void
+    public function validateNonNullValue($rawValue) : bool
     {
-        if (!$rawValue instanceof \Graphpinator\Argument\Argument) {
-            throw new \Exception('Invalid resolve value for type __InputValue');
-        }
+        return $rawValue instanceof \Graphpinator\Argument\Argument;
     }
 
     protected function getFieldDefinition(): \Graphpinator\Field\ResolvableFieldSet

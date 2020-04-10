@@ -69,11 +69,9 @@ final class TestSchema
             protected const NAME = 'Abc';
             protected const DESCRIPTION = 'Test Abc description';
 
-            public function validateNonNullValue($rawValue) : void
+            protected function validateNonNullValue($rawValue) : bool
             {
-                if ($rawValue !== 1) {
-                    throw new \Exception('Invalid resolve');
-                }
+                return $rawValue === 1;
             }
 
             protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet

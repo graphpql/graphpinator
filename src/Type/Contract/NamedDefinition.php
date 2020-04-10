@@ -68,7 +68,8 @@ abstract class NamedDefinition implements \Graphpinator\Type\Contract\Definition
         return new \Graphpinator\Type\ListType($this);
     }
 
-    protected function validateNonNullValue($rawValue) : void
+    protected function validateNonNullValue($rawValue) : bool
     {
+        return true;
     }
 }

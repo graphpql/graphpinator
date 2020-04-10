@@ -12,8 +12,10 @@ trait TResolvable
             return;
         }
 
-        $this->validateNonNullValue($rawValue);
+        if (!$this->validateNonNullValue($rawValue)) {
+            throw new \Exception('Invalid resolved value for ' . $this->getName());
+        }
     }
 
-    abstract protected function validateNonNullValue($rawValue);
+    abstract protected function validateNonNullValue($rawValue) : bool;
 }

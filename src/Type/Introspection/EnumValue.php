@@ -14,11 +14,9 @@ final class EnumValue extends \Graphpinator\Type\Type
         parent::__construct();
     }
 
-    public function validateNonNullValue($rawValue) : void
+    public function validateNonNullValue($rawValue) : bool
     {
-        if (!$rawValue instanceof \Graphpinator\Type\Scalar\EnumItem) {
-            throw new \Exception('Invalid resolved value for __EnumValue');
-        }
+        return $rawValue instanceof \Graphpinator\Type\Scalar\EnumItem;
     }
 
     protected function getFieldDefinition(): \Graphpinator\Field\ResolvableFieldSet

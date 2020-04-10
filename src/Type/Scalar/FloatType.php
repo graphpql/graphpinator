@@ -9,12 +9,8 @@ final class FloatType extends ScalarType
     protected const NAME = 'Float';
     protected const DESCRIPTION = 'Float built-in type';
 
-    protected function validateNonNullValue($rawValue) : void
+    protected function validateNonNullValue($rawValue) : bool
     {
-        if (\is_float($rawValue)) {
-            return;
-        }
-
-        throw new \Exception();
+        return \is_float($rawValue);
     }
 }

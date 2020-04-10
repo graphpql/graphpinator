@@ -9,12 +9,8 @@ final class IntType extends \Graphpinator\Type\Scalar\ScalarType
     protected const NAME = 'Int';
     protected const DESCRIPTION = 'Int built-in type';
 
-    protected function validateNonNullValue($rawValue) : void
+    protected function validateNonNullValue($rawValue) : bool
     {
-        if (\is_int($rawValue)) {
-            return;
-        }
-
-        throw new \Exception('Invalid int value.');
+        return \is_int($rawValue);
     }
 }

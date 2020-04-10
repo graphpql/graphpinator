@@ -14,11 +14,9 @@ final class Type extends \Graphpinator\Type\Type
         parent::__construct();
     }
 
-    public function validateNonNullValue($rawValue): void
+    public function validateNonNullValue($rawValue) : bool
     {
-        if (!$rawValue instanceof \Graphpinator\Type\Contract\Definition) {
-            throw new \Exception('Invalid resolve value for type __Type');
-        }
+        return $rawValue instanceof \Graphpinator\Type\Contract\Definition;
     }
 
     protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
