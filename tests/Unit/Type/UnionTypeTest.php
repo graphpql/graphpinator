@@ -44,9 +44,9 @@ final class UnionTypeTest extends \PHPUnit\Framework\TestCase
         return new class extends \Graphpinator\Type\Type {
             protected const NAME = 'Abc';
 
-            public function __construct()
+            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
             {
-                parent::__construct(new \Graphpinator\Field\ResolvableFieldSet([]));
+                return new \Graphpinator\Field\ResolvableFieldSet([]);
             }
         };
     }
@@ -56,9 +56,9 @@ final class UnionTypeTest extends \PHPUnit\Framework\TestCase
         return new class extends \Graphpinator\Type\Type {
             protected const NAME = 'Xyz';
 
-            public function __construct()
+            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
             {
-                parent::__construct(new \Graphpinator\Field\ResolvableFieldSet([]));
+                return new \Graphpinator\Field\ResolvableFieldSet([]);
             }
         };
     }
@@ -68,9 +68,9 @@ final class UnionTypeTest extends \PHPUnit\Framework\TestCase
         return new class extends \Graphpinator\Type\Type {
             protected const NAME = 'Zzz';
 
-            public function __construct()
+            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
             {
-                parent::__construct(new \Graphpinator\Field\ResolvableFieldSet([]));
+                return new \Graphpinator\Field\ResolvableFieldSet([]);
             }
         };
     }

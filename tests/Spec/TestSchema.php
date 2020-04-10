@@ -58,13 +58,13 @@ final class TestSchema
         {
             protected const NAME = 'Query';
 
-            public function __construct()
+            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
             {
-                parent::__construct(new \Graphpinator\Field\ResolvableFieldSet([
+                return new \Graphpinator\Field\ResolvableFieldSet([
                     new \Graphpinator\Field\ResolvableField('field0', TestSchema::getUnion(), function () {
                         return \Graphpinator\Resolver\FieldResult::fromRaw(TestSchema::getTypeAbc(), null);
                     })
-                ]));
+                ]);
             }
         };
     }
@@ -74,10 +74,11 @@ final class TestSchema
         return new class extends \Graphpinator\Type\Type
         {
             protected const NAME = 'Abc';
+            protected const DESCRIPTION = 'Test Abc description';
 
-            public function __construct()
+            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
             {
-                parent::__construct(new \Graphpinator\Field\ResolvableFieldSet([
+                return new \Graphpinator\Field\ResolvableFieldSet([
                     new \Graphpinator\Field\ResolvableField('field1', TestSchema::getInterface(),
                         function ($parent, \Graphpinator\Normalizer\ArgumentValueSet $args) {
                             $object = new \stdClass();
@@ -100,7 +101,7 @@ final class TestSchema
                         new \Graphpinator\Argument\Argument('arg1', \Graphpinator\Type\Container\Container::Int(), 123),
                         new \Graphpinator\Argument\Argument('arg2', TestSchema::getInput()),
                     ]))
-                ]));
+                ]);
             }
         };
     }
@@ -110,14 +111,20 @@ final class TestSchema
         return new class extends \Graphpinator\Type\Type
         {
             protected const NAME = 'Xyz';
+            protected const DESCRIPTION = null;
 
             public function __construct()
             {
-                parent::__construct(new \Graphpinator\Field\ResolvableFieldSet([
+                parent::__construct(new \Graphpinator\Type\Utils\InterfaceSet([TestSchema::getInterface()]));
+            }
+
+            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+            {
+                return new \Graphpinator\Field\ResolvableFieldSet([
                     new \Graphpinator\Field\ResolvableField('name', \Graphpinator\Type\Container\Container::String(), function (\stdClass $parent) {
                         return $parent->name;
                     })
-                ]), new \Graphpinator\Type\Utils\InterfaceSet([TestSchema::getInterface()]));
+                ]);
             }
         };
     }
@@ -163,11 +170,11 @@ final class TestSchema
         {
             protected const NAME = 'TestInterface';
 
-            public function __construct()
+            protected function getFieldDefinition(): \Graphpinator\Field\FieldSet
             {
-                parent::__construct(new \Graphpinator\Field\FieldSet([
+                return new \Graphpinator\Field\FieldSet([
                     new \Graphpinator\Field\Field('name', \Graphpinator\Type\Container\Container::String()),
-                ]));
+                ]);
             }
         };
     }

@@ -29,6 +29,8 @@ abstract class ScalarType extends \Graphpinator\Type\Contract\ConcreteDefinition
         return \Graphpinator\Value\ScalarValue::create($rawValue, $this);
     }
 
+    public function getTypeKind() : string
     {
+        return \Graphpinator\Type\Introspection\TypeKind::SCALAR;
     }
 }

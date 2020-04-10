@@ -77,4 +77,9 @@ final class ListType extends \Graphpinator\Type\Contract\ModifierDefinition
     {
         return new \Graphpinator\Type\NotNullType($this);
     }
+
+    public function getTypeKind() : string
+    {
+        return \Graphpinator\Type\Introspection\TypeKind::LIST;
+    }
 }

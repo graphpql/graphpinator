@@ -11,14 +11,11 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
     use \Graphpinator\Type\Contract\TResolvable;
     use \Graphpinator\Type\Utils\TInterfaceImplementor;
 
-    protected \Graphpinator\Field\ResolvableFieldSet $fields;
+    protected ?\Graphpinator\Field\ResolvableFieldSet $metaFields = null;
 
-    public function __construct(\Graphpinator\Field\ResolvableFieldSet $fields, ?\Graphpinator\Type\Utils\InterfaceSet $implements = null)
+    public function __construct(?\Graphpinator\Type\Utils\InterfaceSet $implements = null)
     {
-        $this->fields = $fields;
         $this->implements = $implements ?? new \Graphpinator\Type\Utils\InterfaceSet([]);
-
-        $this->validateInterfaces();
     }
 
     public function createValue($rawValue) : \Graphpinator\Value\ValidatedValue
@@ -35,11 +32,6 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
         return parent::isInstanceOf($type);
     }
 
-    public function getFields() : \Graphpinator\Field\ResolvableFieldSet
-    {
-        return $this->fields;
-    }
-
     public function resolveFields(?\Graphpinator\Normalizer\FieldSet $requestedFields, \Graphpinator\Resolver\FieldResult $parentResult) : array
     {
         if ($requestedFields === null) {
@@ -53,7 +45,7 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
                 continue;
             }
 
-            $field = $this->fields[$request->getName()];
+            $field = $this->getMetaFields()[$request->getName()] ?? $this->getFields()[$request->getName()];
             $arguments = new \Graphpinator\Normalizer\ArgumentValueSet($request->getArguments(), $field->getArguments());
             $innerResult = $field->resolve($parentResult, $arguments);
 
@@ -61,5 +53,41 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
         }
 
         return $resolved;
+    }
+
+    public function getTypeKind() : string
+    {
+        return \Graphpinator\Type\Introspection\TypeKind::OBJECT;
+    }
+
+    public function getMetaFields() : \Graphpinator\Field\ResolvableFieldSet
+    {
+        if (!$this->metaFields instanceof \Graphpinator\Field\ResolvableFieldSet) {
+            $this->metaFields = $this->getMetaFieldDefinition();
+        }
+
+        return $this->metaFields;
+    }
+
+    public function addMetaField(\Graphpinator\Field\ResolvableField $field) : void
+    {
+        if ($this->getMetaFields()->offsetExists($field->getName())) {
+            throw new \Exception('This metafield already exists');
+        }
+
+        $this->metaFields->offsetSet($field->getName(), $field);
+    }
+
+    abstract protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet;
+
+    private function getMetaFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+    {
+        return new \Graphpinator\Field\ResolvableFieldSet([
+            new \Graphpinator\Field\ResolvableField(
+                '__typename',
+                \Graphpinator\Type\Container\Container::String()->notNull(),
+                function() { return $this->getName(); },
+            ),
+        ]);
     }
 }

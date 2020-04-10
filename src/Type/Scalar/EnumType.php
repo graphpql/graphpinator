@@ -43,4 +43,9 @@ abstract class EnumType extends ScalarType
 
         throw new \Exception('Unkwown enum value');
     }
+
+    public function getTypeKind() : string
+    {
+        return \Graphpinator\Type\Introspection\TypeKind::ENUM;
+    }
 }

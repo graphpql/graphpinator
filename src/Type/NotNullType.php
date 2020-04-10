@@ -44,4 +44,9 @@ final class NotNullType extends \Graphpinator\Type\Contract\ModifierDefinition
 
         return false;
     }
+
+    public function getTypeKind() : string
+    {
+        return \Graphpinator\Type\Introspection\TypeKind::NON_NULL;
+    }
 }

@@ -4,25 +4,18 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Type;
 
-use Graphpinator\Type\Contract\AbstractDefinition;
-use Graphpinator\Type\Contract\Definition;
-use Graphpinator\Type\Contract\Outputable;
-
-abstract class InterfaceType extends AbstractDefinition implements Outputable, \Graphpinator\Type\Utils\InterfaceImplementor
+abstract class InterfaceType extends \Graphpinator\Type\Contract\AbstractDefinition implements
+    \Graphpinator\Type\Contract\Outputable,
+    \Graphpinator\Type\Utils\InterfaceImplementor
 {
     use \Graphpinator\Type\Utils\TInterfaceImplementor;
 
-    protected \Graphpinator\Field\FieldSet $fields;
-
-    public function __construct(\Graphpinator\Field\FieldSet $fields, ?\Graphpinator\Type\Utils\InterfaceSet $implements = null)
+    public function __construct(?\Graphpinator\Type\Utils\InterfaceSet $implements = null)
     {
-        $this->fields = $fields;
         $this->implements = $implements ?? new \Graphpinator\Type\Utils\InterfaceSet([]);
-
-        $this->validateInterfaces();
     }
 
-    public function isInstanceOf(Definition $type) : bool
+    public function isInstanceOf(\Graphpinator\Type\Contract\Definition $type) : bool
     {
         if ($type instanceof NotNullType) {
             return $this->isInstanceOf($type->getInnerType());
@@ -32,7 +25,7 @@ abstract class InterfaceType extends AbstractDefinition implements Outputable, \
             || ($type instanceof self && $this->implements($type));
     }
 
-    public function isImplementedBy(Definition $type) : bool
+    public function isImplementedBy(\Graphpinator\Type\Contract\Definition $type) : bool
     {
         if ($type instanceof NotNullType) {
             return $this->isImplementedBy($type->getInnerType());
@@ -44,6 +37,19 @@ abstract class InterfaceType extends AbstractDefinition implements Outputable, \
 
     public function getFields() : \Graphpinator\Field\FieldSet
     {
+        if (!$this->fields instanceof \Graphpinator\Field\FieldSet) {
+            $this->fields = $this->getFieldDefinition();
+
+            $this->validateInterfaces();
+        }
+
         return $this->fields;
     }
+
+    public function getTypeKind() : string
+    {
+        return \Graphpinator\Type\Introspection\TypeKind::INTERFACE;
+    }
+
+    abstract protected function getFieldDefinition() : \Graphpinator\Field\FieldSet;
 }

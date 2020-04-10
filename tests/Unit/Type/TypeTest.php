@@ -60,9 +60,9 @@ final class TypeTest extends \PHPUnit\Framework\TestCase
         return new class extends \Graphpinator\Type\Type {
             protected const NAME = 'Abc';
 
-            public function __construct()
+            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
             {
-                parent::__construct(new \Graphpinator\Field\ResolvableFieldSet([]));
+                return new \Graphpinator\Field\ResolvableFieldSet([]);
             }
         };
     }
@@ -118,9 +118,9 @@ final class TypeTest extends \PHPUnit\Framework\TestCase
     {
         return new class extends \Graphpinator\Type\Type {
 
-            public function __construct()
+            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
             {
-                $this->fields = new \Graphpinator\Field\ResolvableFieldSet([
+                return new \Graphpinator\Field\ResolvableFieldSet([
                     new \Graphpinator\Field\ResolvableField(
                         'field1',
                         \Graphpinator\Type\Container\Container::String(),

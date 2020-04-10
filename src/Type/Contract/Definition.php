@@ -6,6 +6,8 @@ namespace Graphpinator\Type\Contract;
 
 interface Definition
 {
+    public function getTypeKind() : string;
+
     public function getNamedType() : \Graphpinator\Type\Contract\NamedDefinition;
 
     public function isInstanceOf(\Graphpinator\Type\Contract\Definition $type) : bool;

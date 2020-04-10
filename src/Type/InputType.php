@@ -48,4 +48,9 @@ abstract class InputType extends \Graphpinator\Type\Contract\ConcreteDefinition 
 
         return $core;
     }
+
+    public function getTypeKind() : string
+    {
+        return \Graphpinator\Type\Introspection\TypeKind::INPUT_OBJECT;
+    }
 }

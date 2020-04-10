@@ -53,9 +53,9 @@ final class ListTypeTest extends \PHPUnit\Framework\TestCase
         return new class extends \Graphpinator\Type\Type {
             protected const NAME = 'Abc';
 
-            public function __construct()
+            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
             {
-                parent::__construct(new \Graphpinator\Field\ResolvableFieldSet([new \Graphpinator\Field\ResolvableField(
+                return new \Graphpinator\Field\ResolvableFieldSet([new \Graphpinator\Field\ResolvableField(
                     'field',
                     \Graphpinator\Type\Container\Container::String(),
                     static function (int $parent) {
@@ -65,7 +65,7 @@ final class ListTypeTest extends \PHPUnit\Framework\TestCase
 
                         return 'foo';
                     }
-                )]));
+                )]);
             }
         };
     }

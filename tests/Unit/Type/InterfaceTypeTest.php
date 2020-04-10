@@ -34,13 +34,13 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
     public function testMissingField() : void
     {
         $this->expectException(\Exception::class);
-        self::getInvalidType1();
+        self::getInvalidType1()->getFields();
     }
 
     public function testIncompatibleType() : void
     {
         $this->expectException(\Exception::class);
-        self::getInvalidType2();
+        self::getInvalidType2()->getFields();
     }
 
     public static function getInvalidType1() : \Graphpinator\Type\Type
@@ -51,11 +51,15 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
             public function __construct()
             {
                 parent::__construct(
-                    new \Graphpinator\Field\ResolvableFieldSet([]),
                     new \Graphpinator\Type\Utils\InterfaceSet([
                         InterfaceTypeTest::createTestInterface(),
                     ])
                 );
+            }
+
+            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+            {
+                return new \Graphpinator\Field\ResolvableFieldSet([]);
             }
         };
     }
@@ -68,14 +72,18 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
             public function __construct()
             {
                 parent::__construct(
-                    new \Graphpinator\Field\ResolvableFieldSet([
-                        new \Graphpinator\Field\ResolvableField('name', \Graphpinator\Type\Container\Container::String(), function (){}),
-                        new \Graphpinator\Field\ResolvableField('otherName', \Graphpinator\Type\Container\Container::Boolean(), function (){}),
-                    ]),
                     new \Graphpinator\Type\Utils\InterfaceSet([
                         InterfaceTypeTest::createTestInterface(),
                     ])
                 );
+            }
+
+            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+            {
+                return new \Graphpinator\Field\ResolvableFieldSet([
+                    new \Graphpinator\Field\ResolvableField('name', \Graphpinator\Type\Container\Container::String(), function (){}),
+                    new \Graphpinator\Field\ResolvableField('otherName', \Graphpinator\Type\Container\Container::Boolean(), function (){}),
+                ]);
             }
         };
     }
@@ -88,14 +96,18 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
             public function __construct()
             {
                 parent::__construct(
-                    new \Graphpinator\Field\FieldSet([
-                        new \Graphpinator\Field\Field('name', \Graphpinator\Type\Container\Container::String()),
-                        new \Graphpinator\Field\Field('otherName', \Graphpinator\Type\Container\Container::Int()->notNull()),
-                    ]),
                     new \Graphpinator\Type\Utils\InterfaceSet([
                         InterfaceTypeTest::createTestParentInterface(),
                     ])
                 );
+            }
+
+            protected function getFieldDefinition() : \Graphpinator\Field\FieldSet
+            {
+                return new \Graphpinator\Field\FieldSet([
+                    new \Graphpinator\Field\Field('name', \Graphpinator\Type\Container\Container::String()),
+                    new \Graphpinator\Field\Field('otherName', \Graphpinator\Type\Container\Container::Int()->notNull()),
+                ]);
             }
         };
     }
@@ -105,13 +117,11 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
         return new class extends \Graphpinator\Type\InterfaceType {
             protected const NAME = 'Bar';
 
-            public function __construct()
+            protected function getFieldDefinition() : \Graphpinator\Field\FieldSet
             {
-                parent::__construct(
-                    new \Graphpinator\Field\FieldSet([
-                        new \Graphpinator\Field\Field('name', \Graphpinator\Type\Container\Container::String())
-                    ]),
-                );
+                return new \Graphpinator\Field\FieldSet([
+                    new \Graphpinator\Field\Field('name', \Graphpinator\Type\Container\Container::String())
+                ]);
             }
         };
     }
@@ -121,11 +131,9 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
         return new class extends \Graphpinator\Type\Type {
             protected const NAME = 'Abc';
 
-            public function __construct()
+            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
             {
-                parent::__construct(
-                    new \Graphpinator\Field\ResolvableFieldSet([])
-                );
+                return new \Graphpinator\Field\ResolvableFieldSet([]);
             }
         };
     }
@@ -138,14 +146,18 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
             public function __construct()
             {
                 parent::__construct(
-                    new \Graphpinator\Field\ResolvableFieldSet([
-                        new \Graphpinator\Field\ResolvableField('name', \Graphpinator\Type\Container\Container::String(), function (){}),
-                        new \Graphpinator\Field\ResolvableField('otherName', \Graphpinator\Type\Container\Container::Int(), function (){}),
-                    ]),
                     new \Graphpinator\Type\Utils\InterfaceSet([
                         InterfaceTypeTest::createTestInterface(),
                     ])
                 );
+            }
+
+            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+            {
+                return new \Graphpinator\Field\ResolvableFieldSet([
+                    new \Graphpinator\Field\ResolvableField('name', \Graphpinator\Type\Container\Container::String(), function (){}),
+                    new \Graphpinator\Field\ResolvableField('otherName', \Graphpinator\Type\Container\Container::Int(), function (){}),
+                ]);
             }
         };
     }
@@ -158,13 +170,17 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
             public function __construct()
             {
                 parent::__construct(
-                    new \Graphpinator\Field\ResolvableFieldSet([
-                        new \Graphpinator\Field\ResolvableField('name', \Graphpinator\Type\Container\Container::String(), function (){}),
-                    ]),
                     new \Graphpinator\Type\Utils\InterfaceSet([
                         InterfaceTypeTest::createTestParentInterface(),
                     ])
                 );
+            }
+
+            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+            {
+                return new \Graphpinator\Field\ResolvableFieldSet([
+                    new \Graphpinator\Field\ResolvableField('name', \Graphpinator\Type\Container\Container::String(), function (){}),
+                ]);
             }
         };
     }

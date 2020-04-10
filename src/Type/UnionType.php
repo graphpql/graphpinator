@@ -13,6 +13,11 @@ abstract class UnionType extends \Graphpinator\Type\Contract\AbstractDefinition 
         $this->types = $types;
     }
 
+    public function getTypes() : \Graphpinator\Type\Utils\ConcreteSet
+    {
+        return $this->types;
+    }
+
     public function isInstanceOf(\Graphpinator\Type\Contract\Definition $type) : bool
     {
         if ($type instanceof NotNullType) {
@@ -31,5 +36,10 @@ abstract class UnionType extends \Graphpinator\Type\Contract\AbstractDefinition 
         }
 
         return false;
+    }
+
+    public function getTypeKind() : string
+    {
+        return \Graphpinator\Type\Introspection\TypeKind::UNION;
     }
 }
