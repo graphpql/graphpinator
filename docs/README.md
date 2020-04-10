@@ -1,6 +1,6 @@
 # Documentation
 
-Hello. We are happy you consider using this library. Here is some useful links:
+Hello! We are happy you consider using this library. There are some useful links:
 
 ## General:
 
