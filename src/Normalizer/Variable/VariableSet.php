@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Normalizer\Variable;
 
-final class VariableSet extends \Graphpinator\ClassSet
+final class VariableSet extends \Graphpinator\Utils\ClassSet
 {
     public const INNER_CLASS = Variable::class;
 

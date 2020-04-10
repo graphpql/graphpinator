@@ -2,12 +2,12 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Type\Utils;
+namespace Graphpinator\Utils;
 
 /**
  * Class InterfaceSet which is type safe container for InterfaceTypes.
  */
-final class InterfaceSet extends \Graphpinator\ClassSet
+final class InterfaceSet extends \Graphpinator\Utils\ClassSet
 {
     public const INNER_CLASS = \Graphpinator\Type\InterfaceType::class;
 

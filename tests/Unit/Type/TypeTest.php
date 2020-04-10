@@ -32,7 +32,7 @@ final class TypeTest extends \PHPUnit\Framework\TestCase
             public function __construct()
             {
                 parent::__construct(
-                    new \Graphpinator\Type\Utils\ConcreteSet([
+                    new \Graphpinator\Utils\ConcreteSet([
                         TypeTest::getTestTypeAbc(),
                     ])
                 );
@@ -48,7 +48,7 @@ final class TypeTest extends \PHPUnit\Framework\TestCase
             public function __construct()
             {
                 parent::__construct(
-                    new \Graphpinator\Type\Utils\ConcreteSet([
+                    new \Graphpinator\Utils\ConcreteSet([
                     ])
                 );
             }

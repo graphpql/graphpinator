@@ -53,7 +53,7 @@ final class Type extends \Graphpinator\Type\Type
                 'fields',
                 \Graphpinator\Type\Container\Container::introspectionField()->notNull()->list(),
                 static function (\Graphpinator\Type\Contract\Definition $definition) : ?\Graphpinator\Field\FieldSet {
-                    return $definition instanceof \Graphpinator\Type\Utils\InterfaceImplementor
+                    return $definition instanceof \Graphpinator\Type\Contract\InterfaceImplementor
                         ? $definition->getFields()
                         : null;
                 },
@@ -61,8 +61,8 @@ final class Type extends \Graphpinator\Type\Type
             new \Graphpinator\Field\ResolvableField(
                 'interfaces',
                 $this->notNull()->list(),
-                static function (\Graphpinator\Type\Contract\Definition $definition) : ?\Graphpinator\Type\Utils\InterfaceSet {
-                    return $definition instanceof \Graphpinator\Type\Utils\InterfaceImplementor
+                static function (\Graphpinator\Type\Contract\Definition $definition) : ?\Graphpinator\Utils\InterfaceSet {
+                    return $definition instanceof \Graphpinator\Type\Contract\InterfaceImplementor
                         ? $definition->getInterfaces()
                         : null;
                 },
@@ -70,7 +70,7 @@ final class Type extends \Graphpinator\Type\Type
             new \Graphpinator\Field\ResolvableField(
                 'possibleTypes',
                 $this->notNull()->list(),
-                static function (\Graphpinator\Type\Contract\Definition $definition) : ?\Graphpinator\Type\Utils\ConcreteSet {
+                static function (\Graphpinator\Type\Contract\Definition $definition) : ?\Graphpinator\Utils\ConcreteSet {
                     if ($definition instanceof \Graphpinator\Type\UnionType) {
                         return $definition->getTypes();
                     }

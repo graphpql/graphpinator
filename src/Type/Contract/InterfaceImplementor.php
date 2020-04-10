@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Type\Utils;
+namespace Graphpinator\Type\Contract;
 
 /**
  * Interface InterfaceImplementor which marks types which can implement interface - currently Type and Interface.
@@ -17,7 +17,7 @@ interface InterfaceImplementor
     /**
      * Returns interfaces, which this type implements.
      */
-    public function getInterfaces() : InterfaceSet;
+    public function getInterfaces() : \Graphpinator\Utils\InterfaceSet;
 
     /**
      * Checks whether this type implements given interface.

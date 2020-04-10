@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Parser\Fragment;
 
-final class FragmentSet extends \Graphpinator\ClassSet
+final class FragmentSet extends \Graphpinator\Utils\ClassSet
 {
     public const INNER_CLASS = Fragment::class;
 

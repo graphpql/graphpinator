@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Parser\Value;
 
-final class NamedValueSet extends \Graphpinator\ClassSet
+final class NamedValueSet extends \Graphpinator\Utils\ClassSet
 {
     public const INNER_CLASS = NamedValue::class;
 

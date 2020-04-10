@@ -6,16 +6,16 @@ namespace Graphpinator\Type;
 
 abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition implements
     \Graphpinator\Type\Contract\Resolvable,
-    \Graphpinator\Type\Utils\InterfaceImplementor
+    \Graphpinator\Type\Contract\InterfaceImplementor
 {
     use \Graphpinator\Type\Contract\TResolvable;
-    use \Graphpinator\Type\Utils\TInterfaceImplementor;
+    use \Graphpinator\Type\Contract\TInterfaceImplementor;
 
     protected ?\Graphpinator\Field\ResolvableFieldSet $metaFields = null;
 
-    public function __construct(?\Graphpinator\Type\Utils\InterfaceSet $implements = null)
+    public function __construct(?\Graphpinator\Utils\InterfaceSet $implements = null)
     {
-        $this->implements = $implements ?? new \Graphpinator\Type\Utils\InterfaceSet([]);
+        $this->implements = $implements ?? new \Graphpinator\Utils\InterfaceSet([]);
     }
 
     public function createValue($rawValue) : \Graphpinator\Value\ValidatedValue

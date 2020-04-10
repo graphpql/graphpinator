@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Type\Scalar;
 
-final class EnumItemSet extends \Graphpinator\ClassSet
+final class EnumItemSet extends \Graphpinator\Utils\ClassSet
 {
     public const INNER_CLASS = EnumItem::class;
 

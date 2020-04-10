@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Resolver;
 
-final class FieldSetResult extends \Graphpinator\ClassSet
+final class FieldSetResult extends \Graphpinator\Utils\ClassSet
 {
     public const INNER_CLASS = FieldResult::class;
 

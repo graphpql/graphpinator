@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Parser;
 
-final class FieldSet extends \Graphpinator\ClassSet
+final class FieldSet extends \Graphpinator\Utils\ClassSet
 {
     public const INNER_CLASS = Field::class;
 

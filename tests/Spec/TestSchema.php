@@ -115,7 +115,7 @@ final class TestSchema
 
             public function __construct()
             {
-                parent::__construct(new \Graphpinator\Type\Utils\InterfaceSet([TestSchema::getInterface()]));
+                parent::__construct(new \Graphpinator\Utils\InterfaceSet([TestSchema::getInterface()]));
             }
 
             protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
@@ -187,7 +187,7 @@ final class TestSchema
 
             public function __construct()
             {
-                parent::__construct(new \Graphpinator\Type\Utils\ConcreteSet([
+                parent::__construct(new \Graphpinator\Utils\ConcreteSet([
                     TestSchema::getTypeAbc(),
                     TestSchema::getTypeXyz(),
                 ]));

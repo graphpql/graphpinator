@@ -30,7 +30,7 @@ final class UnionTypeTest extends \PHPUnit\Framework\TestCase
             public function __construct()
             {
                 parent::__construct(
-                    new \Graphpinator\Type\Utils\ConcreteSet([
+                    new \Graphpinator\Utils\ConcreteSet([
                         UnionTypeTest::getTestTypeXyz(),
                         UnionTypeTest::getTestTypeZzz(),
                     ])

@@ -6,14 +6,14 @@ namespace Graphpinator\Type;
 
 abstract class UnionType extends \Graphpinator\Type\Contract\AbstractDefinition implements \Graphpinator\Type\Contract\Outputable
 {
-    protected \Graphpinator\Type\Utils\ConcreteSet $types;
+    protected \Graphpinator\Utils\ConcreteSet $types;
 
-    public function __construct(\Graphpinator\Type\Utils\ConcreteSet $types)
+    public function __construct(\Graphpinator\Utils\ConcreteSet $types)
     {
         $this->types = $types;
     }
 
-    public function getTypes() : \Graphpinator\Type\Utils\ConcreteSet
+    public function getTypes() : \Graphpinator\Utils\ConcreteSet
     {
         return $this->types;
     }

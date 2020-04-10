@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator;
+namespace Graphpinator\Utils;
 
 abstract class ClassSet extends \Infinityloop\Utils\ImmutableSet
 {

@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Type\Utils;
+namespace Graphpinator\Type\Contract;
 
 /**
  * Trait TInterfaceImplementor which is implementation of InterfaceImplementor interface.
@@ -10,12 +10,12 @@ namespace Graphpinator\Type\Utils;
 trait TInterfaceImplementor
 {
     protected ?\Graphpinator\Field\FieldSet $fields = null;
-    protected \Graphpinator\Type\Utils\InterfaceSet $implements;
+    protected \Graphpinator\Utils\InterfaceSet $implements;
 
     /**
      * Returns interfaces, which this type implements.
      */
-    public function getInterfaces() : InterfaceSet
+    public function getInterfaces() : \Graphpinator\Utils\InterfaceSet
     {
         return $this->implements;
     }

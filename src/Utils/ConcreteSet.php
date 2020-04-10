@@ -2,12 +2,12 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Type\Utils;
+namespace Graphpinator\Utils;
 
 /**
  * Class ConcreteSet which is type safe container for ConcreteTypes.
  */
-final class ConcreteSet extends \Graphpinator\ClassSet
+final class ConcreteSet extends \Graphpinator\Utils\ClassSet
 {
     public const INNER_CLASS = \Graphpinator\Type\Contract\ConcreteDefinition::class;
 

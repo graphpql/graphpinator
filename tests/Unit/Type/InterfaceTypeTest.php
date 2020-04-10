@@ -51,7 +51,7 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
             public function __construct()
             {
                 parent::__construct(
-                    new \Graphpinator\Type\Utils\InterfaceSet([
+                    new \Graphpinator\Utils\InterfaceSet([
                         InterfaceTypeTest::createTestInterface(),
                     ])
                 );
@@ -72,7 +72,7 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
             public function __construct()
             {
                 parent::__construct(
-                    new \Graphpinator\Type\Utils\InterfaceSet([
+                    new \Graphpinator\Utils\InterfaceSet([
                         InterfaceTypeTest::createTestInterface(),
                     ])
                 );
@@ -96,7 +96,7 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
             public function __construct()
             {
                 parent::__construct(
-                    new \Graphpinator\Type\Utils\InterfaceSet([
+                    new \Graphpinator\Utils\InterfaceSet([
                         InterfaceTypeTest::createTestParentInterface(),
                     ])
                 );
@@ -146,7 +146,7 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
             public function __construct()
             {
                 parent::__construct(
-                    new \Graphpinator\Type\Utils\InterfaceSet([
+                    new \Graphpinator\Utils\InterfaceSet([
                         InterfaceTypeTest::createTestInterface(),
                     ])
                 );
@@ -170,7 +170,7 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
             public function __construct()
             {
                 parent::__construct(
-                    new \Graphpinator\Type\Utils\InterfaceSet([
+                    new \Graphpinator\Utils\InterfaceSet([
                         InterfaceTypeTest::createTestParentInterface(),
                     ])
                 );
