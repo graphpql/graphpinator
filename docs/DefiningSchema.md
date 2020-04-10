@@ -199,9 +199,9 @@ class Character extends \Graphpinator\Type\InterfaceType
 }
 ```
 
-Fields are defined using `getFieldDefinition` function using the same concept as for defining Types. The only difference is absence of resolve function, because Interface cannot be resolved directly. Field definitions are used to validate contract with types implementing this interface.
+Fields are defined using `getFieldDefinition` function using the same concept as for defining Types. The only difference is absence of resolve function, because Interfaces cannot be resolved directly. Field definitions are used to validate contract with Types implementing this interface.
 
-Interfaces can also implement other interfaces using the same definition as types - passing `InterfaceSet` into parent constructor.
+Interfaces can also implement other interfaces using the same procedure as types - passing `InterfaceSet` into parent constructor.
 
 ### Union
 
