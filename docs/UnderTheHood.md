@@ -8,7 +8,7 @@ Lets take a look at following paragraphs, which describe execution process and c
 
 ## Parsing - understanding the request
 
-Parsing stage is responsible for understanding the request and validation of GraphQL syntax, without any knowledge about Schema itself. Result of parsing is object representing the request in a compact way.
+Parsing stage is responsible for understanding the request and validation of GraphQL syntax, without any knowledge about Schema itself. Result of parsing is object representing the request in a structured and easily traversable way.
 
 ### Source\Source
 
@@ -40,14 +40,19 @@ compact objects representing request's operations and fragments.
 
 ## Normalizing - validating and comparing request against given schema
 
-Normalizing stage is responsible for converting `Parser\ParseResult` into `Request\Operation`, which is a fully validated object that can be executed and resolved in next stage.
+Normalizing stage is basicaly putting together ParseResult and Schema. It is responsible for converting `Parser\ParseResult` into `Request\Operation`, which is a fully validated object that can be executed and resolved in next stage.
 
 Converting `ParseResult` is operation that consist of few sub-operations:
   - Explode fragment spreads into fields.
-  - Replace Type references (in fragment Type conditions) with Types from schema.
-  - Validate Variable default values and types.
+  - Replace Type references (string representation of Type) with instances of Types from Schema.
+  - Validate Variable default values and Types.
+
+Result of normalization is a new object, which does not modify the result from parsing. `ParseResult` can therefore be used again and normalized against different schema without parsing the string again. This is barely useful feature (how many times are you going to use the same request for multiple schemas), but it is done in order to keep the interface uniformed - execution also doesnt modify normalization result in order to possibly use it again with different variables, which is more common scenario.
 
 ***
 
 ## Resolving - executing the request
 
+Resolving is the final step towards getting the data client asked for. At first, it takes Json of variables and replaces variable references with literal values. Then resolves request using tree structure of types and fields.
+
+Result of resolving is `ExecutionResult`. Previous stage result remained intact, in order to use it again with different set of variables.
