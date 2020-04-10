@@ -130,11 +130,18 @@ Fields are defined using `getFieldDefinition` function. This is (apart from seco
 
 Types of fields or input types for arguments are instances of desired type.
 
-### Scalar
+#### Implementing interface
 
-### Enum
+In order to make Type implement interface, pass `InterfaceSet` to parent constructor.
 
-### Input
+```
+public function __construct(\Graphpinator\Type\InterfaceType $interfaceType)
+{
+    parent::__construct(new \Graphpinator\Utils\InterfaceSet([$interfaceType]));
+}
+```
+
+Validation against interface contract is done right after lazy-loading of fields.
 
 ### Interface
 
@@ -215,6 +222,12 @@ class SearchResult extends \Graphpinator\Type\UnionType
     }
 }
 ```
+
+### Scalar
+
+### Enum
+
+### Input
 
 
 ## Creating schema
