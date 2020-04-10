@@ -138,6 +138,8 @@ Types of fields or input types for arguments are instances of desired type.
 
 ### Interface
 
+> \Graphpinator\Type\InterfaceType
+
 ```
 interface Character {
   id: ID!
@@ -153,9 +155,9 @@ interface Character {
 use Graphpinator\Field\Field;
 use Graphpinator\Type\Container\Container;
 
-class Starship extends \Graphpinator\Type\Type
+class Character extends \Graphpinator\Type\InterfaceType
 {
-  protected const NAME = 'Starship';
+  protected const NAME = 'Character';
   
   private \Graphpinator\Type\EnumType $episode;
   private \Graphpinator\Type\Type $character;
@@ -192,7 +194,28 @@ class Starship extends \Graphpinator\Type\Type
 
 Fields are defined using `getFieldDefinition` function using the same concept as for defining Types. The only difference is absence of resolve function, because Interface cannot be resolved directly. Field definitions are used to validate contract with types implementing this interface.
 
+Interfaces can also implement other interfaces using the same definition as types - passing `InterfaceSet` into parent constructor.
+
 ### Union
+
+> \Graphpinator\Type\UnionType
+
+```
+union SearchResult = Human | Droid | Starship
+```
+
+```
+class SearchResult extends \Graphpinator\Type\UnionType
+{
+    protected const NAME = 'SearchResult';
+
+    public function __construct(\Graphpinator\Type\Type $human, \Graphpinator\Type\Type $droid, \Graphpinator\Type\Type $starship)
+    {
+        parent::__construct(new \Graphpinator\Utils\ConcreteSet([$human, $droid, $starship]));
+    }
+}
+```
+
 
 ## Creating schema
 
