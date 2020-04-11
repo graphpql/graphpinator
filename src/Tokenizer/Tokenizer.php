@@ -13,6 +13,17 @@ final class Tokenizer implements \Iterator
     protected ?Token $token;
     protected ?int $tokenStartIndex;
 
+    private const ESCAPE_MAP = [
+        '"' => '"',
+        '\\' => '\\',
+        '/' => '/',
+        'b' => "\u{0008}",
+        'f' => "\u{000C}",
+        'n' => "\u{000A}",
+        'r' => "\u{000D}",
+        't' => "\u{0009}",
+    ];
+
     public function __construct(\Graphpinator\Source\Source $source, bool $skipNotRelevant = true)
     {
         $this->source = $source;
@@ -82,11 +93,24 @@ final class Tokenizer implements \Iterator
 
         switch ($this->source->getChar()) {
             case '"':
-                $this->source->next();
-                $this->token = new Token(TokenType::STRING, $this->eatString());
-                $this->source->next();
+                $quotes = $this->eatChars(static function (string $char) : bool { return $char === '"'; });
 
-                return;
+                switch (\strlen($quotes)) {
+                    case 1:
+                        $this->token = new Token(TokenType::STRING, $this->eatString());
+
+                        return;
+                    case 2:
+                        $this->token = new Token(TokenType::STRING, '');
+
+                        return;
+                    case 3:
+                        $this->token = new Token(TokenType::STRING, $this->eatBlockString());
+
+                        return;
+                    default:
+                        throw new \Exception('Invalid string literal');
+                }
             case \PHP_EOL:
                 $this->token = new Token(TokenType::NEWLINE);
                 $this->source->next();
@@ -218,7 +242,38 @@ final class Tokenizer implements \Iterator
 
     private function eatString() : string
     {
-        return $this->eatChars(static function (string $char) : bool { return $char !== '"'; });
+        $value = '';
+
+        for (; $this->source->hasChar(); $this->source->next()) {
+            $char = $this->source->getChar();
+
+            switch ($char) {
+                case \PHP_EOL:
+                    throw new \Exception('Use block string literal instead');
+                case '"':
+                    $this->source->next();
+
+                    return $value;
+                case '\\':
+                    $char = $this->eatEscapeChar();
+            }
+
+            $value .= $char;
+        }
+
+        return $value;
+    }
+
+    private function eatEscapeChar() : string
+    {
+        $this->source->next();
+        $escapedChar = $this->source->getChar();
+
+        if (!\array_key_exists($escapedChar, self::ESCAPE_MAP)) {
+            throw new \Exception('Unknown escape character.');
+        }
+
+        return self::ESCAPE_MAP[$escapedChar];
     }
 
     private function eatInt(bool $negative = true, bool $leadingZeros = true) : string

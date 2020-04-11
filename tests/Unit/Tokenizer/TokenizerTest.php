@@ -12,8 +12,38 @@ final class TokenizerTest extends \PHPUnit\Framework\TestCase
     public function simpleDataProvider() : array
     {
         return [
+            ['""', [
+                new Token(TokenType::STRING, ''),
+            ]],
             ['"ěščřžýá"', [
                 new Token(TokenType::STRING, 'ěščřžýá'),
+            ]],
+            ['"\\""', [
+                new Token(TokenType::STRING, '"'),
+            ]],
+            ['"\\\\"', [
+                new Token(TokenType::STRING, '\\'),
+            ]],
+            ['"\\/"', [
+                new Token(TokenType::STRING, '/'),
+            ]],
+            ['"\\b"', [
+                new Token(TokenType::STRING, "\u{0008}"),
+            ]],
+            ['"\\f"', [
+                new Token(TokenType::STRING, "\u{000C}"),
+            ]],
+            ['"\\n"', [
+                new Token(TokenType::STRING, "\u{000A}"),
+            ]],
+            ['"\\r"', [
+                new Token(TokenType::STRING, "\u{000D}"),
+            ]],
+            ['"\\t"', [
+                new Token(TokenType::STRING, "\u{0009}"),
+            ]],
+            ['"blabla\\t\\"\\nfoobar"', [
+                new Token(TokenType::STRING, "blabla\u{0009}\"\u{000A}foobar"),
             ]],
             ['4', [
                 new Token(TokenType::INT, '4'),
@@ -240,6 +270,9 @@ final class TokenizerTest extends \PHPUnit\Framework\TestCase
     public function invalidDataProvider() : array
     {
         return [
+            ['"""""'],
+            ['"\\1"'],
+            ['"' . \PHP_EOL . '"'],
             ['- 123'],
             ['123.'],
             ['123.1e'],
