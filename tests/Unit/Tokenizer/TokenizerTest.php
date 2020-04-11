@@ -45,6 +45,33 @@ final class TokenizerTest extends \PHPUnit\Framework\TestCase
             ['"blabla\\t\\"\\nfoobar"', [
                 new Token(TokenType::STRING, "blabla\u{0009}\"\u{000A}foobar"),
             ]],
+            ['"""' . \PHP_EOL . '"""', [
+                new Token(TokenType::STRING, ''),
+            ]],
+            ['"""' . \PHP_EOL . \PHP_EOL . \PHP_EOL . '"""', [
+                new Token(TokenType::STRING, ''),
+            ]],
+            ['"""' . \PHP_EOL . \PHP_EOL . 'foo' . \PHP_EOL . \PHP_EOL . '"""', [
+                new Token(TokenType::STRING, 'foo'),
+            ]],
+            ['"""' . \PHP_EOL . \PHP_EOL . '       foo' . \PHP_EOL . \PHP_EOL . '"""', [
+                new Token(TokenType::STRING, 'foo'),
+            ]],
+            ['"""' . \PHP_EOL . ' foo' . \PHP_EOL . '       foo' . \PHP_EOL . '"""', [
+                new Token(TokenType::STRING, 'foo' . \PHP_EOL . '      foo'),
+            ]],
+            ['"""\\n"""', [
+                new Token(TokenType::STRING, "\\n"),
+            ]],
+            ['"""\\""""""', [
+                new Token(TokenType::STRING, '"""'),
+            ]],
+            ['"""\\\\""""""', [
+                new Token(TokenType::STRING, '\\"""'),
+            ]],
+            ['"""abc\\"""abc"""', [
+                new Token(TokenType::STRING, 'abc"""abc'),
+            ]],
             ['4', [
                 new Token(TokenType::INT, '4'),
             ]],
@@ -270,9 +297,12 @@ final class TokenizerTest extends \PHPUnit\Framework\TestCase
     public function invalidDataProvider() : array
     {
         return [
-            ['"""""'],
+            ['"foo'],
             ['"\\1"'],
             ['"' . \PHP_EOL . '"'],
+            ['"""""'],
+            ['"""\\""""'],
+            ['"""abc""""'],
             ['- 123'],
             ['123.'],
             ['123.1e'],
@@ -321,5 +351,27 @@ final class TokenizerTest extends \PHPUnit\Framework\TestCase
             self::assertSame($indexes[$index], $key);
             ++$index;
         }
+    }
+
+    public function testBlockStringIndent() : void
+    {
+        $source1 = new \Graphpinator\Source\StringSource('"""'. \PHP_EOL .
+            '    Hello,' . \PHP_EOL .
+            '      World!' . \PHP_EOL .
+            \PHP_EOL .
+            '    Yours,' . \PHP_EOL .
+            '      GraphQL.' . \PHP_EOL .
+            '"""');
+        $source2 = new \Graphpinator\Source\StringSource('"Hello,\\n  World!\\n\\nYours,\\n  GraphQL."');
+
+        $tokenizer = new \Graphpinator\Tokenizer\Tokenizer($source1);
+        $tokenizer->rewind();
+        $token1 = $tokenizer->current();
+        $tokenizer = new \Graphpinator\Tokenizer\Tokenizer($source2);
+        $tokenizer->rewind();
+        $token2 = $tokenizer->current();
+
+        self::assertSame($token1->getType(), $token2->getType());
+        self::assertSame($token1->getValue(), $token2->getValue());
     }
 }

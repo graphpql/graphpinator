@@ -10,8 +10,8 @@ final class Tokenizer implements \Iterator
 
     private \Graphpinator\Source\Source $source;
     protected bool $skipNotRelevant;
-    protected ?Token $token;
-    protected ?int $tokenStartIndex;
+    protected ?Token $token = null;
+    protected ?int $tokenStartIndex = null;
 
     private const ESCAPE_MAP = [
         '"' => '"',
@@ -161,7 +161,7 @@ final class Tokenizer implements \Iterator
                 $dots = $this->eatChars(static function (string $char) : bool { return $char === '.'; });
 
                 if (\strlen($dots) !== 3) {
-                    throw new \Exception();
+                    throw new \Exception('Invalid ellipsis');
                 }
 
                 $this->token = new Token(TokenType::ELLIP);
@@ -261,7 +261,103 @@ final class Tokenizer implements \Iterator
             $value .= $char;
         }
 
-        return $value;
+        throw new \Exception('String literal has no end.');
+    }
+
+    private function eatBlockString() : string
+    {
+        $value = '';
+
+        while ($this->source->hasChar()) {
+            switch ($this->source->getChar()) {
+                case '"':
+                    $quotes = $this->eatChars(static function (string $char) : bool { return $char === '"'; });
+
+                    if (\strlen($quotes) === 3) {
+                        return $this->formatBlockString($value);
+                    }
+
+                    if (\strlen($quotes) > 3) {
+                        throw new \Exception('Invalid block string escape sequence');
+                    }
+
+                    $value .= $quotes;
+
+                    continue 2;
+                case '\\':
+                    $this->source->next();
+                    $quotes = $this->eatChars(static function (string $char) : bool { return $char === '"'; }, 3);
+
+                    if (\strlen($quotes) === 3) {
+                        $value .= '"""';
+                    } else {
+                        $value .= '\\' . $quotes;
+                    }
+
+                    continue 2;
+                default:
+                    $value .= $this->source->getChar();
+                    $this->source->next();
+            }
+        }
+
+        throw new \Exception('String literal has no end');
+    }
+
+    private function formatBlockString(string $value) : string
+    {
+        $lines = \explode(\PHP_EOL, $value);
+        $lineCount = \count($lines);
+
+        while ($lineCount > 0) {
+            $first = \array_key_first($lines);
+
+            if ($lines[$first] === '' || \ctype_space($lines[$first])) {
+                unset($lines[$first]);
+                --$lineCount;
+
+                continue;
+            }
+
+            $last = \array_key_last($lines);
+
+            if ($lines[$last] === '' || \ctype_space($lines[$last])) {
+                unset($lines[$last]);
+                --$lineCount;
+
+                continue;
+            }
+
+            break;
+        }
+
+        $commonWhitespace = null;
+
+        foreach ($lines as $line) {
+            $trim = \ltrim($line);
+
+            if ($trim === '') {
+                continue;
+            }
+
+            $whitespaceCount = \strlen($line) - \strlen($trim);
+
+            if ($commonWhitespace === null || $commonWhitespace > $whitespaceCount) {
+                $commonWhitespace = $whitespaceCount;
+            }
+        }
+
+        if (\in_array($commonWhitespace, [0, null], true)) {
+            return \implode(\PHP_EOL, $lines);
+        }
+
+        $formattedLines = [];
+
+        foreach ($lines as $line) {
+            $formattedLines[] = \substr($line, $commonWhitespace);
+        }
+
+        return \implode(\PHP_EOL, $formattedLines);
     }
 
     private function eatEscapeChar() : string
@@ -308,13 +404,15 @@ final class Tokenizer implements \Iterator
         return $this->eatChars(static function (string $char) : bool { return $char === '_' || \ctype_alnum($char); });
     }
 
-    private function eatChars(callable $condition) : string
+    private function eatChars(callable $condition, int $limit = \PHP_INT_MAX) : string
     {
         $value = '';
+        $count = 0;
 
-        for (; $this->source->hasChar(); $this->source->next()) {
+        for (; $this->source->hasChar() && $count < $limit; $this->source->next()) {
             if ($condition($this->source->getChar()) === true) {
                 $value .= $this->source->getChar();
+                ++$count;
 
                 continue;
             }
