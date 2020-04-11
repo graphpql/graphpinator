@@ -13,10 +13,6 @@ final class ListType extends \Graphpinator\Type\Contract\ModifierDefinition
 
     public function resolveFields(?\Graphpinator\Normalizer\FieldSet $requestedFields, \Graphpinator\Resolver\FieldResult $parentResult) : array
     {
-        if ($requestedFields === null) {
-            throw new \Exception('List without fields specified.');
-        }
-
         if (!$parentResult->getResult() instanceof \Graphpinator\Value\ListValue) {
             throw new \Exception('Cannot create list');
         }
