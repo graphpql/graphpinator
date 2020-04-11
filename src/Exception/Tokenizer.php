@@ -6,11 +6,13 @@ namespace Graphpinator\Exception;
 
 abstract class Tokenizer extends \Exception
 {
+    public const MESSAGE = '';
+
     protected int $position;
 
-    public function __construct(string $message, int $position)
+    public function __construct(int $position)
     {
-        parent::__construct($message, 0, null);
+        parent::__construct(static::MESSAGE);
 
         $this->position = $position;
     }

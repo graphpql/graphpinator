@@ -16,7 +16,9 @@ final class TokenContainerTest extends \PHPUnit\Framework\TestCase
         self::assertFalse($tokenizer->hasPrev());
         self::assertSame($tokenizer->getCurrent()->getType(), TokenType::CUR_O);
         self::assertSame($tokenizer->getNext()->getType(), TokenType::CUR_C);
+        self::assertTrue($tokenizer->hasPrev());
         self::assertSame($tokenizer->getNext()->getType(), TokenType::SQU_O);
+        self::assertTrue($tokenizer->hasPrev());
         self::assertSame($tokenizer->peekNext()->getType(), TokenType::SQU_C);
         self::assertSame($tokenizer->getNext()->getType(), TokenType::SQU_C);
         self::assertSame($tokenizer->getPrev()->getType(), TokenType::SQU_O);

@@ -79,6 +79,9 @@ final class TokenizerTest extends \PHPUnit\Framework\TestCase
             ['"""' . \PHP_EOL . ' foo' . \PHP_EOL . '       foo' . \PHP_EOL . '"""', [
                 new Token(TokenType::STRING, 'foo' . \PHP_EOL . '      foo'),
             ]],
+            ['"""   foo' . \PHP_EOL . \PHP_EOL . '  foo' . \PHP_EOL . \PHP_EOL . ' foo"""', [
+                new Token(TokenType::STRING, '  foo' . \PHP_EOL . \PHP_EOL . ' foo' . \PHP_EOL . \PHP_EOL . 'foo'),
+            ]],
             ['"""\\n"""', [
                 new Token(TokenType::STRING, "\\n"),
             ]],
@@ -112,6 +115,9 @@ final class TokenizerTest extends \PHPUnit\Framework\TestCase
             ['4e10', [
                 new Token(TokenType::FLOAT, '4e10'),
             ]],
+            ['4e0010', [
+                new Token(TokenType::FLOAT, '4e0010'),
+            ]],
             ['-4e10', [
                 new Token(TokenType::FLOAT, '-4e10'),
             ]],
@@ -120,6 +126,12 @@ final class TokenizerTest extends \PHPUnit\Framework\TestCase
             ]],
             ['-4e-10', [
                 new Token(TokenType::FLOAT, '-4e-10'),
+            ]],
+            ['4e+10', [
+                new Token(TokenType::FLOAT, '4e10'),
+            ]],
+            ['-4e+10', [
+                new Token(TokenType::FLOAT, '-4e10'),
             ]],
             ['null', [
                 new Token(TokenType::NULL),
@@ -332,19 +344,19 @@ final class TokenizerTest extends \PHPUnit\Framework\TestCase
             ['"\\u12z3"', \Graphpinator\Exception\StringLiteralInvalidEscape::class],
             ['"\\u123"', \Graphpinator\Exception\StringLiteralInvalidEscape::class],
             ['"' . \PHP_EOL . '"', \Graphpinator\Exception\StringLiteralNewLine::class],
-            ['- 123'],
-            ['123.'],
-            ['123.1e'],
-            ['123.-1'],
-            ['00123', \Graphpinator\Exception\IntLiteralLeadingZero::class],
-            ['00123.123', \Graphpinator\Exception\IntLiteralLeadingZero::class],
-            ['123.1E'],
+            ['123.-1', \Graphpinator\Exception\NumericLiteralNegativeFraction::class],
+            ['- 123', \Graphpinator\Exception\NumericLiteralMalformed::class],
+            ['123. ', \Graphpinator\Exception\NumericLiteralMalformed::class],
+            ['123.1e ', \Graphpinator\Exception\NumericLiteralMalformed::class],
+            ['00123', \Graphpinator\Exception\NumericLiteralLeadingZero::class],
+            ['00123.123', \Graphpinator\Exception\NumericLiteralLeadingZero::class],
+            ['123.1E ', \Graphpinator\Exception\NumericLiteralMalformed::class],
+            ['123e ', \Graphpinator\Exception\NumericLiteralMalformed::class],
+            ['123E ', \Graphpinator\Exception\NumericLiteralMalformed::class],
+            ['123Name', \Graphpinator\Exception\NumericLiteralFollowedByName::class],
+            ['123.123Name', \Graphpinator\Exception\NumericLiteralFollowedByName::class],
+            ['123.123eName', \Graphpinator\Exception\NumericLiteralMalformed::class],
             ['123.45.67'],
-            ['123e'],
-            ['123E'],
-            ['123Name'],
-            ['123.123Name'],
-            ['123.1eName'],
             ['.E'],
             ['-.E'],
             ['>>'],
@@ -362,6 +374,10 @@ final class TokenizerTest extends \PHPUnit\Framework\TestCase
     {
         $this->expectException($exception ?? \Exception::class);
 
+        if ($exception !== null) {
+            $this->expectExceptionMessage(\constant($exception . '::MESSAGE'));
+        }
+
         $source = new \Graphpinator\Source\StringSource($source);
         $tokenizer = new \Graphpinator\Tokenizer\Tokenizer($source);
 
@@ -374,6 +390,13 @@ final class TokenizerTest extends \PHPUnit\Framework\TestCase
         $source = new \Graphpinator\Source\StringSource('query { "ěščřžýá" }');
         $tokenizer = new \Graphpinator\Tokenizer\Tokenizer($source);
         $indexes = [0, 6, 8, 18];
+        $index = 0;
+
+        foreach ($tokenizer as $key => $token) {
+            self::assertSame($indexes[$index], $key);
+            ++$index;
+        }
+
         $index = 0;
 
         foreach ($tokenizer as $key => $token) {

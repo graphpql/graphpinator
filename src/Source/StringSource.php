@@ -30,7 +30,7 @@ final class StringSource implements Source
             return $this->characters[$this->currentIndex];
         }
 
-        throw new \Exception('Enexpected end');
+        throw new \Graphpinator\Exception\SourceUnexpectedEnd($this->getPosition());
     }
 
     public function getPosition() : int

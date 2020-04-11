@@ -29,7 +29,7 @@ final class Schema
         $this->query->addMetaField(new \Graphpinator\Field\ResolvableField(
             '__schema',
             \Graphpinator\Type\Container\Container::introspectionSchema(),
-            function() { return $this; },
+            function() : self { return $this; },
         ));
         $this->query->addMetaField(new \Graphpinator\Field\ResolvableField(
             '__type',

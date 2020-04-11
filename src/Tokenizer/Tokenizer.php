@@ -215,6 +215,11 @@ final class Tokenizer implements \Iterator
 
             if ($this->source->hasChar() && \in_array($this->source->getChar(), ['e', 'E'], true)) {
                 $this->source->next();
+
+                if ($this->source->getChar() === '+') {
+                    $this->source->next();
+                }
+
                 $numberVal .= 'e' . $this->eatInt(true, true);
             }
 
@@ -224,7 +229,7 @@ final class Tokenizer implements \Iterator
         }
 
         if ($this->source->hasChar() && \ctype_alpha($this->source->getChar())) {
-            throw new \Exception('Invalid number literal');
+            throw new \Graphpinator\Exception\NumericLiteralFollowedByName($this->source->getPosition());
         }
     }
 
@@ -382,7 +387,7 @@ final class Tokenizer implements \Iterator
 
         if ($this->source->getChar() === '-') {
             if (!$negative) {
-                throw new \Graphpinator\Exception\FloatLiteralNegativeFraction($this->source->getPosition());
+                throw new \Graphpinator\Exception\NumericLiteralNegativeFraction($this->source->getPosition());
             }
 
             $sign = '-';
@@ -393,11 +398,11 @@ final class Tokenizer implements \Iterator
         $digitCount = \strlen($digits);
 
         if ($digitCount === 0) {
-            throw new \Exception('Invalid numeric value');
+            throw new \Graphpinator\Exception\NumericLiteralMalformed($this->source->getPosition());
         }
 
         if (!$leadingZeros && $digitCount > 1 && \strpos($digits, '0') === 0) {
-            throw new \Graphpinator\Exception\IntLiteralLeadingZero($this->source->getPosition());
+            throw new \Graphpinator\Exception\NumericLiteralLeadingZero($this->source->getPosition());
         }
 
         return $sign . $digits;

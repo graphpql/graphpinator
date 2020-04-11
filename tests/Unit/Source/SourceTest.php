@@ -40,4 +40,17 @@ final class SourceTest extends \PHPUnit\Framework\TestCase
         self::assertTrue($source->valid());
         self::assertSame(0, $source->key());
     }
+
+    public function testInvalid() : void
+    {
+        $this->expectException(\Graphpinator\Exception\SourceUnexpectedEnd::class);
+        $this->expectExceptionMessage(\Graphpinator\Exception\SourceUnexpectedEnd::MESSAGE);
+
+        $source = new \Graphpinator\Source\StringSource('123');
+
+        $source->next();
+        $source->next();
+        $source->next();
+        $source->getChar();
+    }
 }

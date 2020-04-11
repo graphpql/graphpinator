@@ -4,10 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Exception;
 
-final class StringLiteralNewLine extends \Exception
+final class StringLiteralNewLine extends Tokenizer
 {
-    public function __construct(int $position)
-    {
-        parent::__construct('Simple string literal cannot span across multiple lines. Use block literal or escape sequence.', $position);
-    }
+    public const MESSAGE = 'Simple string literal cannot span across multiple lines. Use block literal or escape sequence.';
 }
