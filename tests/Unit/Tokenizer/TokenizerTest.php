@@ -54,7 +54,17 @@ final class TokenizerTest extends \PHPUnit\Framework\TestCase
             ['"blabla\\t\\"\\nfoobar"', [
                 new Token(TokenType::STRING, "blabla\u{0009}\"\u{000A}foobar"),
             ]],
+            ['""""""', [
+                new Token(TokenType::STRING, ''),
+            ]],
+            ['""""""""', [
+                new Token(TokenType::STRING, ''),
+                new Token(TokenType::STRING, ''),
+            ]],
             ['"""' . \PHP_EOL . '"""', [
+                new Token(TokenType::STRING, ''),
+            ]],
+            ['"""   """', [
                 new Token(TokenType::STRING, ''),
             ]],
             ['"""' . \PHP_EOL . \PHP_EOL . \PHP_EOL . '"""', [
@@ -80,6 +90,12 @@ final class TokenizerTest extends \PHPUnit\Framework\TestCase
             ]],
             ['"""abc\\"""abc"""', [
                 new Token(TokenType::STRING, 'abc"""abc'),
+            ]],
+            ['0', [
+                new Token(TokenType::INT, '0'),
+            ]],
+            ['-0', [
+                new Token(TokenType::INT, '-0'),
             ]],
             ['4', [
                 new Token(TokenType::INT, '4'),
@@ -306,20 +322,22 @@ final class TokenizerTest extends \PHPUnit\Framework\TestCase
     public function invalidDataProvider() : array
     {
         return [
-            ['"foo'],
-            ['"\\1"'],
-            ['"\\u12z3"'],
-            ['"\\u123"'],
-            ['"' . \PHP_EOL . '"'],
-            ['"""""'],
-            ['"""\\""""'],
-            ['"""abc""""'],
+            ['"foo', \Graphpinator\Exception\StringLiteralWithoutEnd::class],
+            ['""""', \Graphpinator\Exception\StringLiteralWithoutEnd::class],
+            ['"""""', \Graphpinator\Exception\StringLiteralWithoutEnd::class],
+            ['"""""""', \Graphpinator\Exception\StringLiteralWithoutEnd::class],
+            ['"""\\""""', \Graphpinator\Exception\StringLiteralWithoutEnd::class],
+            ['"""abc""""', \Graphpinator\Exception\StringLiteralWithoutEnd::class],
+            ['"\\1"', \Graphpinator\Exception\StringLiteralInvalidEscape::class],
+            ['"\\u12z3"', \Graphpinator\Exception\StringLiteralInvalidEscape::class],
+            ['"\\u123"', \Graphpinator\Exception\StringLiteralInvalidEscape::class],
+            ['"' . \PHP_EOL . '"', \Graphpinator\Exception\StringLiteralNewLine::class],
             ['- 123'],
             ['123.'],
             ['123.1e'],
             ['123.-1'],
-            ['00123'],
-            ['00123.123'],
+            ['00123', \Graphpinator\Exception\IntLiteralLeadingZero::class],
+            ['00123.123', \Graphpinator\Exception\IntLiteralLeadingZero::class],
             ['123.1E'],
             ['123.45.67'],
             ['123e'],
@@ -340,9 +358,9 @@ final class TokenizerTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider invalidDataProvider
      */
-    public function testInvalid(string $source) : void
+    public function testInvalid(string $source, string $exception = null) : void
     {
-        $this->expectException(\Exception::class);
+        $this->expectException($exception ?? \Exception::class);
 
         $source = new \Graphpinator\Source\StringSource($source);
         $tokenizer = new \Graphpinator\Tokenizer\Tokenizer($source);

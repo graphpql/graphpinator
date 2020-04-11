@@ -93,7 +93,7 @@ final class Tokenizer implements \Iterator
 
         switch ($this->source->getChar()) {
             case '"':
-                $quotes = $this->eatChars(static function (string $char) : bool { return $char === '"'; });
+                $quotes = $this->eatChars(static function (string $char) : bool { return $char === '"'; }, 3);
 
                 switch (\strlen($quotes)) {
                     case 1:
@@ -104,12 +104,10 @@ final class Tokenizer implements \Iterator
                         $this->token = new Token(TokenType::STRING, '');
 
                         return;
-                    case 3:
+                    default:
                         $this->token = new Token(TokenType::STRING, $this->eatBlockString());
 
                         return;
-                    default:
-                        throw new \Exception('Invalid string literal');
                 }
             case \PHP_EOL:
                 $this->token = new Token(TokenType::NEWLINE);
@@ -250,7 +248,7 @@ final class Tokenizer implements \Iterator
 
             switch ($char) {
                 case \PHP_EOL:
-                    throw new \Exception('Use block string literal instead');
+                    throw new \Graphpinator\Exception\StringLiteralNewLine($this->source->getPosition());
                 case '"':
                     return $value;
                 case '\\':
@@ -262,7 +260,7 @@ final class Tokenizer implements \Iterator
             }
         }
 
-        throw new \Exception('String literal has no end.');
+        throw new \Graphpinator\Exception\StringLiteralWithoutEnd($this->source->getPosition());
     }
 
     private function eatBlockString() : string
@@ -272,14 +270,10 @@ final class Tokenizer implements \Iterator
         while ($this->source->hasChar()) {
             switch ($this->source->getChar()) {
                 case '"':
-                    $quotes = $this->eatChars(static function (string $char) : bool { return $char === '"'; });
+                    $quotes = $this->eatChars(static function (string $char) : bool { return $char === '"'; }, 3);
 
                     if (\strlen($quotes) === 3) {
                         return $this->formatBlockString($value);
-                    }
-
-                    if (\strlen($quotes) > 3) {
-                        throw new \Exception('Invalid block string escape sequence');
                     }
 
                     $value .= $quotes;
@@ -302,20 +296,18 @@ final class Tokenizer implements \Iterator
             }
         }
 
-        throw new \Exception('String literal has no end');
+        throw new \Graphpinator\Exception\StringLiteralWithoutEnd($this->source->getPosition());
     }
 
     private function formatBlockString(string $value) : string
     {
         $lines = \explode(\PHP_EOL, $value);
-        $lineCount = \count($lines);
 
-        while ($lineCount > 0) {
+        while (\count($lines) > 0) {
             $first = \array_key_first($lines);
 
             if ($lines[$first] === '' || \ctype_space($lines[$first])) {
                 unset($lines[$first]);
-                --$lineCount;
 
                 continue;
             }
@@ -324,7 +316,6 @@ final class Tokenizer implements \Iterator
 
             if ($lines[$last] === '' || \ctype_space($lines[$last])) {
                 unset($lines[$last]);
-                --$lineCount;
 
                 continue;
             }
@@ -367,49 +358,49 @@ final class Tokenizer implements \Iterator
 
         if ($escapedChar === 'u') {
             $this->source->next();
-            $hexdec = $this->eatChars(static function (string $char) : bool { return \ctype_xdigit($char); }, 4);
+            $hexDec = $this->eatChars(static function (string $char) : bool { return \ctype_xdigit($char); }, 4);
 
-            if (\strlen($hexdec) !== 4) {
-                throw new \Exception('Invalid unicode sequence');
+            if (\strlen($hexDec) !== 4) {
+                throw new \Graphpinator\Exception\StringLiteralInvalidEscape($this->source->getPosition());
             }
 
-            return \mb_chr(\hexdec($hexdec), 'utf8');
+            return \mb_chr(\hexdec($hexDec), 'utf8');
         }
 
         $this->source->next();
 
         if (!\array_key_exists($escapedChar, self::ESCAPE_MAP)) {
-            throw new \Exception('Unknown escape character.');
+            throw new \Graphpinator\Exception\StringLiteralInvalidEscape($this->source->getPosition());
         }
 
         return self::ESCAPE_MAP[$escapedChar];
     }
 
-    private function eatInt(bool $negative = true, bool $leadingZeros = true) : string
+    private function eatInt(bool $negative, bool $leadingZeros) : string
     {
-        $value = '';
+        $sign = '';
 
         if ($this->source->getChar() === '-') {
-            if ($negative) {
-                $value .= '-';
-            } else {
-                throw new \Exception();
+            if (!$negative) {
+                throw new \Graphpinator\Exception\FloatLiteralNegativeFraction($this->source->getPosition());
             }
 
+            $sign = '-';
             $this->source->next();
         }
 
-        if (!$leadingZeros && $this->source->hasChar() && $this->source->getChar() === '0') {
-            throw new \Exception('Leading zeros');
-        }
+        $digits =  $this->eatChars(static function (string $char) : bool { return \ctype_digit($char); });
+        $digitCount = \strlen($digits);
 
-        $value .=  $this->eatChars(static function (string $char) : bool { return \ctype_digit($char); });
-
-        if (!\is_numeric($value)) {
+        if ($digitCount === 0) {
             throw new \Exception('Invalid numeric value');
         }
 
-        return $value;
+        if (!$leadingZeros && $digitCount > 1 && \strpos($digits, '0') === 0) {
+            throw new \Graphpinator\Exception\IntLiteralLeadingZero($this->source->getPosition());
+        }
+
+        return $sign . $digits;
     }
 
     private function eatName() : string

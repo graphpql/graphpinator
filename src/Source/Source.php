@@ -9,4 +9,6 @@ interface Source extends \Iterator
     public function hasChar() : bool;
 
     public function getChar() : string;
+
+    public function getPosition() : int;
 }

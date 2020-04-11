@@ -33,6 +33,11 @@ final class StringSource implements Source
         throw new \Exception('Enexpected end');
     }
 
+    public function getPosition() : int
+    {
+        return $this->currentIndex;
+    }
+
     public function current() : string
     {
         return $this->getChar();
