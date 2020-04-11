@@ -43,6 +43,19 @@ final class TestSchema
                     'Boolean' => \Graphpinator\Type\Container\Container::Boolean(),
                 ];
             }
+
+            public function getDirective(string $name) : \Graphpinator\Directive\Directive
+            {
+                return $this->getAllDirectives()[$name];
+            }
+
+            public function getAllDirectives() : array
+            {
+                return [
+                    'skip' => \Graphpinator\Type\Container\Container::directiveSkip(),
+                    'include' => \Graphpinator\Type\Container\Container::directiveInclude(),
+                ];
+            }
         };
     }
 

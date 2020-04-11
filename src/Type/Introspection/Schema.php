@@ -61,7 +61,7 @@ final class Schema extends \Graphpinator\Type\Type
                 'directives',
                 \Graphpinator\Type\Container\Container::introspectionDirective()->notNullList(),
                 static function (\Graphpinator\Type\Schema $schema) : array {
-                    return [];
+                    return $schema->getTypeContainer()->getAllDirectives();
                 },
             ),
         ]);

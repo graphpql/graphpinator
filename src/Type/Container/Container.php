@@ -20,6 +20,16 @@ abstract class Container
     abstract public function getAllTypes() : array;
 
     /**
+     * Core function to find directive by its name.
+     */
+    abstract public function getDirective(string $name) : \Graphpinator\Directive\Directive;
+
+    /**
+     * Function to return all directives.
+     */
+    abstract public function getAllDirectives() : array;
+
+    /**
      * Built-in Int type.
      */
     public static function Int() : \Graphpinator\Type\Scalar\IntType
@@ -121,5 +131,21 @@ abstract class Container
     public static function introspectionDirectiveLocation() : \Graphpinator\Type\Introspection\DirectiveLocation
     {
         return new \Graphpinator\Type\Introspection\DirectiveLocation();
+    }
+
+    /**
+     * Built-in Skip directive.
+     */
+    public static function directiveSkip() : \Graphpinator\Directive\SkipDirective
+    {
+        return new \Graphpinator\Directive\SkipDirective();
+    }
+
+    /**
+     * Built-in Include directive.
+     */
+    public static function directiveInclude() : \Graphpinator\Directive\IncludeDirective
+    {
+        return new \Graphpinator\Directive\IncludeDirective();
     }
 }
