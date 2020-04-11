@@ -42,6 +42,15 @@ final class TokenizerTest extends \PHPUnit\Framework\TestCase
             ['"\\t"', [
                 new Token(TokenType::STRING, "\u{0009}"),
             ]],
+            ['"\\u1234"', [
+                new Token(TokenType::STRING, "\u{1234}"),
+            ]],
+            ['"u1234"', [
+                new Token(TokenType::STRING, 'u1234'),
+            ]],
+            ['"abc\\u1234abc"', [
+                new Token(TokenType::STRING, "abc\u{1234}abc"),
+            ]],
             ['"blabla\\t\\"\\nfoobar"', [
                 new Token(TokenType::STRING, "blabla\u{0009}\"\u{000A}foobar"),
             ]],
@@ -299,6 +308,8 @@ final class TokenizerTest extends \PHPUnit\Framework\TestCase
         return [
             ['"foo'],
             ['"\\1"'],
+            ['"\\u12z3"'],
+            ['"\\u123"'],
             ['"' . \PHP_EOL . '"'],
             ['"""""'],
             ['"""\\""""'],

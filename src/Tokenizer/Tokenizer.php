@@ -244,21 +244,22 @@ final class Tokenizer implements \Iterator
     {
         $value = '';
 
-        for (; $this->source->hasChar(); $this->source->next()) {
+        while ($this->source->hasChar()) {
             $char = $this->source->getChar();
+            $this->source->next();
 
             switch ($char) {
                 case \PHP_EOL:
                     throw new \Exception('Use block string literal instead');
                 case '"':
-                    $this->source->next();
-
                     return $value;
                 case '\\':
-                    $char = $this->eatEscapeChar();
-            }
+                    $value .= $this->eatEscapeChar();
 
-            $value .= $char;
+                    continue 2;
+                default:
+                    $value .= $char;
+            }
         }
 
         throw new \Exception('String literal has no end.');
@@ -362,8 +363,20 @@ final class Tokenizer implements \Iterator
 
     private function eatEscapeChar() : string
     {
-        $this->source->next();
         $escapedChar = $this->source->getChar();
+
+        if ($escapedChar === 'u') {
+            $this->source->next();
+            $hexdec = $this->eatChars(static function (string $char) : bool { return \ctype_xdigit($char); }, 4);
+
+            if (\strlen($hexdec) !== 4) {
+                throw new \Exception('Invalid unicode sequence');
+            }
+
+            return \mb_chr(\hexdec($hexdec), 'utf8');
+        }
+
+        $this->source->next();
 
         if (!\array_key_exists($escapedChar, self::ESCAPE_MAP)) {
             throw new \Exception('Unknown escape character.');
