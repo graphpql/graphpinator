@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Exception;
+namespace Graphpinator\Exception\Parser;
 
-final class NumericLiteralNegativeFraction extends Tokenizer
+final class NumericLiteralNegativeFraction extends ParseError
 {
     public const MESSAGE = 'Negative fraction part in numeric value.';
 }

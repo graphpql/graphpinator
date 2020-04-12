@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Exception;
+namespace Graphpinator\Exception\Parser;
 
-final class SourceUnexpectedEnd extends Tokenizer
+final class SourceUnexpectedEnd extends ParseError
 {
     public const MESSAGE = 'Unexpected end of input.';
 }

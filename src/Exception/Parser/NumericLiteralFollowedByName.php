@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Exception;
+namespace Graphpinator\Exception\Parser;
 
-final class NumericLiteralFollowedByName extends Tokenizer
+final class NumericLiteralFollowedByName extends ParseError
 {
     public const MESSAGE = 'Numeric literal cannot be followed by name.';
 }

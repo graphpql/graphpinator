@@ -229,7 +229,7 @@ final class Tokenizer implements \Iterator
         }
 
         if ($this->source->hasChar() && \ctype_alpha($this->source->getChar())) {
-            throw new \Graphpinator\Exception\NumericLiteralFollowedByName($this->source->getPosition());
+            throw new \Graphpinator\Exception\Parser\NumericLiteralFollowedByName($this->source->getPosition());
         }
     }
 
@@ -253,7 +253,7 @@ final class Tokenizer implements \Iterator
 
             switch ($char) {
                 case \PHP_EOL:
-                    throw new \Graphpinator\Exception\StringLiteralNewLine($this->source->getPosition());
+                    throw new \Graphpinator\Exception\Parser\StringLiteralNewLine($this->source->getPosition());
                 case '"':
                     return $value;
                 case '\\':
@@ -265,7 +265,7 @@ final class Tokenizer implements \Iterator
             }
         }
 
-        throw new \Graphpinator\Exception\StringLiteralWithoutEnd($this->source->getPosition());
+        throw new \Graphpinator\Exception\Parser\StringLiteralWithoutEnd($this->source->getPosition());
     }
 
     private function eatBlockString() : string
@@ -301,7 +301,7 @@ final class Tokenizer implements \Iterator
             }
         }
 
-        throw new \Graphpinator\Exception\StringLiteralWithoutEnd($this->source->getPosition());
+        throw new \Graphpinator\Exception\Parser\StringLiteralWithoutEnd($this->source->getPosition());
     }
 
     private function formatBlockString(string $value) : string
@@ -366,7 +366,7 @@ final class Tokenizer implements \Iterator
             $hexDec = $this->eatChars(static function (string $char) : bool { return \ctype_xdigit($char); }, 4);
 
             if (\strlen($hexDec) !== 4) {
-                throw new \Graphpinator\Exception\StringLiteralInvalidEscape($this->source->getPosition());
+                throw new \Graphpinator\Exception\Parser\StringLiteralInvalidEscape($this->source->getPosition());
             }
 
             return \mb_chr(\hexdec($hexDec), 'utf8');
@@ -375,7 +375,7 @@ final class Tokenizer implements \Iterator
         $this->source->next();
 
         if (!\array_key_exists($escapedChar, self::ESCAPE_MAP)) {
-            throw new \Graphpinator\Exception\StringLiteralInvalidEscape($this->source->getPosition());
+            throw new \Graphpinator\Exception\Parser\StringLiteralInvalidEscape($this->source->getPosition());
         }
 
         return self::ESCAPE_MAP[$escapedChar];
@@ -387,7 +387,7 @@ final class Tokenizer implements \Iterator
 
         if ($this->source->getChar() === '-') {
             if (!$negative) {
-                throw new \Graphpinator\Exception\NumericLiteralNegativeFraction($this->source->getPosition());
+                throw new \Graphpinator\Exception\Parser\NumericLiteralNegativeFraction($this->source->getPosition());
             }
 
             $sign = '-';
@@ -398,11 +398,11 @@ final class Tokenizer implements \Iterator
         $digitCount = \strlen($digits);
 
         if ($digitCount === 0) {
-            throw new \Graphpinator\Exception\NumericLiteralMalformed($this->source->getPosition());
+            throw new \Graphpinator\Exception\Parser\NumericLiteralMalformed($this->source->getPosition());
         }
 
         if (!$leadingZeros && $digitCount > 1 && \strpos($digits, '0') === 0) {
-            throw new \Graphpinator\Exception\NumericLiteralLeadingZero($this->source->getPosition());
+            throw new \Graphpinator\Exception\Parser\NumericLiteralLeadingZero($this->source->getPosition());
         }
 
         return $sign . $digits;

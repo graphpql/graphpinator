@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Exception;
+namespace Graphpinator\Exception\Parser;
 
-abstract class Tokenizer extends \Exception
+abstract class ParseError extends \Exception
 {
     public const MESSAGE = '';
 

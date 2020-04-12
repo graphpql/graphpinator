@@ -43,8 +43,8 @@ final class SourceTest extends \PHPUnit\Framework\TestCase
 
     public function testInvalid() : void
     {
-        $this->expectException(\Graphpinator\Exception\SourceUnexpectedEnd::class);
-        $this->expectExceptionMessage(\Graphpinator\Exception\SourceUnexpectedEnd::MESSAGE);
+        $this->expectException(\Graphpinator\Exception\Parser\SourceUnexpectedEnd::class);
+        $this->expectExceptionMessage(\Graphpinator\Exception\Parser\SourceUnexpectedEnd::MESSAGE);
 
         $source = new \Graphpinator\Source\StringSource('123');
 
