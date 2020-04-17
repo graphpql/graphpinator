@@ -9,5 +9,5 @@ final class DirectiveResult
     use \Nette\StaticClass;
 
     public const NONE = 'none';
-    public const SKIP_RESULT = 'skip';
+    public const SKIP = 'skip';
 }

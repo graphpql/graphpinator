@@ -17,7 +17,7 @@ final class SkipDirective extends Directive
             ]),
             static function (\Graphpinator\Normalizer\ArgumentValueSet $arguments) : string {
                 return $arguments->offsetGet('if')->getRawValue()
-                    ? DirectiveResult::SKIP_RESULT
+                    ? DirectiveResult::SKIP
                     : DirectiveResult::NONE;
             },
             [

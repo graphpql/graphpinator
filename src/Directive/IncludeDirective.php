@@ -18,7 +18,7 @@ final class IncludeDirective extends Directive
             static function (\Graphpinator\Normalizer\ArgumentValueSet $arguments) : string {
                 return $arguments->offsetGet('if')->getRawValue()
                     ? DirectiveResult::NONE
-                    : DirectiveResult::SKIP_RESULT;
+                    : DirectiveResult::SKIP;
             },
             [
                 DirectiveLocation::FIELD,
