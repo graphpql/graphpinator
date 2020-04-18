@@ -8,7 +8,7 @@ final class NullValueTest extends \PHPUnit\Framework\TestCase
 {
     public function testSimple(): void
     {
-        $value = new \Graphpinator\Value\NullValue(\Graphpinator\Type\Container\Container::Int());
+        $value = new \Graphpinator\Resolver\Value\NullValue(\Graphpinator\Type\Container\Container::Int());
 
         self::assertNull($value->getRawValue());
     }
@@ -17,6 +17,6 @@ final class NullValueTest extends \PHPUnit\Framework\TestCase
     {
         $this->expectException(\Exception::class);
 
-        \Graphpinator\Value\ScalarValue::create(null, \Graphpinator\Type\Container\Container::Int()->notNull());
+        \Graphpinator\Resolver\Value\ScalarValue::create(null, \Graphpinator\Type\Container\Container::Int()->notNull());
     }
 }

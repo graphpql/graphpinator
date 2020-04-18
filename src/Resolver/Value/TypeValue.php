@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Value;
+namespace Graphpinator\Resolver\Value;
 
 final class TypeValue extends ValidatedValue
 {

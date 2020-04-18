@@ -11,7 +11,7 @@ final class Argument
 
     private string $name;
     private \Graphpinator\Type\Contract\Inputable $type;
-    private ?\Graphpinator\Value\ValidatedValue $defaultValue;
+    private ?\Graphpinator\Resolver\Value\ValidatedValue $defaultValue;
 
     public function __construct(string $name, \Graphpinator\Type\Contract\Inputable $type, $defaultValue = null)
     {
@@ -35,7 +35,7 @@ final class Argument
         return $this->type;
     }
 
-    public function getDefaultValue() : ?\Graphpinator\Value\ValidatedValue
+    public function getDefaultValue() : ?\Graphpinator\Resolver\Value\ValidatedValue
     {
         return $this->defaultValue;
     }

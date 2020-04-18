@@ -29,7 +29,7 @@ final class ArgumentSet extends \Infinityloop\Utils\ObjectSet
     {
         $defaultValue = $object->getDefaultValue();
 
-        if ($defaultValue instanceof \Graphpinator\Value\ValidatedValue) {
+        if ($defaultValue instanceof \Graphpinator\Resolver\Value\ValidatedValue) {
             $this->defaults[$object->getName()] = $defaultValue;
         }
 

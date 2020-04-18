@@ -15,12 +15,12 @@ final class VariableValueSet extends \Infinityloop\Utils\ObjectSet
         }
     }
 
-    public function current() : \Graphpinator\Value\ValidatedValue
+    public function current() : \Graphpinator\Resolver\Value\ValidatedValue
     {
         return parent::current();
     }
 
-    public function offsetGet($offset) : \Graphpinator\Value\ValidatedValue
+    public function offsetGet($offset) : \Graphpinator\Resolver\Value\ValidatedValue
     {
         return parent::offsetGet($offset);
     }

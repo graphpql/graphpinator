@@ -9,7 +9,7 @@ final class NotNullTypeTest extends \PHPUnit\Framework\TestCase
     public function testCreateValue() : void
     {
         $type = self::getTestTypeAbc()->notNull();
-        self::assertInstanceOf(\Graphpinator\Value\TypeValue::class, $type->createValue(123));
+        self::assertInstanceOf(\Graphpinator\Resolver\Value\TypeValue::class, $type->createValue(123));
     }
 
     public function testCreateValueNull() : void
@@ -17,7 +17,7 @@ final class NotNullTypeTest extends \PHPUnit\Framework\TestCase
         $this->expectException(\Exception::class);
 
         $type = self::getTestTypeAbc()->notNull();
-        self::assertInstanceOf(\Graphpinator\Value\TypeValue::class, $type->createValue(null));
+        self::assertInstanceOf(\Graphpinator\Resolver\Value\TypeValue::class, $type->createValue(null));
     }
 
     public function testValidateValue() : void

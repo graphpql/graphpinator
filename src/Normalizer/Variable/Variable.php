@@ -10,7 +10,7 @@ final class Variable
 
     private string $name;
     private \Graphpinator\Type\Contract\Inputable $type;
-    private ?\Graphpinator\Value\ValidatedValue $default;
+    private ?\Graphpinator\Resolver\Value\ValidatedValue $default;
 
     public function __construct(
         string $name,
@@ -34,18 +34,18 @@ final class Variable
         return $this->type;
     }
 
-    public function getDefault() : ?\Graphpinator\Value\ValidatedValue
+    public function getDefault() : ?\Graphpinator\Resolver\Value\ValidatedValue
     {
         return $this->default;
     }
 
-    public function createValue(\Infinityloop\Utils\Json $variables) : \Graphpinator\Value\ValidatedValue
+    public function createValue(\Infinityloop\Utils\Json $variables) : \Graphpinator\Resolver\Value\ValidatedValue
     {
         $value = null;
 
         if (isset($variables[$this->name])) {
             $value = $variables[$this->name];
-        } elseif ($this->default instanceof \Graphpinator\Value\ValidatedValue) {
+        } elseif ($this->default instanceof \Graphpinator\Resolver\Value\ValidatedValue) {
             return $this->default;
         }
 

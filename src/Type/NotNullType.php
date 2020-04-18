@@ -6,11 +6,11 @@ namespace Graphpinator\Type;
 
 final class NotNullType extends \Graphpinator\Type\Contract\ModifierDefinition
 {
-    public function createValue($rawValue) : \Graphpinator\Value\ValidatedValue
+    public function createValue($rawValue) : \Graphpinator\Resolver\Value\ValidatedValue
     {
         $value = $this->innerType->createValue($rawValue);
 
-        if ($value instanceof \Graphpinator\Value\NullValue) {
+        if ($value instanceof \Graphpinator\Resolver\Value\NullValue) {
             throw new \Exception('Value cannot be null.');
         }
 

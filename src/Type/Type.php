@@ -18,9 +18,9 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
         $this->implements = $implements ?? new \Graphpinator\Utils\InterfaceSet([]);
     }
 
-    public function createValue($rawValue) : \Graphpinator\Value\ValidatedValue
+    public function createValue($rawValue) : \Graphpinator\Resolver\Value\ValidatedValue
     {
-        return \Graphpinator\Value\TypeValue::create($rawValue, $this);
+        return \Graphpinator\Resolver\Value\TypeValue::create($rawValue, $this);
     }
 
     public function isInstanceOf(\Graphpinator\Type\Contract\Definition $type) : bool
@@ -120,7 +120,7 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
             $arguments = new \Graphpinator\Resolver\ArgumentValueSet($field->getArguments(), $fieldDef->getArguments());
             $innerResult = $fieldDef->resolve($parentResult, $arguments);
 
-            $result[$field->getAlias()] = $innerResult->getResult() instanceof \Graphpinator\Value\NullValue
+            $result[$field->getAlias()] = $innerResult->getResult() instanceof \Graphpinator\Resolver\Value\NullValue
                 ? $innerResult->getResult()
                 : $innerResult->getType()->resolve($field->getFields(), $innerResult);
         }

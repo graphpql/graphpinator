@@ -13,9 +13,9 @@ abstract class InputType extends \Graphpinator\Type\Contract\ConcreteDefinition 
         $this->arguments = $arguments;
     }
 
-    public function createValue($rawValue) : \Graphpinator\Value\ValidatedValue
+    public function createValue($rawValue) : \Graphpinator\Resolver\Value\ValidatedValue
     {
-        return \Graphpinator\Value\InputValue::create($rawValue, $this);
+        return \Graphpinator\Resolver\Value\InputValue::create($rawValue, $this);
     }
 
     public function applyDefaults($value) : array

@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Value;
+namespace Graphpinator\Resolver\Value;
 
-final class ScalarValue extends \Graphpinator\Value\ValidatedValue
+final class ScalarValue extends \Graphpinator\Resolver\Value\ValidatedValue
 {
     public function __construct($value, \Graphpinator\Type\Scalar\ScalarType $type)
     {

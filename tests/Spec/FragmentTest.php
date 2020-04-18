@@ -61,14 +61,17 @@ final class FragmentTest extends \PHPUnit\Framework\TestCase
             [
                 'query queryName { ...namedFragment }',
                 \Infinityloop\Utils\Json::fromArray([]),
+                \Graphpinator\Exception\Normalizer\UnknownFragment::class,
             ],
             [
                 'query queryName { ...namedFragment ...namedFragment } fragment namedFragment on Query { field0 {} }',
                 \Infinityloop\Utils\Json::fromArray([]),
+                \Graphpinator\Exception\Resolver\DuplicateField::class,
             ],
             [
                 'query queryName { ...namedFragment } fragment namedFragment on Query { ...cycleFragment field0 } fragment cycleFragment on Query { ...namedFragment }',
                 \Infinityloop\Utils\Json::fromArray([]),
+                \Graphpinator\Exception\Normalizer\FragmentCycle::class,
             ],
         ];
     }
@@ -76,9 +79,10 @@ final class FragmentTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider invalidDataProvider
      */
-    public function testInvalid(string $request, \Infinityloop\Utils\Json $variables) : void
+    public function testInvalid(string $request, \Infinityloop\Utils\Json $variables, string $exception) : void
     {
-        $this->expectException(\Exception::class);
+        $this->expectException($exception);
+        $this->expectExceptionMessage(\constant($exception . '::MESSAGE'));
 
         $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
         $graphpinator->runQuery($request, $variables);

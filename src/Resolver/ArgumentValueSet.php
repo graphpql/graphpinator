@@ -26,7 +26,7 @@ final class ArgumentValueSet extends \Infinityloop\Utils\ObjectSet
                 continue;
             }
 
-            if ($argument->getDefaultValue() instanceof \Graphpinator\Value\ValidatedValue) {
+            if ($argument->getDefaultValue() instanceof \Graphpinator\Resolver\Value\ValidatedValue) {
                 $this->appendUnique(
                     $argument->getName(),
                     $argument->getDefaultValue()
@@ -37,17 +37,17 @@ final class ArgumentValueSet extends \Infinityloop\Utils\ObjectSet
 
             $this->appendUnique(
                 $argument->getName(),
-                new \Graphpinator\Value\NullValue($argument->getType())
+                new \Graphpinator\Resolver\Value\NullValue($argument->getType())
             );
         }
     }
 
-    public function current() : \Graphpinator\Value\ValidatedValue
+    public function current() : \Graphpinator\Resolver\Value\ValidatedValue
     {
         return parent::current();
     }
 
-    public function offsetGet($offset) : \Graphpinator\Value\ValidatedValue
+    public function offsetGet($offset) : \Graphpinator\Resolver\Value\ValidatedValue
     {
         return parent::offsetGet($offset);
     }

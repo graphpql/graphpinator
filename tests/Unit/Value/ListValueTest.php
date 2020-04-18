@@ -9,13 +9,13 @@ final class ListValueTest extends \PHPUnit\Framework\TestCase
     public function testApplyDefaults() : void
     {
         $type = $this->createTestInput()->list();
-        $value = \Graphpinator\Value\ListValue::create([[], []], $type);
+        $value = \Graphpinator\Resolver\Value\ListValue::create([[], []], $type);
         self::assertCount(2, $value);
         self::assertCount(2, $value->getRawValue());
 
         foreach ($value as $key => $listValue) {
             self::assertIsInt($key);
-            self::assertInstanceOf(\Graphpinator\Value\InputValue::class, $listValue);
+            self::assertInstanceOf(\Graphpinator\Resolver\Value\InputValue::class, $listValue);
             self::assertSame('random', $listValue['field']->getRawValue());
         }
 
@@ -29,15 +29,15 @@ final class ListValueTest extends \PHPUnit\Framework\TestCase
     public function testApplyDefaultsNull() : void
     {
         $type = $this->createTestInput()->list();
-        $value = \Graphpinator\Value\ListValue::create(null, $type);
-        self::assertInstanceOf(\Graphpinator\Value\NullValue::class, $value);
+        $value = \Graphpinator\Resolver\Value\ListValue::create(null, $type);
+        self::assertInstanceOf(\Graphpinator\Resolver\Value\NullValue::class, $value);
     }
 
     public function testInvalid() : void
     {
         $this->expectException(\Exception::class);
 
-        $value = new \Graphpinator\Value\ListValue(123, new \Graphpinator\Type\ListType($this->createTestInput()));
+        $value = new \Graphpinator\Resolver\Value\ListValue(123, new \Graphpinator\Type\ListType($this->createTestInput()));
     }
 
     protected function createTestInput() : \Graphpinator\Type\InputType

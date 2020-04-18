@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Value;
+namespace Graphpinator\Resolver\Value;
 
 abstract class ValidatedValue implements \JsonSerializable
 {
@@ -20,10 +20,10 @@ abstract class ValidatedValue implements \JsonSerializable
     public static function create($rawValue, \Graphpinator\Type\Contract\Definition $type)
     {
         if ($rawValue === null) {
-            return new \Graphpinator\Value\NullValue($type);
+            return new \Graphpinator\Resolver\Value\NullValue($type);
         }
 
-        if ($type->isInputable()) {
+        if ($type instanceof \Graphpinator\Type\Contract\Inputable && $type->isInputable()) {
             $rawValue = $type->applyDefaults($rawValue);
         }
 

@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Value;
+namespace Graphpinator\Resolver\Value;
 
-final class NullValue extends \Graphpinator\Value\ValidatedValue
+final class NullValue extends \Graphpinator\Resolver\Value\ValidatedValue
 {
     public function __construct(\Graphpinator\Type\Contract\Definition $type)
     {

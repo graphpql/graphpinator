@@ -6,5 +6,5 @@ namespace Graphpinator\Type\Contract;
 
 interface Instantiable extends \Graphpinator\Type\Contract\Definition
 {
-    public function createValue($rawValue) : \Graphpinator\Value\ValidatedValue;
+    public function createValue($rawValue) : \Graphpinator\Resolver\Value\ValidatedValue;
 }

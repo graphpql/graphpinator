@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Value;
+namespace Graphpinator\Resolver\Value;
 
 final class InputValue extends ValidatedValue implements \Iterator, \ArrayAccess
 {
@@ -14,7 +14,7 @@ final class InputValue extends ValidatedValue implements \Iterator, \ArrayAccess
             $usedValue = $fields[$argument->getName()] ?? $argument->getDefaultValue();
 
             // default values are already validated
-            $value[$argument->getName()] = $usedValue instanceof \Graphpinator\Value\ValidatedValue
+            $value[$argument->getName()] = $usedValue instanceof \Graphpinator\Resolver\Value\ValidatedValue
                 ? $usedValue
                 : $argument->getType()->createValue($usedValue);
         }

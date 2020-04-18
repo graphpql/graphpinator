@@ -10,7 +10,7 @@ abstract class ScalarType extends \Graphpinator\Type\Contract\ConcreteDefinition
 {
     use \Graphpinator\Type\Contract\TResolvable;
 
-    public function resolve(?\Graphpinator\Normalizer\FieldSet $requestedFields, \Graphpinator\Resolver\FieldResult $parentResult) : \Graphpinator\Value\ValidatedValue
+    public function resolve(?\Graphpinator\Normalizer\FieldSet $requestedFields, \Graphpinator\Resolver\FieldResult $parentResult) : \Graphpinator\Resolver\Value\ValidatedValue
     {
         if ($requestedFields instanceof \Graphpinator\Normalizer\FieldSet) {
             throw new \Graphpinator\Exception\Resolver\SelectionOnLeaf();
@@ -24,9 +24,9 @@ abstract class ScalarType extends \Graphpinator\Type\Contract\ConcreteDefinition
         return $value;
     }
 
-    public function createValue($rawValue) : \Graphpinator\Value\ValidatedValue
+    public function createValue($rawValue) : \Graphpinator\Resolver\Value\ValidatedValue
     {
-        return \Graphpinator\Value\ScalarValue::create($rawValue, $this);
+        return \Graphpinator\Resolver\Value\ScalarValue::create($rawValue, $this);
     }
 
     public function getTypeKind() : string

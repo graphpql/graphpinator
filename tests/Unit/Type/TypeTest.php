@@ -10,7 +10,7 @@ final class TypeTest extends \PHPUnit\Framework\TestCase
     {
         $type = self::getTestTypeAbc();
 
-        self::assertInstanceOf(\Graphpinator\Value\TypeValue::class, $type->createValue(123));
+        self::assertInstanceOf(\Graphpinator\Resolver\Value\TypeValue::class, $type->createValue(123));
         self::assertSame(123, $type->createValue(123)->getRawValue());
     }
 

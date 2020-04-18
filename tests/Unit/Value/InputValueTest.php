@@ -9,7 +9,7 @@ final class InputValueTest extends \PHPUnit\Framework\TestCase
     public function testApplyDefaults() : void
     {
         $fields = [];
-        $defaults = ['field' => \Graphpinator\Value\ScalarValue::create('random', \Graphpinator\Type\Container\Container::String())];
+        $defaults = ['field' => \Graphpinator\Resolver\Value\ScalarValue::create('random', \Graphpinator\Type\Container\Container::String())];
 
         $type = $this->createMock(\Graphpinator\Type\InputType::class);
         $type->expects($this->exactly(2))->method('getArguments')->willReturn(
@@ -18,7 +18,7 @@ final class InputValueTest extends \PHPUnit\Framework\TestCase
         $type->expects($this->once())->method('isInputable')->willReturn(true);
         $type->expects($this->once())->method('applyDefaults')->with($fields)->willReturn($defaults);
 
-        $value = \Graphpinator\Value\InputValue::create($fields, $type);
+        $value = \Graphpinator\Resolver\Value\InputValue::create($fields, $type);
         self::assertTrue(isset($value['field']));
         self::assertFalse(isset($value['field0']));
         self::assertSame($defaults['field'], $value['field']);
@@ -35,7 +35,7 @@ final class InputValueTest extends \PHPUnit\Framework\TestCase
         $type->expects($this->once())->method('isInputable')->willReturn(true);
         $type->expects($this->once())->method('applyDefaults')->with($fields)->willReturn($fields);
 
-        $value = \Graphpinator\Value\InputValue::create($fields, $type);
+        $value = \Graphpinator\Resolver\Value\InputValue::create($fields, $type);
         self::assertSame($fields, $value->getRawValue());
     }
 
@@ -43,7 +43,7 @@ final class InputValueTest extends \PHPUnit\Framework\TestCase
     {
         $type = $this->createMock(\Graphpinator\Type\InputType::class);
 
-        self::assertInstanceOf(\Graphpinator\Value\NullValue::class, \Graphpinator\Value\InputValue::create(null, $type));
+        self::assertInstanceOf(\Graphpinator\Resolver\Value\NullValue::class, \Graphpinator\Resolver\Value\InputValue::create(null, $type));
     }
 
     public function testInvalidField() : void
@@ -57,6 +57,6 @@ final class InputValueTest extends \PHPUnit\Framework\TestCase
         $type->expects($this->once())->method('isInputable')->willReturn(true);
         $type->expects($this->once())->method('applyDefaults')->with($fields)->willReturn($fields);
 
-        $value = \Graphpinator\Value\InputValue::create($fields, $type);
+        $value = \Graphpinator\Resolver\Value\InputValue::create($fields, $type);
     }
 }

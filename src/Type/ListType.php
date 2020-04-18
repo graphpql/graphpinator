@@ -6,14 +6,14 @@ namespace Graphpinator\Type;
 
 final class ListType extends \Graphpinator\Type\Contract\ModifierDefinition
 {
-    public function createValue($rawValue) : \Graphpinator\Value\ValidatedValue
+    public function createValue($rawValue) : \Graphpinator\Resolver\Value\ValidatedValue
     {
-        return \Graphpinator\Value\ListValue::create($rawValue, $this);
+        return \Graphpinator\Resolver\Value\ListValue::create($rawValue, $this);
     }
 
     public function resolve(?\Graphpinator\Normalizer\FieldSet $requestedFields, \Graphpinator\Resolver\FieldResult $parentResult) : array
     {
-        if (!$parentResult->getResult() instanceof \Graphpinator\Value\ListValue) {
+        if (!$parentResult->getResult() instanceof \Graphpinator\Resolver\Value\ListValue) {
             throw new \Exception('Cannot create list');
         }
 
@@ -28,7 +28,7 @@ final class ListType extends \Graphpinator\Type\Contract\ModifierDefinition
 
     public function validateValue($rawValue) : void
     {
-        if ($rawValue === null || $rawValue instanceof \Graphpinator\Value\ValidatedValue) {
+        if ($rawValue === null || $rawValue instanceof \Graphpinator\Resolver\Value\ValidatedValue) {
             return;
         }
 

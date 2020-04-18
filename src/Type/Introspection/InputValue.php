@@ -47,7 +47,7 @@ final class InputValue extends \Graphpinator\Type\Type
                 'defaultValue',
                 \Graphpinator\Type\Container\Container::String(),
                 static function (\Graphpinator\Argument\Argument $argument) : ?string {
-                    return $argument->getDefaultValue() instanceof \Graphpinator\Value\ValidatedValue
+                    return $argument->getDefaultValue() instanceof \Graphpinator\Resolver\Value\ValidatedValue
                         ? \json_encode($argument->getDefaultValue(), \JSON_THROW_ON_ERROR, 512)
                         : null;
                 },
