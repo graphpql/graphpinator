@@ -10,31 +10,10 @@ final class FieldSet extends \Graphpinator\Utils\ClassSet
 
     private \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet $fragments;
 
-    public function __construct(array $fields, \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet $fragments)
+    public function __construct(array $fields, \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet $fragments = null)
     {
         parent::__construct($fields);
-        $this->fragments = $fragments;
-    }
-
-    public function getFragmentSpreads() : \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet
-    {
-        return $this->fragments;
-    }
-
-    public function normalize(
-        \Graphpinator\Type\Container\Container $typeContainer,
-        \Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions
-    ) : \Graphpinator\Normalizer\FieldSet
-    {
-        $normalizedFields = [];
-
-        foreach ($this->getCombinedFields($fragmentDefinitions) as $field) {
-            \assert($field instanceof Field);
-
-            $normalizedFields[] = $field->normalize($typeContainer, $fragmentDefinitions);
-        }
-
-        return new \Graphpinator\Normalizer\FieldSet($normalizedFields);
+        $this->fragments = $fragments ?? new \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet([]);
     }
 
     public function current() : Field
@@ -47,20 +26,42 @@ final class FieldSet extends \Graphpinator\Utils\ClassSet
         return parent::offsetGet($offset);
     }
 
-    private function getCombinedFields(\Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions) : array
+    public function getFragmentSpreads() : \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet
     {
-        $allFields = $this->array;
+        return $this->fragments;
+    }
 
-        foreach ($this->fragments as $fragment) {
-            foreach ($fragment->getFields($fragmentDefinitions) as $fragmentField) {
-                if (\array_key_exists($fragmentField->getName(), $allFields)) {
-                    throw new \Exception('Fragment defines field that already exists in selection.');
-                }
-
-                $allFields[$fragmentField->getName()] = $fragmentField;
+    public function validateCycles(\Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions, array $stack) : void
+    {
+        foreach ($this as $field) {
+            if ($field->getFields() instanceof self) {
+                $field->getFields()->validateCycles($fragmentDefinitions, $stack);
             }
         }
 
-        return $allFields;
+        foreach ($this->getFragmentSpreads() as $spread) {
+            if (!$spread instanceof \Graphpinator\Parser\FragmentSpread\NamedFragmentSpread) {
+                continue;
+            }
+
+            $fragmentDefinitions[$spread->getName()]->validateCycles($fragmentDefinitions, $stack);
+        }
+    }
+
+    public function normalize(
+        \Graphpinator\Type\Container\Container $typeContainer,
+        \Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions
+    ) : \Graphpinator\Normalizer\FieldSet
+    {
+        $normalized = [];
+
+        foreach ($this as $field) {
+            $normalized[] = $field->normalize($typeContainer, $fragmentDefinitions);
+        }
+
+        return new \Graphpinator\Normalizer\FieldSet(
+            $normalized,
+            $this->fragments->normalize($typeContainer, $fragmentDefinitions),
+        );
     }
 }

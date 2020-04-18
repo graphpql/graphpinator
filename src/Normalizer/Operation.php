@@ -37,7 +37,7 @@ final class Operation
 
     public function execute(\Infinityloop\Utils\Json $variables) : OperationResult
     {
-        $data = $this->operation->resolveFields(
+        $data = $this->operation->resolve(
             $this->children->applyVariables(new VariableValueSet($this->variables, $variables)),
             \Graphpinator\Resolver\FieldResult::fromRaw($this->operation, null)
         );

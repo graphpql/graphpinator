@@ -12,14 +12,14 @@ abstract class Directive
     protected const DESCRIPTION = null;
 
     private \Graphpinator\Argument\ArgumentSet $arguments;
-    private \Closure $evaluate;
+    private \Closure $resolveFn;
     private array $locations;
     private bool $repeatable;
 
-    public function __construct(\Graphpinator\Argument\ArgumentSet $arguments, callable $evaluate, array $locations, bool $repeatable)
+    public function __construct(\Graphpinator\Argument\ArgumentSet $arguments, callable $resolveFn, array $locations, bool $repeatable)
     {
         $this->arguments = $arguments;
-        $this->evaluate = $evaluate;
+        $this->resolveFn = $resolveFn;
         $this->locations = $locations;
         $this->repeatable = $repeatable;
     }
@@ -47,5 +47,16 @@ abstract class Directive
     public function isRepeatable() : bool
     {
         return $this->repeatable;
+    }
+
+    public function resolve(\Graphpinator\Normalizer\ArgumentValueSet $arguments) : string
+    {
+        $result = \call_user_func($this->resolveFn, $arguments);
+
+        if (\is_string($result) && \array_key_exists($result, DirectiveResult::ENUM)) {
+            return $result;
+        }
+
+        throw new \Exception('Directive fn must return directiveResult string');
     }
 }

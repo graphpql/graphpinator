@@ -78,30 +78,11 @@ final class TypeTest extends \PHPUnit\Framework\TestCase
             new \Graphpinator\Normalizer\Field('field3', null, new \Graphpinator\Parser\Value\NamedValueSet([])),
         ]);
         $parentValue = \Graphpinator\Resolver\FieldResult::fromRaw(\Graphpinator\Type\Container\Container::String(), self::PARENT_VAL);
-        $result = $type->resolveFields($requestFields, $parentValue);
+        $result = $type->resolve($requestFields, $parentValue);
 
         self::assertCount(3, $result);
 
         foreach (['field1' => 'fieldValue', 'field2' => false, 'field3' => null] as $name => $value) {
-            self::assertArrayHasKey($name, $result);
-            self::assertSame($value, $result[$name]->getRawValue());
-        }
-    }
-
-    public function testResolveFieldsIgnore(): void
-    {
-        $type = $this->createTestType();
-        $requestFields = new \Graphpinator\Normalizer\FieldSet([
-            new \Graphpinator\Normalizer\Field('field1', null, new \Graphpinator\Parser\Value\NamedValueSet([]), null, \Graphpinator\Type\Container\Container::String()),
-            new \Graphpinator\Normalizer\Field('field2', null, new \Graphpinator\Parser\Value\NamedValueSet([]), null, \Graphpinator\Type\Container\Container::Int()),
-            new \Graphpinator\Normalizer\Field('field3', null, new \Graphpinator\Parser\Value\NamedValueSet([])),
-        ]);
-        $parentValue = \Graphpinator\Resolver\FieldResult::fromRaw(\Graphpinator\Type\Container\Container::String(), self::PARENT_VAL);
-        $result = $type->resolveFields($requestFields, $parentValue);
-
-        self::assertCount(2, $result);
-
-        foreach (['field1' => 'fieldValue', 'field3' => null] as $name => $value) {
             self::assertArrayHasKey($name, $result);
             self::assertSame($value, $result[$name]->getRawValue());
         }

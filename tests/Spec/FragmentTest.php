@@ -34,6 +34,11 @@ final class FragmentTest extends \PHPUnit\Framework\TestCase
                 \Infinityloop\Utils\Json::fromArray([]),
                 \Infinityloop\Utils\Json::fromArray(['data' => ['field0' => ['field1' => ['name' => 'Test 123']]]]),
             ],
+            [
+                'query queryName { ... namedFragment } fragment innerFragment on Xyz { name } fragment namedFragment on Query { field0 { field1 { ... innerFragment } } }',
+                \Infinityloop\Utils\Json::fromArray([]),
+                \Infinityloop\Utils\Json::fromArray(['data' => ['field0' => ['field1' => ['name' => 'Test 123']]]]),
+            ],
         ];
     }
 

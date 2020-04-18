@@ -15,7 +15,7 @@ final class NamedTypeRef implements TypeRef
         $this->name = $name;
     }
 
-    public function resolve(\Graphpinator\Type\Container\Container $typeContainer): \Graphpinator\Type\Contract\NamedDefinition
+    public function normalize(\Graphpinator\Type\Container\Container $typeContainer): \Graphpinator\Type\Contract\NamedDefinition
     {
         return $typeContainer->getType($this->name);
     }

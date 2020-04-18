@@ -10,7 +10,7 @@ abstract class ScalarType extends \Graphpinator\Type\Contract\ConcreteDefinition
 {
     use \Graphpinator\Type\Contract\TResolvable;
 
-    public function resolveFields(?\Graphpinator\Normalizer\FieldSet $requestedFields, \Graphpinator\Resolver\FieldResult $parentResult) : \Graphpinator\Value\ValidatedValue
+    public function resolve(?\Graphpinator\Normalizer\FieldSet $requestedFields, \Graphpinator\Resolver\FieldResult $parentResult) : \Graphpinator\Value\ValidatedValue
     {
         if ($requestedFields instanceof \Graphpinator\Normalizer\FieldSet) {
             throw new \Exception('Cannot require fields on leaf type.');

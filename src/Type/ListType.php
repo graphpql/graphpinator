@@ -11,7 +11,7 @@ final class ListType extends \Graphpinator\Type\Contract\ModifierDefinition
         return \Graphpinator\Value\ListValue::create($rawValue, $this);
     }
 
-    public function resolveFields(?\Graphpinator\Normalizer\FieldSet $requestedFields, \Graphpinator\Resolver\FieldResult $parentResult) : array
+    public function resolve(?\Graphpinator\Normalizer\FieldSet $requestedFields, \Graphpinator\Resolver\FieldResult $parentResult) : array
     {
         if (!$parentResult->getResult() instanceof \Graphpinator\Value\ListValue) {
             throw new \Exception('Cannot create list');
@@ -20,7 +20,7 @@ final class ListType extends \Graphpinator\Type\Contract\ModifierDefinition
         $return = [];
 
         foreach ($parentResult->getResult() as $val) {
-            $return[] = $this->innerType->resolveFields($requestedFields, \Graphpinator\Resolver\FieldResult::fromValidated($val));
+            $return[] = $this->innerType->resolve($requestedFields, \Graphpinator\Resolver\FieldResult::fromValidated($val));
         }
 
         return $return;

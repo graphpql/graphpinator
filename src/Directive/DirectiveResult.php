@@ -10,4 +10,9 @@ final class DirectiveResult
 
     public const NONE = 'none';
     public const SKIP = 'skip';
+
+    public const ENUM = [
+        self::NONE => self::NONE,
+        self::SKIP => self::SKIP,
+    ];
 }

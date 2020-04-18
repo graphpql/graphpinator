@@ -20,4 +20,18 @@ final class FragmentSpreadSet extends \Infinityloop\Utils\ImmutableSet
     {
         return parent::offsetGet($offset);
     }
+
+    public function normalize(
+        \Graphpinator\Type\Container\Container $typeContainer,
+        \Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions
+    ) : \Graphpinator\Normalizer\FragmentSpread\FragmentSpreadSet
+    {
+        $normalized = [];
+
+        foreach ($this as $spread) {
+            $normalized[] = $spread->normalize($typeContainer, $fragmentDefinitions);
+        }
+
+        return new \Graphpinator\Normalizer\FragmentSpread\FragmentSpreadSet($normalized);
+    }
 }

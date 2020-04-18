@@ -85,6 +85,18 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                         'args' => [['name' => 'if']],
                         'locations' => ['FIELD', 'FRAGMENT_SPREAD', 'INLINE_FRAGMENT'],
                         'isRepeatable' => false,
+                    ], [
+                        'name' => 'testDirective',
+                        'description' => null,
+                        'args' => [],
+                        'locations' => ['FIELD'],
+                        'isRepeatable' => true,
+                    ], [
+                        'name' => 'invalidDirective',
+                        'description' => null,
+                        'args' => [],
+                        'locations' => ['FIELD'],
+                        'isRepeatable' => true,
                     ],
                 ]]]]),
             ],

@@ -8,14 +8,17 @@ final class FieldSet extends \Graphpinator\Utils\ClassSet
 {
     public const INNER_CLASS = Field::class;
 
-    public function current() : Field
+    private \Graphpinator\Normalizer\FragmentSpread\FragmentSpreadSet $fragments;
+
+    public function __construct(array $fields, ?\Graphpinator\Normalizer\FragmentSpread\FragmentSpreadSet $fragments = null)
     {
-        return parent::current();
+        parent::__construct($fields);
+        $this->fragments = $fragments ?? new \Graphpinator\Normalizer\FragmentSpread\FragmentSpreadSet([]);
     }
 
-    public function offsetGet($offset) : Field
+    public function getFragments() : \Graphpinator\Normalizer\FragmentSpread\FragmentSpreadSet
     {
-        return parent::offsetGet($offset);
+        return $this->fragments;
     }
 
     public function applyVariables(\Graphpinator\Resolver\VariableValueSet $variables) : self
@@ -26,6 +29,19 @@ final class FieldSet extends \Graphpinator\Utils\ClassSet
             $fields[] = $field->applyVariables($variables);
         }
 
-        return new self($fields);
+        return new self(
+            $fields,
+            $this->fragments->applyVariables($variables),
+        );
+    }
+
+    public function current() : Field
+    {
+        return parent::current();
+    }
+
+    public function offsetGet($offset) : Field
+    {
+        return parent::offsetGet($offset);
     }
 }

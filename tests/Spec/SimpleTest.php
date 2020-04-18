@@ -14,6 +14,11 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
                 \Infinityloop\Utils\Json::fromArray([]),
                 \Infinityloop\Utils\Json::fromArray(['data' => ['field0' => ['field1' => ['name' => 'Test 123']]]]),
             ],
+            [
+                'query queryName { aliasName: field0 { field1 { name } } }',
+                \Infinityloop\Utils\Json::fromArray([]),
+                \Infinityloop\Utils\Json::fromArray(['data' => ['aliasName' => ['field1' => ['name' => 'Test 123']]]]),
+            ],
         ];
     }
 

@@ -43,7 +43,7 @@ final class Variable
     {
         return new \Graphpinator\Normalizer\Variable\Variable(
             $this->name,
-            $this->type->resolve($typeContainer),
+            $this->type->normalize($typeContainer),
             $this->default,
         );
     }

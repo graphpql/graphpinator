@@ -84,12 +84,19 @@ final class ParserTest extends \PHPUnit\Framework\TestCase
 
     public function testDirective() : void
     {
-        $this->expectException(\Exception::class);
+        $result = \Graphpinator\Parser\Parser::parseString('query { field @directiveName(arg1: 123) }');
 
-        $result = \Graphpinator\Parser\Parser::parseString('query { field @directive(arg1: 123) }');
-
-        // TODO
         self::assertCount(0, $result->getFragments());
+        self::assertCount(1, $result->getOperation()->getFields());
+        self::assertArrayHasKey('field', $result->getOperation()->getFields());
+        self::assertCount(1, $result->getOperation()->getFields()->offsetGet('field')->getDirectives());
+        self::assertSame(\Graphpinator\Directive\DirectiveLocation::FIELD, $result->getOperation()->getFields()->offsetGet('field')->getDirectives()->getLocation());
+        self::assertArrayHasKey(0, $result->getOperation()->getFields()->offsetGet('field')->getDirectives());
+        self::assertSame('directiveName', $result->getOperation()->getFields()->offsetGet('field')->getDirectives()->offsetGet(0)->getName());
+        self::assertCount(1, $result->getOperation()->getFields()->offsetGet('field')->getDirectives()->offsetGet(0)->getArguments());
+        self::assertArrayHasKey('arg1', $result->getOperation()->getFields()->offsetGet('field')->getDirectives()->offsetGet(0)->getArguments());
+        self::assertSame('arg1', $result->getOperation()->getFields()->offsetGet('field')->getDirectives()->offsetGet(0)->getArguments()->offsetGet('arg1')->getName());
+        self::assertSame(123, $result->getOperation()->getFields()->offsetGet('field')->getDirectives()->offsetGet(0)->getArguments()->offsetGet('arg1')->getRawValue());
     }
 
 
@@ -114,23 +121,57 @@ final class ParserTest extends \PHPUnit\Framework\TestCase
         $result = \Graphpinator\Parser\Parser::parseString('query { ... fragmentName } ');
 
         self::assertCount(0, $result->getFragments());
+        self::assertCount(0, $result->getOperation()->getFields());
         self::assertCount(1, $result->getOperation()->getFields()->getFragmentSpreads());
         self::assertArrayHasKey(0, $result->getOperation()->getFields()->getFragmentSpreads());
         self::assertInstanceOf(\Graphpinator\Parser\FragmentSpread\NamedFragmentSpread::class, $result->getOperation()->getFields()->getFragmentSpreads()[0]);
-        self::assertSame('fragmentName', $result->getOperation()->getFields()->getFragmentSpreads()[0]->getName());
-        self::assertCount(0, $result->getOperation()->getFields());
+        self::assertSame('fragmentName', $result->getOperation()->getFields()->getFragmentSpreads()->offsetGet(0)->getName());
+        self::assertCount(0, $result->getOperation()->getFields()->getFragmentSpreads()->offsetGet(0)->getDirectives());
     }
 
-    public function testTypeFragmentSpread() : void
+    public function testInlineFragmentSpread() : void
     {
-        $result = \Graphpinator\Parser\Parser::parseString('query { ... on TypeName {} }');
+        $result = \Graphpinator\Parser\Parser::parseString('query { ... on TypeName { fieldName } }');
 
         self::assertCount(0, $result->getFragments());
+        self::assertCount(0, $result->getOperation()->getFields());
         self::assertCount(1, $result->getOperation()->getFields()->getFragmentSpreads());
         self::assertArrayHasKey(0, $result->getOperation()->getFields()->getFragmentSpreads());
-        self::assertInstanceOf(\Graphpinator\Parser\FragmentSpread\TypeFragmentSpread::class , $result->getOperation()->getFields()->getFragmentSpreads()[0]);
-        self::assertSame('TypeName', $result->getOperation()->getFields()->getFragmentSpreads()[0]->getTypeCond()->getName());
+        self::assertInstanceOf(\Graphpinator\Parser\FragmentSpread\InlineFragmentSpread::class , $result->getOperation()->getFields()->getFragmentSpreads()[0]);
+        self::assertSame('TypeName', $result->getOperation()->getFields()->getFragmentSpreads()->offsetGet(0)->getTypeCond()->getName());
+        self::assertCount(1, $result->getOperation()->getFields()->getFragmentSpreads()->offsetGet(0)->getFields());
+        self::assertCount(0, $result->getOperation()->getFields()->getFragmentSpreads()->offsetGet(0)->getDirectives());
+    }
+
+    public function testNamedFragmentSpreadDirective() : void
+    {
+        $result = \Graphpinator\Parser\Parser::parseString('query { ... fragmentName @directiveName() }');
+
+        self::assertCount(0, $result->getFragments());
         self::assertCount(0, $result->getOperation()->getFields());
+        self::assertCount(1, $result->getOperation()->getFields()->getFragmentSpreads());
+        self::assertArrayHasKey(0, $result->getOperation()->getFields()->getFragmentSpreads());
+        self::assertInstanceOf(\Graphpinator\Parser\FragmentSpread\NamedFragmentSpread::class, $result->getOperation()->getFields()->getFragmentSpreads()[0]);
+        self::assertSame('fragmentName', $result->getOperation()->getFields()->getFragmentSpreads()->offsetGet(0)->getName());
+        self::assertCount(1, $result->getOperation()->getFields()->getFragmentSpreads()->offsetGet(0)->getDirectives());
+        self::assertArrayHasKey(0, $result->getOperation()->getFields()->getFragmentSpreads()->offsetGet(0)->getDirectives());
+        self::assertSame('directiveName', $result->getOperation()->getFields()->getFragmentSpreads()->offsetGet(0)->getDirectives()->offsetGet(0)->getName());
+    }
+
+    public function testInlineFragmentSpreadDirective() : void
+    {
+        $result = \Graphpinator\Parser\Parser::parseString('query { ... on TypeName @directiveName() { fieldName } }');
+
+        self::assertCount(0, $result->getFragments());
+        self::assertCount(0, $result->getOperation()->getFields());
+        self::assertCount(1, $result->getOperation()->getFields()->getFragmentSpreads());
+        self::assertArrayHasKey(0, $result->getOperation()->getFields()->getFragmentSpreads());
+        self::assertInstanceOf(\Graphpinator\Parser\FragmentSpread\InlineFragmentSpread::class , $result->getOperation()->getFields()->getFragmentSpreads()[0]);
+        self::assertSame('TypeName', $result->getOperation()->getFields()->getFragmentSpreads()->offsetGet(0)->getTypeCond()->getName());
+        self::assertCount(1, $result->getOperation()->getFields()->getFragmentSpreads()->offsetGet(0)->getFields());
+        self::assertCount(1, $result->getOperation()->getFields()->getFragmentSpreads()->offsetGet(0)->getDirectives());
+        self::assertArrayHasKey(0, $result->getOperation()->getFields()->getFragmentSpreads()->offsetGet(0)->getDirectives());
+        self::assertSame('directiveName', $result->getOperation()->getFields()->getFragmentSpreads()->offsetGet(0)->getDirectives()->offsetGet(0)->getName());
     }
 
     public function testVariable() : void
@@ -149,7 +190,7 @@ final class ParserTest extends \PHPUnit\Framework\TestCase
 
     public function testVariableDefault() : void
     {
-        $result = \Graphpinator\Parser\Parser::parseString('query queryName ($varName: Int = 3) {}');
+        $result = \Graphpinator\Parser\Parser::parseString('query queryName ($varName: Float = 3.14) {}');
 
         self::assertCount(0, $result->getFragments());
         self::assertCount(0, $result->getOperation()->getFields());
@@ -157,8 +198,8 @@ final class ParserTest extends \PHPUnit\Framework\TestCase
         self::assertArrayHasKey('varName', $result->getOperation()->getVariables());
         self::assertSame('varName', $result->getOperation()->getVariables()->offsetGet('varName')->getName());
         self::assertInstanceOf(\Graphpinator\Parser\TypeRef\NamedTypeRef::class, $result->getOperation()->getVariables()->offsetGet('varName')->getType());
-        self::assertSame('Int', $result->getOperation()->getVariables()->offsetGet('varName')->getType()->getName());
-        self::assertSame(3, $result->getOperation()->getVariables()->offsetGet('varName')->getDefault()->getRawValue());
+        self::assertSame('Float', $result->getOperation()->getVariables()->offsetGet('varName')->getType()->getName());
+        self::assertSame(3.14, $result->getOperation()->getVariables()->offsetGet('varName')->getDefault()->getRawValue());
     }
 
     public function testVariableComplexType() : void
@@ -238,7 +279,6 @@ final class ParserTest extends \PHPUnit\Framework\TestCase
         self::assertNull($result->getOperation()->getFields()->offsetGet('fieldName')->getAlias());
         self::assertNull($result->getOperation()->getFields()->offsetGet('fieldName')->getArguments());
         self::assertNull($result->getOperation()->getFields()->offsetGet('fieldName')->getFields());
-        self::assertNull($result->getOperation()->getFields()->offsetGet('fieldName')->getTypeCondition());
     }
 
     public function testFieldArguments() : void
@@ -255,7 +295,6 @@ final class ParserTest extends \PHPUnit\Framework\TestCase
         self::assertCount(1, $result->getOperation()->getFields()->offsetGet('fieldName')->getArguments());
         self::assertArrayHasKey('argName', $result->getOperation()->getFields()->offsetGet('fieldName')->getArguments());
         self::assertSame('argVal', $result->getOperation()->getFields()->offsetGet('fieldName')->getArguments()->offsetGet('argName')->getRawValue());
-        self::assertNull($result->getOperation()->getFields()->offsetGet('fieldName')->getTypeCondition());
         self::assertNull($result->getOperation()->getFields()->offsetGet('fieldName')->getFields());
     }
 
@@ -270,14 +309,12 @@ final class ParserTest extends \PHPUnit\Framework\TestCase
         self::assertSame('fieldName', $result->getOperation()->getFields()->offsetGet('fieldName')->getName());
         self::assertNull($result->getOperation()->getFields()->offsetGet('fieldName')->getAlias());
         self::assertNull($result->getOperation()->getFields()->offsetGet('fieldName')->getArguments());
-        self::assertNull($result->getOperation()->getFields()->offsetGet('fieldName')->getTypeCondition());
         self::assertInstanceOf(\Graphpinator\Parser\FieldSet::class, $result->getOperation()->getFields()->offsetGet('fieldName')->getFields());
         self::assertCount(1, $result->getOperation()->getFields()->offsetGet('fieldName')->getFields());
         self::assertArrayHasKey('innerField', $result->getOperation()->getFields()->offsetGet('fieldName')->getFields());
         self::assertSame('innerField', $result->getOperation()->getFields()->offsetGet('fieldName')->getFields()->offsetGet('innerField')->getName());
         self::assertNull($result->getOperation()->getFields()->offsetGet('fieldName')->getFields()->offsetGet('innerField')->getAlias());
         self::assertNull($result->getOperation()->getFields()->offsetGet('fieldName')->getFields()->offsetGet('innerField')->getArguments());
-        self::assertNull($result->getOperation()->getFields()->offsetGet('fieldName')->getFields()->offsetGet('innerField')->getTypeCondition());
     }
 
     public function testFieldAlias() : void
@@ -292,7 +329,6 @@ final class ParserTest extends \PHPUnit\Framework\TestCase
         self::assertSame('aliasName', $result->getOperation()->getFields()->offsetGet('fieldName')->getAlias());
         self::assertNull($result->getOperation()->getFields()->offsetGet('fieldName')->getArguments());
         self::assertNull($result->getOperation()->getFields()->offsetGet('fieldName')->getFields());
-        self::assertNull($result->getOperation()->getFields()->offsetGet('fieldName')->getTypeCondition());
     }
 
     public function testFieldAll() : void
@@ -308,7 +344,6 @@ final class ParserTest extends \PHPUnit\Framework\TestCase
         self::assertInstanceOf(\Graphpinator\Parser\Value\NamedValueSet::class, $result->getOperation()->getFields()->offsetGet('fieldName')->getArguments());
         self::assertCount(1, $result->getOperation()->getFields()->offsetGet('fieldName')->getArguments());
         self::assertArrayHasKey('argName', $result->getOperation()->getFields()->offsetGet('fieldName')->getArguments());
-        self::assertNull($result->getOperation()->getFields()->offsetGet('fieldName')->getTypeCondition());
         self::assertInstanceOf(\Graphpinator\Parser\FieldSet::class, $result->getOperation()->getFields()->offsetGet('fieldName')->getFields());
         self::assertCount(1, $result->getOperation()->getFields()->offsetGet('fieldName')->getFields());
         self::assertArrayHasKey('innerField', $result->getOperation()->getFields()->offsetGet('fieldName')->getFields());
@@ -316,7 +351,6 @@ final class ParserTest extends \PHPUnit\Framework\TestCase
         self::assertNull($result->getOperation()->getFields()->offsetGet('fieldName')->getFields()->offsetGet('innerField')->getAlias());
         self::assertInstanceOf(\Graphpinator\Parser\Value\NamedValueSet::class, $result->getOperation()->getFields()->offsetGet('fieldName')->getFields()->offsetGet('innerField')->getArguments());
         self::assertCount(1, $result->getOperation()->getFields()->offsetGet('fieldName')->getFields()->offsetGet('innerField')->getArguments());
-        self::assertNull($result->getOperation()->getFields()->offsetGet('fieldName')->getFields()->offsetGet('innerField')->getTypeCondition());
     }
 
     public function invalidDataProvider() : array
@@ -338,6 +372,8 @@ final class ParserTest extends \PHPUnit\Framework\TestCase
             // invalid fragment spread
             ['query queryName { ... {} }'],
             ['query queryName { ... on {} }'],
+            ['query queryName { ... on Int! }'],
+            ['query queryName { ... on [Int] }'],
             // invalid variable value
             ['query queryName ($var: Int = @dir) {}'],
             ['query queryName ($var: Int = $var2) {}'],

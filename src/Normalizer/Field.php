@@ -13,22 +13,23 @@ final class Field
     private string $name;
     private string $alias;
     private \Graphpinator\Parser\Value\NamedValueSet $arguments;
+    private \Graphpinator\Normalizer\Directive\DirectiveSet $directives;
     private ?\Graphpinator\Normalizer\FieldSet $children;
-    private ?\Graphpinator\Type\Contract\NamedDefinition $typeCond;
 
     public function __construct(
         string $name,
         ?string $alias = null,
         ?\Graphpinator\Parser\Value\NamedValueSet $arguments = null,
-        ?\Graphpinator\Normalizer\FieldSet $children = null,
-        ?\Graphpinator\Type\Contract\NamedDefinition $typeCond = null
+        ?\Graphpinator\Normalizer\Directive\DirectiveSet $directives = null,
+        ?\Graphpinator\Normalizer\FieldSet $children = null
     )
     {
         $this->name = $name;
         $this->alias = $alias ?? $name;
         $this->arguments = $arguments ?? new \Graphpinator\Parser\Value\NamedValueSet([]);
+        $this->directives = $directives
+            ?? new \Graphpinator\Normalizer\Directive\DirectiveSet([], \Graphpinator\Directive\DirectiveLocation::FIELD);
         $this->children = $children;
-        $this->typeCond = $typeCond;
     }
 
     public function getName() : string
@@ -46,23 +47,14 @@ final class Field
         return $this->arguments;
     }
 
+    public function getDirectives() : \Graphpinator\Normalizer\Directive\DirectiveSet
+    {
+        return $this->directives;
+    }
+
     public function getFields() : ?\Graphpinator\Normalizer\FieldSet
     {
         return $this->children;
-    }
-
-    public function getTypeCondition() : ?\Graphpinator\Type\Contract\NamedDefinition
-    {
-        return $this->typeCond;
-    }
-
-    public function typeMatches(\Graphpinator\Type\Contract\Definition $type) : bool
-    {
-        if ($this->typeCond instanceof \Graphpinator\Type\Contract\NamedDefinition) {
-            return $type->isInstanceOf($this->typeCond);
-        }
-
-        return true;
     }
 
     public function applyVariables(VariableValueSet $variables) : self
@@ -71,10 +63,10 @@ final class Field
             $this->name,
             $this->alias,
             $this->arguments->applyVariables($variables),
+            $this->directives->applyVariables($variables),
             $this->children instanceof FieldSet
                 ? $this->children->applyVariables($variables)
                 : null,
-            $this->typeCond,
         );
     }
 }

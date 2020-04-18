@@ -20,8 +20,8 @@ final class NotNullRef implements TypeRef
         return $this->innerRef;
     }
 
-    public function resolve(\Graphpinator\Type\Container\Container $typeContainer) : \Graphpinator\Type\NotNullType
+    public function normalize(\Graphpinator\Type\Container\Container $typeContainer) : \Graphpinator\Type\NotNullType
     {
-        return new \Graphpinator\Type\NotNullType($this->innerRef->resolve($typeContainer));
+        return new \Graphpinator\Type\NotNullType($this->innerRef->normalize($typeContainer));
     }
 }

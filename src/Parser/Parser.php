@@ -173,10 +173,9 @@ final class Parser
 
         if ($this->tokenizer->peekNext()->getType() === TokenType::COLON) {
             $this->tokenizer->getNext();
-            $token = $this->tokenizer->assertNext(TokenType::NAME);
 
             $aliasName = $fieldName;
-            $fieldName = $token->getValue();
+            $fieldName = $this->tokenizer->assertNext(TokenType::NAME)->getValue();
         }
 
         if ($this->tokenizer->peekNext()->getType() === TokenType::PAR_O) {
@@ -184,16 +183,14 @@ final class Parser
             $arguments = $this->parseArguments();
         }
 
-        if ($this->tokenizer->peekNext()->getType() === TokenType::DIRECTIVE) {
-            throw new \Exception('Directives are not yet supported');
-        }
+        $directives = $this->parseDirectives(\Graphpinator\Directive\DirectiveLocation::FIELD);
 
         if ($this->tokenizer->peekNext()->getType() === TokenType::CUR_O) {
             $this->tokenizer->getNext();
             $children = $this->parseSelectionSet();
         }
 
-        return new Field($fieldName, $aliasName, $children, $arguments);
+        return new Field($fieldName, $aliasName, $children, $arguments, $directives);
     }
 
     /**
@@ -206,14 +203,37 @@ final class Parser
     {
         switch ($this->tokenizer->getNext()->getType()) {
             case TokenType::NAME:
-                return new \Graphpinator\Parser\FragmentSpread\NamedFragmentSpread($this->tokenizer->getCurrent()->getValue());
+                return new \Graphpinator\Parser\FragmentSpread\NamedFragmentSpread(
+                    $this->tokenizer->getCurrent()->getValue(),
+                    $this->parseDirectives(\Graphpinator\Directive\DirectiveLocation::FRAGMENT_SPREAD),
+                );
             case TokenType::ON:
                 $typeCond = $this->parseType();
+
+                if (!$typeCond instanceof \Graphpinator\Parser\TypeRef\NamedTypeRef) {
+                    throw new \Exception('Fragment type condition must be concrete type');
+                }
+
+                $directives = $this->parseDirectives(\Graphpinator\Directive\DirectiveLocation::INLINE_FRAGMENT);
                 $this->tokenizer->assertNext(TokenType::CUR_O);
 
-                return new \Graphpinator\Parser\FragmentSpread\TypeFragmentSpread($typeCond, $this->parseSelectionSet());
+                return new \Graphpinator\Parser\FragmentSpread\InlineFragmentSpread(
+                    $this->parseSelectionSet(),
+                    $directives,
+                    $typeCond,
+                );
+            case TokenType::DIRECTIVE:
+                $this->tokenizer->getPrev();
+                $directives = $this->parseDirectives(\Graphpinator\Directive\DirectiveLocation::INLINE_FRAGMENT);
+                $this->tokenizer->assertNext(TokenType::CUR_O);
+
+                return new \Graphpinator\Parser\FragmentSpread\InlineFragmentSpread(
+                    $this->parseSelectionSet(),
+                    $directives,
+                    null,
+                );
             default:
-                throw new \Exception('Expected fragment name or type condition.');
+                throw new \Exception('Expected fragment name, type condition or directive.');
         }
     }
 
@@ -248,6 +268,29 @@ final class Parser
         $this->tokenizer->getNext();
 
         return new \Graphpinator\Parser\Variable\VariableSet($variables);
+    }
+
+    /**
+     * Parses directive list.
+     *
+     * Expects iterator on previous token
+     * Leaves iterator to last used token - closing parenthesis
+     */
+    private function parseDirectives(string $location) : \Graphpinator\Parser\Directive\DirectiveSet
+    {
+        $directives = [];
+
+        while ($this->tokenizer->peekNext()->getType() === TokenType::DIRECTIVE) {
+            $this->tokenizer->getNext();
+
+            $dirName = $this->tokenizer->getCurrent()->getValue();
+            $this->tokenizer->assertNext(TokenType::PAR_O);
+            $dirArguments = $this->parseArguments();
+
+            $directives[] = new \Graphpinator\Parser\Directive\Directive($dirName, $dirArguments);
+        }
+
+        return new \Graphpinator\Parser\Directive\DirectiveSet($directives, $location);
     }
 
     /**

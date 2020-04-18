@@ -13,7 +13,7 @@ final class ListTypeTest extends \PHPUnit\Framework\TestCase
         $type = self::getTestTypeAbc()->list();
         $parent = \Graphpinator\Resolver\FieldResult::fromRaw($type, [124]);
 
-        $result = $type->resolveFields(null, $parent);
+        $result = $type->resolve(null, $parent);
     }
 
     public function testValidateValue() : void

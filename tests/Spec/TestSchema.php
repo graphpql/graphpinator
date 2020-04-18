@@ -54,6 +54,8 @@ final class TestSchema
                 return [
                     'skip' => \Graphpinator\Type\Container\Container::directiveSkip(),
                     'include' => \Graphpinator\Type\Container\Container::directiveInclude(),
+                    'testDirective' => TestSchema::getTestDirective(),
+                    'invalidDirective' => TestSchema::getInvalidDirective(),
                 ];
             }
         };
@@ -240,6 +242,42 @@ final class TestSchema
             public function __construct()
             {
                 parent::__construct(self::fromConstants());
+            }
+        };
+    }
+
+    public static function getTestDirective() : \Graphpinator\Directive\Directive
+    {
+        return new class extends \Graphpinator\Directive\Directive
+        {
+            protected const NAME = 'testDirective';
+
+            public function __construct()
+            {
+                parent::__construct(
+                    new \Graphpinator\Argument\ArgumentSet([]),
+                    static function() {return \Graphpinator\Directive\DirectiveResult::NONE;},
+                    [\Graphpinator\Directive\DirectiveLocation::FIELD],
+                    true,
+                );
+            }
+        };
+    }
+
+    public static function getInvalidDirective() : \Graphpinator\Directive\Directive
+    {
+        return new class extends \Graphpinator\Directive\Directive
+        {
+            protected const NAME = 'invalidDirective';
+
+            public function __construct()
+            {
+                parent::__construct(
+                    new \Graphpinator\Argument\ArgumentSet([]),
+                    static function() {return 'blahblah';},
+                    [\Graphpinator\Directive\DirectiveLocation::FIELD],
+                    true,
+                );
             }
         };
     }

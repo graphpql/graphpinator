@@ -12,20 +12,20 @@ final class Field
     private ?string $alias;
     private ?\Graphpinator\Parser\FieldSet $children;
     private ?\Graphpinator\Parser\Value\NamedValueSet $arguments;
-    private ?\Graphpinator\Parser\TypeRef\NamedTypeRef $typeCond;
+    private ?\Graphpinator\Parser\Directive\DirectiveSet $directives;
 
     public function __construct(
         string $name,
-        ?string $alias,
-        ?\Graphpinator\Parser\FieldSet $children,
-        ?\Graphpinator\Parser\Value\NamedValueSet $arguments,
-        ?\Graphpinator\Parser\TypeRef\NamedTypeRef $typeCond = null
+        ?string $alias = null,
+        ?\Graphpinator\Parser\FieldSet $children = null,
+        ?\Graphpinator\Parser\Value\NamedValueSet $arguments = null,
+        ?\Graphpinator\Parser\Directive\DirectiveSet $directives = null
     ) {
         $this->name = $name;
         $this->alias = $alias;
         $this->children = $children;
         $this->arguments = $arguments;
-        $this->typeCond = $typeCond;
+        $this->directives = $directives;
     }
 
     public function getName() : string
@@ -48,14 +48,9 @@ final class Field
         return $this->arguments;
     }
 
-    public function getTypeCondition() : ?\Graphpinator\Parser\TypeRef\NamedTypeRef
+    public function getDirectives() : ?\Graphpinator\Parser\Directive\DirectiveSet
     {
-        return $this->typeCond;
-    }
-
-    public function setTypeCondition(\Graphpinator\Parser\TypeRef\NamedTypeRef $typeCond) : void
-    {
-        $this->typeCond = $typeCond;
+        return $this->directives;
     }
 
     public function normalize(
@@ -67,11 +62,11 @@ final class Field
             $this->name,
             $this->alias,
             $this->arguments,
+            $this->directives instanceof \Graphpinator\Parser\Directive\DirectiveSet
+                ? $this->directives->normalize($typeContainer)
+                : null,
             $this->children instanceof \Graphpinator\Parser\FieldSet
                 ? $this->children->normalize($typeContainer, $fragmentDefinitions)
-                : null,
-            $this->typeCond instanceof \Graphpinator\Parser\TypeRef\NamedTypeRef
-                ? $this->typeCond->resolve($typeContainer)
                 : null,
         );
     }

@@ -9,10 +9,13 @@ final class NamedFragmentSpread implements FragmentSpread
     use \Nette\SmartObject;
 
     private string $name;
+    private \Graphpinator\Parser\Directive\DirectiveSet $directives;
 
-    public function __construct(string $name)
+    public function __construct(string $name, ?\Graphpinator\Parser\Directive\DirectiveSet $directives = null)
     {
         $this->name = $name;
+        $this->directives = $directives
+            ?? new \Graphpinator\Parser\Directive\DirectiveSet([], \Graphpinator\Directive\DirectiveLocation::FRAGMENT_SPREAD);
     }
 
     public function getName() : string
@@ -20,12 +23,23 @@ final class NamedFragmentSpread implements FragmentSpread
         return $this->name;
     }
 
-    public function getFields(\Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions) : \Graphpinator\Parser\FieldSet
+    public function getDirectives() : \Graphpinator\Parser\Directive\DirectiveSet
     {
-        if ($fragmentDefinitions->offsetExists($this->name)) {
-            return $fragmentDefinitions->offsetGet($this->name)->getFields();
+        return $this->directives;
+    }
+
+    public function normalize(\Graphpinator\Type\Container\Container $typeContainer, \Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions): \Graphpinator\Normalizer\FragmentSpread\FragmentSpread
+    {
+        if (!$fragmentDefinitions->offsetExists($this->name)) {
+            throw new \Exception('Unknown fragment');
         }
 
-        throw new \Exception('Unknown fragment');
+        $fragment = $fragmentDefinitions->offsetGet($this->name);
+
+        return new \Graphpinator\Normalizer\FragmentSpread\FragmentSpread(
+            $fragment->getFields()->normalize($typeContainer, $fragmentDefinitions),
+            $this->directives->normalize($typeContainer),
+            $fragment->getTypeCond()->normalize($typeContainer),
+        );
     }
 }
