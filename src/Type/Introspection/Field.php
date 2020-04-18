@@ -9,9 +9,13 @@ final class Field extends \Graphpinator\Type\Type
     protected const NAME = '__Field';
     protected const DESCRIPTION = 'Built-in introspection type.';
 
-    public function __construct()
+    private \Graphpinator\Type\Container\Container $container;
+
+    public function __construct(\Graphpinator\Type\Container\Container $container)
     {
         parent::__construct();
+
+        $this->container = $container;
     }
 
     protected function validateNonNullValue($rawValue) : bool
@@ -38,14 +42,14 @@ final class Field extends \Graphpinator\Type\Type
             ),
             new \Graphpinator\Field\ResolvableField(
                 'args',
-                \Graphpinator\Type\Container\Container::introspectionInputValue()->notNullList(),
+                $this->container->introspectionInputValue()->notNullList(),
                 static function (\Graphpinator\Field\Field $field) : \Graphpinator\Argument\ArgumentSet {
                     return $field->getArguments();
                 },
             ),
             new \Graphpinator\Field\ResolvableField(
                 'type',
-                \Graphpinator\Type\Container\Container::introspectionType()->notNull(),
+                $this->container->introspectionType()->notNull(),
                 static function (\Graphpinator\Field\Field $field) : \Graphpinator\Type\Contract\Definition {
                     return $field->getType();
                 },

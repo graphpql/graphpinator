@@ -9,9 +9,13 @@ final class Type extends \Graphpinator\Type\Type
     protected const NAME = '__Type';
     protected const DESCRIPTION = 'Built-in introspection type.';
 
-    public function __construct()
+    private \Graphpinator\Type\Container\Container $container;
+
+    public function __construct(\Graphpinator\Type\Container\Container $container)
     {
         parent::__construct();
+
+        $this->container = $container;
     }
 
     protected function validateNonNullValue($rawValue) : bool
@@ -24,7 +28,7 @@ final class Type extends \Graphpinator\Type\Type
         return new \Graphpinator\Field\ResolvableFieldSet([
             new \Graphpinator\Field\ResolvableField(
                 'kind',
-                \Graphpinator\Type\Container\Container::introspectionTypeKind()->notNull(),
+                $this->container->introspectionTypeKind()->notNull(),
                 static function (\Graphpinator\Type\Contract\Definition $definition) : string {
                     return $definition->getTypeKind();
                 },
@@ -49,7 +53,7 @@ final class Type extends \Graphpinator\Type\Type
             ),
             new \Graphpinator\Field\ResolvableField(
                 'fields',
-                \Graphpinator\Type\Container\Container::introspectionField()->notNull()->list(),
+                $this->container->introspectionField()->notNull()->list(),
                 static function (\Graphpinator\Type\Contract\Definition $definition) : ?\Graphpinator\Field\FieldSet {
                     return $definition instanceof \Graphpinator\Type\Contract\InterfaceImplementor
                         ? $definition->getFields()
@@ -68,13 +72,22 @@ final class Type extends \Graphpinator\Type\Type
             new \Graphpinator\Field\ResolvableField(
                 'possibleTypes',
                 $this->notNull()->list(),
-                static function (\Graphpinator\Type\Contract\Definition $definition) : ?\Graphpinator\Utils\ConcreteSet {
+                function (\Graphpinator\Type\Contract\Definition $definition) : ?\Graphpinator\Utils\ConcreteSet {
                     if ($definition instanceof \Graphpinator\Type\UnionType) {
                         return $definition->getTypes();
                     }
 
                     if ($definition instanceof \Graphpinator\Type\InterfaceType) {
-                        return null;
+                        $subTypes = [];
+
+                        foreach ($this->container->getAllTypes() as $type) {
+                            if ($type instanceof \Graphpinator\Type\Type &&
+                                $type->isInstanceOf($definition)) {
+                                $subTypes[] = $type;
+                            }
+                        }
+
+                        return new \Graphpinator\Utils\ConcreteSet($subTypes);
                     }
 
                     return null;
@@ -82,7 +95,7 @@ final class Type extends \Graphpinator\Type\Type
             ),
             new \Graphpinator\Field\ResolvableField(
                 'enumValues',
-                \Graphpinator\Type\Container\Container::introspectionEnumValue()->notNull()->list(),
+                $this->container->introspectionEnumValue()->notNull()->list(),
                 static function (\Graphpinator\Type\Contract\Definition $definition) : ?\Graphpinator\Type\Scalar\EnumItemSet {
                     return $definition instanceof \Graphpinator\Type\Scalar\EnumType
                         ? $definition->getItems()
@@ -91,7 +104,7 @@ final class Type extends \Graphpinator\Type\Type
             ),
             new \Graphpinator\Field\ResolvableField(
                 'inputFields',
-                \Graphpinator\Type\Container\Container::introspectionInputValue()->notNull()->list(),
+                $this->container->introspectionInputValue()->notNull()->list(),
                 static function (\Graphpinator\Type\Contract\Definition $definition) : ?\Graphpinator\Argument\ArgumentSet {
                     return $definition instanceof \Graphpinator\Type\InputType
                         ? $definition->getArguments()

@@ -9,9 +9,13 @@ final class Schema extends \Graphpinator\Type\Type
     protected const NAME = '__Schema';
     protected const DESCRIPTION = 'Built-in introspection type.';
 
-    public function __construct()
+    private \Graphpinator\Type\Container\Container $container;
+
+    public function __construct(\Graphpinator\Type\Container\Container $container)
     {
         parent::__construct();
+
+        $this->container = $container;
     }
 
     protected function validateNonNullValue($rawValue) : bool
@@ -31,37 +35,37 @@ final class Schema extends \Graphpinator\Type\Type
             ),
             new \Graphpinator\Field\ResolvableField(
                 'types',
-                \Graphpinator\Type\Container\Container::introspectionType()->notNullList(),
+                $this->container->introspectionType()->notNullList(),
                 static function (\Graphpinator\Type\Schema $schema) : array {
-                    return $schema->getTypeContainer()->getAllTypes();
+                    return $schema->getContainer()->getAllTypes();
                 },
             ),
             new \Graphpinator\Field\ResolvableField(
                 'queryType',
-                \Graphpinator\Type\Container\Container::introspectionType()->notNull(),
+                $this->container->introspectionType()->notNull(),
                 static function (\Graphpinator\Type\Schema $schema) : \Graphpinator\Type\Contract\Definition {
                     return $schema->getQuery();
                 },
             ),
             new \Graphpinator\Field\ResolvableField(
                 'mutationType',
-                \Graphpinator\Type\Container\Container::introspectionType(),
+                $this->container->introspectionType(),
                 static function (\Graphpinator\Type\Schema $schema) : ?\Graphpinator\Type\Contract\Definition {
                     return $schema->getMutation();
                 },
             ),
             new \Graphpinator\Field\ResolvableField(
                 'subscriptionType',
-                \Graphpinator\Type\Container\Container::introspectionType(),
+                $this->container->introspectionType(),
                 static function (\Graphpinator\Type\Schema $schema) : ?\Graphpinator\Type\Contract\Definition {
                     return $schema->getMutation();
                 },
             ),
             new \Graphpinator\Field\ResolvableField(
                 'directives',
-                \Graphpinator\Type\Container\Container::introspectionDirective()->notNullList(),
+                $this->container->introspectionDirective()->notNullList(),
                 static function (\Graphpinator\Type\Schema $schema) : array {
-                    return $schema->getTypeContainer()->getAllDirectives();
+                    return $schema->getContainer()->getAllDirectives();
                 },
             ),
         ]);

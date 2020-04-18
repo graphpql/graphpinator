@@ -9,7 +9,7 @@ final class Schema
     use \Nette\SmartObject;
     use \Graphpinator\Utils\TOptionalDescription;
 
-    private \Graphpinator\Type\Container\Container $typeContainer;
+    private \Graphpinator\Type\Container\Container $container;
     private \Graphpinator\Type\Type $query;
     private ?\Graphpinator\Type\Type $mutation;
     private ?\Graphpinator\Type\Type $subscription;
@@ -21,21 +21,21 @@ final class Schema
         ?\Graphpinator\Type\Type $subscription = null
     )
     {
-        $this->typeContainer = $typeContainer;
+        $this->container = $typeContainer;
         $this->query = $query;
         $this->mutation = $mutation;
         $this->subscription = $subscription;
 
         $this->query->addMetaField(new \Graphpinator\Field\ResolvableField(
             '__schema',
-            \Graphpinator\Type\Container\Container::introspectionSchema(),
+            $this->container->introspectionSchema(),
             function() : self { return $this; },
         ));
         $this->query->addMetaField(new \Graphpinator\Field\ResolvableField(
             '__type',
-            \Graphpinator\Type\Container\Container::introspectionType(),
+            $this->container->introspectionType(),
             function($parent, \Graphpinator\Resolver\ArgumentValueSet $args) : \Graphpinator\Type\Contract\Definition {
-                return $this->typeContainer->getType($args['name']->getRawValue());
+                return $this->container->getType($args['name']->getRawValue());
             },
             new \Graphpinator\Argument\ArgumentSet([
                 new \Graphpinator\Argument\Argument('name', \Graphpinator\Type\Container\Container::String()->notNull()),
@@ -43,9 +43,9 @@ final class Schema
         ));
     }
 
-    public function getTypeContainer() : \Graphpinator\Type\Container\Container
+    public function getContainer() : \Graphpinator\Type\Container\Container
     {
-        return $this->typeContainer;
+        return $this->container;
     }
 
     public function getQuery() : \Graphpinator\Type\Type

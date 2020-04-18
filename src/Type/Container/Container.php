@@ -70,70 +70,6 @@ abstract class Container
     }
 
     /**
-     * Built-in __Schema type.
-     */
-    public static function introspectionSchema() : \Graphpinator\Type\Introspection\Schema
-    {
-        return new \Graphpinator\Type\Introspection\Schema();
-    }
-
-    /**
-     * Built-in __Type type.
-     */
-    public static function introspectionType() : \Graphpinator\Type\Introspection\Type
-    {
-        return new \Graphpinator\Type\Introspection\Type();
-    }
-
-    /**
-     * Built-in __TypeKind type.
-     */
-    public static function introspectionTypeKind() : \Graphpinator\Type\Introspection\TypeKind
-    {
-        return new \Graphpinator\Type\Introspection\TypeKind();
-    }
-
-    /**
-     * Built-in __Field type.
-     */
-    public static function introspectionField() : \Graphpinator\Type\Introspection\Field
-    {
-        return new \Graphpinator\Type\Introspection\Field();
-    }
-
-    /**
-     * Built-in __InputValue type.
-     */
-    public static function introspectionInputValue() : \Graphpinator\Type\Introspection\InputValue
-    {
-        return new \Graphpinator\Type\Introspection\InputValue();
-    }
-
-    /**
-     * Built-in __EnumValue type.
-     */
-    public static function introspectionEnumValue() : \Graphpinator\Type\Introspection\EnumValue
-    {
-        return new \Graphpinator\Type\Introspection\EnumValue();
-    }
-
-    /**
-     * Built-in __Directive type.
-     */
-    public static function introspectionDirective() : \Graphpinator\Type\Introspection\Directive
-    {
-        return new \Graphpinator\Type\Introspection\Directive();
-    }
-
-    /**
-     * Built-in __DirectiveLocation enum.
-     */
-    public static function introspectionDirectiveLocation() : \Graphpinator\Type\Introspection\DirectiveLocation
-    {
-        return new \Graphpinator\Type\Introspection\DirectiveLocation();
-    }
-
-    /**
      * Built-in Skip directive.
      */
     public static function directiveSkip() : \Graphpinator\Directive\SkipDirective
@@ -147,5 +83,69 @@ abstract class Container
     public static function directiveInclude() : \Graphpinator\Directive\IncludeDirective
     {
         return new \Graphpinator\Directive\IncludeDirective();
+    }
+
+    /**
+     * Built-in __Schema type.
+     */
+    public function introspectionSchema() : \Graphpinator\Type\Introspection\Schema
+    {
+        return new \Graphpinator\Type\Introspection\Schema($this);
+    }
+
+    /**
+     * Built-in __Type type.
+     */
+    public function introspectionType() : \Graphpinator\Type\Introspection\Type
+    {
+        return new \Graphpinator\Type\Introspection\Type($this);
+    }
+
+    /**
+     * Built-in __TypeKind type.
+     */
+    public function introspectionTypeKind() : \Graphpinator\Type\Introspection\TypeKind
+    {
+        return new \Graphpinator\Type\Introspection\TypeKind();
+    }
+
+    /**
+     * Built-in __Field type.
+     */
+    public function introspectionField() : \Graphpinator\Type\Introspection\Field
+    {
+        return new \Graphpinator\Type\Introspection\Field($this);
+    }
+
+    /**
+     * Built-in __InputValue type.
+     */
+    public function introspectionInputValue() : \Graphpinator\Type\Introspection\InputValue
+    {
+        return new \Graphpinator\Type\Introspection\InputValue($this);
+    }
+
+    /**
+     * Built-in __EnumValue type.
+     */
+    public function introspectionEnumValue() : \Graphpinator\Type\Introspection\EnumValue
+    {
+        return new \Graphpinator\Type\Introspection\EnumValue();
+    }
+
+    /**
+     * Built-in __Directive type.
+     */
+    public function introspectionDirective() : \Graphpinator\Type\Introspection\Directive
+    {
+        return new \Graphpinator\Type\Introspection\Directive($this);
+    }
+
+    /**
+     * Built-in __DirectiveLocation enum.
+     */
+    public function introspectionDirectiveLocation() : \Graphpinator\Type\Introspection\DirectiveLocation
+    {
+        return new \Graphpinator\Type\Introspection\DirectiveLocation();
     }
 }

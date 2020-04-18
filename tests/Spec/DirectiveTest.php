@@ -93,7 +93,7 @@ final class DirectiveTest extends \PHPUnit\Framework\TestCase
     public function testRepeatable() : void
     {
         $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
-        TestSchema::getSchema()->getTypeContainer()->getDirective('testDirective')::$count = 0;
+        TestSchema::getSchema()->getContainer()->getDirective('testDirective')::$count = 0;
 
         self::assertSame(
             \Infinityloop\Utils\Json::fromArray(['data' => ['field0' => ['field1' => ['name' => 'Test 123']]]])->toString(),
@@ -102,7 +102,7 @@ final class DirectiveTest extends \PHPUnit\Framework\TestCase
                 \Infinityloop\Utils\Json::fromArray([])
             ), JSON_THROW_ON_ERROR, 512),
         );
-        self::assertSame(3, TestSchema::getSchema()->getTypeContainer()->getDirective('testDirective')::$count);
+        self::assertSame(3, TestSchema::getSchema()->getContainer()->getDirective('testDirective')::$count);
     }
 
     public function invalidDataProvider() : array

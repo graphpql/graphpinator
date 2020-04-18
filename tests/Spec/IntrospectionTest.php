@@ -162,7 +162,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                         'description' => null,
                         'fields' => [['name' => 'name']],
                         'interfaces' => [],
-                        'possibleTypes' => null,
+                        'possibleTypes' => [['name' => 'Xyz']],
                         'inputFields' => null,
                         'enumValues' => null,
                         'ofType' => null,
