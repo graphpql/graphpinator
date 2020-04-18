@@ -356,27 +356,24 @@ final class TokenizerTest extends \PHPUnit\Framework\TestCase
             ['123Name', \Graphpinator\Exception\Parser\NumericLiteralFollowedByName::class],
             ['123.123Name', \Graphpinator\Exception\Parser\NumericLiteralFollowedByName::class],
             ['123.123eName', \Graphpinator\Exception\Parser\NumericLiteralMalformed::class],
-            ['123.45.67'],
-            ['.E'],
-            ['-.E'],
-            ['>>'],
-            ['..'],
-            ['....'],
-            ['@ directiveName'],
-            ['$ variableName'],
+            ['-.E', \Graphpinator\Exception\Parser\NumericLiteralMalformed::class],
+            ['>>', \Graphpinator\Exception\Parser\UnknownSymbol::class],
+            ['123.45.67', \Graphpinator\Exception\Parser\InvalidEllipsis::class],
+            ['.E', \Graphpinator\Exception\Parser\InvalidEllipsis::class],
+            ['..', \Graphpinator\Exception\Parser\InvalidEllipsis::class],
+            ['....', \Graphpinator\Exception\Parser\InvalidEllipsis::class],
+            ['@ directiveName', \Graphpinator\Exception\Parser\MissingDirectiveName::class],
+            ['$ variableName', \Graphpinator\Exception\Parser\MissingVariableName::class],
         ];
     }
 
     /**
      * @dataProvider invalidDataProvider
      */
-    public function testInvalid(string $source, string $exception = null) : void
+    public function testInvalid(string $source, string $exception) : void
     {
-        $this->expectException($exception ?? \Exception::class);
-
-        if ($exception !== null) {
-            $this->expectExceptionMessage(\constant($exception . '::MESSAGE'));
-        }
+        $this->expectException($exception);
+        $this->expectExceptionMessage(\constant($exception . '::MESSAGE'));
 
         $source = new \Graphpinator\Source\StringSource($source);
         $tokenizer = new \Graphpinator\Tokenizer\Tokenizer($source);

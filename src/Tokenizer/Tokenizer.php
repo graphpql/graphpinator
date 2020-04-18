@@ -123,7 +123,7 @@ final class Tokenizer implements \Iterator
                     return;
                 }
 
-                throw new \Exception('Missing variable name');
+                throw new \Graphpinator\Exception\Parser\MissingVariableName($this->source->getPosition());
             case TokenType::DIRECTIVE:
                 $this->source->next();
 
@@ -133,7 +133,7 @@ final class Tokenizer implements \Iterator
                     return;
                 }
 
-                throw new \Exception('Missing directive name');
+                throw new \Graphpinator\Exception\Parser\MissingDirectiveName($this->source->getPosition());
             case TokenType::COMMENT:
                 $this->source->next();
                 $this->token = new Token(TokenType::COMMENT, $this->eatComment());
@@ -159,7 +159,7 @@ final class Tokenizer implements \Iterator
                 $dots = $this->eatChars(static function (string $char) : bool { return $char === '.'; });
 
                 if (\strlen($dots) !== 3) {
-                    throw new \Exception('Invalid ellipsis');
+                    throw new \Graphpinator\Exception\Parser\InvalidEllipsis($this->source->getPosition());
                 }
 
                 $this->token = new Token(TokenType::ELLIP);
@@ -167,7 +167,7 @@ final class Tokenizer implements \Iterator
                 return;
         }
 
-        throw new \Exception('Unknown token');
+        throw new \Graphpinator\Exception\Parser\UnknownSymbol($this->source->getPosition());
     }
 
     private function createWordToken() : void
