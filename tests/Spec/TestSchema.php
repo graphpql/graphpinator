@@ -37,6 +37,7 @@ final class TestSchema
                     'TestInput' => TestSchema::getInput(),
                     'TestInnerInput' => TestSchema::getInnerInput(),
                     'TestEnum' => TestSchema::getEnum(),
+                    'TestExplicitEnum' => TestSchema::getExplicitEnum(),
                     'Int' => \Graphpinator\Type\Container\Container::Int(),
                     'Float' => \Graphpinator\Type\Container\Container::Float(),
                     'String' => \Graphpinator\Type\Container\Container::String(),
@@ -109,7 +110,7 @@ final class TestSchema
                                 $objectVal = $args['arg2']->getRawValue();
                                 $str = '';
 
-                                \array_walk_recursive($objectVal, function ($item, $key) use (&$str) {
+                                \array_walk_recursive($objectVal, static function ($item, $key) use (&$str) {
                                     $str .= $key . ': ' . $item . '; ';
                                 });
 
@@ -248,6 +249,24 @@ final class TestSchema
             public function __construct()
             {
                 parent::__construct(self::fromConstants());
+            }
+        };
+    }
+
+    public static function getExplicitEnum() : \Graphpinator\Type\Scalar\EnumType
+    {
+        return new class extends \Graphpinator\Type\Scalar\EnumType
+        {
+            protected const NAME = 'TestExplicitEnum';
+
+            public function __construct()
+            {
+                parent::__construct(new \Graphpinator\Type\Scalar\EnumItemSet([
+                    (new \Graphpinator\Type\Scalar\EnumItem('A'))->setDeprecated(true),
+                    (new \Graphpinator\Type\Scalar\EnumItem('B'))->setDeprecated(true),
+                    (new \Graphpinator\Type\Scalar\EnumItem('C'))->setDeprecated(true),
+                    (new \Graphpinator\Type\Scalar\EnumItem('D'))->setDeprecated(true),
+                ]));
             }
         };
     }

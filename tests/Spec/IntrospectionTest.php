@@ -64,6 +64,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                     ['name' => 'TestInput'],
                     ['name' => 'TestInnerInput'],
                     ['name' => 'TestEnum'],
+                    ['name' => 'TestExplicitEnum'],
                     ['name' => 'Int'],
                     ['name' => 'Float'],
                     ['name' => 'String'],
@@ -128,7 +129,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                         'kind' => 'OBJECT',
                         'name' => 'Abc',
                         'description' => 'Test Abc description',
-                        'fields' => [['name' => 'field1']],
+                        'fields' => [],
                         'interfaces' => [],
                         'possibleTypes' => null,
                         'inputFields' => null,
@@ -223,6 +224,28 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                 ]),
             ],
             [
+                '{ __type(name: "TestExplicitEnum") { enumValues(includeDeprecated: true){name description isDeprecated deprecationReason} } }',
+                \Infinityloop\Utils\Json::fromArray([
+                    'data' => ['__type' => [
+                        'enumValues' => [
+                            ['name' => 'A', 'description' => null, 'isDeprecated' => true, 'deprecationReason' => null],
+                            ['name' => 'B', 'description' => null, 'isDeprecated' => true, 'deprecationReason' => null],
+                            ['name' => 'C', 'description' => null, 'isDeprecated' => true, 'deprecationReason' => null],
+                            ['name' => 'D', 'description' => null, 'isDeprecated' => true, 'deprecationReason' => null],
+                        ],
+                    ]],
+                ]),
+            ],
+            [
+                '{ __type(name: "TestExplicitEnum") { enumValues(includeDeprecated: false){name description isDeprecated deprecationReason} } }',
+                \Infinityloop\Utils\Json::fromArray([
+                    'data' => ['__type' => [
+                        'enumValues' => [
+                        ],
+                    ]],
+                ]),
+            ],
+            [
                 '{ __type(name: "TestInterface") { fields{name description args{name} isDeprecated deprecationReason type {kind name ofType {name}} } } }',
                 \Infinityloop\Utils\Json::fromArray([
                     'data' => ['__type' => [
@@ -238,7 +261,15 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                 ]),
             ],
             [
-                '{ __type(name: "Abc") { fields{name description isDeprecated deprecationReason type{name} args{name description type{name} defaultValue} } } }',
+                '{ __type(name: "Abc") { fields(includeDeprecated: false) {name description isDeprecated deprecationReason type{name} args{name description type{name} defaultValue} } } }',
+                \Infinityloop\Utils\Json::fromArray([
+                    'data' => ['__type' => [
+                        'fields' => [],
+                    ]],
+                ]),
+            ],
+            [
+                '{ __type(name: "Abc") { fields(includeDeprecated: true) {name description isDeprecated deprecationReason type{name} args{name description type{name} defaultValue} } } }',
                 \Infinityloop\Utils\Json::fromArray([
                     'data' => ['__type' => [
                         'fields' => [[
