@@ -18,7 +18,8 @@ class Field
     {
         $this->name = $name;
         $this->type = $type;
-        $this->arguments = $arguments ?? new \Graphpinator\Argument\ArgumentSet([]);
+        $this->arguments = $arguments
+            ?? new \Graphpinator\Argument\ArgumentSet([]);
     }
 
     public function getName() : string

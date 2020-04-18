@@ -22,7 +22,8 @@ final class Operation
         $this->children = $children;
         $this->type = $type;
         $this->name = $name;
-        $this->variables = $variables ?? new \Graphpinator\Parser\Variable\VariableSet([]);
+        $this->variables = $variables
+            ?? new \Graphpinator\Parser\Variable\VariableSet([]);
     }
 
     public function getType() : string

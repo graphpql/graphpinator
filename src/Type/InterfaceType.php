@@ -12,7 +12,8 @@ abstract class InterfaceType extends \Graphpinator\Type\Contract\AbstractDefinit
 
     public function __construct(?\Graphpinator\Utils\InterfaceSet $implements = null)
     {
-        $this->implements = $implements ?? new \Graphpinator\Utils\InterfaceSet([]);
+        $this->implements = $implements
+            ?? new \Graphpinator\Utils\InterfaceSet([]);
     }
 
     public function isInstanceOf(\Graphpinator\Type\Contract\Definition $type) : bool

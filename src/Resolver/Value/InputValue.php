@@ -11,7 +11,8 @@ final class InputValue extends ValidatedValue implements \Iterator, \ArrayAccess
         $value = [];
 
         foreach ($type->getArguments() as $argument) {
-            $usedValue = $fields[$argument->getName()] ?? $argument->getDefaultValue();
+            $usedValue = $fields[$argument->getName()]
+                ?? $argument->getDefaultValue();
 
             // default values are already validated
             $value[$argument->getName()] = $usedValue instanceof \Graphpinator\Resolver\Value\ValidatedValue

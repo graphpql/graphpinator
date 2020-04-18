@@ -15,7 +15,8 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
 
     public function __construct(?\Graphpinator\Utils\InterfaceSet $implements = null)
     {
-        $this->implements = $implements ?? new \Graphpinator\Utils\InterfaceSet([]);
+        $this->implements = $implements
+            ?? new \Graphpinator\Utils\InterfaceSet([]);
     }
 
     public function createValue($rawValue) : \Graphpinator\Resolver\Value\ValidatedValue
@@ -116,7 +117,8 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
                 }
             }
 
-            $fieldDef = $this->getMetaFields()[$field->getName()] ?? $this->getFields()[$field->getName()];
+            $fieldDef = $this->getMetaFields()[$field->getName()]
+                ?? $this->getFields()[$field->getName()];
             $arguments = new \Graphpinator\Resolver\ArgumentValueSet($field->getArguments(), $fieldDef->getArguments());
             $innerResult = $fieldDef->resolve($parentResult, $arguments);
 

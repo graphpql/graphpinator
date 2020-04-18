@@ -16,7 +16,8 @@ final class Directive
         ?\Graphpinator\Parser\Value\NamedValueSet $arguments = null
     ) {
         $this->directive = $directive;
-        $this->arguments = $arguments ?? new \Graphpinator\Parser\Value\NamedValueSet([]);
+        $this->arguments = $arguments
+            ?? new \Graphpinator\Parser\Value\NamedValueSet([]);
     }
 
     public function getDirective() : \Graphpinator\Directive\Directive

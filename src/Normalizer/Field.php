@@ -25,8 +25,10 @@ final class Field
     )
     {
         $this->name = $name;
-        $this->alias = $alias ?? $name;
-        $this->arguments = $arguments ?? new \Graphpinator\Parser\Value\NamedValueSet([]);
+        $this->alias = $alias
+            ?? $name;
+        $this->arguments = $arguments
+            ?? new \Graphpinator\Parser\Value\NamedValueSet([]);
         $this->directives = $directives
             ?? new \Graphpinator\Normalizer\Directive\DirectiveSet([], \Graphpinator\Directive\DirectiveLocation::FIELD);
         $this->children = $children;
