@@ -63,13 +63,13 @@ trait TInterfaceImplementor
         foreach ($this->implements as $interface) {
             foreach ($interface->getFields() as $fieldContract) {
                 if (!$this->getFields()->offsetExists($fieldContract->getName())) {
-                    throw new \Exception('Type doesnt satisfy interface - missing field');
+                    throw new \Graphpinator\Exception\Type\InterfaceContractMissingField();
                 }
 
                 $field = $this->getFields()->offsetGet($fieldContract->getName());
 
                 if (!$field->getType()->isInstanceOf($fieldContract->getType())) {
-                    throw new \Exception('Type doesnt satisfy interface - invalid field type');
+                    throw new \Graphpinator\Exception\Type\InterfaceContractInvalidFieldType();
                 }
             }
         }

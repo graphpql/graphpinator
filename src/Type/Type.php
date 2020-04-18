@@ -35,7 +35,7 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
     public function resolve(?\Graphpinator\Normalizer\FieldSet $requestedFields, \Graphpinator\Resolver\FieldResult $parentResult) : array
     {
         if ($requestedFields === null) {
-            throw new \Exception('Composite type without fields specified.');
+            throw new \Graphpinator\Exception\Resolver\SelectionOnComposite();
         }
 
         $resolved = [];
@@ -103,7 +103,7 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
     {
         foreach ($fieldSet as $field) {
             if (\array_key_exists($field->getAlias(), $result)) {
-                throw new \Exception('Duplicit defined in fragment');
+                throw new \Graphpinator\Exception\Resolver\DuplicateField();
             }
 
             foreach ($field->getDirectives() as $directive) {

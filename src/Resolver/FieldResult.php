@@ -24,11 +24,11 @@ final class FieldResult
 
     public static function fromValidated(\Graphpinator\Value\ValidatedValue $value) : self
     {
-        if (!$value->getType()->getNamedType() instanceof \Graphpinator\Type\Contract\ConcreteDefinition) {
-            throw new \Exception('Abstract type fields need to return ResolveResult with concrete resolution.');
+        if ($value->getType()->getNamedType() instanceof \Graphpinator\Type\Contract\ConcreteDefinition) {
+            return new self($value->getType(), $value);
         }
 
-        return new self($value->getType(), $value);
+        throw new \Graphpinator\Exception\Resolver\FieldResultAbstract();
     }
 
     public function getType() : \Graphpinator\Type\Contract\Resolvable

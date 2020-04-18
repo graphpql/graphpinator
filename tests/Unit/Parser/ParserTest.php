@@ -394,9 +394,9 @@ final class ParserTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider invalidDataProvider
      */
-    public function testInvalid(string $input, string $exception = null) : void
+    public function testInvalid(string $input, string $exception) : void
     {
-        $this->expectException($exception ?? \Exception::class);
+        $this->expectException($exception);
         $this->expectExceptionMessage(\constant($exception . '::MESSAGE'));
 
         $result = \Graphpinator\Parser\Parser::parseString($input);

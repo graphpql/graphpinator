@@ -33,13 +33,17 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
 
     public function testMissingField() : void
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(\Graphpinator\Exception\Type\InterfaceContractMissingField::class);
+        $this->expectExceptionMessage(\Graphpinator\Exception\Type\InterfaceContractMissingField::MESSAGE);
+
         self::getInvalidType1()->getFields();
     }
 
     public function testIncompatibleType() : void
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(\Graphpinator\Exception\Type\InterfaceContractInvalidFieldType::class);
+        $this->expectExceptionMessage(\Graphpinator\Exception\Type\InterfaceContractInvalidFieldType::MESSAGE);
+
         self::getInvalidType2()->getFields();
     }
 

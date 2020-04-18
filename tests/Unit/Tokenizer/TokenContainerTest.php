@@ -36,7 +36,8 @@ final class TokenContainerTest extends \PHPUnit\Framework\TestCase
 
     public function testInvalidPrev() : void
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(\Graphpinator\Exception\Parser\UnexpectedEnd::class);
+        $this->expectExceptionMessage(\Graphpinator\Exception\Parser\UnexpectedEnd::MESSAGE);
 
         $source = new \Graphpinator\Source\StringSource('{}[]()');
         $tokenizer = new \Graphpinator\Tokenizer\TokenContainer($source);
@@ -45,7 +46,8 @@ final class TokenContainerTest extends \PHPUnit\Framework\TestCase
 
     public function testInvalidNext() : void
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(\Graphpinator\Exception\Parser\UnexpectedEnd::class);
+        $this->expectExceptionMessage(\Graphpinator\Exception\Parser\UnexpectedEnd::MESSAGE);
 
         $source = new \Graphpinator\Source\StringSource('{');
         $tokenizer = new \Graphpinator\Tokenizer\TokenContainer($source);
@@ -54,7 +56,8 @@ final class TokenContainerTest extends \PHPUnit\Framework\TestCase
 
     public function testInvalidPeek() : void
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(\Graphpinator\Exception\Parser\UnexpectedEnd::class);
+        $this->expectExceptionMessage(\Graphpinator\Exception\Parser\UnexpectedEnd::MESSAGE);
 
         $source = new \Graphpinator\Source\StringSource('{');
         $tokenizer = new \Graphpinator\Tokenizer\TokenContainer($source);
@@ -63,10 +66,11 @@ final class TokenContainerTest extends \PHPUnit\Framework\TestCase
 
     public function testInvalidAssert() : void
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(\Graphpinator\Exception\Parser\UnexpectedEnd::class);
+        $this->expectExceptionMessage(\Graphpinator\Exception\Parser\UnexpectedEnd::MESSAGE);
 
         $source = new \Graphpinator\Source\StringSource('{}[]()');
         $tokenizer = new \Graphpinator\Tokenizer\TokenContainer($source);
-        $tokenizer->assertNext(TokenType::VARIABLE);
+        $tokenizer->assertNext(TokenType::VARIABLE, \Graphpinator\Exception\Parser\UnexpectedEnd::class);
     }
 }

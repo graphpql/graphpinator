@@ -20,18 +20,18 @@ final class ResolvableField extends Field
     {
         $result = \call_user_func($this->resolveFunction, $parentValue->getResult()->getRawValue(), $arguments);
 
-        if (!$result instanceof FieldResult) {
-            if (!$this->type->getNamedType() instanceof \Graphpinator\Type\Contract\ConcreteDefinition) {
-                throw new \Exception('Abstract type fields need to return ResolveResult with concrete resolution.');
+        if ($result instanceof FieldResult) {
+            if ($result->getType()->isInstanceOf($this->type)) {
+                return $result;
             }
 
-            $result = FieldResult::fromRaw($this->type, $result);
+            throw new \Graphpinator\Exception\Resolver\FieldResultTypeMismatch();
         }
 
-        if ($result->getType()->isInstanceOf($this->type)) {
-            return $result;
+        if ($this->type->getNamedType() instanceof \Graphpinator\Type\Contract\ConcreteDefinition) {
+            return FieldResult::fromRaw($this->type, $result);
         }
 
-        throw new \Exception('Incorrect type of resolved field.');
+        throw new \Graphpinator\Exception\Resolver\FieldResultAbstract();
     }
 }
