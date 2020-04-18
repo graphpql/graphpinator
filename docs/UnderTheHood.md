@@ -43,7 +43,6 @@ compact objects representing request's operations and fragments.
 Normalizing stage is basicaly putting together ParseResult and Schema. It is responsible for converting `Parser\ParseResult` into `Request\Operation`, which is a fully validated object that can be executed and resolved in next stage.
 
 Converting `ParseResult` is operation that consist of few sub-operations:
-  - Explode fragment spreads into fields.
   - Replace Type references (string representation of Type) with instances of Types from Schema.
   - Validate Variable default values and Types.
 
