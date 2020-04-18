@@ -356,47 +356,46 @@ final class ParserTest extends \PHPUnit\Framework\TestCase
     public function invalidDataProvider() : array
     {
         return [
-            // empty
-            [''],
-            ['$var'],
-            // no operation
-            ['fragment fragmentName on TypeName {}'],
-            // no type condition
-            ['fragment fragmentName {}'],
-            // missing operation type
-            ['queryName {}'],
-            // missing operation name
-            ['query ($var: Int) {}'],
-            // invalid variable syntax
-            ['query queryName [$var: Int] {}'],
-            // invalid fragment spread
-            ['query queryName { ... {} }'],
-            ['query queryName { ... on {} }'],
-            ['query queryName { ... on Int! }'],
-            ['query queryName { ... on [Int] }'],
-            // invalid variable value
-            ['query queryName ($var: Int = @dir) {}'],
-            ['query queryName ($var: Int = $var2) {}'],
-            // missing variable type
-            ['query queryName ($var = 123) {}'],
-            ['query queryName ($var: = 123) {}'],
-            // missing variable name
-            ['query queryName (Int = 5) {}'],
-            ['query queryName (:Int = 5) {}'],
-            // invalid selection set
-            ['query queryName { $var }'],
-            // missing argument name
-            ['query queryName { fieldName(123) }'],
-            ['query queryName { fieldName(: 123) }'],
+            ['', \Graphpinator\Exception\Parser\EmptyRequest::class],
+            ['$var', \Graphpinator\Exception\Parser\ExpectedRoot::class],
+            ['fragment fragmentName on TypeName {}', \Graphpinator\Exception\Parser\EmptyOperation::class],
+            ['fragment fragmentName {}', \Graphpinator\Exception\Parser\ExpectedTypeCondition::class],
+            ['fragment fragmentName on {}', \Graphpinator\Exception\Parser\ExpectedType::class],
+            ['queryName {}', \Graphpinator\Exception\Parser\UnknownOperationType::class],
+            ['queary queryName {}', \Graphpinator\Exception\Parser\UnknownOperationType::class],
+            ['query ($var: Int) {}', \Graphpinator\Exception\Parser\ExpectedAfterOperationType::class],
+            ['query queryName field', \Graphpinator\Exception\Parser\ExpectedAfterOperationName::class],
+            ['query queryName [$var: Int] {}', \Graphpinator\Exception\Parser\ExpectedAfterOperationName::class],
+            ['query queryName ($var: Int) field', \Graphpinator\Exception\Parser\ExpectedSelectionSet::class],
+            ['query queryName { ... {} }', \Graphpinator\Exception\Parser\ExpectedFragmentSpreadInfo::class],
+            ['query queryName { ... on {} }', \Graphpinator\Exception\Parser\ExpectedType::class],
+            ['query queryName { ... on Int! {} }', \Graphpinator\Exception\Parser\ExpectedNamedType::class],
+            ['query queryName { ... on [Int] {} }', \Graphpinator\Exception\Parser\ExpectedNamedType::class],
+            ['query queryName { ... on [Int {} }', \Graphpinator\Exception\Parser\ExpectedClosingBracket::class],
+            ['query queryName { ... on Int }', \Graphpinator\Exception\Parser\ExpectedSelectionSet::class],
+            ['query queryName { ... @directive() }', \Graphpinator\Exception\Parser\ExpectedSelectionSet::class],
+            ['query queryName ($var: Int = @dir) {}', \Graphpinator\Exception\Parser\ExpectedValue::class],
+            ['query queryName ($var: Int = $var2) {}', \Graphpinator\Exception\Parser\ExpectedLiteralValue::class],
+            ['query queryName ($var = 123) {}', \Graphpinator\Exception\Parser\ExpectedColon::class],
+            ['query queryName { fieldName(arg = 123) }', \Graphpinator\Exception\Parser\ExpectedColon::class],
+            ['query queryName { fieldName(arg: {123}}) }', \Graphpinator\Exception\Parser\ExpectedFieldName::class],
+            ['query queryName { fieldName : { field } }', \Graphpinator\Exception\Parser\ExpectedFieldName::class],
+            ['query queryName ($var: = 123) {}', \Graphpinator\Exception\Parser\ExpectedType::class],
+            ['query queryName (Int = 5) {}', \Graphpinator\Exception\Parser\ExpectedVariableName::class],
+            ['query queryName (:Int = 5) {}', \Graphpinator\Exception\Parser\ExpectedVariableName::class],
+            ['query queryName { $var }', \Graphpinator\Exception\Parser\ExpectedSelectionSetBody::class],
+            ['query queryName { fieldName(123) }', \Graphpinator\Exception\Parser\ExpectedArgumentName::class],
+            ['query queryName { fieldName(: 123) }', \Graphpinator\Exception\Parser\ExpectedArgumentName::class],
         ];
     }
 
     /**
      * @dataProvider invalidDataProvider
      */
-    public function testInvalid(string $input) : void
+    public function testInvalid(string $input, string $exception = null) : void
     {
-        $this->expectException(\Exception::class);
+        $this->expectException($exception ?? \Exception::class);
+        $this->expectExceptionMessage(\constant($exception . '::MESSAGE'));
 
         $result = \Graphpinator\Parser\Parser::parseString($input);
     }

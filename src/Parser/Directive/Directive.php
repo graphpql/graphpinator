@@ -9,11 +9,11 @@ final class Directive
     use \Nette\SmartObject;
 
     private string $name;
-    private \Graphpinator\Parser\Value\NamedValueSet $arguments;
+    private ?\Graphpinator\Parser\Value\NamedValueSet $arguments;
 
     public function __construct(
         string $name,
-        \Graphpinator\Parser\Value\NamedValueSet $arguments
+        ?\Graphpinator\Parser\Value\NamedValueSet $arguments
     ) {
         $this->name = $name;
         $this->arguments = $arguments;
@@ -24,7 +24,7 @@ final class Directive
         return $this->name;
     }
 
-    public function getArguments() : \Graphpinator\Parser\Value\NamedValueSet
+    public function getArguments() : ?\Graphpinator\Parser\Value\NamedValueSet
     {
         return $this->arguments;
     }

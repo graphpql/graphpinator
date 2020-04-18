@@ -13,10 +13,10 @@ final class Directive
 
     public function __construct(
         \Graphpinator\Directive\Directive $directive,
-        \Graphpinator\Parser\Value\NamedValueSet $arguments
+        ?\Graphpinator\Parser\Value\NamedValueSet $arguments = null
     ) {
         $this->directive = $directive;
-        $this->arguments = $arguments;
+        $this->arguments = $arguments ?? new \Graphpinator\Parser\Value\NamedValueSet([]);
     }
 
     public function getDirective() : \Graphpinator\Directive\Directive

@@ -67,12 +67,12 @@ final class TokenContainer implements \IteratorAggregate
         return $this->tokens[$this->currentIndex + 1];
     }
 
-    public function assertNext(string $tokenType) : Token
+    public function assertNext(string $tokenType, string $exceptionClass = \Exception::class) : Token
     {
         $token = $this->getNext();
 
         if ($token->getType() !== $tokenType) {
-            throw new \Exception('Unexpected token.');
+            throw new $exceptionClass;
         }
 
         return $token;
