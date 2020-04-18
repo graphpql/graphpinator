@@ -14,7 +14,7 @@ final class Directive extends \Graphpinator\Type\Type
         parent::__construct();
     }
 
-    public function validateNonNullValue($rawValue) : bool
+    protected function validateNonNullValue($rawValue) : bool
     {
         return $rawValue instanceof \Graphpinator\Directive\Directive;
     }

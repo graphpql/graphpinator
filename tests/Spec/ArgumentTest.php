@@ -20,14 +20,14 @@ final class ArgumentTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider simpleDataProvider
      */
-    public function testSimple(string $request, \Infinityloop\Utils\Json $variables, \Infinityloop\Utils\Json $result) : void
+    public function testSimple(string $request, \Infinityloop\Utils\Json $variables, \Infinityloop\Utils\Json $expected) : void
     {
         $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
+        $result = $graphpinator->runQuery($request, $variables);
 
-        self::assertSame(
-            $result->toString(),
-            \json_encode($graphpinator->runQuery($request, $variables)),
-        );
+        self::assertSame($expected->toString(), \json_encode($result, JSON_THROW_ON_ERROR, 512),);
+        self::assertSame($expected['data'], \json_decode(\json_encode($result->getData()), true));
+        self::assertNull($result->getErrors());
     }
 
     public function invalidDataProvider() : array

@@ -4,9 +4,9 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Parser\Variable;
 
-final class VariableSet extends \Graphpinator\Utils\ClassSet
+final class VariableSet extends \Infinityloop\Utils\ObjectSet
 {
-    public const INNER_CLASS = Variable::class;
+    protected const INNER_CLASS = Variable::class;
 
     public function current() : Variable
     {
@@ -27,5 +27,10 @@ final class VariableSet extends \Graphpinator\Utils\ClassSet
         }
 
         return new \Graphpinator\Normalizer\Variable\VariableSet($variables);
+    }
+
+    protected function getKey($object)
+    {
+        return $object->getName();
     }
 }

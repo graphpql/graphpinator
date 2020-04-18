@@ -105,7 +105,7 @@ final class TypeTest extends \PHPUnit\Framework\TestCase
                     new \Graphpinator\Field\ResolvableField(
                         'field1',
                         \Graphpinator\Type\Container\Container::String(),
-                        static function ($parentValue, \Graphpinator\Normalizer\ArgumentValueSet $arguments) {
+                        static function ($parentValue, \Graphpinator\Resolver\ArgumentValueSet $arguments) {
                             TypeTest::assertSame(TypeTest::PARENT_VAL, $parentValue);
                             TypeTest::assertCount(0, $arguments);
 
@@ -114,7 +114,7 @@ final class TypeTest extends \PHPUnit\Framework\TestCase
                     new \Graphpinator\Field\ResolvableField(
                         'field2',
                         \Graphpinator\Type\Container\Container::Boolean(),
-                        static function ($parentValue, \Graphpinator\Normalizer\ArgumentValueSet $arguments) {
+                        static function ($parentValue, \Graphpinator\Resolver\ArgumentValueSet $arguments) {
                             TypeTest::assertSame(TypeTest::PARENT_VAL, $parentValue);
                             TypeTest::assertCount(0, $arguments);
 
@@ -123,7 +123,7 @@ final class TypeTest extends \PHPUnit\Framework\TestCase
                     new \Graphpinator\Field\ResolvableField(
                         'field3',
                         \Graphpinator\Type\Container\Container::Int(),
-                        static function ($parentValue, \Graphpinator\Normalizer\ArgumentValueSet $arguments) {
+                        static function ($parentValue, \Graphpinator\Resolver\ArgumentValueSet $arguments) {
                             TypeTest::assertSame(TypeTest::PARENT_VAL, $parentValue);
                             TypeTest::assertCount(0, $arguments);
 

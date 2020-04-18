@@ -4,9 +4,9 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Type\Scalar;
 
-final class EnumItemSet extends \Graphpinator\Utils\ClassSet
+final class EnumItemSet extends \Infinityloop\Utils\ObjectSet
 {
-    public const INNER_CLASS = EnumItem::class;
+    protected const INNER_CLASS = EnumItem::class;
 
     public function current() : EnumItem
     {
@@ -16,5 +16,10 @@ final class EnumItemSet extends \Graphpinator\Utils\ClassSet
     public function offsetGet($offset) : EnumItem
     {
         return parent::offsetGet($offset);
+    }
+
+    protected function getKey($object)
+    {
+        return $object->getName();
     }
 }

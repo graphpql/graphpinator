@@ -359,6 +359,8 @@ final class ParserTest extends \PHPUnit\Framework\TestCase
             ['', \Graphpinator\Exception\Parser\EmptyRequest::class],
             ['$var', \Graphpinator\Exception\Parser\ExpectedRoot::class],
             ['fragment fragmentName on TypeName {}', \Graphpinator\Exception\Parser\EmptyOperation::class],
+            ['fragment fragmentName on TypeName! {}', \Graphpinator\Exception\Parser\ExpectedNamedType::class],
+            ['fragment fragmentName on [TypeName] {}', \Graphpinator\Exception\Parser\ExpectedNamedType::class],
             ['fragment fragmentName {}', \Graphpinator\Exception\Parser\ExpectedTypeCondition::class],
             ['fragment fragmentName on {}', \Graphpinator\Exception\Parser\ExpectedType::class],
             ['queryName {}', \Graphpinator\Exception\Parser\UnknownOperationType::class],

@@ -326,7 +326,7 @@ final class Parser
      * Expects iterator on previous token
      * Leaves iterator to last used token - last token in value definition
      */
-    private function parseValue(bool $literalOnly = false) : \Graphpinator\Parser\Value\Value
+    private function parseValue(bool $literalOnly) : \Graphpinator\Parser\Value\Value
     {
         switch ($this->tokenizer->getNext()->getType()) {
             case TokenType::VARIABLE:

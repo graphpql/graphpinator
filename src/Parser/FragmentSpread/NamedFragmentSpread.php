@@ -31,7 +31,7 @@ final class NamedFragmentSpread implements FragmentSpread
     public function normalize(\Graphpinator\Type\Container\Container $typeContainer, \Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions): \Graphpinator\Normalizer\FragmentSpread\FragmentSpread
     {
         if (!$fragmentDefinitions->offsetExists($this->name)) {
-            throw new \Exception('Unknown fragment');
+            throw new \Graphpinator\Exception\Normalizer\UnknownFragment();
         }
 
         $fragment = $fragmentDefinitions->offsetGet($this->name);

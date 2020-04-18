@@ -16,7 +16,7 @@ final class ResolvableField extends Field
         $this->resolveFunction = $resolveFunction;
     }
 
-    public function resolve(FieldResult $parentValue, \Graphpinator\Normalizer\ArgumentValueSet $arguments) : FieldResult
+    public function resolve(FieldResult $parentValue, \Graphpinator\Resolver\ArgumentValueSet $arguments) : FieldResult
     {
         $result = \call_user_func($this->resolveFunction, $parentValue->getResult()->getRawValue(), $arguments);
 

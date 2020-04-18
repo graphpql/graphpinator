@@ -94,7 +94,7 @@ final class TestSchema
             {
                 return new \Graphpinator\Field\ResolvableFieldSet([
                     (new \Graphpinator\Field\ResolvableField('field1', TestSchema::getInterface(),
-                        static function (int $parent, \Graphpinator\Normalizer\ArgumentValueSet $args) {
+                        static function (int $parent, \Graphpinator\Resolver\ArgumentValueSet $args) {
                             $object = new \stdClass();
 
                             if ($args['arg2']->getRawValue() === null) {
@@ -252,11 +252,16 @@ final class TestSchema
         {
             protected const NAME = 'testDirective';
 
+            public static $count = 0;
+
             public function __construct()
             {
                 parent::__construct(
                     new \Graphpinator\Argument\ArgumentSet([]),
-                    static function() {return \Graphpinator\Directive\DirectiveResult::NONE;},
+                    static function() {
+                        ++self::$count;
+                        return \Graphpinator\Directive\DirectiveResult::NONE;
+                    },
                     [\Graphpinator\Directive\DirectiveLocation::FIELD],
                     true,
                 );

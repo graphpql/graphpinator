@@ -49,7 +49,7 @@ abstract class Directive
         return $this->repeatable;
     }
 
-    public function resolve(\Graphpinator\Normalizer\ArgumentValueSet $arguments) : string
+    public function resolve(\Graphpinator\Resolver\ArgumentValueSet $arguments) : string
     {
         $result = \call_user_func($this->resolveFn, $arguments);
 
@@ -57,6 +57,6 @@ abstract class Directive
             return $result;
         }
 
-        throw new \Exception('Directive fn must return directiveResult string');
+        throw new \Graphpinator\Exception\Resolver\InvalidDirectiveResult();
     }
 }

@@ -4,23 +4,16 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Parser\Directive;
 
-final class DirectiveSet extends \Infinityloop\Utils\ImmutableSet
+final class DirectiveSet extends \Infinityloop\Utils\ObjectSet
 {
+    protected const INNER_CLASS = Directive::class;
+
     private string $location;
 
     public function __construct(array $data, string $location)
     {
-        $validatedData = [];
+        parent::__construct($data);
 
-        foreach ($data as $object) {
-            if (!$object instanceof Directive) {
-                throw new \Exception('Invalid input.');
-            }
-
-            $validatedData[] = $object;
-        }
-
-        parent::__construct($validatedData);
         $this->location = $location;
     }
 

@@ -64,11 +64,11 @@ final class Operation
 
                 break;
             default:
-                throw new \Exception('Unknown operation type');
+                throw new \Graphpinator\Exception\Parser\UnknownOperationType();
         }
 
         if (!$operation instanceof \Graphpinator\Type\Type) {
-            throw new \Exception('Unsupported operation type.');
+            throw new \Graphpinator\Exception\Normalizer\OperationNotSupported();
         }
 
         return new \Graphpinator\Normalizer\Operation(

@@ -4,9 +4,9 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Parser\Value;
 
-final class NamedValueSet extends \Graphpinator\Utils\ClassSet
+final class NamedValueSet extends \Infinityloop\Utils\ObjectSet
 {
-    public const INNER_CLASS = NamedValue::class;
+    protected const INNER_CLASS = NamedValue::class;
 
     public function current() : NamedValue
     {
@@ -27,5 +27,10 @@ final class NamedValueSet extends \Graphpinator\Utils\ClassSet
         }
 
         return new self($values);
+    }
+
+    protected function getKey($object)
+    {
+        return $object->getName();
     }
 }

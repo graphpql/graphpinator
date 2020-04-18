@@ -42,7 +42,7 @@ final class Fragment
         }
 
         if (\array_key_exists($this->name, $stack)) {
-            throw new \Exception('Fragment cycle detected');
+            throw new \Graphpinator\Exception\Normalizer\FragmentCycle();
         }
 
         $stack[$this->name] = true;

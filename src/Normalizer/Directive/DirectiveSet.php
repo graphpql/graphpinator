@@ -4,39 +4,36 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Normalizer\Directive;
 
-final class DirectiveSet extends \Infinityloop\Utils\ImmutableSet
+final class DirectiveSet extends \Infinityloop\Utils\ObjectSet
 {
+    protected const INNER_CLASS = Directive::class;
+
     private string $location;
 
     public function __construct(array $data, string $location)
     {
-        $validatedData = [];
+        parent::__construct($data);
+
+        $this->location = $location;
         $directiveTypes = [];
 
-        foreach ($data as $object) {
-            if (!$object instanceof Directive) {
-                throw new \Exception('Invalid input.');
+        foreach ($this->array as $object) {
+            $directive = $object->getDirective();
+
+            if (!\in_array($location, $directive->getLocations(), true)) {
+                throw new \Graphpinator\Exception\Normalizer\MisplacedDirective();
             }
 
-            if (!\in_array($location, $object->getDirective()->getLocations(), true)) {
-                throw new \Exception('Invalid location');
-            }
-
-            $validatedData[] = $object;
-
-            if ($object->getDirective()->isRepeatable()) {
+            if ($directive->isRepeatable()) {
                 continue;
             }
 
-            if (\array_key_exists($object->getDirective()->getName(), $directiveTypes)) {
-                throw new \Exception('Duplicated directive usage.');
+            if (\array_key_exists($directive->getName(), $directiveTypes)) {
+                throw new \Graphpinator\Exception\Normalizer\DuplicatedDirective();
             }
 
-            $directiveTypes[$object->getDirective()->getName()] = true;
+            $directiveTypes[$directive->getName()] = true;
         }
-
-        parent::__construct($validatedData);
-        $this->location = $location;
     }
 
     public function current() : Directive

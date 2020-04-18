@@ -4,19 +4,15 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Resolver;
 
-final class VariableValueSet extends \Infinityloop\Utils\ImmutableSet
+final class VariableValueSet extends \Infinityloop\Utils\ObjectSet
 {
     public function __construct(
         \Graphpinator\Normalizer\Variable\VariableSet $definedVariables,
         \Infinityloop\Utils\Json $providedValues
     ) {
-        $data = [];
-
         foreach ($definedVariables as $variable) {
-            $data[$variable->getName()] = $variable->createValue($providedValues);
+            $this->array[$variable->getName()] = $variable->createValue($providedValues);
         }
-
-        parent::__construct($data);
     }
 
     public function current() : \Graphpinator\Value\ValidatedValue

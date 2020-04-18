@@ -43,7 +43,7 @@ final class TokenContainer implements \IteratorAggregate
     public function getPrev() : Token
     {
         if (!$this->hasPrev()) {
-            throw new \Exception('Unexpected end.');
+            throw new \Graphpinator\Exception\Parser\UnexpectedEnd();
         }
 
         return $this->tokens[--$this->currentIndex];
@@ -52,7 +52,7 @@ final class TokenContainer implements \IteratorAggregate
     public function getNext() : Token
     {
         if (!$this->hasNext()) {
-            throw new \Exception('Unexpected end.');
+            throw new \Graphpinator\Exception\Parser\UnexpectedEnd();
         }
 
         return $this->tokens[++$this->currentIndex];
@@ -61,7 +61,7 @@ final class TokenContainer implements \IteratorAggregate
     public function peekNext() : Token
     {
         if (!$this->hasNext()) {
-            throw new \Exception('Unexpected end.');
+            throw new \Graphpinator\Exception\Parser\UnexpectedEnd();
         }
 
         return $this->tokens[$this->currentIndex + 1];

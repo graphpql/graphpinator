@@ -15,7 +15,7 @@ final class IncludeDirective extends Directive
             new \Graphpinator\Argument\ArgumentSet([
                 new \Graphpinator\Argument\Argument('if', \Graphpinator\Type\Container\Container::Boolean()->notNull()),
             ]),
-            static function (\Graphpinator\Normalizer\ArgumentValueSet $arguments) : string {
+            static function (\Graphpinator\Resolver\ArgumentValueSet $arguments) : string {
                 return $arguments->offsetGet('if')->getRawValue()
                     ? DirectiveResult::NONE
                     : DirectiveResult::SKIP;

@@ -4,16 +4,18 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Parser;
 
-final class FieldSet extends \Graphpinator\Utils\ClassSet
+final class FieldSet extends \Infinityloop\Utils\ObjectSet
 {
-    public const INNER_CLASS = Field::class;
+    protected const INNER_CLASS = Field::class;
 
     private \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet $fragments;
 
     public function __construct(array $fields, \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet $fragments = null)
     {
         parent::__construct($fields);
-        $this->fragments = $fragments ?? new \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet([]);
+
+        $this->fragments = $fragments
+            ?? new \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet([]);
     }
 
     public function current() : Field
@@ -63,5 +65,10 @@ final class FieldSet extends \Graphpinator\Utils\ClassSet
             $normalized,
             $this->fragments->normalize($typeContainer, $fragmentDefinitions),
         );
+    }
+
+    protected function getKey($object)
+    {
+        return $object->getName();
     }
 }

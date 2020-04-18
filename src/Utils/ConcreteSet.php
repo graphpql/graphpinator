@@ -7,9 +7,9 @@ namespace Graphpinator\Utils;
 /**
  * Class ConcreteSet which is type safe container for ConcreteTypes.
  */
-final class ConcreteSet extends \Graphpinator\Utils\ClassSet
+final class ConcreteSet extends \Infinityloop\Utils\ObjectSet
 {
-    public const INNER_CLASS = \Graphpinator\Type\Contract\ConcreteDefinition::class;
+    protected const INNER_CLASS = \Graphpinator\Type\Contract\ConcreteDefinition::class;
 
     public function current() : \Graphpinator\Type\Contract\ConcreteDefinition
     {
@@ -19,5 +19,10 @@ final class ConcreteSet extends \Graphpinator\Utils\ClassSet
     public function offsetGet($offset) : \Graphpinator\Type\Contract\ConcreteDefinition
     {
         return parent::offsetGet($offset);
+    }
+
+    protected function getKey($object)
+    {
+        return $object->getName();
     }
 }

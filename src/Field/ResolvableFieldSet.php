@@ -6,7 +6,7 @@ namespace Graphpinator\Field;
 
 final class ResolvableFieldSet extends FieldSet
 {
-    public const INNER_CLASS = ResolvableField::class;
+    protected const INNER_CLASS = ResolvableField::class;
 
     public function current() : ResolvableField
     {

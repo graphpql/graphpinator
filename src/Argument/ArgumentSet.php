@@ -4,27 +4,11 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Argument;
 
-final class ArgumentSet extends \Infinityloop\Utils\ImmutableSet
+final class ArgumentSet extends \Infinityloop\Utils\ObjectSet
 {
+    protected const INNER_CLASS = Argument::class;
+
     private array $defaults = [];
-
-    public function __construct(array $arguments)
-    {
-        foreach ($arguments as $argument) {
-            if ($argument instanceof Argument) {
-                $this->appendUnique($argument->getName(), $argument);
-                $defaultValue = $argument->getDefaultValue();
-
-                if ($defaultValue instanceof \Graphpinator\Value\ValidatedValue) {
-                    $this->defaults[$argument->getName()] = $defaultValue;
-                }
-
-                continue;
-            }
-
-            throw new \Exception();
-        }
-    }
 
     public function getDefaults() : array
     {
@@ -39,5 +23,16 @@ final class ArgumentSet extends \Infinityloop\Utils\ImmutableSet
     public function offsetGet($offset) : Argument
     {
         return parent::offsetGet($offset);
+    }
+
+    protected function getKey($object)
+    {
+        $defaultValue = $object->getDefaultValue();
+
+        if ($defaultValue instanceof \Graphpinator\Value\ValidatedValue) {
+            $this->defaults[$object->getName()] = $defaultValue;
+        }
+
+        return $object->getName();
     }
 }

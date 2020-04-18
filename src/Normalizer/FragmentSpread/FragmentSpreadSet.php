@@ -4,12 +4,9 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Normalizer\FragmentSpread;
 
-final class FragmentSpreadSet extends \Infinityloop\Utils\ImmutableSet
+final class FragmentSpreadSet extends \Infinityloop\Utils\ObjectSet
 {
-    public function __construct(array $data)
-    {
-        parent::__construct($data);
-    }
+    protected const INNER_CLASS = FragmentSpread::class;
 
     public function current() : FragmentSpread
     {

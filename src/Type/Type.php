@@ -44,7 +44,7 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
         foreach ($requestedFields->getFragments() as $fragmentSpread) {
             foreach ($fragmentSpread->getDirectives() as $directive) {
                 $directiveDef = $directive->getDirective();
-                $arguments = new \Graphpinator\Normalizer\ArgumentValueSet($directive->getArguments(), $directiveDef->getArguments());
+                $arguments = new \Graphpinator\Resolver\ArgumentValueSet($directive->getArguments(), $directiveDef->getArguments());
                 $directiveResult = $directiveDef->resolve($arguments);
 
                 if ($directiveResult === \Graphpinator\Directive\DirectiveResult::SKIP) {
@@ -108,7 +108,7 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
 
             foreach ($field->getDirectives() as $directive) {
                 $directiveDef = $directive->getDirective();
-                $arguments = new \Graphpinator\Normalizer\ArgumentValueSet($directive->getArguments(), $directiveDef->getArguments());
+                $arguments = new \Graphpinator\Resolver\ArgumentValueSet($directive->getArguments(), $directiveDef->getArguments());
                 $directiveResult = $directiveDef->resolve($arguments);
 
                 if ($directiveResult === \Graphpinator\Directive\DirectiveResult::SKIP) {
@@ -117,7 +117,7 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
             }
 
             $fieldDef = $this->getMetaFields()[$field->getName()] ?? $this->getFields()[$field->getName()];
-            $arguments = new \Graphpinator\Normalizer\ArgumentValueSet($field->getArguments(), $fieldDef->getArguments());
+            $arguments = new \Graphpinator\Resolver\ArgumentValueSet($field->getArguments(), $fieldDef->getArguments());
             $innerResult = $fieldDef->resolve($parentResult, $arguments);
 
             $result[$field->getAlias()] = $innerResult->getResult() instanceof \Graphpinator\Value\NullValue

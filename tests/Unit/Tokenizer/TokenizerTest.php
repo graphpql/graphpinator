@@ -67,6 +67,9 @@ final class TokenizerTest extends \PHPUnit\Framework\TestCase
             ['"""   """', [
                 new Token(TokenType::STRING, ''),
             ]],
+            ['"""  abc  """', [
+                new Token(TokenType::STRING, 'abc  '),
+            ]],
             ['"""' . \PHP_EOL . \PHP_EOL . \PHP_EOL . '"""', [
                 new Token(TokenType::STRING, ''),
             ]],
@@ -147,6 +150,9 @@ final class TokenizerTest extends \PHPUnit\Framework\TestCase
             ]],
             ['__Name', [
                 new Token(TokenType::NAME, '__Name'),
+            ]],
+            ['Name_with_underscore', [
+                new Token(TokenType::NAME, 'Name_with_underscore'),
             ]],
             ['FALSE true', [
                 new Token(TokenType::FALSE),

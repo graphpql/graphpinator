@@ -4,9 +4,9 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Field;
 
-class FieldSet extends \Graphpinator\Utils\ClassSet
+class FieldSet extends \Infinityloop\Utils\ObjectSet
 {
-    public const INNER_CLASS = Field::class;
+    protected const INNER_CLASS = Field::class;
 
     public function current() : Field
     {
@@ -18,8 +18,8 @@ class FieldSet extends \Graphpinator\Utils\ClassSet
         return parent::offsetGet($offset);
     }
 
-    public function offsetSet($offset, $value) : void
+    protected function getKey($object)
     {
-        $this->appendUnique($offset, $value);
+        return $object->getName();
     }
 }

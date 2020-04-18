@@ -23,14 +23,14 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider typenameDataProvider
      */
-    public function testTypename(string $request, \Infinityloop\Utils\Json $result) : void
+    public function testSimple(string $request, \Infinityloop\Utils\Json $expected) : void
     {
         $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
+        $result = $graphpinator->runQuery($request, \Infinityloop\Utils\Json::fromArray([]));
 
-        self::assertSame(
-            $result->toString(),
-            \json_encode($graphpinator->runQuery($request, \Infinityloop\Utils\Json::fromArray([]))),
-        );
+        self::assertSame($expected->toString(), \json_encode($result, JSON_THROW_ON_ERROR, 512),);
+        self::assertSame($expected['data'], \json_decode(\json_encode($result->getData()), true));
+        self::assertNull($result->getErrors());
     }
 
     public function schemaDataProvider() : array

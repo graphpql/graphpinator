@@ -34,7 +34,7 @@ final class Schema
         $this->query->addMetaField(new \Graphpinator\Field\ResolvableField(
             '__type',
             \Graphpinator\Type\Container\Container::introspectionType(),
-            function($parent, \Graphpinator\Normalizer\ArgumentValueSet $args) : \Graphpinator\Type\Contract\Definition {
+            function($parent, \Graphpinator\Resolver\ArgumentValueSet $args) : \Graphpinator\Type\Contract\Definition {
                 return $this->typeContainer->getType($args['name']->getRawValue());
             },
             new \Graphpinator\Argument\ArgumentSet([

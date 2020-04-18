@@ -7,9 +7,9 @@ namespace Graphpinator\Utils;
 /**
  * Class InterfaceSet which is type safe container for InterfaceTypes.
  */
-final class InterfaceSet extends \Graphpinator\Utils\ClassSet
+final class InterfaceSet extends \Infinityloop\Utils\ObjectSet
 {
-    public const INNER_CLASS = \Graphpinator\Type\InterfaceType::class;
+    protected const INNER_CLASS = \Graphpinator\Type\InterfaceType::class;
 
     public function current() : \Graphpinator\Type\InterfaceType
     {
@@ -19,5 +19,10 @@ final class InterfaceSet extends \Graphpinator\Utils\ClassSet
     public function offsetGet($offset) : \Graphpinator\Type\InterfaceType
     {
         return parent::offsetGet($offset);
+    }
+
+    protected function getKey($object)
+    {
+        return $object->getName();
     }
 }

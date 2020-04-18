@@ -29,6 +29,10 @@ final class ParseResult
 
     public function normalize(\Graphpinator\Type\Schema $schema) : \Graphpinator\Normalizer\Operation
     {
+        foreach ($this->fragments as $fragment) {
+            $fragment->validateCycles($this->fragments, []);
+        }
+
         return $this->operation->normalize($schema, $this->fragments);
     }
 }

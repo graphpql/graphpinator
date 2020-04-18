@@ -4,16 +4,28 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Normalizer;
 
-final class FieldSet extends \Graphpinator\Utils\ClassSet
+final class FieldSet extends \Infinityloop\Utils\ObjectSet
 {
-    public const INNER_CLASS = Field::class;
+    protected const INNER_CLASS = Field::class;
 
     private \Graphpinator\Normalizer\FragmentSpread\FragmentSpreadSet $fragments;
 
     public function __construct(array $fields, ?\Graphpinator\Normalizer\FragmentSpread\FragmentSpreadSet $fragments = null)
     {
         parent::__construct($fields);
-        $this->fragments = $fragments ?? new \Graphpinator\Normalizer\FragmentSpread\FragmentSpreadSet([]);
+
+        $this->fragments = $fragments
+            ?? new \Graphpinator\Normalizer\FragmentSpread\FragmentSpreadSet([]);
+    }
+
+    public function current() : Field
+    {
+        return parent::current();
+    }
+
+    public function offsetGet($offset) : Field
+    {
+        return parent::offsetGet($offset);
     }
 
     public function getFragments() : \Graphpinator\Normalizer\FragmentSpread\FragmentSpreadSet
@@ -35,13 +47,8 @@ final class FieldSet extends \Graphpinator\Utils\ClassSet
         );
     }
 
-    public function current() : Field
+    protected function getKey($object)
     {
-        return parent::current();
-    }
-
-    public function offsetGet($offset) : Field
-    {
-        return parent::offsetGet($offset);
+        return $object->getName();
     }
 }
