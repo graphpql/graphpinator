@@ -10,6 +10,11 @@ final class UnionTypeTest extends \PHPUnit\Framework\TestCase
     {
         $union = self::createTestUnion();
 
+        self::assertArrayHasKey('Xyz', $union->getTypes());
+        self::assertSame('Xyz', $union->getTypes()->offsetGet('Xyz')->getName());
+        self::assertArrayHasKey('Zzz', $union->getTypes());
+        self::assertSame('Zzz', $union->getTypes()->offsetGet('Zzz')->getName());
+
         self::assertTrue($union->isInstanceOf($union));
         self::assertTrue($union->isInstanceOf(new \Graphpinator\Type\NotNullType($union)));
         self::assertFalse($union->isInstanceOf(self::getTestTypeZzz()));

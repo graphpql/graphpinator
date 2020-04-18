@@ -25,7 +25,7 @@ final class Operation
         $this->variables = $variables;
     }
 
-    public function getChildren() : \Graphpinator\Normalizer\FieldSet
+    public function getFields() : \Graphpinator\Normalizer\FieldSet
     {
         return $this->children;
     }

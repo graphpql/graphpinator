@@ -70,6 +70,16 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
                 \Infinityloop\Utils\Json::fromArray([]),
                 \Exception::class,
             ],
+            [
+                'query queryName { fieldInvalidType { } }',
+                \Infinityloop\Utils\Json::fromArray([]),
+                \Graphpinator\Exception\Resolver\FieldResultTypeMismatch::class,
+            ],
+            [
+                'query queryName { fieldAbstract { } }',
+                \Infinityloop\Utils\Json::fromArray([]),
+                \Graphpinator\Exception\Resolver\FieldResultAbstract::class,
+            ],
         ];
     }
 

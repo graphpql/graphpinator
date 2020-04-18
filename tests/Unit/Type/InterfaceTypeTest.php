@@ -11,6 +11,9 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
         $interface = self::createTestInterface();
         $parent = self::createTestParentInterface();
 
+        self::assertArrayHasKey('Bar', $interface->getInterfaces());
+        self::assertSame('Bar', $interface->getInterfaces()->offsetGet('Bar')->getName());
+
         self::assertTrue($interface->isInstanceOf($interface));
         self::assertTrue($interface->isInstanceOf(new \Graphpinator\Type\NotNullType($interface)));
         self::assertTrue($interface->isInstanceOf($parent));

@@ -70,8 +70,14 @@ final class TestSchema
             protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
             {
                 return new \Graphpinator\Field\ResolvableFieldSet([
-                    new \Graphpinator\Field\ResolvableField('field0', TestSchema::getUnion(), function () {
+                    new \Graphpinator\Field\ResolvableField('field0', TestSchema::getUnion(), static function () {
                         return \Graphpinator\Resolver\FieldResult::fromRaw(TestSchema::getTypeAbc(), 1);
+                    }),
+                    new \Graphpinator\Field\ResolvableField('fieldInvalidType', TestSchema::getUnion(), static function () {
+                        return \Graphpinator\Resolver\FieldResult::fromRaw(\Graphpinator\Type\Container\Container::Int(), 1);
+                    }),
+                    new \Graphpinator\Field\ResolvableField('fieldAbstract', TestSchema::getUnion(), static function () {
+                        return 1;
                     })
                 ]);
             }

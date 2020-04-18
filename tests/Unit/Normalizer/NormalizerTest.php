@@ -30,7 +30,7 @@ final class NormalizerTest extends \PHPUnit\Framework\TestCase
         $normalizer = new \Graphpinator\Normalizer\Normalizer(\Graphpinator\Tests\Spec\TestSchema::getSchema());
         $operation = $normalizer->normalize($parseResult);
 
-        self::assertCount(0, $operation->getChildren());
+        self::assertCount(0, $operation->getFields());
         self::assertCount(2, $operation->getVariables());
         self::assertArrayHasKey('varName', $operation->getVariables());
         self::assertSame('varName', $operation->getVariables()->offsetGet('varName')->getName());
@@ -42,6 +42,64 @@ final class NormalizerTest extends \PHPUnit\Framework\TestCase
         self::assertNull($operation->getVariables()->offsetGet('varNameList')->getDefault());
         self::assertInstanceOf(\Graphpinator\Type\ListType::class, $operation->getVariables()->offsetGet('varNameList')->getType());
         self::assertSame('Abc', $operation->getVariables()->offsetGet('varNameList')->getType()->getNamedType()->getName());
+    }
+
+    public function testDirectiveReferences() : void
+    {
+        $parseResult = new \Graphpinator\Parser\ParseResult(
+            new \Graphpinator\Parser\Operation(
+                new \Graphpinator\Parser\FieldSet([
+                    new \Graphpinator\Parser\Field('fieldName', null, null, null, new \Graphpinator\Parser\Directive\DirectiveSet([
+                        new \Graphpinator\Parser\Directive\Directive('skip', null),
+                    ], \Graphpinator\Directive\DirectiveLocation::FIELD)),
+                ], new \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet([
+                    new \Graphpinator\Parser\FragmentSpread\InlineFragmentSpread(
+                        new \Graphpinator\Parser\FieldSet([]),
+                        new \Graphpinator\Parser\Directive\DirectiveSet([
+                            new \Graphpinator\Parser\Directive\Directive('skip', null),
+                        ], \Graphpinator\Directive\DirectiveLocation::INLINE_FRAGMENT),
+                    ),
+                    new \Graphpinator\Parser\FragmentSpread\NamedFragmentSpread(
+                        'fragmentName',
+                        new \Graphpinator\Parser\Directive\DirectiveSet([
+                            new \Graphpinator\Parser\Directive\Directive('include', null),
+                        ], \Graphpinator\Directive\DirectiveLocation::FRAGMENT_SPREAD),
+                    ),
+                ])),
+                \Graphpinator\Tokenizer\OperationType::QUERY,
+                'operationName',
+            ),
+            new \Graphpinator\Parser\Fragment\FragmentSet([
+                new \Graphpinator\Parser\Fragment\Fragment(
+                    'fragmentName',
+                    new \Graphpinator\Parser\TypeRef\NamedTypeRef('Int'),
+                    new \Graphpinator\Parser\FieldSet([]),
+                ),
+            ]),
+        );
+
+        $normalizer = new \Graphpinator\Normalizer\Normalizer(\Graphpinator\Tests\Spec\TestSchema::getSchema());
+        $operation = $normalizer->normalize($parseResult);
+
+        self::assertCount(0, $operation->getVariables());
+        self::assertCount(1, $operation->getFields());
+        self::assertArrayHasKey('fieldName', $operation->getFields());
+        self::assertSame('fieldName', $operation->getFields()->offsetGet('fieldName')->getName());
+        self::assertCount(1, $operation->getFields()->offsetGet('fieldName')->getDirectives());
+        self::assertArrayHasKey(0, $operation->getFields()->offsetGet('fieldName')->getDirectives());
+        self::assertSame(\Graphpinator\Directive\DirectiveLocation::FIELD, $operation->getFields()->offsetGet('fieldName')->getDirectives()->getLocation());
+        self::assertInstanceOf(\Graphpinator\Directive\SkipDirective::class, $operation->getFields()->offsetGet('fieldName')->getDirectives()->offsetGet(0)->getDirective());
+        self::assertCount(2, $operation->getFields()->getFragments());
+        self::assertArrayHasKey(0, $operation->getFields()->getFragments());
+        self::assertCount(1, $operation->getFields()->getFragments()->offsetGet(0)->getDirectives());
+        self::assertArrayHasKey(0, $operation->getFields()->getFragments()->offsetGet(0)->getDirectives());
+        self::assertSame(\Graphpinator\Directive\DirectiveLocation::INLINE_FRAGMENT, $operation->getFields()->getFragments()->offsetGet(0)->getDirectives()->getLocation());
+        self::assertInstanceOf(\Graphpinator\Directive\SkipDirective::class, $operation->getFields()->getFragments()->offsetGet(0)->getDirectives()->offsetGet(0)->getDirective());
+        self::assertArrayHasKey(1, $operation->getFields()->getFragments());
+        self::assertCount(1, $operation->getFields()->getFragments()->offsetGet(1)->getDirectives());
+        self::assertArrayHasKey(0, $operation->getFields()->getFragments()->offsetGet(1)->getDirectives());
+        self::assertSame(\Graphpinator\Directive\DirectiveLocation::FRAGMENT_SPREAD, $operation->getFields()->getFragments()->offsetGet(1)->getDirectives()->getLocation());
+        self::assertInstanceOf(\Graphpinator\Directive\IncludeDirective::class, $operation->getFields()->getFragments()->offsetGet(1)->getDirectives()->offsetGet(0)->getDirective());
     }
 
     public function invalidDataProvider() : array
