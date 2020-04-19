@@ -4,7 +4,10 @@
 
 ## Introduction
 
-PHP implementation of GraphQL server. Its job is transformation of query string into resolved Json result for a given Schema.
+Feature complete PHP implementation of GraphQL server. Its job is transformation of query string into resolved Json result for a given Schema. 
+
+- Fully typesafe, and therefore minimum required PHP version is 7.4+.
+- Sacrafices a tiny bit of convenience for huge amount of clarity and safety - no random configuration `array`s, no variable function arguments, ... - this library doesnt try to save you from verbosity, but makes sure you always know what you've got
 
 ## Installation
 
