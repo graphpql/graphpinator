@@ -24,6 +24,10 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
                 'query queryName { field0 @invalidDirective() { field1 { name } } }',
                 \Infinityloop\Utils\Json::fromArray(['errors' => [['message' => 'Server responded with unknown error.']]]),
             ],
+            [
+                'query queryName { fieldThrow { field1 { name } } }',
+                \Infinityloop\Utils\Json::fromArray(['errors' => [['message' => 'Server responded with unknown error.']]]),
+            ],
         ];
     }
 

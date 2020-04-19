@@ -79,6 +79,9 @@ final class TestSchema
                     }),
                     new \Graphpinator\Field\ResolvableField('fieldAbstract', TestSchema::getUnion(), static function () {
                         return 1;
+                    }),
+                    new \Graphpinator\Field\ResolvableField('fieldThrow', TestSchema::getUnion(), static function () {
+                        throw new \Exception('Random exception');
                     })
                 ]);
             }

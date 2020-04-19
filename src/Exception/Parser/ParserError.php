@@ -6,7 +6,7 @@ namespace Graphpinator\Exception\Parser;
 
 abstract class ParserError extends \Graphpinator\Exception\GraphpinatorBase
 {
-    public function isOutputable() : bool
+    protected function isOutputable() : bool
     {
         return true;
     }
