@@ -10,5 +10,5 @@ interface Source extends \Iterator
 
     public function getChar() : string;
 
-    public function getPosition() : int;
+    public function getLocation() : Location;
 }

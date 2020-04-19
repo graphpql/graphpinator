@@ -4,12 +4,10 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Exception\Parser;
 
-abstract class ParserError extends \Exception
+abstract class ParserError extends \Graphpinator\Exception\GraphpinatorBase
 {
-    public const MESSAGE = '';
-
-    public function __construct()
+    public function isOutputable() : bool
     {
-        parent::__construct(static::MESSAGE);
+        return true;
     }
 }

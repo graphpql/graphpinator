@@ -11,6 +11,8 @@ final class StringSource implements Source
     private array $characters;
     private int $numberOfChars;
     private int $currentIndex;
+    private int $currentLine;
+    private int $currentColumn;
 
     public function __construct(string $source)
     {
@@ -30,12 +32,17 @@ final class StringSource implements Source
             return $this->characters[$this->currentIndex];
         }
 
-        throw new \Graphpinator\Exception\Parser\SourceUnexpectedEnd($this->getPosition());
+        throw new \Graphpinator\Exception\Tokenizer\SourceUnexpectedEnd($this->getLocation());
     }
 
-    public function getPosition() : int
+    public function getLocation() : Location
     {
-        return $this->currentIndex;
+        return new Location($this->currentLine, $this->currentColumn);
+    }
+
+    public function getNumberOfChars() : int
+    {
+        return $this->numberOfChars;
     }
 
     public function current() : string
@@ -50,6 +57,13 @@ final class StringSource implements Source
 
     public function next() : void
     {
+        if ($this->getChar() === \PHP_EOL) {
+            ++$this->currentLine;
+            $this->currentColumn = 0;
+        } else {
+            ++$this->currentColumn;
+        }
+
         ++$this->currentIndex;
     }
 
@@ -61,5 +75,7 @@ final class StringSource implements Source
     public function rewind() : void
     {
         $this->currentIndex = 0;
+        $this->currentLine = 0;
+        $this->currentColumn = 0;
     }
 }

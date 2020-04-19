@@ -340,36 +340,36 @@ final class TokenizerTest extends \PHPUnit\Framework\TestCase
     public function invalidDataProvider() : array
     {
         return [
-            ['"foo', \Graphpinator\Exception\Parser\StringLiteralWithoutEnd::class],
-            ['""""', \Graphpinator\Exception\Parser\StringLiteralWithoutEnd::class],
-            ['"""""', \Graphpinator\Exception\Parser\StringLiteralWithoutEnd::class],
-            ['"""""""', \Graphpinator\Exception\Parser\StringLiteralWithoutEnd::class],
-            ['"""\\""""', \Graphpinator\Exception\Parser\StringLiteralWithoutEnd::class],
-            ['"""abc""""', \Graphpinator\Exception\Parser\StringLiteralWithoutEnd::class],
-            ['"\\1"', \Graphpinator\Exception\Parser\StringLiteralInvalidEscape::class],
-            ['"\\u12z3"', \Graphpinator\Exception\Parser\StringLiteralInvalidEscape::class],
-            ['"\\u123"', \Graphpinator\Exception\Parser\StringLiteralInvalidEscape::class],
-            ['"' . \PHP_EOL . '"', \Graphpinator\Exception\Parser\StringLiteralNewLine::class],
-            ['123.-1', \Graphpinator\Exception\Parser\NumericLiteralNegativeFraction::class],
-            ['- 123', \Graphpinator\Exception\Parser\NumericLiteralMalformed::class],
-            ['123. ', \Graphpinator\Exception\Parser\NumericLiteralMalformed::class],
-            ['123.1e ', \Graphpinator\Exception\Parser\NumericLiteralMalformed::class],
-            ['00123', \Graphpinator\Exception\Parser\NumericLiteralLeadingZero::class],
-            ['00123.123', \Graphpinator\Exception\Parser\NumericLiteralLeadingZero::class],
-            ['123.1E ', \Graphpinator\Exception\Parser\NumericLiteralMalformed::class],
-            ['123e ', \Graphpinator\Exception\Parser\NumericLiteralMalformed::class],
-            ['123E ', \Graphpinator\Exception\Parser\NumericLiteralMalformed::class],
-            ['123Name', \Graphpinator\Exception\Parser\NumericLiteralFollowedByName::class],
-            ['123.123Name', \Graphpinator\Exception\Parser\NumericLiteralFollowedByName::class],
-            ['123.123eName', \Graphpinator\Exception\Parser\NumericLiteralMalformed::class],
-            ['-.E', \Graphpinator\Exception\Parser\NumericLiteralMalformed::class],
-            ['>>', \Graphpinator\Exception\Parser\UnknownSymbol::class],
-            ['123.45.67', \Graphpinator\Exception\Parser\InvalidEllipsis::class],
-            ['.E', \Graphpinator\Exception\Parser\InvalidEllipsis::class],
-            ['..', \Graphpinator\Exception\Parser\InvalidEllipsis::class],
-            ['....', \Graphpinator\Exception\Parser\InvalidEllipsis::class],
-            ['@ directiveName', \Graphpinator\Exception\Parser\MissingDirectiveName::class],
-            ['$ variableName', \Graphpinator\Exception\Parser\MissingVariableName::class],
+            ['"foo', \Graphpinator\Exception\Tokenizer\StringLiteralWithoutEnd::class],
+            ['""""', \Graphpinator\Exception\Tokenizer\StringLiteralWithoutEnd::class],
+            ['"""""', \Graphpinator\Exception\Tokenizer\StringLiteralWithoutEnd::class],
+            ['"""""""', \Graphpinator\Exception\Tokenizer\StringLiteralWithoutEnd::class],
+            ['"""\\""""', \Graphpinator\Exception\Tokenizer\StringLiteralWithoutEnd::class],
+            ['"""abc""""', \Graphpinator\Exception\Tokenizer\StringLiteralWithoutEnd::class],
+            ['"\\1"', \Graphpinator\Exception\Tokenizer\StringLiteralInvalidEscape::class],
+            ['"\\u12z3"', \Graphpinator\Exception\Tokenizer\StringLiteralInvalidEscape::class],
+            ['"\\u123"', \Graphpinator\Exception\Tokenizer\StringLiteralInvalidEscape::class],
+            ['"' . \PHP_EOL . '"', \Graphpinator\Exception\Tokenizer\StringLiteralNewLine::class],
+            ['123.-1', \Graphpinator\Exception\Tokenizer\NumericLiteralNegativeFraction::class],
+            ['- 123', \Graphpinator\Exception\Tokenizer\NumericLiteralMalformed::class],
+            ['123. ', \Graphpinator\Exception\Tokenizer\NumericLiteralMalformed::class],
+            ['123.1e ', \Graphpinator\Exception\Tokenizer\NumericLiteralMalformed::class],
+            ['00123', \Graphpinator\Exception\Tokenizer\NumericLiteralLeadingZero::class],
+            ['00123.123', \Graphpinator\Exception\Tokenizer\NumericLiteralLeadingZero::class],
+            ['123.1E ', \Graphpinator\Exception\Tokenizer\NumericLiteralMalformed::class],
+            ['123e ', \Graphpinator\Exception\Tokenizer\NumericLiteralMalformed::class],
+            ['123E ', \Graphpinator\Exception\Tokenizer\NumericLiteralMalformed::class],
+            ['123Name', \Graphpinator\Exception\Tokenizer\NumericLiteralFollowedByName::class],
+            ['123.123Name', \Graphpinator\Exception\Tokenizer\NumericLiteralFollowedByName::class],
+            ['123.123eName', \Graphpinator\Exception\Tokenizer\NumericLiteralMalformed::class],
+            ['-.E', \Graphpinator\Exception\Tokenizer\NumericLiteralMalformed::class],
+            ['>>', \Graphpinator\Exception\Tokenizer\UnknownSymbol::class],
+            ['123.45.67', \Graphpinator\Exception\Tokenizer\InvalidEllipsis::class],
+            ['.E', \Graphpinator\Exception\Tokenizer\InvalidEllipsis::class],
+            ['..', \Graphpinator\Exception\Tokenizer\InvalidEllipsis::class],
+            ['....', \Graphpinator\Exception\Tokenizer\InvalidEllipsis::class],
+            ['@ directiveName', \Graphpinator\Exception\Tokenizer\MissingDirectiveName::class],
+            ['$ variableName', \Graphpinator\Exception\Tokenizer\MissingVariableName::class],
         ];
     }
 
@@ -385,6 +385,7 @@ final class TokenizerTest extends \PHPUnit\Framework\TestCase
         $tokenizer = new \Graphpinator\Tokenizer\Tokenizer($source);
 
         foreach ($tokenizer as $token) {
+            self::assertInstanceOf(Token::class, $token);
         }
     }
 

@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Exception\Parser;
+namespace Graphpinator\Exception\Tokenizer;
 
 final class NumericLiteralLeadingZero extends TokenizerError
 {

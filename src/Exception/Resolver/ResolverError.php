@@ -4,12 +4,6 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Exception\Resolver;
 
-abstract class ResolverError extends \Exception
+abstract class ResolverError extends \Graphpinator\Exception\GraphpinatorBase
 {
-    public const MESSAGE = '';
-
-    public function __construct()
-    {
-        parent::__construct(static::MESSAGE);
-    }
 }

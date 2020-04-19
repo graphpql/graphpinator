@@ -20,9 +20,13 @@ final class SourceTest extends \PHPUnit\Framework\TestCase
      */
     public function testSimple(string $source, array $chars) : void
     {
+        $source = new \Graphpinator\Source\StringSource($source);
+
+        self::assertSame(\count($chars), $source->getNumberOfChars());
+
         $index = 0;
 
-        foreach ((new \Graphpinator\Source\StringSource($source)) as $key => $val) {
+        foreach ($source as $key => $val) {
             self::assertSame($index, $key);
             self::assertSame($chars[$index], $val);
 
@@ -43,8 +47,8 @@ final class SourceTest extends \PHPUnit\Framework\TestCase
 
     public function testInvalid() : void
     {
-        $this->expectException(\Graphpinator\Exception\Parser\SourceUnexpectedEnd::class);
-        $this->expectExceptionMessage(\Graphpinator\Exception\Parser\SourceUnexpectedEnd::MESSAGE);
+        $this->expectException(\Graphpinator\Exception\Tokenizer\SourceUnexpectedEnd::class);
+        $this->expectExceptionMessage(\Graphpinator\Exception\Tokenizer\SourceUnexpectedEnd::MESSAGE);
 
         $source = new \Graphpinator\Source\StringSource('123');
 
@@ -52,5 +56,22 @@ final class SourceTest extends \PHPUnit\Framework\TestCase
         $source->next();
         $source->next();
         $source->getChar();
+    }
+
+    public function testLocation() : void
+    {
+        $source = new \Graphpinator\Source\StringSource('abcd' . \PHP_EOL . 'abcde' . \PHP_EOL . \PHP_EOL . \PHP_EOL . 'abc');
+        $lines = [5, 6, 1, 1, 3];
+
+        for ($line = 0; $line < \count($lines); ++$line) {
+            for ($column = 0; $column < $lines[$line]; ++$column) {
+                $location = $source->getLocation();
+
+                self::assertSame($line, $location->getLine());
+                self::assertSame($column, $location->getColumn());
+
+                $source->next();
+            }
+        }
     }
 }
