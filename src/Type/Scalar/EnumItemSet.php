@@ -17,6 +17,17 @@ final class EnumItemSet extends \Infinityloop\Utils\ObjectSet
     {
         return parent::offsetGet($offset);
     }
+    
+    public function getArray() : array
+    {
+        $return = [];
+
+        foreach ($this as $enumItem) {
+            $return[] = $enumItem->getName();
+        }
+
+        return $return;
+    }
 
     protected function getKey($object)
     {
