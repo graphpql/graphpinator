@@ -178,14 +178,14 @@ final class TestSchema
         {
             protected const NAME = 'TestInput';
 
-            public function __construct()
+            protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
             {
-                parent::__construct(new \Graphpinator\Argument\ArgumentSet([
+                return new \Graphpinator\Argument\ArgumentSet([
                     new \Graphpinator\Argument\Argument('name', \Graphpinator\Type\Container\Container::String()->notNull()),
                     new \Graphpinator\Argument\Argument('inner', TestSchema::getInnerInput()),
                     new \Graphpinator\Argument\Argument('innerList', TestSchema::getInnerInput()->notNullList()),
                     new \Graphpinator\Argument\Argument('innerNotNull', TestSchema::getInnerInput()->notNull()),
-                ]));
+                ]);
             }
         };
     }
@@ -196,13 +196,13 @@ final class TestSchema
         {
             protected const NAME = 'TestInnerInput';
 
-            public function __construct()
+            protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
             {
-                parent::__construct(new \Graphpinator\Argument\ArgumentSet([
+                return new \Graphpinator\Argument\ArgumentSet([
                     new \Graphpinator\Argument\Argument('name', \Graphpinator\Type\Container\Container::String()->notNull()),
                     new \Graphpinator\Argument\Argument('number', \Graphpinator\Type\Container\Container::Int()->notNullList()),
                     new \Graphpinator\Argument\Argument('bool', \Graphpinator\Type\Container\Container::Boolean()),
-                ]));
+                ]);
             }
         };
     }
