@@ -45,13 +45,11 @@ final class ListValueTest extends \PHPUnit\Framework\TestCase
         return new class extends \Graphpinator\Type\InputType {
             protected const NAME = 'Abc';
 
-            public function __construct()
+            protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
             {
-                parent::__construct(
-                    new \Graphpinator\Argument\ArgumentSet([new \Graphpinator\Argument\Argument(
-                        'field', \Graphpinator\Type\Container\Container::String(), 'random',
-                    )]),
-                );
+                return new \Graphpinator\Argument\ArgumentSet([new \Graphpinator\Argument\Argument(
+                    'field', \Graphpinator\Type\Container\Container::String(), 'random',
+                )]);
             }
         };
     }
