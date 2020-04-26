@@ -6,12 +6,7 @@ namespace Graphpinator\Type;
 
 abstract class InputType extends \Graphpinator\Type\Contract\ConcreteDefinition implements \Graphpinator\Type\Contract\Inputable
 {
-    protected \Graphpinator\Argument\ArgumentSet $arguments;
-
-    public function __construct(\Graphpinator\Argument\ArgumentSet $arguments)
-    {
-        $this->arguments = $arguments;
-    }
+    protected ?\Graphpinator\Argument\ArgumentSet $arguments = null;
 
     public function createValue($rawValue) : \Graphpinator\Resolver\Value\ValidatedValue
     {
@@ -24,13 +19,24 @@ abstract class InputType extends \Graphpinator\Type\Contract\ConcreteDefinition 
             throw new \Exception('Composite input type without fields specified.');
         }
 
-        return self::merge($value, $this->arguments->getDefaults());
+        return self::merge($value, $this->getArguments()->getDefaults());
     }
 
     public function getArguments() : \Graphpinator\Argument\ArgumentSet
     {
+        if (!$this->arguments instanceof \Graphpinator\Argument\ArgumentSet) {
+            $this->arguments = $this->getFieldDefinition();
+        }
+
         return $this->arguments;
     }
+
+    public function getTypeKind() : string
+    {
+        return \Graphpinator\Type\Introspection\TypeKind::INPUT_OBJECT;
+    }
+
+    abstract protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet;
 
     private static function merge(array $core, iterable $supplement) : array
     {
@@ -47,10 +53,5 @@ abstract class InputType extends \Graphpinator\Type\Contract\ConcreteDefinition 
         }
 
         return $core;
-    }
-
-    public function getTypeKind() : string
-    {
-        return \Graphpinator\Type\Introspection\TypeKind::INPUT_OBJECT;
     }
 }
