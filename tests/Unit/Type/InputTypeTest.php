@@ -27,14 +27,12 @@ final class InputTypeTest extends \PHPUnit\Framework\TestCase
         return new class extends \Graphpinator\Type\InputType {
             protected const NAME = 'Abc';
 
-            public function __construct()
+            protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
             {
-                parent::__construct(
-                    new \Graphpinator\Argument\ArgumentSet([
-                        new \Graphpinator\Argument\Argument('field1', InputTypeTest::createTestSubInput(), ['subfield' => 'random']),
-                        new \Graphpinator\Argument\Argument('field2', InputTypeTest::createTestSubInput(), ['subfield' => 'random']),
-                    ]),
-                );
+                return new \Graphpinator\Argument\ArgumentSet([
+                    new \Graphpinator\Argument\Argument('field1', InputTypeTest::createTestSubInput(), ['subfield' => 'random']),
+                    new \Graphpinator\Argument\Argument('field2', InputTypeTest::createTestSubInput(), ['subfield' => 'random']),
+                ]);
             }
         };
     }
@@ -44,13 +42,11 @@ final class InputTypeTest extends \PHPUnit\Framework\TestCase
         return new class extends \Graphpinator\Type\InputType {
             protected const NAME = 'Abc';
 
-            public function __construct()
+            protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
             {
-                parent::__construct(
-                    new \Graphpinator\Argument\ArgumentSet([new \Graphpinator\Argument\Argument(
-                        'subfield', \Graphpinator\Type\Container\Container::String(), 'random',
-                    )]),
-                );
+                return new \Graphpinator\Argument\ArgumentSet([new \Graphpinator\Argument\Argument(
+                    'subfield', \Graphpinator\Type\Container\Container::String(), 'random',
+                )]);
             }
         };
     }
