@@ -42,4 +42,15 @@ abstract class UnionType extends \Graphpinator\Type\Contract\AbstractDefinition 
     {
         return \Graphpinator\Type\Introspection\TypeKind::UNION;
     }
+
+    public function printSchema() : string
+    {
+        $typeNames = [];
+
+        foreach ($this->getTypes() as $type) {
+            $typeNames[] = $type->printName();
+        }
+
+        return 'union ' . $this->getName() . ' = ' . \implode(' | ', $typeNames);
+    }
 }

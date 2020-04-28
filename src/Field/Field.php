@@ -36,4 +36,24 @@ class Field
     {
         return $this->arguments;
     }
+
+    public function printSchema() : string
+    {
+        return $this->getName() . $this->printArguments() . ': ' . $this->getType()->printName() . $this->printDeprecated();
+    }
+
+    private function printArguments() : string
+    {
+        if (\count($this->arguments) === 0) {
+            return '';
+        }
+
+        $arguments = [];
+
+        foreach ($this->arguments as $argument) {
+            $arguments[] = $argument->printSchema();
+        }
+
+        return '(' . \implode(', ', $arguments) . ')';
+    }
 }

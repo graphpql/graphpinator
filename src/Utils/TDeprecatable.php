@@ -35,4 +35,11 @@ trait TDeprecatable
 
         return $this;
     }
+
+    private function printDeprecated() : string
+    {
+        return $this->isDeprecated()
+            ? ' @deprecated'
+            : '';
+    }
 }

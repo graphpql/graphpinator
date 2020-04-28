@@ -10,6 +10,8 @@ interface Definition
 
     public function getNamedType() : \Graphpinator\Type\Contract\NamedDefinition;
 
+    public function printName() : string;
+
     public function isInstanceOf(\Graphpinator\Type\Contract\Definition $type) : bool;
 
     public function isInputable() : bool;

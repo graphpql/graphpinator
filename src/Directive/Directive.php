@@ -59,4 +59,15 @@ abstract class Directive
 
         throw new \Graphpinator\Exception\Resolver\InvalidDirectiveResult();
     }
+
+    public function printSchema() : string
+    {
+        $schema = 'directive @' . $this->getName();
+
+        if ($this->repeatable) {
+            $schema .= ' repeatable';
+        }
+
+        return $schema . ' on ' . \implode(' | ', $this->locations);
+    }
 }

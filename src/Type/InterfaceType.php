@@ -52,5 +52,16 @@ abstract class InterfaceType extends \Graphpinator\Type\Contract\AbstractDefinit
         return \Graphpinator\Type\Introspection\TypeKind::INTERFACE;
     }
 
+    public function printSchema() : string
+    {
+        $schema = 'interface ' . $this->getName() . $this->printImplements() . ' {' . \PHP_EOL;
+
+        foreach ($this->getFields() as $field) {
+            $schema .= '  ' . $field->printSchema() . \PHP_EOL;
+        }
+
+        return $schema . '}';
+    }
+
     abstract protected function getFieldDefinition() : \Graphpinator\Field\FieldSet;
 }

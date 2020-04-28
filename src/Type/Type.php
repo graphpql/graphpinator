@@ -64,11 +64,6 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
         return $resolved;
     }
 
-    public function getTypeKind() : string
-    {
-        return \Graphpinator\Type\Introspection\TypeKind::OBJECT;
-    }
-
     public function getMetaFields() : \Graphpinator\Field\ResolvableFieldSet
     {
         if (!$this->metaFields instanceof \Graphpinator\Field\ResolvableFieldSet) {
@@ -81,6 +76,22 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
     public function addMetaField(\Graphpinator\Field\ResolvableField $field) : void
     {
         $this->getMetaFields()->offsetSet($field->getName(), $field);
+    }
+
+    public function getTypeKind() : string
+    {
+        return \Graphpinator\Type\Introspection\TypeKind::OBJECT;
+    }
+
+    public function printSchema() : string
+    {
+        $schema = 'type ' . $this->getName() . $this->printImplements() . ' {' . \PHP_EOL;
+
+        foreach ($this->getFields() as $field) {
+            $schema .= '  ' . $field->printSchema() . \PHP_EOL;
+        }
+
+        return $schema . '}';
     }
 
     abstract protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet;

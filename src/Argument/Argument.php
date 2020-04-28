@@ -39,4 +39,15 @@ final class Argument
     {
         return $this->defaultValue;
     }
+
+    public function printSchema() : string
+    {
+        $schema = $this->getName() . ': ' . $this->type->printName();
+
+        if ($this->defaultValue instanceof \Graphpinator\Resolver\Value\ValidatedValue) {
+            $schema .= ' = ' . $this->defaultValue->jsonSerialize();
+        }
+
+        return $schema;
+    }
 }

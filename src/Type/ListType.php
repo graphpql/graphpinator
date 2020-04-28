@@ -78,4 +78,9 @@ final class ListType extends \Graphpinator\Type\Contract\ModifierDefinition
     {
         return \Graphpinator\Type\Introspection\TypeKind::LIST;
     }
+
+    public function printName() : string
+    {
+        return '[' . $this->innerType->printName() . ']';
+    }
 }

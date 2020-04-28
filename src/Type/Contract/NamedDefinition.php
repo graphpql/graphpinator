@@ -14,6 +14,11 @@ abstract class NamedDefinition implements \Graphpinator\Type\Contract\Definition
         return static::NAME;
     }
 
+    public function printName() : string
+    {
+        return $this->getName();
+    }
+
     public function getDescription() : ?string
     {
         return static::DESCRIPTION;
@@ -67,6 +72,8 @@ abstract class NamedDefinition implements \Graphpinator\Type\Contract\Definition
     {
         return new \Graphpinator\Type\ListType($this);
     }
+
+    abstract public function printSchema() : string;
 
     protected function validateNonNullValue($rawValue) : bool
     {

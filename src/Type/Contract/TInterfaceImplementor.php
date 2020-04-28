@@ -74,4 +74,19 @@ trait TInterfaceImplementor
             }
         }
     }
+
+    private function printImplements() : string
+    {
+        if (\count($this->implements) === 0) {
+            return '';
+        }
+
+        $interfaces = [];
+
+        foreach ($this->implements as $interface) {
+            $interfaces[] = $interface->getName();
+        }
+
+        return ' implements ' . \implode(' & ', $interfaces);
+    }
 }

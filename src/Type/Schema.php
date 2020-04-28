@@ -62,4 +62,37 @@ final class Schema
     {
         return $this->subscription;
     }
+
+    public function printSchema() : string
+    {
+        $query = $this->query instanceof Type
+            ? $this->query->getName()
+            : 'null';
+        $mutation = $this->mutation instanceof Type
+            ? $this->mutation->getName()
+            : 'null';
+        $subscription = $this->subscription instanceof Type
+            ? $this->subscription->getName()
+            : 'null';
+
+        $schemaDef = <<<EOL
+        schema {
+          query: {$query}
+          mutation: {$mutation}
+          subscription: {$subscription}
+        }
+        EOL;
+
+        $entries = [$schemaDef];
+
+        foreach ($this->container->getAllTypes() as $type) {
+            $entries[] = $type->printSchema();
+        }
+
+        foreach ($this->container->getAllDirectives() as $directive) {
+            $entries[] = $directive->printSchema();
+        }
+
+        return \implode(\PHP_EOL . \PHP_EOL, $entries);
+    }
 }

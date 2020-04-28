@@ -36,6 +36,17 @@ abstract class InputType extends \Graphpinator\Type\Contract\ConcreteDefinition 
         return \Graphpinator\Type\Introspection\TypeKind::INPUT_OBJECT;
     }
 
+    public function printSchema() : string
+    {
+        $schema = 'input ' . $this->getName() . ' {' . \PHP_EOL;
+
+        foreach ($this->getArguments() as $argument) {
+            $schema .= '  ' . $argument->printSchema() . \PHP_EOL;
+        }
+
+        return $schema . '}';
+    }
+
     abstract protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet;
 
     private static function merge(array $core, iterable $supplement) : array
