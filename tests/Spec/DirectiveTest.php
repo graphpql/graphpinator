@@ -109,6 +109,10 @@ final class DirectiveTest extends \PHPUnit\Framework\TestCase
     {
         return [
             [
+                'query queryName { field0 { field1 @skip(if: false) @skip(if: false) { name } } }',
+                \Graphpinator\Exception\Normalizer\DuplicatedDirective::class,
+            ],
+            [
                 'query queryName { field0 { field1 @include(if: false) @include(if: false) { name } } }',
                 \Graphpinator\Exception\Normalizer\DuplicatedDirective::class,
             ],
