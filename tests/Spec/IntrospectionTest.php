@@ -65,28 +65,12 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                     ['name' => 'TestInnerInput'],
                     ['name' => 'TestEnum'],
                     ['name' => 'TestExplicitEnum'],
-                    ['name' => 'Int'],
-                    ['name' => 'Float'],
-                    ['name' => 'String'],
-                    ['name' => 'Boolean'],
                 ]]]]),
             ],
             [
                 '{ __schema { directives {name description args{name} locations isRepeatable} } }',
                 \Infinityloop\Utils\Json::fromArray(['data' => ['__schema' => ['directives' => [
                     [
-                        'name' => 'skip',
-                        'description' => 'Built-in skip directive.',
-                        'args' => [['name' => 'if']],
-                        'locations' => ['FIELD', 'FRAGMENT_SPREAD', 'INLINE_FRAGMENT'],
-                        'isRepeatable' => false,
-                    ], [
-                        'name' => 'include',
-                        'description' => 'Built-in include directive.',
-                        'args' => [['name' => 'if']],
-                        'locations' => ['FIELD', 'FRAGMENT_SPREAD', 'INLINE_FRAGMENT'],
-                        'isRepeatable' => false,
-                    ], [
                         'name' => 'testDirective',
                         'description' => null,
                         'args' => [],

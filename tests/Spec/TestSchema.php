@@ -16,50 +16,33 @@ final class TestSchema
         );
     }
 
+    public static function getFullSchema() : \Graphpinator\Type\Schema
+    {
+        return new \Graphpinator\Type\Schema(
+            self::getTypeResolver(),
+            self::getQuery(),
+            self::getQuery(),
+            self::getQuery(),
+        );
+    }
+
     public static function getTypeResolver() : \Graphpinator\Type\Container\Container
     {
-        return new class extends \Graphpinator\Type\Container\Container
-        {
-            public function getType(string $name): \Graphpinator\Type\Contract\NamedDefinition
-            {
-                return $this->getAllTypes()[$name];
-            }
-
-            public function getAllTypes() : array
-            {
-                return [
-                    'Query' => TestSchema::getQuery(),
-                    'Abc' => TestSchema::getTypeAbc(),
-                    'Xyz' => TestSchema::getTypeXyz(),
-                    'Zzz' => TestSchema::getTypeZzz(),
-                    'TestInterface' => TestSchema::getInterface(),
-                    'TestUnion' => TestSchema::getUnion(),
-                    'TestInput' => TestSchema::getInput(),
-                    'TestInnerInput' => TestSchema::getInnerInput(),
-                    'TestEnum' => TestSchema::getEnum(),
-                    'TestExplicitEnum' => TestSchema::getExplicitEnum(),
-                    'Int' => \Graphpinator\Type\Container\Container::Int(),
-                    'Float' => \Graphpinator\Type\Container\Container::Float(),
-                    'String' => \Graphpinator\Type\Container\Container::String(),
-                    'Boolean' => \Graphpinator\Type\Container\Container::Boolean(),
-                ];
-            }
-
-            public function getDirective(string $name) : \Graphpinator\Directive\Directive
-            {
-                return $this->getAllDirectives()[$name];
-            }
-
-            public function getAllDirectives() : array
-            {
-                return [
-                    'skip' => \Graphpinator\Type\Container\Container::directiveSkip(),
-                    'include' => \Graphpinator\Type\Container\Container::directiveInclude(),
-                    'testDirective' => TestSchema::getTestDirective(),
-                    'invalidDirective' => TestSchema::getInvalidDirective(),
-                ];
-            }
-        };
+        return new \Graphpinator\Type\Container\SimpleContainer([
+            'Query' => self::getQuery(),
+            'Abc' => self::getTypeAbc(),
+            'Xyz' => self::getTypeXyz(),
+            'Zzz' => self::getTypeZzz(),
+            'TestInterface' => self::getInterface(),
+            'TestUnion' => self::getUnion(),
+            'TestInput' => self::getInput(),
+            'TestInnerInput' => self::getInnerInput(),
+            'TestEnum' => self::getEnum(),
+            'TestExplicitEnum' => self::getExplicitEnum(),
+        ], [
+            'testDirective' => self::getTestDirective(),
+            'invalidDirective' => self::getInvalidDirective(),
+        ]);
     }
 
     public static function getQuery() : \Graphpinator\Type\Type

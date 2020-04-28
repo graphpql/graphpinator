@@ -143,23 +143,80 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           D @deprecated
         }
         
-        scalar Int
-        
-        scalar Float
-        
-        scalar String
-        
-        scalar Boolean
-        
-        directive @skip on FIELD | FRAGMENT_SPREAD | INLINE_FRAGMENT
-
-        directive @include on FIELD | FRAGMENT_SPREAD | INLINE_FRAGMENT
-        
         directive @testDirective repeatable on FIELD
         
         directive @invalidDirective repeatable on FIELD
         EOL;
 
         self::assertSame($expected, TestSchema::getSchema()->printSchema());
+    }
+
+    public function testPrintFullTestSchema() : void
+    {
+        $expected = <<<EOL
+        schema {
+          query: Query
+          mutation: Query
+          subscription: Query
+        }
+        
+        type Query {
+          field0: TestUnion
+          fieldInvalidType: TestUnion
+          fieldAbstract: TestUnion
+          fieldThrow: TestUnion
+        }
+        
+        type Abc {
+          field1(arg1: Int = 123, arg2: TestInput): TestInterface @deprecated
+        }
+        
+        type Xyz implements TestInterface {
+          name: String!
+        }
+        
+        type Zzz {
+          enumList: [TestEnum]
+        }
+        
+        interface TestInterface {
+          name: String!
+        }
+        
+        union TestUnion = Abc | Xyz
+        
+        input TestInput {
+          name: String!
+          inner: TestInnerInput
+          innerList: [TestInnerInput!]!
+          innerNotNull: TestInnerInput!
+        }
+        
+        input TestInnerInput {
+          name: String!
+          number: [Int!]!
+          bool: Boolean
+        }
+        
+        enum TestEnum {
+          A
+          B
+          C
+          D
+        }
+        
+        enum TestExplicitEnum {
+          A @deprecated
+          B @deprecated
+          C @deprecated
+          D @deprecated
+        }
+        
+        directive @testDirective repeatable on FIELD
+        
+        directive @invalidDirective repeatable on FIELD
+        EOL;
+
+        self::assertSame($expected, TestSchema::getFullSchema()->printSchema());
     }
 }

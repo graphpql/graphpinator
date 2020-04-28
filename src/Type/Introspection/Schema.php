@@ -37,7 +37,7 @@ final class Schema extends \Graphpinator\Type\Type
                 'types',
                 $this->container->introspectionType()->notNullList(),
                 static function (\Graphpinator\Type\Schema $schema) : array {
-                    return $schema->getContainer()->getAllTypes();
+                    return $schema->getContainer()->getTypes();
                 },
             ),
             new \Graphpinator\Field\ResolvableField(
@@ -65,7 +65,7 @@ final class Schema extends \Graphpinator\Type\Type
                 'directives',
                 $this->container->introspectionDirective()->notNullList(),
                 static function (\Graphpinator\Type\Schema $schema) : array {
-                    return $schema->getContainer()->getAllDirectives();
+                    return $schema->getContainer()->getDirectives();
                 },
             ),
         ]);

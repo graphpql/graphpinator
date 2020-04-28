@@ -101,7 +101,7 @@ final class Type extends \Graphpinator\Type\Type
                     if ($definition instanceof \Graphpinator\Type\InterfaceType) {
                         $subTypes = [];
 
-                        foreach ($this->container->getAllTypes() as $type) {
+                        foreach ($this->container->getTypes() as $type) {
                             if ($type instanceof \Graphpinator\Type\Type &&
                                 $type->isInstanceOf($definition)) {
                                 $subTypes[] = $type;

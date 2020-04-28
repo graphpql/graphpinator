@@ -85,11 +85,11 @@ final class Schema
 
         $entries = [$schemaDef];
 
-        foreach ($this->container->getAllTypes() as $type) {
+        foreach ($this->container->getTypes() as $type) {
             $entries[] = $type->printSchema();
         }
 
-        foreach ($this->container->getAllDirectives() as $directive) {
+        foreach ($this->container->getDirectives() as $directive) {
             $entries[] = $directive->printSchema();
         }
 

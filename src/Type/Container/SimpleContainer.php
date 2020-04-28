@@ -11,6 +11,8 @@ class SimpleContainer extends Container
 {
     protected array $types = [];
     protected array $directives = [];
+    protected array $builtInTypes = [];
+    protected array $builtInDirectives = [];
 
     /**
      * @param \Graphpinator\Type\Contract\NamedDefinition[] $types
@@ -25,24 +27,47 @@ class SimpleContainer extends Container
         foreach ($directives as $directive) {
             $this->directives[$directive->getName()] = $directive;
         }
+
+        $this->builtInTypes = [
+            'ID' => self::ID(),
+            'Int' => self::Int(),
+            'Float' => self::Float(),
+            'String' => self::String(),
+            'Boolean' => self::Boolean(),
+            '__Schema' => $this->introspectionSchema(),
+            '__Type' => $this->introspectionType(),
+            '__TypeKind' => $this->introspectionField(),
+            '__Field' => $this->introspectionField(),
+            '__EnumValue' => $this->introspectionEnumValue(),
+            '__InputValue' => $this->introspectionInputValue(),
+            '__Directive' => $this->introspectionDirective(),
+            '__DirectiveLocation' => $this->introspectionDirectiveLocation(),
+        ];
+
+        $this->builtInDirectives = [
+            'skip' => self::directiveSkip(),
+            'include' => self::directiveInclude(),
+        ];
     }
 
     public function getType(string $name) : \Graphpinator\Type\Contract\NamedDefinition
     {
-        return $this->types[$name];
+        return $this->builtInTypes[$name]
+            ?? $this->types[$name];
     }
 
-    public function getAllTypes() : array
+    public function getTypes() : array
     {
         return $this->types;
     }
 
     public function getDirective(string $name) : \Graphpinator\Directive\Directive
     {
-        return $this->directives[$name];
+        return $this->builtInDirectives[$name]
+            ?? $this->directives[$name];
     }
 
-    public function getAllDirectives() : array
+    public function getDirectives() : array
     {
         return $this->directives;
     }

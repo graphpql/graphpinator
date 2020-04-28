@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Graphpinator\Tests\Unit\Type\Scalar;
+namespace Graphpinator\Tests\Unit\Type;
 
 final class EnumTypeTest extends \PHPUnit\Framework\TestCase
 {
@@ -65,6 +65,13 @@ final class EnumTypeTest extends \PHPUnit\Framework\TestCase
         self::assertNull($enum->getItems()['B']->getDescription());
         self::assertFalse($enum->getItems()['B']->isDeprecated());
         self::assertNull($enum->getItems()['B']->getDeprecationReason());
+    }
+
+    public function testGetArray() : void
+    {
+        $items = $this->createTestEnum()->getItems()->getArray();
+
+        self::assertSame(['A', 'B'], $items);
     }
 
     protected function createTestEnum() : \Graphpinator\Type\EnumType
