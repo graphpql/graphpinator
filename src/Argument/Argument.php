@@ -45,7 +45,7 @@ final class Argument
         $schema = $this->getName() . ': ' . $this->type->printName();
 
         if ($this->defaultValue instanceof \Graphpinator\Resolver\Value\ValidatedValue) {
-            $schema .= ' = ' . $this->defaultValue->jsonSerialize();
+            $schema .= ' = ' . $this->defaultValue->printValue();
         }
 
         return $schema;
