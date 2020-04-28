@@ -17,6 +17,6 @@ final class NullValueTest extends \PHPUnit\Framework\TestCase
     {
         $this->expectException(\Exception::class);
 
-        \Graphpinator\Resolver\Value\ScalarValue::create(null, \Graphpinator\Type\Container\Container::Int()->notNull());
+        \Graphpinator\Resolver\Value\LeafValue::create(null, \Graphpinator\Type\Container\Container::Int()->notNull());
     }
 }

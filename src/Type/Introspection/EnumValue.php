@@ -16,7 +16,7 @@ final class EnumValue extends \Graphpinator\Type\Type
 
     protected function validateNonNullValue($rawValue) : bool
     {
-        return $rawValue instanceof \Graphpinator\Type\Scalar\EnumItem;
+        return $rawValue instanceof \Graphpinator\Type\Enum\EnumItem;
     }
 
     protected function getFieldDefinition(): \Graphpinator\Field\ResolvableFieldSet
@@ -25,28 +25,28 @@ final class EnumValue extends \Graphpinator\Type\Type
             new \Graphpinator\Field\ResolvableField(
                 'name',
                 \Graphpinator\Type\Container\Container::String()->notNull(),
-                static function (\Graphpinator\Type\Scalar\EnumItem $item) : string {
+                static function (\Graphpinator\Type\Enum\EnumItem $item) : string {
                     return $item->getName();
                 },
             ),
             new \Graphpinator\Field\ResolvableField(
                 'description',
                 \Graphpinator\Type\Container\Container::String(),
-                static function (\Graphpinator\Type\Scalar\EnumItem $item) : ?string {
+                static function (\Graphpinator\Type\Enum\EnumItem $item) : ?string {
                     return $item->getDescription();
                 },
             ),
             new \Graphpinator\Field\ResolvableField(
                 'isDeprecated',
                 \Graphpinator\Type\Container\Container::Boolean()->notNull(),
-                static function (\Graphpinator\Type\Scalar\EnumItem $item) : bool {
+                static function (\Graphpinator\Type\Enum\EnumItem $item) : bool {
                     return $item->isDeprecated();
                 },
             ),
             new \Graphpinator\Field\ResolvableField(
                 'deprecationReason',
                 \Graphpinator\Type\Container\Container::String(),
-                static function (\Graphpinator\Type\Scalar\EnumItem $item) : ?string {
+                static function (\Graphpinator\Type\Enum\EnumItem $item) : ?string {
                     return $item->getDeprecationReason();
                 },
             ),

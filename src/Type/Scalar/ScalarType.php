@@ -4,33 +4,15 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Type\Scalar;
 
-abstract class ScalarType extends \Graphpinator\Type\Contract\ConcreteDefinition implements
-    \Graphpinator\Type\Contract\Inputable,
-    \Graphpinator\Type\Contract\Resolvable
+abstract class ScalarType extends \Graphpinator\Type\Contract\LeafDefinition
 {
-    use \Graphpinator\Type\Contract\TResolvable;
-
-    public function resolve(?\Graphpinator\Normalizer\FieldSet $requestedFields, \Graphpinator\Resolver\FieldResult $parentResult) : \Graphpinator\Resolver\Value\ValidatedValue
-    {
-        if ($requestedFields instanceof \Graphpinator\Normalizer\FieldSet) {
-            throw new \Graphpinator\Exception\Resolver\SelectionOnLeaf();
-        }
-
-        return $parentResult->getResult();
-    }
-
-    public function applyDefaults($value)
-    {
-        return $value;
-    }
-
-    public function createValue($rawValue) : \Graphpinator\Resolver\Value\ValidatedValue
-    {
-        return \Graphpinator\Resolver\Value\ScalarValue::create($rawValue, $this);
-    }
-
-    public function getTypeKind() : string
+    final public function getTypeKind() : string
     {
         return \Graphpinator\Type\Introspection\TypeKind::SCALAR;
+    }
+
+    final public function printSchema() : string
+    {
+        return 'scalar ' . $this->getName();
     }
 }

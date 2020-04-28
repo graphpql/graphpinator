@@ -238,9 +238,9 @@ final class TestSchema
         };
     }
 
-    public static function getEnum() : \Graphpinator\Type\Scalar\EnumType
+    public static function getEnum() : \Graphpinator\Type\EnumType
     {
-        return new class extends \Graphpinator\Type\Scalar\EnumType
+        return new class extends \Graphpinator\Type\EnumType
         {
             protected const NAME = 'TestEnum';
 
@@ -256,19 +256,19 @@ final class TestSchema
         };
     }
 
-    public static function getExplicitEnum() : \Graphpinator\Type\Scalar\EnumType
+    public static function getExplicitEnum() : \Graphpinator\Type\EnumType
     {
-        return new class extends \Graphpinator\Type\Scalar\EnumType
+        return new class extends \Graphpinator\Type\EnumType
         {
             protected const NAME = 'TestExplicitEnum';
 
             public function __construct()
             {
-                parent::__construct(new \Graphpinator\Type\Scalar\EnumItemSet([
-                    (new \Graphpinator\Type\Scalar\EnumItem('A'))->setDeprecated(true),
-                    (new \Graphpinator\Type\Scalar\EnumItem('B'))->setDeprecated(true),
-                    (new \Graphpinator\Type\Scalar\EnumItem('C'))->setDeprecated(true),
-                    (new \Graphpinator\Type\Scalar\EnumItem('D'))->setDeprecated(true),
+                parent::__construct(new \Graphpinator\Type\Enum\EnumItemSet([
+                    (new \Graphpinator\Type\Enum\EnumItem('A'))->setDeprecated(true),
+                    (new \Graphpinator\Type\Enum\EnumItem('B'))->setDeprecated(true),
+                    (new \Graphpinator\Type\Enum\EnumItem('C'))->setDeprecated(true),
+                    (new \Graphpinator\Type\Enum\EnumItem('D'))->setDeprecated(true),
                 ]));
             }
         };

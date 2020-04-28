@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Type\Introspection;
 
-final class DirectiveLocation extends \Graphpinator\Type\Scalar\EnumType
+final class DirectiveLocation extends \Graphpinator\Type\EnumType
 {
     protected const NAME = '__DirectiveLocation';
     protected const DESCRIPTION = 'Built-in introspection enum.';

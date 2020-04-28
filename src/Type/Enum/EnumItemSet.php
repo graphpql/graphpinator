@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Type\Scalar;
+namespace Graphpinator\Type\Enum;
 
 final class EnumItemSet extends \Infinityloop\Utils\ObjectSet
 {

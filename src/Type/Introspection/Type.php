@@ -117,8 +117,8 @@ final class Type extends \Graphpinator\Type\Type
             new \Graphpinator\Field\ResolvableField(
                 'enumValues',
                 $this->container->introspectionEnumValue()->notNull()->list(),
-                static function (Definition $definition, \Graphpinator\Resolver\ArgumentValueSet $arguments) : ?\Graphpinator\Type\Scalar\EnumItemSet {
-                    if (!$definition instanceof \Graphpinator\Type\Scalar\EnumType) {
+                static function (Definition $definition, \Graphpinator\Resolver\ArgumentValueSet $arguments) : ?\Graphpinator\Type\Enum\EnumItemSet {
+                    if (!$definition instanceof \Graphpinator\Type\EnumType) {
                         return null;
                     }
 
@@ -136,7 +136,7 @@ final class Type extends \Graphpinator\Type\Type
                         $filtered[] = $enumItem;
                     }
 
-                    return new \Graphpinator\Type\Scalar\EnumItemSet($filtered);
+                    return new \Graphpinator\Type\Enum\EnumItemSet($filtered);
                 },
                 new \Graphpinator\Argument\ArgumentSet([
                     new \Graphpinator\Argument\Argument('includeDeprecated', \Graphpinator\Type\Container\Container::Boolean(), false),

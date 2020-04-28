@@ -67,9 +67,9 @@ final class EnumTypeTest extends \PHPUnit\Framework\TestCase
         self::assertNull($enum->getItems()['B']->getDeprecationReason());
     }
 
-    protected function createTestEnum() : \Graphpinator\Type\Scalar\EnumType
+    protected function createTestEnum() : \Graphpinator\Type\EnumType
     {
-        return new class extends \Graphpinator\Type\Scalar\EnumType {
+        return new class extends \Graphpinator\Type\EnumType {
             protected const NAME = 'abc';
 
             public const ENUMA = 'a';

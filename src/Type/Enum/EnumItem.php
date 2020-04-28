@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Type\Scalar;
+namespace Graphpinator\Type\Enum;
 
 final class EnumItem
 {
@@ -20,5 +20,10 @@ final class EnumItem
     public function getName() : string
     {
         return $this->name;
+    }
+
+    public function printSchema() : string
+    {
+        return $this->getName() . $this->printDeprecated();
     }
 }

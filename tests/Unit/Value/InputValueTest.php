@@ -9,7 +9,7 @@ final class InputValueTest extends \PHPUnit\Framework\TestCase
     public function testApplyDefaults() : void
     {
         $fields = [];
-        $defaults = ['field' => \Graphpinator\Resolver\Value\ScalarValue::create('random', \Graphpinator\Type\Container\Container::String())];
+        $defaults = ['field' => \Graphpinator\Resolver\Value\LeafValue::create('random', \Graphpinator\Type\Container\Container::String())];
 
         $type = $this->createMock(\Graphpinator\Type\InputType::class);
         $type->expects($this->exactly(2))->method('getArguments')->willReturn(
