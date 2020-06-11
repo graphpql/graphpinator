@@ -17,7 +17,7 @@ final class FieldResult
         $this->result = $value;
     }
 
-    public static function fromRaw(\Graphpinator\Type\Contract\Resolvable $type, $rawValue) : self
+    public static function fromRaw(\Graphpinator\Type\Contract\Definition $type, $rawValue) : self
     {
         return new self($type, $type->createValue($rawValue));
     }
