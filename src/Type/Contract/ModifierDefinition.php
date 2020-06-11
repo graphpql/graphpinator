@@ -35,11 +35,6 @@ abstract class ModifierDefinition implements
         return $this->innerType->isOutputable();
     }
 
-    public function isInstantiable() : bool
-    {
-        return $this->innerType->isInstantiable();
-    }
-
     public function isResolvable() : bool
     {
         return $this->innerType->isResolvable();
