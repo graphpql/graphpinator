@@ -13,14 +13,16 @@ final class ListType extends \Graphpinator\Type\Contract\ModifierDefinition
 
     public function resolve(?\Graphpinator\Normalizer\FieldSet $requestedFields, \Graphpinator\Resolver\FieldResult $parentResult) : array
     {
-        if (!$parentResult->getResult() instanceof \Graphpinator\Resolver\Value\ListValue) {
+        $listValue = $parentResult->getResult();
+
+        if (!$listValue instanceof \Graphpinator\Resolver\Value\ListValue) {
             throw new \Exception('Cannot create list');
         }
 
         $return = [];
 
-        foreach ($parentResult->getResult() as $val) {
-            $return[] = $this->innerType->resolve($requestedFields, \Graphpinator\Resolver\FieldResult::fromValidated($val));
+        foreach ($listValue as $val) {
+            $return[] = $val->getType()->resolve($requestedFields, \Graphpinator\Resolver\FieldResult::fromValidated($val));
         }
 
         return $return;
