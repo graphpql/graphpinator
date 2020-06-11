@@ -48,11 +48,6 @@ abstract class NamedDefinition implements \Graphpinator\Type\Contract\Definition
         return $this instanceof Outputable;
     }
 
-    public function isInstantiable() : bool
-    {
-        return $this instanceof Instantiable;
-    }
-
     public function isResolvable() : bool
     {
         return $this instanceof Resolvable;
