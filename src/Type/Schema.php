@@ -84,12 +84,16 @@ final class Schema
         EOL;
 
         $entries = [$schemaDef];
+        $types = $this->container->getTypes();
+        $directives = $this->container->getDirectives();
+        \ksort($types);
+        \ksort($directives);
 
-        foreach ($this->container->getTypes() as $type) {
+        foreach ($types as $type) {
             $entries[] = $type->printSchema();
         }
 
-        foreach ($this->container->getDirectives() as $directive) {
+        foreach ($directives as $directive) {
             $entries[] = $directive->printSchema();
         }
 
