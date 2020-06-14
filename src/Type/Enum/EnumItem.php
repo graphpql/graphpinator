@@ -12,9 +12,10 @@ final class EnumItem
 
     private string $name;
 
-    public function __construct(string $name)
+    public function __construct(string $name, ?string $description = null)
     {
         $this->name = $name;
+        $this->description = $description;
     }
 
     public function getName() : string
