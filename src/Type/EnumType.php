@@ -20,11 +20,15 @@ abstract class EnumType extends \Graphpinator\Type\Contract\LeafDefinition
         foreach ((new \ReflectionClass(static::class))->getReflectionConstants() as $constant) {
             $value = $constant->getValue();
 
-            if (!\is_string($value) || !$constant->isPublic()) {
+            if (!$constant->isPublic()) {
                 continue;
             }
 
-            $values[] = new Enum\EnumItem(\strtoupper($value));
+            if (\is_string($value)) {
+                $values[] = new Enum\EnumItem(\strtoupper($value));
+            } elseif (\is_array($value) && \count($value) === 2) {
+                $values[] = new Enum\EnumItem(\strtoupper($value[0]), $value[1]);
+            }
         }
 
         return new Enum\EnumItemSet($values);
