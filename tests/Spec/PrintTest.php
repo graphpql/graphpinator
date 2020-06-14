@@ -91,42 +91,15 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           subscription: null
         }
         
+        type Abc {
+          field1(arg1: Int = 123, arg2: TestInput): TestInterface @deprecated
+        }
+        
         type Query {
           field0: TestUnion
           fieldInvalidType: TestUnion
           fieldAbstract: TestUnion
           fieldThrow: TestUnion
-        }
-        
-        type Abc {
-          field1(arg1: Int = 123, arg2: TestInput): TestInterface @deprecated
-        }
-        
-        type Xyz implements TestInterface {
-          name: String!
-        }
-        
-        type Zzz {
-          enumList: [TestEnum]
-        }
-        
-        interface TestInterface {
-          name: String!
-        }
-        
-        union TestUnion = Abc | Xyz
-        
-        input TestInput {
-          name: String!
-          inner: TestInnerInput
-          innerList: [TestInnerInput!]!
-          innerNotNull: TestInnerInput!
-        }
-        
-        input TestInnerInput {
-          name: String!
-          number: [Int!]!
-          bool: Boolean
         }
         
         enum TestEnum {
@@ -143,9 +116,36 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           D @deprecated
         }
         
-        directive @testDirective repeatable on FIELD
+        input TestInnerInput {
+          name: String!
+          number: [Int!]!
+          bool: Boolean
+        }
+        
+        input TestInput {
+          name: String!
+          inner: TestInnerInput
+          innerList: [TestInnerInput!]!
+          innerNotNull: TestInnerInput!
+        }
+        
+        interface TestInterface {
+          name: String!
+        }
+        
+        union TestUnion = Abc | Xyz
+        
+        type Xyz implements TestInterface {
+          name: String!
+        }
+        
+        type Zzz {
+          enumList: [TestEnum]
+        }
         
         directive @invalidDirective repeatable on FIELD
+        
+        directive @testDirective repeatable on FIELD
         EOL;
 
         self::assertSame($expected, TestSchema::getSchema()->printSchema());
@@ -159,6 +159,10 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           mutation: Query
           subscription: Query
         }
+
+        type Abc {
+          field1(arg1: Int = 123, arg2: TestInput): TestInterface @deprecated
+        }
         
         type Query {
           field0: TestUnion
@@ -166,38 +170,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldAbstract: TestUnion
           fieldThrow: TestUnion
         }
-        
-        type Abc {
-          field1(arg1: Int = 123, arg2: TestInput): TestInterface @deprecated
-        }
-        
-        type Xyz implements TestInterface {
-          name: String!
-        }
-        
-        type Zzz {
-          enumList: [TestEnum]
-        }
-        
-        interface TestInterface {
-          name: String!
-        }
-        
-        union TestUnion = Abc | Xyz
-        
-        input TestInput {
-          name: String!
-          inner: TestInnerInput
-          innerList: [TestInnerInput!]!
-          innerNotNull: TestInnerInput!
-        }
-        
-        input TestInnerInput {
-          name: String!
-          number: [Int!]!
-          bool: Boolean
-        }
-        
+
         enum TestEnum {
           A
           B
@@ -212,9 +185,36 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           D @deprecated
         }
         
-        directive @testDirective repeatable on FIELD
+        input TestInnerInput {
+          name: String!
+          number: [Int!]!
+          bool: Boolean
+        }
+        
+        input TestInput {
+          name: String!
+          inner: TestInnerInput
+          innerList: [TestInnerInput!]!
+          innerNotNull: TestInnerInput!
+        }
+        
+        interface TestInterface {
+          name: String!
+        }
+        
+        union TestUnion = Abc | Xyz
+        
+        type Xyz implements TestInterface {
+          name: String!
+        }
+        
+        type Zzz {
+          enumList: [TestEnum]
+        }
         
         directive @invalidDirective repeatable on FIELD
+        
+        directive @testDirective repeatable on FIELD
         EOL;
 
         self::assertSame($expected, TestSchema::getFullSchema()->printSchema());
