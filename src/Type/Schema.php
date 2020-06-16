@@ -63,8 +63,10 @@ final class Schema
         return $this->subscription;
     }
 
-    public function printSchema() : string
+    public function printSchema(?\Graphpinator\Utils\Sort\PrintSorter $sorter = null) : string
     {
+        $sorter = $sorter ?? new \Graphpinator\Utils\Sort\AlphabeticalSorter();
+
         $query = $this->query instanceof Type
             ? $this->query->getName()
             : 'null';
@@ -84,10 +86,8 @@ final class Schema
         EOL;
 
         $entries = [$schemaDef];
-        $types = $this->container->getTypes();
-        $directives = $this->container->getDirectives();
-        \ksort($types);
-        \ksort($directives);
+        $types = $sorter->sortTypes($this->container->getTypes());
+        $directives = $sorter->sortDirectives($this->container->getDirectives());
 
         foreach ($types as $type) {
             $entries[] = $type->printSchema();
