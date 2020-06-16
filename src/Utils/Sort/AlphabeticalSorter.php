@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Utils\Sort;
 
-class AlphabeticalSorter implements PrintSorter
+final class AlphabeticalSorter implements PrintSorter
 {
     public function sortTypes(array $types) : array
     {
