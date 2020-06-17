@@ -8,7 +8,7 @@ class TypeKindSorter implements PrintSorter
 {
     public function sortTypes(array $types) : array
     {
-        $interface = $union = $input = $enum = $scalar = $type = [];
+        $interface = $union = $input = $enum = $scalar = $object = [];
 
         foreach ($types as $name => $type) {
             switch ($type->getTypeKind()) {
@@ -28,7 +28,7 @@ class TypeKindSorter implements PrintSorter
                     $scalar[$name] = $type;
                     break;
                 case \Graphpinator\Type\Introspection\TypeKind::OBJECT:
-                    $type[$name] = $type;
+                    $object[$name] = $type;
                     break;
             }
         }
@@ -38,9 +38,9 @@ class TypeKindSorter implements PrintSorter
         \ksort($input);
         \ksort($enum);
         \ksort($scalar);
-        \ksort($type);
+        \ksort($object);
 
-        return \array_merge($interface, $type, $union, $input, $scalar, $enum);
+        return \array_merge($interface, $object, $union, $input, $scalar, $enum);
     }
 
     public function sortDirectives(array $directives) : array
