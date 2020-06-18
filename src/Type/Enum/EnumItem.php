@@ -25,6 +25,6 @@ final class EnumItem
 
     public function printSchema() : string
     {
-        return $this->getName() . $this->printDeprecated();
+        return $this->printDescription(1) . $this->getName() . $this->printDeprecated();
     }
 }

@@ -46,10 +46,22 @@ abstract class EnumType extends \Graphpinator\Type\Contract\LeafDefinition
 
     public function printSchema() : string
     {
-        $schema = 'enum ' . $this->getName() . ' {' . \PHP_EOL;
+        $schema = $this->printDescription() . 'enum ' . $this->getName() . ' {' . \PHP_EOL;
+
+        $previousHasDescription = false;
+        $isFirst = true;
 
         foreach ($this->getItems() as $enumItem) {
-            $schema .= '  ' . $enumItem->printSchema() . \PHP_EOL;
+            $currentHasDescription = $enumItem->getDescription() !== null;
+
+            if (!$isFirst && ($previousHasDescription || $currentHasDescription)) {
+                $schema .= \PHP_EOL;
+            }
+
+            $schema .= $enumItem->printSchema() . \PHP_EOL;
+
+            $previousHasDescription = $currentHasDescription;
+            $isFirst = false;
         }
 
         return $schema . '}';
