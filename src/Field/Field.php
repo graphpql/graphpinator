@@ -39,7 +39,21 @@ class Field
 
     public function printSchema() : string
     {
-        return $this->getName() . $this->printArguments() . ': ' . $this->getType()->printName() . $this->printDeprecated();
+        return $this->printDescription() . $this->getName() . $this->printArguments() . ': ' . $this->getType()->printName() . $this->printDeprecated();
+    }
+
+    public function printDescription() : string
+    {
+        if ($this->getDescription() !== null) {
+            if (\mb_strpos($this->getDescription(), \PHP_EOL) !== false) {
+                $description = \str_replace(\PHP_EOL, \PHP_EOL . '  ', $this->getDescription());
+                return '"""' . \PHP_EOL . '  ' . $description . \PHP_EOL . '  ' . '"""' . \PHP_EOL . '  ';
+            }
+
+            return '"' . $this->getDescription() . '"' . \PHP_EOL . '  ';
+        }
+
+        return '';
     }
 
     private function printArguments() : string

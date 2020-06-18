@@ -85,10 +85,21 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
 
     public function printSchema() : string
     {
-        $schema = 'type ' . $this->getName() . $this->printImplements() . ' {' . \PHP_EOL;
+        $schema = $this->printDescription();
+        $schema .= 'type ' . $this->getName() . $this->printImplements() . ' {' . \PHP_EOL;
 
+        $previousHasDescription = false;
+        $isFirst = true;
         foreach ($this->getFields() as $field) {
+            $currentHasDescription = $field->getDescription() !== null;
+            if(!$isFirst && ($previousHasDescription || $currentHasDescription)) {
+                $schema .= \PHP_EOL;
+            }
+
             $schema .= '  ' . $field->printSchema() . \PHP_EOL;
+
+            $previousHasDescription = $currentHasDescription;
+            $isFirst = false;
         }
 
         return $schema . '}';
@@ -137,5 +148,14 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
                 ? $innerResult->getResult()
                 : $innerResult->getType()->resolve($field->getFields(), $innerResult);
         }
+    }
+
+    public function printDescription() : string
+    {
+        if ($this->getDescription() !== null) {
+            return '"""' . \PHP_EOL . $this->getDescription() . \PHP_EOL . '"""' . \PHP_EOL;
+        }
+
+        return '';
     }
 }
