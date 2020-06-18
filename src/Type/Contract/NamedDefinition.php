@@ -74,4 +74,13 @@ abstract class NamedDefinition implements \Graphpinator\Type\Contract\Definition
     {
         return true;
     }
+
+    protected function printDescription() : string
+    {
+        if ($this->getDescription() === null) {
+            return '';
+        }
+
+        return '"""' . \PHP_EOL . $this->getDescription() . \PHP_EOL . '"""' . \PHP_EOL;
+    }
 }
