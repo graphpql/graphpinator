@@ -77,7 +77,7 @@ final class Schema
             ? $this->subscription->getName()
             : 'null';
 
-        $schemaDef = <<<EOL
+        $schemaDef = $this->printDescription() . <<<EOL
         schema {
           query: {$query}
           mutation: {$mutation}
