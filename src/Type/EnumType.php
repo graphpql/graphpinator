@@ -6,6 +6,8 @@ namespace Graphpinator\Type;
 
 abstract class EnumType extends \Graphpinator\Type\Contract\LeafDefinition
 {
+    use \Graphpinator\Printable\TRepeatablePrint;
+
     protected Enum\EnumItemSet $options;
 
     public function __construct(Enum\EnumItemSet $options)
@@ -46,25 +48,10 @@ abstract class EnumType extends \Graphpinator\Type\Contract\LeafDefinition
 
     public function printSchema() : string
     {
-        $schema = $this->printDescription() . 'enum ' . $this->getName() . ' {' . \PHP_EOL;
-
-        $previousHasDescription = false;
-        $isFirst = true;
-
-        foreach ($this->getItems() as $enumItem) {
-            $currentHasDescription = $enumItem->getDescription() !== null;
-
-            if (!$isFirst && ($previousHasDescription || $currentHasDescription)) {
-                $schema .= \PHP_EOL;
-            }
-
-            $schema .= $enumItem->printSchema() . \PHP_EOL;
-
-            $previousHasDescription = $currentHasDescription;
-            $isFirst = false;
-        }
-
-        return $schema . '}';
+        return $this->printDescription()
+            . 'enum ' . $this->getName() . ' {' . \PHP_EOL
+            . $this->printItems($this->getItems())
+            . '}';
     }
 
     protected function validateNonNullValue($rawValue) : bool

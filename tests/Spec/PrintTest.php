@@ -18,6 +18,9 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             [
                 $container->introspectionTypeKind(),
                 <<<EOL
+                """
+                Built-in introspection enum.
+                """
                 enum __TypeKind {
                   SCALAR
                   OBJECT
@@ -33,6 +36,9 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             [
                 $container->introspectionSchema(),
                 <<<EOL
+                """
+                Built-in introspection type.
+                """
                 type __Schema {
                   description: String
                   types: [__Type!]!
@@ -46,14 +52,21 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             [
                 $container->introspectionType(),
                 <<<EOL
+                """
+                Built-in introspection type.
+                """
                 type __Type {
                   kind: __TypeKind!
                   name: String
                   description: String
-                  fields(includeDeprecated: Boolean = false): [__Field!]
+                  fields(
+                    includeDeprecated: Boolean = false
+                  ): [__Field!]
                   interfaces: [__Type!]
                   possibleTypes: [__Type!]
-                  enumValues(includeDeprecated: Boolean = false): [__EnumValue!]
+                  enumValues(
+                    includeDeprecated: Boolean = false
+                  ): [__EnumValue!]
                   inputFields: [__InputValue!]
                   ofType: __Type
                 }
@@ -62,6 +75,9 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             [
                 $container->introspectionDirective(),
                 <<<EOL
+                """
+                Built-in introspection type.
+                """
                 type __Directive {
                   name: String!
                   description: String
@@ -91,8 +107,14 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           subscription: null
         }
         
+        """
+        Test Abc description
+        """
         type Abc {
-          field1(arg1: Int = 123, arg2: TestInput): TestInterface @deprecated
+          field1(
+            arg1: Int = 123
+            arg2: TestInput
+          ): TestInterface @deprecated
         }
         
         type Query {
@@ -160,8 +182,14 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           subscription: Query
         }
 
+        """
+        Test Abc description
+        """
         type Abc {
-          field1(arg1: Int = 123, arg2: TestInput): TestInterface @deprecated
+          field1(
+            arg1: Int = 123
+            arg2: TestInput
+          ): TestInterface @deprecated
         }
         
         type Query {
@@ -218,5 +246,155 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         EOL;
 
         self::assertSame($expected, TestSchema::getFullSchema()->printSchema());
+    }
+
+    public function testPrintTypeKindSorterTestSchema() : void
+    {
+        $expected = <<<EOL
+        schema {
+          query: Query
+          mutation: null
+          subscription: null
+        }
+        
+        interface TestInterface {
+          name: String!
+        }
+        
+        """
+        Test Abc description
+        """
+        type Abc {
+          field1(
+            arg1: Int = 123
+            arg2: TestInput
+          ): TestInterface @deprecated
+        }
+        
+        type Query {
+          field0: TestUnion
+          fieldInvalidType: TestUnion
+          fieldAbstract: TestUnion
+          fieldThrow: TestUnion
+        }
+        
+        type Xyz implements TestInterface {
+          name: String!
+        }
+        
+        type Zzz {
+          enumList: [TestEnum]
+        }
+        
+        union TestUnion = Abc | Xyz
+        
+        input TestInnerInput {
+          name: String!
+          number: [Int!]!
+          bool: Boolean
+        }
+        
+        input TestInput {
+          name: String!
+          inner: TestInnerInput
+          innerList: [TestInnerInput!]!
+          innerNotNull: TestInnerInput!
+        }
+        
+        enum TestEnum {
+          A
+          B
+          C
+          D
+        }
+        
+        enum TestExplicitEnum {
+          A @deprecated
+          B @deprecated
+          C @deprecated
+          D @deprecated
+        }
+        
+        directive @invalidDirective repeatable on FIELD
+        
+        directive @testDirective repeatable on FIELD
+        EOL;
+
+        self::assertSame($expected, \Graphpinator\Tests\Spec\TestSchema::getSchema()->printSchema(new \Graphpinator\Utils\Sort\TypeKindSorter()));
+    }
+
+    public function testPrintTypeKindSorterFullTestSchema() : void
+    {
+        $expected = <<<EOL
+        schema {
+          query: Query
+          mutation: Query
+          subscription: Query
+        }
+        
+        interface TestInterface {
+          name: String!
+        }
+        
+        """
+        Test Abc description
+        """
+        type Abc {
+          field1(
+            arg1: Int = 123
+            arg2: TestInput
+          ): TestInterface @deprecated
+        }
+        
+        type Query {
+          field0: TestUnion
+          fieldInvalidType: TestUnion
+          fieldAbstract: TestUnion
+          fieldThrow: TestUnion
+        }
+        
+        type Xyz implements TestInterface {
+          name: String!
+        }
+        
+        type Zzz {
+          enumList: [TestEnum]
+        }
+        
+        union TestUnion = Abc | Xyz
+        
+        input TestInnerInput {
+          name: String!
+          number: [Int!]!
+          bool: Boolean
+        }
+        
+        input TestInput {
+          name: String!
+          inner: TestInnerInput
+          innerList: [TestInnerInput!]!
+          innerNotNull: TestInnerInput!
+        }
+        
+        enum TestEnum {
+          A
+          B
+          C
+          D
+        }
+        
+        enum TestExplicitEnum {
+          A @deprecated
+          B @deprecated
+          C @deprecated
+          D @deprecated
+        }
+        
+        directive @invalidDirective repeatable on FIELD
+        
+        directive @testDirective repeatable on FIELD
+        EOL;
+
+        self::assertSame($expected, \Graphpinator\Tests\Spec\TestSchema::getFullSchema()->printSchema(new \Graphpinator\Utils\Sort\TypeKindSorter()));
     }
 }

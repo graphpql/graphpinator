@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Argument;
 
-final class ArgumentSet extends \Infinityloop\Utils\ObjectSet
+final class ArgumentSet extends \Infinityloop\Utils\ObjectSet implements \Graphpinator\Printable\PrintableSet
 {
     protected const INNER_CLASS = Argument::class;
 

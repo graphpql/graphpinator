@@ -9,6 +9,7 @@ abstract class InterfaceType extends \Graphpinator\Type\Contract\AbstractDefinit
     \Graphpinator\Type\Contract\InterfaceImplementor
 {
     use \Graphpinator\Type\Contract\TInterfaceImplementor;
+    use \Graphpinator\Printable\TRepeatablePrint;
 
     public function __construct(?\Graphpinator\Utils\InterfaceSet $implements = null)
     {
@@ -54,25 +55,10 @@ abstract class InterfaceType extends \Graphpinator\Type\Contract\AbstractDefinit
 
     public function printSchema() : string
     {
-        $schema = $this->printDescription() . 'interface ' . $this->getName() . $this->printImplements() . ' {' . \PHP_EOL;
-
-        $previousHasDescription = false;
-        $isFirst = true;
-
-        foreach ($this->getFields() as $field) {
-            $currentHasDescription = $field->getDescription() !== null;
-
-            if (!$isFirst && ($previousHasDescription || $currentHasDescription)) {
-                $schema .= \PHP_EOL;
-            }
-
-            $schema .= $field->printSchema() . \PHP_EOL;
-
-            $previousHasDescription = $currentHasDescription;
-            $isFirst = false;
-        }
-
-        return $schema . '}';
+        return $this->printDescription()
+            . 'interface ' . $this->getName() . $this->printImplements() . ' {' . \PHP_EOL
+            . $this->printItems($this->getFields())
+            . '}';
     }
 
     abstract protected function getFieldDefinition() : \Graphpinator\Field\FieldSet;

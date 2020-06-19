@@ -23,6 +23,11 @@ trait TOptionalDescription
         return $this;
     }
 
+    public function hasDescription() : bool
+    {
+        return $this->getDescription() !== null;
+    }
+
     private function printDescription(int $indentLevel = 0) : string
     {
         $indentation = \str_repeat('  ', $indentLevel);
