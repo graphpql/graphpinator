@@ -18,6 +18,9 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             [
                 $container->introspectionTypeKind(),
                 <<<EOL
+                """
+                Built-in introspection enum.
+                """
                 enum __TypeKind {
                   SCALAR
                   OBJECT
@@ -33,6 +36,9 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             [
                 $container->introspectionSchema(),
                 <<<EOL
+                """
+                Built-in introspection type.
+                """
                 type __Schema {
                   description: String
                   types: [__Type!]!
@@ -46,14 +52,21 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             [
                 $container->introspectionType(),
                 <<<EOL
+                """
+                Built-in introspection type.
+                """
                 type __Type {
                   kind: __TypeKind!
                   name: String
                   description: String
-                  fields(includeDeprecated: Boolean = false): [__Field!]
+                  fields(
+                    includeDeprecated: Boolean = false
+                  ): [__Field!]
                   interfaces: [__Type!]
                   possibleTypes: [__Type!]
-                  enumValues(includeDeprecated: Boolean = false): [__EnumValue!]
+                  enumValues(
+                    includeDeprecated: Boolean = false
+                  ): [__EnumValue!]
                   inputFields: [__InputValue!]
                   ofType: __Type
                 }
@@ -62,6 +75,9 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             [
                 $container->introspectionDirective(),
                 <<<EOL
+                """
+                Built-in introspection type.
+                """
                 type __Directive {
                   name: String!
                   description: String
@@ -82,7 +98,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         self::assertSame($print, $type->printSchema());
     }
 
-    public function testPrintTestSchema() : void
+    public function testPrintSchema() : void
     {
         $expected = <<<EOL
         schema {
@@ -91,8 +107,43 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           subscription: null
         }
         
+        """
+        Test Abc description
+        """
         type Abc {
-          field1(arg1: Int = 123, arg2: TestInput): TestInterface @deprecated
+          field1(
+            arg1: Int = 123
+            arg2: TestInput
+          ): TestInterface @deprecated
+        }
+        
+        """
+        ETestEnum description
+        """
+        enum ETestEnum {
+          "single line description"
+          A
+        
+          "single line description"
+          B
+        
+          "single line description"
+          C
+        
+          "single line description"
+          D
+        }
+        
+        interface ITestInterface {
+          name: String!
+        }
+        
+        """
+        ITestInterface2 Description
+        """
+        interface ITestInterface2 {
+          "single line description"
+          name: String!
         }
         
         type Query {
@@ -104,36 +155,77 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         
         enum TestEnum {
           A
+        
+          "single line description"
           B
+        
           C
+        
+          """
+          multi line
+          description
+          """
           D
         }
         
         enum TestExplicitEnum {
-          A @deprecated
+          "single line description"
+          A
+        
           B @deprecated
-          C @deprecated
+        
+          """
+          multi line
+          description
+          """
+          C
+        
+          "single line description 2"
           D @deprecated
         }
         
         input TestInnerInput {
           name: String!
+        
+          "single line description"
           number: [Int!]!
+        
+          """
+          multi line
+          description
+          """
           bool: Boolean
         }
         
         input TestInput {
           name: String!
+        
+          """
+          multi line
+          description
+          """
           inner: TestInnerInput
+        
+          """
+          multi line
+          description
+          """
           innerList: [TestInnerInput!]!
+        
+          "single line description"
           innerNotNull: TestInnerInput!
         }
         
+        """
+        TestInterface Description
+        """
         interface TestInterface {
           name: String!
         }
         
         union TestUnion = Abc | Xyz
+        
+        union UTestUnion = Abc | Xyz
         
         type Xyz implements TestInterface {
           name: String!
@@ -148,10 +240,10 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         directive @testDirective repeatable on FIELD
         EOL;
 
-        self::assertSame($expected, TestSchema::getSchema()->printSchema());
+        self::assertSame($expected, PrintSchema::getSchema()->printSchema());
     }
 
-    public function testPrintFullTestSchema() : void
+    public function testPrintFullSchema() : void
     {
         $expected = <<<EOL
         schema {
@@ -160,8 +252,43 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           subscription: Query
         }
 
+        """
+        Test Abc description
+        """
         type Abc {
-          field1(arg1: Int = 123, arg2: TestInput): TestInterface @deprecated
+          field1(
+            arg1: Int = 123
+            arg2: TestInput
+          ): TestInterface @deprecated
+        }
+        
+        """
+        ETestEnum description
+        """
+        enum ETestEnum {
+          "single line description"
+          A
+        
+          "single line description"
+          B
+        
+          "single line description"
+          C
+        
+          "single line description"
+          D
+        }
+        
+        interface ITestInterface {
+          name: String!
+        }
+        
+        """
+        ITestInterface2 Description
+        """
+        interface ITestInterface2 {
+          "single line description"
+          name: String!
         }
         
         type Query {
@@ -173,36 +300,77 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
 
         enum TestEnum {
           A
+        
+          "single line description"
           B
+        
           C
+        
+          """
+          multi line
+          description
+          """
           D
         }
         
         enum TestExplicitEnum {
-          A @deprecated
+          "single line description"
+          A
+        
           B @deprecated
-          C @deprecated
+        
+          """
+          multi line
+          description
+          """
+          C
+        
+          "single line description 2"
           D @deprecated
         }
         
         input TestInnerInput {
           name: String!
+        
+          "single line description"
           number: [Int!]!
+        
+          """
+          multi line
+          description
+          """
           bool: Boolean
         }
         
         input TestInput {
           name: String!
+        
+          """
+          multi line
+          description
+          """
           inner: TestInnerInput
+        
+          """
+          multi line
+          description
+          """
           innerList: [TestInnerInput!]!
+        
+          "single line description"
           innerNotNull: TestInnerInput!
         }
         
+        """
+        TestInterface Description
+        """
         interface TestInterface {
           name: String!
         }
         
         union TestUnion = Abc | Xyz
+        
+        union UTestUnion = Abc | Xyz
         
         type Xyz implements TestInterface {
           name: String!
@@ -217,6 +385,296 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         directive @testDirective repeatable on FIELD
         EOL;
 
-        self::assertSame($expected, TestSchema::getFullSchema()->printSchema());
+        self::assertSame($expected, PrintSchema::getFullSchema()->printSchema());
+    }
+
+    public function testPrintTypeKindSorterSchema() : void
+    {
+        $expected = <<<EOL
+        schema {
+          query: Query
+          mutation: null
+          subscription: null
+        }
+        
+        interface ITestInterface {
+          name: String!
+        }
+        
+        """
+        ITestInterface2 Description
+        """
+        interface ITestInterface2 {
+          "single line description"
+          name: String!
+        }
+        
+        """
+        TestInterface Description
+        """
+        interface TestInterface {
+          name: String!
+        }
+        
+        """
+        Test Abc description
+        """
+        type Abc {
+          field1(
+            arg1: Int = 123
+            arg2: TestInput
+          ): TestInterface @deprecated
+        }
+        
+        type Query {
+          field0: TestUnion
+          fieldInvalidType: TestUnion
+          fieldAbstract: TestUnion
+          fieldThrow: TestUnion
+        }
+        
+        type Xyz implements TestInterface {
+          name: String!
+        }
+        
+        type Zzz {
+          enumList: [TestEnum]
+        }
+        
+        union TestUnion = Abc | Xyz
+        
+        union UTestUnion = Abc | Xyz
+        
+        input TestInnerInput {
+          name: String!
+        
+          "single line description"
+          number: [Int!]!
+        
+          """
+          multi line
+          description
+          """
+          bool: Boolean
+        }
+        
+        input TestInput {
+          name: String!
+        
+          """
+          multi line
+          description
+          """
+          inner: TestInnerInput
+        
+          """
+          multi line
+          description
+          """
+          innerList: [TestInnerInput!]!
+        
+          "single line description"
+          innerNotNull: TestInnerInput!
+        }
+        
+        """
+        ETestEnum description
+        """
+        enum ETestEnum {
+          "single line description"
+          A
+        
+          "single line description"
+          B
+        
+          "single line description"
+          C
+        
+          "single line description"
+          D
+        }
+        
+        enum TestEnum {
+          A
+        
+          "single line description"
+          B
+        
+          C
+        
+          """
+          multi line
+          description
+          """
+          D
+        }
+        
+        enum TestExplicitEnum {
+          "single line description"
+          A
+        
+          B @deprecated
+        
+          """
+          multi line
+          description
+          """
+          C
+        
+          "single line description 2"
+          D @deprecated
+        }
+        
+        directive @invalidDirective repeatable on FIELD
+        
+        directive @testDirective repeatable on FIELD
+        EOL;
+
+        self::assertSame($expected, PrintSchema::getSchema()->printSchema(new \Graphpinator\Utils\Sort\TypeKindSorter()));
+    }
+
+    public function testPrintTypeKindSorterFullSchema() : void
+    {
+        $expected = <<<EOL
+        schema {
+          query: Query
+          mutation: Query
+          subscription: Query
+        }
+        
+        interface ITestInterface {
+          name: String!
+        }
+        
+        """
+        ITestInterface2 Description
+        """
+        interface ITestInterface2 {
+          "single line description"
+          name: String!
+        }
+        
+        """
+        TestInterface Description
+        """
+        interface TestInterface {
+          name: String!
+        }
+        
+        """
+        Test Abc description
+        """
+        type Abc {
+          field1(
+            arg1: Int = 123
+            arg2: TestInput
+          ): TestInterface @deprecated
+        }
+        
+        type Query {
+          field0: TestUnion
+          fieldInvalidType: TestUnion
+          fieldAbstract: TestUnion
+          fieldThrow: TestUnion
+        }
+        
+        type Xyz implements TestInterface {
+          name: String!
+        }
+        
+        type Zzz {
+          enumList: [TestEnum]
+        }
+        
+        union TestUnion = Abc | Xyz
+        
+        union UTestUnion = Abc | Xyz
+        
+        input TestInnerInput {
+          name: String!
+        
+          "single line description"
+          number: [Int!]!
+        
+          """
+          multi line
+          description
+          """
+          bool: Boolean
+        }
+        
+        input TestInput {
+          name: String!
+        
+          """
+          multi line
+          description
+          """
+          inner: TestInnerInput
+        
+          """
+          multi line
+          description
+          """
+          innerList: [TestInnerInput!]!
+        
+          "single line description"
+          innerNotNull: TestInnerInput!
+        }
+        
+        """
+        ETestEnum description
+        """
+        enum ETestEnum {
+          "single line description"
+          A
+        
+          "single line description"
+          B
+        
+          "single line description"
+          C
+        
+          "single line description"
+          D
+        }
+        
+        enum TestEnum {
+          A
+        
+          "single line description"
+          B
+        
+          C
+        
+          """
+          multi line
+          description
+          """
+          D
+        }
+        
+        enum TestExplicitEnum {
+          "single line description"
+          A
+        
+          B @deprecated
+        
+          """
+          multi line
+          description
+          """
+          C
+        
+          "single line description 2"
+          D @deprecated
+        }
+        
+        directive @invalidDirective repeatable on FIELD
+        
+        directive @testDirective repeatable on FIELD
+        EOL;
+
+        self::assertSame($expected, PrintSchema::getFullSchema()->printSchema(new \Graphpinator\Utils\Sort\TypeKindSorter()));
     }
 }

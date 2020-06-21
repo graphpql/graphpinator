@@ -6,6 +6,8 @@ namespace Graphpinator\Type;
 
 abstract class InputType extends \Graphpinator\Type\Contract\ConcreteDefinition implements \Graphpinator\Type\Contract\Inputable
 {
+    use \Graphpinator\Printable\TRepeatablePrint;
+
     protected ?\Graphpinator\Argument\ArgumentSet $arguments = null;
 
     public function createValue($rawValue) : \Graphpinator\Resolver\Value\ValidatedValue
@@ -38,13 +40,10 @@ abstract class InputType extends \Graphpinator\Type\Contract\ConcreteDefinition 
 
     public function printSchema() : string
     {
-        $schema = 'input ' . $this->getName() . ' {' . \PHP_EOL;
-
-        foreach ($this->getArguments() as $argument) {
-            $schema .= '  ' . $argument->printSchema() . \PHP_EOL;
-        }
-
-        return $schema . '}';
+        return $this->printDescription()
+            . 'input ' . $this->getName() . ' {' . \PHP_EOL
+            . $this->printItems($this->getArguments())
+            . '}';
     }
 
     abstract protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet;

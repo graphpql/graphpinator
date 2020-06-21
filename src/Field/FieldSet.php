@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Field;
 
-class FieldSet extends \Infinityloop\Utils\ObjectSet
+class FieldSet extends \Infinityloop\Utils\ObjectSet implements \Graphpinator\Printable\PrintableSet
 {
     protected const INNER_CLASS = Field::class;
 

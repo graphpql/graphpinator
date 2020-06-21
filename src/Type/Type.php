@@ -10,6 +10,7 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
 {
     use \Graphpinator\Type\Contract\TResolvable;
     use \Graphpinator\Type\Contract\TInterfaceImplementor;
+    use \Graphpinator\Printable\TRepeatablePrint;
 
     protected ?\Graphpinator\Field\ResolvableFieldSet $metaFields = null;
 
@@ -85,13 +86,10 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
 
     public function printSchema() : string
     {
-        $schema = 'type ' . $this->getName() . $this->printImplements() . ' {' . \PHP_EOL;
-
-        foreach ($this->getFields() as $field) {
-            $schema .= '  ' . $field->printSchema() . \PHP_EOL;
-        }
-
-        return $schema . '}';
+        return $this->printDescription()
+            . 'type ' . $this->getName() . $this->printImplements() . ' {' . \PHP_EOL
+            . $this->printItems($this->getFields())
+            . '}';
     }
 
     abstract protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet;

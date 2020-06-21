@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Argument;
 
-final class Argument
+final class Argument implements \Graphpinator\Printable\Printable
 {
     use \Nette\SmartObject;
     use \Graphpinator\Utils\TOptionalDescription;
@@ -40,9 +40,9 @@ final class Argument
         return $this->defaultValue;
     }
 
-    public function printSchema() : string
+    public function printSchema(int $indentLevel = 1) : string
     {
-        $schema = $this->getName() . ': ' . $this->type->printName();
+        $schema = $this->printDescription($indentLevel) . $this->getName() . ': ' . $this->type->printName();
 
         if ($this->defaultValue instanceof \Graphpinator\Resolver\Value\ValidatedValue) {
             $schema .= ' = ' . $this->defaultValue->printValue();

@@ -4,11 +4,12 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Field;
 
-class Field
+class Field implements \Graphpinator\Printable\Printable
 {
     use \Nette\SmartObject;
     use \Graphpinator\Utils\TOptionalDescription;
     use \Graphpinator\Utils\TDeprecatable;
+    use \Graphpinator\Printable\TRepeatablePrint;
 
     protected string $name;
     protected \Graphpinator\Type\Contract\Outputable $type;
@@ -37,9 +38,9 @@ class Field
         return $this->arguments;
     }
 
-    public function printSchema() : string
+    public function printSchema(int $indentLevel = 1) : string
     {
-        return $this->getName() . $this->printArguments() . ': ' . $this->getType()->printName() . $this->printDeprecated();
+        return $this->printDescription($indentLevel) . $this->getName() . $this->printArguments() . ': ' . $this->getType()->printName() . $this->printDeprecated();
     }
 
     private function printArguments() : string
@@ -48,12 +49,6 @@ class Field
             return '';
         }
 
-        $arguments = [];
-
-        foreach ($this->arguments as $argument) {
-            $arguments[] = $argument->printSchema();
-        }
-
-        return '(' . \implode(', ', $arguments) . ')';
+        return '(' . \PHP_EOL . $this->printItems($this->getArguments(), 2) . '  )';
     }
 }

@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Type\Enum;
 
-final class EnumItem
+final class EnumItem implements \Graphpinator\Printable\Printable
 {
     use \Nette\SmartObject;
     use \Graphpinator\Utils\TOptionalDescription;
@@ -23,8 +23,8 @@ final class EnumItem
         return $this->name;
     }
 
-    public function printSchema() : string
+    public function printSchema(int $indentLevel = 1) : string
     {
-        return $this->getName() . $this->printDeprecated();
+        return $this->printDescription($indentLevel) . $this->getName() . $this->printDeprecated();
     }
 }

@@ -112,8 +112,8 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                     'data' => ['__type' => [
                         'kind' => 'OBJECT',
                         'name' => 'Abc',
-                        'description' => 'Test Abc description',
-                        'fields' => [],
+                        'description' => null,
+                        'fields' => [['name' => 'field1']],
                         'interfaces' => [],
                         'possibleTypes' => null,
                         'inputFields' => null,
@@ -212,10 +212,10 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                 \Infinityloop\Utils\Json::fromArray([
                     'data' => ['__type' => [
                         'enumValues' => [
-                            ['name' => 'A', 'description' => null, 'isDeprecated' => true, 'deprecationReason' => null],
-                            ['name' => 'B', 'description' => null, 'isDeprecated' => true, 'deprecationReason' => null],
-                            ['name' => 'C', 'description' => null, 'isDeprecated' => true, 'deprecationReason' => null],
-                            ['name' => 'D', 'description' => null, 'isDeprecated' => true, 'deprecationReason' => null],
+                            ['name' => 'A', 'description' => null, 'isDeprecated' => false, 'deprecationReason' => null],
+                            ['name' => 'B', 'description' => null, 'isDeprecated' => false, 'deprecationReason' => null],
+                            ['name' => 'C', 'description' => null, 'isDeprecated' => false, 'deprecationReason' => null],
+                            ['name' => 'D', 'description' => null, 'isDeprecated' => false, 'deprecationReason' => null],
                         ],
                     ]],
                 ]),
@@ -225,6 +225,10 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                 \Infinityloop\Utils\Json::fromArray([
                     'data' => ['__type' => [
                         'enumValues' => [
+                            ['name' => 'A', 'description' => null, 'isDeprecated' => false, 'deprecationReason' => null],
+                            ['name' => 'B', 'description' => null, 'isDeprecated' => false, 'deprecationReason' => null],
+                            ['name' => 'C', 'description' => null, 'isDeprecated' => false, 'deprecationReason' => null],
+                            ['name' => 'D', 'description' => null, 'isDeprecated' => false, 'deprecationReason' => null],
                         ],
                     ]],
                 ]),
@@ -248,7 +252,28 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                 '{ __type(name: "Abc") { fields(includeDeprecated: false) {name description isDeprecated deprecationReason type{name} args{name description type{name} defaultValue} } } }',
                 \Infinityloop\Utils\Json::fromArray([
                     'data' => ['__type' => [
-                        'fields' => [],
+                        'fields' => [
+                            [
+                                'name' => 'field1',
+                                'description' => null,
+                                'isDeprecated' => false,
+                                'deprecationReason' => null,
+                                'type' => ['name' => 'TestInterface'],
+                                'args' => [
+                                    [
+                                        'name' => 'arg1',
+                                        'description' => null,
+                                        'type' => ['name' => 'Int'],
+                                        'defaultValue' => '123',
+                                    ], [
+                                        'name' => 'arg2',
+                                        'description' => null,
+                                        'type' => ['name' => 'TestInput'],
+                                        'defaultValue' => null,
+                                    ]
+                                ],
+                            ],
+                        ],
                     ]],
                 ]),
             ],
@@ -259,8 +284,8 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                         'fields' => [[
                             'name' => 'field1',
                             'description' => null,
-                            'isDeprecated' => true,
-                            'deprecationReason' => 'Test deprecation reason',
+                            'isDeprecated' => false,
+                            'deprecationReason' => null,
                             'type' => ['name' => 'TestInterface'],
                             'args' => [
                                 [
@@ -314,6 +339,86 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
     public function testType(string $request, \Infinityloop\Utils\Json $result) : void
     {
         $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
+
+        self::assertSame(
+            $result->toString(),
+            \json_encode($graphpinator->runQuery($request, \Infinityloop\Utils\Json::fromArray([]))),
+        );
+    }
+
+    public function testDescription() : void
+    {
+        $request = '{ __type(name: "Abc") { kind name description fields{name} interfaces{name} possibleTypes{name} inputFields{name} enumValues{name} ofType{name} } }';
+        $graphpinator = new \Graphpinator\Graphpinator(PrintSchema::getSchema());
+        $result = \Infinityloop\Utils\Json::fromArray([
+            'data' => ['__type' => [
+                'kind' => 'OBJECT',
+                'name' => 'Abc',
+                'description' => 'Test Abc description',
+                'fields' => [],
+                'interfaces' => [],
+                'possibleTypes' => null,
+                'inputFields' => null,
+                'enumValues' => null,
+                'ofType' => null,
+            ]],
+        ]);
+
+        self::assertSame(
+            $result->toString(),
+            \json_encode($graphpinator->runQuery($request, \Infinityloop\Utils\Json::fromArray([]))),
+        );
+    }
+
+    public function testDeprecatedFields() : void
+    {
+        $request = '{ __type(name: "Abc") { fields(includeDeprecated: false) {name description isDeprecated deprecationReason type{name} args{name description type{name} defaultValue} } } }';
+        $graphpinator = new \Graphpinator\Graphpinator(PrintSchema::getSchema());
+        $result = \Infinityloop\Utils\Json::fromArray([
+            'data' => ['__type' => [
+                'fields' => [],
+            ]],
+        ]);
+
+        self::assertSame(
+            $result->toString(),
+            \json_encode($graphpinator->runQuery($request, \Infinityloop\Utils\Json::fromArray([]))),
+        );
+    }
+
+    public function testDeprecatedFalseEnum() : void
+    {
+        $request = '{ __type(name: "TestExplicitEnum") { enumValues(includeDeprecated: false){name description isDeprecated deprecationReason} } }';
+        $graphpinator = new \Graphpinator\Graphpinator(PrintSchema::getSchema());
+        $result = \Infinityloop\Utils\Json::fromArray([
+            'data' => ['__type' => [
+                'enumValues' => [
+                    ['name' => 'A', 'description' => 'single line description', 'isDeprecated' => false, 'deprecationReason' => null],
+                    ['name' => 'C', 'description' => 'multi line' . \PHP_EOL . 'description', 'isDeprecated' => false, 'deprecationReason' => null],
+                ],
+            ]],
+        ]);
+
+        self::assertSame(
+            $result->toString(),
+            \json_encode($graphpinator->runQuery($request, \Infinityloop\Utils\Json::fromArray([]))),
+        );
+    }
+
+    public function testDeprecatedTrueEnum() : void
+    {
+        $request = '{ __type(name: "TestExplicitEnum") { enumValues(includeDeprecated: true){name description isDeprecated deprecationReason} } }';
+        $graphpinator = new \Graphpinator\Graphpinator(PrintSchema::getSchema());
+        $result = \Infinityloop\Utils\Json::fromArray([
+            'data' => ['__type' => [
+                'enumValues' => [
+                    ['name' => 'A', 'description' => 'single line description', 'isDeprecated' => false, 'deprecationReason' => null],
+                    ['name' => 'B', 'description' => null, 'isDeprecated' => true, 'deprecationReason' => null],
+                    ['name' => 'C', 'description' => 'multi line' . \PHP_EOL . 'description', 'isDeprecated' => false, 'deprecationReason' => null],
+                    ['name' => 'D', 'description' => 'single line description 2', 'isDeprecated' => true, 'deprecationReason' => 'reason'],
+                ],
+            ]],
+        ]);
 
         self::assertSame(
             $result->toString(),
