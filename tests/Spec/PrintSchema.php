@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Spec;
 
-final class TestSchema
+final class PrintSchema
 {
     use \Nette\StaticClass;
 
@@ -33,12 +33,16 @@ final class TestSchema
             'Abc' => self::getTypeAbc(),
             'Xyz' => self::getTypeXyz(),
             'Zzz' => self::getTypeZzz(),
+            'ITestInterface' => self::getInterfaceWithoutDescription(),
             'TestInterface' => self::getInterface(),
+            'ITestInterface2' => self::getInterfaceWithDescription(),
+            'UTestUnion' => self::getUnionWithDescription(),
             'TestUnion' => self::getUnion(),
             'TestInput' => self::getInput(),
             'TestInnerInput' => self::getInnerInput(),
             'TestEnum' => self::getEnum(),
             'TestExplicitEnum' => self::getExplicitEnum(),
+            'ETestEnum' => self::getEnumWithDescription(),
         ], [
             'testDirective' => self::getTestDirective(),
             'invalidDirective' => self::getInvalidDirective(),
@@ -76,7 +80,7 @@ final class TestSchema
         return new class extends \Graphpinator\Type\Type
         {
             protected const NAME = 'Abc';
-            protected const DESCRIPTION = null;
+            protected const DESCRIPTION = 'Test Abc description';
 
             protected function validateNonNullValue($rawValue) : bool
             {
@@ -86,29 +90,14 @@ final class TestSchema
             protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
             {
                 return new \Graphpinator\Field\ResolvableFieldSet([
-                    new \Graphpinator\Field\ResolvableField('field1', TestSchema::getInterface(),
+                    (new \Graphpinator\Field\ResolvableField('field1', TestSchema::getInterface(),
                         static function (int $parent, \Graphpinator\Resolver\ArgumentValueSet $args) {
-                            $object = new \stdClass();
-
-                            if ($args['arg2']->getRawValue() === null) {
-                                $object->name = 'Test ' . $args['arg1']->getRawValue();
-                            } else {
-                                $objectVal = $args['arg2']->getRawValue();
-                                $str = '';
-
-                                \array_walk_recursive($objectVal, static function ($item, $key) use (&$str) {
-                                    $str .= $key . ': ' . $item . '; ';
-                                });
-
-                                $object->name = 'Test input: ' . $str;
-                            }
-
-                            return \Graphpinator\Resolver\FieldResult::fromRaw(TestSchema::getTypeXyz(), $object);
-                    },
-                    new \Graphpinator\Argument\ArgumentSet([
-                        new \Graphpinator\Argument\Argument('arg1', \Graphpinator\Type\Container\Container::Int(), 123),
-                        new \Graphpinator\Argument\Argument('arg2', TestSchema::getInput()),
-                    ]))
+                            return 1;
+                        },
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument('arg1', \Graphpinator\Type\Container\Container::Int(), 123),
+                            new \Graphpinator\Argument\Argument('arg2', TestSchema::getInput()),
+                        ])))->setDeprecated(true)->setDeprecationReason('Test deprecation reason')
                 ]);
             }
         };
@@ -165,9 +154,9 @@ final class TestSchema
             {
                 return new \Graphpinator\Argument\ArgumentSet([
                     new \Graphpinator\Argument\Argument('name', \Graphpinator\Type\Container\Container::String()->notNull()),
-                    new \Graphpinator\Argument\Argument('inner', TestSchema::getInnerInput()),
-                    new \Graphpinator\Argument\Argument('innerList', TestSchema::getInnerInput()->notNullList()),
-                    new \Graphpinator\Argument\Argument('innerNotNull', TestSchema::getInnerInput()->notNull()),
+                    (new \Graphpinator\Argument\Argument('inner', TestSchema::getInnerInput()))->setDescription('multi line' . \PHP_EOL . 'description'),
+                    (new \Graphpinator\Argument\Argument('innerList', TestSchema::getInnerInput()->notNullList()))->setDescription('multi line' . \PHP_EOL . 'description'),
+                    (new \Graphpinator\Argument\Argument('innerNotNull', TestSchema::getInnerInput()->notNull()))->setDescription('single line description'),
                 ]);
             }
         };
@@ -183,8 +172,8 @@ final class TestSchema
             {
                 return new \Graphpinator\Argument\ArgumentSet([
                     new \Graphpinator\Argument\Argument('name', \Graphpinator\Type\Container\Container::String()->notNull()),
-                    new \Graphpinator\Argument\Argument('number', \Graphpinator\Type\Container\Container::Int()->notNullList()),
-                    new \Graphpinator\Argument\Argument('bool', \Graphpinator\Type\Container\Container::Boolean()),
+                    (new \Graphpinator\Argument\Argument('number', \Graphpinator\Type\Container\Container::Int()->notNullList()))->setDescription('single line description'),
+                    (new \Graphpinator\Argument\Argument('bool', \Graphpinator\Type\Container\Container::Boolean()))->setDescription('multi line' . \PHP_EOL . 'description'),
                 ]);
             }
         };
@@ -195,11 +184,44 @@ final class TestSchema
         return new class extends \Graphpinator\Type\InterfaceType
         {
             protected const NAME = 'TestInterface';
+            protected const DESCRIPTION = 'TestInterface Description';
 
             protected function getFieldDefinition(): \Graphpinator\Field\FieldSet
             {
                 return new \Graphpinator\Field\FieldSet([
                     new \Graphpinator\Field\Field('name', \Graphpinator\Type\Container\Container::String()->notNull()),
+                ]);
+            }
+        };
+    }
+
+    public static function getInterfaceWithoutDescription() : \Graphpinator\Type\InterfaceType
+    {
+        return new class extends \Graphpinator\Type\InterfaceType
+        {
+            protected const NAME = 'ITestInterface';
+
+            protected function getFieldDefinition(): \Graphpinator\Field\FieldSet
+            {
+                return new \Graphpinator\Field\FieldSet([
+                    new \Graphpinator\Field\Field('name', \Graphpinator\Type\Container\Container::String()->notNull()),
+                ]);
+            }
+        };
+    }
+
+    public static function getInterfaceWithDescription() : \Graphpinator\Type\InterfaceType
+    {
+        return new class extends \Graphpinator\Type\InterfaceType
+        {
+            protected const NAME = 'ITestInterface2';
+            protected const DESCRIPTION = 'ITestInterface2 Description';
+
+            protected function getFieldDefinition(): \Graphpinator\Field\FieldSet
+            {
+                return new \Graphpinator\Field\FieldSet([
+                    (new \Graphpinator\Field\Field('name', \Graphpinator\Type\Container\Container::String()->notNull()))
+                        ->setDescription('single line description'),
                 ]);
             }
         };
@@ -214,8 +236,25 @@ final class TestSchema
             public function __construct()
             {
                 parent::__construct(new \Graphpinator\Utils\ConcreteSet([
-                    TestSchema::getTypeAbc(),
-                    TestSchema::getTypeXyz(),
+                    PrintSchema::getTypeAbc(),
+                    PrintSchema::getTypeXyz(),
+                ]));
+            }
+        };
+    }
+
+    public static function getUnionWithDescription() : \Graphpinator\Type\UnionType
+    {
+        return new class extends \Graphpinator\Type\UnionType
+        {
+            protected const NAME = 'UTestUnion';
+            protected const DESCRIPTION =  'UTestUnion description';
+
+            public function __construct()
+            {
+                parent::__construct(new \Graphpinator\Utils\ConcreteSet([
+                    PrintSchema::getTypeAbc(),
+                    PrintSchema::getTypeXyz(),
                 ]));
             }
         };
@@ -228,9 +267,28 @@ final class TestSchema
             protected const NAME = 'TestEnum';
 
             public const A = 'a';
-            public const B = 'b';
+            public const B = ['b', 'single line description'];
             public const C = 'c';
-            public const D = 'd';
+            public const D = ['d', 'multi line' . \PHP_EOL . 'description'];
+
+            public function __construct()
+            {
+                parent::__construct(self::fromConstants());
+            }
+        };
+    }
+
+    public static function getEnumWithDescription() : \Graphpinator\Type\EnumType
+    {
+        return new class extends \Graphpinator\Type\EnumType
+        {
+            protected const NAME = 'ETestEnum';
+            protected const DESCRIPTION = 'ETestEnum description';
+
+            public const A = ['a', 'single line description'];
+            public const B = ['b', 'single line description'];
+            public const C = ['c', 'single line description'];
+            public const D = ['d', 'single line description'];
 
             public function __construct()
             {
@@ -248,10 +306,12 @@ final class TestSchema
             public function __construct()
             {
                 parent::__construct(new \Graphpinator\Type\Enum\EnumItemSet([
-                    new \Graphpinator\Type\Enum\EnumItem('A'),
-                    new \Graphpinator\Type\Enum\EnumItem('B'),
-                    new \Graphpinator\Type\Enum\EnumItem('C'),
-                    new \Graphpinator\Type\Enum\EnumItem('D'),
+                    (new \Graphpinator\Type\Enum\EnumItem('A'))->setDescription('single line description'),
+                    (new \Graphpinator\Type\Enum\EnumItem('B'))->setDeprecated(true),
+                    (new \Graphpinator\Type\Enum\EnumItem('C'))->setDescription('multi line' . \PHP_EOL . 'description'),
+                    (new \Graphpinator\Type\Enum\EnumItem('D'))->setDescription('single line description 2')
+                        ->setDeprecated(true)
+                        ->setDeprecationReason('reason'),
                 ]));
             }
         };
