@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Printable;
 
-interface PrintableSet
+interface PrintableSet extends \Iterator
 {
     public function current() : Printable;
 
