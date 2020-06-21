@@ -36,6 +36,7 @@ trait TInterfaceImplementor
 
     /**
      * Checks whether this type implements given interface.
+     * @param \Graphpinator\Type\InterfaceType $interface
      */
     public function implements(\Graphpinator\Type\InterfaceType $interface) : bool
     {

@@ -7,6 +7,7 @@ namespace Graphpinator\Type\Contract;
 /**
  * Interface InterfaceImplementor which marks types which can implement interface - currently Type and Interface.
  */
+//@phpcs:ignore SlevomatCodingStandard.Classes.SuperfluousInterfaceNaming.SuperfluousPrefix
 interface InterfaceImplementor extends \Graphpinator\Type\Contract\Definition
 {
     /**
@@ -21,6 +22,7 @@ interface InterfaceImplementor extends \Graphpinator\Type\Contract\Definition
 
     /**
      * Checks whether this type implements given interface.
+     * @param \Graphpinator\Type\InterfaceType $interface
      */
     public function implements(\Graphpinator\Type\InterfaceType $interface) : bool;
 }

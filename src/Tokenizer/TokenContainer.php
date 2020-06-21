@@ -46,7 +46,9 @@ final class TokenContainer implements \IteratorAggregate
             throw new \Graphpinator\Exception\Parser\UnexpectedEnd();
         }
 
-        return $this->tokens[--$this->currentIndex];
+        --$this->currentIndex;
+
+        return $this->tokens[$this->currentIndex];
     }
 
     public function getNext() : Token
@@ -55,7 +57,9 @@ final class TokenContainer implements \IteratorAggregate
             throw new \Graphpinator\Exception\Parser\UnexpectedEnd();
         }
 
-        return $this->tokens[++$this->currentIndex];
+        ++$this->currentIndex;
+
+        return $this->tokens[$this->currentIndex];
     }
 
     public function peekNext() : Token
@@ -67,12 +71,13 @@ final class TokenContainer implements \IteratorAggregate
         return $this->tokens[$this->currentIndex + 1];
     }
 
+    //phpcs:ignore SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly.ReferencedGeneralException
     public function assertNext(string $tokenType, string $exceptionClass = \Exception::class) : Token
     {
         $token = $this->getNext();
 
         if ($token->getType() !== $tokenType) {
-            throw new $exceptionClass;
+            throw new $exceptionClass();
         }
 
         return $token;

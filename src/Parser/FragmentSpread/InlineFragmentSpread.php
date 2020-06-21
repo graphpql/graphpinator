@@ -39,7 +39,10 @@ final class InlineFragmentSpread implements \Graphpinator\Parser\FragmentSpread\
         return $this->typeCond;
     }
 
-    public function normalize(\Graphpinator\Type\Container\Container $typeContainer, \Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions) : \Graphpinator\Normalizer\FragmentSpread\FragmentSpread
+    public function normalize(
+        \Graphpinator\Type\Container\Container $typeContainer,
+        \Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions
+    ) : \Graphpinator\Normalizer\FragmentSpread\FragmentSpread
     {
         return new \Graphpinator\Normalizer\FragmentSpread\FragmentSpread(
             $this->fields->normalize($typeContainer, $fragmentDefinitions),

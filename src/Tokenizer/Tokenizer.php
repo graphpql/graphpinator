@@ -111,6 +111,8 @@ final class Tokenizer implements \Iterator
 
                         return;
                 }
+
+                // fallthrough
             case \PHP_EOL:
                 $this->token = new \Graphpinator\Tokenizer\Token(TokenType::NEWLINE);
                 $this->source->next();

@@ -19,6 +19,7 @@ final class Parser
 
     /**
      * Static shortcut.
+     * @param string $source
      */
     public static function parseString(string $source) : ParseResult
     {
@@ -70,9 +71,17 @@ final class Parser
                                     break;
                                 case TokenType::PAR_O:
                                     $variables = $this->parseVariables();
-                                    $this->tokenizer->assertNext(TokenType::CUR_O, \Graphpinator\Exception\Parser\ExpectedSelectionSet::class);
+                                    $this->tokenizer->assertNext(
+                                        TokenType::CUR_O,
+                                        \Graphpinator\Exception\Parser\ExpectedSelectionSet::class,
+                                    );
 
-                                    $operation = new \Graphpinator\Parser\Operation($this->parseSelectionSet(), $operationType, $operationName, $variables);
+                                    $operation = new \Graphpinator\Parser\Operation(
+                                        $this->parseSelectionSet(),
+                                        $operationType,
+                                        $operationName,
+                                        $variables,
+                                    );
 
                                     break;
                                 default:
@@ -271,6 +280,8 @@ final class Parser
      *
      * Expects iterator on previous token
      * Leaves iterator to last used token - closing parenthesis
+     *
+     * @param string $location
      */
     private function parseDirectives(string $location) : \Graphpinator\Parser\Directive\DirectiveSet
     {
@@ -325,6 +336,8 @@ final class Parser
      *
      * Expects iterator on previous token
      * Leaves iterator to last used token - last token in value definition
+     *
+     * @param bool $literalOnly
      */
     private function parseValue(bool $literalOnly) : \Graphpinator\Parser\Value\Value
     {
@@ -379,6 +392,8 @@ final class Parser
      *
      * Expects iterator on previous token
      * Leaves iterator to last used token - last token in type definition
+     *
+     * @param bool $namedOnly
      */
     private function parseType(bool $namedOnly) : \Graphpinator\Parser\TypeRef\TypeRef
     {

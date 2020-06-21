@@ -28,7 +28,10 @@ final class NamedFragmentSpread implements \Graphpinator\Parser\FragmentSpread\F
         return $this->directives;
     }
 
-    public function normalize(\Graphpinator\Type\Container\Container $typeContainer, \Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions) : \Graphpinator\Normalizer\FragmentSpread\FragmentSpread
+    public function normalize(
+        \Graphpinator\Type\Container\Container $typeContainer,
+        \Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions
+    ) : \Graphpinator\Normalizer\FragmentSpread\FragmentSpread
     {
         if (!$fragmentDefinitions->offsetExists($this->name)) {
             throw new \Graphpinator\Exception\Normalizer\UnknownFragment();

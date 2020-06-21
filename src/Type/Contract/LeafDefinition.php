@@ -10,7 +10,10 @@ abstract class LeafDefinition extends \Graphpinator\Type\Contract\ConcreteDefini
 {
     use \Graphpinator\Type\Contract\TResolvable;
 
-    final public function resolve(?\Graphpinator\Normalizer\FieldSet $requestedFields, \Graphpinator\Resolver\FieldResult $parentResult) : \Graphpinator\Resolver\Value\ValidatedValue
+    final public function resolve(
+        ?\Graphpinator\Normalizer\FieldSet $requestedFields,
+        \Graphpinator\Resolver\FieldResult $parentResult
+    ) : \Graphpinator\Resolver\Value\ValidatedValue
     {
         if ($requestedFields instanceof \Graphpinator\Normalizer\FieldSet) {
             throw new \Graphpinator\Exception\Resolver\SelectionOnLeaf();
