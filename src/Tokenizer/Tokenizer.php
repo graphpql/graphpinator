@@ -20,9 +20,9 @@ final class Tokenizer implements \Iterator
     ];
 
     private \Graphpinator\Source\Source $source;
-    protected bool $skipNotRelevant;
-    protected ?Token $token = null;
-    protected ?int $tokenStartIndex = null;
+    private bool $skipNotRelevant;
+    private ?Token $token = null;
+    private ?int $tokenStartIndex = null;
 
     public function __construct(\Graphpinator\Source\Source $source, bool $skipNotRelevant = true)
     {
