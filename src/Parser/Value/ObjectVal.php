@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Parser\Value;
 
-final class ObjectVal implements Value
+final class ObjectVal implements \Graphpinator\Parser\Value\Value
 {
     use \Nette\SmartObject;
 

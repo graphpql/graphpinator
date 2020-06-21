@@ -6,9 +6,6 @@ namespace Graphpinator\Type\Introspection;
 
 final class DirectiveLocation extends \Graphpinator\Type\EnumType
 {
-    protected const NAME = '__DirectiveLocation';
-    protected const DESCRIPTION = 'Built-in introspection enum.';
-
     public const QUERY = 'QUERY';
     public const MUTATION = 'MUTATION';
     public const SUBSCRIPTION = 'SUBSCRIPTION';
@@ -28,6 +25,9 @@ final class DirectiveLocation extends \Graphpinator\Type\EnumType
     public const ENUM_VALUE = 'ENUM_VALUE';
     public const INPUT_OBJECT = 'INPUT_OBJECT';
     public const INPUT_FIELD_DEFINITION = 'INPUT_FIELD_DEFINITION';
+
+    protected const NAME = '__DirectiveLocation';
+    protected const DESCRIPTION = 'Built-in introspection enum.';
 
     public function __construct()
     {

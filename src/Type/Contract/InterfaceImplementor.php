@@ -7,7 +7,7 @@ namespace Graphpinator\Type\Contract;
 /**
  * Interface InterfaceImplementor which marks types which can implement interface - currently Type and Interface.
  */
-interface InterfaceImplementor extends Definition
+interface InterfaceImplementor extends \Graphpinator\Type\Contract\Definition
 {
     /**
      * Returns fields defined for this type.

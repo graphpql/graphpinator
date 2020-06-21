@@ -18,7 +18,8 @@ final class Operation
         string $type = \Graphpinator\Tokenizer\OperationType::QUERY,
         ?string $name = null,
         ?\Graphpinator\Parser\Variable\VariableSet $variables = null
-    ) {
+    )
+    {
         $this->children = $children;
         $this->type = $type;
         $this->name = $name;

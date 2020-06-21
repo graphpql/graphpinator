@@ -9,7 +9,8 @@ final class VariableValueSet extends \Infinityloop\Utils\ObjectSet
     public function __construct(
         \Graphpinator\Normalizer\Variable\VariableSet $definedVariables,
         \Infinityloop\Utils\Json $providedValues
-    ) {
+    )
+    {
         foreach ($definedVariables as $variable) {
             $this->array[$variable->getName()] = $variable->createValue($providedValues);
         }

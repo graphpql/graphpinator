@@ -10,7 +10,7 @@ final class FieldSet extends \Infinityloop\Utils\ObjectSet
 
     private \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet $fragments;
 
-    public function __construct(array $fields, \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet $fragments = null)
+    public function __construct(array $fields, ?\Graphpinator\Parser\FragmentSpread\FragmentSpreadSet $fragments = null)
     {
         parent::__construct($fields);
 

@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Normalizer;
 
-use Graphpinator\Resolver\VariableValueSet;
+use \Graphpinator\Resolver\VariableValueSet;
 
 final class Field
 {

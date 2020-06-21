@@ -16,7 +16,8 @@ final class Variable
         string $name,
         \Graphpinator\Parser\TypeRef\TypeRef $type,
         ?\Graphpinator\Parser\Value\Value $default = null
-    ) {
+    )
+    {
         $this->name = $name;
         $this->type = $type;
         $this->default = $default;

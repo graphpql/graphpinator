@@ -27,13 +27,13 @@ abstract class EnumType extends \Graphpinator\Type\Contract\LeafDefinition
             }
 
             if (\is_string($value)) {
-                $values[] = new Enum\EnumItem(\strtoupper($value));
+                $values[] = new \Graphpinator\Type\Enum\EnumItem(\strtoupper($value));
             } elseif (\is_array($value) && \count($value) === 2) {
-                $values[] = new Enum\EnumItem(\strtoupper($value[0]), $value[1]);
+                $values[] = new \Graphpinator\Type\Enum\EnumItem(\strtoupper($value[0]), $value[1]);
             }
         }
 
-        return new Enum\EnumItemSet($values);
+        return new \Graphpinator\Type\Enum\EnumItemSet($values);
     }
 
     public function getItems() : Enum\EnumItemSet

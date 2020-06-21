@@ -9,5 +9,5 @@ interface FragmentSpread
     public function normalize(
         \Graphpinator\Type\Container\Container $typeContainer,
         \Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions
-    ): \Graphpinator\Normalizer\FragmentSpread\FragmentSpread;
+    ) : \Graphpinator\Normalizer\FragmentSpread\FragmentSpread;
 }

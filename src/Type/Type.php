@@ -100,13 +100,15 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
             new \Graphpinator\Field\ResolvableField(
                 '__typename',
                 \Graphpinator\Type\Container\Container::String()->notNull(),
-                function() { return $this->getName(); },
+                function() {
+                    return $this->getName();
+                },
             ),
         ]);
     }
 
     private function resolveFieldSet(
-        array& $result,
+        array &$result,
         \Graphpinator\Normalizer\FieldSet $fieldSet,
         \Graphpinator\Resolver\FieldResult $parentResult
     ) : void

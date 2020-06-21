@@ -36,7 +36,7 @@ final class NotNullType extends \Graphpinator\Type\Contract\ModifierDefinition
         return $this->innerType->applyDefaults($value);
     }
 
-    public function isInstanceOf(\Graphpinator\Type\Contract\Definition $type): bool
+    public function isInstanceOf(\Graphpinator\Type\Contract\Definition $type) : bool
     {
         if ($type instanceof self) {
             return $this->innerType->isInstanceOf($type->getInnerType());

@@ -7,7 +7,7 @@ namespace Graphpinator\Type\Container;
 /**
  * Simple Container implementation
  */
-class SimpleContainer extends Container
+class SimpleContainer extends \Graphpinator\Type\Container\Container
 {
     protected array $types = [];
     protected array $directives = [];

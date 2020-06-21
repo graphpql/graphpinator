@@ -11,20 +11,20 @@ final class TokenType
     public const NEWLINE = 'newline';
     public const COMMENT = '#';
     public const COMMA = ',';
-    # lexical
+    // lexical
     public const NAME = 'name';
     public const VARIABLE = '$';
     public const DIRECTIVE = '@';
     public const INT = 'int';
     public const FLOAT = 'float';
     public const STRING = 'string';
-    # keywords
+    // keywords
     public const NULL = 'null';
     public const TRUE = 'true';
     public const FALSE = 'false';
     public const FRAGMENT = 'fragment';
     public const ON = 'on'; // type condition
-    # punctators
+    // punctators
     public const AMP = '&'; // implements
     public const PIPE = '|'; // union
     public const EXCL = '!'; // not null

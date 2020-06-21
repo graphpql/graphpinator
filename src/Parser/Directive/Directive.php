@@ -14,7 +14,8 @@ final class Directive
     public function __construct(
         string $name,
         ?\Graphpinator\Parser\Value\NamedValueSet $arguments
-    ) {
+    )
+    {
         $this->name = $name;
         $this->arguments = $arguments;
     }

@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Resolver\Value;
 
-final class TypeValue extends ValidatedValue
+final class TypeValue extends \Graphpinator\Resolver\Value\ValidatedValue
 {
     public function __construct($resolvedValue, \Graphpinator\Type\Type $type)
     {

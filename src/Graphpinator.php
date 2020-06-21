@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Graphpinator;
 
@@ -23,7 +23,7 @@ final class Graphpinator
             return \Graphpinator\Parser\Parser::parseString($request)
                 ->normalize($this->schema)
                 ->execute($variables);
-        } catch (\Exception $exception) {
+        } catch (\Throwable $exception) {
             if (!$this->catchExceptions) {
                 throw $exception;
             }
@@ -31,7 +31,7 @@ final class Graphpinator
             return new \Graphpinator\Resolver\OperationResult(null, [
                 $exception instanceof \Graphpinator\Exception\GraphpinatorBase
                     ? $exception
-                    : \Graphpinator\Exception\GraphpinatorBase::notOutputableResponse()
+                    : \Graphpinator\Exception\GraphpinatorBase::notOutputableResponse(),
             ]);
         }
     }

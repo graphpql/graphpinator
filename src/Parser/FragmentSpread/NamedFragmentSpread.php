@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Parser\FragmentSpread;
 
-final class NamedFragmentSpread implements FragmentSpread
+final class NamedFragmentSpread implements \Graphpinator\Parser\FragmentSpread\FragmentSpread
 {
     use \Nette\SmartObject;
 
@@ -28,7 +28,7 @@ final class NamedFragmentSpread implements FragmentSpread
         return $this->directives;
     }
 
-    public function normalize(\Graphpinator\Type\Container\Container $typeContainer, \Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions): \Graphpinator\Normalizer\FragmentSpread\FragmentSpread
+    public function normalize(\Graphpinator\Type\Container\Container $typeContainer, \Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions) : \Graphpinator\Normalizer\FragmentSpread\FragmentSpread
     {
         if (!$fragmentDefinitions->offsetExists($this->name)) {
             throw new \Graphpinator\Exception\Normalizer\UnknownFragment();

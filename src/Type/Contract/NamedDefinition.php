@@ -9,6 +9,8 @@ abstract class NamedDefinition implements \Graphpinator\Type\Contract\Definition
     protected const NAME = '';
     protected const DESCRIPTION = null;
 
+    abstract public function printSchema() : string;
+
     public function getName() : string
     {
         return static::NAME;
@@ -29,7 +31,7 @@ abstract class NamedDefinition implements \Graphpinator\Type\Contract\Definition
         return $this;
     }
 
-    public function isInstanceOf(\Graphpinator\Type\Contract\Definition $type): bool
+    public function isInstanceOf(\Graphpinator\Type\Contract\Definition $type) : bool
     {
         if ($type instanceof \Graphpinator\Type\NotNullType) {
             return $this->isInstanceOf($type->getInnerType());
@@ -67,8 +69,6 @@ abstract class NamedDefinition implements \Graphpinator\Type\Contract\Definition
     {
         return new \Graphpinator\Type\ListType($this);
     }
-
-    abstract public function printSchema() : string;
 
     protected function validateNonNullValue($rawValue) : bool
     {

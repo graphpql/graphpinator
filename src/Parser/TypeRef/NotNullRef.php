@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Parser\TypeRef;
 
-final class NotNullRef implements TypeRef
+final class NotNullRef implements \Graphpinator\Parser\TypeRef\TypeRef
 {
     use \Nette\SmartObject;
 

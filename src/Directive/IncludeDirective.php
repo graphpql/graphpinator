@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Directive;
 
-final class IncludeDirective extends Directive
+final class IncludeDirective extends \Graphpinator\Directive\Directive
 {
     protected const NAME = 'include';
     protected const DESCRIPTION = 'Built-in include directive.';
