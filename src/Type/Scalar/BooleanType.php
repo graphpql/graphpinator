@@ -11,6 +11,6 @@ final class BooleanType extends \Graphpinator\Type\Scalar\ScalarType
 
     protected function validateNonNullValue($rawValue) : bool
     {
-        return is_bool($rawValue);
+        return \is_bool($rawValue);
     }
 }

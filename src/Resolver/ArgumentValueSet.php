@@ -9,7 +9,8 @@ final class ArgumentValueSet extends \Infinityloop\Utils\ObjectSet
     public function __construct(
         \Graphpinator\Parser\Value\NamedValueSet $namedValueSet,
         \Graphpinator\Argument\ArgumentSet $argumentSet
-    ) {
+    )
+    {
         foreach ($namedValueSet as $namedValue) {
             if (!$argumentSet->offsetExists($namedValue->getName())) {
                 throw new \Graphpinator\Exception\Resolver\UnknownArgument();
@@ -20,7 +21,7 @@ final class ArgumentValueSet extends \Infinityloop\Utils\ObjectSet
             if ($namedValueSet->offsetExists($argument->getName())) {
                 $this->appendUnique(
                     $argument->getName(),
-                    $argument->getType()->createValue($namedValueSet[$argument->getName()]->getRawValue())
+                    $argument->getType()->createValue($namedValueSet[$argument->getName()]->getRawValue()),
                 );
 
                 continue;
@@ -29,7 +30,7 @@ final class ArgumentValueSet extends \Infinityloop\Utils\ObjectSet
             if ($argument->getDefaultValue() instanceof \Graphpinator\Resolver\Value\ValidatedValue) {
                 $this->appendUnique(
                     $argument->getName(),
-                    $argument->getDefaultValue()
+                    $argument->getDefaultValue(),
                 );
 
                 continue;
@@ -37,7 +38,7 @@ final class ArgumentValueSet extends \Infinityloop\Utils\ObjectSet
 
             $this->appendUnique(
                 $argument->getName(),
-                new \Graphpinator\Resolver\Value\NullValue($argument->getType())
+                new \Graphpinator\Resolver\Value\NullValue($argument->getType()),
             );
         }
     }

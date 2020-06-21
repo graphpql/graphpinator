@@ -29,7 +29,9 @@ final class Schema
         $this->query->addMetaField(new \Graphpinator\Field\ResolvableField(
             '__schema',
             $this->container->introspectionSchema(),
-            function() : self { return $this; },
+            function() : self {
+                return $this;
+            },
         ));
         $this->query->addMetaField(new \Graphpinator\Field\ResolvableField(
             '__type',
@@ -65,7 +67,7 @@ final class Schema
 
     public function printSchema(?\Graphpinator\Utils\Sort\PrintSorter $sorter = null) : string
     {
-        $sorter = $sorter ?? new \Graphpinator\Utils\Sort\AlphabeticalSorter();
+        $sorter ??= new \Graphpinator\Utils\Sort\AlphabeticalSorter();
 
         $query = $this->query instanceof Type
             ? $this->query->getName()

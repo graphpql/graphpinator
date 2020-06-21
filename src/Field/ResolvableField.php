@@ -4,9 +4,9 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Field;
 
-use Graphpinator\Resolver\FieldResult;
+use \Graphpinator\Resolver\FieldResult;
 
-final class ResolvableField extends Field
+final class ResolvableField extends \Graphpinator\Field\Field
 {
     private \Closure $resolveFunction;
 

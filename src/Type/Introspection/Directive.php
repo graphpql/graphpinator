@@ -23,7 +23,7 @@ final class Directive extends \Graphpinator\Type\Type
         return $rawValue instanceof \Graphpinator\Directive\Directive;
     }
 
-    protected function getFieldDefinition(): \Graphpinator\Field\ResolvableFieldSet
+    protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
     {
         return new \Graphpinator\Field\ResolvableFieldSet([
             new \Graphpinator\Field\ResolvableField(

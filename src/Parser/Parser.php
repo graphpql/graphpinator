@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Parser;
 
-use Graphpinator\Tokenizer\TokenType;
+use \Graphpinator\Tokenizer\TokenType;
 
 final class Parser
 {
@@ -45,7 +45,7 @@ final class Parser
 
                     break;
                 case TokenType::CUR_O:
-                    $operation = new Operation($this->parseSelectionSet());
+                    $operation = new \Graphpinator\Parser\Operation($this->parseSelectionSet());
 
                     break;
                 case TokenType::NAME:
@@ -57,7 +57,7 @@ final class Parser
 
                     switch ($this->tokenizer->getNext()->getType()) {
                         case TokenType::CUR_O:
-                            $operation = new Operation($this->parseSelectionSet(), $operationType);
+                            $operation = new \Graphpinator\Parser\Operation($this->parseSelectionSet(), $operationType);
 
                             break;
                         case TokenType::NAME:
@@ -65,14 +65,14 @@ final class Parser
 
                             switch ($this->tokenizer->getNext()->getType()) {
                                 case TokenType::CUR_O:
-                                    $operation = new Operation($this->parseSelectionSet(), $operationType, $operationName);
+                                    $operation = new \Graphpinator\Parser\Operation($this->parseSelectionSet(), $operationType, $operationName);
 
                                     break;
                                 case TokenType::PAR_O:
                                     $variables = $this->parseVariables();
                                     $this->tokenizer->assertNext(TokenType::CUR_O, \Graphpinator\Exception\Parser\ExpectedSelectionSet::class);
 
-                                    $operation = new Operation($this->parseSelectionSet(), $operationType, $operationName, $variables);
+                                    $operation = new \Graphpinator\Parser\Operation($this->parseSelectionSet(), $operationType, $operationName, $variables);
 
                                     break;
                                 default:
@@ -100,7 +100,7 @@ final class Parser
             throw new \Graphpinator\Exception\Parser\EmptyOperation();
         }
 
-        return new ParseResult(
+        return new \Graphpinator\Parser\ParseResult(
             $operation,
             new \Graphpinator\Parser\Fragment\FragmentSet($fragments),
         );
@@ -156,7 +156,7 @@ final class Parser
 
         $this->tokenizer->getNext();
 
-        return new FieldSet($fields, new \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet($fragments));
+        return new \Graphpinator\Parser\FieldSet($fields, new \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet($fragments));
     }
 
     /**
@@ -191,7 +191,7 @@ final class Parser
             $children = $this->parseSelectionSet();
         }
 
-        return new Field($fieldName, $aliasName, $children, $arguments, $directives);
+        return new \Graphpinator\Parser\Field($fieldName, $aliasName, $children, $arguments, $directives);
     }
 
     /**

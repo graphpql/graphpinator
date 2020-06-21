@@ -16,7 +16,8 @@ final class Variable
         string $name,
         \Graphpinator\Type\Contract\Inputable $type,
         ?\Graphpinator\Parser\Value\Value $default = null
-    ) {
+    )
+    {
         $this->name = $name;
         $this->type = $type;
         $this->default = $default instanceof \Graphpinator\Parser\Value\Value

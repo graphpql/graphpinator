@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Resolver\Value;
 
-final class InputValue extends ValidatedValue implements \Iterator, \ArrayAccess
+final class InputValue extends \Graphpinator\Resolver\Value\ValidatedValue implements \Iterator, \ArrayAccess
 {
     public function __construct(array $fields, \Graphpinator\Type\InputType $type)
     {

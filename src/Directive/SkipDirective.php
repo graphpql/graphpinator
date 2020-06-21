@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Directive;
 
-final class SkipDirective extends Directive
+final class SkipDirective extends \Graphpinator\Directive\Directive
 {
     protected const NAME = 'skip';
     protected const DESCRIPTION = 'Built-in skip directive.';

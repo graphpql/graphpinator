@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Parser\FragmentSpread;
 
-final class InlineFragmentSpread implements FragmentSpread
+final class InlineFragmentSpread implements \Graphpinator\Parser\FragmentSpread\FragmentSpread
 {
     use \Nette\SmartObject;
 
@@ -39,7 +39,7 @@ final class InlineFragmentSpread implements FragmentSpread
         return $this->typeCond;
     }
 
-    public function normalize(\Graphpinator\Type\Container\Container $typeContainer, \Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions): \Graphpinator\Normalizer\FragmentSpread\FragmentSpread
+    public function normalize(\Graphpinator\Type\Container\Container $typeContainer, \Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions) : \Graphpinator\Normalizer\FragmentSpread\FragmentSpread
     {
         return new \Graphpinator\Normalizer\FragmentSpread\FragmentSpread(
             $this->fields->normalize($typeContainer, $fragmentDefinitions),

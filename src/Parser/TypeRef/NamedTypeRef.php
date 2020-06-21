@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Parser\TypeRef;
 
-final class NamedTypeRef implements TypeRef
+final class NamedTypeRef implements \Graphpinator\Parser\TypeRef\TypeRef
 {
     use \Nette\SmartObject;
 
@@ -15,7 +15,7 @@ final class NamedTypeRef implements TypeRef
         $this->name = $name;
     }
 
-    public function normalize(\Graphpinator\Type\Container\Container $typeContainer): \Graphpinator\Type\Contract\NamedDefinition
+    public function normalize(\Graphpinator\Type\Container\Container $typeContainer) : \Graphpinator\Type\Contract\NamedDefinition
     {
         return $typeContainer->getType($this->name);
     }

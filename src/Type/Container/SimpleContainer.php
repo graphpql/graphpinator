@@ -7,7 +7,7 @@ namespace Graphpinator\Type\Container;
 /**
  * Simple Container implementation
  */
-class SimpleContainer extends Container
+class SimpleContainer extends \Graphpinator\Type\Container\Container
 {
     protected array $types = [];
     protected array $directives = [];
@@ -15,8 +15,8 @@ class SimpleContainer extends Container
     protected array $builtInDirectives = [];
 
     /**
-     * @param \Graphpinator\Type\Contract\NamedDefinition[] $types
-     * @param \Graphpinator\Directive\Directive[] $directives
+     * @param array<\Graphpinator\Type\Contract\NamedDefinition> $types
+     * @param array<\Graphpinator\Directive\Directive> $directives
      */
     public function __construct(array $types, array $directives)
     {

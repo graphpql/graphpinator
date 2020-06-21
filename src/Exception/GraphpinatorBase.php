@@ -21,6 +21,13 @@ abstract class GraphpinatorBase extends \Exception implements \JsonSerializable
         $this->extensions = $extensions;
     }
 
+    public static function notOutputableResponse() : array
+    {
+        return [
+            'message' => 'Server responded with unknown error.',
+        ];
+    }
+
     final public function jsonSerialize() : array
     {
         if (!$this->isOutputable()) {
@@ -44,13 +51,6 @@ abstract class GraphpinatorBase extends \Exception implements \JsonSerializable
         }
 
         return $result;
-    }
-
-    public static function notOutputableResponse() : array
-    {
-        return [
-            'message' => 'Server responded with unknown error.'
-        ];
     }
 
     protected function isOutputable() : bool

@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Parser\Value;
 
-final class VariableRef implements Value
+final class VariableRef implements \Graphpinator\Parser\Value\Value
 {
     use \Nette\SmartObject;
 
@@ -15,7 +15,7 @@ final class VariableRef implements Value
         $this->varName = $name;
     }
 
-    public function getRawValue(): void
+    public function getRawValue() : void
     {
         throw new \Exception('Invalid state.');
     }
@@ -25,7 +25,7 @@ final class VariableRef implements Value
         if ($variables->offsetExists($this->varName)) {
             $value = $variables[$this->varName];
 
-            return new Literal($value->getRawValue());
+            return new \Graphpinator\Parser\Value\Literal($value->getRawValue());
         }
 
         throw new \Exception('Unknown variable.');

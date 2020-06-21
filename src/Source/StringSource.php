@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Source;
 
-final class StringSource implements Source
+final class StringSource implements \Graphpinator\Source\Source
 {
     use \Nette\SmartObject;
 
@@ -16,7 +16,7 @@ final class StringSource implements Source
 
     public function __construct(string $source)
     {
-        $this->characters = \preg_split('//u', $source, -1, PREG_SPLIT_NO_EMPTY);
+        $this->characters = \preg_split('//u', $source, -1, \PREG_SPLIT_NO_EMPTY);
         $this->numberOfChars = \count($this->characters);
         $this->rewind();
     }
@@ -37,7 +37,7 @@ final class StringSource implements Source
 
     public function getLocation() : Location
     {
-        return new Location($this->currentLine, $this->currentColumn);
+        return new \Graphpinator\Source\Location($this->currentLine, $this->currentColumn);
     }
 
     public function getNumberOfChars() : int

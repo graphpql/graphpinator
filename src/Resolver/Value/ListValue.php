@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Resolver\Value;
 
-final class ListValue extends ValidatedValue implements \Iterator, \Countable
+final class ListValue extends \Graphpinator\Resolver\Value\ValidatedValue implements \Iterator, \Countable
 {
     public function __construct($list, \Graphpinator\Type\ListType $type)
     {

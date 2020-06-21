@@ -8,8 +8,8 @@ final class Token
 {
     use \Nette\SmartObject;
 
-    protected string $type;
-    protected ?string $value;
+    private string $type;
+    private ?string $value;
 
     public function __construct(string $type, ?string $value = null)
     {

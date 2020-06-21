@@ -4,8 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Normalizer;
 
-use Graphpinator\Resolver\OperationResult;
-use Graphpinator\Resolver\VariableValueSet;
+use \Graphpinator\Resolver\OperationResult;
 
 final class Operation
 {
@@ -19,7 +18,8 @@ final class Operation
         \Graphpinator\Type\Type $operation,
         \Graphpinator\Normalizer\FieldSet $children,
         \Graphpinator\Normalizer\Variable\VariableSet $variables
-    ) {
+    )
+    {
         $this->operation = $operation;
         $this->children = $children;
         $this->variables = $variables;
@@ -38,10 +38,10 @@ final class Operation
     public function execute(\Infinityloop\Utils\Json $variables) : OperationResult
     {
         $data = $this->operation->resolve(
-            $this->children->applyVariables(new VariableValueSet($this->variables, $variables)),
-            \Graphpinator\Resolver\FieldResult::fromRaw($this->operation, null)
+            $this->children->applyVariables(new \Graphpinator\Resolver\VariableValueSet($this->variables, $variables)),
+            \Graphpinator\Resolver\FieldResult::fromRaw($this->operation, null),
         );
 
-        return new OperationResult($data);
+        return new \Graphpinator\Resolver\OperationResult($data);
     }
 }

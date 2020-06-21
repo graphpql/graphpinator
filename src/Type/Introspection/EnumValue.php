@@ -19,7 +19,7 @@ final class EnumValue extends \Graphpinator\Type\Type
         return $rawValue instanceof \Graphpinator\Type\Enum\EnumItem;
     }
 
-    protected function getFieldDefinition(): \Graphpinator\Field\ResolvableFieldSet
+    protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
     {
         return new \Graphpinator\Field\ResolvableFieldSet([
             new \Graphpinator\Field\ResolvableField(

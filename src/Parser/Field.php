@@ -20,7 +20,8 @@ final class Field
         ?\Graphpinator\Parser\FieldSet $children = null,
         ?\Graphpinator\Parser\Value\NamedValueSet $arguments = null,
         ?\Graphpinator\Parser\Directive\DirectiveSet $directives = null
-    ) {
+    )
+    {
         $this->name = $name;
         $this->alias = $alias;
         $this->children = $children;

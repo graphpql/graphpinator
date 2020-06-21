@@ -23,7 +23,7 @@ final class InputValue extends \Graphpinator\Type\Type
         return $rawValue instanceof \Graphpinator\Argument\Argument;
     }
 
-    protected function getFieldDefinition(): \Graphpinator\Field\ResolvableFieldSet
+    protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
     {
         return new \Graphpinator\Field\ResolvableFieldSet([
             new \Graphpinator\Field\ResolvableField(
