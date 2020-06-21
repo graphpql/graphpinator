@@ -19,10 +19,10 @@ final class Tokenizer implements \Iterator
         't' => "\u{0009}",
     ];
 
-    private bool $skipNotRelevant;
-    private ?Token $token = null;
-    private ?int $tokenStartIndex = null;
     private \Graphpinator\Source\Source $source;
+    protected bool $skipNotRelevant;
+    protected ?Token $token = null;
+    protected ?int $tokenStartIndex = null;
 
     public function __construct(\Graphpinator\Source\Source $source, bool $skipNotRelevant = true)
     {
