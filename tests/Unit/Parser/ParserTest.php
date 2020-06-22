@@ -78,7 +78,6 @@ final class ParserTest extends \PHPUnit\Framework\TestCase
     {
         $result = \Graphpinator\Parser\Parser::parseString('query {} mutation {}');
 
-        // TODO
         self::assertCount(0, $result->getFragments());
     }
 

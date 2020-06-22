@@ -100,7 +100,6 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
     public function testInvalid(string $request, \Infinityloop\Utils\Json $variables, string $exception) : void
     {
         $this->expectException($exception);
-        //$this->expectExceptionMessage(\constant($exception . '::MESSAGE'));
 
         $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
         $graphpinator->runQuery($request, $variables);
