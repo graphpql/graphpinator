@@ -24,7 +24,7 @@
   "scripts": {
     "phpunit": "phpunit tests",
     "infection": "infection",
-    "codestyle": "phpcs --standard=/vendor/phpcs/vendor/infinityloop-dev/coding-standard/InfinityloopCodingStandard/ruleset.xml --extensions=php src tests"
+    "codestyle": "phpcs --standard=/vendor/infinityloop-dev/coding-standard/InfinityloopCodingStandard/ruleset.xml --extensions=php src tests"
   },
   "autoload": {
     "psr-4": {
