@@ -1,19 +1,44 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Unit\Type;
 
 final class ListTypeTest extends \PHPUnit\Framework\TestCase
 {
+    public static function getTestTypeAbc() : \Graphpinator\Type\Type
+    {
+        return new class extends \Graphpinator\Type\Type {
+            protected const NAME = 'Abc';
+
+            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+            {
+                return new \Graphpinator\Field\ResolvableFieldSet([
+                    new \Graphpinator\Field\ResolvableField(
+                        'field',
+                        \Graphpinator\Type\Container\Container::String(),
+                        static function (int $parent) {
+                            if ($parent !== 123) {
+                                throw new \Exception();
+                            }
+
+                            return 'foo';
+                        },
+                    ),
+                ]);
+            }
+        };
+    }
+
     public function testNoRequest() : void
     {
+        //phpcs:ignore SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly.ReferencedGeneralException
         $this->expectException(\Exception::class);
 
         $type = self::getTestTypeAbc()->list();
         $parent = \Graphpinator\Resolver\FieldResult::fromRaw($type, [124]);
 
-        $result = $type->resolve(null, $parent);
+        $type->resolve(null, $parent);
     }
 
     public function testValidateValue() : void
@@ -25,6 +50,7 @@ final class ListTypeTest extends \PHPUnit\Framework\TestCase
 
     public function testValidateValueInvalidValue() : void
     {
+        //phpcs:ignore SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly.ReferencedGeneralException
         $this->expectException(\Exception::class);
 
         $type = \Graphpinator\Type\Container\Container::String()->list();
@@ -33,6 +59,7 @@ final class ListTypeTest extends \PHPUnit\Framework\TestCase
 
     public function testValidateValueNoArray() : void
     {
+        //phpcs:ignore SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly.ReferencedGeneralException
         $this->expectException(\Exception::class);
 
         $type = \Graphpinator\Type\Container\Container::String()->list();
@@ -46,27 +73,5 @@ final class ListTypeTest extends \PHPUnit\Framework\TestCase
         self::assertTrue($type->isInstanceOf($type));
         self::assertTrue($type->isInstanceOf($type->notNull()));
         self::assertFalse($type->isInstanceOf(\Graphpinator\Type\Container\Container::String()));
-    }
-
-    public static function getTestTypeAbc() : \Graphpinator\Type\Type
-    {
-        return new class extends \Graphpinator\Type\Type {
-            protected const NAME = 'Abc';
-
-            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
-            {
-                return new \Graphpinator\Field\ResolvableFieldSet([new \Graphpinator\Field\ResolvableField(
-                    'field',
-                    \Graphpinator\Type\Container\Container::String(),
-                    static function (int $parent) {
-                        if ($parent !== 123) {
-                            throw new \Exception();
-                        }
-
-                        return 'foo';
-                    }
-                )]);
-            }
-        };
     }
 }

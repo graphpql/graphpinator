@@ -26,11 +26,13 @@ final class NotNullType extends \Graphpinator\Type\Contract\ModifierDefinition
         $this->innerType->validateValue($rawValue);
     }
 
+    //@phpcs:ignore SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingAnyTypeHint
     public function resolve(?\Graphpinator\Normalizer\FieldSet $requestedFields, \Graphpinator\Resolver\FieldResult $parentResult)
     {
         return $this->innerType->resolve($requestedFields, $parentResult);
     }
 
+    //@phpcs:ignore SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingAnyTypeHint
     public function applyDefaults($value)
     {
         return $this->innerType->applyDefaults($value);

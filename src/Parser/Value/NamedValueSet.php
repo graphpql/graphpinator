@@ -29,6 +29,7 @@ final class NamedValueSet extends \Infinityloop\Utils\ObjectSet
         return new self($values);
     }
 
+    //@phpcs:ignore SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingAnyTypeHint
     protected function getKey($object)
     {
         return $object->getName();

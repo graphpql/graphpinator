@@ -29,6 +29,7 @@ final class EnumItemSet extends \Infinityloop\Utils\ObjectSet implements \Graphp
         return $return;
     }
 
+    //@phpcs:ignore SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingAnyTypeHint
     protected function getKey($object)
     {
         return $object->getName();

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Spec;
 
@@ -12,65 +12,245 @@ final class InputTest extends \PHPUnit\Framework\TestCase
             [
                 'query queryName { field0 { field1(arg2: null) { name } } }',
                 \Infinityloop\Utils\Json::fromArray([]),
-                \Infinityloop\Utils\Json::fromArray(['data' => ['field0' => ['field1' => ['name' => 'Test 123']]]]),
+                \Infinityloop\Utils\Json::fromArray([
+                    'data' => [
+                        'field0' => [
+                            'field1' => [
+                                'name' => 'Test 123',
+                            ],
+                        ],
+                    ],
+                ]),
             ],
             [
                 'query queryName { field0 { field1(arg2: {name: "foo", innerList: [], innerNotNull: {name: "bar", number: []} }) { name } } }',
                 \Infinityloop\Utils\Json::fromArray([]),
-                \Infinityloop\Utils\Json::fromArray(['data' => ['field0' => ['field1' => ['name' => 'Test input: name: foo; inner: ; name: bar; bool: ; ']]]]),
+                \Infinityloop\Utils\Json::fromArray([
+                    'data' => [
+                        'field0' => [
+                            'field1' => [
+                                'name' => 'Test input: name: foo; inner: ; name: bar; bool: ; ',
+                            ],
+                        ],
+                    ],
+                ]),
             ],
             [
-                'query queryName { field0 { field1(arg2: {name: "foo", innerList: [], innerNotNull: {name: "bar", number: [123, 456]} }) { name } } }',
+                'query queryName { 
+                    field0 { 
+                        field1(arg2: {
+                            name: "foo", innerList: [], innerNotNull: {
+                                name: "bar", number: [123, 456]
+                            } 
+                        }) 
+                        { 
+                            name 
+                        } 
+                    } 
+                }',
                 \Infinityloop\Utils\Json::fromArray([]),
-                \Infinityloop\Utils\Json::fromArray(['data' => ['field0' => ['field1' => ['name' => 'Test input: name: foo; inner: ; name: bar; 0: 123; 1: 456; bool: ; ']]]]),
+                \Infinityloop\Utils\Json::fromArray([
+                    'data' => [
+                        'field0' => [
+                            'field1' => [
+                                'name' => 'Test input: name: foo; inner: ; name: bar; 0: 123; 1: 456; bool: ; ',
+                            ],
+                        ],
+                    ],
+                ]),
             ],
             [
-                'query queryName { field0 { field1(arg2: {name: "foo", inner: null, innerList: [], innerNotNull: {name: "bar", number: []} }) { name } } }',
+                'query queryName { 
+                    field0 { 
+                        field1(arg2: {
+                            name: "foo", inner: null, innerList: [], innerNotNull: {
+                                name: "bar", number: []
+                            } 
+                        }) 
+                        { 
+                            name 
+                        } 
+                    } 
+                }',
                 \Infinityloop\Utils\Json::fromArray([]),
-                \Infinityloop\Utils\Json::fromArray(['data' => ['field0' => ['field1' => ['name' => 'Test input: name: foo; inner: ; name: bar; bool: ; ']]]]),
+                \Infinityloop\Utils\Json::fromArray([
+                    'data' => [
+                        'field0' => [
+                            'field1' => [
+                                'name' => 'Test input: name: foo; inner: ; name: bar; bool: ; ',
+                            ],
+                        ],
+                    ],
+                ]),
             ],
             [
-                'query queryName { field0 { field1(arg2: {name: "foo", innerList: [], innerNotNull: {name: "bar", number: [], bool: null} }) { name } } }',
+                'query queryName { 
+                    field0 { 
+                        field1(arg2: {
+                            name: "foo", innerList: [], innerNotNull: {
+                                name: "bar", number: [], bool: null
+                            } 
+                        }) 
+                        { 
+                            name 
+                        } 
+                    } 
+                }',
                 \Infinityloop\Utils\Json::fromArray([]),
-                \Infinityloop\Utils\Json::fromArray(['data' => ['field0' => ['field1' => ['name' => 'Test input: name: foo; inner: ; name: bar; bool: ; ']]]]),
+                \Infinityloop\Utils\Json::fromArray([
+                    'data' => [
+                        'field0' => [
+                            'field1' => [
+                                'name' => 'Test input: name: foo; inner: ; name: bar; bool: ; ',
+                            ],
+                        ],
+                    ],
+                ]),
             ],
             [
-                'query queryName { field0 { field1(arg2: {name: "foo", innerList: [], innerNotNull: {name: "bar", number: [], bool: true} }) { name } } }',
+                'query queryName { 
+                    field0 { 
+                        field1(arg2: {
+                            name: "foo", innerList: [], innerNotNull: {
+                                name: "bar", number: [], bool: true
+                            } 
+                        }) 
+                        { 
+                            name 
+                        } 
+                    } 
+                }',
                 \Infinityloop\Utils\Json::fromArray([]),
-                \Infinityloop\Utils\Json::fromArray(['data' => ['field0' => ['field1' => ['name' => 'Test input: name: foo; inner: ; name: bar; bool: 1; ']]]]),
+                \Infinityloop\Utils\Json::fromArray([
+                    'data' => [
+                        'field0' => [
+                            'field1' => [
+                                'name' => 'Test input: name: foo; inner: ; name: bar; bool: 1; ',
+                            ],
+                        ],
+                    ],
+                ]),
             ],
             [
-                'query queryName { field0 { field1(arg2: {name: "foo", innerList: [{name: "bar", number: []}, {name: "bar", number: []}], innerNotNull: {name: "bar", number: []} }) { name } } }',
+                'query queryName { 
+                    field0 { 
+                        field1(arg2: {
+                            name: "foo", innerList: [{
+                                name: "bar", number: []
+                            }, 
+                            {
+                                name: "bar", number: []
+                            }], 
+                            innerNotNull: {
+                                name: "bar", number: []
+                            } 
+                        }) 
+                        { 
+                            name 
+                        } 
+                    } 
+                }',
                 \Infinityloop\Utils\Json::fromArray([]),
-                \Infinityloop\Utils\Json::fromArray(['data' => ['field0' => ['field1' => ['name' => 'Test input: name: foo; inner: ; name: bar; bool: ; name: bar; bool: ; name: bar; bool: ; ']]]]),
+                \Infinityloop\Utils\Json::fromArray([
+                    'data' => [
+                        'field0' => [
+                            'field1' => [
+                                'name' => 'Test input: name: foo; inner: ; name: bar; bool: ; name: bar; bool: ; name: bar; bool: ; ',
+                            ],
+                        ],
+                    ],
+                ]),
             ],
             [
-                'query queryName ($var1: TestInnerInput = {name: "bar", number: []}){ field0 { field1(arg2: {name: "foo", innerList: [$var1, $var1], innerNotNull: $var1 }) { name } } }',
+                'query queryName ($var1: TestInnerInput = {
+                    name: "bar", number: []
+                    })
+                    { 
+                        field0 { 
+                            field1(arg2: {
+                                name: "foo", innerList: [$var1, $var1], innerNotNull: $var1 
+                            }) 
+                            { 
+                                name 
+                            } 
+                        } 
+                    }',
                 \Infinityloop\Utils\Json::fromArray([]),
-                \Infinityloop\Utils\Json::fromArray(['data' => ['field0' => ['field1' => ['name' => 'Test input: name: foo; inner: ; name: bar; bool: ; name: bar; bool: ; name: bar; bool: ; ']]]]),
+                \Infinityloop\Utils\Json::fromArray([
+                    'data' => [
+                        'field0' => [
+                            'field1' => [
+                                'name' => 'Test input: name: foo; inner: ; name: bar; bool: ; name: bar; bool: ; name: bar; bool: ; ',
+                            ],
+                        ],
+                    ],
+                ]),
             ],
             [
-                'query queryName ($var1: TestInnerInput){ field0 { field1(arg2: {name: "foo", innerList: [$var1, $var1], innerNotNull: $var1 }) { name } } }',
+                'query queryName ($var1: TestInnerInput) { 
+                    field0 { 
+                        field1(arg2: {
+                            name: "foo", innerList: [$var1, $var1], innerNotNull: $var1 
+                        }) 
+                        { 
+                            name 
+                        } 
+                    } 
+                }',
                 \Infinityloop\Utils\Json::fromArray(['var1' => ['name' => 'bar', 'number' => []]]),
-                \Infinityloop\Utils\Json::fromArray(['data' => ['field0' => ['field1' => ['name' => 'Test input: name: foo; inner: ; name: bar; bool: ; name: bar; bool: ; name: bar; bool: ; ']]]]),
+                \Infinityloop\Utils\Json::fromArray([
+                    'data' => [
+                        'field0' => [
+                            'field1' => [
+                                'name' => 'Test input: name: foo; inner: ; name: bar; bool: ; name: bar; bool: ; name: bar; bool: ; ',
+                            ],
+                        ],
+                    ],
+                ]),
             ],
             [
-                'query queryName ($var1: [TestInnerInput] = [{name: "bar", number: []}]){ field0 { field1(arg2: {name: "foo", innerList: $var1, innerNotNull: {name: "bar", number: []} }) { name } } }',
+                'query queryName ($var1: [TestInnerInput] = [
+                            {name: "bar", number: []}
+                        ]
+                    )
+                    { 
+                        field0 { 
+                            field1(arg2: {
+                                name: "foo", innerList: $var1, innerNotNull: {
+                                    name: "bar", number: []
+                                } 
+                            }) 
+                            { 
+                                name 
+                            } 
+                        } 
+                    }',
                 \Infinityloop\Utils\Json::fromArray([]),
-                \Infinityloop\Utils\Json::fromArray(['data' => ['field0' => ['field1' => ['name' => 'Test input: name: foo; inner: ; name: bar; bool: ; name: bar; bool: ; ']]]]),
+                \Infinityloop\Utils\Json::fromArray([
+                    'data' => [
+                        'field0' => [
+                            'field1' => [
+                                'name' => 'Test input: name: foo; inner: ; name: bar; bool: ; name: bar; bool: ; ',
+                            ],
+                        ],
+                    ],
+                ]),
             ],
         ];
     }
 
     /**
      * @dataProvider simpleDataProvider
+     * @param string $request
+     * @param \Infinityloop\Utils\Json $variables
+     * @param \Infinityloop\Utils\Json $expected
      */
     public function testSimple(string $request, \Infinityloop\Utils\Json $variables, \Infinityloop\Utils\Json $expected) : void
     {
         $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
         $result = $graphpinator->runQuery($request, $variables);
 
-        self::assertSame($expected->toString(), \json_encode($result, JSON_THROW_ON_ERROR, 512),);
+        self::assertSame($expected->toString(), \json_encode($result, \JSON_THROW_ON_ERROR, 512));
         self::assertSame($expected['data'], \json_decode(\json_encode($result->getData()), true));
         self::assertNull($result->getErrors());
     }
@@ -99,9 +279,12 @@ final class InputTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider invalidDataProvider
+     * @param string $request
+     * @param \Infinityloop\Utils\Json $variables
      */
     public function testInvalid(string $request, \Infinityloop\Utils\Json $variables) : void
     {
+        //phpcs:ignore SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly.ReferencedGeneralException
         $this->expectException(\Exception::class);
 
         $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());

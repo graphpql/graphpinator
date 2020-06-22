@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Spec;
 
@@ -24,19 +24,25 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider simpleDataProvider
+     * @param string $request
+     * @param \Infinityloop\Utils\Json $variables
+     * @param \Infinityloop\Utils\Json $expected
      */
     public function testSimple(string $request, \Infinityloop\Utils\Json $variables, \Infinityloop\Utils\Json $expected) : void
     {
         $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
         $result = $graphpinator->runQuery($request, $variables);
 
-        self::assertSame($expected->toString(), \json_encode($result, JSON_THROW_ON_ERROR, 512),);
+        self::assertSame($expected->toString(), \json_encode($result, \JSON_THROW_ON_ERROR, 512));
         self::assertSame($expected['data'], \json_decode(\json_encode($result->getData()), true));
         self::assertNull($result->getErrors());
     }
 
     /**
      * @dataProvider simpleDataProvider
+     * @param string $request
+     * @param \Infinityloop\Utils\Json $variables
+     * @param \Infinityloop\Utils\Json $expected
      */
     public function testComponents(string $request, \Infinityloop\Utils\Json $variables, \Infinityloop\Utils\Json $expected) : void
     {
@@ -47,7 +53,7 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
 
         $result = $resolver->resolve($normalizer->normalize($parser->parse()), $variables);
 
-        self::assertSame($expected->toString(), \json_encode($result, JSON_THROW_ON_ERROR, 512),);
+        self::assertSame($expected->toString(), \json_encode($result, \JSON_THROW_ON_ERROR, 512));
         self::assertSame($expected['data'], \json_decode(\json_encode($result->getData()), true));
         self::assertNull($result->getErrors());
     }
@@ -63,11 +69,13 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
             [
                 'query queryName { field0 { field1 { nonExisting } } }',
                 \Infinityloop\Utils\Json::fromArray([]),
+                //phpcs:ignore SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly.ReferencedGeneralException
                 \Exception::class,
             ],
             [
                 'query queryName { field0 { field1 { name { nonExisting } } } }',
                 \Infinityloop\Utils\Json::fromArray([]),
+                //phpcs:ignore SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly.ReferencedGeneralException
                 \Exception::class,
             ],
             [
@@ -85,6 +93,9 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider invalidDataProvider
+     * @param string $request
+     * @param \Infinityloop\Utils\Json $variables
+     * @param string $exception
      */
     public function testInvalid(string $request, \Infinityloop\Utils\Json $variables, string $exception) : void
     {

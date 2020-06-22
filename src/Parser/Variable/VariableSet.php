@@ -29,6 +29,7 @@ final class VariableSet extends \Infinityloop\Utils\ObjectSet
         return new \Graphpinator\Normalizer\Variable\VariableSet($variables);
     }
 
+    //@phpcs:ignore SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingAnyTypeHint
     protected function getKey($object)
     {
         return $object->getName();

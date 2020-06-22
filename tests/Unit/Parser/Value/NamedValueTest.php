@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Unit\Parser\Value;
 
@@ -19,8 +19,10 @@ final class NamedValueTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider simpleDataProvider
+     * @param \Graphpinator\Parser\Value\Value $value
+     * @param string $name
      */
-    public function testSimple(\Graphpinator\Parser\Value\Value $value, string $name): void
+    public function testSimple(\Graphpinator\Parser\Value\Value $value, string $name) : void
     {
         $obj = new \Graphpinator\Parser\Value\NamedValue($value, $name);
 
@@ -33,14 +35,14 @@ final class NamedValueTest extends \PHPUnit\Framework\TestCase
     {
         $variables = new \Graphpinator\Resolver\VariableValueSet(
             new \Graphpinator\Normalizer\Variable\VariableSet([
-                new \Graphpinator\Normalizer\Variable\Variable('var1', \Graphpinator\Type\Container\Container::String())
+                new \Graphpinator\Normalizer\Variable\Variable('var1', \Graphpinator\Type\Container\Container::String()),
             ]),
             \Infinityloop\Utils\Json::fromArray(['var1' => 'val1']),
         );
 
         $value = new \Graphpinator\Parser\Value\NamedValue(
             new \Graphpinator\Parser\Value\VariableRef('var1'),
-            'argumentName'
+            'argumentName',
         );
 
         $newValue = $value->applyVariables($variables);

@@ -1,262 +1,432 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Unit\Tokenizer;
 
-use Graphpinator\Tokenizer\Token;
-use Graphpinator\Tokenizer\TokenType;
+use \Graphpinator\Tokenizer\Token;
+use \Graphpinator\Tokenizer\TokenType;
 
 final class TokenizerTest extends \PHPUnit\Framework\TestCase
 {
     public function simpleDataProvider() : array
     {
         return [
-            ['""', [
-                new Token(TokenType::STRING, ''),
-            ]],
-            ['"ěščřžýá"', [
-                new Token(TokenType::STRING, 'ěščřžýá'),
-            ]],
-            ['"\\""', [
-                new Token(TokenType::STRING, '"'),
-            ]],
-            ['"\\\\"', [
-                new Token(TokenType::STRING, '\\'),
-            ]],
-            ['"\\/"', [
-                new Token(TokenType::STRING, '/'),
-            ]],
-            ['"\\b"', [
-                new Token(TokenType::STRING, "\u{0008}"),
-            ]],
-            ['"\\f"', [
-                new Token(TokenType::STRING, "\u{000C}"),
-            ]],
-            ['"\\n"', [
-                new Token(TokenType::STRING, "\u{000A}"),
-            ]],
-            ['"\\r"', [
-                new Token(TokenType::STRING, "\u{000D}"),
-            ]],
-            ['"\\t"', [
-                new Token(TokenType::STRING, "\u{0009}"),
-            ]],
-            ['"\\u1234"', [
-                new Token(TokenType::STRING, "\u{1234}"),
-            ]],
-            ['"u1234"', [
-                new Token(TokenType::STRING, 'u1234'),
-            ]],
-            ['"abc\\u1234abc"', [
-                new Token(TokenType::STRING, "abc\u{1234}abc"),
-            ]],
-            ['"blabla\\t\\"\\nfoobar"', [
-                new Token(TokenType::STRING, "blabla\u{0009}\"\u{000A}foobar"),
-            ]],
-            ['""""""', [
-                new Token(TokenType::STRING, ''),
-            ]],
-            ['""""""""', [
-                new Token(TokenType::STRING, ''),
-                new Token(TokenType::STRING, ''),
-            ]],
-            ['"""' . \PHP_EOL . '"""', [
-                new Token(TokenType::STRING, ''),
-            ]],
-            ['"""   """', [
-                new Token(TokenType::STRING, ''),
-            ]],
-            ['"""  abc  """', [
-                new Token(TokenType::STRING, 'abc  '),
-            ]],
-            ['"""' . \PHP_EOL . \PHP_EOL . \PHP_EOL . '"""', [
-                new Token(TokenType::STRING, ''),
-            ]],
-            ['"""' . \PHP_EOL . \PHP_EOL . 'foo' . \PHP_EOL . \PHP_EOL . '"""', [
-                new Token(TokenType::STRING, 'foo'),
-            ]],
-            ['"""' . \PHP_EOL . \PHP_EOL . '       foo' . \PHP_EOL . \PHP_EOL . '"""', [
-                new Token(TokenType::STRING, 'foo'),
-            ]],
-            ['"""' . \PHP_EOL . ' foo' . \PHP_EOL . '       foo' . \PHP_EOL . '"""', [
-                new Token(TokenType::STRING, 'foo' . \PHP_EOL . '      foo'),
-            ]],
-            ['"""   foo' . \PHP_EOL . \PHP_EOL . '  foo' . \PHP_EOL . \PHP_EOL . ' foo"""', [
-                new Token(TokenType::STRING, '  foo' . \PHP_EOL . \PHP_EOL . ' foo' . \PHP_EOL . \PHP_EOL . 'foo'),
-            ]],
-            ['"""\\n"""', [
-                new Token(TokenType::STRING, "\\n"),
-            ]],
-            ['"""\\""""""', [
-                new Token(TokenType::STRING, '"""'),
-            ]],
-            ['"""\\\\""""""', [
-                new Token(TokenType::STRING, '\\"""'),
-            ]],
-            ['"""abc\\"""abc"""', [
-                new Token(TokenType::STRING, 'abc"""abc'),
-            ]],
-            ['0', [
-                new Token(TokenType::INT, '0'),
-            ]],
-            ['-0', [
-                new Token(TokenType::INT, '-0'),
-            ]],
-            ['4', [
-                new Token(TokenType::INT, '4'),
-            ]],
-            ['-4', [
-                new Token(TokenType::INT, '-4'),
-            ]],
-            ['4.0', [
-                new Token(TokenType::FLOAT, '4.0'),
-            ]],
-            ['-4.0', [
-                new Token(TokenType::FLOAT, '-4.0'),
-            ]],
-            ['4e10', [
-                new Token(TokenType::FLOAT, '4e10'),
-            ]],
-            ['4e0010', [
-                new Token(TokenType::FLOAT, '4e0010'),
-            ]],
-            ['-4e10', [
-                new Token(TokenType::FLOAT, '-4e10'),
-            ]],
-            ['4E10', [
-                new Token(TokenType::FLOAT, '4e10'),
-            ]],
-            ['-4e-10', [
-                new Token(TokenType::FLOAT, '-4e-10'),
-            ]],
-            ['4e+10', [
-                new Token(TokenType::FLOAT, '4e10'),
-            ]],
-            ['-4e+10', [
-                new Token(TokenType::FLOAT, '-4e10'),
-            ]],
-            ['null', [
-                new Token(TokenType::NULL),
-            ]],
-            ['NULL', [
-                new Token(TokenType::NULL),
-            ]],
-            ['Name', [
-                new Token(TokenType::NAME, 'Name'),
-            ]],
-            ['NAME', [
-                new Token(TokenType::NAME, 'NAME'),
-            ]],
-            ['__Name', [
-                new Token(TokenType::NAME, '__Name'),
-            ]],
-            ['Name_with_underscore', [
-                new Token(TokenType::NAME, 'Name_with_underscore'),
-            ]],
-            ['FALSE true', [
-                new Token(TokenType::FALSE),
-                new Token(TokenType::TRUE),
-            ]],
-            ['... type fragment', [
-                new Token(TokenType::ELLIP),
-                new Token(TokenType::NAME, 'type'),
-                new Token(TokenType::FRAGMENT),
-            ]],
-            ['-4.024E-10', [
-                new Token(TokenType::FLOAT, '-4.024e-10'),
-            ]],
-            ['query { field1 { innerField } }', [
-                new Token(TokenType::NAME, 'query'),
-                new Token(TokenType::CUR_O),
-                new Token(TokenType::NAME, 'field1'),
-                new Token(TokenType::CUR_O),
-                new Token(TokenType::NAME, 'innerField'),
-                new Token(TokenType::CUR_C),
-                new Token(TokenType::CUR_C),
-            ]],
-            ['mutation { field(argName: 4) }', [
-                new Token(TokenType::NAME, 'mutation'),
-                new Token(TokenType::CUR_O),
-                new Token(TokenType::NAME, 'field'),
-                new Token(TokenType::PAR_O),
-                new Token(TokenType::NAME, 'argName'),
-                new Token(TokenType::COLON),
-                new Token(TokenType::INT, '4'),
-                new Token(TokenType::PAR_C),
-                new Token(TokenType::CUR_C),
-            ]],
-            ['subscription { field(argName: "str") }', [
-                new Token(TokenType::NAME, 'subscription'),
-                new Token(TokenType::CUR_O),
-                new Token(TokenType::NAME, 'field'),
-                new Token(TokenType::PAR_O),
-                new Token(TokenType::NAME, 'argName'),
-                new Token(TokenType::COLON),
-                new Token(TokenType::STRING, 'str'),
-                new Token(TokenType::PAR_C),
-                new Token(TokenType::CUR_C),
-            ]],
-            ['query { field(argName: ["str", "str", $varName]) @directiveName }', [
-                new Token(TokenType::NAME, 'query'),
-                new Token(TokenType::CUR_O),
-                new Token(TokenType::NAME, 'field'),
-                new Token(TokenType::PAR_O),
-                new Token(TokenType::NAME, 'argName'),
-                new Token(TokenType::COLON),
-                new Token(TokenType::SQU_O),
-                new Token(TokenType::STRING, 'str'),
-                new Token(TokenType::COMMA),
-                new Token(TokenType::STRING, 'str'),
-                new Token(TokenType::COMMA),
-                new Token(TokenType::VARIABLE, 'varName'),
-                new Token(TokenType::SQU_C),
-                new Token(TokenType::PAR_C),
-                new Token(TokenType::DIRECTIVE, 'directiveName'),
-                new Token(TokenType::CUR_C),
-            ]],
-            ['query {' . \PHP_EOL .
-                'field1 {' . \PHP_EOL .
-                    'innerField' . \PHP_EOL .
-                '}' . \PHP_EOL .
-            '}', [
-                new Token(TokenType::NAME, 'query'),
-                new Token(TokenType::CUR_O),
-                new Token(TokenType::NEWLINE),
-                new Token(TokenType::NAME, 'field1'),
-                new Token(TokenType::CUR_O),
-                new Token(TokenType::NEWLINE),
-                new Token(TokenType::NAME, 'innerField'),
-                new Token(TokenType::NEWLINE),
-                new Token(TokenType::CUR_C),
-                new Token(TokenType::NEWLINE),
-                new Token(TokenType::CUR_C),
-            ]],
-            ['query {' . \PHP_EOL .
-                'field1 {' . \PHP_EOL .
-                    '# this is comment' . \PHP_EOL .
-                    'innerField' . \PHP_EOL .
-                '}' . \PHP_EOL .
-            '}', [
-                new Token(TokenType::NAME, 'query'),
-                new Token(TokenType::CUR_O),
-                new Token(TokenType::NEWLINE),
-                new Token(TokenType::NAME, 'field1'),
-                new Token(TokenType::CUR_O),
-                new Token(TokenType::NEWLINE),
-                new Token(TokenType::COMMENT, ' this is comment'),
-                new Token(TokenType::NEWLINE),
-                new Token(TokenType::NAME, 'innerField'),
-                new Token(TokenType::NEWLINE),
-                new Token(TokenType::CUR_C),
-                new Token(TokenType::NEWLINE),
-                new Token(TokenType::CUR_C),
-            ]],
+            [
+                '""',
+                [
+                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, ''),
+                ],
+            ],
+            [
+                '"ěščřžýá"',
+                [
+                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, 'ěščřžýá'),
+                ],
+            ],
+            [
+                '"\\""',
+                [
+                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, '"'),
+                ],
+            ],
+            [
+                '"\\\\"',
+                [
+                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, '\\'),
+                ],
+            ],
+            [
+                '"\\/"',
+                [
+                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, '/'),
+                ],
+            ],
+            [
+                '"\\b"',
+                [
+                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, "\u{0008}"),
+                ],
+            ],
+            [
+                '"\\f"',
+                [
+                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, "\u{000C}"),
+                ],
+            ],
+            [
+                '"\\n"',
+                [
+                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, "\u{000A}"),
+                ],
+            ],
+            [
+                '"\\r"',
+                [
+                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, "\u{000D}"),
+                ],
+            ],
+            [
+                '"\\t"',
+                [
+                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, "\u{0009}"),
+                ],
+            ],
+            [
+                '"\\u1234"',
+                [
+                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, "\u{1234}"),
+                ],
+            ],
+            [
+                '"u1234"',
+                [
+                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, 'u1234'),
+                ],
+            ],
+            [
+                '"abc\\u1234abc"',
+                [
+                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, "abc\u{1234}abc"),
+                ],
+            ],
+            [
+                '"blabla\\t\\"\\nfoobar"',
+                [
+                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, "blabla\u{0009}\"\u{000A}foobar"),
+                ],
+            ],
+            [
+                '""""""',
+                [
+                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, ''),
+                ],
+            ],
+            [
+                '""""""""',
+                [
+                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, ''),
+                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, ''),
+                ],
+            ],
+            [
+                '"""' . \PHP_EOL . '"""',
+                [
+                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, ''),
+                ],
+            ],
+            [
+                '"""   """',
+                [
+                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, ''),
+                ],
+            ],
+            [
+                '"""  abc  """',
+                [
+                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, 'abc  '),
+                ],
+            ],
+            [
+                '"""' . \PHP_EOL . \PHP_EOL . \PHP_EOL . '"""',
+                [
+                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, ''),
+                ],
+            ],
+            [
+                '"""' . \PHP_EOL . \PHP_EOL . 'foo' . \PHP_EOL . \PHP_EOL . '"""',
+                [
+                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, 'foo'),
+                ],
+            ],
+            [
+                '"""' . \PHP_EOL . \PHP_EOL . '       foo' . \PHP_EOL . \PHP_EOL . '"""',
+                [
+                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, 'foo'),
+                ],
+            ],
+            [
+                '"""' . \PHP_EOL . ' foo' . \PHP_EOL . '       foo' . \PHP_EOL . '"""',
+                [
+                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, 'foo' . \PHP_EOL . '      foo'),
+                ],
+            ],
+            [
+                '"""   foo' . \PHP_EOL . \PHP_EOL . '  foo' . \PHP_EOL . \PHP_EOL . ' foo"""',
+                [
+                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, '  foo' . \PHP_EOL . \PHP_EOL . ' foo' . \PHP_EOL . \PHP_EOL . 'foo'),
+                ],
+            ],
+            [
+                '"""\\n"""',
+                [
+                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, "\\n"),
+                ],
+            ],
+            [
+                '"""\\""""""',
+                [
+                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, '"""'),
+                ],
+            ],
+            [
+                '"""\\\\""""""',
+                [
+                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, '\\"""'),
+                ],
+            ],
+            [
+                '"""abc\\"""abc"""',
+                [
+                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, 'abc"""abc'),
+                ],
+            ],
+            [
+                '0',
+                [
+                    new \Graphpinator\Tokenizer\Token(TokenType::INT, '0'),
+                ],
+            ],
+            [
+                '-0',
+                [
+                    new \Graphpinator\Tokenizer\Token(TokenType::INT, '-0'),
+                ],
+            ],
+            [
+                '4',
+                [
+                    new \Graphpinator\Tokenizer\Token(TokenType::INT, '4'),
+                ],
+            ],
+            [
+                '-4',
+                [
+                    new \Graphpinator\Tokenizer\Token(TokenType::INT, '-4'),
+                ],
+            ],
+            [
+                '4.0',
+                [
+                    new \Graphpinator\Tokenizer\Token(TokenType::FLOAT, '4.0'),
+                ],
+            ],
+            [
+                '-4.0',
+                [
+                    new \Graphpinator\Tokenizer\Token(TokenType::FLOAT, '-4.0'),
+                ],
+            ],
+            [
+                '4e10',
+                [
+                    new \Graphpinator\Tokenizer\Token(TokenType::FLOAT, '4e10'),
+                ],
+            ],
+            [
+                '4e0010',
+                [
+                    new \Graphpinator\Tokenizer\Token(TokenType::FLOAT, '4e0010'),
+                ],
+            ],
+            [
+                '-4e10',
+                [
+                    new \Graphpinator\Tokenizer\Token(TokenType::FLOAT, '-4e10'),
+                ],
+            ],
+            [
+                '4E10',
+                [
+                    new \Graphpinator\Tokenizer\Token(TokenType::FLOAT, '4e10'),
+                ],
+            ],
+            [
+                '-4e-10',
+                [
+                    new \Graphpinator\Tokenizer\Token(TokenType::FLOAT, '-4e-10'),
+                ],
+            ],
+            [
+                '4e+10',
+                [
+                    new \Graphpinator\Tokenizer\Token(TokenType::FLOAT, '4e10'),
+                ],
+            ],
+            [
+                '-4e+10',
+                [
+                    new \Graphpinator\Tokenizer\Token(TokenType::FLOAT, '-4e10'),
+                ],
+            ],
+            [
+                'null',
+                [
+                    new \Graphpinator\Tokenizer\Token(TokenType::NULL),
+                ],
+            ],
+            [
+                'NULL',
+                [
+                    new \Graphpinator\Tokenizer\Token(TokenType::NULL),
+                ],
+            ],
+            [
+                'Name',
+                [
+                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, 'Name'),
+                ],
+            ],
+            [
+                'NAME',
+                [
+                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, 'NAME'),
+                ],
+            ],
+            [
+                '__Name',
+                [
+                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, '__Name'),
+                ],
+            ],
+            [
+                'Name_with_underscore',
+                [
+                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, 'Name_with_underscore'),
+                ],
+            ],
+            [
+                'FALSE true',
+                [
+                    new \Graphpinator\Tokenizer\Token(TokenType::FALSE),
+                    new \Graphpinator\Tokenizer\Token(TokenType::TRUE),
+                ],
+            ],
+            [
+                '... type fragment',
+                [
+                    new \Graphpinator\Tokenizer\Token(TokenType::ELLIP),
+                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, 'type'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::FRAGMENT),
+                ],
+            ],
+            [
+                '-4.024E-10',
+                [
+                    new \Graphpinator\Tokenizer\Token(TokenType::FLOAT, '-4.024e-10'),
+                ],
+            ],
+            [
+                'query { field1 { innerField } }',
+                [
+                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, 'query'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_O),
+                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, 'field1'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_O),
+                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, 'innerField'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_C),
+                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_C),
+                ],
+            ],
+            [
+                'mutation { field(argName: 4) }',
+                [
+                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, 'mutation'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_O),
+                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, 'field'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::PAR_O),
+                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, 'argName'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::COLON),
+                    new \Graphpinator\Tokenizer\Token(TokenType::INT, '4'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::PAR_C),
+                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_C),
+                ],
+            ],
+            [
+                'subscription { field(argName: "str") }',
+                [
+                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, 'subscription'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_O),
+                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, 'field'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::PAR_O),
+                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, 'argName'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::COLON),
+                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, 'str'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::PAR_C),
+                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_C),
+                ],
+            ],
+            [
+                'query { field(argName: ["str", "str", $varName]) @directiveName }',
+                [
+                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, 'query'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_O),
+                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, 'field'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::PAR_O),
+                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, 'argName'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::COLON),
+                    new \Graphpinator\Tokenizer\Token(TokenType::SQU_O),
+                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, 'str'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::COMMA),
+                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, 'str'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::COMMA),
+                    new \Graphpinator\Tokenizer\Token(TokenType::VARIABLE, 'varName'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::SQU_C),
+                    new \Graphpinator\Tokenizer\Token(TokenType::PAR_C),
+                    new \Graphpinator\Tokenizer\Token(TokenType::DIRECTIVE, 'directiveName'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_C),
+                ],
+            ],
+            [
+                'query {' . \PHP_EOL .
+                    'field1 {' . \PHP_EOL .
+                        'innerField' . \PHP_EOL .
+                    '}' . \PHP_EOL .
+                '}',
+                [
+                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, 'query'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_O),
+                    new \Graphpinator\Tokenizer\Token(TokenType::NEWLINE),
+                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, 'field1'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_O),
+                    new \Graphpinator\Tokenizer\Token(TokenType::NEWLINE),
+                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, 'innerField'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::NEWLINE),
+                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_C),
+                    new \Graphpinator\Tokenizer\Token(TokenType::NEWLINE),
+                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_C),
+                ],
+            ],
+            [
+                'query {' . \PHP_EOL .
+                    'field1 {' . \PHP_EOL .
+                        '# this is comment' . \PHP_EOL .
+                        'innerField' . \PHP_EOL .
+                    '}' . \PHP_EOL .
+                '}',
+                [
+                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, 'query'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_O),
+                    new \Graphpinator\Tokenizer\Token(TokenType::NEWLINE),
+                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, 'field1'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_O),
+                    new \Graphpinator\Tokenizer\Token(TokenType::NEWLINE),
+                    new \Graphpinator\Tokenizer\Token(TokenType::COMMENT, ' this is comment'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::NEWLINE),
+                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, 'innerField'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::NEWLINE),
+                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_C),
+                    new \Graphpinator\Tokenizer\Token(TokenType::NEWLINE),
+                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_C),
+                ],
+            ],
         ];
     }
 
     /**
      * @dataProvider simpleDataProvider
+     * @param string $source
+     * @param array $tokens
      */
     public function testSimple(string $source, array $tokens) : void
     {
@@ -274,55 +444,66 @@ final class TokenizerTest extends \PHPUnit\Framework\TestCase
     public function skipDataProvider() : array
     {
         return [
-            ['query { field(argName: ["str", "str", true, false, null]) }', [
-                new Token(TokenType::NAME, 'query'),
-                new Token(TokenType::CUR_O),
-                new Token(TokenType::NAME, 'field'),
-                new Token(TokenType::PAR_O),
-                new Token(TokenType::NAME, 'argName'),
-                new Token(TokenType::COLON),
-                new Token(TokenType::SQU_O),
-                new Token(TokenType::STRING, 'str'),
-                new Token(TokenType::STRING, 'str'),
-                new Token(TokenType::TRUE),
-                new Token(TokenType::FALSE),
-                new Token(TokenType::NULL),
-                new Token(TokenType::SQU_C),
-                new Token(TokenType::PAR_C),
-                new Token(TokenType::CUR_C),
-            ]],
-            ['query {' . \PHP_EOL .
-                'field1 {' . \PHP_EOL .
-                'innerField' . \PHP_EOL .
-                '}' . \PHP_EOL .
-            '}', [
-                new Token(TokenType::NAME, 'query'),
-                new Token(TokenType::CUR_O),
-                new Token(TokenType::NAME, 'field1'),
-                new Token(TokenType::CUR_O),
-                new Token(TokenType::NAME, 'innerField'),
-                new Token(TokenType::CUR_C),
-                new Token(TokenType::CUR_C),
-            ]],
-            ['query {' . \PHP_EOL .
-                'field1 {' . \PHP_EOL .
-                    '# this is comment' . \PHP_EOL .
+            [
+                'query { field(argName: ["str", "str", true, false, null]) }',
+                [
+                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, 'query'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_O),
+                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, 'field'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::PAR_O),
+                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, 'argName'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::COLON),
+                    new \Graphpinator\Tokenizer\Token(TokenType::SQU_O),
+                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, 'str'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, 'str'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::TRUE),
+                    new \Graphpinator\Tokenizer\Token(TokenType::FALSE),
+                    new \Graphpinator\Tokenizer\Token(TokenType::NULL),
+                    new \Graphpinator\Tokenizer\Token(TokenType::SQU_C),
+                    new \Graphpinator\Tokenizer\Token(TokenType::PAR_C),
+                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_C),
+                ],
+            ],
+            [
+                'query {' . \PHP_EOL .
+                    'field1 {' . \PHP_EOL .
                     'innerField' . \PHP_EOL .
-                '}' . \PHP_EOL .
-            '}', [
-                new Token(TokenType::NAME, 'query'),
-                new Token(TokenType::CUR_O),
-                new Token(TokenType::NAME, 'field1'),
-                new Token(TokenType::CUR_O),
-                new Token(TokenType::NAME, 'innerField'),
-                new Token(TokenType::CUR_C),
-                new Token(TokenType::CUR_C),
-            ]],
+                    '}' . \PHP_EOL .
+                '}',
+                [
+                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, 'query'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_O),
+                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, 'field1'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_O),
+                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, 'innerField'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_C),
+                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_C),
+                ],
+            ],
+            [
+                'query {' . \PHP_EOL .
+                    'field1 {' . \PHP_EOL .
+                        '# this is comment' . \PHP_EOL .
+                        'innerField' . \PHP_EOL .
+                    '}' . \PHP_EOL .
+                '}',
+                [
+                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, 'query'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_O),
+                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, 'field1'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_O),
+                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, 'innerField'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_C),
+                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_C),
+                ],
+            ],
         ];
     }
 
     /**
      * @dataProvider skipDataProvider
+     * @param string $source
+     * @param array $tokens
      */
     public function testSkip(string $source, array $tokens) : void
     {
@@ -375,6 +556,8 @@ final class TokenizerTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider invalidDataProvider
+     * @param string $source
+     * @param string $exception
      */
     public function testInvalid(string $source, string $exception) : void
     {
@@ -411,7 +594,7 @@ final class TokenizerTest extends \PHPUnit\Framework\TestCase
 
     public function testBlockStringIndent() : void
     {
-        $source1 = new \Graphpinator\Source\StringSource('"""'. \PHP_EOL .
+        $source1 = new \Graphpinator\Source\StringSource('"""' . \PHP_EOL .
             '    Hello,' . \PHP_EOL .
             '      World!' . \PHP_EOL .
             \PHP_EOL .

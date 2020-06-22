@@ -83,7 +83,7 @@ final class TokenContainer implements \IteratorAggregate
         return $token;
     }
 
-    public function getIterator()
+    public function getIterator() : \ArrayIterator
     {
         return new \ArrayIterator($this->tokens);
     }

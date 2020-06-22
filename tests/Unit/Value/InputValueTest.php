@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Unit\Value;
 
@@ -13,7 +13,7 @@ final class InputValueTest extends \PHPUnit\Framework\TestCase
 
         $type = $this->createMock(\Graphpinator\Type\InputType::class);
         $type->expects($this->exactly(2))->method('getArguments')->willReturn(
-            new \Graphpinator\Argument\ArgumentSet([new \Graphpinator\Argument\Argument('field', \Graphpinator\Type\Container\Container::String())])
+            new \Graphpinator\Argument\ArgumentSet([new \Graphpinator\Argument\Argument('field', \Graphpinator\Type\Container\Container::String())]),
         );
         $type->expects($this->once())->method('isInputable')->willReturn(true);
         $type->expects($this->once())->method('applyDefaults')->with($fields)->willReturn($defaults);
@@ -30,7 +30,7 @@ final class InputValueTest extends \PHPUnit\Framework\TestCase
 
         $type = $this->createMock(\Graphpinator\Type\InputType::class);
         $type->expects($this->exactly(2))->method('getArguments')->willReturn(
-            new \Graphpinator\Argument\ArgumentSet([new \Graphpinator\Argument\Argument('field', \Graphpinator\Type\Container\Container::String())])
+            new \Graphpinator\Argument\ArgumentSet([new \Graphpinator\Argument\Argument('field', \Graphpinator\Type\Container\Container::String())]),
         );
         $type->expects($this->once())->method('isInputable')->willReturn(true);
         $type->expects($this->once())->method('applyDefaults')->with($fields)->willReturn($fields);
@@ -48,6 +48,7 @@ final class InputValueTest extends \PHPUnit\Framework\TestCase
 
     public function testInvalidField() : void
     {
+        //phpcs:ignore SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly.ReferencedGeneralException
         $this->expectException(\Exception::class);
 
         $fields = ['field0' => 123];
@@ -57,6 +58,6 @@ final class InputValueTest extends \PHPUnit\Framework\TestCase
         $type->expects($this->once())->method('isInputable')->willReturn(true);
         $type->expects($this->once())->method('applyDefaults')->with($fields)->willReturn($fields);
 
-        $value = \Graphpinator\Resolver\Value\InputValue::create($fields, $type);
+        \Graphpinator\Resolver\Value\InputValue::create($fields, $type);
     }
 }

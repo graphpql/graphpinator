@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Unit\Type\Scalar;
 
@@ -28,8 +28,9 @@ final class FloatTypeTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider simpleDataProvider
+     * @param float|null $rawValue
      */
-    public function testValidateValue($rawValue): void
+    public function testValidateValue($rawValue) : void
     {
         $float = new \Graphpinator\Type\Scalar\FloatType();
         $float->validateValue($rawValue);
@@ -39,9 +40,11 @@ final class FloatTypeTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider invalidDataProvider
+     * @param int|bool|string|array $rawValue
      */
-    public function testValidateValueInvalid($rawValue): void
+    public function testValidateValueInvalid($rawValue) : void
     {
+        //phpcs:ignore SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly.ReferencedGeneralException
         $this->expectException(\Exception::class);
 
         $float = new \Graphpinator\Type\Scalar\FloatType();

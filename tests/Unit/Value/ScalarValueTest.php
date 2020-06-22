@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Unit\Value;
 
@@ -22,8 +22,9 @@ final class ScalarValueTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider simpleDataProvider
+     * @param int|float|string|bool|array|\Graphpinator\Resolver\Value\LeafValue $rawValue
      */
-    public function testSimple($rawValue): void
+    public function testSimple($rawValue) : void
     {
         $type = $this->createMock(\Graphpinator\Type\Scalar\ScalarType::class);
         $type->expects($this->once())->method('validateValue')->with($rawValue);

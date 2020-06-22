@@ -22,6 +22,7 @@ final class NamedValue
         return $this->value;
     }
 
+    //@phpcs:ignore SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingAnyTypeHint
     public function getRawValue()
     {
         return $this->value->getRawValue();

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Spec;
 
@@ -79,13 +79,16 @@ final class DirectiveTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider simpleDataProvider
+     * @param string $request
+     * @param \Infinityloop\Utils\Json $variables
+     * @param \Infinityloop\Utils\Json $expected
      */
     public function testSimple(string $request, \Infinityloop\Utils\Json $variables, \Infinityloop\Utils\Json $expected) : void
     {
         $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
         $result = $graphpinator->runQuery($request, $variables);
 
-        self::assertSame($expected->toString(), \json_encode($result, JSON_THROW_ON_ERROR, 512),);
+        self::assertSame($expected->toString(), \json_encode($result, \JSON_THROW_ON_ERROR, 512));
         self::assertSame($expected['data'], \json_decode(\json_encode($result->getData()), true));
         self::assertNull($result->getErrors());
     }
@@ -99,8 +102,8 @@ final class DirectiveTest extends \PHPUnit\Framework\TestCase
             \Infinityloop\Utils\Json::fromArray(['data' => ['field0' => ['field1' => ['name' => 'Test 123']]]])->toString(),
             \json_encode($graphpinator->runQuery(
                 'query queryName { field0 { field1 @testDirective @testDirective @testDirective { name } } }',
-                \Infinityloop\Utils\Json::fromArray([])
-            ), JSON_THROW_ON_ERROR, 512),
+                \Infinityloop\Utils\Json::fromArray([]),
+            ), \JSON_THROW_ON_ERROR, 512),
         );
         self::assertSame(3, TestSchema::getSchema()->getContainer()->getDirective('testDirective')::$count);
     }
@@ -131,12 +134,14 @@ final class DirectiveTest extends \PHPUnit\Framework\TestCase
             [
                 'query queryName { field0 { field1 @testDirective(if: true) { name } } }',
                 \Graphpinator\Exception\Resolver\UnknownArgument::class,
-            ]
+            ],
         ];
     }
 
     /**
      * @dataProvider invalidDataProvider
+     * @param string $query
+     * @param string $exception
      */
     public function testInvalid(string $query, string $exception) : void
     {
@@ -145,6 +150,6 @@ final class DirectiveTest extends \PHPUnit\Framework\TestCase
 
         $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
 
-        $graphpinator->runQuery($query, \Infinityloop\Utils\Json::fromArray([]),);
+        $graphpinator->runQuery($query, \Infinityloop\Utils\Json::fromArray([]));
     }
 }

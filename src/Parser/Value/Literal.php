@@ -15,6 +15,7 @@ final class Literal implements \Graphpinator\Parser\Value\Value
         $this->value = $value;
     }
 
+    //@phpcs:ignore SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingAnyTypeHint
     public function getRawValue()
     {
         return $this->value;

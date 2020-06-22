@@ -17,6 +17,7 @@ abstract class ValidatedValue implements \JsonSerializable
         $this->type = $type;
     }
 
+    //@phpcs:ignore SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingAnyTypeHint
     public static function create($rawValue, \Graphpinator\Type\Contract\Definition $type)
     {
         if ($rawValue === null) {
@@ -35,11 +36,13 @@ abstract class ValidatedValue implements \JsonSerializable
         return $this->type;
     }
 
+    //@phpcs:ignore SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingAnyTypeHint
     public function getRawValue()
     {
         return $this->value;
     }
 
+    //@phpcs:ignore SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingAnyTypeHint
     public function jsonSerialize()
     {
         return $this->value;

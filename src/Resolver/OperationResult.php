@@ -27,6 +27,7 @@ final class OperationResult implements \JsonSerializable
         return $this->errors;
     }
 
+    //@phpcs:ignore SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingAnyTypeHint
     public function jsonSerialize()
     {
         $return = [];

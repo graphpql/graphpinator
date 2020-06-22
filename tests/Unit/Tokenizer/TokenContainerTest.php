@@ -1,10 +1,10 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Unit\Tokenizer;
 
-use Graphpinator\Tokenizer\TokenType;
+use \Graphpinator\Tokenizer\TokenType;
 
 final class TokenContainerTest extends \PHPUnit\Framework\TestCase
 {

@@ -1,12 +1,12 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Unit\Type\Scalar;
 
 final class ScalarTypeTest extends \PHPUnit\Framework\TestCase
 {
-    public function testCreate(): void
+    public function testCreate() : void
     {
         $int = \Graphpinator\Type\Container\Container::Int();
         $float = \Graphpinator\Type\Container\Container::Float();
@@ -21,7 +21,7 @@ final class ScalarTypeTest extends \PHPUnit\Framework\TestCase
         self::assertInstanceOf(\Graphpinator\Type\Scalar\ScalarType::class, $id);
     }
 
-    public function testResolveFields(): void
+    public function testResolveFields() : void
     {
         $type = new \Graphpinator\Type\Scalar\BooleanType();
         $value = new \Graphpinator\Resolver\Value\LeafValue(true, $type);
