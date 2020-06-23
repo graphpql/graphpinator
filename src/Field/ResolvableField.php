@@ -10,7 +10,12 @@ final class ResolvableField extends \Graphpinator\Field\Field
 {
     private \Closure $resolveFunction;
 
-    public function __construct(string $name, \Graphpinator\Type\Contract\Outputable $type, callable $resolveFunction, ?\Graphpinator\Argument\ArgumentSet $arguments = null)
+    public function __construct(
+        string $name,
+        \Graphpinator\Type\Contract\Outputable $type,
+        callable $resolveFunction,
+        ?\Graphpinator\Argument\ArgumentSet $arguments = null
+    )
     {
         parent::__construct($name, $type, $arguments);
         $this->resolveFunction = $resolveFunction;

@@ -15,7 +15,9 @@ class SimpleContainer extends \Graphpinator\Type\Container\Container
     protected array $builtInDirectives = [];
 
     /**
+     * @phpcs:ignore SlevomatCodingStandard.TypeHints.DisallowArrayTypeHintSyntax.DisallowedArrayTypeHintSyntax
      * @param \Graphpinator\Type\Contract\NamedDefinition[] $types
+     * @phpcs:ignore SlevomatCodingStandard.TypeHints.DisallowArrayTypeHintSyntax.DisallowedArrayTypeHintSyntax
      * @param \Graphpinator\Directive\Directive[] $directives
      */
     public function __construct(array $types, array $directives)

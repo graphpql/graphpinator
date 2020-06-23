@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Spec;
 
@@ -17,7 +17,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 $container->introspectionTypeKind(),
-                <<<EOL
+                <<<'EOL'
                 """
                 Built-in introspection enum.
                 """
@@ -35,7 +35,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 $container->introspectionSchema(),
-                <<<EOL
+                <<<'EOL'
                 """
                 Built-in introspection type.
                 """
@@ -51,7 +51,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 $container->introspectionType(),
-                <<<EOL
+                <<<'EOL'
                 """
                 Built-in introspection type.
                 """
@@ -74,7 +74,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 $container->introspectionDirective(),
-                <<<EOL
+                <<<'EOL'
                 """
                 Built-in introspection type.
                 """
@@ -92,6 +92,8 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider simpleDataProvider
+     * @param \Graphpinator\Type\Contract\Definition $type
+     * @param string $print
      */
     public function testSimple(\Graphpinator\Type\Contract\Definition $type, string $print) : void
     {
@@ -100,7 +102,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
 
     public function testPrintSchema() : void
     {
-        $expected = <<<EOL
+        $expected = <<<'EOL'
         schema {
           query: Query
           mutation: null
@@ -245,7 +247,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
 
     public function testPrintFullSchema() : void
     {
-        $expected = <<<EOL
+        $expected = <<<'EOL'
         schema {
           query: Query
           mutation: Query
@@ -390,7 +392,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
 
     public function testPrintTypeKindSorterSchema() : void
     {
-        $expected = <<<EOL
+        $expected = <<<'EOL'
         schema {
           query: Query
           mutation: null
@@ -535,7 +537,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
 
     public function testPrintTypeKindSorterFullSchema() : void
     {
-        $expected = <<<EOL
+        $expected = <<<'EOL'
         schema {
           query: Query
           mutation: Query

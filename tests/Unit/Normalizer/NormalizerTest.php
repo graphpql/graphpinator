@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Unit\Normalizer;
 
@@ -21,8 +21,8 @@ final class NormalizerTest extends \PHPUnit\Framework\TestCase
                     new \Graphpinator\Parser\Variable\Variable(
                         'varNameList',
                         new \Graphpinator\Parser\TypeRef\ListTypeRef(new \Graphpinator\Parser\TypeRef\NamedTypeRef('Abc')),
-                    )
-                ])
+                    ),
+                ]),
             ),
             new \Graphpinator\Parser\Fragment\FragmentSet([]),
         );
@@ -87,19 +87,37 @@ final class NormalizerTest extends \PHPUnit\Framework\TestCase
         self::assertSame('fieldName', $operation->getFields()->offsetGet('fieldName')->getName());
         self::assertCount(1, $operation->getFields()->offsetGet('fieldName')->getDirectives());
         self::assertArrayHasKey(0, $operation->getFields()->offsetGet('fieldName')->getDirectives());
-        self::assertSame(\Graphpinator\Directive\DirectiveLocation::FIELD, $operation->getFields()->offsetGet('fieldName')->getDirectives()->getLocation());
-        self::assertInstanceOf(\Graphpinator\Directive\SkipDirective::class, $operation->getFields()->offsetGet('fieldName')->getDirectives()->offsetGet(0)->getDirective());
+        self::assertSame(
+            \Graphpinator\Directive\DirectiveLocation::FIELD,
+            $operation->getFields()->offsetGet('fieldName')->getDirectives()->getLocation(),
+        );
+        self::assertInstanceOf(
+            \Graphpinator\Directive\SkipDirective::class,
+            $operation->getFields()->offsetGet('fieldName')->getDirectives()->offsetGet(0)->getDirective(),
+        );
         self::assertCount(2, $operation->getFields()->getFragments());
         self::assertArrayHasKey(0, $operation->getFields()->getFragments());
         self::assertCount(1, $operation->getFields()->getFragments()->offsetGet(0)->getDirectives());
         self::assertArrayHasKey(0, $operation->getFields()->getFragments()->offsetGet(0)->getDirectives());
-        self::assertSame(\Graphpinator\Directive\DirectiveLocation::INLINE_FRAGMENT, $operation->getFields()->getFragments()->offsetGet(0)->getDirectives()->getLocation());
-        self::assertInstanceOf(\Graphpinator\Directive\SkipDirective::class, $operation->getFields()->getFragments()->offsetGet(0)->getDirectives()->offsetGet(0)->getDirective());
+        self::assertSame(
+            \Graphpinator\Directive\DirectiveLocation::INLINE_FRAGMENT,
+            $operation->getFields()->getFragments()->offsetGet(0)->getDirectives()->getLocation(),
+        );
+        self::assertInstanceOf(
+            \Graphpinator\Directive\SkipDirective::class,
+            $operation->getFields()->getFragments()->offsetGet(0)->getDirectives()->offsetGet(0)->getDirective(),
+        );
         self::assertArrayHasKey(1, $operation->getFields()->getFragments());
         self::assertCount(1, $operation->getFields()->getFragments()->offsetGet(1)->getDirectives());
         self::assertArrayHasKey(0, $operation->getFields()->getFragments()->offsetGet(1)->getDirectives());
-        self::assertSame(\Graphpinator\Directive\DirectiveLocation::FRAGMENT_SPREAD, $operation->getFields()->getFragments()->offsetGet(1)->getDirectives()->getLocation());
-        self::assertInstanceOf(\Graphpinator\Directive\IncludeDirective::class, $operation->getFields()->getFragments()->offsetGet(1)->getDirectives()->offsetGet(0)->getDirective());
+        self::assertSame(
+            \Graphpinator\Directive\DirectiveLocation::FRAGMENT_SPREAD,
+            $operation->getFields()->getFragments()->offsetGet(1)->getDirectives()->getLocation(),
+        );
+        self::assertInstanceOf(
+            \Graphpinator\Directive\IncludeDirective::class,
+            $operation->getFields()->getFragments()->offsetGet(1)->getDirectives()->offsetGet(0)->getDirective(),
+        );
     }
 
     public function invalidDataProvider() : array
@@ -139,7 +157,7 @@ final class NormalizerTest extends \PHPUnit\Framework\TestCase
                 new \Graphpinator\Parser\ParseResult(
                     new \Graphpinator\Parser\Operation(
                         new \Graphpinator\Parser\FieldSet([], new \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet([
-                            new \Graphpinator\Parser\FragmentSpread\NamedFragmentSpread('fragmentName')
+                            new \Graphpinator\Parser\FragmentSpread\NamedFragmentSpread('fragmentName'),
                         ])),
                         'query',
                     ),
@@ -166,14 +184,14 @@ final class NormalizerTest extends \PHPUnit\Framework\TestCase
                             'fragment2',
                             new \Graphpinator\Parser\TypeRef\NamedTypeRef('Int'),
                             new \Graphpinator\Parser\FieldSet([], new \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet([
-                                new \Graphpinator\Parser\FragmentSpread\NamedFragmentSpread('fragment3')
+                                new \Graphpinator\Parser\FragmentSpread\NamedFragmentSpread('fragment3'),
                             ])),
                         ),
                         new \Graphpinator\Parser\Fragment\Fragment(
                             'fragment3',
                             new \Graphpinator\Parser\TypeRef\NamedTypeRef('Int'),
                             new \Graphpinator\Parser\FieldSet([], new \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet([
-                                new \Graphpinator\Parser\FragmentSpread\NamedFragmentSpread('fragment4')
+                                new \Graphpinator\Parser\FragmentSpread\NamedFragmentSpread('fragment4'),
                             ])),
                         ),
                         new \Graphpinator\Parser\Fragment\Fragment(
@@ -213,7 +231,7 @@ final class NormalizerTest extends \PHPUnit\Framework\TestCase
                             new \Graphpinator\Parser\TypeRef\NamedTypeRef('Int'),
                             new \Graphpinator\Parser\FieldSet([], new \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet([
                                 new \Graphpinator\Parser\FragmentSpread\InlineFragmentSpread(new \Graphpinator\Parser\FieldSet([])),
-                                new \Graphpinator\Parser\FragmentSpread\NamedFragmentSpread('fragment1')
+                                new \Graphpinator\Parser\FragmentSpread\NamedFragmentSpread('fragment1'),
                             ])),
                         ),
                     ]),
@@ -242,8 +260,8 @@ final class NormalizerTest extends \PHPUnit\Framework\TestCase
                                     'field',
                                     null,
                                     new \Graphpinator\Parser\FieldSet([], new \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet([
-                                        new \Graphpinator\Parser\FragmentSpread\NamedFragmentSpread('fragment1')
-                                    ]))
+                                        new \Graphpinator\Parser\FragmentSpread\NamedFragmentSpread('fragment1'),
+                                    ])),
                                 ),
                             ], new \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet([])),
                         ),
@@ -256,6 +274,8 @@ final class NormalizerTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider invalidDataProvider
+     * @param \Graphpinator\Parser\ParseResult $parseResult
+     * @param string $exception
      */
     public function testInvalid(\Graphpinator\Parser\ParseResult $parseResult, string $exception) : void
     {
@@ -263,6 +283,6 @@ final class NormalizerTest extends \PHPUnit\Framework\TestCase
         $this->expectExceptionMessage(\constant($exception . '::MESSAGE'));
 
         $normalizer = new \Graphpinator\Normalizer\Normalizer(\Graphpinator\Tests\Spec\TestSchema::getSchema());
-        $operation = $normalizer->normalize($parseResult);
+        $normalizer->normalize($parseResult);
     }
 }

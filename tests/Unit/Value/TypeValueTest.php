@@ -1,12 +1,12 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Unit\Value;
 
 final class TypeValueTest extends \PHPUnit\Framework\TestCase
 {
-    public function testSimple(): void
+    public function testSimple() : void
     {
         $value = new \Graphpinator\Resolver\Value\TypeValue(123, $this->createTestType());
         $value2 = \Graphpinator\Resolver\Value\TypeValue::create(123, $this->createTestType());
@@ -15,11 +15,12 @@ final class TypeValueTest extends \PHPUnit\Framework\TestCase
         self::assertSame(123, $value2->getRawValue());
     }
 
-    public function testInvalid(): void
+    public function testInvalid() : void
     {
+        //phpcs:ignore SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly.ReferencedGeneralException
         $this->expectException(\Exception::class);
 
-        $value = new \Graphpinator\Resolver\Value\TypeValue(456, $this->createTestType());
+        new \Graphpinator\Resolver\Value\TypeValue(456, $this->createTestType());
     }
 
     protected function createTestType() : \Graphpinator\Type\Type

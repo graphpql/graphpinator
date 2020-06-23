@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Spec;
 
@@ -11,10 +11,14 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
         return [
             [
                 'query queryName ($ var1: Int) { }',
-                \Infinityloop\Utils\Json::fromArray(['errors' => [[
-                    'message' => \Graphpinator\Exception\Tokenizer\MissingVariableName::MESSAGE,
-                    'locations' => [['line' => 0, 'column' => 18]]
-                ]]]),
+                \Infinityloop\Utils\Json::fromArray([
+                    'errors' => [
+                        [
+                            'message' => \Graphpinator\Exception\Tokenizer\MissingVariableName::MESSAGE,
+                            'locations' => [['line' => 0, 'column' => 18]],
+                        ],
+                    ],
+                ]),
             ],
             [
                 'query queryName { field0 { ',
@@ -33,13 +37,15 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider simpleDataProvider
+     * @param string $request
+     * @param \Infinityloop\Utils\Json $expected
      */
     public function testSimple(string $request, \Infinityloop\Utils\Json $expected) : void
     {
         $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema(), true);
         $result = $graphpinator->runQuery($request, \Infinityloop\Utils\Json::fromArray([]));
 
-        self::assertSame($expected->toString(), \json_encode($result, JSON_THROW_ON_ERROR, 512),);
+        self::assertSame($expected->toString(), \json_encode($result, \JSON_THROW_ON_ERROR, 512));
         self::assertSame($expected['errors'], \json_decode(\json_encode($result->getErrors()), true));
         self::assertNull($result->getData());
     }
@@ -55,8 +61,9 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
         $exception = new \Graphpinator\Exception\Parser\UnexpectedEnd($location, $path, $extensions);
 
         self::assertSame(
+            //@phpcs:ignore SlevomatCodingStandard.Files.LineLength.LineTooLong
             '{"message":"Unexpected end of stream.","locations":[{"line":6,"column":7}],"path":["hero","heroFriends",1,"name"],"extensions":{"code":"CAN_NOT_FETCH_BY_ID","timestamp":"Fri Feb 9 14:33:09 UTC 2018"}}',
-            \json_encode($exception, JSON_THROW_ON_ERROR, 512),
+            \json_encode($exception, \JSON_THROW_ON_ERROR, 512),
         );
     }
 }

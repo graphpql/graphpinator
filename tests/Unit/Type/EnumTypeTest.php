@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Unit\Type;
 
@@ -17,8 +17,9 @@ final class EnumTypeTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider simpleDataProvider
+     * @param string|null $rawValue
      */
-    public function testValidateValue($rawValue): void
+    public function testValidateValue($rawValue) : void
     {
         $enum = $this->createTestEnum();
         $enum->validateValue($rawValue);
@@ -41,16 +42,18 @@ final class EnumTypeTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider invalidDataProvider
+     * @param int|float|string|bool|array $rawValue
      */
-    public function testValidateValueInvalid($rawValue): void
+    public function testValidateValueInvalid($rawValue) : void
     {
+        //phpcs:ignore SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly.ReferencedGeneralException
         $this->expectException(\Exception::class);
 
         $enum = $this->createTestEnum();
         $enum->validateValue($rawValue);
     }
 
-    public function testGetItems(): void
+    public function testGetItems() : void
     {
         $enum = $this->createTestEnum();
 
@@ -74,13 +77,14 @@ final class EnumTypeTest extends \PHPUnit\Framework\TestCase
         self::assertSame(['A', 'B'], $items);
     }
 
+    //@phpcs:disable SlevomatCodingStandard.Classes.UnusedPrivateElements.UnusedConstant
     protected function createTestEnum() : \Graphpinator\Type\EnumType
     {
         return new class extends \Graphpinator\Type\EnumType {
-            protected const NAME = 'abc';
-
             public const ENUMA = 'a';
             public const ENUMB = 'b';
+
+            protected const NAME = 'abc';
             protected const ENUMC = 'c';
             private const ENUMD = 'd';
 
@@ -90,4 +94,6 @@ final class EnumTypeTest extends \PHPUnit\Framework\TestCase
             }
         };
     }
+
+    //@phpcs:enable SlevomatCodingStandard.Classes.UnusedPrivateElements.UnusedConstant
 }

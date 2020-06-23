@@ -63,9 +63,9 @@ final class TestSchema
                     new \Graphpinator\Field\ResolvableField('fieldAbstract', TestSchema::getUnion(), static function () {
                         return 1;
                     }),
-                    new \Graphpinator\Field\ResolvableField('fieldThrow', TestSchema::getUnion(), static function () {
+                    new \Graphpinator\Field\ResolvableField('fieldThrow', TestSchema::getUnion(), static function () : void {
                         throw new \Exception('Random exception');
-                    })
+                    }),
                 ]);
             }
         };
@@ -86,7 +86,9 @@ final class TestSchema
             protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
             {
                 return new \Graphpinator\Field\ResolvableFieldSet([
-                    new \Graphpinator\Field\ResolvableField('field1', TestSchema::getInterface(),
+                    new \Graphpinator\Field\ResolvableField(
+                        'field1',
+                        TestSchema::getInterface(),
                         static function (int $parent, \Graphpinator\Resolver\ArgumentValueSet $args) {
                             $object = new \stdClass();
 
@@ -96,7 +98,7 @@ final class TestSchema
                                 $objectVal = $args['arg2']->getRawValue();
                                 $str = '';
 
-                                \array_walk_recursive($objectVal, static function ($item, $key) use (&$str) {
+                                \array_walk_recursive($objectVal, static function ($item, $key) use (&$str) : void {
                                     $str .= $key . ': ' . $item . '; ';
                                 });
 
@@ -104,11 +106,12 @@ final class TestSchema
                             }
 
                             return \Graphpinator\Resolver\FieldResult::fromRaw(TestSchema::getTypeXyz(), $object);
-                    },
-                    new \Graphpinator\Argument\ArgumentSet([
+                        },
+                        new \Graphpinator\Argument\ArgumentSet([
                         new \Graphpinator\Argument\Argument('arg1', \Graphpinator\Type\Container\Container::Int(), 123),
                         new \Graphpinator\Argument\Argument('arg2', TestSchema::getInput()),
-                    ]))
+                        ]),
+                    ),
                 ]);
             }
         };
@@ -129,9 +132,13 @@ final class TestSchema
             protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
             {
                 return new \Graphpinator\Field\ResolvableFieldSet([
-                    new \Graphpinator\Field\ResolvableField('name', \Graphpinator\Type\Container\Container::String()->notNull(), function (\stdClass $parent) {
-                        return $parent->name;
-                    })
+                    new \Graphpinator\Field\ResolvableField(
+                        'name',
+                        \Graphpinator\Type\Container\Container::String()->notNull(),
+                        static function (\stdClass $parent) {
+                            return $parent->name;
+                        },
+                    ),
                 ]);
             }
         };
@@ -147,9 +154,9 @@ final class TestSchema
             protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
             {
                 return new \Graphpinator\Field\ResolvableFieldSet([
-                    new \Graphpinator\Field\ResolvableField('enumList', TestSchema::getEnum()->list(), function () {
+                    new \Graphpinator\Field\ResolvableField('enumList', TestSchema::getEnum()->list(), static function () {
                         return ['A', 'B'];
-                    })
+                    }),
                 ]);
             }
         };
@@ -196,7 +203,7 @@ final class TestSchema
         {
             protected const NAME = 'TestInterface';
 
-            protected function getFieldDefinition(): \Graphpinator\Field\FieldSet
+            protected function getFieldDefinition() : \Graphpinator\Field\FieldSet
             {
                 return new \Graphpinator\Field\FieldSet([
                     new \Graphpinator\Field\Field('name', \Graphpinator\Type\Container\Container::String()->notNull()),
@@ -225,12 +232,12 @@ final class TestSchema
     {
         return new class extends \Graphpinator\Type\EnumType
         {
-            protected const NAME = 'TestEnum';
-
             public const A = 'a';
             public const B = 'b';
             public const C = 'c';
             public const D = 'd';
+
+            protected const NAME = 'TestEnum';
 
             public function __construct()
             {
@@ -262,7 +269,6 @@ final class TestSchema
         return new class extends \Graphpinator\Directive\Directive
         {
             protected const NAME = 'testDirective';
-
             public static $count = 0;
 
             public function __construct()
@@ -271,6 +277,7 @@ final class TestSchema
                     new \Graphpinator\Argument\ArgumentSet([]),
                     static function() {
                         ++self::$count;
+
                         return \Graphpinator\Directive\DirectiveResult::NONE;
                     },
                     [\Graphpinator\Directive\DirectiveLocation::FIELD],
@@ -290,7 +297,9 @@ final class TestSchema
             {
                 parent::__construct(
                     new \Graphpinator\Argument\ArgumentSet([]),
-                    static function() {return 'blahblah';},
+                    static function() {
+                        return 'blahblah';
+                    },
                     [\Graphpinator\Directive\DirectiveLocation::FIELD],
                     true,
                 );

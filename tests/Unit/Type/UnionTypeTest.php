@@ -1,32 +1,11 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Unit\Type;
 
 final class UnionTypeTest extends \PHPUnit\Framework\TestCase
 {
-    public function testSimple() : void
-    {
-        $union = self::createTestUnion();
-
-        self::assertArrayHasKey('Xyz', $union->getTypes());
-        self::assertSame('Xyz', $union->getTypes()->offsetGet('Xyz')->getName());
-        self::assertArrayHasKey('Zzz', $union->getTypes());
-        self::assertSame('Zzz', $union->getTypes()->offsetGet('Zzz')->getName());
-
-        self::assertTrue($union->isInstanceOf($union));
-        self::assertTrue($union->isInstanceOf(new \Graphpinator\Type\NotNullType($union)));
-        self::assertFalse($union->isInstanceOf(self::getTestTypeZzz()));
-        self::assertFalse($union->isInstanceOf(new \Graphpinator\Type\NotNullType(self::getTestTypeZzz())));
-        self::assertTrue($union->isImplementedBy(self::getTestTypeXyz()));
-        self::assertTrue($union->isImplementedBy(new \Graphpinator\Type\NotNullType(self::getTestTypeXyz())));
-        self::assertTrue($union->isImplementedBy(self::getTestTypeZzz()));
-        self::assertTrue($union->isImplementedBy(new \Graphpinator\Type\NotNullType(self::getTestTypeZzz())));
-        self::assertFalse($union->isImplementedBy(self::getTestTypeAbc()));
-        self::assertFalse($union->isImplementedBy(new \Graphpinator\Type\NotNullType(self::getTestTypeAbc())));
-    }
-
     public static function createTestUnion() : \Graphpinator\Type\UnionType
     {
         return new class extends \Graphpinator\Type\UnionType {
@@ -38,7 +17,7 @@ final class UnionTypeTest extends \PHPUnit\Framework\TestCase
                     new \Graphpinator\Utils\ConcreteSet([
                         UnionTypeTest::getTestTypeXyz(),
                         UnionTypeTest::getTestTypeZzz(),
-                    ])
+                    ]),
                 );
             }
         };
@@ -78,5 +57,26 @@ final class UnionTypeTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Field\ResolvableFieldSet([]);
             }
         };
+    }
+
+    public function testSimple() : void
+    {
+        $union = self::createTestUnion();
+
+        self::assertArrayHasKey('Xyz', $union->getTypes());
+        self::assertSame('Xyz', $union->getTypes()->offsetGet('Xyz')->getName());
+        self::assertArrayHasKey('Zzz', $union->getTypes());
+        self::assertSame('Zzz', $union->getTypes()->offsetGet('Zzz')->getName());
+
+        self::assertTrue($union->isInstanceOf($union));
+        self::assertTrue($union->isInstanceOf(new \Graphpinator\Type\NotNullType($union)));
+        self::assertFalse($union->isInstanceOf(self::getTestTypeZzz()));
+        self::assertFalse($union->isInstanceOf(new \Graphpinator\Type\NotNullType(self::getTestTypeZzz())));
+        self::assertTrue($union->isImplementedBy(self::getTestTypeXyz()));
+        self::assertTrue($union->isImplementedBy(new \Graphpinator\Type\NotNullType(self::getTestTypeXyz())));
+        self::assertTrue($union->isImplementedBy(self::getTestTypeZzz()));
+        self::assertTrue($union->isImplementedBy(new \Graphpinator\Type\NotNullType(self::getTestTypeZzz())));
+        self::assertFalse($union->isImplementedBy(self::getTestTypeAbc()));
+        self::assertFalse($union->isImplementedBy(new \Graphpinator\Type\NotNullType(self::getTestTypeAbc())));
     }
 }

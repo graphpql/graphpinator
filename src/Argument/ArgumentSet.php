@@ -25,6 +25,7 @@ final class ArgumentSet extends \Infinityloop\Utils\ObjectSet implements \Graphp
         return parent::offsetGet($offset);
     }
 
+    //@phpcs:ignore SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingAnyTypeHint
     protected function getKey($object)
     {
         $defaultValue = $object->getDefaultValue();

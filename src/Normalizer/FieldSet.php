@@ -47,6 +47,7 @@ final class FieldSet extends \Infinityloop\Utils\ObjectSet
         );
     }
 
+    //@phpcs:ignore SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingAnyTypeHint
     protected function getKey($object)
     {
         return $object->getName();

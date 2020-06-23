@@ -1,11 +1,35 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Unit\Type;
 
 final class NotNullTypeTest extends \PHPUnit\Framework\TestCase
 {
+    public static function getTestTypeAbc() : \Graphpinator\Type\Type
+    {
+        return new class extends \Graphpinator\Type\Type {
+            protected const NAME = 'Abc';
+
+            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+            {
+                return new \Graphpinator\Field\ResolvableFieldSet([
+                    new \Graphpinator\Field\ResolvableField(
+                        'field',
+                        \Graphpinator\Type\Container\Container::String(),
+                        static function (int $parent) {
+                            if ($parent !== 123) {
+                                throw new \Exception();
+                            }
+
+                            return 'foo';
+                        },
+                    ),
+                ]);
+            }
+        };
+    }
+
     public function testCreateValue() : void
     {
         $type = self::getTestTypeAbc()->notNull();
@@ -14,6 +38,7 @@ final class NotNullTypeTest extends \PHPUnit\Framework\TestCase
 
     public function testCreateValueNull() : void
     {
+        //phpcs:ignore SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly.ReferencedGeneralException
         $this->expectException(\Exception::class);
 
         $type = self::getTestTypeAbc()->notNull();
@@ -34,6 +59,7 @@ final class NotNullTypeTest extends \PHPUnit\Framework\TestCase
 
     public function testValidateValueInvalidValue() : void
     {
+        //phpcs:ignore SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly.ReferencedGeneralException
         $this->expectException(\Exception::class);
 
         $type = \Graphpinator\Type\Container\Container::String()->notNull();
@@ -46,27 +72,5 @@ final class NotNullTypeTest extends \PHPUnit\Framework\TestCase
 
         self::assertTrue($type->isInstanceOf($type));
         self::assertFalse($type->isInstanceOf($type->getInnerType()));
-    }
-
-    public static function getTestTypeAbc() : \Graphpinator\Type\Type
-    {
-        return new class extends \Graphpinator\Type\Type {
-            protected const NAME = 'Abc';
-
-            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
-            {
-                return new \Graphpinator\Field\ResolvableFieldSet([new \Graphpinator\Field\ResolvableField(
-                    'field',
-                    \Graphpinator\Type\Container\Container::String(),
-                    static function (int $parent) {
-                        if ($parent !== 123) {
-                            throw new \Exception();
-                        }
-
-                        return 'foo';
-                    }
-                )]);
-            }
-        };
     }
 }

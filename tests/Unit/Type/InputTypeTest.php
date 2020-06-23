@@ -1,27 +1,11 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Unit\Type;
 
 final class InputTypeTest extends \PHPUnit\Framework\TestCase
 {
-    public function testApplyDefaults() : void
-    {
-        $input = self::createTestInput();
-        $value = $input->createValue(['field1' => ['subfield' => 'concrete']]);
-
-        self::assertSame(['field1' => ['subfield' => 'concrete'], 'field2' => ['subfield' => 'random']], $value->getRawValue());
-    }
-
-    public function testInvalidValue() : void
-    {
-        $this->expectException(\Exception::class);
-
-        $input = self::createTestInput();
-        $input->createValue(123);
-    }
-
     public static function createTestInput() : \Graphpinator\Type\InputType
     {
         return new class extends \Graphpinator\Type\InputType {
@@ -44,10 +28,31 @@ final class InputTypeTest extends \PHPUnit\Framework\TestCase
 
             protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
             {
-                return new \Graphpinator\Argument\ArgumentSet([new \Graphpinator\Argument\Argument(
-                    'subfield', \Graphpinator\Type\Container\Container::String(), 'random',
-                )]);
+                return new \Graphpinator\Argument\ArgumentSet([
+                    new \Graphpinator\Argument\Argument(
+                        'subfield',
+                        \Graphpinator\Type\Container\Container::String(),
+                        'random',
+                    ),
+                ]);
             }
         };
+    }
+
+    public function testApplyDefaults() : void
+    {
+        $input = self::createTestInput();
+        $value = $input->createValue(['field1' => ['subfield' => 'concrete']]);
+
+        self::assertSame(['field1' => ['subfield' => 'concrete'], 'field2' => ['subfield' => 'random']], $value->getRawValue());
+    }
+
+    public function testInvalidValue() : void
+    {
+        //phpcs:ignore SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly.ReferencedGeneralException
+        $this->expectException(\Exception::class);
+
+        $input = self::createTestInput();
+        $input->createValue(123);
     }
 }

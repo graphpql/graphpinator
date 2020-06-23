@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Unit\Type\Container;
 
@@ -14,9 +14,19 @@ final class SimpleContainerTest extends \PHPUnit\Framework\TestCase
         self::assertCount(0, $container->getDirectives());
 
         foreach ([
-            'ID', 'Int', 'Float', 'String', 'Boolean',
-            '__Schema', '__Type', '__TypeKind', '__Field', '__EnumValue', '__InputValue',
-             '__Directive', '__DirectiveLocation'
+            'ID',
+            'Int',
+            'Float',
+            'String',
+            'Boolean',
+            '__Schema',
+            '__Type',
+            '__TypeKind',
+            '__Field',
+            '__EnumValue',
+            '__InputValue',
+             '__Directive',
+            '__DirectiveLocation',
                  ] as $typeName) {
             self::assertInstanceOf(\Graphpinator\Type\Contract\NamedDefinition::class, $container->getType($typeName));
         }

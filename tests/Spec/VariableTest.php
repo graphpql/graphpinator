@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Spec;
 
@@ -34,13 +34,16 @@ final class VariableTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider simpleDataProvider
+     * @param string $request
+     * @param \Infinityloop\Utils\Json $variables
+     * @param \Infinityloop\Utils\Json $expected
      */
     public function testSimple(string $request, \Infinityloop\Utils\Json $variables, \Infinityloop\Utils\Json $expected) : void
     {
         $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
         $result = $graphpinator->runQuery($request, $variables);
 
-        self::assertSame($expected->toString(), \json_encode($result, JSON_THROW_ON_ERROR, 512),);
+        self::assertSame($expected->toString(), \json_encode($result, \JSON_THROW_ON_ERROR, 512));
         self::assertSame($expected['data'], \json_decode(\json_encode($result->getData()), true));
         self::assertNull($result->getErrors());
     }
@@ -69,9 +72,12 @@ final class VariableTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider invalidDataProvider
+     * @param string $request
+     * @param \Infinityloop\Utils\Json $variables
      */
     public function testInvalid(string $request, \Infinityloop\Utils\Json $variables) : void
     {
+        //phpcs:ignore SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly.ReferencedGeneralException
         $this->expectException(\Exception::class);
 
         $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());

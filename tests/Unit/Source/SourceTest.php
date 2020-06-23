@@ -1,12 +1,12 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Unit\Source;
 
 final class SourceTest extends \PHPUnit\Framework\TestCase
 {
-    public function simpleDataProvider(): array
+    public function simpleDataProvider() : array
     {
         return [
             ['987123456', ['9','8','7','1','2','3','4','5','6']],
@@ -17,6 +17,8 @@ final class SourceTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider simpleDataProvider
+     * @param string $source
+     * @param array $chars
      */
     public function testSimple(string $source, array $chars) : void
     {
@@ -36,6 +38,7 @@ final class SourceTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider simpleDataProvider
+     * @param string $source
      */
     public function testInitialization(string $source) : void
     {

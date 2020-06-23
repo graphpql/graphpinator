@@ -40,7 +40,8 @@ class Field implements \Graphpinator\Printable\Printable
 
     public function printSchema(int $indentLevel = 1) : string
     {
-        return $this->printDescription($indentLevel) . $this->getName() . $this->printArguments() . ': ' . $this->getType()->printName() . $this->printDeprecated();
+        return $this->printDescription($indentLevel)
+            . $this->getName() . $this->printArguments() . ': ' . $this->getType()->printName() . $this->printDeprecated();
     }
 
     private function printArguments() : string

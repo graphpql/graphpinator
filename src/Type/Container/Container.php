@@ -6,11 +6,13 @@ namespace Graphpinator\Type\Container;
 
 /**
  * Class Container which is responsible for fetching instances of type classes.
+ * @phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
  */
 abstract class Container
 {
     /**
      * Core function to find type by its name.
+     * @param string $name
      */
     abstract public function getType(string $name) : \Graphpinator\Type\Contract\NamedDefinition;
 
@@ -21,6 +23,7 @@ abstract class Container
 
     /**
      * Core function to find directive by its name.
+     * @param string $name
      */
     abstract public function getDirective(string $name) : \Graphpinator\Directive\Directive;
 
@@ -149,3 +152,4 @@ abstract class Container
         return new \Graphpinator\Type\Introspection\DirectiveLocation();
     }
 }
+//@phpcs:enable PSR1.Methods.CamelCapsMethodName.NotCamelCaps

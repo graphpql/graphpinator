@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Unit\Value;
 
@@ -35,9 +35,10 @@ final class ListValueTest extends \PHPUnit\Framework\TestCase
 
     public function testInvalid() : void
     {
+        //phpcs:ignore SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly.ReferencedGeneralException
         $this->expectException(\Exception::class);
 
-        $value = new \Graphpinator\Resolver\Value\ListValue(123, new \Graphpinator\Type\ListType($this->createTestInput()));
+        new \Graphpinator\Resolver\Value\ListValue(123, new \Graphpinator\Type\ListType($this->createTestInput()));
     }
 
     protected function createTestInput() : \Graphpinator\Type\InputType
@@ -47,9 +48,13 @@ final class ListValueTest extends \PHPUnit\Framework\TestCase
 
             protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
             {
-                return new \Graphpinator\Argument\ArgumentSet([new \Graphpinator\Argument\Argument(
-                    'field', \Graphpinator\Type\Container\Container::String(), 'random',
-                )]);
+                return new \Graphpinator\Argument\ArgumentSet([
+                    new \Graphpinator\Argument\Argument(
+                        'field',
+                        \Graphpinator\Type\Container\Container::String(),
+                        'random',
+                    ),
+                ]);
             }
         };
     }
