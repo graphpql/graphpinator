@@ -35,7 +35,7 @@ final class Operation
         return $this->variables;
     }
 
-    public function execute(\Infinityloop\Utils\Json $variables) : OperationResult
+    public function execute(array $variables) : OperationResult
     {
         $data = $this->operation->resolve(
             $this->children->applyVariables(new \Graphpinator\Resolver\VariableValueSet($this->variables, $variables)),
