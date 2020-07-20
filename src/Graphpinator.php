@@ -17,10 +17,14 @@ final class Graphpinator
         $this->catchExceptions = $catchExceptions;
     }
 
-    public function runQuery(string $request, \Infinityloop\Utils\Json $variables) : \Graphpinator\Resolver\OperationResult
+    public function runQuery(\Infinityloop\Utils\Json $request) : \Graphpinator\Resolver\OperationResult
     {
+        $query = $request['query'];
+        $variables = $request['variables'] ?? [];
+        $operationName = $request['operationName'] ?? null;
+
         try {
-            return \Graphpinator\Parser\Parser::parseString($request)
+            return \Graphpinator\Parser\Parser::parseString($query)
                 ->normalize($this->schema)
                 ->execute($variables);
         } catch (\Throwable $exception) {
