@@ -40,7 +40,7 @@ final class Variable
         return $this->default;
     }
 
-    public function createValue(\Infinityloop\Utils\Json $variables) : \Graphpinator\Resolver\Value\ValidatedValue
+    public function createValue(array $variables) : \Graphpinator\Resolver\Value\ValidatedValue
     {
         $value = null;
 
