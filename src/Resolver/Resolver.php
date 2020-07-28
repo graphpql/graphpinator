@@ -10,7 +10,7 @@ final class Resolver
 
     public function resolve(
         \Graphpinator\Normalizer\Operation $operation,
-        \Infinityloop\Utils\Json $variables
+        array $variables
     ) : \Graphpinator\Resolver\OperationResult
     {
         return $operation->execute($variables);

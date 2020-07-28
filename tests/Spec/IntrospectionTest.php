@@ -10,11 +10,15 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
     {
         return [
             [
-                '{ __typename }',
+                \Infinityloop\Utils\Json::fromArray([
+                    'query' => '{ __typename }',
+                ]),
                 \Infinityloop\Utils\Json::fromArray(['data' => ['__typename' => 'Query']]),
             ],
             [
-                '{ field0 { __typename } }',
+                \Infinityloop\Utils\Json::fromArray([
+                    'query' => '{ field0 { __typename } }',
+                ]),
                 \Infinityloop\Utils\Json::fromArray(['data' => ['field0' => ['__typename' => 'Abc']]]),
             ],
         ];
@@ -22,16 +26,16 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider typenameDataProvider
-     * @param string $request
+     * @param \Infinityloop\Utils\Json $request
      * @param \Infinityloop\Utils\Json $expected
      */
-    public function testSimple(string $request, \Infinityloop\Utils\Json $expected) : void
+    public function testSimple(\Infinityloop\Utils\Json $request, \Infinityloop\Utils\Json $expected) : void
     {
         $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
-        $result = $graphpinator->runQuery($request, \Infinityloop\Utils\Json::fromArray([]));
+        $result = $graphpinator->runQuery($request);
 
         self::assertSame($expected->toString(), \json_encode($result, \JSON_THROW_ON_ERROR, 512));
-        self::assertSame($expected['data'], \json_decode(\json_encode($result->getData()), true));
+        self::assertSame($expected['data'], \json_decode(\json_encode($result->getData(), \JSON_THROW_ON_ERROR, 512), true, 512, \JSON_THROW_ON_ERROR));
         self::assertNull($result->getErrors());
     }
 
@@ -39,23 +43,33 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
     {
         return [
             [
-                '{ __schema { description } }',
+                \Infinityloop\Utils\Json::fromArray([
+                    'query' => '{ __schema { description } }',
+                ]),
                 \Infinityloop\Utils\Json::fromArray(['data' => ['__schema' => ['description' => 'Test schema description']]]),
             ],
             [
-                '{ __schema { queryType {name} } }',
+                \Infinityloop\Utils\Json::fromArray([
+                    'query' => '{ __schema { queryType {name} } }',
+                ]),
                 \Infinityloop\Utils\Json::fromArray(['data' => ['__schema' => ['queryType' => ['name' => 'Query']]]]),
             ],
             [
-                '{ __schema { mutationType {name} } }',
+                \Infinityloop\Utils\Json::fromArray([
+                    'query' => '{ __schema { mutationType {name} } }',
+                ]),
                 \Infinityloop\Utils\Json::fromArray(['data' => ['__schema' => ['mutationType' => null]]]),
             ],
             [
-                '{ __schema { subscriptionType {name} } }',
+                \Infinityloop\Utils\Json::fromArray([
+                    'query' => '{ __schema { subscriptionType {name} } }',
+                ]),
                 \Infinityloop\Utils\Json::fromArray(['data' => ['__schema' => ['subscriptionType' => null]]]),
             ],
             [
-                '{ __schema { types {name} } }',
+                \Infinityloop\Utils\Json::fromArray([
+                    'query' => '{ __schema { types {name} } }',
+                ]),
                 \Infinityloop\Utils\Json::fromArray([
                     'data' => [
                         '__schema' => [
@@ -76,7 +90,9 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                 ]),
             ],
             [
-                '{ __schema { directives {name description args{name} locations isRepeatable} } }',
+                \Infinityloop\Utils\Json::fromArray([
+                    'query' => '{ __schema { directives {name description args{name} locations isRepeatable} } }',
+                ]),
                 \Infinityloop\Utils\Json::fromArray([
                     'data' => [
                         '__schema' => [
@@ -105,10 +121,10 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider schemaDataProvider
-     * @param string $request
+     * @param \Infinityloop\Utils\Json $request
      * @param \Infinityloop\Utils\Json $result
      */
-    public function testSchema(string $request, \Infinityloop\Utils\Json $result) : void
+    public function testSchema(\Infinityloop\Utils\Json $request, \Infinityloop\Utils\Json $result) : void
     {
         $schema = TestSchema::getSchema();
         $schema->setDescription('Test schema description');
@@ -116,7 +132,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
 
         self::assertSame(
             $result->toString(),
-            \json_encode($graphpinator->runQuery($request, \Infinityloop\Utils\Json::fromArray([]))),
+            \json_encode($graphpinator->runQuery($request), \JSON_THROW_ON_ERROR, 512),
         );
     }
 
@@ -124,28 +140,30 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
     {
         return [
             [
-                '{ 
-                    __type(name: "Abc") { 
-                        kind name description fields {
-                            name
+                \Infinityloop\Utils\Json::fromArray([
+                    'query' => '{ 
+                        __type(name: "Abc") { 
+                            kind name description fields {
+                                name
+                            } 
+                            interfaces {
+                                name
+                            } 
+                            possibleTypes {
+                                name
+                            } 
+                            inputFields {
+                                name
+                            } 
+                            enumValues {
+                                name
+                            } 
+                            ofType {
+                                name
+                            } 
                         } 
-                        interfaces {
-                            name
-                        } 
-                        possibleTypes {
-                            name
-                        } 
-                        inputFields {
-                            name
-                        } 
-                        enumValues {
-                            name
-                        } 
-                        ofType {
-                            name
-                        } 
-                    } 
-                }',
+                    }',
+                ]),
                 \Infinityloop\Utils\Json::fromArray([
                     'data' => [
                         '__type' => [
@@ -163,28 +181,30 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                 ]),
             ],
             [
-                '{ 
-                    __type(name: "Xyz") { 
-                        kind name description fields {
-                            name
+                \Infinityloop\Utils\Json::fromArray([
+                    'query' => '{ 
+                        __type(name: "Xyz") { 
+                            kind name description fields {
+                                name
+                            } 
+                            interfaces {
+                                name
+                            } 
+                            possibleTypes {
+                                name
+                            } 
+                            inputFields {
+                                name
+                            } 
+                            enumValues {
+                                name
+                            } 
+                            ofType {
+                                name
+                            } 
                         } 
-                        interfaces {
-                            name
-                        } 
-                        possibleTypes {
-                            name
-                        } 
-                        inputFields {
-                            name
-                        } 
-                        enumValues {
-                            name
-                        } 
-                        ofType {
-                            name
-                        } 
-                    } 
-                }',
+                    }',
+                ]),
                 \Infinityloop\Utils\Json::fromArray([
                     'data' => [
                         '__type' => [
@@ -202,28 +222,30 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                 ]),
             ],
             [
-                '{ 
-                    __type(name: "TestInterface") { 
-                        kind name description fields {
-                            name
+                \Infinityloop\Utils\Json::fromArray([
+                    'query' => '{ 
+                        __type(name: "TestInterface") { 
+                            kind name description fields {
+                                name
+                            } 
+                            interfaces {
+                                name
+                            } 
+                            possibleTypes {
+                                name
+                            } 
+                            inputFields {
+                                name
+                            } 
+                            enumValues {
+                                name
+                            } 
+                            ofType {
+                                name
+                            } 
                         } 
-                        interfaces {
-                            name
-                        } 
-                        possibleTypes {
-                            name
-                        } 
-                        inputFields {
-                            name
-                        } 
-                        enumValues {
-                            name
-                        } 
-                        ofType {
-                            name
-                        } 
-                    } 
-                }',
+                    }',
+                ]),
                 \Infinityloop\Utils\Json::fromArray([
                     'data' => [
                         '__type' => [
@@ -241,28 +263,30 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                 ]),
             ],
             [
-                '{ 
-                    __type(name: "TestUnion") { 
-                        kind name description fields {
-                            name
+                \Infinityloop\Utils\Json::fromArray([
+                    'query' => '{ 
+                        __type(name: "TestUnion") { 
+                            kind name description fields {
+                                name
+                            } 
+                            interfaces {
+                                name
+                            } 
+                            possibleTypes {
+                                name
+                            } 
+                            inputFields {
+                                name
+                            } 
+                            enumValues {
+                                name
+                            } 
+                            ofType {
+                                name
+                            } 
                         } 
-                        interfaces {
-                            name
-                        } 
-                        possibleTypes {
-                            name
-                        } 
-                        inputFields {
-                            name
-                        } 
-                        enumValues {
-                            name
-                        } 
-                        ofType {
-                            name
-                        } 
-                    } 
-                }',
+                    }',
+                ]),
                 \Infinityloop\Utils\Json::fromArray([
                     'data' => [
                         '__type' => [
@@ -280,28 +304,30 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                 ]),
             ],
             [
-                '{ 
-                    __type(name: "TestInnerInput") { 
-                        kind name description fields {
-                            name
+                \Infinityloop\Utils\Json::fromArray([
+                    'query' => '{ 
+                        __type(name: "TestInnerInput") { 
+                            kind name description fields {
+                                name
+                            } 
+                            interfaces {
+                                name
+                            } 
+                            possibleTypes {
+                                name
+                            } 
+                            inputFields {
+                                name
+                            } 
+                            enumValues {
+                                name
+                            } 
+                            ofType {
+                                name
+                            } 
                         } 
-                        interfaces {
-                            name
-                        } 
-                        possibleTypes {
-                            name
-                        } 
-                        inputFields {
-                            name
-                        } 
-                        enumValues {
-                            name
-                        } 
-                        ofType {
-                            name
-                        } 
-                    } 
-                }',
+                    }',
+                ]),
                 \Infinityloop\Utils\Json::fromArray([
                     'data' => [
                         '__type' => [
@@ -319,28 +345,30 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                 ]),
             ],
             [
-                '{ 
-                    __type(name: "TestEnum") { 
-                        kind name description fields {
-                            name
+                \Infinityloop\Utils\Json::fromArray([
+                    'query' => '{ 
+                        __type(name: "TestEnum") { 
+                            kind name description fields {
+                                name
+                            } 
+                            interfaces {
+                                name
+                            } 
+                            possibleTypes {
+                                name
+                            } 
+                            inputFields {
+                                name
+                            } 
+                            enumValues {
+                                name description isDeprecated deprecationReason
+                            } 
+                            ofType {
+                                name
+                            } 
                         } 
-                        interfaces {
-                            name
-                        } 
-                        possibleTypes {
-                            name
-                        } 
-                        inputFields {
-                            name
-                        } 
-                        enumValues {
-                            name description isDeprecated deprecationReason
-                        } 
-                        ofType {
-                            name
-                        } 
-                    } 
-                }',
+                    }',
+                ]),
                 \Infinityloop\Utils\Json::fromArray([
                     'data' => [
                         '__type' => [
@@ -363,7 +391,9 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                 ]),
             ],
             [
-                '{ __type(name: "TestExplicitEnum") { enumValues(includeDeprecated: true){name description isDeprecated deprecationReason} } }',
+                \Infinityloop\Utils\Json::fromArray([
+                    'query' => '{ __type(name: "TestExplicitEnum") { enumValues(includeDeprecated: true){name description isDeprecated deprecationReason} } }',
+                ]),
                 \Infinityloop\Utils\Json::fromArray([
                     'data' => [
                         '__type' => [
@@ -378,7 +408,9 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                 ]),
             ],
             [
-                '{ __type(name: "TestExplicitEnum") { enumValues(includeDeprecated: false){name description isDeprecated deprecationReason} } }',
+                \Infinityloop\Utils\Json::fromArray([
+                    'query' => '{ __type(name: "TestExplicitEnum") { enumValues(includeDeprecated: false){name description isDeprecated deprecationReason} } }',
+                ]),
                 \Infinityloop\Utils\Json::fromArray([
                     'data' => [
                         '__type' => [
@@ -393,20 +425,22 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                 ]),
             ],
             [
-                '{ 
-                    __type(name: "TestInterface") { 
-                        fields {
-                            name description args {
-                            name
-                            } 
-                            isDeprecated deprecationReason type {
-                                kind name ofType {
-                                    name
-                                }
+                \Infinityloop\Utils\Json::fromArray([
+                    'query' => '{ 
+                        __type(name: "TestInterface") { 
+                            fields {
+                                name description args {
+                                name
+                                } 
+                                isDeprecated deprecationReason type {
+                                    kind name ofType {
+                                        name
+                                    }
+                                } 
                             } 
                         } 
-                    } 
-                }',
+                    }',
+                ]),
                 \Infinityloop\Utils\Json::fromArray([
                     'data' => [
                         '__type' => [
@@ -425,21 +459,23 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                 ]),
             ],
             [
-                '{ 
-                    __type(name: "Abc") { 
-                        fields(includeDeprecated: false) {
-                            name description isDeprecated deprecationReason type{
-                                name
-                            } 
-                            args {
-                                name description type {
+                \Infinityloop\Utils\Json::fromArray([
+                    'query' => '{ 
+                        __type(name: "Abc") { 
+                            fields(includeDeprecated: false) {
+                                name description isDeprecated deprecationReason type{
                                     name
                                 } 
-                                defaultValue
+                                args {
+                                    name description type {
+                                        name
+                                    } 
+                                    defaultValue
+                                } 
                             } 
                         } 
-                    } 
-                }',
+                    }',
+                ]),
                 \Infinityloop\Utils\Json::fromArray([
                     'data' => [
                         '__type' => [
@@ -471,21 +507,23 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                 ]),
             ],
             [
-                '{ 
-                    __type(name: "Abc") { 
-                        fields(includeDeprecated: true) { 
-                            name description isDeprecated deprecationReason type {
-                                name
-                            } 
-                            args {
-                                name description type {
+                \Infinityloop\Utils\Json::fromArray([
+                    'query' => '{ 
+                        __type(name: "Abc") { 
+                            fields(includeDeprecated: true) { 
+                                name description isDeprecated deprecationReason type {
                                     name
                                 } 
-                                defaultValue
+                                args {
+                                    name description type {
+                                        name
+                                    } 
+                                    defaultValue
+                                } 
                             } 
                         } 
-                    } 
-                }',
+                    }',
+                ]),
                 \Infinityloop\Utils\Json::fromArray([
                     'data' => [
                         '__type' => [
@@ -517,7 +555,9 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                 ]),
             ],
             [
-                '{ __type(name: "String") { name kind } }',
+                \Infinityloop\Utils\Json::fromArray([
+                    'query' => '{ __type(name: "String") { name kind } }',
+                ]),
                 \Infinityloop\Utils\Json::fromArray([
                     'data' => [
                         '__type' => [
@@ -528,7 +568,9 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                 ]),
             ],
             [
-                '{ __type(name: "Zzz") { fields {name type{name kind ofType{name}}}}}',
+                \Infinityloop\Utils\Json::fromArray([
+                    'query' => '{ __type(name: "Zzz") { fields {name type{name kind ofType{name}}}}}',
+                ]),
                 \Infinityloop\Utils\Json::fromArray([
                     'data' => [
                         '__type' => [
@@ -553,43 +595,45 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider typeDataProvider
-     * @param string $request
+     * @param \Infinityloop\Utils\Json $request
      * @param \Infinityloop\Utils\Json $result
      */
-    public function testType(string $request, \Infinityloop\Utils\Json $result) : void
+    public function testType(\Infinityloop\Utils\Json $request, \Infinityloop\Utils\Json $result) : void
     {
         $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
 
         self::assertSame(
             $result->toString(),
-            \json_encode($graphpinator->runQuery($request, \Infinityloop\Utils\Json::fromArray([]))),
+            \json_encode($graphpinator->runQuery($request), JSON_THROW_ON_ERROR, 512),
         );
     }
 
     public function testDescription() : void
     {
-        $request = '{ 
-            __type(name: "Abc") { 
-                kind name description fields {
-                    name
+        $request = \Infinityloop\Utils\Json::fromArray([
+            'query' => '{ 
+                __type(name: "Abc") { 
+                    kind name description fields {
+                        name
+                    } 
+                    interfaces {
+                        name
+                    } 
+                    possibleTypes {
+                        name
+                    } 
+                    inputFields {
+                        name
+                    } 
+                    enumValues {
+                        name
+                    } 
+                    ofType {
+                        name
+                    } 
                 } 
-                interfaces {
-                    name
-                } 
-                possibleTypes {
-                    name
-                } 
-                inputFields {
-                    name
-                } 
-                enumValues {
-                    name
-                } 
-                ofType {
-                    name
-                } 
-            } 
-        }';
+            }',
+        ]);
         $graphpinator = new \Graphpinator\Graphpinator(PrintSchema::getSchema());
         $result = \Infinityloop\Utils\Json::fromArray([
             'data' => [
@@ -609,27 +653,29 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
 
         self::assertSame(
             $result->toString(),
-            \json_encode($graphpinator->runQuery($request, \Infinityloop\Utils\Json::fromArray([]))),
+            \json_encode($graphpinator->runQuery($request), \JSON_THROW_ON_ERROR, 512),
         );
     }
 
     public function testDeprecatedFields() : void
     {
-        $request = '{ 
-            __type(name: "Abc") { 
-                fields(includeDeprecated: false) {
-                    name description isDeprecated deprecationReason type {
-                        name
-                    } 
-                    args {
-                        name description type {
+        $request = \Infinityloop\Utils\Json::fromArray([
+            'query' => '{ 
+                __type(name: "Abc") { 
+                    fields(includeDeprecated: false) {
+                        name description isDeprecated deprecationReason type {
                             name
                         } 
-                        defaultValue
+                        args {
+                            name description type {
+                                name
+                            } 
+                            defaultValue
+                        } 
                     } 
                 } 
-            } 
-        }';
+            }',
+        ]);
         $graphpinator = new \Graphpinator\Graphpinator(PrintSchema::getSchema());
         $result = \Infinityloop\Utils\Json::fromArray([
             'data' => [
@@ -641,13 +687,15 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
 
         self::assertSame(
             $result->toString(),
-            \json_encode($graphpinator->runQuery($request, \Infinityloop\Utils\Json::fromArray([]))),
+            \json_encode($graphpinator->runQuery($request), \JSON_THROW_ON_ERROR, 512),
         );
     }
 
     public function testDeprecatedFalseEnum() : void
     {
-        $request = '{ __type(name: "TestExplicitEnum") { enumValues(includeDeprecated: false){name description isDeprecated deprecationReason} } }';
+        $request = \Infinityloop\Utils\Json::fromArray([
+            'query' => '{ __type(name: "TestExplicitEnum") { enumValues(includeDeprecated: false){name description isDeprecated deprecationReason} } }',
+        ]);
         $graphpinator = new \Graphpinator\Graphpinator(PrintSchema::getSchema());
         $result = \Infinityloop\Utils\Json::fromArray([
             'data' => [
@@ -672,13 +720,15 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
 
         self::assertSame(
             $result->toString(),
-            \json_encode($graphpinator->runQuery($request, \Infinityloop\Utils\Json::fromArray([]))),
+            \json_encode($graphpinator->runQuery($request), \JSON_THROW_ON_ERROR, 512),
         );
     }
 
     public function testDeprecatedTrueEnum() : void
     {
-        $request = '{ __type(name: "TestExplicitEnum") { enumValues(includeDeprecated: true){name description isDeprecated deprecationReason} } }';
+        $request = \Infinityloop\Utils\Json::fromArray([
+            'query' => '{ __type(name: "TestExplicitEnum") { enumValues(includeDeprecated: true){name description isDeprecated deprecationReason} } }',
+        ]);
         $graphpinator = new \Graphpinator\Graphpinator(PrintSchema::getSchema());
         $result = \Infinityloop\Utils\Json::fromArray([
             'data' => [
@@ -715,7 +765,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
 
         self::assertSame(
             $result->toString(),
-            \json_encode($graphpinator->runQuery($request, \Infinityloop\Utils\Json::fromArray([]))),
+            \json_encode($graphpinator->runQuery($request), \JSON_THROW_ON_ERROR, 512),
         );
     }
 }

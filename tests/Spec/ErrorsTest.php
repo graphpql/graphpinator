@@ -10,7 +10,9 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
     {
         return [
             [
-                'query queryName ($ var1: Int) { }',
+                \Infinityloop\Utils\Json::fromArray([
+                    'query' => 'query queryName ($ var1: Int) { }',
+                ]),
                 \Infinityloop\Utils\Json::fromArray([
                     'errors' => [
                         [
@@ -21,15 +23,21 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
                 ]),
             ],
             [
-                'query queryName { field0 { ',
+                \Infinityloop\Utils\Json::fromArray([
+                    'query' => 'query queryName { field0 { ',
+                ]),
                 \Infinityloop\Utils\Json::fromArray(['errors' => [['message' => \Graphpinator\Exception\Parser\UnexpectedEnd::MESSAGE]]]),
             ],
             [
-                'query queryName { field0 @invalidDirective() { field1 { name } } }',
+                \Infinityloop\Utils\Json::fromArray([
+                    'query' => 'query queryName { field0 @invalidDirective() { field1 { name } } }',
+                ]),
                 \Infinityloop\Utils\Json::fromArray(['errors' => [['message' => 'Server responded with unknown error.']]]),
             ],
             [
-                'query queryName { fieldThrow { field1 { name } } }',
+                \Infinityloop\Utils\Json::fromArray([
+                    'query' => 'query queryName { fieldThrow { field1 { name } } }',
+                ]),
                 \Infinityloop\Utils\Json::fromArray(['errors' => [['message' => 'Server responded with unknown error.']]]),
             ],
         ];
@@ -37,16 +45,16 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider simpleDataProvider
-     * @param string $request
+     * @param \Infinityloop\Utils\Json $request
      * @param \Infinityloop\Utils\Json $expected
      */
-    public function testSimple(string $request, \Infinityloop\Utils\Json $expected) : void
+    public function testSimple(\Infinityloop\Utils\Json $request, \Infinityloop\Utils\Json $expected) : void
     {
         $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema(), true);
-        $result = $graphpinator->runQuery($request, \Infinityloop\Utils\Json::fromArray([]));
+        $result = $graphpinator->runQuery($request);
 
         self::assertSame($expected->toString(), \json_encode($result, \JSON_THROW_ON_ERROR, 512));
-        self::assertSame($expected['errors'], \json_decode(\json_encode($result->getErrors()), true));
+        self::assertSame($expected['errors'], \json_decode(\json_encode($result->getErrors(), \JSON_THROW_ON_ERROR, 512), true, 512, \JSON_THROW_ON_ERROR));
         self::assertNull($result->getData());
     }
 

@@ -10,68 +10,81 @@ final class DirectiveTest extends \PHPUnit\Framework\TestCase
     {
         return [
             [
-                'query queryName { field0 { field1 @skip(if: true) { name } } }',
-                \Infinityloop\Utils\Json::fromArray([]),
+                \Infinityloop\Utils\Json::fromArray([
+                    'query' => 'query queryName { field0 { field1 @skip(if: true) { name } } }',
+                ]),
                 \Infinityloop\Utils\Json::fromArray(['data' => ['field0' => []]]),
             ],
             [
-                'query queryName { field0 { field1 @skip(if: false) { name } } }',
-                \Infinityloop\Utils\Json::fromArray([]),
+                \Infinityloop\Utils\Json::fromArray([
+                    'query' => 'query queryName { field0 { field1 @skip(if: false) { name } } }',
+                ]),
                 \Infinityloop\Utils\Json::fromArray(['data' => ['field0' => ['field1' => ['name' => 'Test 123']]]]),
             ],
             [
-                'query queryName { field0 { field1 @include(if: true) { name } } }',
-                \Infinityloop\Utils\Json::fromArray([]),
+                \Infinityloop\Utils\Json::fromArray([
+                    'query' => 'query queryName { field0 { field1 @include(if: true) { name } } }',
+                ]),
                 \Infinityloop\Utils\Json::fromArray(['data' => ['field0' => ['field1' => ['name' => 'Test 123']]]]),
             ],
             [
-                'query queryName { field0 { field1 @include(if: false) { name } } }',
-                \Infinityloop\Utils\Json::fromArray([]),
+                \Infinityloop\Utils\Json::fromArray([
+                    'query' => 'query queryName { field0 { field1 @include(if: false) { name } } }',
+                ]),
                 \Infinityloop\Utils\Json::fromArray(['data' => ['field0' => []]]),
             ],
             [
-                'query queryName { field0 { field1 @include(if: false) @skip(if: false) { name } } }',
-                \Infinityloop\Utils\Json::fromArray([]),
+                \Infinityloop\Utils\Json::fromArray([
+                    'query' => 'query queryName { field0 { field1 @include(if: false) @skip(if: false) { name } } }',
+                ]),
                 \Infinityloop\Utils\Json::fromArray(['data' => ['field0' => []]]),
             ],
             [
-                'query queryName { field0 { field1 @include(if: true) @skip(if: true) { name } } }',
-                \Infinityloop\Utils\Json::fromArray([]),
+                \Infinityloop\Utils\Json::fromArray([
+                    'query' => 'query queryName { field0 { field1 @include(if: true) @skip(if: true) { name } } }',
+                ]),
                 \Infinityloop\Utils\Json::fromArray(['data' => ['field0' => []]]),
             ],
             [
-                'query queryName { field0 { field1 @include(if: false) @skip(if: true) { name } } }',
-                \Infinityloop\Utils\Json::fromArray([]),
+                \Infinityloop\Utils\Json::fromArray([
+                    'query' => 'query queryName { field0 { field1 @include(if: false) @skip(if: true) { name } } }',
+                ]),
                 \Infinityloop\Utils\Json::fromArray(['data' => ['field0' => []]]),
             ],
             [
-                'query queryName { field0 { field1 @include(if: true) @skip(if: false) { name } } }',
-                \Infinityloop\Utils\Json::fromArray([]),
+                \Infinityloop\Utils\Json::fromArray([
+                    'query' => 'query queryName { field0 { field1 @include(if: true) @skip(if: false) { name } } }',
+                ]),
                 \Infinityloop\Utils\Json::fromArray(['data' => ['field0' => ['field1' => ['name' => 'Test 123']]]]),
             ],
             [
-                'query queryName { field0 { ... @include(if: true) { field1 { name } } } }',
-                \Infinityloop\Utils\Json::fromArray([]),
+                \Infinityloop\Utils\Json::fromArray([
+                    'query' => 'query queryName { field0 { ... @include(if: true) { field1 { name } } } }',
+                ]),
                 \Infinityloop\Utils\Json::fromArray(['data' => ['field0' => ['field1' => ['name' => 'Test 123']]]]),
             ],
             [
-                'query queryName { field0 { ... @include(if: false) { field1 { name } } } }',
-                \Infinityloop\Utils\Json::fromArray([]),
+                \Infinityloop\Utils\Json::fromArray([
+                    'query' => 'query queryName { field0 { ... @include(if: false) { field1 { name } } } }',
+                ]),
                 \Infinityloop\Utils\Json::fromArray(['data' => ['field0' => []]]),
             ],
             [
-                'query queryName { field0 { ... namedFragment @include(if: true) } } fragment namedFragment on Abc { field1 { name } }',
-                \Infinityloop\Utils\Json::fromArray([]),
+                \Infinityloop\Utils\Json::fromArray([
+                    'query' => 'query queryName { field0 { ... namedFragment @include(if: true) } } fragment namedFragment on Abc { field1 { name } }',
+                ]),
                 \Infinityloop\Utils\Json::fromArray(['data' => ['field0' => ['field1' => ['name' => 'Test 123']]]]),
             ],
             [
-                'query queryName { field0 { ... namedFragment @include(if: false) } } fragment namedFragment on Abc { field1 { name } }',
-                \Infinityloop\Utils\Json::fromArray([]),
+                \Infinityloop\Utils\Json::fromArray([
+                    'query' => 'query queryName { field0 { ... namedFragment @include(if: false) } } fragment namedFragment on Abc { field1 { name } }',
+                ]),
                 \Infinityloop\Utils\Json::fromArray(['data' => ['field0' => []]]),
             ],
             [
-                'query queryName { field0 { field1 @testDirective() { name } } }',
-                \Infinityloop\Utils\Json::fromArray([]),
+                \Infinityloop\Utils\Json::fromArray([
+                    'query' => 'query queryName { field0 { field1 @testDirective() { name } } }',
+                ]),
                 \Infinityloop\Utils\Json::fromArray(['data' => ['field0' => ['field1' => ['name' => 'Test 123']]]]),
             ],
         ];
@@ -79,14 +92,13 @@ final class DirectiveTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider simpleDataProvider
-     * @param string $request
-     * @param \Infinityloop\Utils\Json $variables
+     * @param \Infinityloop\Utils\Json $request
      * @param \Infinityloop\Utils\Json $expected
      */
-    public function testSimple(string $request, \Infinityloop\Utils\Json $variables, \Infinityloop\Utils\Json $expected) : void
+    public function testSimple(\Infinityloop\Utils\Json $request, \Infinityloop\Utils\Json $expected) : void
     {
         $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
-        $result = $graphpinator->runQuery($request, $variables);
+        $result = $graphpinator->runQuery($request);
 
         self::assertSame($expected->toString(), \json_encode($result, \JSON_THROW_ON_ERROR, 512));
         self::assertSame($expected['data'], \json_decode(\json_encode($result->getData()), true));
@@ -101,8 +113,9 @@ final class DirectiveTest extends \PHPUnit\Framework\TestCase
         self::assertSame(
             \Infinityloop\Utils\Json::fromArray(['data' => ['field0' => ['field1' => ['name' => 'Test 123']]]])->toString(),
             \json_encode($graphpinator->runQuery(
-                'query queryName { field0 { field1 @testDirective @testDirective @testDirective { name } } }',
-                \Infinityloop\Utils\Json::fromArray([]),
+                \Infinityloop\Utils\Json::fromArray([
+                    'query' => 'query queryName { field0 { field1 @testDirective @testDirective @testDirective { name } } }',
+                ]),
             ), \JSON_THROW_ON_ERROR, 512),
         );
         self::assertSame(3, TestSchema::getSchema()->getContainer()->getDirective('testDirective')::$count);
@@ -112,27 +125,39 @@ final class DirectiveTest extends \PHPUnit\Framework\TestCase
     {
         return [
             [
-                'query queryName { field0 { field1 @skip(if: false) @skip(if: false) { name } } }',
+                \Infinityloop\Utils\Json::fromArray([
+                    'query' => 'query queryName { field0 { field1 @skip(if: false) @skip(if: false) { name } } }',
+                ]),
                 \Graphpinator\Exception\Normalizer\DuplicatedDirective::class,
             ],
             [
-                'query queryName { field0 { field1 @include(if: false) @include(if: false) { name } } }',
+                \Infinityloop\Utils\Json::fromArray([
+                    'query' => 'query queryName { field0 { field1 @include(if: false) @include(if: false) { name } } }',
+                ]),
                 \Graphpinator\Exception\Normalizer\DuplicatedDirective::class,
             ],
             [
-                'query queryName { field0 { field1 @include(if: false) @testDirective @include(if: false) { name } } }',
+                \Infinityloop\Utils\Json::fromArray([
+                    'query' => 'query queryName { field0 { field1 @include(if: false) @testDirective @include(if: false) { name } } }',
+                ]),
                 \Graphpinator\Exception\Normalizer\DuplicatedDirective::class,
             ],
             [
-                'query queryName { field0 { ... on Abc @testDirective { field1 { name } } } }',
+                \Infinityloop\Utils\Json::fromArray([
+                    'query' => 'query queryName { field0 { ... on Abc @testDirective { field1 { name } } } }',
+                ]),
                 \Graphpinator\Exception\Normalizer\MisplacedDirective::class,
             ],
             [
-                'query queryName { field0 @invalidDirective() { field1 { name } } }',
+                \Infinityloop\Utils\Json::fromArray([
+                    'query' => 'query queryName { field0 @invalidDirective() { field1 { name } } }',
+                ]),
                 \Graphpinator\Exception\Resolver\InvalidDirectiveResult::class,
             ],
             [
-                'query queryName { field0 { field1 @testDirective(if: true) { name } } }',
+                \Infinityloop\Utils\Json::fromArray([
+                    'query' => 'query queryName { field0 { field1 @testDirective(if: true) { name } } }',
+                ]),
                 \Graphpinator\Exception\Resolver\UnknownArgument::class,
             ],
         ];
@@ -140,16 +165,16 @@ final class DirectiveTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider invalidDataProvider
-     * @param string $query
+     * @param \Infinityloop\Utils\Json $request
      * @param string $exception
      */
-    public function testInvalid(string $query, string $exception) : void
+    public function testInvalid(\Infinityloop\Utils\Json $request, string $exception) : void
     {
         $this->expectException($exception);
         $this->expectExceptionMessage(\constant($exception . '::MESSAGE'));
 
         $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
 
-        $graphpinator->runQuery($query, \Infinityloop\Utils\Json::fromArray([]));
+        $graphpinator->runQuery($request);
     }
 }

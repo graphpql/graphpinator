@@ -10,13 +10,15 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
     {
         return [
             [
-                'query queryName { field0 { field1 { name } } }',
-                \Infinityloop\Utils\Json::fromArray([]),
+                \Infinityloop\Utils\Json::fromArray([
+                    'query' => 'query queryName { field0 { field1 { name } } }',
+                ]),
                 \Infinityloop\Utils\Json::fromArray(['data' => ['field0' => ['field1' => ['name' => 'Test 123']]]]),
             ],
             [
-                'query queryName { aliasName: field0 { field1 { name } } }',
-                \Infinityloop\Utils\Json::fromArray([]),
+                \Infinityloop\Utils\Json::fromArray([
+                    'query' => 'query queryName { aliasName: field0 { field1 { name } } }',
+                ]),
                 \Infinityloop\Utils\Json::fromArray(['data' => ['aliasName' => ['field1' => ['name' => 'Test 123']]]]),
             ],
         ];
@@ -24,14 +26,13 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider simpleDataProvider
-     * @param string $request
-     * @param \Infinityloop\Utils\Json $variables
+     * @param \Infinityloop\Utils\Json $request
      * @param \Infinityloop\Utils\Json $expected
      */
-    public function testSimple(string $request, \Infinityloop\Utils\Json $variables, \Infinityloop\Utils\Json $expected) : void
+    public function testSimple(\Infinityloop\Utils\Json $request, \Infinityloop\Utils\Json $expected) : void
     {
         $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
-        $result = $graphpinator->runQuery($request, $variables);
+        $result = $graphpinator->runQuery($request);
 
         self::assertSame($expected->toString(), \json_encode($result, \JSON_THROW_ON_ERROR, 512));
         self::assertSame($expected['data'], \json_decode(\json_encode($result->getData()), true));
@@ -40,18 +41,17 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider simpleDataProvider
-     * @param string $request
-     * @param \Infinityloop\Utils\Json $variables
+     * @param \Infinityloop\Utils\Json $request
      * @param \Infinityloop\Utils\Json $expected
      */
-    public function testComponents(string $request, \Infinityloop\Utils\Json $variables, \Infinityloop\Utils\Json $expected) : void
+    public function testComponents(\Infinityloop\Utils\Json $request, \Infinityloop\Utils\Json $expected) : void
     {
-        $source = new \Graphpinator\Source\StringSource($request);
+        $source = new \Graphpinator\Source\StringSource($request['query']);
         $parser = new \Graphpinator\Parser\Parser($source);
         $normalizer = new \Graphpinator\Normalizer\Normalizer(TestSchema::getSchema());
         $resolver = new \Graphpinator\Resolver\Resolver();
 
-        $result = $resolver->resolve($normalizer->normalize($parser->parse()), $variables);
+        $result = $resolver->resolve($normalizer->normalize($parser->parse()), $request['variables'] ?? []);
 
         self::assertSame($expected->toString(), \json_encode($result, \JSON_THROW_ON_ERROR, 512));
         self::assertSame($expected['data'], \json_decode(\json_encode($result->getData()), true));
@@ -62,30 +62,35 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
     {
         return [
             [
-                'query queryName { field0 { field1 } }',
-                \Infinityloop\Utils\Json::fromArray([]),
+                \Infinityloop\Utils\Json::fromArray([
+                    'query' => 'query queryName { field0 { field1 } }',
+                ]),
                 \Graphpinator\Exception\Resolver\SelectionOnComposite::class,
             ],
             [
-                'query queryName { field0 { field1 { nonExisting } } }',
-                \Infinityloop\Utils\Json::fromArray([]),
+                \Infinityloop\Utils\Json::fromArray([
+                    'query' => 'query queryName { field0 { field1 { nonExisting } } }',
+                ]),
                 //phpcs:ignore SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly.ReferencedGeneralException
                 \Exception::class,
             ],
             [
-                'query queryName { field0 { field1 { name { nonExisting } } } }',
-                \Infinityloop\Utils\Json::fromArray([]),
+                \Infinityloop\Utils\Json::fromArray([
+                    'query' => 'query queryName { field0 { field1 { name { nonExisting } } } }',
+                ]),
                 //phpcs:ignore SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly.ReferencedGeneralException
                 \Exception::class,
             ],
             [
-                'query queryName { fieldInvalidType { } }',
-                \Infinityloop\Utils\Json::fromArray([]),
+                \Infinityloop\Utils\Json::fromArray([
+                    'query' => 'query queryName { fieldInvalidType { } }',
+                ]),
                 \Graphpinator\Exception\Resolver\FieldResultTypeMismatch::class,
             ],
             [
-                'query queryName { fieldAbstract { } }',
-                \Infinityloop\Utils\Json::fromArray([]),
+                \Infinityloop\Utils\Json::fromArray([
+                    'query' => 'query queryName { fieldAbstract { } }',
+                ]),
                 \Graphpinator\Exception\Resolver\FieldResultAbstract::class,
             ],
         ];
@@ -97,11 +102,11 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
      * @param \Infinityloop\Utils\Json $variables
      * @param string $exception
      */
-    public function testInvalid(string $request, \Infinityloop\Utils\Json $variables, string $exception) : void
+    public function testInvalid(\Infinityloop\Utils\Json $request, string $exception) : void
     {
         $this->expectException($exception);
 
         $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
-        $graphpinator->runQuery($request, $variables);
+        $graphpinator->runQuery($request);
     }
 }
