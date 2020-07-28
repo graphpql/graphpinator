@@ -51,7 +51,8 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
         $normalizer = new \Graphpinator\Normalizer\Normalizer(TestSchema::getSchema());
         $resolver = new \Graphpinator\Resolver\Resolver();
 
-        $result = $resolver->resolve($normalizer->normalize($parser->parse()), $request['variables'] ?? []);
+        $result = $resolver->resolve($normalizer->normalize($parser->parse()), $request['variables']
+            ?? []);
 
         self::assertSame($expected->toString(), \json_encode($result, \JSON_THROW_ON_ERROR, 512));
         self::assertSame($expected['data'], \json_decode(\json_encode($result->getData()), true));
@@ -94,8 +95,7 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
                 \Graphpinator\Exception\Resolver\FieldResultAbstract::class,
             ],
             [
-                \Infinityloop\Utils\Json::fromArray([
-                ]),
+                \Infinityloop\Utils\Json::fromArray([]),
                 \Graphpinator\Exception\RequestWithoutQuery::class,
             ],
             [
@@ -107,14 +107,14 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
             [
                 \Infinityloop\Utils\Json::fromArray([
                     'query' => '',
-                    'variables' => 'abc'
+                    'variables' => 'abc',
                 ]),
                 \Graphpinator\Exception\RequestVariablesNotArray::class,
             ],
             [
                 \Infinityloop\Utils\Json::fromArray([
                     'query' => '',
-                    'operationName' => 123
+                    'operationName' => 123,
                 ]),
                 \Graphpinator\Exception\RequestOperationNameNotString::class,
             ],
@@ -131,8 +131,7 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider invalidDataProvider
-     * @param string $request
-     * @param \Infinityloop\Utils\Json $variables
+     * @param \Infinityloop\Utils\Json $request
      * @param string $exception
      */
     public function testInvalid(\Infinityloop\Utils\Json $request, string $exception) : void

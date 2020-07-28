@@ -71,13 +71,17 @@ final class DirectiveTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 \Infinityloop\Utils\Json::fromArray([
-                    'query' => 'query queryName { field0 { ... namedFragment @include(if: true) } } fragment namedFragment on Abc { field1 { name } }',
+                    'query' => 'query queryName { 
+                        field0 { ... namedFragment @include(if: true) } } fragment namedFragment on Abc { field1 { name } 
+                    }',
                 ]),
                 \Infinityloop\Utils\Json::fromArray(['data' => ['field0' => ['field1' => ['name' => 'Test 123']]]]),
             ],
             [
                 \Infinityloop\Utils\Json::fromArray([
-                    'query' => 'query queryName { field0 { ... namedFragment @include(if: false) } } fragment namedFragment on Abc { field1 { name } }',
+                    'query' => 'query queryName { 
+                        field0 { ... namedFragment @include(if: false) } } fragment namedFragment on Abc { field1 { name } 
+                    }',
                 ]),
                 \Infinityloop\Utils\Json::fromArray(['data' => ['field0' => []]]),
             ],

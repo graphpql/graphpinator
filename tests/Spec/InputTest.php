@@ -25,7 +25,9 @@ final class InputTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 \Infinityloop\Utils\Json::fromArray([
-                    'query' => 'query queryName { field0 { field1(arg2: {name: "foo", innerList: [], innerNotNull: {name: "bar", number: []} }) { name } } }',
+                    'query' => 'query queryName { 
+                        field0 { field1(arg2: {name: "foo", innerList: [], innerNotNull: {name: "bar", number: []} }) { name } } 
+                    }',
                 ]),
                 \Infinityloop\Utils\Json::fromArray([
                     'data' => [
@@ -206,7 +208,7 @@ final class InputTest extends \PHPUnit\Framework\TestCase
                             } 
                         } 
                     }',
-                    'variables' => ['var1' => ['name' => 'bar', 'number' => []]]
+                    'variables' => ['var1' => ['name' => 'bar', 'number' => []]],
                 ]),
                 \Infinityloop\Utils\Json::fromArray([
                     'data' => [

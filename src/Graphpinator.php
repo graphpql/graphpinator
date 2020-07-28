@@ -26,8 +26,11 @@ final class Graphpinator
         $this->validateRequest($request);
 
         $query = $request[self::QUERY];
-        $variables = $request[self::VARIABLES] ?? [];
-        $operationName = $request[self::OPERATION_NAME] ?? null;
+        $variables = $request[self::VARIABLES]
+            ?? [];
+        //phpcs:ignore SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable
+        $operationName = $request[self::OPERATION_NAME]
+            ?? null;
 
         try {
             return \Graphpinator\Parser\Parser::parseString($query)

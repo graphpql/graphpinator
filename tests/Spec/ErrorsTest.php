@@ -54,7 +54,10 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
         $result = $graphpinator->runQuery($request);
 
         self::assertSame($expected->toString(), \json_encode($result, \JSON_THROW_ON_ERROR, 512));
-        self::assertSame($expected['errors'], \json_decode(\json_encode($result->getErrors(), \JSON_THROW_ON_ERROR, 512), true, 512, \JSON_THROW_ON_ERROR));
+        self::assertSame(
+            $expected['errors'],
+            \json_decode(\json_encode($result->getErrors(), \JSON_THROW_ON_ERROR, 512), true, 512, \JSON_THROW_ON_ERROR),
+        );
         self::assertNull($result->getData());
     }
 
