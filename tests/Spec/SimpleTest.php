@@ -93,6 +93,39 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
                 ]),
                 \Graphpinator\Exception\Resolver\FieldResultAbstract::class,
             ],
+            [
+                \Infinityloop\Utils\Json::fromArray([
+                ]),
+                \Graphpinator\Exception\RequestWithoutQuery::class,
+            ],
+            [
+                \Infinityloop\Utils\Json::fromArray([
+                    'query' => 123,
+                ]),
+                \Graphpinator\Exception\RequestQueryNotString::class,
+            ],
+            [
+                \Infinityloop\Utils\Json::fromArray([
+                    'query' => '',
+                    'variables' => 'abc'
+                ]),
+                \Graphpinator\Exception\RequestVariablesNotArray::class,
+            ],
+            [
+                \Infinityloop\Utils\Json::fromArray([
+                    'query' => '',
+                    'operationName' => 123
+                ]),
+                \Graphpinator\Exception\RequestOperationNameNotString::class,
+            ],
+            [
+                \Infinityloop\Utils\Json::fromArray([
+                    'query' => '',
+                    'operationName' => '',
+                    'randomKey' => 'randomVal',
+                ]),
+                \Graphpinator\Exception\RequestUnknownKey::class,
+            ],
         ];
     }
 

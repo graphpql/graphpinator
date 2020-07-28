@@ -8,6 +8,10 @@ final class Graphpinator
 {
     use \Nette\SmartObject;
 
+    public const QUERY = 'query';
+    public const VARIABLES = 'variables';
+    public const OPERATION_NAME = 'operationName';
+
     private \Graphpinator\Type\Schema $schema;
     private bool $catchExceptions;
 
@@ -21,9 +25,9 @@ final class Graphpinator
     {
         $this->validateRequest($request);
 
-        $query = $request['query'];
-        $variables = $request['variables'] ?? [];
-        $operationName = $request['operationName'] ?? null;
+        $query = $request[self::QUERY];
+        $variables = $request[self::VARIABLES] ?? [];
+        $operationName = $request[self::OPERATION_NAME] ?? null;
 
         try {
             return \Graphpinator\Parser\Parser::parseString($query)
@@ -44,20 +48,26 @@ final class Graphpinator
 
     private function validateRequest(\Infinityloop\Utils\Json $request) : void
     {
-        if (!isset($request['query'])) {
+        if (!isset($request[self::QUERY])) {
             throw new \Graphpinator\Exception\RequestWithoutQuery();
         }
 
-        if (!\is_string($request['query'])) {
+        if (!\is_string($request[self::QUERY])) {
             throw new \Graphpinator\Exception\RequestQueryNotString();
         }
 
-        if (isset($request['variables']) && !\is_array($request['variables'])) {
+        if (isset($request[self::VARIABLES]) && !\is_array($request[self::VARIABLES])) {
             throw new \Graphpinator\Exception\RequestVariablesNotArray();
         }
 
-        if (isset($request['operationName']) && !\is_string($request['operationName'])) {
+        if (isset($request[self::OPERATION_NAME]) && !\is_string($request[self::OPERATION_NAME])) {
             throw new \Graphpinator\Exception\RequestOperationNameNotString();
+        }
+
+        foreach ($request as $key => $value) {
+            if (!\array_key_exists($key, [self::QUERY => 1, self::VARIABLES => 1, self::OPERATION_NAME => 1])) {
+                throw new \Graphpinator\Exception\RequestUnknownKey();
+            }
         }
     }
 }
