@@ -19,6 +19,8 @@ final class Graphpinator
 
     public function runQuery(\Infinityloop\Utils\Json $request) : \Graphpinator\Resolver\OperationResult
     {
+        $this->validateRequest($request);
+
         $query = $request['query'];
         $variables = $request['variables'] ?? [];
         $operationName = $request['operationName'] ?? null;
@@ -37,6 +39,25 @@ final class Graphpinator
                     ? $exception
                     : \Graphpinator\Exception\GraphpinatorBase::notOutputableResponse(),
             ]);
+        }
+    }
+
+    private function validateRequest(\Infinityloop\Utils\Json $request) : void
+    {
+        if (!isset($request['query'])) {
+            throw new \Graphpinator\Exception\RequestWithoutQuery();
+        }
+
+        if (!\is_string($request['query'])) {
+            throw new \Graphpinator\Exception\RequestQueryNotString();
+        }
+
+        if (isset($request['variables']) && !\is_array($request['variables'])) {
+            throw new \Graphpinator\Exception\RequestVariablesNotArray();
+        }
+
+        if (isset($request['operationName']) && !\is_string($request['operationName'])) {
+            throw new \Graphpinator\Exception\RequestOperationNameNotString();
         }
     }
 }
