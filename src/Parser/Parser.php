@@ -141,6 +141,8 @@ final class Parser
                     default:
                         throw new \Graphpinator\Exception\Parser\ExpectedAfterOperationType();
                 }
+
+                break;
             default:
                 throw new \Graphpinator\Exception\Parser\ExpectedRoot();
         }
