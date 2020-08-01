@@ -18,8 +18,7 @@ final class VariableSet extends \Infinityloop\Utils\ObjectSet
         return parent::offsetGet($offset);
     }
 
-    //@phpcs:ignore SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingAnyTypeHint
-    protected function getKey($object)
+    protected function getKey($object) : string
     {
         return $object->getName();
     }
