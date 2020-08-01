@@ -225,6 +225,10 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           name: String!
         }
         
+        scalar TestScalar
+
+        scalar TestSecondScalar
+        
         union TestUnion = Abc | Xyz
         
         union UTestUnion = Abc | Xyz
@@ -370,6 +374,10 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           name: String!
         }
         
+        scalar TestScalar
+
+        scalar TestSecondScalar
+        
         union TestUnion = Abc | Xyz
         
         union UTestUnion = Abc | Xyz
@@ -478,6 +486,10 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           "single line description"
           innerNotNull: TestInnerInput!
         }
+        
+        scalar TestScalar
+
+        scalar TestSecondScalar
         
         """
         ETestEnum description
@@ -623,6 +635,10 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           "single line description"
           innerNotNull: TestInnerInput!
         }
+        
+        scalar TestScalar
+
+        scalar TestSecondScalar
         
         """
         ETestEnum description

@@ -43,6 +43,8 @@ final class PrintSchema
             'TestEnum' => self::getEnum(),
             'TestExplicitEnum' => self::getExplicitEnum(),
             'ETestEnum' => self::getEnumWithDescription(),
+            'TestSecondScalar' => self::getTestSecondScalar(),
+            'TestScalar' => self::getTestScalar(),
         ], [
             'testDirective' => self::getTestDirective(),
             'invalidDirective' => self::getInvalidDirective(),
@@ -336,6 +338,22 @@ final class PrintSchema
                         ->setDeprecationReason('reason'),
                 ]));
             }
+        };
+    }
+
+    public static function getTestScalar() : \Graphpinator\Type\Scalar\ScalarType
+    {
+        return new class extends \Graphpinator\Type\Scalar\ScalarType
+        {
+            protected const NAME = 'TestScalar';
+        };
+    }
+
+    public static function getTestSecondScalar() : \Graphpinator\Type\Scalar\ScalarType
+    {
+        return new class extends \Graphpinator\Type\Scalar\ScalarType
+        {
+            protected const NAME = 'TestSecondScalar';
         };
     }
 
