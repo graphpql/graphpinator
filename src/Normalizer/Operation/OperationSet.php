@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Normalizer;
+namespace Graphpinator\Normalizer\Operation;
 
 final class OperationSet extends \Infinityloop\Utils\ObjectSet
 {

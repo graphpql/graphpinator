@@ -9,8 +9,8 @@ final class NormalizerTest extends \PHPUnit\Framework\TestCase
     public function testVariableTypeReferences() : void
     {
         $parseResult = new \Graphpinator\Parser\ParseResult(
-            new \Graphpinator\Parser\OperationSet([
-                new \Graphpinator\Parser\Operation(
+            new \Graphpinator\Parser\Operation\OperationSet([
+                new \Graphpinator\Parser\Operation\Operation(
                     new \Graphpinator\Parser\FieldSet([], new \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet([])),
                     \Graphpinator\Tokenizer\OperationType::QUERY,
                     'operationName',
@@ -49,8 +49,8 @@ final class NormalizerTest extends \PHPUnit\Framework\TestCase
     public function testDirectiveReferences() : void
     {
         $parseResult = new \Graphpinator\Parser\ParseResult(
-            new \Graphpinator\Parser\OperationSet([
-                new \Graphpinator\Parser\Operation(
+            new \Graphpinator\Parser\Operation\OperationSet([
+                new \Graphpinator\Parser\Operation\Operation(
                     new \Graphpinator\Parser\FieldSet([
                         new \Graphpinator\Parser\Field('fieldName', null, null, null, new \Graphpinator\Parser\Directive\DirectiveSet([
                             new \Graphpinator\Parser\Directive\Directive('skip', null),
@@ -129,8 +129,8 @@ final class NormalizerTest extends \PHPUnit\Framework\TestCase
         return [
             [
                 new \Graphpinator\Parser\ParseResult(
-                    new \Graphpinator\Parser\OperationSet([
-                        new \Graphpinator\Parser\Operation(
+                    new \Graphpinator\Parser\Operation\OperationSet([
+                        new \Graphpinator\Parser\Operation\Operation(
                             new \Graphpinator\Parser\FieldSet([], new \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet([])),
                             \Graphpinator\Tokenizer\OperationType::MUTATION,
                         ),
@@ -141,8 +141,8 @@ final class NormalizerTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 new \Graphpinator\Parser\ParseResult(
-                    new \Graphpinator\Parser\OperationSet([
-                        new \Graphpinator\Parser\Operation(
+                    new \Graphpinator\Parser\Operation\OperationSet([
+                        new \Graphpinator\Parser\Operation\Operation(
                             new \Graphpinator\Parser\FieldSet([], new \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet([])),
                             \Graphpinator\Tokenizer\OperationType::SUBSCRIPTION,
                         ),
@@ -153,8 +153,8 @@ final class NormalizerTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 new \Graphpinator\Parser\ParseResult(
-                    new \Graphpinator\Parser\OperationSet([
-                        new \Graphpinator\Parser\Operation(
+                    new \Graphpinator\Parser\Operation\OperationSet([
+                        new \Graphpinator\Parser\Operation\Operation(
                             new \Graphpinator\Parser\FieldSet([], new \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet([])),
                             'random',
                         ),
@@ -165,8 +165,8 @@ final class NormalizerTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 new \Graphpinator\Parser\ParseResult(
-                    new \Graphpinator\Parser\OperationSet([
-                        new \Graphpinator\Parser\Operation(
+                    new \Graphpinator\Parser\Operation\OperationSet([
+                        new \Graphpinator\Parser\Operation\Operation(
                             new \Graphpinator\Parser\FieldSet([], new \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet([
                                 new \Graphpinator\Parser\FragmentSpread\NamedFragmentSpread('fragmentName'),
                             ])),
@@ -179,8 +179,8 @@ final class NormalizerTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 new \Graphpinator\Parser\ParseResult(
-                    new \Graphpinator\Parser\OperationSet([
-                        new \Graphpinator\Parser\Operation(
+                    new \Graphpinator\Parser\Operation\OperationSet([
+                        new \Graphpinator\Parser\Operation\Operation(
                             new \Graphpinator\Parser\FieldSet([], new \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet([])),
                             'query',
                         ),
@@ -227,8 +227,8 @@ final class NormalizerTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 new \Graphpinator\Parser\ParseResult(
-                    new \Graphpinator\Parser\OperationSet([
-                        new \Graphpinator\Parser\Operation(
+                    new \Graphpinator\Parser\Operation\OperationSet([
+                        new \Graphpinator\Parser\Operation\Operation(
                             new \Graphpinator\Parser\FieldSet([], new \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet([])),
                             'query',
                         ),
@@ -256,8 +256,8 @@ final class NormalizerTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 new \Graphpinator\Parser\ParseResult(
-                    new \Graphpinator\Parser\OperationSet([
-                        new \Graphpinator\Parser\Operation(
+                    new \Graphpinator\Parser\Operation\OperationSet([
+                        new \Graphpinator\Parser\Operation\Operation(
                             new \Graphpinator\Parser\FieldSet([], new \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet([])),
                             'query',
                         ),

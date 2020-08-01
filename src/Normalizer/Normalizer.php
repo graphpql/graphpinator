@@ -15,7 +15,7 @@ final class Normalizer
         $this->schema = $schema;
     }
 
-    public function normalize(\Graphpinator\Parser\ParseResult $parseResult) : OperationSet
+    public function normalize(\Graphpinator\Parser\ParseResult $parseResult) : \Graphpinator\Normalizer\Operation\OperationSet
     {
         return $parseResult->normalize($this->schema);
     }

@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Parser;
+namespace Graphpinator\Parser\Operation;
 
 final class Operation
 {
@@ -50,7 +50,7 @@ final class Operation
     public function normalize(
         \Graphpinator\Type\Schema $schema,
         \Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions
-    ) : \Graphpinator\Normalizer\Operation
+    ) : \Graphpinator\Normalizer\Operation\Operation
     {
         switch ($this->type) {
             case \Graphpinator\Tokenizer\OperationType::QUERY:
@@ -73,7 +73,7 @@ final class Operation
             throw new \Graphpinator\Exception\Normalizer\OperationNotSupported();
         }
 
-        return new \Graphpinator\Normalizer\Operation(
+        return new \Graphpinator\Normalizer\Operation\Operation(
             $operation,
             $this->children->normalize($schema->getContainer(), $fragmentDefinitions),
             $this->variables->normalize($schema->getContainer()),

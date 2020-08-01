@@ -2,18 +2,18 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Parser;
+namespace Graphpinator\Parser\Operation;
 
 final class OperationSet extends \Infinityloop\Utils\ObjectSet
 {
     protected const INNER_CLASS = Operation::class;
 
-    public function current() : Operation
+    public function current() : \Graphpinator\Parser\Operation\Operation
     {
         return parent::current();
     }
 
-    public function offsetGet($offset) : Operation
+    public function offsetGet($offset) : \Graphpinator\Parser\Operation\Operation
     {
         return parent::offsetGet($offset);
     }
@@ -21,7 +21,7 @@ final class OperationSet extends \Infinityloop\Utils\ObjectSet
     public function normalize(
         \Graphpinator\Type\Schema $schema,
         \Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions
-    ) : \Graphpinator\Normalizer\OperationSet
+    ) : \Graphpinator\Normalizer\Operation\OperationSet
     {
         $normalized = [];
 
@@ -29,7 +29,7 @@ final class OperationSet extends \Infinityloop\Utils\ObjectSet
             $normalized[] = $operation->normalize($schema, $fragmentDefinitions);
         }
 
-        return new \Graphpinator\Normalizer\OperationSet($normalized);
+        return new \Graphpinator\Normalizer\Operation\OperationSet($normalized);
     }
 
     protected function getKey(object $object) : ?string

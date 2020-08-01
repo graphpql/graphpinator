@@ -2,9 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Normalizer;
-
-use \Graphpinator\Resolver\OperationResult;
+namespace Graphpinator\Normalizer\Operation;
 
 final class Operation
 {
@@ -40,7 +38,7 @@ final class Operation
         return $this->variables;
     }
 
-    public function execute(array $variables) : OperationResult
+    public function execute(array $variables) : \Graphpinator\Resolver\OperationResult
     {
         $data = $this->operation->resolve(
             $this->children->applyVariables(new \Graphpinator\Resolver\VariableValueSet($this->variables, $variables)),

@@ -9,7 +9,7 @@ final class Resolver
     use \Nette\SmartObject;
 
     public function resolve(
-        \Graphpinator\Normalizer\OperationSet $operationSet,
+        \Graphpinator\Normalizer\Operation\OperationSet $operationSet,
         ?string $operationName,
         array $variables
     ) : \Graphpinator\Resolver\OperationResult

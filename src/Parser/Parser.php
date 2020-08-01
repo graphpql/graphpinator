@@ -68,7 +68,7 @@ final class Parser
         }
 
         return new \Graphpinator\Parser\ParseResult(
-            new \Graphpinator\Parser\OperationSet($operations),
+            new \Graphpinator\Parser\Operation\OperationSet($operations),
             new \Graphpinator\Parser\Fragment\FragmentSet($fragments),
         );
     }
@@ -99,11 +99,11 @@ final class Parser
      * Expects iterator on previous token - operation keyword or opening brace
      * Leaves iterator to last used token - closing brace
      */
-    private function parseOperation() : Operation
+    private function parseOperation() : \Graphpinator\Parser\Operation\Operation
     {
         switch ($this->tokenizer->getCurrent()->getType()) {
             case TokenType::CUR_O:
-                return new \Graphpinator\Parser\Operation($this->parseSelectionSet());
+                return new \Graphpinator\Parser\Operation\Operation($this->parseSelectionSet());
             case TokenType::NAME:
                 $operationType = $this->tokenizer->getCurrent()->getValue();
 
@@ -113,13 +113,13 @@ final class Parser
 
                 switch ($this->tokenizer->getNext()->getType()) {
                     case TokenType::CUR_O:
-                        return new \Graphpinator\Parser\Operation($this->parseSelectionSet(), $operationType);
+                        return new \Graphpinator\Parser\Operation\Operation($this->parseSelectionSet(), $operationType);
                     case TokenType::NAME:
                         $operationName = $this->tokenizer->getCurrent()->getValue();
 
                         switch ($this->tokenizer->getNext()->getType()) {
                             case TokenType::CUR_O:
-                                return new \Graphpinator\Parser\Operation($this->parseSelectionSet(), $operationType, $operationName);
+                                return new \Graphpinator\Parser\Operation\Operation($this->parseSelectionSet(), $operationType, $operationName);
                             case TokenType::PAR_O:
                                 $variables = $this->parseVariables();
                                 $this->tokenizer->assertNext(
@@ -127,7 +127,7 @@ final class Parser
                                     \Graphpinator\Exception\Parser\ExpectedSelectionSet::class,
                                 );
 
-                                return new \Graphpinator\Parser\Operation(
+                                return new \Graphpinator\Parser\Operation\Operation(
                                     $this->parseSelectionSet(),
                                     $operationType,
                                     $operationName,
