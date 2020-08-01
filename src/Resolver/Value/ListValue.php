@@ -9,7 +9,7 @@ final class ListValue extends \Graphpinator\Resolver\Value\ValidatedValue implem
     public function __construct($list, \Graphpinator\Type\ListType $type)
     {
         if (!\is_iterable($list)) {
-            throw new \Exception('Value must be list or null.');
+            throw new \Graphpinator\Exception\Resolver\ExpectedListOrNull();
         }
 
         $value = [];

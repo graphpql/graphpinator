@@ -13,7 +13,7 @@ trait TResolvable
         }
 
         if (!$this->validateNonNullValue($rawValue)) {
-            throw new \Exception('Invalid resolved value for ' . $this->getName());
+            throw new \Graphpinator\Exception\Type\InvalidResolvedValue($this->getName());
         }
     }
 

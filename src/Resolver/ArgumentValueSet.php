@@ -56,7 +56,7 @@ final class ArgumentValueSet extends \Infinityloop\Utils\ObjectSet
     private function appendUnique($offset, $value) : void
     {
         if ($this->offsetExists($offset)) {
-            throw new \Exception('Duplicated item.');
+            throw new \Graphpinator\Exception\Resolver\DuplicateItem();
         }
 
         $this->array[$offset] = $value;

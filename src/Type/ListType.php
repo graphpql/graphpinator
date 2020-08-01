@@ -16,7 +16,7 @@ final class ListType extends \Graphpinator\Type\Contract\ModifierDefinition
         $listValue = $parentResult->getResult();
 
         if (!$listValue instanceof \Graphpinator\Resolver\Value\ListValue) {
-            throw new \Exception('Cannot create list');
+            throw new \Graphpinator\Exception\Type\FailedToCreateListValue();
         }
 
         $return = [];
@@ -35,7 +35,7 @@ final class ListType extends \Graphpinator\Type\Contract\ModifierDefinition
         }
 
         if (!\is_iterable($rawValue)) {
-            throw new \Exception('Value must be list or null.');
+            throw new \Graphpinator\Exception\Type\ExpectedListOrNull();
         }
 
         foreach ($rawValue as $val) {
@@ -46,7 +46,7 @@ final class ListType extends \Graphpinator\Type\Contract\ModifierDefinition
     public function applyDefaults($value) : array
     {
         if (!\is_iterable($value)) {
-            throw new \Exception('Value has to be list.');
+            throw new \Graphpinator\Exception\Type\ExpectedList();
         }
 
         $return = [];
