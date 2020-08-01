@@ -24,6 +24,11 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
             {
                 return new \Graphpinator\Field\ResolvableFieldSet([]);
             }
+
+            protected function validateNonNullValue($rawValue) : bool
+            {
+                return true;
+            }
         };
     }
 
@@ -53,6 +58,11 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
                         },
                     ),
                 ]);
+            }
+
+            protected function validateNonNullValue($rawValue) : bool
+            {
+                return true;
             }
         };
     }
@@ -104,6 +114,11 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
             {
                 return new \Graphpinator\Field\ResolvableFieldSet([]);
             }
+
+            protected function validateNonNullValue($rawValue) : bool
+            {
+                return true;
+            }
         };
     }
 
@@ -130,6 +145,11 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
                     }),
                 ]);
             }
+
+            protected function validateNonNullValue($rawValue) : bool
+            {
+                return true;
+            }
         };
     }
 
@@ -153,6 +173,11 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
                     new \Graphpinator\Field\ResolvableField('name', \Graphpinator\Type\Container\Container::String(), static function () : void {
                     }),
                 ]);
+            }
+
+            protected function validateNonNullValue($rawValue) : bool
+            {
+                return true;
             }
         };
     }

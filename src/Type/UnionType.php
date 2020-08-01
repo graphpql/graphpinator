@@ -4,7 +4,8 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Type;
 
-abstract class UnionType extends \Graphpinator\Type\Contract\AbstractDefinition implements \Graphpinator\Type\Contract\Outputable
+abstract class UnionType extends \Graphpinator\Type\Contract\AbstractDefinition implements
+    \Graphpinator\Type\Contract\Outputable
 {
     protected \Graphpinator\Utils\ConcreteSet $types;
 
@@ -13,12 +14,12 @@ abstract class UnionType extends \Graphpinator\Type\Contract\AbstractDefinition 
         $this->types = $types;
     }
 
-    public function getTypes() : \Graphpinator\Utils\ConcreteSet
+    final public function getTypes() : \Graphpinator\Utils\ConcreteSet
     {
         return $this->types;
     }
 
-    public function isInstanceOf(\Graphpinator\Type\Contract\Definition $type) : bool
+    final public function isInstanceOf(\Graphpinator\Type\Contract\Definition $type) : bool
     {
         if ($type instanceof NotNullType) {
             return $this->isInstanceOf($type->getInnerType());
@@ -27,7 +28,7 @@ abstract class UnionType extends \Graphpinator\Type\Contract\AbstractDefinition 
         return $type instanceof static;
     }
 
-    public function isImplementedBy(\Graphpinator\Type\Contract\Definition $type) : bool
+    final public function isImplementedBy(\Graphpinator\Type\Contract\Definition $type) : bool
     {
         foreach ($this->types as $temp) {
             if ($temp->isInstanceOf($type)) {
@@ -38,12 +39,12 @@ abstract class UnionType extends \Graphpinator\Type\Contract\AbstractDefinition 
         return false;
     }
 
-    public function getTypeKind() : string
+    final public function getTypeKind() : string
     {
         return \Graphpinator\Type\Introspection\TypeKind::UNION;
     }
 
-    public function printSchema() : string
+    final public function printSchema() : string
     {
         $typeNames = [];
 

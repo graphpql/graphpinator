@@ -74,6 +74,11 @@ final class PrintSchema
                     }),
                 ]);
             }
+
+            protected function validateNonNullValue($rawValue) : bool
+            {
+                return true;
+            }
         };
     }
 
@@ -132,6 +137,11 @@ final class PrintSchema
                     ),
                 ]);
             }
+
+            protected function validateNonNullValue($rawValue) : bool
+            {
+                return true;
+            }
         };
     }
 
@@ -149,6 +159,11 @@ final class PrintSchema
                         return ['A', 'B'];
                     }),
                 ]);
+            }
+
+            protected function validateNonNullValue($rawValue) : bool
+            {
+                return true;
             }
         };
     }
@@ -346,6 +361,11 @@ final class PrintSchema
         return new class extends \Graphpinator\Type\Scalar\ScalarType
         {
             protected const NAME = 'TestScalar';
+
+            protected function validateNonNullValue($rawValue) : bool
+            {
+                return true;
+            }
         };
     }
 
@@ -354,6 +374,11 @@ final class PrintSchema
         return new class extends \Graphpinator\Type\Scalar\ScalarType
         {
             protected const NAME = 'TestSecondScalar';
+
+            protected function validateNonNullValue($rawValue) : bool
+            {
+                return true;
+            }
         };
     }
 

@@ -69,6 +69,11 @@ final class TestSchema
                     }),
                 ]);
             }
+
+            protected function validateNonNullValue($rawValue) : bool
+            {
+                return true;
+            }
         };
     }
 
@@ -142,6 +147,11 @@ final class TestSchema
                     ),
                 ]);
             }
+
+            protected function validateNonNullValue($rawValue) : bool
+            {
+                return true;
+            }
         };
     }
 
@@ -159,6 +169,11 @@ final class TestSchema
                         return ['A', 'B'];
                     }),
                 ]);
+            }
+
+            protected function validateNonNullValue($rawValue) : bool
+            {
+                return true;
             }
         };
     }
@@ -270,6 +285,11 @@ final class TestSchema
         return new class extends \Graphpinator\Type\Scalar\ScalarType
         {
             protected const NAME = 'TestScalar';
+
+            protected function validateNonNullValue($rawValue) : bool
+            {
+                return true;
+            }
         };
     }
 

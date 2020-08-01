@@ -17,7 +17,7 @@ abstract class InterfaceType extends \Graphpinator\Type\Contract\AbstractDefinit
             ?? new \Graphpinator\Utils\InterfaceSet([]);
     }
 
-    public function isInstanceOf(\Graphpinator\Type\Contract\Definition $type) : bool
+    final public function isInstanceOf(\Graphpinator\Type\Contract\Definition $type) : bool
     {
         if ($type instanceof NotNullType) {
             return $this->isInstanceOf($type->getInnerType());
@@ -27,7 +27,7 @@ abstract class InterfaceType extends \Graphpinator\Type\Contract\AbstractDefinit
             || ($type instanceof self && $this->implements($type));
     }
 
-    public function isImplementedBy(\Graphpinator\Type\Contract\Definition $type) : bool
+    final public function isImplementedBy(\Graphpinator\Type\Contract\Definition $type) : bool
     {
         if ($type instanceof NotNullType) {
             return $this->isImplementedBy($type->getInnerType());
@@ -37,7 +37,7 @@ abstract class InterfaceType extends \Graphpinator\Type\Contract\AbstractDefinit
             && $type->implements($this);
     }
 
-    public function getFields() : \Graphpinator\Field\FieldSet
+    final public function getFields() : \Graphpinator\Field\FieldSet
     {
         if (!$this->fields instanceof \Graphpinator\Field\FieldSet) {
             $this->fields = $this->getFieldDefinition();
@@ -48,12 +48,12 @@ abstract class InterfaceType extends \Graphpinator\Type\Contract\AbstractDefinit
         return $this->fields;
     }
 
-    public function getTypeKind() : string
+    final public function getTypeKind() : string
     {
         return \Graphpinator\Type\Introspection\TypeKind::INTERFACE;
     }
 
-    public function printSchema() : string
+    final public function printSchema() : string
     {
         return $this->printDescription()
             . 'interface ' . $this->getName() . $this->printImplements() . ' {' . \PHP_EOL
