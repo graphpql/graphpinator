@@ -28,14 +28,13 @@ final class Graphpinator
         $query = $request[self::QUERY];
         $variables = $request[self::VARIABLES]
             ?? [];
-        //phpcs:ignore SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable
         $operationName = $request[self::OPERATION_NAME]
             ?? null;
 
         try {
             return \Graphpinator\Parser\Parser::parseString($query)
                 ->normalize($this->schema)
-                ->execute($variables);
+                ->execute($operationName, $variables);
         } catch (\Throwable $exception) {
             if (!$this->catchExceptions) {
                 throw $exception;

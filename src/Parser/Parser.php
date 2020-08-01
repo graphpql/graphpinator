@@ -36,66 +36,15 @@ final class Parser
         }
 
         $fragments = [];
-        $operation = null;
+        $operations = [];
 
         while (true) {
-            switch ($this->tokenizer->getCurrent()->getType()) {
-                case TokenType::FRAGMENT:
-                    $fragment = $this->parseFragmentDefinition();
-                    $fragments[$fragment->getName()] = $fragment;
-
-                    break;
-                case TokenType::CUR_O:
-                    $operation = new \Graphpinator\Parser\Operation($this->parseSelectionSet());
-
-                    break;
-                case TokenType::NAME:
-                    $operationType = $this->tokenizer->getCurrent()->getValue();
-
-                    if (!\Graphpinator\Tokenizer\OperationType::isOperationKeyword($operationType)) {
-                        throw new \Graphpinator\Exception\Parser\UnknownOperationType();
-                    }
-
-                    switch ($this->tokenizer->getNext()->getType()) {
-                        case TokenType::CUR_O:
-                            $operation = new \Graphpinator\Parser\Operation($this->parseSelectionSet(), $operationType);
-
-                            break;
-                        case TokenType::NAME:
-                            $operationName = $this->tokenizer->getCurrent()->getValue();
-
-                            switch ($this->tokenizer->getNext()->getType()) {
-                                case TokenType::CUR_O:
-                                    $operation = new \Graphpinator\Parser\Operation($this->parseSelectionSet(), $operationType, $operationName);
-
-                                    break;
-                                case TokenType::PAR_O:
-                                    $variables = $this->parseVariables();
-                                    $this->tokenizer->assertNext(
-                                        TokenType::CUR_O,
-                                        \Graphpinator\Exception\Parser\ExpectedSelectionSet::class,
-                                    );
-
-                                    $operation = new \Graphpinator\Parser\Operation(
-                                        $this->parseSelectionSet(),
-                                        $operationType,
-                                        $operationName,
-                                        $variables,
-                                    );
-
-                                    break;
-                                default:
-                                    throw new \Graphpinator\Exception\Parser\ExpectedAfterOperationName();
-                            }
-
-                            break;
-                        default:
-                            throw new \Graphpinator\Exception\Parser\ExpectedAfterOperationType();
-                    }
-
-                    break;
-                default:
-                    throw new \Graphpinator\Exception\Parser\ExpectedRoot();
+            if ($this->tokenizer->getCurrent()->getType() === TokenType::FRAGMENT) {
+                $fragment = $this->parseFragmentDefinition();
+                $fragments[$fragment->getName()] = $fragment;
+            } else {
+                $operation = $this->parseOperation();
+                $operations[$operation->getName()] = $operation;
             }
 
             if (!$this->tokenizer->hasNext()) {
@@ -105,12 +54,21 @@ final class Parser
             $this->tokenizer->getNext();
         }
 
-        if (!$operation instanceof Operation) {
-            throw new \Graphpinator\Exception\Parser\EmptyOperation();
+        switch (\count($operations)) {
+            case 0:
+                throw new \Graphpinator\Exception\Parser\EmptyOperation();
+            case 1:
+                break;
+            default:
+                foreach ($operations as $operation) {
+                    if ($operation->getName() === null) {
+                        throw new \Graphpinator\Exception\Parser\OperationWithoutName();
+                    }
+                }
         }
 
         return new \Graphpinator\Parser\ParseResult(
-            $operation,
+            new \Graphpinator\Parser\OperationSet($operations),
             new \Graphpinator\Parser\Fragment\FragmentSet($fragments),
         );
     }
@@ -133,6 +91,59 @@ final class Parser
             $typeCond,
             $this->parseSelectionSet(),
         );
+    }
+
+    /**
+     * Parses operation
+     *
+     * Expects iterator on previous token - operation keyword or opening brace
+     * Leaves iterator to last used token - closing brace
+     */
+    private function parseOperation() : Operation
+    {
+        switch ($this->tokenizer->getCurrent()->getType()) {
+            case TokenType::CUR_O:
+                return new \Graphpinator\Parser\Operation($this->parseSelectionSet());
+            case TokenType::NAME:
+                $operationType = $this->tokenizer->getCurrent()->getValue();
+
+                if (!\Graphpinator\Tokenizer\OperationType::isOperationKeyword($operationType)) {
+                    throw new \Graphpinator\Exception\Parser\UnknownOperationType();
+                }
+
+                switch ($this->tokenizer->getNext()->getType()) {
+                    case TokenType::CUR_O:
+                        return new \Graphpinator\Parser\Operation($this->parseSelectionSet(), $operationType);
+                    case TokenType::NAME:
+                        $operationName = $this->tokenizer->getCurrent()->getValue();
+
+                        switch ($this->tokenizer->getNext()->getType()) {
+                            case TokenType::CUR_O:
+                                return new \Graphpinator\Parser\Operation($this->parseSelectionSet(), $operationType, $operationName);
+                            case TokenType::PAR_O:
+                                $variables = $this->parseVariables();
+                                $this->tokenizer->assertNext(
+                                    TokenType::CUR_O,
+                                    \Graphpinator\Exception\Parser\ExpectedSelectionSet::class,
+                                );
+
+                                return new \Graphpinator\Parser\Operation(
+                                    $this->parseSelectionSet(),
+                                    $operationType,
+                                    $operationName,
+                                    $variables,
+                                );
+                            default:
+                                throw new \Graphpinator\Exception\Parser\ExpectedAfterOperationName();
+                        }
+
+                        break;
+                    default:
+                        throw new \Graphpinator\Exception\Parser\ExpectedAfterOperationType();
+                }
+            default:
+                throw new \Graphpinator\Exception\Parser\ExpectedRoot();
+        }
     }
 
     /**

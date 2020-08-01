@@ -25,6 +25,11 @@ final class Operation
         $this->variables = $variables;
     }
 
+    public function getType() : \Graphpinator\Type\Type
+    {
+        return $this->operation;
+    }
+
     public function getFields() : \Graphpinator\Normalizer\FieldSet
     {
         return $this->children;

@@ -51,8 +51,12 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
         $normalizer = new \Graphpinator\Normalizer\Normalizer(TestSchema::getSchema());
         $resolver = new \Graphpinator\Resolver\Resolver();
 
-        $result = $resolver->resolve($normalizer->normalize($parser->parse()), $request['variables']
-            ?? []);
+        $operationName = $request['operationName']
+            ?? null;
+        $variables = $request['variables']
+            ?? [];
+
+        $result = $resolver->resolve($normalizer->normalize($parser->parse()), $operationName, $variables);
 
         self::assertSame($expected->toString(), \json_encode($result, \JSON_THROW_ON_ERROR, 512));
         self::assertSame($expected['data'], \json_decode(\json_encode($result->getData()), true));
