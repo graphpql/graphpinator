@@ -25,7 +25,11 @@ final class FieldSet extends \Infinityloop\Utils\ObjectSet
 
     public function offsetGet($offset) : Field
     {
-        return parent::offsetGet($offset);
+        if (!$this->offsetExists($offset)) {
+            throw new \Graphpinator\Exception\Parser\FieldNotDefined();
+        }
+
+        return $this->array[$offset];
     }
 
     public function getFragmentSpreads() : \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet

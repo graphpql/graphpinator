@@ -15,7 +15,11 @@ class FieldSet extends \Infinityloop\Utils\ObjectSet implements \Graphpinator\Pr
 
     public function offsetGet($offset) : Field
     {
-        return parent::offsetGet($offset);
+        if (!$this->offsetExists($offset)) {
+            throw new \Graphpinator\Exception\Field\FieldNotDefined();
+        }
+
+        return $this->array[$offset];
     }
 
     protected function getKey($object) : string

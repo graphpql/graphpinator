@@ -15,7 +15,11 @@ final class VariableSet extends \Infinityloop\Utils\ObjectSet
 
     public function offsetGet($offset) : Variable
     {
-        return parent::offsetGet($offset);
+        if (!$this->offsetExists($offset)) {
+            throw new \Graphpinator\Exception\Parser\VariableNotDefined();
+        }
+
+        return $this->array[$offset];
     }
 
     public function normalize(\Graphpinator\Type\Container\Container $typeContainer) : \Graphpinator\Normalizer\Variable\VariableSet

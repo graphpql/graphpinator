@@ -22,7 +22,11 @@ final class ArgumentSet extends \Infinityloop\Utils\ObjectSet implements \Graphp
 
     public function offsetGet($offset) : Argument
     {
-        return parent::offsetGet($offset);
+        if (!$this->offsetExists($offset)) {
+            throw new \Graphpinator\Exception\Argument\ArgumentNotDefined();
+        }
+
+        return $this->array[$offset];
     }
 
     protected function getKey($object) : string
