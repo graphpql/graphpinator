@@ -15,7 +15,7 @@ abstract class EnumType extends \Graphpinator\Type\Contract\LeafDefinition
         $this->options = $options;
     }
 
-    public static function fromConstants() : Enum\EnumItemSet
+    final public static function fromConstants() : Enum\EnumItemSet
     {
         $values = [];
 
@@ -36,17 +36,17 @@ abstract class EnumType extends \Graphpinator\Type\Contract\LeafDefinition
         return new \Graphpinator\Type\Enum\EnumItemSet($values);
     }
 
-    public function getItems() : Enum\EnumItemSet
+    final public function getItems() : Enum\EnumItemSet
     {
         return $this->options;
     }
 
-    public function getTypeKind() : string
+    final public function getTypeKind() : string
     {
         return \Graphpinator\Type\Introspection\TypeKind::ENUM;
     }
 
-    public function printSchema() : string
+    final public function printSchema() : string
     {
         return $this->printDescription()
             . 'enum ' . $this->getName() . ' {' . \PHP_EOL
@@ -54,7 +54,7 @@ abstract class EnumType extends \Graphpinator\Type\Contract\LeafDefinition
             . '}';
     }
 
-    protected function validateNonNullValue($rawValue) : bool
+    final protected function validateNonNullValue($rawValue) : bool
     {
         return \is_string($rawValue) && $this->options->offsetExists($rawValue);
     }

@@ -10,12 +10,12 @@ abstract class InputType extends \Graphpinator\Type\Contract\ConcreteDefinition 
 
     protected ?\Graphpinator\Argument\ArgumentSet $arguments = null;
 
-    public function createValue($rawValue) : \Graphpinator\Resolver\Value\ValidatedValue
+    final public function createValue($rawValue) : \Graphpinator\Resolver\Value\ValidatedValue
     {
         return \Graphpinator\Resolver\Value\InputValue::create($rawValue, $this);
     }
 
-    public function applyDefaults($value) : array
+    final public function applyDefaults($value) : array
     {
         if (!\is_array($value)) {
             throw new \Graphpinator\Exception\Type\ExpectedInputTypeWithFields();
@@ -24,7 +24,7 @@ abstract class InputType extends \Graphpinator\Type\Contract\ConcreteDefinition 
         return self::merge($value, $this->getArguments()->getDefaults());
     }
 
-    public function getArguments() : \Graphpinator\Argument\ArgumentSet
+    final public function getArguments() : \Graphpinator\Argument\ArgumentSet
     {
         if (!$this->arguments instanceof \Graphpinator\Argument\ArgumentSet) {
             $this->arguments = $this->getFieldDefinition();
@@ -33,12 +33,12 @@ abstract class InputType extends \Graphpinator\Type\Contract\ConcreteDefinition 
         return $this->arguments;
     }
 
-    public function getTypeKind() : string
+    final public function getTypeKind() : string
     {
         return \Graphpinator\Type\Introspection\TypeKind::INPUT_OBJECT;
     }
 
-    public function printSchema() : string
+    final public function printSchema() : string
     {
         return $this->printDescription()
             . 'input ' . $this->getName() . ' {' . \PHP_EOL

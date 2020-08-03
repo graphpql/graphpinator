@@ -11,71 +11,59 @@ abstract class NamedDefinition implements \Graphpinator\Type\Contract\Definition
 
     abstract public function printSchema() : string;
 
-    public function getName() : string
+    abstract public function isInstanceOf(\Graphpinator\Type\Contract\Definition $type) : bool;
+
+    final public function getName() : string
     {
         return static::NAME;
     }
 
-    public function printName() : string
+    final public function printName() : string
     {
         return $this->getName();
     }
 
-    public function getDescription() : ?string
+    final public function getDescription() : ?string
     {
         return static::DESCRIPTION;
     }
 
-    public function getNamedType() : \Graphpinator\Type\Contract\NamedDefinition
+    final public function getNamedType() : \Graphpinator\Type\Contract\NamedDefinition
     {
         return $this;
     }
 
-    public function isInstanceOf(\Graphpinator\Type\Contract\Definition $type) : bool
-    {
-        if ($type instanceof \Graphpinator\Type\NotNullType) {
-            return $this->isInstanceOf($type->getInnerType());
-        }
-
-        return $type instanceof static;
-    }
-
-    public function isInputable() : bool
+    final public function isInputable() : bool
     {
         return $this instanceof Inputable;
     }
 
-    public function isOutputable() : bool
+    final public function isOutputable() : bool
     {
         return $this instanceof Outputable;
     }
 
-    public function isResolvable() : bool
+    final public function isResolvable() : bool
     {
         return $this instanceof Resolvable;
     }
 
-    public function notNull() : \Graphpinator\Type\NotNullType
+    final public function notNull() : \Graphpinator\Type\NotNullType
     {
         return new \Graphpinator\Type\NotNullType($this);
     }
 
-    public function notNullList() : \Graphpinator\Type\NotNullType
+    final public function notNullList() : \Graphpinator\Type\NotNullType
     {
         return new \Graphpinator\Type\NotNullType(new \Graphpinator\Type\ListType(new \Graphpinator\Type\NotNullType($this)));
     }
 
-    public function list() : \Graphpinator\Type\ListType
+    final public function list() : \Graphpinator\Type\ListType
     {
         return new \Graphpinator\Type\ListType($this);
     }
 
-    protected function validateNonNullValue($rawValue) : bool
-    {
-        return true;
-    }
-
-    protected function printDescription() : string
+    final protected function printDescription() : string
     {
         if ($this->getDescription() === null) {
             return '';

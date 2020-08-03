@@ -8,18 +8,21 @@ final class ParseResult
 {
     use \Nette\SmartObject;
 
-    private \Graphpinator\Parser\Operation $operation;
+    private \Graphpinator\Parser\Operation\OperationSet $operations;
     private \Graphpinator\Parser\Fragment\FragmentSet $fragments;
 
-    public function __construct(\Graphpinator\Parser\Operation $operation, \Graphpinator\Parser\Fragment\FragmentSet $fragments)
+    public function __construct(
+        \Graphpinator\Parser\Operation\OperationSet $operations,
+        \Graphpinator\Parser\Fragment\FragmentSet $fragments
+    )
     {
-        $this->operation = $operation;
+        $this->operations = $operations;
         $this->fragments = $fragments;
     }
 
-    public function getOperation() : \Graphpinator\Parser\Operation
+    public function getOperations() : \Graphpinator\Parser\Operation\OperationSet
     {
-        return $this->operation;
+        return $this->operations;
     }
 
     public function getFragments() : \Graphpinator\Parser\Fragment\FragmentSet
@@ -27,12 +30,12 @@ final class ParseResult
         return $this->fragments;
     }
 
-    public function normalize(\Graphpinator\Type\Schema $schema) : \Graphpinator\Normalizer\Operation
+    public function normalize(\Graphpinator\Type\Schema $schema) : \Graphpinator\Normalizer\Operation\OperationSet
     {
         foreach ($this->fragments as $fragment) {
             $fragment->validateCycles($this->fragments, []);
         }
 
-        return $this->operation->normalize($schema, $this->fragments);
+        return $this->operations->normalize($schema, $this->fragments);
     }
 }

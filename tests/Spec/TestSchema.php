@@ -39,6 +39,7 @@ final class TestSchema
             'TestInnerInput' => self::getInnerInput(),
             'TestEnum' => self::getEnum(),
             'TestExplicitEnum' => self::getExplicitEnum(),
+            'TestScalar' => self::getTestScalar(),
         ], [
             'testDirective' => self::getTestDirective(),
             'invalidDirective' => self::getInvalidDirective(),
@@ -67,6 +68,11 @@ final class TestSchema
                         throw new \Exception('Random exception');
                     }),
                 ]);
+            }
+
+            protected function validateNonNullValue($rawValue) : bool
+            {
+                return true;
             }
         };
     }
@@ -141,6 +147,11 @@ final class TestSchema
                     ),
                 ]);
             }
+
+            protected function validateNonNullValue($rawValue) : bool
+            {
+                return true;
+            }
         };
     }
 
@@ -158,6 +169,11 @@ final class TestSchema
                         return ['A', 'B'];
                     }),
                 ]);
+            }
+
+            protected function validateNonNullValue($rawValue) : bool
+            {
+                return true;
             }
         };
     }
@@ -260,6 +276,19 @@ final class TestSchema
                     new \Graphpinator\Type\Enum\EnumItem('C'),
                     new \Graphpinator\Type\Enum\EnumItem('D'),
                 ]));
+            }
+        };
+    }
+
+    public static function getTestScalar() : \Graphpinator\Type\Scalar\ScalarType
+    {
+        return new class extends \Graphpinator\Type\Scalar\ScalarType
+        {
+            protected const NAME = 'TestScalar';
+
+            protected function validateNonNullValue($rawValue) : bool
+            {
+                return true;
             }
         };
     }

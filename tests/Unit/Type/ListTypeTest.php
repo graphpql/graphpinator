@@ -27,6 +27,11 @@ final class ListTypeTest extends \PHPUnit\Framework\TestCase
                     ),
                 ]);
             }
+
+            protected function validateNonNullValue($rawValue) : bool
+            {
+                return true;
+            }
         };
     }
 

@@ -87,6 +87,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                                 ['name' => 'TestInnerInput'],
                                 ['name' => 'TestEnum'],
                                 ['name' => 'TestExplicitEnum'],
+                                ['name' => 'TestScalar'],
                             ],
                         ],
                     ],
@@ -548,6 +549,19 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                                     ],
                                 ],
                             ],
+                        ],
+                    ],
+                ]),
+            ],
+            [
+                \Infinityloop\Utils\Json::fromArray([
+                    'query' => '{ __type(name: "TestScalar") { name kind } }',
+                ]),
+                \Infinityloop\Utils\Json::fromArray([
+                    'data' => [
+                        '__type' => [
+                            'name' => 'TestScalar',
+                            'kind' => 'SCALAR',
                         ],
                     ],
                 ]),

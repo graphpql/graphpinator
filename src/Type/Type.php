@@ -20,12 +20,12 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
             ?? new \Graphpinator\Utils\InterfaceSet([]);
     }
 
-    public function createValue($rawValue) : \Graphpinator\Resolver\Value\ValidatedValue
+    final public function createValue($rawValue) : \Graphpinator\Resolver\Value\ValidatedValue
     {
         return \Graphpinator\Resolver\Value\TypeValue::create($rawValue, $this);
     }
 
-    public function isInstanceOf(\Graphpinator\Type\Contract\Definition $type) : bool
+    final public function isInstanceOf(\Graphpinator\Type\Contract\Definition $type) : bool
     {
         if ($type instanceof \Graphpinator\Type\Contract\AbstractDefinition) {
             return $type->isImplementedBy($this);
@@ -34,7 +34,7 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
         return parent::isInstanceOf($type);
     }
 
-    public function resolve(?\Graphpinator\Normalizer\FieldSet $requestedFields, \Graphpinator\Resolver\FieldResult $parentResult) : array
+    final public function resolve(?\Graphpinator\Normalizer\FieldSet $requestedFields, \Graphpinator\Resolver\FieldResult $parentResult) : array
     {
         if ($requestedFields === null) {
             throw new \Graphpinator\Exception\Resolver\SelectionOnComposite();
@@ -65,7 +65,7 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
         return $resolved;
     }
 
-    public function getMetaFields() : \Graphpinator\Field\ResolvableFieldSet
+    final public function getMetaFields() : \Graphpinator\Field\ResolvableFieldSet
     {
         if (!$this->metaFields instanceof \Graphpinator\Field\ResolvableFieldSet) {
             $this->metaFields = $this->getMetaFieldDefinition();
@@ -74,17 +74,17 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
         return $this->metaFields;
     }
 
-    public function addMetaField(\Graphpinator\Field\ResolvableField $field) : void
+    final public function addMetaField(\Graphpinator\Field\ResolvableField $field) : void
     {
         $this->getMetaFields()->offsetSet($field->getName(), $field);
     }
 
-    public function getTypeKind() : string
+    final public function getTypeKind() : string
     {
         return \Graphpinator\Type\Introspection\TypeKind::OBJECT;
     }
 
-    public function printSchema() : string
+    final public function printSchema() : string
     {
         return $this->printDescription()
             . 'type ' . $this->getName() . $this->printImplements() . ' {' . \PHP_EOL
