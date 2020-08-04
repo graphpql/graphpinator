@@ -1,6 +1,6 @@
 {
   "name": "infinityloop-dev/graphpinator",
-  "description": "",
+  "description": "Easy-to-use & Fast GraphQL server implementation for PHP 7.4+.",
   "homepage": "https://www.infinityloop.dev/",
   "type": "library",
   "license": ["MIT"],
