@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Exception;
+namespace Graphpinator\Exception\Request;
 
-final class RequestUnknownKey extends \Graphpinator\Exception\GraphpinatorBase
+final class UnknownKey extends \Graphpinator\Exception\Request\RequestError
 {
     public const MESSAGE = 'Invalid request - unknown key in request JSON (only "query", "variables" and "operationName" are allowed).';
 }

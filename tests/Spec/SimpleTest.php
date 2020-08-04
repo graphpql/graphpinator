@@ -100,27 +100,27 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 \Infinityloop\Utils\Json::fromArray([]),
-                \Graphpinator\Exception\RequestWithoutQuery::class,
+                \Graphpinator\Exception\Request\QueryMissing::class,
             ],
             [
                 \Infinityloop\Utils\Json::fromArray([
                     'query' => 123,
                 ]),
-                \Graphpinator\Exception\RequestQueryNotString::class,
+                \Graphpinator\Exception\Request\QueryNotString::class,
             ],
             [
                 \Infinityloop\Utils\Json::fromArray([
                     'query' => '',
                     'variables' => 'abc',
                 ]),
-                \Graphpinator\Exception\RequestVariablesNotArray::class,
+                \Graphpinator\Exception\Request\VariablesNotArray::class,
             ],
             [
                 \Infinityloop\Utils\Json::fromArray([
                     'query' => '',
                     'operationName' => 123,
                 ]),
-                \Graphpinator\Exception\RequestOperationNameNotString::class,
+                \Graphpinator\Exception\Request\OperationNameNotString::class,
             ],
             [
                 \Infinityloop\Utils\Json::fromArray([
@@ -128,7 +128,7 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
                     'operationName' => '',
                     'randomKey' => 'randomVal',
                 ]),
-                \Graphpinator\Exception\RequestUnknownKey::class,
+                \Graphpinator\Exception\Request\UnknownKey::class,
             ],
         ];
     }

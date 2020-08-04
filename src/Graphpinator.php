@@ -51,24 +51,24 @@ final class Graphpinator
     private function validateRequest(\Infinityloop\Utils\Json $request) : void
     {
         if (!isset($request[self::QUERY])) {
-            throw new \Graphpinator\Exception\RequestWithoutQuery();
+            throw new \Graphpinator\Exception\Request\QueryMissing();
         }
 
         if (!\is_string($request[self::QUERY])) {
-            throw new \Graphpinator\Exception\RequestQueryNotString();
+            throw new \Graphpinator\Exception\Request\QueryNotString();
         }
 
         if (isset($request[self::VARIABLES]) && !\is_array($request[self::VARIABLES])) {
-            throw new \Graphpinator\Exception\RequestVariablesNotArray();
+            throw new \Graphpinator\Exception\Request\VariablesNotArray();
         }
 
         if (isset($request[self::OPERATION_NAME]) && !\is_string($request[self::OPERATION_NAME])) {
-            throw new \Graphpinator\Exception\RequestOperationNameNotString();
+            throw new \Graphpinator\Exception\Request\OperationNameNotString();
         }
 
         foreach ($request as $key => $value) {
             if (!\array_key_exists($key, [self::QUERY => 1, self::VARIABLES => 1, self::OPERATION_NAME => 1])) {
-                throw new \Graphpinator\Exception\RequestUnknownKey();
+                throw new \Graphpinator\Exception\Request\UnknownKey();
             }
         }
     }
