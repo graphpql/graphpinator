@@ -23,15 +23,15 @@ final class Graphpinator
 
     public function runQuery(\Infinityloop\Utils\Json $request) : \Graphpinator\Resolver\OperationResult
     {
-        $this->validateRequest($request);
-
-        $query = $request[self::QUERY];
-        $variables = $request[self::VARIABLES]
-            ?? [];
-        $operationName = $request[self::OPERATION_NAME]
-            ?? null;
-
         try {
+            $this->validateRequest($request);
+
+            $query = $request[self::QUERY];
+            $variables = $request[self::VARIABLES]
+                ?? [];
+            $operationName = $request[self::OPERATION_NAME]
+                ?? null;
+
             return \Graphpinator\Parser\Parser::parseString($query)
                 ->normalize($this->schema)
                 ->execute($operationName, $variables);
