@@ -16,7 +16,7 @@ final class VariableSet extends \Infinityloop\Utils\ObjectSet
     public function offsetGet($offset) : Variable
     {
         if (!$this->offsetExists($offset)) {
-            throw new \Graphpinator\Exception\Parser\VariableNotDefined();
+            throw new \Graphpinator\Exception\Parser\UnknownVariable();
         }
 
         return $this->array[$offset];

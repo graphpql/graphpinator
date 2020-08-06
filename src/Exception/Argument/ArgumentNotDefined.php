@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Exception\Argument;
 
-final class ArgumentNotDefined extends \Graphpinator\Exception\Parser\ParserError
+final class ArgumentNotDefined extends \Graphpinator\Exception\Argument\ArgumentError
 {
-    public const MESSAGE = 'Field is not defined.';
+    public const MESSAGE = 'Argument is not defined.';
 }

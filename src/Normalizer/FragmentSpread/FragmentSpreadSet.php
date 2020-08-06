@@ -16,7 +16,7 @@ final class FragmentSpreadSet extends \Infinityloop\Utils\ObjectSet
     public function offsetGet($offset) : FragmentSpread
     {
         if (!$this->offsetExists($offset)) {
-            throw new \Graphpinator\Exception\Normalizer\FragmentSpreadNotDefined();
+            throw new \Graphpinator\Exception\Normalizer\UnknownFragment();
         }
 
         return $this->array[$offset];

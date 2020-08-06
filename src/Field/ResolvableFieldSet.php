@@ -16,7 +16,7 @@ final class ResolvableFieldSet extends \Graphpinator\Field\FieldSet
     public function offsetGet($offset) : ResolvableField
     {
         if (!$this->offsetExists($offset)) {
-            throw new \Graphpinator\Exception\Field\ResolvableFieldNotDefined();
+            throw new \Graphpinator\Exception\Field\FieldNotDefined();
         }
 
         return $this->array[$offset];
