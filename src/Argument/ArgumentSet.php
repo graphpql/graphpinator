@@ -25,7 +25,7 @@ final class ArgumentSet extends \Infinityloop\Utils\ObjectSet implements \Graphp
         return parent::offsetGet($offset);
     }
 
-    protected function getKey($object) : string
+    protected function getKey(object $object) : string
     {
         $defaultValue = $object->getDefaultValue();
 

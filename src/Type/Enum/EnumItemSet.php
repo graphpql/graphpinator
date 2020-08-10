@@ -29,7 +29,7 @@ final class EnumItemSet extends \Infinityloop\Utils\ObjectSet implements \Graphp
         return $return;
     }
 
-    protected function getKey($object) : string
+    protected function getKey(object $object) : string
     {
         return $object->getName();
     }

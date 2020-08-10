@@ -29,7 +29,7 @@ final class VariableSet extends \Infinityloop\Utils\ObjectSet
         return new \Graphpinator\Normalizer\Variable\VariableSet($variables);
     }
 
-    protected function getKey($object) : string
+    protected function getKey(object $object) : string
     {
         return $object->getName();
     }

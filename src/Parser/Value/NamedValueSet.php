@@ -29,7 +29,7 @@ final class NamedValueSet extends \Infinityloop\Utils\ObjectSet
         return new self($values);
     }
 
-    protected function getKey($object) : string
+    protected function getKey(object $object) : string
     {
         return $object->getName();
     }

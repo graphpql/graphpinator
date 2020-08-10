@@ -18,7 +18,7 @@ class FieldSet extends \Infinityloop\Utils\ObjectSet implements \Graphpinator\Pr
         return parent::offsetGet($offset);
     }
 
-    protected function getKey($object) : string
+    protected function getKey(object $object) : string
     {
         return $object->getName();
     }
