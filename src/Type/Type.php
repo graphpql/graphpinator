@@ -55,7 +55,7 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
             }
 
             if ($fragmentSpread->getTypeCondition() instanceof \Graphpinator\Type\Contract\NamedDefinition &&
-                !$parentResult->getType()->isInstanceOf($fragmentSpread->getTypeCondition())) {
+                !$parentResult->getResult()->getType()->isInstanceOf($fragmentSpread->getTypeCondition())) {
                 continue;
             }
 
@@ -135,7 +135,7 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
 
             $result[$field->getAlias()] = $innerResult->getResult() instanceof \Graphpinator\Resolver\Value\NullValue
                 ? $innerResult->getResult()
-                : $innerResult->getType()->resolve($field->getFields(), $innerResult);
+                : $innerResult->getResult()->getType()->resolve($field->getFields(), $innerResult);
         }
     }
 }
