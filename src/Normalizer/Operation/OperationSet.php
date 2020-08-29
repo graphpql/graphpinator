@@ -29,6 +29,6 @@ final class OperationSet extends \Infinityloop\Utils\ObjectSet
 
     protected function getKey(object $object) : string
     {
-        return $object->getType()->getName();
+        return $object->getName();
     }
 }

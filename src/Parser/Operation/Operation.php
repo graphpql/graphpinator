@@ -77,6 +77,7 @@ final class Operation
             $operation,
             $this->children->normalize($schema->getContainer(), $fragmentDefinitions),
             $this->variables->normalize($schema->getContainer()),
+            $this->getName(),
         );
     }
 }
