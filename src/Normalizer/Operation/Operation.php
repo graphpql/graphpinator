@@ -11,13 +11,13 @@ final class Operation
     private \Graphpinator\Type\Type $operation;
     private \Graphpinator\Normalizer\FieldSet $children;
     private \Graphpinator\Normalizer\Variable\VariableSet $variables;
-    private ?string $name = null;
+    private ?string $name;
 
     public function __construct(
         \Graphpinator\Type\Type $operation,
         \Graphpinator\Normalizer\FieldSet $children,
         \Graphpinator\Normalizer\Variable\VariableSet $variables,
-        ?string $name = null
+        ?string $name
     )
     {
         $this->operation = $operation;
