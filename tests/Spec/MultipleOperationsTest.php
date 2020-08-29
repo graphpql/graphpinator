@@ -20,7 +20,8 @@ final class MultipleOperationsTest extends \PHPUnit\Framework\TestCase
 
     public function testMultipleOperationsWithOperationName() : void
     {
-        $request = '{"query": "query queryName { field0 { field1 { name } } } query secondQueryName { aliasName: field0 { field1 { name } } }","operationName": "queryName"}';
+        $request = '{"query": "query queryName { field0 { field1 { name } } } query secondQueryName { aliasName: field0 { field1 { name } } }"' .
+            ',"operationName": "queryName"}';
 
         $graphpinator = new \Graphpinator\Graphpinator(\Graphpinator\Tests\Spec\TestSchema::getSchema());
         $result = $graphpinator->runQuery(\Infinityloop\Utils\Json::fromString($request));
@@ -32,7 +33,8 @@ final class MultipleOperationsTest extends \PHPUnit\Framework\TestCase
 
     public function testMultipleOperationsWithOperationName2() : void
     {
-        $request = '{"query": "query queryName { field0 { field1 { name } } } query secondQueryName { aliasName: field0 { field1 { name } } }","operationName": "secondQueryName"}';
+        $request = '{"query": "query queryName { field0 { field1 { name } } } query secondQueryName { aliasName: field0 { field1 { name } } }",' .
+            '"operationName": "secondQueryName"}';
 
         $graphpinator = new \Graphpinator\Graphpinator(\Graphpinator\Tests\Spec\TestSchema::getSchema());
         $result = $graphpinator->runQuery(\Infinityloop\Utils\Json::fromString($request));
