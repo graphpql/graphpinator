@@ -55,4 +55,13 @@ final class InputTypeTest extends \PHPUnit\Framework\TestCase
         $input = self::createTestInput();
         $input->createValue(123);
     }
+
+    public function testSimple() : void
+    {
+        $input = self::createTestInput();
+
+        self::assertFalse($input->isResolvable());
+        self::assertFalse($input->isOutputable());
+        self::assertTrue($input->isInputable());
+    }
 }
