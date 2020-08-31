@@ -67,7 +67,7 @@ final class Graphpinator
         }
 
         foreach ($request as $key => $value) {
-            if (!\array_key_exists($key, [self::QUERY => 1, self::VARIABLES => 1, self::OPERATION_NAME => 1])) {
+            if (!\in_array($key, [self::QUERY, self::VARIABLES, self::OPERATION_NAME])) {
                 throw new \Graphpinator\Exception\Request\UnknownKey();
             }
         }

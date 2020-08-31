@@ -11,16 +11,19 @@ final class Operation
     private \Graphpinator\Type\Type $operation;
     private \Graphpinator\Normalizer\FieldSet $children;
     private \Graphpinator\Normalizer\Variable\VariableSet $variables;
+    private ?string $name;
 
     public function __construct(
         \Graphpinator\Type\Type $operation,
         \Graphpinator\Normalizer\FieldSet $children,
-        \Graphpinator\Normalizer\Variable\VariableSet $variables
+        \Graphpinator\Normalizer\Variable\VariableSet $variables,
+        ?string $name
     )
     {
         $this->operation = $operation;
         $this->children = $children;
         $this->variables = $variables;
+        $this->name = $name;
     }
 
     public function getType() : \Graphpinator\Type\Type
@@ -36,6 +39,11 @@ final class Operation
     public function getVariables() : \Graphpinator\Normalizer\Variable\VariableSet
     {
         return $this->variables;
+    }
+
+    public function getName() : ?string
+    {
+        return $this->name;
     }
 
     public function execute(array $variables) : \Graphpinator\Resolver\OperationResult

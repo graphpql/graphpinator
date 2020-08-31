@@ -613,4 +613,17 @@ final class TokenizerTest extends \PHPUnit\Framework\TestCase
         self::assertSame($token1->getType(), $token2->getType());
         self::assertSame($token1->getValue(), $token2->getValue());
     }
+
+    public function testRewind() : void
+    {
+        $source = new \Graphpinator\Source\StringSource('Hello"World"');
+
+        $tokenizer = new \Graphpinator\Tokenizer\Tokenizer($source, false);
+        $tokenizer->rewind();
+        self::assertSame('Hello', $tokenizer->current()->getValue());
+        $tokenizer->next();
+        self::assertSame('World', $tokenizer->current()->getValue());
+        $tokenizer->rewind();
+        self::assertSame('Hello', $tokenizer->current()->getValue());
+    }
 }
