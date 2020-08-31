@@ -13,6 +13,8 @@ class SimpleContainer extends \Graphpinator\Type\Container\Container
     protected array $directives = [];
     protected array $builtInTypes = [];
     protected array $builtInDirectives = [];
+    protected array $combinedTypes = [];
+    protected array $combinedDirectives = [];
 
     /**
      * @phpcs:ignore SlevomatCodingStandard.TypeHints.DisallowArrayTypeHintSyntax.DisallowedArrayTypeHintSyntax
@@ -50,6 +52,9 @@ class SimpleContainer extends \Graphpinator\Type\Container\Container
             'skip' => self::directiveSkip(),
             'include' => self::directiveInclude(),
         ];
+
+        $this->combinedTypes = \array_merge($this->types, $this->builtInTypes);
+        $this->combinedDirectives = \array_merge($this->directives, $this->builtInDirectives);
     }
 
     public function getType(string $name) : \Graphpinator\Type\Contract\NamedDefinition
@@ -58,8 +63,12 @@ class SimpleContainer extends \Graphpinator\Type\Container\Container
             ?? $this->types[$name];
     }
 
-    public function getTypes() : array
+    public function getTypes(bool $includeBuiltInTypes = false) : array
     {
+        if ($includeBuiltInTypes) {
+            return $this->combinedTypes;
+        }
+
         return $this->types;
     }
 
@@ -69,8 +78,12 @@ class SimpleContainer extends \Graphpinator\Type\Container\Container
             ?? $this->directives[$name];
     }
 
-    public function getDirectives() : array
+    public function getDirectives(bool $includeBuiltInDirectives = false) : array
     {
+        if ($includeBuiltInDirectives) {
+            return $this->combinedDirectives;
+        }
+
         return $this->directives;
     }
 }
