@@ -40,7 +40,7 @@ class SimpleContainer extends \Graphpinator\Type\Container\Container
             'Boolean' => self::Boolean(),
             '__Schema' => $this->introspectionSchema(),
             '__Type' => $this->introspectionType(),
-            '__TypeKind' => $this->introspectionField(),
+            '__TypeKind' => $this->introspectionTypeKind(),
             '__Field' => $this->introspectionField(),
             '__EnumValue' => $this->introspectionEnumValue(),
             '__InputValue' => $this->introspectionInputValue(),
@@ -63,13 +63,11 @@ class SimpleContainer extends \Graphpinator\Type\Container\Container
             ?? $this->types[$name];
     }
 
-    public function getTypes(bool $includeBuiltInTypes = false) : array
+    public function getTypes(bool $includeBuiltIn = false) : array
     {
-        if ($includeBuiltInTypes) {
-            return $this->combinedTypes;
-        }
-
-        return $this->types;
+        return $includeBuiltIn
+            ? $this->combinedTypes
+            : $this->types;
     }
 
     public function getDirective(string $name) : \Graphpinator\Directive\Directive
@@ -78,12 +76,10 @@ class SimpleContainer extends \Graphpinator\Type\Container\Container
             ?? $this->directives[$name];
     }
 
-    public function getDirectives(bool $includeBuiltInDirectives = false) : array
+    public function getDirectives(bool $includeBuiltIn = false) : array
     {
-        if ($includeBuiltInDirectives) {
-            return $this->combinedDirectives;
-        }
-
-        return $this->directives;
+        return $includeBuiltIn
+            ? $this->combinedDirectives
+            : $this->directives;
     }
 }

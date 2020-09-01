@@ -18,9 +18,9 @@ abstract class Container
 
     /**
      * Function to return all user-defined types.
-     * @param bool $includeBuiltInTypes
+     * @param bool $includeBuiltIn
      */
-    abstract public function getTypes(bool $includeBuiltInTypes = false) : array;
+    abstract public function getTypes(bool $includeBuiltIn = false) : array;
 
     /**
      * Core function to find directive by its name.
@@ -30,9 +30,9 @@ abstract class Container
 
     /**
      * Function to return all user-defined directives.
-     * @param bool $includeBuiltInDirectives
+     * @param bool $includeBuiltIn
      */
-    abstract public function getDirectives(bool $includeBuiltInDirectives = false) : array;
+    abstract public function getDirectives(bool $includeBuiltIn = false) : array;
 
     /**
      * Built-in Int type.
