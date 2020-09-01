@@ -13,6 +13,8 @@ class SimpleContainer extends \Graphpinator\Type\Container\Container
     protected array $directives = [];
     protected array $builtInTypes = [];
     protected array $builtInDirectives = [];
+    protected array $combinedTypes = [];
+    protected array $combinedDirectives = [];
 
     /**
      * @phpcs:ignore SlevomatCodingStandard.TypeHints.DisallowArrayTypeHintSyntax.DisallowedArrayTypeHintSyntax
@@ -38,7 +40,7 @@ class SimpleContainer extends \Graphpinator\Type\Container\Container
             'Boolean' => self::Boolean(),
             '__Schema' => $this->introspectionSchema(),
             '__Type' => $this->introspectionType(),
-            '__TypeKind' => $this->introspectionField(),
+            '__TypeKind' => $this->introspectionTypeKind(),
             '__Field' => $this->introspectionField(),
             '__EnumValue' => $this->introspectionEnumValue(),
             '__InputValue' => $this->introspectionInputValue(),
@@ -50,27 +52,32 @@ class SimpleContainer extends \Graphpinator\Type\Container\Container
             'skip' => self::directiveSkip(),
             'include' => self::directiveInclude(),
         ];
+
+        $this->combinedTypes = \array_merge($this->types, $this->builtInTypes);
+        $this->combinedDirectives = \array_merge($this->directives, $this->builtInDirectives);
     }
 
     public function getType(string $name) : \Graphpinator\Type\Contract\NamedDefinition
     {
-        return $this->builtInTypes[$name]
-            ?? $this->types[$name];
+        return $this->combinedTypes[$name];
     }
 
-    public function getTypes() : array
+    public function getTypes(bool $includeBuiltIn = false) : array
     {
-        return $this->types;
+        return $includeBuiltIn
+            ? $this->combinedTypes
+            : $this->types;
     }
 
     public function getDirective(string $name) : \Graphpinator\Directive\Directive
     {
-        return $this->builtInDirectives[$name]
-            ?? $this->directives[$name];
+        return $this->combinedDirectives[$name];
     }
 
-    public function getDirectives() : array
+    public function getDirectives(bool $includeBuiltIn = false) : array
     {
-        return $this->directives;
+        return $includeBuiltIn
+            ? $this->combinedDirectives
+            : $this->directives;
     }
 }
