@@ -17,15 +17,4 @@ final class FragmentSpreadSet extends \Infinityloop\Utils\ObjectSet
     {
         return parent::offsetGet($offset);
     }
-
-    public function applyVariables(\Graphpinator\Resolver\VariableValueSet $variables) : self
-    {
-        $spreads = [];
-
-        foreach ($this as $spread) {
-            $spreads[] = $spread->applyVariables($variables);
-        }
-
-        return new self($spreads);
-    }
 }

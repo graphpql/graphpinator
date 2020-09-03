@@ -4,8 +4,6 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Normalizer;
 
-use \Graphpinator\Resolver\VariableValueSet;
-
 final class Field
 {
     use \Nette\SmartObject;
@@ -15,13 +13,15 @@ final class Field
     private \Graphpinator\Parser\Value\NamedValueSet $arguments;
     private \Graphpinator\Normalizer\Directive\DirectiveSet $directives;
     private ?\Graphpinator\Normalizer\FieldSet $children;
+    private ?\Graphpinator\Type\Contract\NamedDefinition $typeCond;
 
     public function __construct(
         string $name,
         ?string $alias = null,
         ?\Graphpinator\Parser\Value\NamedValueSet $arguments = null,
         ?\Graphpinator\Normalizer\Directive\DirectiveSet $directives = null,
-        ?\Graphpinator\Normalizer\FieldSet $children = null
+        ?\Graphpinator\Normalizer\FieldSet $children = null,
+        ?\Graphpinator\Type\Contract\NamedDefinition $typeCond = null
     )
     {
         $this->name = $name;
@@ -32,6 +32,7 @@ final class Field
         $this->directives = $directives
             ?? new \Graphpinator\Normalizer\Directive\DirectiveSet([], \Graphpinator\Directive\DirectiveLocation::FIELD);
         $this->children = $children;
+        $this->typeCond = $typeCond;
     }
 
     public function getName() : string
@@ -59,7 +60,17 @@ final class Field
         return $this->children;
     }
 
-    public function applyVariables(VariableValueSet $variables) : self
+    public function getTypeCondition() : ?\Graphpinator\Type\Contract\NamedDefinition
+    {
+        return $this->typeCond;
+    }
+
+    public function setTypeCondition(?\Graphpinator\Type\Contract\NamedDefinition $typeCond) : void
+    {
+        $this->typeCond = $typeCond;
+    }
+
+    public function applyVariables(\Graphpinator\Resolver\VariableValueSet $variables) : self
     {
         return new self(
             $this->name,
@@ -69,6 +80,31 @@ final class Field
             $this->children instanceof FieldSet
                 ? $this->children->applyVariables($variables)
                 : null,
+            $this->typeCond,
         );
+    }
+
+    public function mergeField(Field $field) : self
+    {
+        if ($this->getName() !== $field->getName()) {
+            throw new \Graphpinator\Exception\Normalizer\ConflictingFieldAlias();
+        }
+
+        $fieldArguments = $field->getArguments();
+
+        foreach ($this->getArguments() as $lhs) {
+            if (isset($fieldArguments[$lhs->getName()]) &&
+                $lhs->getValue()->isSame($fieldArguments[$lhs->getName()]->getValue())) {
+                continue;
+            }
+
+            throw new \Graphpinator\Exception\Normalizer\ConflictingFieldArguments();
+        }
+
+        if ($this->children instanceof FieldSet) {
+            $this->children->mergeFieldSet($field->getFields());
+        }
+
+        return $this;
     }
 }

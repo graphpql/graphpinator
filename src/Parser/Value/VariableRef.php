@@ -20,6 +20,11 @@ final class VariableRef implements \Graphpinator\Parser\Value\Value
         throw new \Exception('Invalid state.');
     }
 
+    public function getVarName() : string
+    {
+        return $this->varName;
+    }
+
     public function applyVariables(\Graphpinator\Resolver\VariableValueSet $variables) : Value
     {
         if ($variables->offsetExists($this->varName)) {
@@ -29,5 +34,11 @@ final class VariableRef implements \Graphpinator\Parser\Value\Value
         }
 
         throw new \Exception('Unknown variable.');
+    }
+
+    public function isSame(Value $compare) : bool
+    {
+        return $compare instanceof self
+            && $this->varName === $compare->getVarName();
     }
 }
