@@ -130,7 +130,6 @@ final class NormalizerTest extends \PHPUnit\Framework\TestCase
             \Graphpinator\Directive\IncludeDirective::class,
             $operation->getFields()->offsetGet(2)->getDirectives()->offsetGet(0)->getDirective(),
         );
-
     }
 
     public function invalidDataProvider() : array

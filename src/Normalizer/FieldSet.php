@@ -58,7 +58,7 @@ final class FieldSet extends \Infinityloop\Utils\ObjectSet
         }
     }
 
-    protected function getKey(object $object): ?string
+    protected function getKey(object $object) : ?string
     {
         \assert($object instanceof Field);
 
