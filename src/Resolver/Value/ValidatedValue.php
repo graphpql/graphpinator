@@ -50,44 +50,44 @@ abstract class ValidatedValue implements \JsonSerializable
 
     public function printValue(bool $isList = false) : string
     {
-        if(!\is_array($this->value)) {
+        if (!\is_array($this->value)) {
             return \json_encode($this->value, \JSON_THROW_ON_ERROR);
         }
 
-        $outputValue = $isList ? '[' : '{';
+        $outputValue = $isList ?
+            '[' : '{';
 
         $lastKey = \array_key_last($this->value);
 
-        $isNumericArray = function ($array) : bool
-        {
-            foreach($array as $key => $value)
-            {
-                if(\is_numeric($key)) {
+        $isNumericArray = static function ($array) : bool {
+            foreach ($array as $key => $value) {
+                if (\is_numeric($key)) {
                     return true;
                 }
             }
+
             return false;
         };
 
-        foreach($this->value as $key => $value)
-        {
-            $outputValue .= \is_numeric($key) ? '' : $key . ':';
+        foreach ($this->value as $key => $value) {
+            $outputValue .= \is_numeric($key) ?
+                '' : $key . ':';
 
-            if(\is_array($value->value)) {
-                $outputValue .=  $value->printValue($isNumericArray($value->value));
-            }
-            else {
+            if (\is_array($value->value)) {
+                $outputValue .= $value->printValue($isNumericArray($value->value));
+            } else {
                 $outputValue .= $value->printValue();
             }
 
-            if($lastKey === $key) {
+            if ($lastKey === $key) {
                 break;
             }
 
             $outputValue .= ',';
         }
 
-        $outputValue .= $isList ? ']' : '}';
+        $outputValue .= $isList ?
+            ']' : '}';
 
         return $outputValue;
     }
