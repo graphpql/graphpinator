@@ -17,8 +17,8 @@
     "ext-json": "*"
   },
   "require-dev": {
-    "phpunit/phpunit": "^9.1",
-    "infection/infection": "^0.16 || ^0.17",
+    "phpunit/phpunit": "^9.3",
+    "infection/infection": "^0.17",
     "infinityloop-dev/coding-standard": "dev-master"
   },
   "scripts": {
