@@ -12,28 +12,28 @@ final class VariableTest extends \PHPUnit\Framework\TestCase
             [
                 \Infinityloop\Utils\Json::fromArray([
                     'query' => 'query queryName ($var1: Int) { field0 { field1(arg1: $var1) { name } } }',
-                    'variables' => ['var1' => 456],
+                    'variables' => (object) ['var1' => 456],
                 ]),
                 \Infinityloop\Utils\Json::fromArray(['data' => ['field0' => ['field1' => ['name' => 'Test 456']]]]),
             ],
             [
                 \Infinityloop\Utils\Json::fromArray([
                     'query' => 'query queryName ($var1: Int) { field0 { field1(arg1: $var1) { name } } }',
-                    'variables' => ['var1' => 123],
+                    'variables' => (object) ['var1' => 123],
                 ]),
                 \Infinityloop\Utils\Json::fromArray(['data' => ['field0' => ['field1' => ['name' => 'Test 123']]]]),
             ],
             [
                 \Infinityloop\Utils\Json::fromArray([
                     'query' => 'query queryName ($var1: Int = 456) { field0 { field1(arg1: $var1) { name } } }',
-                    'variables' => [],
+                    'variables' => (object) [],
                 ]),
                 \Infinityloop\Utils\Json::fromArray(['data' => ['field0' => ['field1' => ['name' => 'Test 456']]]]),
             ],
             [
                 \Infinityloop\Utils\Json::fromArray([
                     'query' => 'query queryName ($var1: Int = 123) { field0 { field1(arg1: $var1) { name } } }',
-                    'variables' => [],
+                    'variables' => (object) [],
                 ]),
                 \Infinityloop\Utils\Json::fromArray(['data' => ['field0' => ['field1' => ['name' => 'Test 123']]]]),
             ],
@@ -61,7 +61,7 @@ final class VariableTest extends \PHPUnit\Framework\TestCase
             [
                 \Infinityloop\Utils\Json::fromArray([
                     'query' => 'query queryName ($var1: Int = "123") { field0 { field1 { name } } }',
-                    'variables' => [],
+                    'variables' => (object) [],
                 ]),
             ],
             [
@@ -73,13 +73,13 @@ final class VariableTest extends \PHPUnit\Framework\TestCase
             [
                 \Infinityloop\Utils\Json::fromArray([
                     'query' => 'query queryName ($var1: Int!) { field0 { field1 { name } } }',
-                    'variables' => [],
+                    'variables' => (object) [],
                 ]),
             ],
             [
                 \Infinityloop\Utils\Json::fromArray([
                     'query' => 'query queryName { field0 { field1(arg1: $varNonExistent) { name } } }',
-                    'variables' => [],
+                    'variables' => (object) [],
                 ]),
             ],
         ];

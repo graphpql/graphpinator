@@ -49,8 +49,6 @@ abstract class ValidatedValue implements \JsonSerializable
 
     public function printValue() : string
     {
-        //\var_dump($this->value);
-
         return \json_encode($this->value, \JSON_THROW_ON_ERROR);
     }
 }

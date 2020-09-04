@@ -33,7 +33,7 @@ final class InputTest extends \PHPUnit\Framework\TestCase
                     'data' => [
                         'field0' => [
                             'field1' => [
-                                'name' => 'Test input: name: foo; inner: ; name: bar; bool: ; ',
+                                'name' => 'name: foo; inner: null; innerList: []; innerNotNull: {name: bar; number: []; bool: null; }; ',
                             ],
                         ],
                     ],
@@ -58,7 +58,7 @@ final class InputTest extends \PHPUnit\Framework\TestCase
                     'data' => [
                         'field0' => [
                             'field1' => [
-                                'name' => 'Test input: name: foo; inner: ; name: bar; 0: 123; 1: 456; bool: ; ',
+                                'name' => 'name: foo; inner: null; innerList: []; innerNotNull: {name: bar; number: []; bool: null; }; ',
                             ],
                         ],
                     ],
@@ -83,7 +83,7 @@ final class InputTest extends \PHPUnit\Framework\TestCase
                     'data' => [
                         'field0' => [
                             'field1' => [
-                                'name' => 'Test input: name: foo; inner: ; name: bar; bool: ; ',
+                                'name' => 'name: foo; inner: null; innerList: []; innerNotNull: {name: bar; number: []; bool: null; }; ',
                             ],
                         ],
                     ],
@@ -108,7 +108,7 @@ final class InputTest extends \PHPUnit\Framework\TestCase
                     'data' => [
                         'field0' => [
                             'field1' => [
-                                'name' => 'Test input: name: foo; inner: ; name: bar; bool: ; ',
+                                'name' => 'name: foo; inner: null; innerList: []; innerNotNull: {name: bar; number: []; bool: null; }; ',
                             ],
                         ],
                     ],
@@ -133,7 +133,7 @@ final class InputTest extends \PHPUnit\Framework\TestCase
                     'data' => [
                         'field0' => [
                             'field1' => [
-                                'name' => 'Test input: name: foo; inner: ; name: bar; bool: 1; ',
+                                'name' => 'name: foo; inner: null; innerList: []; innerNotNull: {name: bar; number: []; bool: 1; }; ',
                             ],
                         ],
                     ],
@@ -164,7 +164,7 @@ final class InputTest extends \PHPUnit\Framework\TestCase
                     'data' => [
                         'field0' => [
                             'field1' => [
-                                'name' => 'Test input: name: foo; inner: ; name: bar; bool: ; name: bar; bool: ; name: bar; bool: ; ',
+                                'name' => 'name: foo; inner: null; innerList: []; innerNotNull: {name: bar; number: []; bool: null; }; ',
                             ],
                         ],
                     ],
@@ -174,23 +174,23 @@ final class InputTest extends \PHPUnit\Framework\TestCase
                 \Infinityloop\Utils\Json::fromArray([
                     'query' => 'query queryName ($var1: TestInnerInput = {
                         name: "bar", number: []
-                        })
-                        { 
-                            field0 { 
-                                field1(arg2: {
-                                    name: "foo", innerList: [$var1, $var1], innerNotNull: $var1 
-                                }) 
-                                { 
-                                    name 
-                                } 
+                    })
+                    {
+                        field0 { 
+                            field1(arg2: {
+                                name: "foo", innerList: [$var1, $var1], innerNotNull: $var1 
+                            }) 
+                            { 
+                                name 
                             } 
-                        }',
+                        } 
+                    }',
                 ]),
                 \Infinityloop\Utils\Json::fromArray([
                     'data' => [
                         'field0' => [
                             'field1' => [
-                                'name' => 'Test input: name: foo; inner: ; name: bar; bool: ; name: bar; bool: ; name: bar; bool: ; ',
+                                'name' => 'name: foo; inner: null; innerList: []; innerNotNull: {name: bar; number: []; bool: null; }; ',
                             ],
                         ],
                     ],
@@ -208,13 +208,13 @@ final class InputTest extends \PHPUnit\Framework\TestCase
                             } 
                         } 
                     }',
-                    'variables' => ['var1' => ['name' => 'bar', 'number' => []]],
+                    'variables' => (object) ['var1' => (object) ['name' => 'bar', 'number' => (object) []]],
                 ]),
                 \Infinityloop\Utils\Json::fromArray([
                     'data' => [
                         'field0' => [
                             'field1' => [
-                                'name' => 'Test input: name: foo; inner: ; name: bar; bool: ; name: bar; bool: ; name: bar; bool: ; ',
+                                'name' => 'name: foo; inner: ; name: bar; bool: ; name: bar; bool: ; name: bar; bool: ; ',
                             ],
                         ],
                     ],
@@ -223,27 +223,26 @@ final class InputTest extends \PHPUnit\Framework\TestCase
             [
                 \Infinityloop\Utils\Json::fromArray([
                     'query' => 'query queryName ($var1: [TestInnerInput] = [
-                                {name: "bar", number: []}
-                            ]
-                        )
-                        { 
-                            field0 { 
-                                field1(arg2: {
-                                    name: "foo", innerList: $var1, innerNotNull: {
-                                        name: "bar", number: []
-                                    } 
-                                }) 
-                                { 
-                                    name 
+                        {name: "bar", number: []}
+                    ])
+                    { 
+                        field0 { 
+                            field1(arg2: {
+                                name: "foo", innerList: $var1, innerNotNull: {
+                                    name: "bar", number: []
                                 } 
+                            }) 
+                            { 
+                                name 
                             } 
-                        }',
+                        } 
+                    }',
                 ]),
                 \Infinityloop\Utils\Json::fromArray([
                     'data' => [
                         'field0' => [
                             'field1' => [
-                                'name' => 'Test input: name: foo; inner: ; name: bar; bool: ; name: bar; bool: ; ',
+                                'name' => 'name: foo; inner: null; innerList: []; innerNotNull: {name: bar; number: []; bool: null; }; ',
                             ],
                         ],
                     ],

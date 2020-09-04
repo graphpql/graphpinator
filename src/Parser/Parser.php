@@ -384,12 +384,12 @@ final class Parser
 
                 return new \Graphpinator\Parser\Value\ListVal($values);
             case TokenType::CUR_O:
-                $values = [];
+                $values = new \stdClass();
 
                 while ($this->tokenizer->peekNext()->getType() !== TokenType::CUR_C) {
                     $name = $this->tokenizer->assertNext(TokenType::NAME, \Graphpinator\Exception\Parser\ExpectedFieldName::class)->getValue();
                     $this->tokenizer->assertNext(TokenType::COLON, \Graphpinator\Exception\Parser\ExpectedColon::class);
-                    $values[$name] = $this->parseValue($literalOnly);
+                    $values->{$name} = $this->parseValue($literalOnly);
                 }
 
                 $this->tokenizer->getNext();

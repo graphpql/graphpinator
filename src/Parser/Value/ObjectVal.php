@@ -8,26 +8,26 @@ final class ObjectVal implements \Graphpinator\Parser\Value\Value
 {
     use \Nette\SmartObject;
 
-    private array $value;
+    private \stdClass $value;
 
-    public function __construct(array $value)
+    public function __construct(\stdClass $value)
     {
         $this->value = $value;
     }
 
-    public function getValue() : array
+    public function getValue() : \stdClass
     {
         return $this->value;
     }
 
-    public function getRawValue() : array
+    public function getRawValue() : \stdClass
     {
-        $return = [];
+        $return = new \stdClass();
 
         foreach ($this->value as $key => $value) {
             \assert($value instanceof Value);
 
-            $return[$key] = $value->getRawValue();
+            $return->{$key} = $value->getRawValue();
         }
 
         return $return;
@@ -35,12 +35,12 @@ final class ObjectVal implements \Graphpinator\Parser\Value\Value
 
     public function applyVariables(\Graphpinator\Resolver\VariableValueSet $variables) : Value
     {
-        $return = [];
+        $return = new \stdClass();
 
         foreach ($this->value as $key => $value) {
             \assert($value instanceof Value);
 
-            $return[$key] = $value->applyVariables($variables);
+            $return->{$key} = $value->applyVariables($variables);
         }
 
         return new self($return);
@@ -52,17 +52,17 @@ final class ObjectVal implements \Graphpinator\Parser\Value\Value
             return false;
         }
 
-        $secondArray = $compare->getValue();
+        $secondObject = $compare->getValue();
 
-        if (\count($secondArray) !== \count($this->value)) {
+        if (\count((array) $secondObject) !== \count((array) $this->value)) {
             return false;
         }
 
         foreach ($this->value as $key => $value) {
             \assert($value instanceof Value);
 
-            if (!\array_key_exists($key, $secondArray) ||
-                !$value->isSame($secondArray[$key])) {
+            if (!\property_exists($secondObject, $key) ||
+                !$value->isSame($secondObject->{$key})) {
                 return false;
             }
         }

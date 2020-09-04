@@ -9,7 +9,7 @@ final class ListValueTest extends \PHPUnit\Framework\TestCase
     public function testApplyDefaults() : void
     {
         $type = $this->createTestInput()->list();
-        $value = \Graphpinator\Resolver\Value\ListValue::create([[], []], $type);
+        $value = \Graphpinator\Resolver\Value\ListValue::create([new \stdClass(), new \stdClass()], $type);
         self::assertCount(2, $value);
         self::assertCount(2, $value->getRawValue());
 

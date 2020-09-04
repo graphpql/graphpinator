@@ -17,7 +17,6 @@ abstract class InputType extends \Graphpinator\Type\Contract\ConcreteDefinition 
 
     final public function applyDefaults($value) : \stdClass
     {
-        \var_dump($value);
         if (!$value instanceof \stdClass) {
             throw new \Exception('Composite input type without fields specified.');
         }
@@ -60,7 +59,7 @@ abstract class InputType extends \Graphpinator\Type\Contract\ConcreteDefinition 
                 continue;
             }
 
-            $core[$key] = $value;
+            $core->{$key} = $value;
         }
 
         return $core;

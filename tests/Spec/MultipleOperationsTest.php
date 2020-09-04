@@ -10,18 +10,25 @@ final class MultipleOperationsTest extends \PHPUnit\Framework\TestCase
     {
         return [
             [
-                '{"query":"query queryName { field0 { field1(arg2: null) { name } } }","operationName":"queryName"}',
-                '{"data":{"field0":{"field1":{"name":"Test 123"}}}}',
+                \Infinityloop\Utils\Json::fromArray([
+                    'query' => 'query queryName { field0 { field1(arg2: null) { name } } }',
+                    'operationName' => 'queryName',
+                ]),
+                \Infinityloop\Utils\Json::fromArray(['data' => ['field0' => ['field1' => ['name' => 'Test 123']]]]),
             ],
             [
-                '{"query": "query queryName { field0 { field1 { name } } } query secondQueryName { aliasName: field0 { field1 { name } } }",' .
-                '"operationName": "queryName"}',
-                '{"data":{"field0":{"field1":{"name":"Test 123"}}}}',
+                \Infinityloop\Utils\Json::fromArray([
+                    'query' => 'query queryName { field0 { field1 { name } } } query secondQueryName { aliasName: field0 { field1 { name } } }',
+                    'operationName' => 'queryName',
+                ]),
+                \Infinityloop\Utils\Json::fromArray(['data' => ['field0' => ['field1' => ['name' => 'Test 123']]]]),
             ],
             [
-                '{"query": "query queryName { field0 { field1 { name } } } query secondQueryName { aliasName: field0 { field1 { name } } }",' .
-                '"operationName": "secondQueryName"}',
-                '{"data":{"aliasName":{"field1":{"name":"Test 123"}}}}',
+                \Infinityloop\Utils\Json::fromArray([
+                    'query' => 'query queryName { field0 { field1 { name } } } query secondQueryName { aliasName: field0 { field1 { name } } }',
+                    'operationName' => 'secondQueryName',
+                ]),
+                \Infinityloop\Utils\Json::fromArray(['data' => ['aliasName' => ['field1' => ['name' => 'Test 123']]]]),
             ],
         ];
     }
@@ -31,11 +38,11 @@ final class MultipleOperationsTest extends \PHPUnit\Framework\TestCase
      * @param string $request
      * @param string $expected
      */
-    public function testOperationName(string $request, string $expected) : void
+    public function testOperationName(\Infinityloop\Utils\Json $request, \Infinityloop\Utils\Json $expected) : void
     {
         $graphpinator = new \Graphpinator\Graphpinator(\Graphpinator\Tests\Spec\TestSchema::getSchema());
-        $result = $graphpinator->runQuery(\Infinityloop\Utils\Json::fromString($request));
+        $result = $graphpinator->runQuery($request);
 
-        self::assertSame($expected, \json_encode($result, \JSON_THROW_ON_ERROR, 512));
+        self::assertSame($expected->toString(), \json_encode($result, \JSON_THROW_ON_ERROR, 512));
     }
 }

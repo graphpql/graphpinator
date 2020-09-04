@@ -28,7 +28,7 @@ final class Graphpinator
 
             $query = $request[self::QUERY];
             $variables = $request[self::VARIABLES]
-                ?? [];
+                ?? new \stdClass();
             $operationName = $request[self::OPERATION_NAME]
                 ?? null;
 
@@ -50,6 +50,10 @@ final class Graphpinator
 
     private function validateRequest(\Infinityloop\Utils\Json $request) : void
     {
+        if ($request->isInAssocMode()) {
+            throw new \Graphpinator\Exception\Request\JsonEnabledAssoc();
+        }
+
         if (!isset($request[self::QUERY])) {
             throw new \Graphpinator\Exception\Request\QueryMissing();
         }
@@ -58,7 +62,7 @@ final class Graphpinator
             throw new \Graphpinator\Exception\Request\QueryNotString();
         }
 
-        if (isset($request[self::VARIABLES]) && !\is_array($request[self::VARIABLES])) {
+        if (isset($request[self::VARIABLES]) && !$request[self::VARIABLES] instanceof \stdClass) {
             throw new \Graphpinator\Exception\Request\VariablesNotArray();
         }
 

@@ -56,43 +56,43 @@ final class IsSameTest extends \PHPUnit\Framework\TestCase
             ]),
         false,
                 ],
-            [new \Graphpinator\Parser\Value\ObjectVal([]), new \Graphpinator\Parser\Value\ObjectVal([]), true],
+            [new \Graphpinator\Parser\Value\ObjectVal((object) []), new \Graphpinator\Parser\Value\ObjectVal((object) []), true],
             [
-            new \Graphpinator\Parser\Value\ObjectVal([]),
-            new \Graphpinator\Parser\Value\ObjectVal([
+            new \Graphpinator\Parser\Value\ObjectVal((object) []),
+            new \Graphpinator\Parser\Value\ObjectVal((object) [
                 'val1' => new \Graphpinator\Parser\Value\Literal('123'),
                 'val2' => new \Graphpinator\Parser\Value\Literal('abc'),
             ]),
         false,
                 ],
             [
-            new \Graphpinator\Parser\Value\ObjectVal([
+            new \Graphpinator\Parser\Value\ObjectVal((object) [
                 'val1' => new \Graphpinator\Parser\Value\Literal('123'),
                 'val2' => new \Graphpinator\Parser\Value\Literal('abc'),
             ]),
-        new \Graphpinator\Parser\Value\ObjectVal([
+        new \Graphpinator\Parser\Value\ObjectVal((object) [
                 'val1' => new \Graphpinator\Parser\Value\Literal('123'),
                 'val2' => new \Graphpinator\Parser\Value\Literal('abc'),
             ]),
         true,
                 ],
             [
-            new \Graphpinator\Parser\Value\ObjectVal([
+            new \Graphpinator\Parser\Value\ObjectVal((object) [
                 'val1' => new \Graphpinator\Parser\Value\Literal('123'),
                 'val2' => new \Graphpinator\Parser\Value\Literal('abc'),
             ]),
-        new \Graphpinator\Parser\Value\ObjectVal([
+        new \Graphpinator\Parser\Value\ObjectVal((object) [
                 'val1' => new \Graphpinator\Parser\Value\Literal('123'),
                 'val3' => new \Graphpinator\Parser\Value\Literal('abc'),
             ]),
         false,
                 ],
             [
-            new \Graphpinator\Parser\Value\ObjectVal([
+            new \Graphpinator\Parser\Value\ObjectVal((object) [
                 'val1' => new \Graphpinator\Parser\Value\Literal('123'),
                 'val2' => new \Graphpinator\Parser\Value\Literal('abc'),
             ]),
-        new \Graphpinator\Parser\Value\ObjectVal([
+        new \Graphpinator\Parser\Value\ObjectVal((object) [
                 'val1' => new \Graphpinator\Parser\Value\Literal('123'),
                 'val2' => new \Graphpinator\Parser\Value\Literal('456'),
             ]),
@@ -113,7 +113,7 @@ final class IsSameTest extends \PHPUnit\Framework\TestCase
                 ],
             [
             new \Graphpinator\Parser\Value\Literal(123),
-            new \Graphpinator\Parser\Value\ObjectVal([
+            new \Graphpinator\Parser\Value\ObjectVal((object) [
                 'val' => new \Graphpinator\Parser\Value\Literal(123),
             ]),
         false,
@@ -131,7 +131,7 @@ final class IsSameTest extends \PHPUnit\Framework\TestCase
                 ],
             [
             new \Graphpinator\Parser\Value\Literal(123.123),
-            new \Graphpinator\Parser\Value\ObjectVal([
+            new \Graphpinator\Parser\Value\ObjectVal((object) [
                 'val' => new \Graphpinator\Parser\Value\Literal(123.123),
             ]),
         false,
@@ -148,7 +148,7 @@ final class IsSameTest extends \PHPUnit\Framework\TestCase
                 ],
             [
             new \Graphpinator\Parser\Value\Literal('123'),
-            new \Graphpinator\Parser\Value\ObjectVal([
+            new \Graphpinator\Parser\Value\ObjectVal((object) [
                 'val' => new \Graphpinator\Parser\Value\Literal('123'),
             ]),
         false,
@@ -163,17 +163,17 @@ final class IsSameTest extends \PHPUnit\Framework\TestCase
                 ],
             [
             new \Graphpinator\Parser\Value\Literal(true),
-            new \Graphpinator\Parser\Value\ObjectVal([
+            new \Graphpinator\Parser\Value\ObjectVal((object) [
                 'val' => new \Graphpinator\Parser\Value\Literal(true),
             ]),
         false,
                 ],
-            [new \Graphpinator\Parser\Value\ListVal([]), new \Graphpinator\Parser\Value\ObjectVal([]), false],
+            [new \Graphpinator\Parser\Value\ListVal([]), new \Graphpinator\Parser\Value\ObjectVal((object) []), false],
             [
             new \Graphpinator\Parser\Value\ListVal([
                 new \Graphpinator\Parser\Value\Literal('123'),
             ]),
-        new \Graphpinator\Parser\Value\ObjectVal([
+        new \Graphpinator\Parser\Value\ObjectVal((object) [
                 'val1' => new \Graphpinator\Parser\Value\Literal('123'),
             ]),
         false,

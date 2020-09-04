@@ -18,7 +18,7 @@ final class OperationSet extends \Infinityloop\Utils\ObjectSet
         return parent::offsetGet($offset);
     }
 
-    public function execute(?string $operationName, array $variables) : \Graphpinator\Resolver\OperationResult
+    public function execute(?string $operationName, \stdClass $variables) : \Graphpinator\Resolver\OperationResult
     {
         $operation = $operationName === null
             ? $this->current()

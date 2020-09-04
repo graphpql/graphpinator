@@ -14,8 +14,16 @@ final class InputTypeTest extends \PHPUnit\Framework\TestCase
             protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
             {
                 return new \Graphpinator\Argument\ArgumentSet([
-                    new \Graphpinator\Argument\Argument('field1', InputTypeTest::createTestSubInput(), ['subfield' => 'random']),
-                    new \Graphpinator\Argument\Argument('field2', InputTypeTest::createTestSubInput(), ['subfield' => 'random']),
+                    new \Graphpinator\Argument\Argument(
+                        'field1',
+                        InputTypeTest::createTestSubInput(),
+                        (object) ['subfield' => 'random'],
+                    ),
+                    new \Graphpinator\Argument\Argument(
+                        'field2',
+                        InputTypeTest::createTestSubInput(),
+                        (object) ['subfield' => 'random'],
+                    ),
                 ]);
             }
         };
@@ -42,11 +50,11 @@ final class InputTypeTest extends \PHPUnit\Framework\TestCase
     public function testApplyDefaults() : void
     {
         $input = self::createTestInput();
-        $value = $input->createValue(['field1' => ['subfield' => 'concrete']]);
+        $value = $input->createValue((object) ['field1' => (object) ['subfield' => 'concrete']]);
 
-        self::assertSame(
-            ['field1' => ['subfield' => 'concrete'], 'field2' => ['subfield' => 'random']],
-            \json_decode(\json_encode($value->getRawValue()), true),
+        self::assertEquals(
+            (object) ['field1' => (object) ['subfield' => 'concrete'], 'field2' => (object) ['subfield' => 'random']],
+            $value->getRawValue(),
         );
     }
 

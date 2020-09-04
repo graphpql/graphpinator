@@ -95,20 +95,33 @@ final class TestSchema
                     new \Graphpinator\Field\ResolvableField(
                         'field1',
                         TestSchema::getInterface(),
-                        static function (int $parent, \Graphpinator\Resolver\ArgumentValueSet $args) {
+                        static function (int $parent, \Graphpinator\Resolver\ArgumentValueSet $args) : \Graphpinator\Resolver\FieldResult {
                             $object = new \stdClass();
 
                             if ($args['arg2']->getRawValue() === null) {
                                 $object->name = 'Test ' . $args['arg1']->getRawValue();
                             } else {
-                                $objectVal = $args['arg2']->getRawValue();
-                                $str = '';
+                                $concat = static function (\stdClass $objectVal) use (&$concat) : string {
+                                    $str = '';
 
-                                \array_walk_recursive($objectVal, static function ($item, $key) use (&$str) : void {
-                                    $str .= $key . ': ' . $item . '; ';
-                                });
+                                    foreach ($objectVal as $key => $item) {
+                                        if ($item instanceof \stdClass) {
+                                            $print = '{' . $concat($item) . '}';
+                                        } elseif (\is_array($item)) {
+                                            $print = '[]';
+                                        } elseif (\is_scalar($item)) {
+                                            $print = $item;
+                                        } elseif ($item === null) {
+                                            $print = 'null';
+                                        }
 
-                                $object->name = 'Test input: ' . $str;
+                                        $str .= $key . ': ' . $print . '; ';
+                                    }
+
+                                    return $str;
+                                };
+
+                                $object->name = $concat($args['arg2']->getRawValue());
                             }
 
                             return \Graphpinator\Resolver\FieldResult::fromRaw(TestSchema::getTypeXyz(), $object);
@@ -187,10 +200,22 @@ final class TestSchema
             protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
             {
                 return new \Graphpinator\Argument\ArgumentSet([
-                    new \Graphpinator\Argument\Argument('name', \Graphpinator\Type\Container\Container::String()->notNull()),
-                    new \Graphpinator\Argument\Argument('inner', TestSchema::getInnerInput()),
-                    new \Graphpinator\Argument\Argument('innerList', TestSchema::getInnerInput()->notNullList()),
-                    new \Graphpinator\Argument\Argument('innerNotNull', TestSchema::getInnerInput()->notNull()),
+                    new \Graphpinator\Argument\Argument(
+                        'name',
+                        \Graphpinator\Type\Container\Container::String()->notNull()
+                    ),
+                    new \Graphpinator\Argument\Argument(
+                        'inner',
+                        TestSchema::getInnerInput()
+                    ),
+                    new \Graphpinator\Argument\Argument(
+                        'innerList',
+                        TestSchema::getInnerInput()->notNullList()
+                    ),
+                    new \Graphpinator\Argument\Argument(
+                        'innerNotNull',
+                        TestSchema::getInnerInput()->notNull()
+                    ),
                 ]);
             }
         };
@@ -205,9 +230,18 @@ final class TestSchema
             protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
             {
                 return new \Graphpinator\Argument\ArgumentSet([
-                    new \Graphpinator\Argument\Argument('name', \Graphpinator\Type\Container\Container::String()->notNull()),
-                    new \Graphpinator\Argument\Argument('number', \Graphpinator\Type\Container\Container::Int()->notNullList()),
-                    new \Graphpinator\Argument\Argument('bool', \Graphpinator\Type\Container\Container::Boolean()),
+                    new \Graphpinator\Argument\Argument(
+                        'name',
+                        \Graphpinator\Type\Container\Container::String()->notNull(),
+                    ),
+                    new \Graphpinator\Argument\Argument(
+                        'number',
+                        \Graphpinator\Type\Container\Container::Int()->notNullList(),
+                    ),
+                    new \Graphpinator\Argument\Argument(
+                        'bool',
+                        \Graphpinator\Type\Container\Container::Boolean(),
+                    ),
                 ]);
             }
         };

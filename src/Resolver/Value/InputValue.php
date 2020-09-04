@@ -6,12 +6,12 @@ namespace Graphpinator\Resolver\Value;
 
 final class InputValue extends \Graphpinator\Resolver\Value\ValidatedValue implements \Iterator, \ArrayAccess
 {
-    public function __construct(array $fields, \Graphpinator\Type\InputType $type)
+    public function __construct(\stdClass $fields, \Graphpinator\Type\InputType $type)
     {
         $value = new \stdClass();
 
         foreach ($type->getArguments() as $argument) {
-            $usedValue = $fields[$argument->getName()]
+            $usedValue = $fields->{$argument->getName()}
                 ?? $argument->getDefaultValue();
 
             // default values are already validated
