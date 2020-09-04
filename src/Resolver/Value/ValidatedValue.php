@@ -48,7 +48,12 @@ abstract class ValidatedValue implements \JsonSerializable
         return $this->value;
     }
 
-    public function printValue(bool $isList = false) : string
+    public function printValue() : string
+    {
+        return $this->executePrintValue();
+    }
+
+    private function executePrintValue(bool $isList = false) : string
     {
         if (!\is_array($this->value)) {
             return \json_encode($this->value, \JSON_THROW_ON_ERROR);
@@ -59,24 +64,14 @@ abstract class ValidatedValue implements \JsonSerializable
 
         $lastKey = \array_key_last($this->value);
 
-        $isNumericArray = static function ($array) : bool {
-            foreach ($array as $key => $value) {
-                if (\is_numeric($key)) {
-                    return true;
-                }
-            }
-
-            return false;
-        };
-
         foreach ($this->value as $key => $value) {
-            $outputValue .= \is_numeric($key) ?
+            $outputValue .= \is_int($key) ?
                 '' : $key . ':';
 
             if (\is_array($value->value)) {
-                $outputValue .= $value->printValue($isNumericArray($value->value));
+                $outputValue .= $value->executePrintValue(\array_key_first($value->value) === 0);
             } else {
-                $outputValue .= $value->printValue();
+                $outputValue .= $value->executePrintValue();
             }
 
             if ($lastKey === $key) {
