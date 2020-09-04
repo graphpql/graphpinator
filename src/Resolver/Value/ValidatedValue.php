@@ -50,36 +50,21 @@ abstract class ValidatedValue implements \JsonSerializable
 
     public function printValue() : string
     {
-        return $this->executePrintValue();
-    }
-
-    private function executePrintValue(bool $isList = false) : string
-    {
-        if (!\is_array($this->value)) {
+        if (\is_scalar($this->value) || $this->value === null) {
             return \json_encode($this->value, \JSON_THROW_ON_ERROR);
         }
 
+        $isList = \array_key_first($this->value) === 0;
+        $component = [];
         $outputValue = $isList ?
             '[' : '{';
 
-        $lastKey = \array_key_last($this->value);
-
         foreach ($this->value as $key => $value) {
-            $outputValue .= \is_int($key) ?
-                '' : $key . ':';
-
-            if (\is_array($value->value)) {
-                $outputValue .= $value->executePrintValue(\array_key_first($value->value) === 0);
-            } else {
-                $outputValue .= $value->executePrintValue();
-            }
-
-            if ($lastKey === $key) {
-                break;
-            }
-
-            $outputValue .= ',';
+            $component[$key] = \is_int($key) ?
+                $value->printValue() : $key . ':' . $value->printValue();
         }
+
+        $outputValue .= \implode(',', $component);
 
         $outputValue .= $isList ?
             ']' : '}';
