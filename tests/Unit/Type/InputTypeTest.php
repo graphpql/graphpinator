@@ -44,7 +44,10 @@ final class InputTypeTest extends \PHPUnit\Framework\TestCase
         $input = self::createTestInput();
         $value = $input->createValue(['field1' => ['subfield' => 'concrete']]);
 
-        self::assertSame(['field1' => ['subfield' => 'concrete'], 'field2' => ['subfield' => 'random']], $value->getRawValue());
+        self::assertSame(
+            ['field1' => ['subfield' => 'concrete'], 'field2' => ['subfield' => 'random']],
+            \json_decode(\json_encode($value->getRawValue()), true),
+        );
     }
 
     public function testInvalidValue() : void

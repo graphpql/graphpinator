@@ -84,11 +84,11 @@ final class TypeTest extends \PHPUnit\Framework\TestCase
         $parentValue = \Graphpinator\Resolver\FieldResult::fromRaw(\Graphpinator\Type\Container\Container::String(), self::PARENT_VAL);
         $result = $type->resolve($requestFields, $parentValue);
 
-        self::assertCount(3, $result);
+        self::assertCount(3, (array) $result);
 
         foreach (['field1' => 'fieldValue', 'field2' => false, 'field3' => null] as $name => $value) {
-            self::assertArrayHasKey($name, $result);
-            self::assertSame($value, $result[$name]->getRawValue());
+            self::assertArrayHasKey($name, (array) $result);
+            self::assertSame($value, $result->{$name}->getRawValue());
         }
     }
 

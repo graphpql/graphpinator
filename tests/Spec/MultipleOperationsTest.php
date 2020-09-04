@@ -11,17 +11,17 @@ final class MultipleOperationsTest extends \PHPUnit\Framework\TestCase
         return [
             [
                 '{"query":"query queryName { field0 { field1(arg2: null) { name } } }","operationName":"queryName"}',
-                '{"field0":{"field1":{"name":"Test 123"}}}',
+                '{"data":{"field0":{"field1":{"name":"Test 123"}}}}',
             ],
             [
                 '{"query": "query queryName { field0 { field1 { name } } } query secondQueryName { aliasName: field0 { field1 { name } } }",' .
                 '"operationName": "queryName"}',
-                '{"field0":{"field1":{"name":"Test 123"}}}',
+                '{"data":{"field0":{"field1":{"name":"Test 123"}}}}',
             ],
             [
                 '{"query": "query queryName { field0 { field1 { name } } } query secondQueryName { aliasName: field0 { field1 { name } } }",' .
                 '"operationName": "secondQueryName"}',
-                '{"aliasName":{"field1":{"name":"Test 123"}}}',
+                '{"data":{"aliasName":{"field1":{"name":"Test 123"}}}}',
             ],
         ];
     }
@@ -36,6 +36,6 @@ final class MultipleOperationsTest extends \PHPUnit\Framework\TestCase
         $graphpinator = new \Graphpinator\Graphpinator(\Graphpinator\Tests\Spec\TestSchema::getSchema());
         $result = $graphpinator->runQuery(\Infinityloop\Utils\Json::fromString($request));
 
-        self::assertSame($expected, \Infinityloop\Utils\Json::fromArray($result->getData())->toString());
+        self::assertSame($expected, \json_encode($result, \JSON_THROW_ON_ERROR, 512));
     }
 }

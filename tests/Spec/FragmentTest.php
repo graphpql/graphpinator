@@ -13,7 +13,7 @@ final class FragmentTest extends \PHPUnit\Framework\TestCase
                 \Infinityloop\Utils\Json::fromArray([
                     'query' => 'query queryName { field0 { field1 { ... on Abc { name } } } }',
                 ]),
-                \Infinityloop\Utils\Json::fromArray(['data' => ['field0' => ['field1' => []]]]),
+                \Infinityloop\Utils\Json::fromArray(['data' => ['field0' => ['field1' => new \stdClass()]]]),
             ],
             [
                 \Infinityloop\Utils\Json::fromArray([
@@ -71,7 +71,6 @@ final class FragmentTest extends \PHPUnit\Framework\TestCase
         $result = $graphpinator->runQuery($request);
 
         self::assertSame($expected->toString(), \json_encode($result, \JSON_THROW_ON_ERROR, 512));
-        self::assertSame($expected['data'], \json_decode(\json_encode($result->getData()), true));
         self::assertNull($result->getErrors());
     }
 
@@ -158,7 +157,6 @@ final class FragmentTest extends \PHPUnit\Framework\TestCase
         $result = $graphpinator->runQuery($request);
 
         self::assertSame($expected->toString(), \json_encode($result, \JSON_THROW_ON_ERROR, 512));
-        self::assertSame($expected['data'], \json_decode(\json_encode($result->getData()), true));
         self::assertNull($result->getErrors());
     }
 

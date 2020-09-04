@@ -34,7 +34,7 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
         return parent::isInstanceOf($type);
     }
 
-    final public function resolve(?\Graphpinator\Normalizer\FieldSet $requestedFields, \Graphpinator\Resolver\FieldResult $parentResult) : array
+    final public function resolve(?\Graphpinator\Normalizer\FieldSet $requestedFields, \Graphpinator\Resolver\FieldResult $parentResult) : \stdClass
     {
         if ($requestedFields === null) {
             throw new \Graphpinator\Exception\Resolver\SelectionOnComposite();
@@ -68,7 +68,7 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
                 : $innerResult->getResult()->getType()->resolve($field->getFields(), $innerResult);
         }
 
-        return $resolved;
+        return (object) $resolved;
     }
 
     final public function getMetaFields() : \Graphpinator\Field\ResolvableFieldSet

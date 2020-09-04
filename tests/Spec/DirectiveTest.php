@@ -13,7 +13,7 @@ final class DirectiveTest extends \PHPUnit\Framework\TestCase
                 \Infinityloop\Utils\Json::fromArray([
                     'query' => 'query queryName { field0 { field1 @skip(if: true) { name } } }',
                 ]),
-                \Infinityloop\Utils\Json::fromArray(['data' => ['field0' => []]]),
+                \Infinityloop\Utils\Json::fromArray(['data' => ['field0' => new \stdClass()]]),
             ],
             [
                 \Infinityloop\Utils\Json::fromArray([
@@ -31,25 +31,25 @@ final class DirectiveTest extends \PHPUnit\Framework\TestCase
                 \Infinityloop\Utils\Json::fromArray([
                     'query' => 'query queryName { field0 { field1 @include(if: false) { name } } }',
                 ]),
-                \Infinityloop\Utils\Json::fromArray(['data' => ['field0' => []]]),
+                \Infinityloop\Utils\Json::fromArray(['data' => ['field0' => new \stdClass()]]),
             ],
             [
                 \Infinityloop\Utils\Json::fromArray([
                     'query' => 'query queryName { field0 { field1 @include(if: false) @skip(if: false) { name } } }',
                 ]),
-                \Infinityloop\Utils\Json::fromArray(['data' => ['field0' => []]]),
+                \Infinityloop\Utils\Json::fromArray(['data' => ['field0' => new \stdClass()]]),
             ],
             [
                 \Infinityloop\Utils\Json::fromArray([
                     'query' => 'query queryName { field0 { field1 @include(if: true) @skip(if: true) { name } } }',
                 ]),
-                \Infinityloop\Utils\Json::fromArray(['data' => ['field0' => []]]),
+                \Infinityloop\Utils\Json::fromArray(['data' => ['field0' => new \stdClass()]]),
             ],
             [
                 \Infinityloop\Utils\Json::fromArray([
                     'query' => 'query queryName { field0 { field1 @include(if: false) @skip(if: true) { name } } }',
                 ]),
-                \Infinityloop\Utils\Json::fromArray(['data' => ['field0' => []]]),
+                \Infinityloop\Utils\Json::fromArray(['data' => ['field0' => new \stdClass()]]),
             ],
             [
                 \Infinityloop\Utils\Json::fromArray([
@@ -67,7 +67,7 @@ final class DirectiveTest extends \PHPUnit\Framework\TestCase
                 \Infinityloop\Utils\Json::fromArray([
                     'query' => 'query queryName { field0 { ... @include(if: false) { field1 { name } } } }',
                 ]),
-                \Infinityloop\Utils\Json::fromArray(['data' => ['field0' => []]]),
+                \Infinityloop\Utils\Json::fromArray(['data' => ['field0' => new \stdClass()]]),
             ],
             [
                 \Infinityloop\Utils\Json::fromArray([
@@ -83,7 +83,7 @@ final class DirectiveTest extends \PHPUnit\Framework\TestCase
                         field0 { ... namedFragment @include(if: false) } } fragment namedFragment on Abc { field1 { name } 
                     }',
                 ]),
-                \Infinityloop\Utils\Json::fromArray(['data' => ['field0' => []]]),
+                \Infinityloop\Utils\Json::fromArray(['data' => ['field0' => new \stdClass()]]),
             ],
             [
                 \Infinityloop\Utils\Json::fromArray([
@@ -105,7 +105,6 @@ final class DirectiveTest extends \PHPUnit\Framework\TestCase
         $result = $graphpinator->runQuery($request);
 
         self::assertSame($expected->toString(), \json_encode($result, \JSON_THROW_ON_ERROR, 512));
-        self::assertSame($expected['data'], \json_decode(\json_encode($result->getData()), true));
         self::assertNull($result->getErrors());
     }
 
