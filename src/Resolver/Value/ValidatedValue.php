@@ -56,18 +56,21 @@ abstract class ValidatedValue implements \JsonSerializable
 
         $isList = \array_key_first($this->value) === 0;
         $component = [];
-        $outputValue = $isList ?
-            '[' : '{';
+        $outputValue = $isList
+            ? '['
+            : '{';
 
         foreach ($this->value as $key => $value) {
-            $component[$key] = \is_int($key) ?
-                $value->printValue() : $key . ':' . $value->printValue();
+            $component[$key] = $isList
+                ? $value->printValue()
+                : $key . ':' . $value->printValue();
         }
 
         $outputValue .= \implode(',', $component);
 
-        $outputValue .= $isList ?
-            ']' : '}';
+        $outputValue .= $isList
+            ? ']'
+            : '}';
 
         return $outputValue;
     }
