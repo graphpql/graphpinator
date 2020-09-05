@@ -208,13 +208,13 @@ final class InputTest extends \PHPUnit\Framework\TestCase
                             } 
                         } 
                     }',
-                    'variables' => (object) ['var1' => (object) ['name' => 'bar', 'number' => (object) []]],
+                    'variables' => (object) ['var1' => (object) ['name' => 'bar', 'number' => []]],
                 ]),
                 \Infinityloop\Utils\Json::fromArray([
                     'data' => [
                         'field0' => [
                             'field1' => [
-                                'name' => 'name: foo; inner: ; name: bar; bool: ; name: bar; bool: ; name: bar; bool: ; ',
+                                'name' => 'name: foo; inner: null; innerList: []; innerNotNull: {name: bar; number: []; bool: null; }; ',
                             ],
                         ],
                     ],

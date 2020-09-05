@@ -54,7 +54,7 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
         $operationName = $request['operationName']
             ?? null;
         $variables = $request['variables']
-            ?? [];
+            ?? new \stdClass();
 
         $result = $resolver->resolve($normalizer->normalize($parser->parse()), $operationName, $variables);
 
@@ -97,6 +97,10 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
                     'query' => 'query queryName { fieldAbstract { } }',
                 ]),
                 \Graphpinator\Exception\Resolver\FieldResultAbstract::class,
+            ],
+            [
+                \Infinityloop\Utils\Json::fromString('{"query":"query queryName { field0 { field1 { name } } }"}', true),
+                \Graphpinator\Exception\Request\JsonEnabledAssoc::class,
             ],
             [
                 \Infinityloop\Utils\Json::fromArray([]),
