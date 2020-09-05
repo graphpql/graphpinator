@@ -202,19 +202,19 @@ final class TestSchema
                 return new \Graphpinator\Argument\ArgumentSet([
                     new \Graphpinator\Argument\Argument(
                         'name',
-                        \Graphpinator\Type\Container\Container::String()->notNull()
+                        \Graphpinator\Type\Container\Container::String()->notNull(),
                     ),
                     new \Graphpinator\Argument\Argument(
                         'inner',
-                        TestSchema::getInnerInput()
+                        TestSchema::getInnerInput(),
                     ),
                     new \Graphpinator\Argument\Argument(
                         'innerList',
-                        TestSchema::getInnerInput()->notNullList()
+                        TestSchema::getInnerInput()->notNullList(),
                     ),
                     new \Graphpinator\Argument\Argument(
                         'innerNotNull',
-                        TestSchema::getInnerInput()->notNull()
+                        TestSchema::getInnerInput()->notNull(),
                     ),
                 ]);
             }
