@@ -34,6 +34,21 @@ final class ListValue extends \Graphpinator\Resolver\Value\ValidatedValue implem
         return $return;
     }
 
+    public function printValue() : string
+    {
+        \assert(\is_array($this->value));
+
+        $component = [];
+
+        foreach ($this->value as $value) {
+            \assert($value instanceof ValidatedValue);
+
+            $component[] = $value->printValue();
+        }
+
+        return '[' . \implode(',', $component) . ']';
+    }
+
     public function current() : ValidatedValue
     {
         return \current($this->value);

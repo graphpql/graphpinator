@@ -44,6 +44,21 @@ final class InputValue extends \Graphpinator\Resolver\Value\ValidatedValue imple
         return $return;
     }
 
+    public function printValue() : string
+    {
+        \assert($this->value instanceof \stdClass);
+
+        $component = [];
+
+        foreach ($this->value as $key => $value) {
+            \assert($value instanceof ValidatedValue);
+
+            $component[$key] = $key . ':' . $value->printValue();
+        }
+
+        return '{' . \implode(',', $component) . '}';
+    }
+
     public function current() : ValidatedValue
     {
         return \current($this->value);
