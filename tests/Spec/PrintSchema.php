@@ -204,7 +204,10 @@ final class PrintSchema
             protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
             {
                 return new \Graphpinator\Argument\ArgumentSet([
-                    new \Graphpinator\Argument\Argument('name', \Graphpinator\Type\Container\Container::String()->notNull()),
+                    new \Graphpinator\Argument\Argument(
+                        'name',
+                        \Graphpinator\Type\Container\Container::String()->notNull()
+                    ),
                     (new \Graphpinator\Argument\Argument(
                         'number',
                         \Graphpinator\Type\Container\Container::Int()->notNullList(),
@@ -387,15 +390,12 @@ final class PrintSchema
         return new class extends \Graphpinator\Directive\Directive
         {
             protected const NAME = 'testDirective';
-            public static $count = 0;
 
             public function __construct()
             {
                 parent::__construct(
                     new \Graphpinator\Argument\ArgumentSet([]),
                     static function() {
-                        ++self::$count;
-
                         return \Graphpinator\Directive\DirectiveResult::NONE;
                     },
                     [\Graphpinator\Directive\DirectiveLocation::FIELD],

@@ -46,8 +46,6 @@ final class InputValue extends \Graphpinator\Resolver\Value\ValidatedValue imple
 
     public function printValue() : string
     {
-        \assert($this->value instanceof \stdClass);
-
         $component = [];
 
         foreach ($this->value as $key => $value) {

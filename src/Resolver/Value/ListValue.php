@@ -36,8 +36,6 @@ final class ListValue extends \Graphpinator\Resolver\Value\ValidatedValue implem
 
     public function printValue() : string
     {
-        \assert(\is_array($this->value));
-
         $component = [];
 
         foreach ($this->value as $value) {
