@@ -76,15 +76,13 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
                 \Infinityloop\Utils\Json::fromArray([
                     'query' => 'query queryName { field0 { field1 { nonExisting } } }',
                 ]),
-                //phpcs:ignore SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly.ReferencedGeneralException
-                \Exception::class,
+                \Graphpinator\Exception\Field\FieldNotDefined::class,
             ],
             [
                 \Infinityloop\Utils\Json::fromArray([
                     'query' => 'query queryName { field0 { field1 { name { nonExisting } } } }',
                 ]),
-                //phpcs:ignore SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly.ReferencedGeneralException
-                \Exception::class,
+                \Graphpinator\Exception\Resolver\SelectionOnLeaf::class,
             ],
             [
                 \Infinityloop\Utils\Json::fromArray([

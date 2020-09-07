@@ -18,7 +18,7 @@ abstract class InputType extends \Graphpinator\Type\Contract\ConcreteDefinition 
     final public function applyDefaults($value) : array
     {
         if (!\is_array($value)) {
-            throw new \Exception('Composite input type without fields specified.');
+            throw new \Graphpinator\Exception\Type\ExpectedInputTypeWithFields();
         }
 
         return self::merge($value, $this->getArguments()->getDefaults());

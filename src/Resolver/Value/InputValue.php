@@ -25,7 +25,7 @@ final class InputValue extends \Graphpinator\Resolver\Value\ValidatedValue imple
                 continue;
             }
 
-            throw new \Exception('Unknown field for input value');
+            throw new \Graphpinator\Exception\Resolver\UnknownFieldForInputValue();
         }
 
         parent::__construct($value, $type);
@@ -81,11 +81,11 @@ final class InputValue extends \Graphpinator\Resolver\Value\ValidatedValue imple
 
     public function offsetSet($offset, $value) : void
     {
-        throw new \Exception();
+        throw new \Graphpinator\Exception\Resolver\InputValueIsReadOnly();
     }
 
     public function offsetUnset($offset) : void
     {
-        throw new \Exception();
+        throw new \Graphpinator\Exception\Resolver\InputValueIsReadOnly();
     }
 }

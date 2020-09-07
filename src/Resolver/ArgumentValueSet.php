@@ -50,13 +50,17 @@ final class ArgumentValueSet extends \Infinityloop\Utils\ObjectSet
 
     public function offsetGet($offset) : \Graphpinator\Resolver\Value\ValidatedValue
     {
-        return parent::offsetGet($offset);
+        if (!$this->offsetExists($offset)) {
+            throw new \Graphpinator\Exception\Resolver\ArgumentValueNotDefined();
+        }
+
+        return $this->array[$offset];
     }
 
     private function appendUnique($offset, $value) : void
     {
         if ($this->offsetExists($offset)) {
-            throw new \Exception('Duplicated item.');
+            throw new \Graphpinator\Exception\Resolver\DuplicateItem();
         }
 
         $this->array[$offset] = $value;

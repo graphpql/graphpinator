@@ -24,7 +24,11 @@ final class DirectiveSet extends \Infinityloop\Utils\ObjectSet
 
     public function offsetGet($offset) : Directive
     {
-        return parent::offsetGet($offset);
+        if (!$this->offsetExists($offset)) {
+            throw new \Graphpinator\Exception\Parser\DirectiveNotDefined();
+        }
+
+        return $this->array[$offset];
     }
 
     public function getLocation() : string

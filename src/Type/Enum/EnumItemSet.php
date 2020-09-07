@@ -15,7 +15,11 @@ final class EnumItemSet extends \Infinityloop\Utils\ObjectSet implements \Graphp
 
     public function offsetGet($offset) : EnumItem
     {
-        return parent::offsetGet($offset);
+        if (!$this->offsetExists($offset)) {
+            throw new \Graphpinator\Exception\Type\EnumItemNotDefined();
+        }
+
+        return $this->array[$offset];
     }
     
     public function getArray() : array

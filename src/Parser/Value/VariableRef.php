@@ -17,7 +17,7 @@ final class VariableRef implements \Graphpinator\Parser\Value\Value
 
     public function getRawValue() : void
     {
-        throw new \Exception('Invalid state.');
+        throw new \Graphpinator\Exception\Parser\InvalidState();
     }
 
     public function applyVariables(\Graphpinator\Resolver\VariableValueSet $variables) : Value
@@ -28,6 +28,6 @@ final class VariableRef implements \Graphpinator\Parser\Value\Value
             return new \Graphpinator\Parser\Value\Literal($value->getRawValue());
         }
 
-        throw new \Exception('Unknown variable.');
+        throw new \Graphpinator\Exception\Parser\UnknownVariable();
     }
 }

@@ -23,6 +23,10 @@ final class VariableValueSet extends \Infinityloop\Utils\ObjectSet
 
     public function offsetGet($offset) : \Graphpinator\Resolver\Value\ValidatedValue
     {
-        return parent::offsetGet($offset);
+        if (!$this->offsetExists($offset)) {
+            throw new \Graphpinator\Exception\Resolver\VariableValueNotDefined();
+        }
+
+        return $this->array[$offset];
     }
 }

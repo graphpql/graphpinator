@@ -9,7 +9,7 @@ final class NullValue extends \Graphpinator\Resolver\Value\ValidatedValue
     public function __construct(\Graphpinator\Type\Contract\Definition $type)
     {
         if ($type instanceof \Graphpinator\Type\NotNullType) {
-            throw new \Exception();
+            throw new \Graphpinator\Exception\Resolver\ExpectedNullType();
         }
 
         parent::__construct(null, $type);

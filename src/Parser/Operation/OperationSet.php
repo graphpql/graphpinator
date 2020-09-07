@@ -15,7 +15,11 @@ final class OperationSet extends \Infinityloop\Utils\ObjectSet
 
     public function offsetGet($offset) : \Graphpinator\Parser\Operation\Operation
     {
-        return parent::offsetGet($offset);
+        if (!$this->offsetExists($offset)) {
+            throw new \Graphpinator\Exception\Parser\OperationNotDefined();
+        }
+
+        return $this->array[$offset];
     }
 
     public function normalize(

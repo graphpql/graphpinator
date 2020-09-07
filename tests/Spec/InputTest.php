@@ -274,22 +274,26 @@ final class InputTest extends \PHPUnit\Framework\TestCase
                 \Infinityloop\Utils\Json::fromArray([
                     'query' => 'query queryName ($var1: Int = "123") { field0 { field1 { name } } }',
                 ]),
+                \Graphpinator\Exception\Type\InvalidResolvedValue::class,
             ],
             [
                 \Infinityloop\Utils\Json::fromArray([
                     'query' => 'query queryName ($var1: Int = 123) { field0 { field1 { name } } }',
                     'variables' => ['var1' => '123'],
                 ]),
+                \Graphpinator\Exception\Type\InvalidResolvedValue::class,
             ],
             [
                 \Infinityloop\Utils\Json::fromArray([
                     'query' => 'query queryName ($var1: Int!) { field0 { field1 { name } } }',
                 ]),
+                \Graphpinator\Exception\Type\ExpectedNotNullValue::class,
             ],
             [
                 \Infinityloop\Utils\Json::fromArray([
                     'query' => 'query queryName { field0 { field1(arg1: $varNonExistent) { name } } }',
                 ]),
+                \Graphpinator\Exception\Parser\UnknownVariable::class,
             ],
         ];
     }
@@ -297,11 +301,11 @@ final class InputTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider invalidDataProvider
      * @param \Infinityloop\Utils\Json $request
+     * @param string $exception
      */
-    public function testInvalid(\Infinityloop\Utils\Json $request) : void
+    public function testInvalid(\Infinityloop\Utils\Json $request, string $exception) : void
     {
-        //phpcs:ignore SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly.ReferencedGeneralException
-        $this->expectException(\Exception::class);
+        $this->expectException($exception);
 
         $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
         $graphpinator->runQuery($request);

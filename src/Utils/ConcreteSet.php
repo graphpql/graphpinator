@@ -18,7 +18,11 @@ final class ConcreteSet extends \Infinityloop\Utils\ObjectSet
 
     public function offsetGet($offset) : \Graphpinator\Type\Contract\ConcreteDefinition
     {
-        return parent::offsetGet($offset);
+        if (!$this->offsetExists($offset)) {
+            throw new \Graphpinator\Exception\Utils\ConcreteDefinitionNotDefined();
+        }
+
+        return $this->array[$offset];
     }
 
     protected function getKey(object $object) : string

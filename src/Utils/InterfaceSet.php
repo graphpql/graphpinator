@@ -18,7 +18,11 @@ final class InterfaceSet extends \Infinityloop\Utils\ObjectSet
 
     public function offsetGet($offset) : \Graphpinator\Type\InterfaceType
     {
-        return parent::offsetGet($offset);
+        if (!$this->offsetExists($offset)) {
+            throw new \Graphpinator\Exception\Utils\InterfaceTypeNotDefined();
+        }
+
+        return $this->array[$offset];
     }
 
     protected function getKey(object $object) : string

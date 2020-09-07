@@ -15,7 +15,11 @@ final class FragmentSet extends \Infinityloop\Utils\ObjectSet
 
     public function offsetGet($offset) : Fragment
     {
-        return parent::offsetGet($offset);
+        if (!$this->offsetExists($offset)) {
+            throw new \Graphpinator\Exception\Parser\FragmentNotDefined();
+        }
+
+        return $this->array[$offset];
     }
 
     protected function getKey(object $object) : string
