@@ -16,7 +16,6 @@ final class Json implements \Countable, \IteratorAggregate, \ArrayAccess, \Seria
     {
         $this->string = $json;
         $this->data = $data;
-        $this->valid = false;
     }
 
     public static function fromString(string $json) : self
@@ -36,7 +35,7 @@ final class Json implements \Countable, \IteratorAggregate, \ArrayAccess, \Seria
         return $this->string;
     }
 
-    public function toArray() : \stdClass
+    public function toObject() : \stdClass
     {
         $this->loadObject();
 
@@ -55,7 +54,7 @@ final class Json implements \Countable, \IteratorAggregate, \ArrayAccess, \Seria
     {
         $this->loadObject();
 
-        return \count($this->data);
+        return \count((array) $this->data);
     }
 
     public function getIterator() : \Iterator
