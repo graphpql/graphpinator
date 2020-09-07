@@ -49,6 +49,28 @@ abstract class ValidatedValue implements \JsonSerializable
 
     public function printValue() : string
     {
-        return \json_encode($this->value, \JSON_THROW_ON_ERROR);
+        if (\is_scalar($this->value) || $this->value === null) {
+            return \json_encode($this->value, \JSON_THROW_ON_ERROR);
+        }
+
+        $isList = \array_key_first($this->value) === 0;
+        $component = [];
+        $outputValue = $isList
+            ? '['
+            : '{';
+
+        foreach ($this->value as $key => $value) {
+            $component[$key] = $isList
+                ? $value->printValue()
+                : $key . ':' . $value->printValue();
+        }
+
+        $outputValue .= \implode(',', $component);
+
+        $outputValue .= $isList
+            ? ']'
+            : '}';
+
+        return $outputValue;
     }
 }
