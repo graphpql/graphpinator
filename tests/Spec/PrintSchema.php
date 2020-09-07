@@ -206,7 +206,7 @@ final class PrintSchema
                 return new \Graphpinator\Argument\ArgumentSet([
                     new \Graphpinator\Argument\Argument(
                         'name',
-                        \Graphpinator\Type\Container\Container::String()->notNull()
+                        \Graphpinator\Type\Container\Container::String()->notNull(),
                     ),
                     (new \Graphpinator\Argument\Argument(
                         'number',
