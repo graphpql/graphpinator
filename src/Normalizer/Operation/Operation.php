@@ -46,7 +46,7 @@ final class Operation
         return $this->name;
     }
 
-    public function execute(array $variables) : \Graphpinator\Resolver\OperationResult
+    public function execute(\stdClass $variables) : \Graphpinator\Resolver\OperationResult
     {
         $data = $this->operation->resolve(
             $this->children->applyVariables(new \Graphpinator\Resolver\VariableValueSet($this->variables, $variables)),

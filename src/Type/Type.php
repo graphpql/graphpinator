@@ -34,17 +34,21 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
         return parent::isInstanceOf($type);
     }
 
-    final public function resolve(?\Graphpinator\Normalizer\FieldSet $requestedFields, \Graphpinator\Resolver\FieldResult $parentResult) : array
+    final public function resolve(?\Graphpinator\Normalizer\FieldSet $requestedFields, \Graphpinator\Resolver\FieldResult $parentResult) : \stdClass
     {
         if ($requestedFields === null) {
             throw new \Graphpinator\Exception\Resolver\SelectionOnComposite();
         }
 
         $resolved = [];
-        $this->resolveFieldSet($resolved, $requestedFields, $parentResult);
 
-        foreach ($requestedFields->getFragments() as $fragmentSpread) {
-            foreach ($fragmentSpread->getDirectives() as $directive) {
+        foreach ($requestedFields as $field) {
+            if ($field->getTypeCondition() instanceof \Graphpinator\Type\Contract\NamedDefinition &&
+                !$parentResult->getResult()->getType()->isInstanceOf($field->getTypeCondition())) {
+                continue;
+            }
+
+            foreach ($field->getDirectives() as $directive) {
                 $directiveDef = $directive->getDirective();
                 $arguments = new \Graphpinator\Resolver\ArgumentValueSet($directive->getArguments(), $directiveDef->getArguments());
                 $directiveResult = $directiveDef->resolve($arguments);
@@ -54,15 +58,17 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
                 }
             }
 
-            if ($fragmentSpread->getTypeCondition() instanceof \Graphpinator\Type\Contract\NamedDefinition &&
-                !$parentResult->getResult()->getType()->isInstanceOf($fragmentSpread->getTypeCondition())) {
-                continue;
-            }
+            $fieldDef = $this->getMetaFields()[$field->getName()]
+                ?? $this->getFields()[$field->getName()];
+            $arguments = new \Graphpinator\Resolver\ArgumentValueSet($field->getArguments(), $fieldDef->getArguments());
+            $innerResult = $fieldDef->resolve($parentResult, $arguments);
 
-            $this->resolveFieldSet($resolved, $fragmentSpread->getFields(), $parentResult);
+            $resolved[$field->getAlias()] = $innerResult->getResult() instanceof \Graphpinator\Resolver\Value\NullValue
+                ? $innerResult->getResult()
+                : $innerResult->getResult()->getType()->resolve($field->getFields(), $innerResult);
         }
 
-        return $resolved;
+        return (object) $resolved;
     }
 
     final public function getMetaFields() : \Graphpinator\Field\ResolvableFieldSet
@@ -105,37 +111,5 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
                 },
             ),
         ]);
-    }
-
-    private function resolveFieldSet(
-        array &$result,
-        \Graphpinator\Normalizer\FieldSet $fieldSet,
-        \Graphpinator\Resolver\FieldResult $parentResult
-    ) : void
-    {
-        foreach ($fieldSet as $field) {
-            if (\array_key_exists($field->getAlias(), $result)) {
-                throw new \Graphpinator\Exception\Resolver\DuplicateField();
-            }
-
-            foreach ($field->getDirectives() as $directive) {
-                $directiveDef = $directive->getDirective();
-                $arguments = new \Graphpinator\Resolver\ArgumentValueSet($directive->getArguments(), $directiveDef->getArguments());
-                $directiveResult = $directiveDef->resolve($arguments);
-
-                if ($directiveResult === \Graphpinator\Directive\DirectiveResult::SKIP) {
-                    return;
-                }
-            }
-
-            $fieldDef = $this->getMetaFields()[$field->getName()]
-                ?? $this->getFields()[$field->getName()];
-            $arguments = new \Graphpinator\Resolver\ArgumentValueSet($field->getArguments(), $fieldDef->getArguments());
-            $innerResult = $fieldDef->resolve($parentResult, $arguments);
-
-            $result[$field->getAlias()] = $innerResult->getResult() instanceof \Graphpinator\Resolver\Value\NullValue
-                ? $innerResult->getResult()
-                : $innerResult->getResult()->getType()->resolve($field->getFields(), $innerResult);
-        }
     }
 }

@@ -21,6 +21,11 @@ final class FragmentSpread
         $this->children = $fields;
         $this->directives = $directives;
         $this->typeCond = $typeCond;
+
+        foreach ($this->children as $field) {
+            $field->getDirectives()->merge($directives);
+            $field->setTypeCondition($typeCond);
+        }
     }
 
     public function getFields() : \Graphpinator\Normalizer\FieldSet
@@ -36,14 +41,5 @@ final class FragmentSpread
     public function getTypeCondition() : ?\Graphpinator\Type\Contract\NamedDefinition
     {
         return $this->typeCond;
-    }
-
-    public function applyVariables(\Graphpinator\Resolver\VariableValueSet $variables) : self
-    {
-        return new self(
-            $this->children->applyVariables($variables),
-            $this->directives->applyVariables($variables),
-            $this->typeCond,
-        );
     }
 }

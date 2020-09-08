@@ -9,31 +9,13 @@ final class DirectiveSet extends \Infinityloop\Utils\ObjectSet
     protected const INNER_CLASS = Directive::class;
 
     private string $location;
+    private array $directiveTypes = [];
 
     public function __construct(array $data, string $location)
     {
-        parent::__construct($data);
-
         $this->location = $location;
-        $directiveTypes = [];
 
-        foreach ($this->array as $object) {
-            $directive = $object->getDirective();
-
-            if (!\in_array($location, $directive->getLocations(), true)) {
-                throw new \Graphpinator\Exception\Normalizer\MisplacedDirective();
-            }
-
-            if ($directive->isRepeatable()) {
-                continue;
-            }
-
-            if (\array_key_exists($directive->getName(), $directiveTypes)) {
-                throw new \Graphpinator\Exception\Normalizer\DuplicatedDirective();
-            }
-
-            $directiveTypes[$directive->getName()] = true;
-        }
+        parent::__construct($data);
     }
 
     public function current() : Directive
@@ -64,5 +46,26 @@ final class DirectiveSet extends \Infinityloop\Utils\ObjectSet
         }
 
         return new self($fields, $this->location);
+    }
+
+    protected function getKey(object $object) : ?string
+    {
+        \assert($object instanceof Directive);
+
+        $directive = $object->getDirective();
+
+        if (!\in_array($this->location, $directive->getLocations(), true)) {
+            throw new \Graphpinator\Exception\Normalizer\MisplacedDirective();
+        }
+
+        if (!$directive->isRepeatable()) {
+            if (\array_key_exists($directive->getName(), $this->directiveTypes)) {
+                throw new \Graphpinator\Exception\Normalizer\DuplicatedDirective();
+            }
+
+            $this->directiveTypes[$directive->getName()] = true;
+        }
+
+        return parent::getKey($object);
     }
 }

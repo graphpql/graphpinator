@@ -10,10 +10,10 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
     {
         return [
             [
-                \Infinityloop\Utils\Json::fromArray([
+                \Graphpinator\Json::fromObject((object) [
                     'query' => 'query queryName ($ var1: Int) { }',
                 ]),
-                \Infinityloop\Utils\Json::fromArray([
+                \Graphpinator\Json::fromObject((object) [
                     'errors' => [
                         [
                             'message' => \Graphpinator\Exception\Tokenizer\MissingVariableName::MESSAGE,
@@ -23,32 +23,32 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
                 ]),
             ],
             [
-                \Infinityloop\Utils\Json::fromArray([
+                \Graphpinator\Json::fromObject((object) [
                     'query' => 'query queryName { field0 { ',
                 ]),
-                \Infinityloop\Utils\Json::fromArray(['errors' => [['message' => \Graphpinator\Exception\Parser\UnexpectedEnd::MESSAGE]]]),
+                \Graphpinator\Json::fromObject((object) ['errors' => [['message' => \Graphpinator\Exception\Parser\UnexpectedEnd::MESSAGE]]]),
             ],
             [
-                \Infinityloop\Utils\Json::fromArray([
+                \Graphpinator\Json::fromObject((object) [
                     'query' => 'query queryName { field0 @invalidDirective() { field1 { name } } }',
                 ]),
-                \Infinityloop\Utils\Json::fromArray(['errors' => [['message' => 'Server responded with unknown error.']]]),
+                \Graphpinator\Json::fromObject((object) ['errors' => [['message' => 'Server responded with unknown error.']]]),
             ],
             [
-                \Infinityloop\Utils\Json::fromArray([
+                \Graphpinator\Json::fromObject((object) [
                     'query' => 'query queryName { fieldThrow { field1 { name } } }',
                 ]),
-                \Infinityloop\Utils\Json::fromArray(['errors' => [['message' => 'Server responded with unknown error.']]]),
+                \Graphpinator\Json::fromObject((object) ['errors' => [['message' => 'Server responded with unknown error.']]]),
             ],
         ];
     }
 
     /**
      * @dataProvider simpleDataProvider
-     * @param \Infinityloop\Utils\Json $request
-     * @param \Infinityloop\Utils\Json $expected
+     * @param \Graphpinator\Json $request
+     * @param \Graphpinator\Json $expected
      */
-    public function testSimple(\Infinityloop\Utils\Json $request, \Infinityloop\Utils\Json $expected) : void
+    public function testSimple(\Graphpinator\Json $request, \Graphpinator\Json $expected) : void
     {
         $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema(), true);
         $result = $graphpinator->runQuery($request);

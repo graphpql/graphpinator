@@ -21,14 +21,14 @@ final class Graphpinator
         $this->catchExceptions = $catchExceptions;
     }
 
-    public function runQuery(\Infinityloop\Utils\Json $request) : \Graphpinator\Resolver\OperationResult
+    public function runQuery(\Graphpinator\Json $request) : \Graphpinator\Resolver\OperationResult
     {
         try {
             $this->validateRequest($request);
 
             $query = $request[self::QUERY];
             $variables = $request[self::VARIABLES]
-                ?? [];
+                ?? new \stdClass();
             $operationName = $request[self::OPERATION_NAME]
                 ?? null;
 
@@ -48,7 +48,7 @@ final class Graphpinator
         }
     }
 
-    private function validateRequest(\Infinityloop\Utils\Json $request) : void
+    private function validateRequest(\Graphpinator\Json $request) : void
     {
         if (!isset($request[self::QUERY])) {
             throw new \Graphpinator\Exception\Request\QueryMissing();
@@ -58,8 +58,8 @@ final class Graphpinator
             throw new \Graphpinator\Exception\Request\QueryNotString();
         }
 
-        if (isset($request[self::VARIABLES]) && !\is_array($request[self::VARIABLES])) {
-            throw new \Graphpinator\Exception\Request\VariablesNotArray();
+        if (isset($request[self::VARIABLES]) && !$request[self::VARIABLES] instanceof \stdClass) {
+            throw new \Graphpinator\Exception\Request\VariablesNotObject();
         }
 
         if (isset($request[self::OPERATION_NAME]) && !\is_string($request[self::OPERATION_NAME])) {
@@ -67,7 +67,7 @@ final class Graphpinator
         }
 
         foreach ($request as $key => $value) {
-            if (!\in_array($key, [self::QUERY, self::VARIABLES, self::OPERATION_NAME])) {
+            if (!\in_array($key, [self::QUERY, self::VARIABLES, self::OPERATION_NAME], true)) {
                 throw new \Graphpinator\Exception\Request\UnknownKey();
             }
         }

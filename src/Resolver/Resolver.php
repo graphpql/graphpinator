@@ -11,7 +11,7 @@ final class Resolver
     public function resolve(
         \Graphpinator\Normalizer\Operation\OperationSet $operationSet,
         ?string $operationName,
-        array $variables
+        \stdClass $variables
     ) : \Graphpinator\Resolver\OperationResult
     {
         return $operationSet->execute($operationName, $variables);

@@ -393,10 +393,10 @@ final class ParserTest extends \PHPUnit\Framework\TestCase
             $operation->getVariables()->offsetGet('varName')->getType(),
         );
         self::assertSame('InputType', $operation->getVariables()->offsetGet('varName')->getType()->getName());
-        self::assertSame(
-            [
+        self::assertEquals(
+            (object) [
                 'fieldName' => null,
-                'fieldName2' => [],
+                'fieldName2' => (object) [],
             ],
             $operation->getVariables()->offsetGet('varName')->getDefault()->getRawValue(),
         );

@@ -11,4 +11,9 @@ final class LeafValue extends \Graphpinator\Resolver\Value\ValidatedValue
         $type->validateValue($value);
         parent::__construct($value, $type);
     }
+
+    public function printValue() : string
+    {
+        return \json_encode($this->value, \JSON_THROW_ON_ERROR);
+    }
 }

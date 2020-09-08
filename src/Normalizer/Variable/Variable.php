@@ -40,12 +40,12 @@ final class Variable
         return $this->default;
     }
 
-    public function createValue(array $variables) : \Graphpinator\Resolver\Value\ValidatedValue
+    public function createValue(\stdClass $variables) : \Graphpinator\Resolver\Value\ValidatedValue
     {
         $value = null;
 
-        if (isset($variables[$this->name])) {
-            $value = $variables[$this->name];
+        if (isset($variables->{$this->name})) {
+            $value = $variables->{$this->name};
         } elseif ($this->default instanceof \Graphpinator\Resolver\Value\ValidatedValue) {
             return $this->default;
         }

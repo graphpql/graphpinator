@@ -25,4 +25,10 @@ final class Literal implements \Graphpinator\Parser\Value\Value
     {
         return $this;
     }
+
+    public function isSame(Value $compare) : bool
+    {
+        return $compare instanceof self
+            && $this->value === $compare->getRawValue();
+    }
 }

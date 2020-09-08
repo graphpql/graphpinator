@@ -17,8 +17,7 @@ abstract class ValidatedValue implements \JsonSerializable
         $this->type = $type;
     }
 
-    //@phpcs:ignore SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingAnyTypeHint
-    public static function create($rawValue, \Graphpinator\Type\Contract\Definition $type)
+    public static function create($rawValue, \Graphpinator\Type\Contract\Definition $type) : self
     {
         if ($rawValue === null) {
             return new \Graphpinator\Resolver\Value\NullValue($type);
@@ -30,6 +29,8 @@ abstract class ValidatedValue implements \JsonSerializable
 
         return new static($rawValue, $type);
     }
+
+    abstract public function printValue() : string;
 
     public function getType() : \Graphpinator\Type\Contract\Definition
     {
@@ -46,10 +47,5 @@ abstract class ValidatedValue implements \JsonSerializable
     public function jsonSerialize()
     {
         return $this->value;
-    }
-
-    public function printValue() : string
-    {
-        return \json_encode($this->value, \JSON_THROW_ON_ERROR);
     }
 }

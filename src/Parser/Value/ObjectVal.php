@@ -8,21 +8,26 @@ final class ObjectVal implements \Graphpinator\Parser\Value\Value
 {
     use \Nette\SmartObject;
 
-    private array $value;
+    private \stdClass $value;
 
-    public function __construct(array $value)
+    public function __construct(\stdClass $value)
     {
         $this->value = $value;
     }
 
-    public function getRawValue() : array
+    public function getValue() : \stdClass
     {
-        $return = [];
+        return $this->value;
+    }
+
+    public function getRawValue() : \stdClass
+    {
+        $return = new \stdClass();
 
         foreach ($this->value as $key => $value) {
             \assert($value instanceof Value);
 
-            $return[$key] = $value->getRawValue();
+            $return->{$key} = $value->getRawValue();
         }
 
         return $return;
@@ -30,14 +35,38 @@ final class ObjectVal implements \Graphpinator\Parser\Value\Value
 
     public function applyVariables(\Graphpinator\Resolver\VariableValueSet $variables) : Value
     {
-        $return = [];
+        $return = new \stdClass();
 
         foreach ($this->value as $key => $value) {
             \assert($value instanceof Value);
 
-            $return[$key] = $value->applyVariables($variables);
+            $return->{$key} = $value->applyVariables($variables);
         }
 
         return new self($return);
+    }
+
+    public function isSame(Value $compare) : bool
+    {
+        if (!$compare instanceof self) {
+            return false;
+        }
+
+        $secondObject = $compare->getValue();
+
+        if (\count((array) $secondObject) !== \count((array) $this->value)) {
+            return false;
+        }
+
+        foreach ($this->value as $key => $value) {
+            \assert($value instanceof Value);
+
+            if (!\property_exists($secondObject, $key) ||
+                !$value->isSame($secondObject->{$key})) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

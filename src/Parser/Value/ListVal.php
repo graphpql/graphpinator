@@ -15,6 +15,11 @@ final class ListVal implements \Graphpinator\Parser\Value\Value
         $this->value = $value;
     }
 
+    public function getValue() : array
+    {
+        return $this->value;
+    }
+
     public function getRawValue() : array
     {
         $return = [];
@@ -39,5 +44,28 @@ final class ListVal implements \Graphpinator\Parser\Value\Value
         }
 
         return new self($return);
+    }
+
+    public function isSame(Value $compare) : bool
+    {
+        if (!$compare instanceof self) {
+            return false;
+        }
+
+        $secondArray = $compare->getValue();
+
+        if (\count($secondArray) !== \count($this->value)) {
+            return false;
+        }
+
+        foreach ($this->value as $key => $value) {
+            \assert($value instanceof Value);
+
+            if (!$value->isSame($secondArray[$key])) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

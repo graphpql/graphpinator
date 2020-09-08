@@ -10,4 +10,6 @@ interface Value
     public function getRawValue();
 
     public function applyVariables(\Graphpinator\Resolver\VariableValueSet $variables) : self;
+
+    public function isSame(Value $compare) : bool;
 }

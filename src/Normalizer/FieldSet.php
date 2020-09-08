@@ -8,15 +8,7 @@ final class FieldSet extends \Infinityloop\Utils\ObjectSet
 {
     protected const INNER_CLASS = Field::class;
 
-    private \Graphpinator\Normalizer\FragmentSpread\FragmentSpreadSet $fragments;
-
-    public function __construct(array $fields, ?\Graphpinator\Normalizer\FragmentSpread\FragmentSpreadSet $fragments = null)
-    {
-        parent::__construct($fields);
-
-        $this->fragments = $fragments
-            ?? new \Graphpinator\Normalizer\FragmentSpread\FragmentSpreadSet([]);
-    }
+    protected array $fieldNames = [];
 
     public function current() : Field
     {
@@ -32,11 +24,6 @@ final class FieldSet extends \Infinityloop\Utils\ObjectSet
         return $this->array[$offset];
     }
 
-    public function getFragments() : \Graphpinator\Normalizer\FragmentSpread\FragmentSpreadSet
-    {
-        return $this->fragments;
-    }
-
     public function applyVariables(\Graphpinator\Resolver\VariableValueSet $variables) : self
     {
         $fields = [];
@@ -45,14 +32,46 @@ final class FieldSet extends \Infinityloop\Utils\ObjectSet
             $fields[] = $field->applyVariables($variables);
         }
 
-        return new self(
-            $fields,
-            $this->fragments->applyVariables($variables),
-        );
+        return new self($fields);
     }
 
-    protected function getKey(object $object) : string
+    public function mergeFieldSet(\Graphpinator\Normalizer\FieldSet $fieldSet) : void
     {
-        return $object->getName();
+        foreach ($fieldSet as $field) {
+            if (!\array_key_exists($field->getAlias(), $this->fieldNames)) {
+                $this->offsetSet(null, $field);
+
+                continue;
+            }
+
+            $conflicts = $this->fieldNames[$field->getAlias()];
+
+            foreach ($conflicts as $conflict) {
+                \assert($conflict instanceof Field);
+
+                if ($conflict->getTypeCondition() === null ||
+                    $field->getTypeCondition() === null ||
+                    $conflict->getTypeCondition() === $field->getTypeCondition()) {
+                    $conflict->mergeField($field);
+
+                    continue 2;
+                }
+            }
+
+            $this->offsetSet(null, $field);
+        }
+    }
+
+    protected function getKey(object $object) : ?string
+    {
+        \assert($object instanceof Field);
+
+        if (!\array_key_exists($object->getAlias(), $this->fieldNames)) {
+            $this->fieldNames[$object->getAlias()] = [];
+        }
+
+        $this->fieldNames[$object->getAlias()][] = $object;
+
+        return parent::getKey($object);
     }
 }

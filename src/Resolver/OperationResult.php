@@ -8,16 +8,16 @@ final class OperationResult implements \JsonSerializable
 {
     use \Nette\SmartObject;
 
-    private ?array $data;
+    private ?\stdClass $data;
     private ?array $errors;
 
-    public function __construct(?array $data = null, ?array $errors = null)
+    public function __construct(?\stdClass $data = null, ?array $errors = null)
     {
         $this->data = $data;
         $this->errors = $errors;
     }
 
-    public function getData() : ?array
+    public function getData() : ?\stdClass
     {
         return $this->data;
     }
@@ -32,7 +32,7 @@ final class OperationResult implements \JsonSerializable
     {
         $return = [];
 
-        if (\is_array($this->data)) {
+        if ($this->data instanceof \stdClass) {
             $return['data'] = $this->data;
         }
 

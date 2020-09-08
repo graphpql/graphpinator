@@ -10,26 +10,26 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
     {
         return [
             [
-                \Infinityloop\Utils\Json::fromArray([
+                \Graphpinator\Json::fromObject((object) [
                     'query' => 'query queryName { field0 { field1 { name } } }',
                 ]),
-                \Infinityloop\Utils\Json::fromArray(['data' => ['field0' => ['field1' => ['name' => 'Test 123']]]]),
+                \Graphpinator\Json::fromObject((object) ['data' => ['field0' => ['field1' => ['name' => 'Test 123']]]]),
             ],
             [
-                \Infinityloop\Utils\Json::fromArray([
+                \Graphpinator\Json::fromObject((object) [
                     'query' => 'query queryName { aliasName: field0 { field1 { name } } }',
                 ]),
-                \Infinityloop\Utils\Json::fromArray(['data' => ['aliasName' => ['field1' => ['name' => 'Test 123']]]]),
+                \Graphpinator\Json::fromObject((object) ['data' => ['aliasName' => ['field1' => ['name' => 'Test 123']]]]),
             ],
         ];
     }
 
     /**
      * @dataProvider simpleDataProvider
-     * @param \Infinityloop\Utils\Json $request
-     * @param \Infinityloop\Utils\Json $expected
+     * @param \Graphpinator\Json $request
+     * @param \Graphpinator\Json $expected
      */
-    public function testSimple(\Infinityloop\Utils\Json $request, \Infinityloop\Utils\Json $expected) : void
+    public function testSimple(\Graphpinator\Json $request, \Graphpinator\Json $expected) : void
     {
         $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
         $result = $graphpinator->runQuery($request);
@@ -41,10 +41,10 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider simpleDataProvider
-     * @param \Infinityloop\Utils\Json $request
-     * @param \Infinityloop\Utils\Json $expected
+     * @param \Graphpinator\Json $request
+     * @param \Graphpinator\Json $expected
      */
-    public function testComponents(\Infinityloop\Utils\Json $request, \Infinityloop\Utils\Json $expected) : void
+    public function testComponents(\Graphpinator\Json $request, \Graphpinator\Json $expected) : void
     {
         $source = new \Graphpinator\Source\StringSource($request['query']);
         $parser = new \Graphpinator\Parser\Parser($source);
@@ -54,7 +54,7 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
         $operationName = $request['operationName']
             ?? null;
         $variables = $request['variables']
-            ?? [];
+            ?? new \stdClass();
 
         $result = $resolver->resolve($normalizer->normalize($parser->parse()), $operationName, $variables);
 
@@ -67,61 +67,61 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
     {
         return [
             [
-                \Infinityloop\Utils\Json::fromArray([
+                \Graphpinator\Json::fromObject((object) [
                     'query' => 'query queryName { field0 { field1 } }',
                 ]),
                 \Graphpinator\Exception\Resolver\SelectionOnComposite::class,
             ],
             [
-                \Infinityloop\Utils\Json::fromArray([
+                \Graphpinator\Json::fromObject((object) [
                     'query' => 'query queryName { field0 { field1 { nonExisting } } }',
                 ]),
                 \Graphpinator\Exception\Field\FieldNotDefined::class,
             ],
             [
-                \Infinityloop\Utils\Json::fromArray([
+                \Graphpinator\Json::fromObject((object) [
                     'query' => 'query queryName { field0 { field1 { name { nonExisting } } } }',
                 ]),
                 \Graphpinator\Exception\Resolver\SelectionOnLeaf::class,
             ],
             [
-                \Infinityloop\Utils\Json::fromArray([
+                \Graphpinator\Json::fromObject((object) [
                     'query' => 'query queryName { fieldInvalidType { } }',
                 ]),
                 \Graphpinator\Exception\Resolver\FieldResultTypeMismatch::class,
             ],
             [
-                \Infinityloop\Utils\Json::fromArray([
+                \Graphpinator\Json::fromObject((object) [
                     'query' => 'query queryName { fieldAbstract { } }',
                 ]),
                 \Graphpinator\Exception\Resolver\FieldResultAbstract::class,
             ],
             [
-                \Infinityloop\Utils\Json::fromArray([]),
+                \Graphpinator\Json::fromObject((object) []),
                 \Graphpinator\Exception\Request\QueryMissing::class,
             ],
             [
-                \Infinityloop\Utils\Json::fromArray([
+                \Graphpinator\Json::fromObject((object) [
                     'query' => 123,
                 ]),
                 \Graphpinator\Exception\Request\QueryNotString::class,
             ],
             [
-                \Infinityloop\Utils\Json::fromArray([
+                \Graphpinator\Json::fromObject((object) [
                     'query' => '',
                     'variables' => 'abc',
                 ]),
-                \Graphpinator\Exception\Request\VariablesNotArray::class,
+                \Graphpinator\Exception\Request\VariablesNotObject::class,
             ],
             [
-                \Infinityloop\Utils\Json::fromArray([
+                \Graphpinator\Json::fromObject((object) [
                     'query' => '',
                     'operationName' => 123,
                 ]),
                 \Graphpinator\Exception\Request\OperationNameNotString::class,
             ],
             [
-                \Infinityloop\Utils\Json::fromArray([
+                \Graphpinator\Json::fromObject((object) [
                     'query' => '',
                     'operationName' => '',
                     'randomKey' => 'randomVal',
@@ -133,10 +133,10 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider invalidDataProvider
-     * @param \Infinityloop\Utils\Json $request
+     * @param \Graphpinator\Json $request
      * @param string $exception
      */
-    public function testInvalid(\Infinityloop\Utils\Json $request, string $exception) : void
+    public function testInvalid(\Graphpinator\Json $request, string $exception) : void
     {
         $this->expectException($exception);
 

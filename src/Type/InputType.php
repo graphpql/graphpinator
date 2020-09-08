@@ -15,9 +15,9 @@ abstract class InputType extends \Graphpinator\Type\Contract\ConcreteDefinition 
         return \Graphpinator\Resolver\Value\InputValue::create($rawValue, $this);
     }
 
-    final public function applyDefaults($value) : array
+    final public function applyDefaults($value) : \stdClass
     {
-        if (!\is_array($value)) {
+        if (!$value instanceof \stdClass) {
             throw new \Graphpinator\Exception\Type\ExpectedInputTypeWithFields();
         }
 
@@ -48,18 +48,18 @@ abstract class InputType extends \Graphpinator\Type\Contract\ConcreteDefinition 
 
     abstract protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet;
 
-    private static function merge(array $core, iterable $supplement) : array
+    private static function merge(\stdClass $core, iterable $supplement) : \stdClass
     {
         foreach ($supplement as $key => $value) {
-            if (\array_key_exists($key, $core)) {
-                if (\is_array($core[$key])) {
-                    $core[$key] = self::merge($core[$key], $supplement[$key]);
+            if (\property_exists($core, $key)) {
+                if ($core->{$key} instanceof \stdClass) {
+                    $core->{$key} = self::merge($core->{$key}, $supplement[$key]);
                 }
 
                 continue;
             }
 
-            $core[$key] = $value;
+            $core->{$key} = $value;
         }
 
         return $core;

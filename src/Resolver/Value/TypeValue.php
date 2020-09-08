@@ -11,4 +11,9 @@ final class TypeValue extends \Graphpinator\Resolver\Value\ValidatedValue
         $type->validateValue($resolvedValue);
         parent::__construct($resolvedValue, $type);
     }
+
+    public function printValue() : string
+    {
+        throw new \Exception('This value cannot be printed');
+    }
 }

@@ -61,10 +61,13 @@ final class FieldSet extends \Infinityloop\Utils\ObjectSet
             $normalized[] = $field->normalize($typeContainer, $fragmentDefinitions);
         }
 
-        return new \Graphpinator\Normalizer\FieldSet(
-            $normalized,
-            $this->fragments->normalize($typeContainer, $fragmentDefinitions),
-        );
+        $return = new \Graphpinator\Normalizer\FieldSet($normalized);
+
+        foreach ($this->fragments->normalize($typeContainer, $fragmentDefinitions) as $fragmentSpread) {
+            $return->mergeFieldSet($fragmentSpread->getFields());
+        }
+
+        return $return;
     }
 
     protected function getKey(object $object) : string

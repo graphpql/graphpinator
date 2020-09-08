@@ -8,7 +8,7 @@ final class VariableValueSet extends \Infinityloop\Utils\ObjectSet
 {
     public function __construct(
         \Graphpinator\Normalizer\Variable\VariableSet $definedVariables,
-        array $providedValues
+        \stdClass $providedValues
     )
     {
         foreach ($definedVariables as $variable) {
