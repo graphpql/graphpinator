@@ -6,7 +6,74 @@ namespace Graphpinator\Tests\Unit\Type;
 
 final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
 {
-    public static function getInvalidType1() : \Graphpinator\Type\Type
+    public static function createInterface() : \Graphpinator\Type\InterfaceType
+    {
+        return new class extends \Graphpinator\Type\InterfaceType {
+            protected const NAME = 'Foo';
+
+            public function __construct()
+            {
+                parent::__construct(
+                    new \Graphpinator\Utils\InterfaceSet([
+                        InterfaceTypeTest::createParentInterface(),
+                    ]),
+                );
+            }
+
+            protected function getFieldDefinition() : \Graphpinator\Field\FieldSet
+            {
+                return new \Graphpinator\Field\FieldSet([
+                    new \Graphpinator\Field\Field(
+                        'field',
+                        \Graphpinator\Type\Container\Container::Int(),
+                    ),
+                    new \Graphpinator\Field\Field(
+                        'fieldNotNull',
+                        \Graphpinator\Type\Container\Container::Int()->notNull(),
+                    ),
+                    new \Graphpinator\Field\Field(
+                        'argument',
+                        \Graphpinator\Type\Container\Container::Int()->notNull(),
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'argumentName',
+                                \Graphpinator\Type\Container\Container::Int(),
+                            ),
+                        ]),
+                    ),
+                    new \Graphpinator\Field\Field(
+                        'argumentNotNull',
+                        \Graphpinator\Type\Container\Container::Int()->notNull(),
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'argumentName',
+                                \Graphpinator\Type\Container\Container::Int()->notNull(),
+                            ),
+                        ]),
+                    ),
+                ]);
+            }
+        };
+    }
+
+    public static function createParentInterface() : \Graphpinator\Type\InterfaceType
+    {
+        return new class extends \Graphpinator\Type\InterfaceType {
+            protected const NAME = 'Bar';
+
+            protected function getFieldDefinition() : \Graphpinator\Field\FieldSet
+            {
+                return new \Graphpinator\Field\FieldSet([
+                    new \Graphpinator\Field\Field(
+                        'field',
+                        \Graphpinator\Type\Container\Container::Int(),
+                    ),
+                ]);
+            }
+        };
+    }
+
+    public static function getTypeMissingField() : \Graphpinator\Type\Type
     {
         return new class extends \Graphpinator\Type\Type {
             protected const NAME = 'Abc';
@@ -15,7 +82,7 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
             {
                 parent::__construct(
                     new \Graphpinator\Utils\InterfaceSet([
-                        InterfaceTypeTest::createTestInterface(),
+                        InterfaceTypeTest::createInterface(),
                     ]),
                 );
             }
@@ -32,7 +99,7 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    public static function getInvalidType2() : \Graphpinator\Type\Type
+    public static function getTypeFieldTypeMismatch() : \Graphpinator\Type\Type
     {
         return new class extends \Graphpinator\Type\Type {
             protected const NAME = 'Abc';
@@ -41,7 +108,7 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
             {
                 parent::__construct(
                     new \Graphpinator\Utils\InterfaceSet([
-                        InterfaceTypeTest::createTestInterface(),
+                        InterfaceTypeTest::createInterface(),
                     ]),
                 );
             }
@@ -49,13 +116,40 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
             protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
             {
                 return new \Graphpinator\Field\ResolvableFieldSet([
-                    new \Graphpinator\Field\ResolvableField('name', \Graphpinator\Type\Container\Container::String(), static function () : void {
+                    new \Graphpinator\Field\ResolvableField(
+                        'field',
+                        \Graphpinator\Type\Container\Container::Int(),
+                        static function () : void {
                     }),
                     new \Graphpinator\Field\ResolvableField(
-                        'otherName',
-                        \Graphpinator\Type\Container\Container::Boolean(),
+                        'fieldNotNull',
+                        \Graphpinator\Type\Container\Container::Boolean()->notNull(),
                         static function () : void {
                         },
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'argument',
+                        \Graphpinator\Type\Container\Container::Int()->notNull(),
+                        static function () : void {
+                        },
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'argumentName',
+                                \Graphpinator\Type\Container\Container::Int(),
+                            ),
+                        ]),
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'argumentNotNull',
+                        \Graphpinator\Type\Container\Container::Int()->notNull(),
+                        static function () : void {
+                        },
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'argumentName',
+                                \Graphpinator\Type\Container\Container::Int()->notNull(),
+                            ),
+                        ]),
                     ),
                 ]);
             }
@@ -67,45 +161,247 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    public static function createTestInterface() : \Graphpinator\Type\InterfaceType
+    public static function getTypeFieldTypeMismatchCovariance() : \Graphpinator\Type\Type
     {
-        return new class extends \Graphpinator\Type\InterfaceType {
-            protected const NAME = 'Foo';
+        return new class extends \Graphpinator\Type\Type {
+            protected const NAME = 'Abc';
 
             public function __construct()
             {
                 parent::__construct(
                     new \Graphpinator\Utils\InterfaceSet([
-                        InterfaceTypeTest::createTestParentInterface(),
+                        InterfaceTypeTest::createInterface(),
                     ]),
                 );
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Field\FieldSet
+            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
             {
-                return new \Graphpinator\Field\FieldSet([
-                    new \Graphpinator\Field\Field('name', \Graphpinator\Type\Container\Container::String()),
-                    new \Graphpinator\Field\Field('otherName', \Graphpinator\Type\Container\Container::Int()->notNull()),
+                return new \Graphpinator\Field\ResolvableFieldSet([
+                    new \Graphpinator\Field\ResolvableField(
+                        'field',
+                        \Graphpinator\Type\Container\Container::Int(),
+                        static function () : void {
+                    }),
+                    new \Graphpinator\Field\ResolvableField(
+                        'fieldNotNull',
+                        \Graphpinator\Type\Container\Container::Int(),
+                        static function () : void {
+                        },
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'argument',
+                        \Graphpinator\Type\Container\Container::Int()->notNull(),
+                        static function () : void {
+                        },
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'argumentName',
+                                \Graphpinator\Type\Container\Container::Int(),
+                            ),
+                        ]),
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'argumentNotNull',
+                        \Graphpinator\Type\Container\Container::Int()->notNull(),
+                        static function () : void {
+                        },
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'argumentName',
+                                \Graphpinator\Type\Container\Container::Int()->notNull(),
+                            ),
+                        ]),
+                    ),
                 ]);
+            }
+
+            protected function validateNonNullValue($rawValue) : bool
+            {
+                return true;
             }
         };
     }
 
-    public static function createTestParentInterface() : \Graphpinator\Type\InterfaceType
+    public static function getTypeMissingArgument() : \Graphpinator\Type\Type
     {
-        return new class extends \Graphpinator\Type\InterfaceType {
-            protected const NAME = 'Bar';
+        return new class extends \Graphpinator\Type\Type {
+            protected const NAME = 'Abc';
 
-            protected function getFieldDefinition() : \Graphpinator\Field\FieldSet
+            public function __construct()
             {
-                return new \Graphpinator\Field\FieldSet([
-                    new \Graphpinator\Field\Field('name', \Graphpinator\Type\Container\Container::String()),
+                parent::__construct(
+                    new \Graphpinator\Utils\InterfaceSet([
+                        InterfaceTypeTest::createInterface(),
+                    ]),
+                );
+            }
+
+            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+            {
+                return new \Graphpinator\Field\ResolvableFieldSet([
+                    new \Graphpinator\Field\ResolvableField(
+                        'field',
+                        \Graphpinator\Type\Container\Container::Int(),
+                        static function () : void {
+                    }),
+                    new \Graphpinator\Field\ResolvableField(
+                        'fieldNotNull',
+                        \Graphpinator\Type\Container\Container::Int()->notNull(),
+                        static function () : void {
+                        },
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'argument',
+                        \Graphpinator\Type\Container\Container::Int()->notNull(),
+                        static function () : void {
+                        },
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'argumentNotNull',
+                        \Graphpinator\Type\Container\Container::Int()->notNull(),
+                        static function () : void {
+                        },
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'argumentName',
+                                \Graphpinator\Type\Container\Container::Int()->notNull(),
+                            ),
+                        ]),
+                    ),
                 ]);
+            }
+
+            protected function validateNonNullValue($rawValue) : bool
+            {
+                return true;
             }
         };
     }
 
-    public static function getTestTypeAbc() : \Graphpinator\Type\Type
+    public static function getTypeArgumentTypeMismatch() : \Graphpinator\Type\Type
+    {
+        return new class extends \Graphpinator\Type\Type {
+            protected const NAME = 'Abc';
+
+            public function __construct()
+            {
+                parent::__construct(
+                    new \Graphpinator\Utils\InterfaceSet([
+                        InterfaceTypeTest::createInterface(),
+                    ]),
+                );
+            }
+
+            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+            {
+                return new \Graphpinator\Field\ResolvableFieldSet([
+                    new \Graphpinator\Field\ResolvableField(
+                        'field',
+                        \Graphpinator\Type\Container\Container::Int(),
+                        static function () : void {
+                    }),
+                    new \Graphpinator\Field\ResolvableField(
+                        'fieldNotNull',
+                        \Graphpinator\Type\Container\Container::Int()->notNull(),
+                        static function () : void {
+                    }),
+                    new \Graphpinator\Field\ResolvableField(
+                        'argument',
+                        \Graphpinator\Type\Container\Container::Int()->notNull(),
+                        static function () : void {
+                        },
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'argumentName',
+                                \Graphpinator\Type\Container\Container::Int(),
+                            ),
+                        ]),
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'argumentNotNull',
+                        \Graphpinator\Type\Container\Container::Int()->notNull(),
+                        static function () : void {
+                        },
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'argumentName',
+                                \Graphpinator\Type\Container\Container::Boolean()->notNull(),
+                            ),
+                        ]),
+                    ),
+                ]);
+            }
+
+            protected function validateNonNullValue($rawValue) : bool
+            {
+                return true;
+            }
+        };
+    }
+
+    public static function getTypeArgumentTypeMismatchContravariance() : \Graphpinator\Type\Type
+    {
+        return new class extends \Graphpinator\Type\Type {
+            protected const NAME = 'Abc';
+
+            public function __construct()
+            {
+                parent::__construct(
+                    new \Graphpinator\Utils\InterfaceSet([
+                        InterfaceTypeTest::createInterface(),
+                    ]),
+                );
+            }
+
+            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+            {
+                return new \Graphpinator\Field\ResolvableFieldSet([
+                    new \Graphpinator\Field\ResolvableField(
+                        'field',
+                        \Graphpinator\Type\Container\Container::Int(),
+                        static function () : void {
+                    }),
+                    new \Graphpinator\Field\ResolvableField(
+                        'fieldNotNull',
+                        \Graphpinator\Type\Container\Container::Int()->notNull(),
+                        static function () : void {
+                    }),
+                    new \Graphpinator\Field\ResolvableField(
+                        'argument',
+                        \Graphpinator\Type\Container\Container::Int()->notNull(),
+                        static function () : void {
+                        },
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'argumentName',
+                                \Graphpinator\Type\Container\Container::Int()->notNull(),
+                            ),
+                        ]),
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'argumentNotNull',
+                        \Graphpinator\Type\Container\Container::Int()->notNull(),
+                        static function () : void {
+                        },
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'argumentName',
+                                \Graphpinator\Type\Container\Container::Int()->notNull(),
+                            ),
+                        ]),
+                    ),
+                ]);
+            }
+
+            protected function validateNonNullValue($rawValue) : bool
+            {
+                return true;
+            }
+        };
+    }
+
+    public static function getTypeWithoutInterface() : \Graphpinator\Type\Type
     {
         return new class extends \Graphpinator\Type\Type {
             protected const NAME = 'Abc';
@@ -122,7 +418,7 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    public static function getTestTypeXyz() : \Graphpinator\Type\Type
+    public static function getTypeImplementingInterface() : \Graphpinator\Type\Type
     {
         return new class extends \Graphpinator\Type\Type {
             protected const NAME = 'Xyz';
@@ -131,7 +427,7 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
             {
                 parent::__construct(
                     new \Graphpinator\Utils\InterfaceSet([
-                        InterfaceTypeTest::createTestInterface(),
+                        InterfaceTypeTest::createInterface(),
                     ]),
                 );
             }
@@ -139,10 +435,40 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
             protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
             {
                 return new \Graphpinator\Field\ResolvableFieldSet([
-                    new \Graphpinator\Field\ResolvableField('name', \Graphpinator\Type\Container\Container::String(), static function () : void {
+                    new \Graphpinator\Field\ResolvableField(
+                        'field',
+                        \Graphpinator\Type\Container\Container::Int(),
+                        static function () : void {
                     }),
-                    new \Graphpinator\Field\ResolvableField('otherName', \Graphpinator\Type\Container\Container::Int(), static function () : void {
+                    new \Graphpinator\Field\ResolvableField(
+                        'fieldNotNull',
+                        \Graphpinator\Type\Container\Container::Int()->notNull(),
+                        static function () : void {
                     }),
+                    new \Graphpinator\Field\ResolvableField(
+                        'argument',
+                        \Graphpinator\Type\Container\Container::Int()->notNull(),
+                        static function () : void {
+                        },
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'argumentName',
+                                \Graphpinator\Type\Container\Container::Int(),
+                            ),
+                        ]),
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'argumentNotNull',
+                        \Graphpinator\Type\Container\Container::Int()->notNull(),
+                        static function () : void {
+                        },
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'argumentName',
+                                \Graphpinator\Type\Container\Container::Int()->notNull(),
+                            ),
+                        ]),
+                    ),
                 ]);
             }
 
@@ -153,7 +479,7 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    public static function getTestTypeZzz() : \Graphpinator\Type\Type
+    public static function getTypeImplementingParentInterface() : \Graphpinator\Type\Type
     {
         return new class extends \Graphpinator\Type\Type {
             protected const NAME = 'Zzz';
@@ -162,7 +488,7 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
             {
                 parent::__construct(
                     new \Graphpinator\Utils\InterfaceSet([
-                        InterfaceTypeTest::createTestParentInterface(),
+                        InterfaceTypeTest::createParentInterface(),
                     ]),
                 );
             }
@@ -170,7 +496,10 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
             protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
             {
                 return new \Graphpinator\Field\ResolvableFieldSet([
-                    new \Graphpinator\Field\ResolvableField('name', \Graphpinator\Type\Container\Container::String(), static function () : void {
+                    new \Graphpinator\Field\ResolvableField(
+                        'field',
+                        \Graphpinator\Type\Container\Container::Int(),
+                        static function () : void {
                     }),
                 ]);
             }
@@ -184,30 +513,30 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
 
     public function testSimple() : void
     {
-        $interface = self::createTestInterface();
-        $parent = self::createTestParentInterface();
+        $interface = self::createInterface();
+        $parentInterface = self::createParentInterface();
 
         self::assertArrayHasKey('Bar', $interface->getInterfaces());
         self::assertSame('Bar', $interface->getInterfaces()->offsetGet('Bar')->getName());
 
         self::assertTrue($interface->isInstanceOf($interface));
         self::assertTrue($interface->isInstanceOf(new \Graphpinator\Type\NotNullType($interface)));
-        self::assertTrue($interface->isInstanceOf($parent));
-        self::assertTrue($interface->isInstanceOf(new \Graphpinator\Type\NotNullType($parent)));
-        self::assertFalse($parent->isInstanceOf($interface));
-        self::assertFalse($parent->isInstanceOf(new \Graphpinator\Type\NotNullType($interface)));
-        self::assertFalse($interface->isImplementedBy(self::getTestTypeAbc()));
-        self::assertFalse($interface->isImplementedBy(new \Graphpinator\Type\NotNullType(self::getTestTypeAbc())));
-        self::assertFalse($parent->isImplementedBy(self::getTestTypeAbc()));
-        self::assertFalse($parent->isImplementedBy(new \Graphpinator\Type\NotNullType(self::getTestTypeAbc())));
-        self::assertTrue($interface->isImplementedBy(self::getTestTypeXyz()));
-        self::assertTrue($interface->isImplementedBy(new \Graphpinator\Type\NotNullType(self::getTestTypeXyz())));
-        self::assertTrue($parent->isImplementedBy(self::getTestTypeXyz()));
-        self::assertTrue($parent->isImplementedBy(new \Graphpinator\Type\NotNullType(self::getTestTypeXyz())));
-        self::assertFalse($interface->isImplementedBy(self::getTestTypeZzz()));
-        self::assertFalse($interface->isImplementedBy(new \Graphpinator\Type\NotNullType(self::getTestTypeZzz())));
-        self::assertTrue($parent->isImplementedBy(self::getTestTypeZzz()));
-        self::assertTrue($parent->isImplementedBy(new \Graphpinator\Type\NotNullType(self::getTestTypeZzz())));
+        self::assertTrue($interface->isInstanceOf($parentInterface));
+        self::assertTrue($interface->isInstanceOf(new \Graphpinator\Type\NotNullType($parentInterface)));
+        self::assertFalse($parentInterface->isInstanceOf($interface));
+        self::assertFalse($parentInterface->isInstanceOf(new \Graphpinator\Type\NotNullType($interface)));
+        self::assertFalse($interface->isImplementedBy(self::getTypeWithoutInterface()));
+        self::assertFalse($interface->isImplementedBy(new \Graphpinator\Type\NotNullType(self::getTypeWithoutInterface())));
+        self::assertFalse($parentInterface->isImplementedBy(self::getTypeWithoutInterface()));
+        self::assertFalse($parentInterface->isImplementedBy(new \Graphpinator\Type\NotNullType(self::getTypeWithoutInterface())));
+        self::assertTrue($interface->isImplementedBy(self::getTypeImplementingInterface()));
+        self::assertTrue($interface->isImplementedBy(new \Graphpinator\Type\NotNullType(self::getTypeImplementingInterface())));
+        self::assertTrue($parentInterface->isImplementedBy(self::getTypeImplementingInterface()));
+        self::assertTrue($parentInterface->isImplementedBy(new \Graphpinator\Type\NotNullType(self::getTypeImplementingInterface())));
+        self::assertFalse($interface->isImplementedBy(self::getTypeImplementingParentInterface()));
+        self::assertFalse($interface->isImplementedBy(new \Graphpinator\Type\NotNullType(self::getTypeImplementingParentInterface())));
+        self::assertTrue($parentInterface->isImplementedBy(self::getTypeImplementingParentInterface()));
+        self::assertTrue($parentInterface->isImplementedBy(new \Graphpinator\Type\NotNullType(self::getTypeImplementingParentInterface())));
     }
 
     public function testMissingField() : void
@@ -215,14 +544,46 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
         $this->expectException(\Graphpinator\Exception\Type\InterfaceContractMissingField::class);
         $this->expectExceptionMessage(\Graphpinator\Exception\Type\InterfaceContractMissingField::MESSAGE);
 
-        self::getInvalidType1()->getFields();
+        self::getTypeMissingField()->getFields();
     }
 
-    public function testIncompatibleType() : void
+    public function testIncompatibleFieldType() : void
     {
-        $this->expectException(\Graphpinator\Exception\Type\InterfaceContractInvalidFieldType::class);
-        $this->expectExceptionMessage(\Graphpinator\Exception\Type\InterfaceContractInvalidFieldType::MESSAGE);
+        $this->expectException(\Graphpinator\Exception\Type\InterfaceContractFieldTypeMismatch::class);
+        $this->expectExceptionMessage(\Graphpinator\Exception\Type\InterfaceContractFieldTypeMismatch::MESSAGE);
 
-        self::getInvalidType2()->getFields();
+        self::getTypeFieldTypeMismatch()->getFields();
+    }
+
+    public function testIncompatibleFieldTypeContravariance() : void
+    {
+        $this->expectException(\Graphpinator\Exception\Type\InterfaceContractFieldTypeMismatch::class);
+        $this->expectExceptionMessage(\Graphpinator\Exception\Type\InterfaceContractFieldTypeMismatch::MESSAGE);
+
+        self::getTypeFieldTypeMismatchCovariance()->getFields();
+    }
+
+    public function testMissingArgument() : void
+    {
+        $this->expectException(\Graphpinator\Exception\Type\InterfaceContractMissingArgument::class);
+        $this->expectExceptionMessage(\Graphpinator\Exception\Type\InterfaceContractMissingArgument::MESSAGE);
+
+        self::getTypeMissingArgument()->getFields();
+    }
+
+    public function testIncompatibleArgumentType() : void
+    {
+        $this->expectException(\Graphpinator\Exception\Type\InterfaceContractArgumentTypeMismatch::class);
+        $this->expectExceptionMessage(\Graphpinator\Exception\Type\InterfaceContractArgumentTypeMismatch::MESSAGE);
+
+        self::getTypeArgumentTypeMismatch()->getFields();
+    }
+
+    public function testIncompatibleArgumentTypeContravariance() : void
+    {
+        $this->expectException(\Graphpinator\Exception\Type\InterfaceContractArgumentTypeMismatch::class);
+        $this->expectExceptionMessage(\Graphpinator\Exception\Type\InterfaceContractArgumentTypeMismatch::MESSAGE);
+
+        self::getTypeArgumentTypeMismatchContravariance()->getFields();
     }
 }
