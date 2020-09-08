@@ -120,7 +120,8 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
                         'field',
                         \Graphpinator\Type\Container\Container::Int(),
                         static function () : void {
-                    }),
+                        },
+                    ),
                     new \Graphpinator\Field\ResolvableField(
                         'fieldNotNull',
                         \Graphpinator\Type\Container\Container::Boolean()->notNull(),
@@ -182,7 +183,8 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
                         'field',
                         \Graphpinator\Type\Container\Container::Int(),
                         static function () : void {
-                    }),
+                        },
+                    ),
                     new \Graphpinator\Field\ResolvableField(
                         'fieldNotNull',
                         \Graphpinator\Type\Container\Container::Int(),
@@ -244,7 +246,8 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
                         'field',
                         \Graphpinator\Type\Container\Container::Int(),
                         static function () : void {
-                    }),
+                        },
+                    ),
                     new \Graphpinator\Field\ResolvableField(
                         'fieldNotNull',
                         \Graphpinator\Type\Container\Container::Int()->notNull(),
@@ -300,12 +303,14 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
                         'field',
                         \Graphpinator\Type\Container\Container::Int(),
                         static function () : void {
-                    }),
+                        },
+                    ),
                     new \Graphpinator\Field\ResolvableField(
                         'fieldNotNull',
                         \Graphpinator\Type\Container\Container::Int()->notNull(),
                         static function () : void {
-                    }),
+                        },
+                    ),
                     new \Graphpinator\Field\ResolvableField(
                         'argument',
                         \Graphpinator\Type\Container\Container::Int()->notNull(),
@@ -361,12 +366,14 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
                         'field',
                         \Graphpinator\Type\Container\Container::Int(),
                         static function () : void {
-                    }),
+                        },
+                    ),
                     new \Graphpinator\Field\ResolvableField(
                         'fieldNotNull',
                         \Graphpinator\Type\Container\Container::Int()->notNull(),
                         static function () : void {
-                    }),
+                        },
+                    ),
                     new \Graphpinator\Field\ResolvableField(
                         'argument',
                         \Graphpinator\Type\Container\Container::Int()->notNull(),
@@ -439,12 +446,14 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
                         'field',
                         \Graphpinator\Type\Container\Container::Int(),
                         static function () : void {
-                    }),
+                        },
+                    ),
                     new \Graphpinator\Field\ResolvableField(
                         'fieldNotNull',
                         \Graphpinator\Type\Container\Container::Int()->notNull(),
                         static function () : void {
-                    }),
+                        },
+                    ),
                     new \Graphpinator\Field\ResolvableField(
                         'argument',
                         \Graphpinator\Type\Container\Container::Int()->notNull(),
@@ -500,7 +509,8 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
                         'field',
                         \Graphpinator\Type\Container\Container::Int(),
                         static function () : void {
-                    }),
+                        },
+                    ),
                 ]);
             }
 
