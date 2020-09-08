@@ -8,10 +8,10 @@ final class FieldResult
 {
     use \Nette\SmartObject;
 
-    private \Graphpinator\Type\Contract\Resolvable $type;
+    private \Graphpinator\Type\Contract\Definition $type;
     private \Graphpinator\Resolver\Value\ValidatedValue $result;
 
-    private function __construct(\Graphpinator\Type\Contract\Resolvable $type, \Graphpinator\Resolver\Value\ValidatedValue $value)
+    private function __construct(\Graphpinator\Type\Contract\Definition $type, \Graphpinator\Resolver\Value\ValidatedValue $value)
     {
         $this->type = $type;
         $this->result = $value;
@@ -31,7 +31,7 @@ final class FieldResult
         throw new \Graphpinator\Exception\Resolver\FieldResultAbstract();
     }
 
-    public function getType() : \Graphpinator\Type\Contract\Resolvable
+    public function getType() : \Graphpinator\Type\Contract\Definition
     {
         return $this->type;
     }
