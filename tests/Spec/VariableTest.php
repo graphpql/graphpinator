@@ -70,7 +70,7 @@ final class VariableTest extends \PHPUnit\Framework\TestCase
                     'query' => 'query queryName ($var1: Int = "123") { field0 { field1 { name } } }',
                     'variables' => ['var1' => '123'],
                 ]),
-                \Graphpinator\Exception\Type\InvalidResolvedValue::class,
+                \Graphpinator\Exception\Request\VariablesNotObject::class,
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
