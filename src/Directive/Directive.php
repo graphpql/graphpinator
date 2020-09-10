@@ -51,7 +51,7 @@ abstract class Directive
 
     public function resolve(\Graphpinator\Resolver\ArgumentValueSet $arguments) : string
     {
-        $result = \call_user_func($this->resolveFn, $arguments);
+        $result = \call_user_func_array($this->resolveFn, $arguments->getRawArguments());
 
         if (\is_string($result) && \array_key_exists($result, DirectiveResult::ENUM)) {
             return $result;

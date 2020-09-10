@@ -15,8 +15,8 @@ final class SkipDirective extends \Graphpinator\Directive\Directive
             new \Graphpinator\Argument\ArgumentSet([
                 new \Graphpinator\Argument\Argument('if', \Graphpinator\Type\Container\Container::Boolean()->notNull()),
             ]),
-            static function (\Graphpinator\Resolver\ArgumentValueSet $arguments) : string {
-                return $arguments->offsetGet('if')->getRawValue()
+            static function (bool $if) : string {
+                return $if
                     ? DirectiveResult::SKIP
                     : DirectiveResult::NONE;
             },

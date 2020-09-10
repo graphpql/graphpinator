@@ -8,17 +8,17 @@ use \Graphpinator\Resolver\FieldResult;
 
 final class ResolvableField extends \Graphpinator\Field\Field
 {
-    private \Closure $resolveFunction;
+    private \Closure $resolveFn;
 
     public function __construct(
         string $name,
         \Graphpinator\Type\Contract\Outputable $type,
-        callable $resolveFunction,
+        callable $resolveFn,
         ?\Graphpinator\Argument\ArgumentSet $arguments = null
     )
     {
         parent::__construct($name, $type, $arguments);
-        $this->resolveFunction = $resolveFunction;
+        $this->resolveFn = $resolveFn;
     }
 
     public function resolve(FieldResult $parentValue, \Graphpinator\Resolver\ArgumentValueSet $arguments) : FieldResult
@@ -26,7 +26,7 @@ final class ResolvableField extends \Graphpinator\Field\Field
         $args = $arguments->getRawArguments();
         \array_unshift($args, $parentValue->getResult()->getRawValue());
 
-        $result = \call_user_func_array($this->resolveFunction, $args);
+        $result = \call_user_func_array($this->resolveFn, $args);
 
         if (!$result instanceof FieldResult) {
             return FieldResult::fromRaw($this->type, $result);

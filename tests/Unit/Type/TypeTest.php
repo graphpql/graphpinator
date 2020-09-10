@@ -108,9 +108,9 @@ final class TypeTest extends \PHPUnit\Framework\TestCase
                     new \Graphpinator\Field\ResolvableField(
                         'field1',
                         \Graphpinator\Type\Container\Container::String(),
-                        static function ($parentValue, \Graphpinator\Resolver\ArgumentValueSet $arguments) {
+                        static function ($parentValue) {
                             TypeTest::assertSame(TypeTest::PARENT_VAL, $parentValue);
-                            TypeTest::assertCount(0, $arguments);
+                            TypeTest::assertCount(1, \func_get_args());
 
                             return 'fieldValue';
                         },
@@ -118,9 +118,9 @@ final class TypeTest extends \PHPUnit\Framework\TestCase
                     new \Graphpinator\Field\ResolvableField(
                         'field2',
                         \Graphpinator\Type\Container\Container::Boolean(),
-                        static function ($parentValue, \Graphpinator\Resolver\ArgumentValueSet $arguments) {
+                        static function ($parentValue) {
                             TypeTest::assertSame(TypeTest::PARENT_VAL, $parentValue);
-                            TypeTest::assertCount(0, $arguments);
+                            TypeTest::assertCount(1, \func_get_args());
 
                             return false;
                         },
@@ -128,9 +128,9 @@ final class TypeTest extends \PHPUnit\Framework\TestCase
                     new \Graphpinator\Field\ResolvableField(
                         'field3',
                         \Graphpinator\Type\Container\Container::Int(),
-                        static function ($parentValue, \Graphpinator\Resolver\ArgumentValueSet $arguments) {
+                        static function ($parentValue) {
                             TypeTest::assertSame(TypeTest::PARENT_VAL, $parentValue);
-                            TypeTest::assertCount(0, $arguments);
+                            TypeTest::assertCount(1, \func_get_args());
 
                             return null;
                         },

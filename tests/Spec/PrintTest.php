@@ -60,12 +60,12 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
                   name: String
                   description: String
                   fields(
-                    includeDeprecated: Boolean = false
+                    includeDeprecated: Boolean! = false
                   ): [__Field!]
                   interfaces: [__Type!]
                   possibleTypes: [__Type!]
                   enumValues(
-                    includeDeprecated: Boolean = false
+                    includeDeprecated: Boolean! = false
                   ): [__EnumValue!]
                   inputFields: [__InputValue!]
                   ofType: __Type

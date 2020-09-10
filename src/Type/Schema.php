@@ -36,8 +36,8 @@ final class Schema
         $this->query->addMetaField(new \Graphpinator\Field\ResolvableField(
             '__type',
             $this->container->introspectionType(),
-            function($parent, \Graphpinator\Resolver\ArgumentValueSet $args) : \Graphpinator\Type\Contract\Definition {
-                return $this->container->getType($args['name']->getRawValue());
+            function($parent, string $name) : \Graphpinator\Type\Contract\Definition {
+                return $this->container->getType($name);
             },
             new \Graphpinator\Argument\ArgumentSet([
                 new \Graphpinator\Argument\Argument('name', \Graphpinator\Type\Container\Container::String()->notNull()),

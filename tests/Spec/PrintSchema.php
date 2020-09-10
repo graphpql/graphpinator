@@ -100,7 +100,7 @@ final class PrintSchema
                     (new \Graphpinator\Field\ResolvableField(
                         'field1',
                         TestSchema::getInterface(),
-                        static function (int $parent, \Graphpinator\Resolver\ArgumentValueSet $args) {
+                        static function (int $parent, ?int $arg1, ?\stdClass $arg2) {
                             return 1;
                         },
                         new \Graphpinator\Argument\ArgumentSet([

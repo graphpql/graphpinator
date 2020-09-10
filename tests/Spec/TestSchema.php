@@ -95,11 +95,11 @@ final class TestSchema
                     new \Graphpinator\Field\ResolvableField(
                         'field1',
                         TestSchema::getInterface(),
-                        static function (int $parent, \Graphpinator\Resolver\ArgumentValueSet $args) : \Graphpinator\Resolver\FieldResult {
+                        static function (int $parent, ?int $arg1, ?\stdClass $arg2) : \Graphpinator\Resolver\FieldResult {
                             $object = new \stdClass();
 
-                            if ($args['arg2']->getRawValue() === null) {
-                                $object->name = 'Test ' . $args['arg1']->getRawValue();
+                            if ($arg2 === null) {
+                                $object->name = 'Test ' . $arg1;
                             } else {
                                 $concat = static function (\stdClass $objectVal) use (&$concat) : string {
                                     $str = '';
@@ -121,14 +121,14 @@ final class TestSchema
                                     return $str;
                                 };
 
-                                $object->name = $concat($args['arg2']->getRawValue());
+                                $object->name = $concat($arg2);
                             }
 
                             return \Graphpinator\Resolver\FieldResult::fromRaw(TestSchema::getTypeXyz(), $object);
                         },
                         new \Graphpinator\Argument\ArgumentSet([
-                        new \Graphpinator\Argument\Argument('arg1', \Graphpinator\Type\Container\Container::Int(), 123),
-                        new \Graphpinator\Argument\Argument('arg2', TestSchema::getInput()),
+                            new \Graphpinator\Argument\Argument('arg1', \Graphpinator\Type\Container\Container::Int(), 123),
+                            new \Graphpinator\Argument\Argument('arg2', TestSchema::getInput()),
                         ]),
                     ),
                 ]);

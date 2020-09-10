@@ -56,12 +56,12 @@ final class Type extends \Graphpinator\Type\Type
             new \Graphpinator\Field\ResolvableField(
                 'fields',
                 $this->container->introspectionField()->notNull()->list(),
-                static function (Definition $definition, \Graphpinator\Resolver\ArgumentValueSet $arguments) : ?\Graphpinator\Field\FieldSet {
+                static function (Definition $definition, bool $includeDeprecated) : ?\Graphpinator\Field\FieldSet {
                     if (!$definition instanceof \Graphpinator\Type\Contract\InterfaceImplementor) {
                         return null;
                     }
 
-                    if ($arguments['includeDeprecated']->getRawValue() === true) {
+                    if ($includeDeprecated === true) {
                         return $definition->getFields();
                     }
 
@@ -78,7 +78,7 @@ final class Type extends \Graphpinator\Type\Type
                     return new \Graphpinator\Field\FieldSet($filtered);
                 },
                 new \Graphpinator\Argument\ArgumentSet([
-                    new \Graphpinator\Argument\Argument('includeDeprecated', \Graphpinator\Type\Container\Container::Boolean(), false),
+                    new \Graphpinator\Argument\Argument('includeDeprecated', \Graphpinator\Type\Container\Container::Boolean()->notNull(), false),
                 ]),
             ),
             new \Graphpinator\Field\ResolvableField(
@@ -117,12 +117,12 @@ final class Type extends \Graphpinator\Type\Type
             new \Graphpinator\Field\ResolvableField(
                 'enumValues',
                 $this->container->introspectionEnumValue()->notNull()->list(),
-                static function (Definition $definition, \Graphpinator\Resolver\ArgumentValueSet $arguments) : ?\Graphpinator\Type\Enum\EnumItemSet {
+                static function (Definition $definition, bool $includeDeprecated) : ?\Graphpinator\Type\Enum\EnumItemSet {
                     if (!$definition instanceof \Graphpinator\Type\EnumType) {
                         return null;
                     }
 
-                    if ($arguments['includeDeprecated']->getRawValue() === true) {
+                    if ($includeDeprecated === true) {
                         return $definition->getItems();
                     }
 
@@ -139,7 +139,7 @@ final class Type extends \Graphpinator\Type\Type
                     return new \Graphpinator\Type\Enum\EnumItemSet($filtered);
                 },
                 new \Graphpinator\Argument\ArgumentSet([
-                    new \Graphpinator\Argument\Argument('includeDeprecated', \Graphpinator\Type\Container\Container::Boolean(), false),
+                    new \Graphpinator\Argument\Argument('includeDeprecated', \Graphpinator\Type\Container\Container::Boolean()->notNull(), false),
                 ]),
             ),
             new \Graphpinator\Field\ResolvableField(
