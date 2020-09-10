@@ -53,6 +53,17 @@ final class ArgumentValueSet extends \Infinityloop\Utils\ObjectSet
         return parent::offsetGet($offset);
     }
 
+    public function getRawArguments() : array
+    {
+        $return = [];
+
+        foreach ($this as $argumentValue) {
+            $return[] = $argumentValue->getRawValue();
+        }
+
+        return $return;
+    }
+
     private function appendUnique($offset, $value) : void
     {
         if ($this->offsetExists($offset)) {
