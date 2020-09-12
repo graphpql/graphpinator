@@ -37,8 +37,8 @@ final class ListTypeTest extends \PHPUnit\Framework\TestCase
 
     public function testNoRequest() : void
     {
-        //phpcs:ignore SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly.ReferencedGeneralException
-        $this->expectException(\Exception::class);
+        $this->expectException(\Graphpinator\Exception\Resolver\SelectionOnComposite::class);
+        $this->expectExceptionMessage(\Graphpinator\Exception\Resolver\SelectionOnComposite::MESSAGE);
 
         $type = self::getTestTypeAbc()->list();
         $parent = \Graphpinator\Resolver\FieldResult::fromRaw($type, [124]);
@@ -55,8 +55,8 @@ final class ListTypeTest extends \PHPUnit\Framework\TestCase
 
     public function testValidateValueInvalidValue() : void
     {
-        //phpcs:ignore SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly.ReferencedGeneralException
-        $this->expectException(\Exception::class);
+        $this->expectException(\Graphpinator\Exception\Type\InvalidResolvedValue::class);
+        $this->expectExceptionMessage(\Graphpinator\Exception\Type\InvalidResolvedValue::MESSAGE);
 
         $type = \Graphpinator\Type\Container\Container::String()->list();
         $type->validateValue(['123', 123]);
@@ -64,8 +64,8 @@ final class ListTypeTest extends \PHPUnit\Framework\TestCase
 
     public function testValidateValueNoArray() : void
     {
-        //phpcs:ignore SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly.ReferencedGeneralException
-        $this->expectException(\Exception::class);
+        $this->expectException(\Graphpinator\Exception\Type\ExpectedListOrNull::class);
+        $this->expectExceptionMessage(\Graphpinator\Exception\Type\ExpectedListOrNull::MESSAGE);
 
         $type = \Graphpinator\Type\Container\Container::String()->list();
         $type->validateValue(123);

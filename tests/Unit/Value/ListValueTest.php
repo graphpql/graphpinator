@@ -35,8 +35,8 @@ final class ListValueTest extends \PHPUnit\Framework\TestCase
 
     public function testInvalid() : void
     {
-        //phpcs:ignore SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly.ReferencedGeneralException
-        $this->expectException(\Exception::class);
+        $this->expectException(\Graphpinator\Exception\Resolver\ExpectedListOrNull::class);
+        $this->expectExceptionMessage(\Graphpinator\Exception\Resolver\ExpectedListOrNull::MESSAGE);
 
         new \Graphpinator\Resolver\Value\ListValue(123, new \Graphpinator\Type\ListType($this->createTestInput()));
     }
