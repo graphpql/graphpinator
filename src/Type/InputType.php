@@ -21,7 +21,7 @@ abstract class InputType extends \Graphpinator\Type\Contract\ConcreteDefinition 
             throw new \Exception('Composite input type without fields specified.');
         }
 
-        return self::merge($value, $this->getArguments()->getDefaults());
+        return self::merge($value, (object) $this->getArguments()->getRawDefaults());
     }
 
     final public function getArguments() : \Graphpinator\Argument\ArgumentSet
@@ -48,12 +48,13 @@ abstract class InputType extends \Graphpinator\Type\Contract\ConcreteDefinition 
 
     abstract protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet;
 
-    private static function merge(\stdClass $core, iterable $supplement) : \stdClass
+    private static function merge(\stdClass $core, \stdClass $supplement) : \stdClass
     {
         foreach ($supplement as $key => $value) {
             if (\property_exists($core, $key)) {
-                if ($core->{$key} instanceof \stdClass) {
-                    $core->{$key} = self::merge($core->{$key}, $supplement[$key]);
+                if ($core->{$key} instanceof \stdClass &&
+                    $supplement->{$key} instanceof \stdClass) {
+                    $core->{$key} = self::merge($core->{$key}, $supplement->{$key});
                 }
 
                 continue;
