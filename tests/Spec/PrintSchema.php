@@ -451,12 +451,12 @@ final class PrintSchema
                                     new \Graphpinator\Argument\Argument(
                                         'notNullListIntArgument1',
                                         \Graphpinator\Type\Container\Container::Int()->notNullList(),
-                                        [0 => 66, 1 => 55],
+                                        [66, 55],
                                     ),
                                     new \Graphpinator\Argument\Argument(
                                         'listIntArgument1',
                                         \Graphpinator\Type\Container\Container::Int()->list(),
-                                        [0 => 66, 1 => null],
+                                        [66, null],
                                     ),
                                     new \Graphpinator\Argument\Argument(
                                         'notNullIntArgument1',
@@ -466,12 +466,12 @@ final class PrintSchema
                                     new \Graphpinator\Argument\Argument(
                                         'notNullListStringArgument1',
                                         \Graphpinator\Type\Container\Container::String()->notNullList(),
-                                        ['A' => 'Boo', 'B' => 'Baz'],
+                                        ['Boo', 'Baz'],
                                     ),
                                     new \Graphpinator\Argument\Argument(
                                         'listStringArgument1',
                                         \Graphpinator\Type\Container\Container::String()->list(),
-                                        ['A' => 'Boo', 'B' => null],
+                                        ['Boo', null],
                                     ),
                                     new \Graphpinator\Argument\Argument(
                                         'notNullStringArgument1',
