@@ -45,6 +45,7 @@ final class PrintSchema
             'ETestEnum' => self::getEnumWithDescription(),
             'TestSecondScalar' => self::getTestSecondScalar(),
             'TestScalar' => self::getTestScalar(),
+            'TestDefaultValue' => self::getDefaultValue(),
         ], [
             'testDirective' => self::getTestDirective(),
             'invalidDirective' => self::getInvalidDirective(),
@@ -421,6 +422,43 @@ final class PrintSchema
                     [\Graphpinator\Directive\DirectiveLocation::FIELD],
                     true,
                 );
+            }
+        };
+    }
+
+    public static function getDefaultValue() : \Graphpinator\Type\InputType
+    {
+        return new class extends \Graphpinator\Type\InputType
+        {
+            protected const NAME = 'TestDefaultValue1';
+
+            protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
+            {
+                return new \Graphpinator\Argument\ArgumentSet([
+                    new \Graphpinator\Argument\Argument('stringArgument1', \Graphpinator\Type\Container\Container::String(), null),
+                    new \Graphpinator\Argument\Argument('stringArgument2', \Graphpinator\Type\Container\Container::String(), 'testValue'),
+                    new \Graphpinator\Argument\Argument('intArgument1', \Graphpinator\Type\Container\Container::Int(), null),
+                    new \Graphpinator\Argument\Argument('intArgument2', \Graphpinator\Type\Container\Container::Int(), 6247),
+                    new \Graphpinator\Argument\Argument(
+                        'inputArgument1',
+                        new class extends \Graphpinator\Type\InputType
+                        {
+                            protected const NAME = 'TestDefaultValue2';
+
+                            protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
+                            {
+                                return new \Graphpinator\Argument\ArgumentSet([
+                                    new \Graphpinator\Argument\Argument('notNullListIntArgument1', \Graphpinator\Type\Container\Container::Int()->notNullList(), [0 => 66, 1 => 55]),
+                                    new \Graphpinator\Argument\Argument('listIntArgument1', \Graphpinator\Type\Container\Container::Int()->list(), [0 => 66, 1 => null]),
+                                    new \Graphpinator\Argument\Argument('notNullIntArgument1', \Graphpinator\Type\Container\Container::Int()->notNull(), 420),
+                                    new \Graphpinator\Argument\Argument('notNullListStringArgument1', \Graphpinator\Type\Container\Container::String()->notNullList(), ['A' => 'Boo', 'B' => 'Baz']),
+                                    new \Graphpinator\Argument\Argument('listStringArgument1', \Graphpinator\Type\Container\Container::String()->list(), ['A' => 'Boo', 'B' => null]),
+                                    new \Graphpinator\Argument\Argument('notNullStringArgument1', \Graphpinator\Type\Container\Container::String()->notNull(), 'notNullValue'),
+                                ]);
+                            }
+                        },
+                        new \stdClass()),
+                ]);
             }
         };
     }

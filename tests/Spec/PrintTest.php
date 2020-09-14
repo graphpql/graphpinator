@@ -155,6 +155,14 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldThrow: TestUnion
         }
         
+        input TestDefaultValue1 {
+          stringArgument1: String = null
+          stringArgument2: String = "testValue"
+          intArgument1: Int = null
+          intArgument2: Int = 6247
+          inputArgument1: TestDefaultValue2 = {notNullListIntArgument1:[66,55],listIntArgument1:[66,null],notNullIntArgument1:420,notNullListStringArgument1:["Boo","Baz"],listStringArgument1:["Boo",null],notNullStringArgument1:"notNullValue"}
+        }
+        
         enum TestEnum {
           A
         
@@ -302,6 +310,14 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldInvalidType: TestUnion
           fieldAbstract: TestUnion
           fieldThrow: TestUnion
+        }
+        
+        input TestDefaultValue1 {
+          stringArgument1: String = null
+          stringArgument2: String = "testValue"
+          intArgument1: Int = null
+          intArgument2: Int = 6247
+          inputArgument1: TestDefaultValue2 = {notNullListIntArgument1:[66,55],listIntArgument1:[66,null],notNullIntArgument1:420,notNullListStringArgument1:["Boo","Baz"],listStringArgument1:["Boo",null],notNullStringArgument1:"notNullValue"}
         }
 
         enum TestEnum {
@@ -455,6 +471,14 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         
         union UTestUnion = Abc | Xyz
         
+        input TestDefaultValue1 {
+          stringArgument1: String = null
+          stringArgument2: String = "testValue"
+          intArgument1: Int = null
+          intArgument2: Int = 6247
+          inputArgument1: TestDefaultValue2 = {notNullListIntArgument1:[66,55],listIntArgument1:[66,null],notNullIntArgument1:420,notNullListStringArgument1:["Boo","Baz"],listStringArgument1:["Boo",null],notNullStringArgument1:"notNullValue"}
+        }
+        
         input TestInnerInput {
           name: String!
         
@@ -603,6 +627,14 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         union TestUnion = Abc | Xyz
         
         union UTestUnion = Abc | Xyz
+        
+        input TestDefaultValue1 {
+          stringArgument1: String = null
+          stringArgument2: String = "testValue"
+          intArgument1: Int = null
+          intArgument2: Int = 6247
+          inputArgument1: TestDefaultValue2 = {notNullListIntArgument1:[66,55],listIntArgument1:[66,null],notNullIntArgument1:420,notNullListStringArgument1:["Boo","Baz"],listStringArgument1:["Boo",null],notNullStringArgument1:"notNullValue"}
+        }
         
         input TestInnerInput {
           name: String!

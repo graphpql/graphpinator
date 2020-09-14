@@ -39,4 +39,13 @@ final class TypeValueTest extends \PHPUnit\Framework\TestCase
             }
         };
     }
+
+    public function testPrintValue() : void
+    {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('This value cannot be printed');
+
+        $value = \Graphpinator\Resolver\Value\TypeValue::create(123, $this->createTestType());
+        $value->printValue();
+    }
 }
