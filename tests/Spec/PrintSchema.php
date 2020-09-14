@@ -448,16 +448,41 @@ final class PrintSchema
                             protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
                             {
                                 return new \Graphpinator\Argument\ArgumentSet([
-                                    new \Graphpinator\Argument\Argument('notNullListIntArgument1', \Graphpinator\Type\Container\Container::Int()->notNullList(), [0 => 66, 1 => 55]),
-                                    new \Graphpinator\Argument\Argument('listIntArgument1', \Graphpinator\Type\Container\Container::Int()->list(), [0 => 66, 1 => null]),
-                                    new \Graphpinator\Argument\Argument('notNullIntArgument1', \Graphpinator\Type\Container\Container::Int()->notNull(), 420),
-                                    new \Graphpinator\Argument\Argument('notNullListStringArgument1', \Graphpinator\Type\Container\Container::String()->notNullList(), ['A' => 'Boo', 'B' => 'Baz']),
-                                    new \Graphpinator\Argument\Argument('listStringArgument1', \Graphpinator\Type\Container\Container::String()->list(), ['A' => 'Boo', 'B' => null]),
-                                    new \Graphpinator\Argument\Argument('notNullStringArgument1', \Graphpinator\Type\Container\Container::String()->notNull(), 'notNullValue'),
+                                    new \Graphpinator\Argument\Argument(
+                                        'notNullListIntArgument1',
+                                        \Graphpinator\Type\Container\Container::Int()->notNullList(),
+                                        [0 => 66, 1 => 55],
+                                    ),
+                                    new \Graphpinator\Argument\Argument(
+                                        'listIntArgument1',
+                                        \Graphpinator\Type\Container\Container::Int()->list(),
+                                        [0 => 66, 1 => null],
+                                    ),
+                                    new \Graphpinator\Argument\Argument(
+                                        'notNullIntArgument1',
+                                        \Graphpinator\Type\Container\Container::Int()->notNull(),
+                                        420,
+                                    ),
+                                    new \Graphpinator\Argument\Argument(
+                                        'notNullListStringArgument1',
+                                        \Graphpinator\Type\Container\Container::String()->notNullList(),
+                                        ['A' => 'Boo', 'B' => 'Baz'],
+                                    ),
+                                    new \Graphpinator\Argument\Argument(
+                                        'listStringArgument1',
+                                        \Graphpinator\Type\Container\Container::String()->list(),
+                                        ['A' => 'Boo', 'B' => null],
+                                    ),
+                                    new \Graphpinator\Argument\Argument(
+                                        'notNullStringArgument1',
+                                        \Graphpinator\Type\Container\Container::String()->notNull(),
+                                        'notNullValue',
+                                    ),
                                 ]);
                             }
                         },
-                        new \stdClass()),
+                        new \stdClass(),
+                    ),
                 ]);
             }
         };

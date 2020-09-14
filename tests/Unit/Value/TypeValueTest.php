@@ -23,6 +23,16 @@ final class TypeValueTest extends \PHPUnit\Framework\TestCase
         new \Graphpinator\Resolver\Value\TypeValue(456, $this->createTestType());
     }
 
+    public function testPrintValue() : void
+    {
+        //phpcs:ignore SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly.ReferencedGeneralException
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('This value cannot be printed');
+
+        $value = \Graphpinator\Resolver\Value\TypeValue::create(123, $this->createTestType());
+        $value->printValue();
+    }
+
     protected function createTestType() : \Graphpinator\Type\Type
     {
         return new class extends \Graphpinator\Type\Type {
@@ -38,14 +48,5 @@ final class TypeValueTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Field\ResolvableFieldSet([]);
             }
         };
-    }
-
-    public function testPrintValue() : void
-    {
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('This value cannot be printed');
-
-        $value = \Graphpinator\Resolver\Value\TypeValue::create(123, $this->createTestType());
-        $value->printValue();
     }
 }
