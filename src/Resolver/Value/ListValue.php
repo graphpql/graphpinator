@@ -44,9 +44,7 @@ final class ListValue extends \Graphpinator\Resolver\Value\ValidatedValue implem
             $component[] = $value->printValue(true);
         }
 
-        return $prettyPrint
-            ? '[' . \implode(', ', $component) . ']'
-            : '[' . \implode(',', $component) . ']';
+        return '[' . \implode($prettyPrint ? ', ' : ',', $component) . ']';
     }
 
     public function current() : ValidatedValue

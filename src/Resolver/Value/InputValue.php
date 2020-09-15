@@ -51,9 +51,7 @@ final class InputValue extends \Graphpinator\Resolver\Value\ValidatedValue imple
         foreach ($this->value as $key => $value) {
             \assert($value instanceof ValidatedValue);
 
-            $prettyPrint
-                ? $component[$key] = $key . ': ' . $value->printValue(true)
-                : $component[$key] = $key . ':' . $value->printValue(false);
+            $component[$key] = $key . ($prettyPrint ? ': ' : ':') . $value->printValue(true);
         }
 
         if (!$component) {
