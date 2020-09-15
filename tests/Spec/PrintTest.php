@@ -160,13 +160,14 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           stringArgument2: String = "testValue"
           intArgument1: Int = null
           intArgument2: Int = 6247
-          
-        EOL .
-          'inputArgument1: TestDefaultValue2 = {notNullListIntArgument1:[66,55],listIntArgument1:[66,null],' .
-          'notNullIntArgument1:420,notNullListStringArgument1:["Boo","Baz"],listStringArgument1:["Boo",null],' .
-          'notNullStringArgument1:"notNullValue"}' .
-        <<< 'EOL'
-        
+          inputArgument1: TestDefaultValue2 = {
+            notNullListIntArgument1: [66, 55],
+            listIntArgument1: [66, null],
+            notNullIntArgument1: 420,
+            notNullListStringArgument1: ["Boo", "Baz"],
+            listStringArgument1: ["Boo", null],
+            notNullStringArgument1: "notNullValue"
+          }
         }
         
         enum TestEnum {
@@ -323,13 +324,14 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           stringArgument2: String = "testValue"
           intArgument1: Int = null
           intArgument2: Int = 6247
-          
-        EOL .
-            'inputArgument1: TestDefaultValue2 = {notNullListIntArgument1:[66,55],listIntArgument1:[66,null],' .
-            'notNullIntArgument1:420,notNullListStringArgument1:["Boo","Baz"],listStringArgument1:["Boo",null],' .
-            'notNullStringArgument1:"notNullValue"}' .
-            <<< 'EOL'
-        
+          inputArgument1: TestDefaultValue2 = {
+            notNullListIntArgument1: [66, 55],
+            listIntArgument1: [66, null],
+            notNullIntArgument1: 420,
+            notNullListStringArgument1: ["Boo", "Baz"],
+            listStringArgument1: ["Boo", null],
+            notNullStringArgument1: "notNullValue"
+          }
         }
         
         enum TestEnum {
@@ -488,13 +490,14 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           stringArgument2: String = "testValue"
           intArgument1: Int = null
           intArgument2: Int = 6247
-          
-        EOL .
-            'inputArgument1: TestDefaultValue2 = {notNullListIntArgument1:[66,55],listIntArgument1:[66,null],' .
-            'notNullIntArgument1:420,notNullListStringArgument1:["Boo","Baz"],listStringArgument1:["Boo",null],' .
-            'notNullStringArgument1:"notNullValue"}' .
-            <<< 'EOL'
-        
+          inputArgument1: TestDefaultValue2 = {
+            notNullListIntArgument1: [66, 55],
+            listIntArgument1: [66, null],
+            notNullIntArgument1: 420,
+            notNullListStringArgument1: ["Boo", "Baz"],
+            listStringArgument1: ["Boo", null],
+            notNullStringArgument1: "notNullValue"
+          }
         }
         
         input TestInnerInput {
@@ -651,13 +654,14 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           stringArgument2: String = "testValue"
           intArgument1: Int = null
           intArgument2: Int = 6247
-          
-        EOL .
-            'inputArgument1: TestDefaultValue2 = {notNullListIntArgument1:[66,55],listIntArgument1:[66,null],' .
-            'notNullIntArgument1:420,notNullListStringArgument1:["Boo","Baz"],listStringArgument1:["Boo",null],' .
-            'notNullStringArgument1:"notNullValue"}' .
-            <<< 'EOL'
-        
+          inputArgument1: TestDefaultValue2 = {
+            notNullListIntArgument1: [66, 55],
+            listIntArgument1: [66, null],
+            notNullIntArgument1: 420,
+            notNullListStringArgument1: ["Boo", "Baz"],
+            listStringArgument1: ["Boo", null],
+            notNullStringArgument1: "notNullValue"
+          }
         }
         
         input TestInnerInput {

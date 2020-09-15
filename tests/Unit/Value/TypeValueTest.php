@@ -30,7 +30,7 @@ final class TypeValueTest extends \PHPUnit\Framework\TestCase
         $this->expectExceptionMessage('This value cannot be printed');
 
         $value = \Graphpinator\Resolver\Value\TypeValue::create(123, $this->createTestType());
-        $value->printValue();
+        $value->printValue(true);
     }
 
     protected function createTestType() : \Graphpinator\Type\Type
