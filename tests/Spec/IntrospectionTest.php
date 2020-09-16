@@ -572,6 +572,50 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
+                    'query' => '{ 
+                        __type(name: "DefaultsInput") { 
+                            inputFields {
+                                name description defaultValue
+                            } 
+                        } 
+                    }',
+                ]),
+                \Graphpinator\Json::fromObject((object) [
+                    'data' => [
+                        '__type' => [
+                            'inputFields' => [
+                                [
+                                    'name' => 'scalar',
+                                    'description' => null,
+                                    'defaultValue' => '"defaultString"',
+                                ],
+                                [
+                                    'name' => 'enum',
+                                    'description' => null,
+                                    'defaultValue' => '"A"',
+                                ],
+                                [
+                                    'name' => 'list',
+                                    'description' => null,
+                                    'defaultValue' => '["string1","string2"]',
+                                ],
+                                [
+                                    'name' => 'object',
+                                    'description' => null,
+                                    'defaultValue' => '{name:"string",number:[1,2],bool:null}',
+                                ],
+                                [
+                                    'name' => 'listObjects',
+                                    'description' => null,
+                                    'defaultValue' => '[{name:"string",number:[1],bool:null},{name:"string",number:[],bool:null}]',
+                                ],
+                            ],
+                        ],
+                    ],
+                ]),
+            ],
+            [
+                \Graphpinator\Json::fromObject((object) [
                     'query' => '{ __type(name: "String") { name kind } }',
                 ]),
                 \Graphpinator\Json::fromObject((object) [
