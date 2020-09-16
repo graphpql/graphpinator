@@ -23,7 +23,7 @@ final class ResolvableField extends \Graphpinator\Field\Field
 
     public function resolve(FieldResult $parentValue, \Graphpinator\Resolver\ArgumentValueSet $arguments) : FieldResult
     {
-        $args = $arguments->getRawArguments();
+        $args = $arguments->getRawValues();
         \array_unshift($args, $parentValue->getResult()->getRawValue());
 
         $result = \call_user_func_array($this->resolveFn, $args);

@@ -53,7 +53,7 @@ final class ArgumentValueSet extends \Infinityloop\Utils\ObjectSet
         return parent::offsetGet($offset);
     }
 
-    public function getRawArguments() : array
+    public function getRawValues() : array
     {
         $return = [];
 
