@@ -57,18 +57,46 @@ final class TestSchema
             protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
             {
                 return new \Graphpinator\Field\ResolvableFieldSet([
-                    new \Graphpinator\Field\ResolvableField('field0', TestSchema::getUnion(), static function () {
-                        return \Graphpinator\Resolver\FieldResult::fromRaw(TestSchema::getTypeAbc(), 1);
-                    }),
-                    new \Graphpinator\Field\ResolvableField('fieldInvalidType', TestSchema::getUnion(), static function () {
-                        return \Graphpinator\Resolver\FieldResult::fromRaw(\Graphpinator\Type\Container\Container::Int(), 1);
-                    }),
-                    new \Graphpinator\Field\ResolvableField('fieldAbstract', TestSchema::getUnion(), static function () {
-                        return 1;
-                    }),
-                    new \Graphpinator\Field\ResolvableField('fieldThrow', TestSchema::getUnion(), static function () : void {
-                        throw new \Exception('Random exception');
-                    }),
+                    new \Graphpinator\Field\ResolvableField(
+                        'fieldValid',
+                        TestSchema::getUnion(),
+                        static function () {
+                            return \Graphpinator\Resolver\FieldResult::fromRaw(TestSchema::getTypeAbc(), 1);
+                        },
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'fieldConstraint',
+                        \Graphpinator\Type\Container\Container::Int(),
+                        static function ($parent, \stdClass $arg) : int {
+                            return 1;
+                        },
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'arg',
+                                TestSchema::getConstraintInput(),
+                            )
+                        ]),
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'fieldInvalidType',
+                        TestSchema::getUnion(),
+                        static function () {
+                            return \Graphpinator\Resolver\FieldResult::fromRaw(\Graphpinator\Type\Container\Container::Int(), 1);
+                        },
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'fieldInvalidReturn',
+                        TestSchema::getUnion(),
+                        static function () {
+                            return 1;
+                        },
+                    ),
+                    new \Graphpinator\Field\ResolvableField('fieldThrow',
+                        TestSchema::getUnion(),
+                        static function () : void {
+                            throw new \Exception('Random exception');
+                        },
+                    ),
                 ]);
             }
 
@@ -259,41 +287,41 @@ final class TestSchema
             {
                 return new \Graphpinator\Argument\ArgumentSet([
                     (new \Graphpinator\Argument\Argument(
-                        'intArg',
+                        'intMinArg',
                         \Graphpinator\Type\Container\Container::Int(),
-                    ))->setConstraint(new \Graphpinator\Argument\Constraint\IntConstraint(null, 40)),
-                    (new \Graphpinator\Argument\Argument(
-                        'intNotNullArg',
-                        \Graphpinator\Type\Container\Container::Int()->notNull(),
                     ))->setConstraint(new \Graphpinator\Argument\Constraint\IntConstraint(-20)),
+                    (new \Graphpinator\Argument\Argument(
+                        'intMaxArg',
+                        \Graphpinator\Type\Container\Container::Int(),
+                    ))->setConstraint(new \Graphpinator\Argument\Constraint\IntConstraint(null, 20)),
                     (new \Graphpinator\Argument\Argument(
                         'intOneOfArg',
                         \Graphpinator\Type\Container\Container::Int(),
                     ))->setConstraint(new \Graphpinator\Argument\Constraint\IntConstraint(null, null, [1, 2, 3])),
                     (new \Graphpinator\Argument\Argument(
-                        'floatArg',
+                        'floatMinArg',
                         \Graphpinator\Type\Container\Container::Float(),
-                    ))->setConstraint(new \Graphpinator\Argument\Constraint\FloatConstraint(null, 4.01)),
+                    ))->setConstraint(new \Graphpinator\Argument\Constraint\FloatConstraint(4.01)),
                     (new \Graphpinator\Argument\Argument(
-                        'floatNotNullArg',
-                        \Graphpinator\Type\Container\Container::Float()->notNull(),
-                    ))->setConstraint(new \Graphpinator\Argument\Constraint\FloatConstraint(-20.101)),
+                        'floatMaxArg',
+                        \Graphpinator\Type\Container\Container::Float(),
+                    ))->setConstraint(new \Graphpinator\Argument\Constraint\FloatConstraint(null, 20.101)),
                     (new \Graphpinator\Argument\Argument(
                         'floatOneOfArg',
                         \Graphpinator\Type\Container\Container::Float(),
-                    ))->setConstraint(new \Graphpinator\Argument\Constraint\FloatConstraint(null, null, [1.01, 2.02, 3.00])),
+                    ))->setConstraint(new \Graphpinator\Argument\Constraint\FloatConstraint(null, null, [1.01, 2.02, 3.0])),
                     (new \Graphpinator\Argument\Argument(
-                        'stringArg',
+                        'stringMinArg',
                         \Graphpinator\Type\Container\Container::String(),
-                    ))->setConstraint(new \Graphpinator\Argument\Constraint\StringConstraint(null, 4)),
-                    (new \Graphpinator\Argument\Argument(
-                        'stringNotNullArg',
-                        \Graphpinator\Type\Container\Container::String()->notNull(),
                     ))->setConstraint(new \Graphpinator\Argument\Constraint\StringConstraint(4)),
+                    (new \Graphpinator\Argument\Argument(
+                        'stringMaxArg',
+                        \Graphpinator\Type\Container\Container::String(),
+                    ))->setConstraint(new \Graphpinator\Argument\Constraint\StringConstraint(null, 10)),
                     (new \Graphpinator\Argument\Argument(
                         'stringRegexArg',
                         \Graphpinator\Type\Container\Container::String(),
-                    ))->setConstraint(new \Graphpinator\Argument\Constraint\StringConstraint(null, null, '(abc)|(foo)')),
+                    ))->setConstraint(new \Graphpinator\Argument\Constraint\StringConstraint(null, null, '/^(abc)|(foo)$/')),
                     (new \Graphpinator\Argument\Argument(
                         'stringOneOfArg',
                         \Graphpinator\Type\Container\Container::String(),
@@ -302,6 +330,25 @@ final class TestSchema
                         'stringOneOfEmptyArg',
                         \Graphpinator\Type\Container\Container::String(),
                     ))->setConstraint(new \Graphpinator\Argument\Constraint\StringConstraint(null, null, null, [])),
+                    (new \Graphpinator\Argument\Argument(
+                        'listMinArg',
+                        \Graphpinator\Type\Container\Container::Int()->list(),
+                    ))->setConstraint(new \Graphpinator\Argument\Constraint\ListConstraint(1)),
+                    (new \Graphpinator\Argument\Argument(
+                        'listMaxArg',
+                        \Graphpinator\Type\Container\Container::Int()->list(),
+                    ))->setConstraint(new \Graphpinator\Argument\Constraint\ListConstraint(null, 3)),
+                    (new \Graphpinator\Argument\Argument(
+                        'listUniqueArg',
+                        \Graphpinator\Type\Container\Container::Int()->list(),
+                    ))->setConstraint(new \Graphpinator\Argument\Constraint\ListConstraint(null, null, true)),
+                    (new \Graphpinator\Argument\Argument(
+                        'listInnerListArg',
+                        \Graphpinator\Type\Container\Container::Int()->list()->list(),
+                    ))->setConstraint(new \Graphpinator\Argument\Constraint\ListConstraint(null, null, false, (object) [
+                        'minItems' => 1,
+                        'maxItems' => 3,
+                    ])),
                 ]);
             }
         };

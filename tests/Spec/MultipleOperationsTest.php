@@ -11,21 +11,21 @@ final class MultipleOperationsTest extends \PHPUnit\Framework\TestCase
         return [
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { field0 { field1(arg2: null) { name } } }',
+                    'query' => 'query queryName { fieldValid { field1(arg2: null) { name } } }',
                     'operationName' => 'queryName',
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['field0' => ['field1' => ['name' => 'Test 123']]]]),
+                \Graphpinator\Json::fromObject((object) ['data' => ['fieldValid' => ['field1' => ['name' => 'Test 123']]]]),
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { field0 { field1 { name } } } query secondQueryName { aliasName: field0 { field1 { name } } }',
+                    'query' => 'query queryName { fieldValid { field1 { name } } } query secondQueryName { aliasName: fieldValid { field1 { name } } }',
                     'operationName' => 'queryName',
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['field0' => ['field1' => ['name' => 'Test 123']]]]),
+                \Graphpinator\Json::fromObject((object) ['data' => ['fieldValid' => ['field1' => ['name' => 'Test 123']]]]),
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { field0 { field1 { name } } } query secondQueryName { aliasName: field0 { field1 { name } } }',
+                    'query' => 'query queryName { fieldValid { field1 { name } } } query secondQueryName { aliasName: fieldValid { field1 { name } } }',
                     'operationName' => 'secondQueryName',
                 ]),
                 \Graphpinator\Json::fromObject((object) ['data' => ['aliasName' => ['field1' => ['name' => 'Test 123']]]]),

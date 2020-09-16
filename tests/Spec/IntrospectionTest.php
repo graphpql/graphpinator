@@ -17,9 +17,9 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => '{ field0 { __typename } }',
+                    'query' => '{ fieldValid { __typename } }',
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['field0' => ['__typename' => 'Abc']]]),
+                \Graphpinator\Json::fromObject((object) ['data' => ['fieldValid' => ['__typename' => 'Abc']]]),
             ],
         ];
     }

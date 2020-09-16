@@ -131,17 +131,21 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         }
         
         input ConstraintInput {
-          intArg: Int @intConstraint(max: 40)
-          intNotNullArg: Int! @intConstraint(min: -20)
+          intMinArg: Int @intConstraint(min: -20)
+          intMaxArg: Int @intConstraint(max: 20)
           intOneOfArg: Int @intConstraint(oneOf: [1, 2, 3])
-          floatArg: Float @floatConstraint(max: 4.01)
-          floatNotNullArg: Float! @floatConstraint(min: -20.101)
+          floatMinArg: Float @floatConstraint(min: 4.01)
+          floatMaxArg: Float @floatConstraint(max: 20.101)
           floatOneOfArg: Float @floatConstraint(oneOf: [1.01, 2.02, 3])
-          stringArg: String @stringConstraint(maxLength: 4)
-          stringNotNullArg: String! @stringConstraint(minLength: 4)
-          stringRegexArg: String @stringConstraint(regex: "(abc)|(foo)")
+          stringMinArg: String @stringConstraint(minLength: 4)
+          stringMaxArg: String @stringConstraint(maxLength: 10)
+          stringRegexArg: String @stringConstraint(regex: "/^(abc)|(foo)$/")
           stringOneOfArg: String @stringConstraint(oneOf: ["abc", "foo"])
           stringOneOfEmptyArg: String @stringConstraint(oneOf: [])
+          listMinArg: [Int] @listConstraint(minItems: 1)
+          listMaxArg: [Int] @listConstraint(maxItems: 3)
+          listUniqueArg: [Int] @listConstraint(unique: true)
+          listInnerListArg: [[Int]] @listConstraint(innerList: {minItems: 1, maxItems: 3})
         }
         
         enum DescriptionEnum {
@@ -161,9 +165,12 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         }
         
         type Query {
-          field0: TestUnion
+          fieldValid: TestUnion
+          fieldConstraint(
+            arg: ConstraintInput
+          ): Int
           fieldInvalidType: TestUnion
-          fieldAbstract: TestUnion
+          fieldInvalidReturn: TestUnion
           fieldThrow: TestUnion
         }
         
@@ -245,17 +252,21 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         }
         
         input ConstraintInput {
-          intArg: Int @intConstraint(max: 40)
-          intNotNullArg: Int! @intConstraint(min: -20)
+          intMinArg: Int @intConstraint(min: -20)
+          intMaxArg: Int @intConstraint(max: 20)
           intOneOfArg: Int @intConstraint(oneOf: [1, 2, 3])
-          floatArg: Float @floatConstraint(max: 4.01)
-          floatNotNullArg: Float! @floatConstraint(min: -20.101)
+          floatMinArg: Float @floatConstraint(min: 4.01)
+          floatMaxArg: Float @floatConstraint(max: 20.101)
           floatOneOfArg: Float @floatConstraint(oneOf: [1.01, 2.02, 3])
-          stringArg: String @stringConstraint(maxLength: 4)
-          stringNotNullArg: String! @stringConstraint(minLength: 4)
-          stringRegexArg: String @stringConstraint(regex: "(abc)|(foo)")
+          stringMinArg: String @stringConstraint(minLength: 4)
+          stringMaxArg: String @stringConstraint(maxLength: 10)
+          stringRegexArg: String @stringConstraint(regex: "/^(abc)|(foo)$/")
           stringOneOfArg: String @stringConstraint(oneOf: ["abc", "foo"])
           stringOneOfEmptyArg: String @stringConstraint(oneOf: [])
+          listMinArg: [Int] @listConstraint(minItems: 1)
+          listMaxArg: [Int] @listConstraint(maxItems: 3)
+          listUniqueArg: [Int] @listConstraint(unique: true)
+          listInnerListArg: [[Int]] @listConstraint(innerList: {minItems: 1, maxItems: 3})
         }
         
         enum DescriptionEnum {
@@ -275,9 +286,12 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         }
         
         type Query {
-          field0: TestUnion
+          fieldValid: TestUnion
+          fieldConstraint(
+            arg: ConstraintInput
+          ): Int
           fieldInvalidType: TestUnion
-          fieldAbstract: TestUnion
+          fieldInvalidReturn: TestUnion
           fieldThrow: TestUnion
         }
         
@@ -355,9 +369,12 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         }
         
         type Query {
-          field0: TestUnion
+          fieldValid: TestUnion
+          fieldConstraint(
+            arg: ConstraintInput
+          ): Int
           fieldInvalidType: TestUnion
-          fieldAbstract: TestUnion
+          fieldInvalidReturn: TestUnion
           fieldThrow: TestUnion
         }
         
@@ -372,17 +389,21 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         union TestUnion = Abc | Xyz
         
         input ConstraintInput {
-          intArg: Int @intConstraint(max: 40)
-          intNotNullArg: Int! @intConstraint(min: -20)
+          intMinArg: Int @intConstraint(min: -20)
+          intMaxArg: Int @intConstraint(max: 20)
           intOneOfArg: Int @intConstraint(oneOf: [1, 2, 3])
-          floatArg: Float @floatConstraint(max: 4.01)
-          floatNotNullArg: Float! @floatConstraint(min: -20.101)
+          floatMinArg: Float @floatConstraint(min: 4.01)
+          floatMaxArg: Float @floatConstraint(max: 20.101)
           floatOneOfArg: Float @floatConstraint(oneOf: [1.01, 2.02, 3])
-          stringArg: String @stringConstraint(maxLength: 4)
-          stringNotNullArg: String! @stringConstraint(minLength: 4)
-          stringRegexArg: String @stringConstraint(regex: "(abc)|(foo)")
+          stringMinArg: String @stringConstraint(minLength: 4)
+          stringMaxArg: String @stringConstraint(maxLength: 10)
+          stringRegexArg: String @stringConstraint(regex: "/^(abc)|(foo)$/")
           stringOneOfArg: String @stringConstraint(oneOf: ["abc", "foo"])
           stringOneOfEmptyArg: String @stringConstraint(oneOf: [])
+          listMinArg: [Int] @listConstraint(minItems: 1)
+          listMaxArg: [Int] @listConstraint(maxItems: 3)
+          listUniqueArg: [Int] @listConstraint(unique: true)
+          listInnerListArg: [[Int]] @listConstraint(innerList: {minItems: 1, maxItems: 3})
         }
         
         input TestInnerInput {
@@ -469,9 +490,12 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         }
         
         type Query {
-          field0: TestUnion
+          fieldValid: TestUnion
+          fieldConstraint(
+            arg: ConstraintInput
+          ): Int
           fieldInvalidType: TestUnion
-          fieldAbstract: TestUnion
+          fieldInvalidReturn: TestUnion
           fieldThrow: TestUnion
         }
         
@@ -486,17 +510,21 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         union TestUnion = Abc | Xyz
         
         input ConstraintInput {
-          intArg: Int @intConstraint(max: 40)
-          intNotNullArg: Int! @intConstraint(min: -20)
+          intMinArg: Int @intConstraint(min: -20)
+          intMaxArg: Int @intConstraint(max: 20)
           intOneOfArg: Int @intConstraint(oneOf: [1, 2, 3])
-          floatArg: Float @floatConstraint(max: 4.01)
-          floatNotNullArg: Float! @floatConstraint(min: -20.101)
+          floatMinArg: Float @floatConstraint(min: 4.01)
+          floatMaxArg: Float @floatConstraint(max: 20.101)
           floatOneOfArg: Float @floatConstraint(oneOf: [1.01, 2.02, 3])
-          stringArg: String @stringConstraint(maxLength: 4)
-          stringNotNullArg: String! @stringConstraint(minLength: 4)
-          stringRegexArg: String @stringConstraint(regex: "(abc)|(foo)")
+          stringMinArg: String @stringConstraint(minLength: 4)
+          stringMaxArg: String @stringConstraint(maxLength: 10)
+          stringRegexArg: String @stringConstraint(regex: "/^(abc)|(foo)$/")
           stringOneOfArg: String @stringConstraint(oneOf: ["abc", "foo"])
           stringOneOfEmptyArg: String @stringConstraint(oneOf: [])
+          listMinArg: [Int] @listConstraint(minItems: 1)
+          listMaxArg: [Int] @listConstraint(maxItems: 3)
+          listUniqueArg: [Int] @listConstraint(unique: true)
+          listInnerListArg: [[Int]] @listConstraint(innerList: {minItems: 1, maxItems: 3})
         }
         
         input TestInnerInput {

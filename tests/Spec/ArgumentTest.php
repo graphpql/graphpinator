@@ -11,9 +11,9 @@ final class ArgumentTest extends \PHPUnit\Framework\TestCase
         return [
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { field0 { field1(arg1: 456) { name } } }',
+                    'query' => 'query queryName { fieldValid { field1(arg1: 456) { name } } }',
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['field0' => ['field1' => ['name' => 'Test 456']]]]),
+                \Graphpinator\Json::fromObject((object) ['data' => ['fieldValid' => ['field1' => ['name' => 'Test 456']]]]),
             ],
         ];
     }
@@ -37,12 +37,12 @@ final class ArgumentTest extends \PHPUnit\Framework\TestCase
         return [
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { field0 { field1(argNonExistent: 123) { name } } }',
+                    'query' => 'query queryName { fieldValid { field1(argNonExistent: 123) { name } } }',
                 ]),
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { field0 { field1(arg1: "123") { name } } }',
+                    'query' => 'query queryName { fieldValid { field1(arg1: "123") { name } } }',
                 ]),
             ],
         ];
