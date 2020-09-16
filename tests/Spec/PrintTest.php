@@ -119,58 +119,32 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           ): TestInterface @deprecated
         }
         
-        """
-        ETestEnum description
-        """
-        enum ETestEnum {
-          "single line description"
+        enum ArrayEnum {
+          "First description"
           A
         
-          "single line description"
+          "Second description"
           B
         
-          "single line description"
+          "Third description"
           C
-        
-          "single line description"
-          D
         }
         
-        interface ITestInterface {
-          name: String!
+        input ConstraintInput {
+          intArg: Int @intConstraint(max: 40)
+          intNotNullArg: Int! @intConstraint(min: -20)
+          intOneOfArg: Int @intConstraint(oneOf: [1, 2, 3])
+          floatArg: Float @floatConstraint(max: 4.01)
+          floatNotNullArg: Float! @floatConstraint(min: -20.101)
+          floatOneOfArg: Float @floatConstraint(oneOf: [1.01, 2.02, 3])
+          stringArg: String @stringConstraint(maxLength: 4)
+          stringNotNullArg: String! @stringConstraint(minLength: 4)
+          stringRegexArg: String @stringConstraint(regex: "(abc)|(foo)")
+          stringOneOfArg: String @stringConstraint(oneOf: ["abc", "foo"])
+          stringOneOfEmptyArg: String @stringConstraint(oneOf: [])
         }
         
-        """
-        ITestInterface2 Description
-        """
-        interface ITestInterface2 {
-          "single line description"
-          name: String!
-        }
-        
-        type Query {
-          field0: TestUnion
-          fieldInvalidType: TestUnion
-          fieldAbstract: TestUnion
-          fieldThrow: TestUnion
-        }
-        
-        enum TestEnum {
-          A
-        
-          "single line description"
-          B
-        
-          C
-        
-          """
-          multi line
-          description
-          """
-          D
-        }
-        
-        enum TestExplicitEnum {
+        enum DescriptionEnum {
           "single line description"
           A
         
@@ -182,39 +156,34 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           """
           C
         
-          "single line description 2"
+          "single line description"
           D @deprecated
+        }
+        
+        type Query {
+          field0: TestUnion
+          fieldInvalidType: TestUnion
+          fieldAbstract: TestUnion
+          fieldThrow: TestUnion
+        }
+        
+        enum SimpleEnum {
+          A
+          B
+          C
+          D
         }
         
         input TestInnerInput {
           name: String!
-        
-          "single line description"
           number: [Int!]!
-        
-          """
-          multi line
-          description
-          """
           bool: Boolean
         }
         
         input TestInput {
           name: String!
-        
-          """
-          multi line
-          description
-          """
           inner: TestInnerInput
-        
-          """
-          multi line
-          description
-          """
           innerList: [TestInnerInput!]!
-        
-          "single line description"
           innerNotNull: TestInnerInput!
         }
         
@@ -226,19 +195,15 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         }
         
         scalar TestScalar
-
-        scalar TestSecondScalar
         
         union TestUnion = Abc | Xyz
-        
-        union UTestUnion = Abc | Xyz
         
         type Xyz implements TestInterface {
           name: String!
         }
         
         type Zzz {
-          enumList: [TestEnum]
+          enumList: [SimpleEnum]
         }
         
         directive @invalidDirective repeatable on FIELD
@@ -246,7 +211,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         directive @testDirective repeatable on FIELD
         EOL;
 
-        self::assertSame($expected, PrintSchema::getSchema()->printSchema());
+        self::assertSame($expected, TestSchema::getSchema()->printSchema());
     }
 
     public function testPrintFullSchema() : void
@@ -268,58 +233,32 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           ): TestInterface @deprecated
         }
         
-        """
-        ETestEnum description
-        """
-        enum ETestEnum {
-          "single line description"
+        enum ArrayEnum {
+          "First description"
           A
         
-          "single line description"
+          "Second description"
           B
         
-          "single line description"
+          "Third description"
           C
-        
-          "single line description"
-          D
         }
         
-        interface ITestInterface {
-          name: String!
+        input ConstraintInput {
+          intArg: Int @intConstraint(max: 40)
+          intNotNullArg: Int! @intConstraint(min: -20)
+          intOneOfArg: Int @intConstraint(oneOf: [1, 2, 3])
+          floatArg: Float @floatConstraint(max: 4.01)
+          floatNotNullArg: Float! @floatConstraint(min: -20.101)
+          floatOneOfArg: Float @floatConstraint(oneOf: [1.01, 2.02, 3])
+          stringArg: String @stringConstraint(maxLength: 4)
+          stringNotNullArg: String! @stringConstraint(minLength: 4)
+          stringRegexArg: String @stringConstraint(regex: "(abc)|(foo)")
+          stringOneOfArg: String @stringConstraint(oneOf: ["abc", "foo"])
+          stringOneOfEmptyArg: String @stringConstraint(oneOf: [])
         }
         
-        """
-        ITestInterface2 Description
-        """
-        interface ITestInterface2 {
-          "single line description"
-          name: String!
-        }
-        
-        type Query {
-          field0: TestUnion
-          fieldInvalidType: TestUnion
-          fieldAbstract: TestUnion
-          fieldThrow: TestUnion
-        }
-
-        enum TestEnum {
-          A
-        
-          "single line description"
-          B
-        
-          C
-        
-          """
-          multi line
-          description
-          """
-          D
-        }
-        
-        enum TestExplicitEnum {
+        enum DescriptionEnum {
           "single line description"
           A
         
@@ -331,39 +270,34 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           """
           C
         
-          "single line description 2"
+          "single line description"
           D @deprecated
+        }
+        
+        type Query {
+          field0: TestUnion
+          fieldInvalidType: TestUnion
+          fieldAbstract: TestUnion
+          fieldThrow: TestUnion
+        }
+        
+        enum SimpleEnum {
+          A
+          B
+          C
+          D
         }
         
         input TestInnerInput {
           name: String!
-        
-          "single line description"
           number: [Int!]!
-        
-          """
-          multi line
-          description
-          """
           bool: Boolean
         }
         
         input TestInput {
           name: String!
-        
-          """
-          multi line
-          description
-          """
           inner: TestInnerInput
-        
-          """
-          multi line
-          description
-          """
           innerList: [TestInnerInput!]!
-        
-          "single line description"
           innerNotNull: TestInnerInput!
         }
         
@@ -375,19 +309,15 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         }
         
         scalar TestScalar
-
-        scalar TestSecondScalar
         
         union TestUnion = Abc | Xyz
-        
-        union UTestUnion = Abc | Xyz
         
         type Xyz implements TestInterface {
           name: String!
         }
         
         type Zzz {
-          enumList: [TestEnum]
+          enumList: [SimpleEnum]
         }
         
         directive @invalidDirective repeatable on FIELD
@@ -395,7 +325,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         directive @testDirective repeatable on FIELD
         EOL;
 
-        self::assertSame($expected, PrintSchema::getFullSchema()->printSchema());
+        self::assertSame($expected, TestSchema::getFullSchema()->printSchema());
     }
 
     public function testPrintTypeKindSorterSchema() : void
@@ -407,18 +337,6 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           subscription: null
         }
         
-        interface ITestInterface {
-          name: String!
-        }
-        
-        """
-        ITestInterface2 Description
-        """
-        interface ITestInterface2 {
-          "single line description"
-          name: String!
-        }
-        
         """
         TestInterface Description
         """
@@ -448,82 +366,52 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         }
         
         type Zzz {
-          enumList: [TestEnum]
+          enumList: [SimpleEnum]
         }
         
         union TestUnion = Abc | Xyz
         
-        union UTestUnion = Abc | Xyz
+        input ConstraintInput {
+          intArg: Int @intConstraint(max: 40)
+          intNotNullArg: Int! @intConstraint(min: -20)
+          intOneOfArg: Int @intConstraint(oneOf: [1, 2, 3])
+          floatArg: Float @floatConstraint(max: 4.01)
+          floatNotNullArg: Float! @floatConstraint(min: -20.101)
+          floatOneOfArg: Float @floatConstraint(oneOf: [1.01, 2.02, 3])
+          stringArg: String @stringConstraint(maxLength: 4)
+          stringNotNullArg: String! @stringConstraint(minLength: 4)
+          stringRegexArg: String @stringConstraint(regex: "(abc)|(foo)")
+          stringOneOfArg: String @stringConstraint(oneOf: ["abc", "foo"])
+          stringOneOfEmptyArg: String @stringConstraint(oneOf: [])
+        }
         
         input TestInnerInput {
           name: String!
-        
-          "single line description"
           number: [Int!]!
-        
-          """
-          multi line
-          description
-          """
           bool: Boolean
         }
         
         input TestInput {
           name: String!
-        
-          """
-          multi line
-          description
-          """
           inner: TestInnerInput
-        
-          """
-          multi line
-          description
-          """
           innerList: [TestInnerInput!]!
-        
-          "single line description"
           innerNotNull: TestInnerInput!
         }
         
         scalar TestScalar
-
-        scalar TestSecondScalar
         
-        """
-        ETestEnum description
-        """
-        enum ETestEnum {
-          "single line description"
+        enum ArrayEnum {
+          "First description"
           A
         
-          "single line description"
+          "Second description"
           B
         
-          "single line description"
+          "Third description"
           C
-        
-          "single line description"
-          D
         }
         
-        enum TestEnum {
-          A
-        
-          "single line description"
-          B
-        
-          C
-        
-          """
-          multi line
-          description
-          """
-          D
-        }
-        
-        enum TestExplicitEnum {
+        enum DescriptionEnum {
           "single line description"
           A
         
@@ -535,8 +423,15 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           """
           C
         
-          "single line description 2"
+          "single line description"
           D @deprecated
+        }
+        
+        enum SimpleEnum {
+          A
+          B
+          C
+          D
         }
         
         directive @invalidDirective repeatable on FIELD
@@ -544,7 +439,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         directive @testDirective repeatable on FIELD
         EOL;
 
-        self::assertSame($expected, PrintSchema::getSchema()->printSchema(new \Graphpinator\Utils\Sort\TypeKindSorter()));
+        self::assertSame($expected, TestSchema::getSchema()->printSchema(new \Graphpinator\Utils\Sort\TypeKindSorter()));
     }
 
     public function testPrintTypeKindSorterFullSchema() : void
@@ -556,18 +451,6 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           subscription: Query
         }
         
-        interface ITestInterface {
-          name: String!
-        }
-        
-        """
-        ITestInterface2 Description
-        """
-        interface ITestInterface2 {
-          "single line description"
-          name: String!
-        }
-        
         """
         TestInterface Description
         """
@@ -597,82 +480,52 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         }
         
         type Zzz {
-          enumList: [TestEnum]
+          enumList: [SimpleEnum]
         }
         
         union TestUnion = Abc | Xyz
         
-        union UTestUnion = Abc | Xyz
+        input ConstraintInput {
+          intArg: Int @intConstraint(max: 40)
+          intNotNullArg: Int! @intConstraint(min: -20)
+          intOneOfArg: Int @intConstraint(oneOf: [1, 2, 3])
+          floatArg: Float @floatConstraint(max: 4.01)
+          floatNotNullArg: Float! @floatConstraint(min: -20.101)
+          floatOneOfArg: Float @floatConstraint(oneOf: [1.01, 2.02, 3])
+          stringArg: String @stringConstraint(maxLength: 4)
+          stringNotNullArg: String! @stringConstraint(minLength: 4)
+          stringRegexArg: String @stringConstraint(regex: "(abc)|(foo)")
+          stringOneOfArg: String @stringConstraint(oneOf: ["abc", "foo"])
+          stringOneOfEmptyArg: String @stringConstraint(oneOf: [])
+        }
         
         input TestInnerInput {
           name: String!
-        
-          "single line description"
           number: [Int!]!
-        
-          """
-          multi line
-          description
-          """
           bool: Boolean
         }
         
         input TestInput {
           name: String!
-        
-          """
-          multi line
-          description
-          """
           inner: TestInnerInput
-        
-          """
-          multi line
-          description
-          """
           innerList: [TestInnerInput!]!
-        
-          "single line description"
           innerNotNull: TestInnerInput!
         }
         
         scalar TestScalar
-
-        scalar TestSecondScalar
         
-        """
-        ETestEnum description
-        """
-        enum ETestEnum {
-          "single line description"
+        enum ArrayEnum {
+          "First description"
           A
         
-          "single line description"
+          "Second description"
           B
         
-          "single line description"
+          "Third description"
           C
-        
-          "single line description"
-          D
         }
         
-        enum TestEnum {
-          A
-        
-          "single line description"
-          B
-        
-          C
-        
-          """
-          multi line
-          description
-          """
-          D
-        }
-        
-        enum TestExplicitEnum {
+        enum DescriptionEnum {
           "single line description"
           A
         
@@ -684,8 +537,15 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           """
           C
         
-          "single line description 2"
+          "single line description"
           D @deprecated
+        }
+        
+        enum SimpleEnum {
+          A
+          B
+          C
+          D
         }
         
         directive @invalidDirective repeatable on FIELD
@@ -693,6 +553,6 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         directive @testDirective repeatable on FIELD
         EOL;
 
-        self::assertSame($expected, PrintSchema::getFullSchema()->printSchema(new \Graphpinator\Utils\Sort\TypeKindSorter()));
+        self::assertSame($expected, TestSchema::getFullSchema()->printSchema(new \Graphpinator\Utils\Sort\TypeKindSorter()));
     }
 }

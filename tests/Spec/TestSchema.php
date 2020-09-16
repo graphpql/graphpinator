@@ -37,8 +37,10 @@ final class TestSchema
             'TestUnion' => self::getUnion(),
             'TestInput' => self::getInput(),
             'TestInnerInput' => self::getInnerInput(),
-            'TestEnum' => self::getEnum(),
-            'TestExplicitEnum' => self::getExplicitEnum(),
+            'ConstraintInput' => self::getConstraintInput(),
+            'SimpleEnum' => self::getSimpleEnum(),
+            'ArrayEnum' => self::getArrayEnum(),
+            'DescriptionEnum' => self::getDescriptionEnum(),
             'TestScalar' => self::getTestScalar(),
         ], [
             'testDirective' => self::getTestDirective(),
@@ -82,7 +84,7 @@ final class TestSchema
         return new class extends \Graphpinator\Type\Type
         {
             protected const NAME = 'Abc';
-            protected const DESCRIPTION = null;
+            protected const DESCRIPTION = 'Test Abc description';
 
             protected function validateNonNullValue($rawValue) : bool
             {
@@ -92,7 +94,7 @@ final class TestSchema
             protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
             {
                 return new \Graphpinator\Field\ResolvableFieldSet([
-                    new \Graphpinator\Field\ResolvableField(
+                    (new \Graphpinator\Field\ResolvableField(
                         'field1',
                         TestSchema::getInterface(),
                         static function (int $parent, ?int $arg1, ?\stdClass $arg2) : \Graphpinator\Resolver\FieldResult {
@@ -130,7 +132,7 @@ final class TestSchema
                             new \Graphpinator\Argument\Argument('arg1', \Graphpinator\Type\Container\Container::Int(), 123),
                             new \Graphpinator\Argument\Argument('arg2', TestSchema::getInput()),
                         ]),
-                    ),
+                    ))->setDeprecated(true),
                 ]);
             }
         };
@@ -178,7 +180,7 @@ final class TestSchema
             protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
             {
                 return new \Graphpinator\Field\ResolvableFieldSet([
-                    new \Graphpinator\Field\ResolvableField('enumList', TestSchema::getEnum()->list(), static function () {
+                    new \Graphpinator\Field\ResolvableField('enumList', TestSchema::getSimpleEnum()->list(), static function () {
                         return ['A', 'B'];
                     }),
                 ]);
@@ -247,11 +249,70 @@ final class TestSchema
         };
     }
 
+    public static function getConstraintInput() : \Graphpinator\Type\InputType
+    {
+        return new class extends \Graphpinator\Type\InputType
+        {
+            protected const NAME = 'ConstraintInput';
+
+            protected function getFieldDefinition(): \Graphpinator\Argument\ArgumentSet
+            {
+                return new \Graphpinator\Argument\ArgumentSet([
+                    (new \Graphpinator\Argument\Argument(
+                        'intArg',
+                        \Graphpinator\Type\Container\Container::Int(),
+                    ))->setConstraint(new \Graphpinator\Argument\Constraint\IntConstraint(null, 40)),
+                    (new \Graphpinator\Argument\Argument(
+                        'intNotNullArg',
+                        \Graphpinator\Type\Container\Container::Int()->notNull(),
+                    ))->setConstraint(new \Graphpinator\Argument\Constraint\IntConstraint(-20)),
+                    (new \Graphpinator\Argument\Argument(
+                        'intOneOfArg',
+                        \Graphpinator\Type\Container\Container::Int(),
+                    ))->setConstraint(new \Graphpinator\Argument\Constraint\IntConstraint(null, null, [1, 2, 3])),
+                    (new \Graphpinator\Argument\Argument(
+                        'floatArg',
+                        \Graphpinator\Type\Container\Container::Float(),
+                    ))->setConstraint(new \Graphpinator\Argument\Constraint\FloatConstraint(null, 4.01)),
+                    (new \Graphpinator\Argument\Argument(
+                        'floatNotNullArg',
+                        \Graphpinator\Type\Container\Container::Float()->notNull(),
+                    ))->setConstraint(new \Graphpinator\Argument\Constraint\FloatConstraint(-20.101)),
+                    (new \Graphpinator\Argument\Argument(
+                        'floatOneOfArg',
+                        \Graphpinator\Type\Container\Container::Float(),
+                    ))->setConstraint(new \Graphpinator\Argument\Constraint\FloatConstraint(null, null, [1.01, 2.02, 3.00])),
+                    (new \Graphpinator\Argument\Argument(
+                        'stringArg',
+                        \Graphpinator\Type\Container\Container::String(),
+                    ))->setConstraint(new \Graphpinator\Argument\Constraint\StringConstraint(null, 4)),
+                    (new \Graphpinator\Argument\Argument(
+                        'stringNotNullArg',
+                        \Graphpinator\Type\Container\Container::String()->notNull(),
+                    ))->setConstraint(new \Graphpinator\Argument\Constraint\StringConstraint(4)),
+                    (new \Graphpinator\Argument\Argument(
+                        'stringRegexArg',
+                        \Graphpinator\Type\Container\Container::String(),
+                    ))->setConstraint(new \Graphpinator\Argument\Constraint\StringConstraint(null, null, '(abc)|(foo)')),
+                    (new \Graphpinator\Argument\Argument(
+                        'stringOneOfArg',
+                        \Graphpinator\Type\Container\Container::String(),
+                    ))->setConstraint(new \Graphpinator\Argument\Constraint\StringConstraint(null, null, null, ['abc', 'foo'])),
+                    (new \Graphpinator\Argument\Argument(
+                        'stringOneOfEmptyArg',
+                        \Graphpinator\Type\Container\Container::String(),
+                    ))->setConstraint(new \Graphpinator\Argument\Constraint\StringConstraint(null, null, null, [])),
+                ]);
+            }
+        };
+    }
+
     public static function getInterface() : \Graphpinator\Type\InterfaceType
     {
         return new class extends \Graphpinator\Type\InterfaceType
         {
             protected const NAME = 'TestInterface';
+            protected const DESCRIPTION = 'TestInterface Description';
 
             protected function getFieldDefinition() : \Graphpinator\Field\FieldSet
             {
@@ -278,16 +339,16 @@ final class TestSchema
         };
     }
 
-    public static function getEnum() : \Graphpinator\Type\EnumType
+    public static function getSimpleEnum() : \Graphpinator\Type\EnumType
     {
         return new class extends \Graphpinator\Type\EnumType
         {
-            public const A = 'a';
-            public const B = 'b';
-            public const C = 'c';
-            public const D = 'd';
+            public const A = 'A';
+            public const B = 'B';
+            public const C = 'C';
+            public const D = 'D';
 
-            protected const NAME = 'TestEnum';
+            protected const NAME = 'SimpleEnum';
 
             public function __construct()
             {
@@ -296,19 +357,39 @@ final class TestSchema
         };
     }
 
-    public static function getExplicitEnum() : \Graphpinator\Type\EnumType
+    public static function getArrayEnum() : \Graphpinator\Type\EnumType
     {
         return new class extends \Graphpinator\Type\EnumType
         {
-            protected const NAME = 'TestExplicitEnum';
+            public const A = ['A', 'First description'];
+            public const B = ['B', 'Second description'];
+            public const C = ['C', 'Third description'];
+
+            protected const NAME = 'ArrayEnum';
+
+            public function __construct()
+            {
+                parent::__construct(self::fromConstants());
+            }
+        };
+    }
+
+    public static function getDescriptionEnum() : \Graphpinator\Type\EnumType
+    {
+        return new class extends \Graphpinator\Type\EnumType
+        {
+            protected const NAME = 'DescriptionEnum';
 
             public function __construct()
             {
                 parent::__construct(new \Graphpinator\Type\Enum\EnumItemSet([
-                    new \Graphpinator\Type\Enum\EnumItem('A'),
-                    new \Graphpinator\Type\Enum\EnumItem('B'),
-                    new \Graphpinator\Type\Enum\EnumItem('C'),
-                    new \Graphpinator\Type\Enum\EnumItem('D'),
+                    new \Graphpinator\Type\Enum\EnumItem('A', 'single line description'),
+                    (new \Graphpinator\Type\Enum\EnumItem('B'))
+                        ->setDeprecated(true),
+                    new \Graphpinator\Type\Enum\EnumItem('C', 'multi line' . \PHP_EOL . 'description'),
+                    (new \Graphpinator\Type\Enum\EnumItem('D', 'single line description'))
+                        ->setDeprecated(true)
+                        ->setDeprecationReason('reason'),
                 ]));
             }
         };
