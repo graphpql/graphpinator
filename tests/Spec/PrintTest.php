@@ -115,7 +115,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         type Abc {
           field1(
             arg1: Int = 123
-            arg2: TestInput
+            arg2: CompositeInput
           ): TestInterface @deprecated
         }
         
@@ -128,6 +128,13 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         
           "Third description"
           C
+        }
+        
+        input CompositeInput {
+          name: String!
+          inner: SimpleInput
+          innerList: [SimpleInput!]!
+          innerNotNull: SimpleInput!
         }
         
         input ConstraintInput {
@@ -146,6 +153,14 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           listMaxArg: [Int] @listConstraint(maxItems: 3)
           listUniqueArg: [Int] @listConstraint(unique: true)
           listInnerListArg: [[Int]] @listConstraint(innerList: {minItems: 1, maxItems: 3})
+        }
+        
+        input DefaultsInput {
+          scalar: String! = "defaultString"
+          enum: SimpleEnum! = "A"
+          list: [String!]! = ["string1","string2"]
+          object: SimpleInput! = {name:"string",number:[1,2],bool:null}
+          listObjects: [SimpleInput!]! = [{name:"string",number:[1],bool:null},{name:"string",number:[],bool:null}]
         }
         
         enum DescriptionEnum {
@@ -181,17 +196,10 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           D
         }
         
-        input TestInnerInput {
+        input SimpleInput {
           name: String!
           number: [Int!]!
           bool: Boolean
-        }
-        
-        input TestInput {
-          name: String!
-          inner: TestInnerInput
-          innerList: [TestInnerInput!]!
-          innerNotNull: TestInnerInput!
         }
         
         """
@@ -236,7 +244,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         type Abc {
           field1(
             arg1: Int = 123
-            arg2: TestInput
+            arg2: CompositeInput
           ): TestInterface @deprecated
         }
         
@@ -249,6 +257,13 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         
           "Third description"
           C
+        }
+        
+        input CompositeInput {
+          name: String!
+          inner: SimpleInput
+          innerList: [SimpleInput!]!
+          innerNotNull: SimpleInput!
         }
         
         input ConstraintInput {
@@ -267,6 +282,14 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           listMaxArg: [Int] @listConstraint(maxItems: 3)
           listUniqueArg: [Int] @listConstraint(unique: true)
           listInnerListArg: [[Int]] @listConstraint(innerList: {minItems: 1, maxItems: 3})
+        }
+        
+        input DefaultsInput {
+          scalar: String! = "defaultString"
+          enum: SimpleEnum! = "A"
+          list: [String!]! = ["string1","string2"]
+          object: SimpleInput! = {name:"string",number:[1,2],bool:null}
+          listObjects: [SimpleInput!]! = [{name:"string",number:[1],bool:null},{name:"string",number:[],bool:null}]
         }
         
         enum DescriptionEnum {
@@ -302,17 +325,10 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           D
         }
         
-        input TestInnerInput {
+        input SimpleInput {
           name: String!
           number: [Int!]!
           bool: Boolean
-        }
-        
-        input TestInput {
-          name: String!
-          inner: TestInnerInput
-          innerList: [TestInnerInput!]!
-          innerNotNull: TestInnerInput!
         }
         
         """
@@ -364,7 +380,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         type Abc {
           field1(
             arg1: Int = 123
-            arg2: TestInput
+            arg2: CompositeInput
           ): TestInterface @deprecated
         }
         
@@ -388,6 +404,13 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         
         union TestUnion = Abc | Xyz
         
+        input CompositeInput {
+          name: String!
+          inner: SimpleInput
+          innerList: [SimpleInput!]!
+          innerNotNull: SimpleInput!
+        }
+        
         input ConstraintInput {
           intMinArg: Int @intConstraint(min: -20)
           intMaxArg: Int @intConstraint(max: 20)
@@ -406,17 +429,18 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           listInnerListArg: [[Int]] @listConstraint(innerList: {minItems: 1, maxItems: 3})
         }
         
-        input TestInnerInput {
+        input DefaultsInput {
+          scalar: String! = "defaultString"
+          enum: SimpleEnum! = "A"
+          list: [String!]! = ["string1","string2"]
+          object: SimpleInput! = {name:"string",number:[1,2],bool:null}
+          listObjects: [SimpleInput!]! = [{name:"string",number:[1],bool:null},{name:"string",number:[],bool:null}]
+        }
+        
+        input SimpleInput {
           name: String!
           number: [Int!]!
           bool: Boolean
-        }
-        
-        input TestInput {
-          name: String!
-          inner: TestInnerInput
-          innerList: [TestInnerInput!]!
-          innerNotNull: TestInnerInput!
         }
         
         scalar TestScalar
@@ -485,7 +509,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         type Abc {
           field1(
             arg1: Int = 123
-            arg2: TestInput
+            arg2: CompositeInput
           ): TestInterface @deprecated
         }
         
@@ -509,6 +533,13 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         
         union TestUnion = Abc | Xyz
         
+        input CompositeInput {
+          name: String!
+          inner: SimpleInput
+          innerList: [SimpleInput!]!
+          innerNotNull: SimpleInput!
+        }
+        
         input ConstraintInput {
           intMinArg: Int @intConstraint(min: -20)
           intMaxArg: Int @intConstraint(max: 20)
@@ -527,17 +558,18 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           listInnerListArg: [[Int]] @listConstraint(innerList: {minItems: 1, maxItems: 3})
         }
         
-        input TestInnerInput {
+        input DefaultsInput {
+          scalar: String! = "defaultString"
+          enum: SimpleEnum! = "A"
+          list: [String!]! = ["string1","string2"]
+          object: SimpleInput! = {name:"string",number:[1,2],bool:null}
+          listObjects: [SimpleInput!]! = [{name:"string",number:[1],bool:null},{name:"string",number:[],bool:null}]
+        }
+        
+        input SimpleInput {
           name: String!
           number: [Int!]!
           bool: Boolean
-        }
-        
-        input TestInput {
-          name: String!
-          inner: TestInnerInput
-          innerList: [TestInnerInput!]!
-          innerNotNull: TestInnerInput!
         }
         
         scalar TestScalar

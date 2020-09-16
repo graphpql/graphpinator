@@ -35,8 +35,9 @@ final class TestSchema
             'Zzz' => self::getTypeZzz(),
             'TestInterface' => self::getInterface(),
             'TestUnion' => self::getUnion(),
-            'TestInput' => self::getInput(),
-            'TestInnerInput' => self::getInnerInput(),
+            'CompositeInput' => self::getCompositeInput(),
+            'SimpleInput' => self::getSimpleInput(),
+            'DefaultsInput' => self::getDefaultsInput(),
             'ConstraintInput' => self::getConstraintInput(),
             'SimpleEnum' => self::getSimpleEnum(),
             'ArrayEnum' => self::getArrayEnum(),
@@ -159,7 +160,7 @@ final class TestSchema
                         },
                         new \Graphpinator\Argument\ArgumentSet([
                             new \Graphpinator\Argument\Argument('arg1', \Graphpinator\Type\Container\Container::Int(), 123),
-                            new \Graphpinator\Argument\Argument('arg2', TestSchema::getInput()),
+                            new \Graphpinator\Argument\Argument('arg2', TestSchema::getCompositeInput()),
                         ]),
                     ))->setDeprecated(true),
                 ]);
@@ -222,11 +223,11 @@ final class TestSchema
         };
     }
 
-    public static function getInput() : \Graphpinator\Type\InputType
+    public static function getCompositeInput() : \Graphpinator\Type\InputType
     {
         return new class extends \Graphpinator\Type\InputType
         {
-            protected const NAME = 'TestInput';
+            protected const NAME = 'CompositeInput';
 
             protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
             {
@@ -237,26 +238,26 @@ final class TestSchema
                     ),
                     new \Graphpinator\Argument\Argument(
                         'inner',
-                        TestSchema::getInnerInput(),
+                        TestSchema::getSimpleInput(),
                     ),
                     new \Graphpinator\Argument\Argument(
                         'innerList',
-                        TestSchema::getInnerInput()->notNullList(),
+                        TestSchema::getSimpleInput()->notNullList(),
                     ),
                     new \Graphpinator\Argument\Argument(
                         'innerNotNull',
-                        TestSchema::getInnerInput()->notNull(),
+                        TestSchema::getSimpleInput()->notNull(),
                     ),
                 ]);
             }
         };
     }
 
-    public static function getInnerInput() : \Graphpinator\Type\InputType
+    public static function getSimpleInput() : \Graphpinator\Type\InputType
     {
         return new class extends \Graphpinator\Type\InputType
         {
-            protected const NAME = 'TestInnerInput';
+            protected const NAME = 'SimpleInput';
 
             protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
             {
@@ -272,6 +273,45 @@ final class TestSchema
                     new \Graphpinator\Argument\Argument(
                         'bool',
                         \Graphpinator\Type\Container\Container::Boolean(),
+                    ),
+                ]);
+            }
+        };
+    }
+
+    public static function getDefaultsInput() : \Graphpinator\Type\InputType
+    {
+        return new class extends \Graphpinator\Type\InputType
+        {
+            protected const NAME = 'DefaultsInput';
+
+            protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
+            {
+                return new \Graphpinator\Argument\ArgumentSet([
+                    new \Graphpinator\Argument\Argument(
+                        'scalar',
+                        \Graphpinator\Type\Container\Container::String()->notNull(),
+                        'defaultString',
+                    ),
+                    new \Graphpinator\Argument\Argument(
+                        'enum',
+                        TestSchema::getSimpleEnum()->notNull(),
+                        'A',
+                    ),
+                    new \Graphpinator\Argument\Argument(
+                        'list',
+                        \Graphpinator\Type\Container\Container::String()->notNullList(),
+                        ['string1', 'string2'],
+                    ),
+                    new \Graphpinator\Argument\Argument(
+                        'object',
+                        TestSchema::getSimpleInput()->notNull(),
+                        (object) ['name' => 'string', 'number' => [1, 2]],
+                    ),
+                    new \Graphpinator\Argument\Argument(
+                        'listObjects',
+                        TestSchema::getSimpleInput()->notNullList(),
+                        [(object) ['name' => 'string', 'number' => [1]], (object) ['name' => 'string', 'number' => []]],
                     ),
                 ]);
             }

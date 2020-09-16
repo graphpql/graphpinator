@@ -172,7 +172,7 @@ final class InputTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName ($var1: TestInnerInput = {
+                    'query' => 'query queryName ($var1: SimpleInput = {
                         name: "bar", number: []
                     })
                     {
@@ -198,7 +198,7 @@ final class InputTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName ($var1: TestInnerInput) { 
+                    'query' => 'query queryName ($var1: SimpleInput) { 
                         fieldValid { 
                             field1(arg2: {
                                 name: "foo", innerList: [$var1, $var1], innerNotNull: $var1 
@@ -222,7 +222,7 @@ final class InputTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName ($var1: [TestInnerInput] = [
+                    'query' => 'query queryName ($var1: [SimpleInput] = [
                         {name: "bar", number: []}
                     ])
                     { 

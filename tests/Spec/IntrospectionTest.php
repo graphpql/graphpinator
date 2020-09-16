@@ -83,8 +83,9 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                                 ['name' => 'Zzz'],
                                 ['name' => 'TestInterface'],
                                 ['name' => 'TestUnion'],
-                                ['name' => 'TestInput'],
-                                ['name' => 'TestInnerInput'],
+                                ['name' => 'CompositeInput'],
+                                ['name' => 'SimpleInput'],
+                                ['name' => 'DefaultsInput'],
                                 ['name' => 'ConstraintInput'],
                                 ['name' => 'SimpleEnum'],
                                 ['name' => 'ArrayEnum'],
@@ -345,7 +346,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
             [
                 \Graphpinator\Json::fromObject((object) [
                     'query' => '{ 
-                        __type(name: "TestInnerInput") { 
+                        __type(name: "SimpleInput") { 
                             kind name description 
                             fields { name }
                             interfaces { name }
@@ -360,7 +361,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                     'data' => [
                         '__type' => [
                             'kind' => 'INPUT_OBJECT',
-                            'name' => 'TestInnerInput',
+                            'name' => 'SimpleInput',
                             'description' => null,
                             'fields' => null,
                             'interfaces' => null,
@@ -559,7 +560,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                                         [
                                             'name' => 'arg2',
                                             'description' => null,
-                                            'type' => ['name' => 'TestInput'],
+                                            'type' => ['name' => 'CompositeInput'],
                                             'defaultValue' => null,
                                         ],
                                     ],
