@@ -19,27 +19,18 @@ final class ArgumentValueSet extends \Infinityloop\Utils\ObjectSet
 
         foreach ($argumentSet as $argument) {
             if ($namedValueSet->offsetExists($argument->getName())) {
-                $this->appendUnique(
-                    $argument->getName(),
-                    $argument->getType()->createValue($namedValueSet[$argument->getName()]->getRawValue()),
-                );
+                $this->appendUnique($argument, $argument->getType()->createValue($namedValueSet[$argument->getName()]->getRawValue()));
 
                 continue;
             }
 
             if ($argument->getDefaultValue() instanceof \Graphpinator\Resolver\Value\ValidatedValue) {
-                $this->appendUnique(
-                    $argument->getName(),
-                    $argument->getDefaultValue(),
-                );
+                $this->appendUnique($argument, $argument->getDefaultValue());
 
                 continue;
             }
 
-            $this->appendUnique(
-                $argument->getName(),
-                new \Graphpinator\Resolver\Value\NullValue($argument->getType()),
-            );
+            $this->appendUnique($argument, new \Graphpinator\Resolver\Value\NullValue($argument->getType()));
         }
     }
 
@@ -64,12 +55,16 @@ final class ArgumentValueSet extends \Infinityloop\Utils\ObjectSet
         return $return;
     }
 
-    private function appendUnique($offset, $value) : void
+    private function appendUnique(\Graphpinator\Argument\Argument $argument, \Graphpinator\Resolver\Value\ValidatedValue $value) : void
     {
-        if ($this->offsetExists($offset)) {
+        if ($argument->getConstraint() instanceof \Graphpinator\Argument\Constraint\Constraint) {
+            $argument->getConstraint()->validate($value);
+        }
+
+        if ($this->offsetExists($argument->getName())) {
             throw new \Exception('Duplicated item.');
         }
 
-        $this->array[$offset] = $value;
+        $this->array[$argument->getName()] = $value;
     }
 }
