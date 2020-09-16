@@ -74,7 +74,7 @@ final class TestSchema
                             new \Graphpinator\Argument\Argument(
                                 'arg',
                                 TestSchema::getConstraintInput(),
-                            )
+                            ),
                         ]),
                     ),
                     new \Graphpinator\Field\ResolvableField(
@@ -91,7 +91,8 @@ final class TestSchema
                             return 1;
                         },
                     ),
-                    new \Graphpinator\Field\ResolvableField('fieldThrow',
+                    new \Graphpinator\Field\ResolvableField(
+                        'fieldThrow',
                         TestSchema::getUnion(),
                         static function () : void {
                             throw new \Exception('Random exception');
@@ -283,7 +284,7 @@ final class TestSchema
         {
             protected const NAME = 'ConstraintInput';
 
-            protected function getFieldDefinition(): \Graphpinator\Argument\ArgumentSet
+            protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
             {
                 return new \Graphpinator\Argument\ArgumentSet([
                     (new \Graphpinator\Argument\Argument(

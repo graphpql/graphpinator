@@ -417,10 +417,30 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                     'data' => [
                         '__type' => [
                             'enumValues' => [
-                                ['name' => 'A', 'description' => 'single line description', 'isDeprecated' => false, 'deprecationReason' => null],
-                                ['name' => 'B', 'description' => null, 'isDeprecated' => true, 'deprecationReason' => null],
-                                ['name' => 'C', 'description' => 'multi line' . PHP_EOL . 'description', 'isDeprecated' => false, 'deprecationReason' => null],
-                                ['name' => 'D', 'description' => 'single line description', 'isDeprecated' => true, 'deprecationReason' => 'reason'],
+                                [
+                                    'name' => 'A',
+                                    'description' => 'single line description',
+                                    'isDeprecated' => false,
+                                    'deprecationReason' => null,
+                                ],
+                                [
+                                    'name' => 'B',
+                                    'description' => null,
+                                    'isDeprecated' => true,
+                                    'deprecationReason' => null,
+                                ],
+                                [
+                                    'name' => 'C',
+                                    'description' => 'multi line' . \PHP_EOL . 'description',
+                                    'isDeprecated' => false,
+                                    'deprecationReason' => null,
+                                ],
+                                [
+                                    'name' => 'D',
+                                    'description' => 'single line description',
+                                    'isDeprecated' => true,
+                                    'deprecationReason' => 'reason',
+                                ],
                             ],
                         ],
                     ],
@@ -436,8 +456,18 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                     'data' => [
                         '__type' => [
                             'enumValues' => [
-                                ['name' => 'A', 'description' => 'single line description', 'isDeprecated' => false, 'deprecationReason' => null],
-                                ['name' => 'C', 'description' => 'multi line' . PHP_EOL . 'description', 'isDeprecated' => false, 'deprecationReason' => null],
+                                [
+                                    'name' => 'A',
+                                    'description' => 'single line description',
+                                    'isDeprecated' => false,
+                                    'deprecationReason' => null,
+                                ],
+                                [
+                                    'name' => 'C',
+                                    'description' => 'multi line' . \PHP_EOL . 'description',
+                                    'isDeprecated' => false,
+                                    'deprecationReason' => null,
+                                ],
                             ],
                         ],
                     ],

@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Argument\Constraint;
 
-final class IntConstraint extends Constraint
+final class IntConstraint extends \Graphpinator\Argument\Constraint\Constraint
 {
     private ?int $min;
     private ?int $max;
@@ -38,7 +38,7 @@ final class IntConstraint extends Constraint
         }
 
         if (\is_array($this->oneOf)) {
-            $components[] = 'oneOf: [' . \implode(', ', $this->oneOf). ']';
+            $components[] = 'oneOf: [' . \implode(', ', $this->oneOf) . ']';
         }
 
         return '@intConstraint(' . \implode(', ', $components) . ')';

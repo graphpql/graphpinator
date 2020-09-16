@@ -29,13 +29,15 @@ final class FragmentTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { ... namedFragment } fragment namedFragment on Query { fieldValid { field1 { name } } }',
+                    'query' => 'query queryName { ... namedFragment } 
+                    fragment namedFragment on Query { fieldValid { field1 { name } } }',
                 ]),
                 \Graphpinator\Json::fromObject((object) ['data' => ['fieldValid' => ['field1' => ['name' => 'Test 123']]]]),
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { ... namedFragment } fragment namedFragment on Query { fieldValid { field1 { ... on Xyz { name } } } }',
+                    'query' => 'query queryName { ... namedFragment } 
+                    fragment namedFragment on Query { fieldValid { field1 { ... on Xyz { name } } } }',
                 ]),
                 \Graphpinator\Json::fromObject((object) ['data' => ['fieldValid' => ['field1' => ['name' => 'Test 123']]]]),
             ],
@@ -103,43 +105,56 @@ final class FragmentTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldValid { field1 { ... on Xyz { __typename name } ... on TestInterface { __typename name } } } }',
+                    'query' => 'query queryName { fieldValid { 
+                    field1 { ... on Xyz { __typename name } ... on TestInterface { __typename name } } 
+                    } }',
                 ]),
                 \Graphpinator\Json::fromObject((object) ['data' => ['fieldValid' => ['field1' => ['__typename' => 'Xyz', 'name' => 'Test 123']]]]),
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldValid { field1 { ... on TestInterface { __typename name } ... on Xyz { __typename name } } } }',
+                    'query' => 'query queryName { fieldValid { 
+                    field1 { ... on TestInterface { __typename name } ... on Xyz { __typename name } } 
+                    } }',
                 ]),
                 \Graphpinator\Json::fromObject((object) ['data' => ['fieldValid' => ['field1' => ['__typename' => 'Xyz', 'name' => 'Test 123']]]]),
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldValid { field1 { __typename } ... on Abc { field1 { ... on Xyz { __typename name } } } } }',
+                    'query' => 'query queryName { fieldValid {
+                     field1 { __typename } ... on Abc { field1 { ... on Xyz { __typename name } } } } }',
                 ]),
                 \Graphpinator\Json::fromObject((object) ['data' => ['fieldValid' => ['field1' => ['__typename' => 'Xyz', 'name' => 'Test 123']]]]),
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldValid { field1 { __typename ... on Xyz { __typename name } ... on Abc { __typename name } } } }',
+                    'query' => 'query queryName { fieldValid { 
+                    field1 { __typename ... on Xyz { __typename name } ... on Abc { __typename name } } 
+                    } }',
                 ]),
                 \Graphpinator\Json::fromObject((object) ['data' => ['fieldValid' => ['field1' => ['__typename' => 'Xyz', 'name' => 'Test 123']]]]),
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldValid { field1 { name: __typename ... on Xyz { __typename } } } }',
+                    'query' => 'query queryName { fieldValid { 
+                    field1 { name: __typename ... on Xyz { __typename } } 
+                    } }',
                 ]),
                 \Graphpinator\Json::fromObject((object) ['data' => ['fieldValid' => ['field1' => ['name' => 'Xyz', '__typename' => 'Xyz']]]]),
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldValid { field1(arg1: 456) { name } ... on Abc { field1(arg1: 456) { __typename } } } }',
+                    'query' => 'query queryName { fieldValid { 
+                    field1(arg1: 456) { name } ... on Abc { field1(arg1: 456) { __typename } } 
+                    } }',
                 ]),
                 \Graphpinator\Json::fromObject((object) ['data' => ['fieldValid' => ['field1' => ['name' => 'Test 456', '__typename' => 'Xyz']]]]),
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldValid { field1(arg1: 456) { name } ... on Abc { field1(arg1: 456) { name } } } }',
+                    'query' => 'query queryName { fieldValid { 
+                    field1(arg1: 456) { name } ... on Abc { field1(arg1: 456) { name } } 
+                    } }',
                 ]),
                 \Graphpinator\Json::fromObject((object) ['data' => ['fieldValid' => ['field1' => ['name' => 'Test 456']]]]),
             ],

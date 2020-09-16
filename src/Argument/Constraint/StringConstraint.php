@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Argument\Constraint;
 
-final class StringConstraint extends Constraint
+final class StringConstraint extends \Graphpinator\Argument\Constraint\Constraint
 {
     private ?int $minLength;
     private ?int $maxLength;

@@ -180,7 +180,7 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
         $type = new class extends \Graphpinator\Type\InputType {
             protected const NAME = 'ConstraintInput';
 
-            protected function getFieldDefinition(): \Graphpinator\Argument\ArgumentSet
+            protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
             {
                 return new \Graphpinator\Argument\ArgumentSet([
                     (new \Graphpinator\Argument\Argument(
@@ -202,7 +202,7 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
         $type = new class extends \Graphpinator\Type\InputType {
             protected const NAME = 'ConstraintInput';
 
-            protected function getFieldDefinition(): \Graphpinator\Argument\ArgumentSet
+            protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
             {
                 return new \Graphpinator\Argument\ArgumentSet([
                     (new \Graphpinator\Argument\Argument(
@@ -224,7 +224,7 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
         $type = new class extends \Graphpinator\Type\InputType {
             protected const NAME = 'ConstraintInput';
 
-            protected function getFieldDefinition(): \Graphpinator\Argument\ArgumentSet
+            protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
             {
                 return new \Graphpinator\Argument\ArgumentSet([
                     (new \Graphpinator\Argument\Argument(
@@ -246,7 +246,7 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
         $type = new class extends \Graphpinator\Type\InputType {
             protected const NAME = 'ConstraintInput';
 
-            protected function getFieldDefinition(): \Graphpinator\Argument\ArgumentSet
+            protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
             {
                 return new \Graphpinator\Argument\ArgumentSet([
                     (new \Graphpinator\Argument\Argument(
@@ -268,7 +268,7 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
         $type = new class extends \Graphpinator\Type\InputType {
             protected const NAME = 'ConstraintInput';
 
-            protected function getFieldDefinition(): \Graphpinator\Argument\ArgumentSet
+            protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
             {
                 return new \Graphpinator\Argument\ArgumentSet([
                     (new \Graphpinator\Argument\Argument(
@@ -290,7 +290,7 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
         $type = new class extends \Graphpinator\Type\InputType {
             protected const NAME = 'ConstraintInput';
 
-            protected function getFieldDefinition(): \Graphpinator\Argument\ArgumentSet
+            protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
             {
                 return new \Graphpinator\Argument\ArgumentSet([
                     (new \Graphpinator\Argument\Argument(
@@ -312,13 +312,13 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
         $type = new class extends \Graphpinator\Type\InputType {
             protected const NAME = 'ConstraintInput';
 
-            protected function getFieldDefinition(): \Graphpinator\Argument\ArgumentSet
+            protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
             {
                 return new \Graphpinator\Argument\ArgumentSet([
                     (new \Graphpinator\Argument\Argument(
                         'arg',
                         \Graphpinator\Type\Container\Container::Int(),
-                    ))->setConstraint(new \Graphpinator\Argument\Constraint\IntConstraint(null, null, ["string"])),
+                    ))->setConstraint(new \Graphpinator\Argument\Constraint\IntConstraint(null, null, ['string'])),
                 ]);
             }
         };
@@ -334,13 +334,13 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
         $type = new class extends \Graphpinator\Type\InputType {
             protected const NAME = 'ConstraintInput';
 
-            protected function getFieldDefinition(): \Graphpinator\Argument\ArgumentSet
+            protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
             {
                 return new \Graphpinator\Argument\ArgumentSet([
                     (new \Graphpinator\Argument\Argument(
                         'arg',
                         \Graphpinator\Type\Container\Container::Float(),
-                    ))->setConstraint(new \Graphpinator\Argument\Constraint\FloatConstraint(null, null, ["string"])),
+                    ))->setConstraint(new \Graphpinator\Argument\Constraint\FloatConstraint(null, null, ['string'])),
                 ]);
             }
         };
@@ -356,7 +356,7 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
         $type = new class extends \Graphpinator\Type\InputType {
             protected const NAME = 'ConstraintInput';
 
-            protected function getFieldDefinition(): \Graphpinator\Argument\ArgumentSet
+            protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
             {
                 return new \Graphpinator\Argument\ArgumentSet([
                     (new \Graphpinator\Argument\Argument(

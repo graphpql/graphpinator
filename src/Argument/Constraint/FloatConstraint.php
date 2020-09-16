@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Argument\Constraint;
 
-final class FloatConstraint extends Constraint
+final class FloatConstraint extends \Graphpinator\Argument\Constraint\Constraint
 {
     private ?float $min;
     private ?float $max;

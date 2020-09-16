@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Argument\Constraint;
 
-final class ListConstraint extends Constraint
+final class ListConstraint extends \Graphpinator\Argument\Constraint\Constraint
 {
     private ?\stdClass $options;
 
@@ -87,18 +87,20 @@ final class ListConstraint extends Constraint
             }
         }
 
-        if ($options->innerList instanceof \stdClass) {
-            foreach ($value as $innerValue) {
-                if ($innerValue === null) {
-                    continue;
-                }
+        if (!$options->innerList instanceof \stdClass) {
+            return;
+        }
 
-                if (!\is_array($innerValue)) {
-                    throw new \Graphpinator\Exception\Constraint\InnerListNotList();
-                }
-
-                self::recursiveValidateFactoryMethod($options->innerList, $innerValue);
+        foreach ($value as $innerValue) {
+            if ($innerValue === null) {
+                continue;
             }
+
+            if (!\is_array($innerValue)) {
+                throw new \Graphpinator\Exception\Constraint\InnerListNotList();
+            }
+
+            self::recursiveValidateFactoryMethod($options->innerList, $innerValue);
         }
     }
 
