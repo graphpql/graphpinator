@@ -190,7 +190,51 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
         $graphpinator->runQuery($request);
     }
 
-    public function testInvalidConstraintType() : void
+    public function testInvalidConstraintTypeString() : void
+    {
+        $this->expectException(\Graphpinator\Exception\Constraint\InvalidConstraintType::class);
+        $this->expectExceptionMessage(\Graphpinator\Exception\Constraint\InvalidConstraintType::MESSAGE);
+
+        $type = new class extends \Graphpinator\Type\InputType {
+            protected const NAME = 'ConstraintInput';
+
+            protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
+            {
+                return new \Graphpinator\Argument\ArgumentSet([
+                    (new \Graphpinator\Argument\Argument(
+                        'arg',
+                        \Graphpinator\Type\Container\Container::Float(),
+                    ))->addConstraint(new \Graphpinator\Argument\Constraint\StringConstraint()),
+                ]);
+            }
+        };
+
+        $type->getArguments();
+    }
+
+    public function testInvalidConstraintTypeInt() : void
+    {
+        $this->expectException(\Graphpinator\Exception\Constraint\InvalidConstraintType::class);
+        $this->expectExceptionMessage(\Graphpinator\Exception\Constraint\InvalidConstraintType::MESSAGE);
+
+        $type = new class extends \Graphpinator\Type\InputType {
+            protected const NAME = 'ConstraintInput';
+
+            protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
+            {
+                return new \Graphpinator\Argument\ArgumentSet([
+                    (new \Graphpinator\Argument\Argument(
+                        'arg',
+                        \Graphpinator\Type\Container\Container::String(),
+                    ))->addConstraint(new \Graphpinator\Argument\Constraint\IntConstraint()),
+                ]);
+            }
+        };
+
+        $type->getArguments();
+    }
+
+    public function testInvalidConstraintTypeFloat() : void
     {
         $this->expectException(\Graphpinator\Exception\Constraint\InvalidConstraintType::class);
         $this->expectExceptionMessage(\Graphpinator\Exception\Constraint\InvalidConstraintType::MESSAGE);
@@ -204,7 +248,7 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
                     (new \Graphpinator\Argument\Argument(
                         'arg',
                         \Graphpinator\Type\Container\Container::Int(),
-                    ))->addConstraint(new \Graphpinator\Argument\Constraint\StringConstraint()),
+                    ))->addConstraint(new \Graphpinator\Argument\Constraint\FloatConstraint()),
                 ]);
             }
         };
