@@ -13,6 +13,10 @@ final class FieldResult
 
     private function __construct(\Graphpinator\Type\Contract\Definition $type, \Graphpinator\Resolver\Value\ValidatedValue $value)
     {
+        if ($type->getNamedType() instanceof \Graphpinator\Type\Contract\AbstractDefinition) {
+            throw new \Graphpinator\Exception\Resolver\FieldResultAbstract();
+        }
+
         $this->type = $type;
         $this->result = $value;
     }
@@ -24,11 +28,7 @@ final class FieldResult
 
     public static function fromValidated(\Graphpinator\Resolver\Value\ValidatedValue $value) : self
     {
-        if ($value->getType()->getNamedType() instanceof \Graphpinator\Type\Contract\ConcreteDefinition) {
-            return new self($value->getType(), $value);
-        }
-
-        throw new \Graphpinator\Exception\Resolver\FieldResultAbstract();
+        return new self($value->getType(), $value);
     }
 
     public function getType() : \Graphpinator\Type\Contract\Definition

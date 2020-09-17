@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Resolver\Value;
 
-final class InputValue extends \Graphpinator\Resolver\Value\ValidatedValue implements \Iterator, \ArrayAccess
+final class InputValue extends \Graphpinator\Resolver\Value\ValidatedValue implements \ArrayAccess
 {
     public function __construct(\stdClass $fields, \Graphpinator\Type\InputType $type)
     {
@@ -57,31 +57,6 @@ final class InputValue extends \Graphpinator\Resolver\Value\ValidatedValue imple
         }
 
         return '{' . \implode(',', $component) . '}';
-    }
-
-    public function current() : ValidatedValue
-    {
-        return \current($this->value);
-    }
-
-    public function next() : void
-    {
-        \next($this->value);
-    }
-
-    public function key() : ?string
-    {
-        return \key($this->value);
-    }
-
-    public function valid() : bool
-    {
-        return \key($this->value) !== null;
-    }
-
-    public function rewind() : void
-    {
-        \reset($this->value);
     }
 
     public function offsetExists($name) : bool
