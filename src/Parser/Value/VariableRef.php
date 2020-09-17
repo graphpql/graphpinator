@@ -17,7 +17,7 @@ final class VariableRef implements \Graphpinator\Parser\Value\Value
 
     public function getRawValue() : void
     {
-        throw new \Exception('Invalid state.');
+        throw new \Graphpinator\Exception\OperationNotSupported();
     }
 
     public function getVarName() : string
@@ -33,7 +33,7 @@ final class VariableRef implements \Graphpinator\Parser\Value\Value
             return new \Graphpinator\Parser\Value\Literal($value->getRawValue());
         }
 
-        throw new \Exception('Unknown variable.');
+        throw new \Graphpinator\Exception\Resolver\MissingVariable();
     }
 
     public function isSame(Value $compare) : bool

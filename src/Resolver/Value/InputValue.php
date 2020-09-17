@@ -71,11 +71,11 @@ final class InputValue extends \Graphpinator\Resolver\Value\ValidatedValue imple
 
     public function offsetSet($offset, $value) : void
     {
-        throw new \Exception();
+        throw new \Graphpinator\Exception\OperationNotSupported();
     }
 
     public function offsetUnset($offset) : void
     {
-        throw new \Exception();
+        throw new \Graphpinator\Exception\OperationNotSupported();
     }
 }

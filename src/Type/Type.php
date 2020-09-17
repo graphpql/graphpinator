@@ -71,15 +71,6 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
         return (object) $resolved;
     }
 
-    final public function getMetaFields() : \Graphpinator\Field\ResolvableFieldSet
-    {
-        if (!$this->metaFields instanceof \Graphpinator\Field\ResolvableFieldSet) {
-            $this->metaFields = $this->getMetaFieldDefinition();
-        }
-
-        return $this->metaFields;
-    }
-
     final public function addMetaField(\Graphpinator\Field\ResolvableField $field) : void
     {
         $this->getMetaFields()->offsetSet($field->getName(), $field);
@@ -99,6 +90,15 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
     }
 
     abstract protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet;
+
+    final protected function getMetaFields() : \Graphpinator\Field\ResolvableFieldSet
+    {
+        if (!$this->metaFields instanceof \Graphpinator\Field\ResolvableFieldSet) {
+            $this->metaFields = $this->getMetaFieldDefinition();
+        }
+
+        return $this->metaFields;
+    }
 
     private function getMetaFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
     {

@@ -69,9 +69,6 @@ final class Schema
     {
         $sorter ??= new \Graphpinator\Utils\Sort\AlphabeticalSorter();
 
-        $query = $this->query instanceof Type
-            ? $this->query->getName()
-            : 'null';
         $mutation = $this->mutation instanceof Type
             ? $this->mutation->getName()
             : 'null';
@@ -81,7 +78,7 @@ final class Schema
 
         $schemaDef = $this->printDescription() . <<<EOL
         schema {
-          query: {$query}
+          query: {$this->query->getName()}
           mutation: {$mutation}
           subscription: {$subscription}
         }
