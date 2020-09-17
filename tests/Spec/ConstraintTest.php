@@ -387,4 +387,48 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
 
         $type->getArguments();
     }
+
+    public function testInvalidConstraintTypeList() : void
+    {
+        $this->expectException(\Graphpinator\Exception\Constraint\InvalidConstraintType::class);
+        $this->expectExceptionMessage(\Graphpinator\Exception\Constraint\InvalidConstraintType::MESSAGE);
+
+        $type = new class extends \Graphpinator\Type\InputType {
+            protected const NAME = 'ConstraintInput';
+
+            protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
+            {
+                return new \Graphpinator\Argument\ArgumentSet([
+                    (new \Graphpinator\Argument\Argument(
+                        'arg',
+                        \Graphpinator\Type\Container\Container::String()->notNull(),
+                    ))->addConstraint(new \Graphpinator\Argument\Constraint\ListConstraint()),
+                ]);
+            }
+        };
+
+        $type->getArguments();
+    }
+
+    public function testUniqueConstraintList() : void
+    {
+        $this->expectException(\Graphpinator\Exception\Constraint\UniqueConstraintOnlyScalar::class);
+        $this->expectExceptionMessage(\Graphpinator\Exception\Constraint\UniqueConstraintOnlyScalar::MESSAGE);
+
+        $type = new class extends \Graphpinator\Type\InputType {
+            protected const NAME = 'ConstraintInput';
+
+            protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
+            {
+                return new \Graphpinator\Argument\ArgumentSet([
+                    (new \Graphpinator\Argument\Argument(
+                        'arg',
+                        \Graphpinator\Type\Container\Container::String()->notNullList()->list()->notNull(),
+                    ))->addConstraint(new \Graphpinator\Argument\Constraint\ListConstraint(null, null, true)),
+                ]);
+            }
+        };
+
+        $type->getArguments();
+    }
 }

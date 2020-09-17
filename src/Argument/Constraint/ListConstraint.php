@@ -25,8 +25,7 @@ final class ListConstraint extends \Graphpinator\Argument\Constraint\Constraint
 
     public function validateType(\Graphpinator\Type\Contract\Inputable $type) : bool
     {
-        return $type instanceof \Graphpinator\Type\ListType
-            || ($type instanceof \Graphpinator\Type\NotNullType && $type->getInnerType() instanceof \Graphpinator\Type\ListType);
+        return self::recursiveValidateType($this->options, $type);
     }
 
     protected function validateFactoryMethod($inputValue) : void
@@ -59,6 +58,35 @@ final class ListConstraint extends \Graphpinator\Argument\Constraint\Constraint
          return \implode(', ', $components);
     }
 
+    private static function recursiveValidateType(\stdClass $options, \Graphpinator\Type\Contract\Inputable $type) : bool
+    {
+        $usedType = $type;
+
+        if ($usedType instanceof \Graphpinator\Type\NotNullType) {
+            $usedType = $usedType->getInnerType();
+        }
+
+        if (!$usedType instanceof \Graphpinator\Type\ListType) {
+            return false;
+        }
+
+        $usedType = $usedType->getInnerType();
+
+        if ($usedType instanceof \Graphpinator\Type\NotNullType) {
+            $usedType = $usedType->getInnerType();
+        }
+
+        if ($options->unique && !$usedType instanceof \Graphpinator\Type\Contract\LeafDefinition) {
+            throw new \Graphpinator\Exception\Constraint\UniqueConstraintOnlyScalar();
+        }
+
+        if ($options->innerList instanceof \stdClass) {
+            return self::recursiveValidateType($options->innerList, $usedType);
+        }
+
+        return true;
+    }
+
     private static function recursiveValidateFactoryMethod(\stdClass $options, array $value) : void
     {
         if (\is_int($options->minItems) && \count($value) < $options->minItems) {
@@ -73,10 +101,6 @@ final class ListConstraint extends \Graphpinator\Argument\Constraint\Constraint
             $differentValues = [];
 
             foreach ($value as $innerValue) {
-                if (!\is_scalar($innerValue)) {
-                    throw new \Graphpinator\Exception\Constraint\UniqueConstraintOnlyScalar();
-                }
-
                 if (!\array_key_exists($innerValue, $differentValues)) {
                     $differentValues[$innerValue] = true;
 
@@ -96,21 +120,17 @@ final class ListConstraint extends \Graphpinator\Argument\Constraint\Constraint
                 continue;
             }
 
-            if (!\is_array($innerValue)) {
-                throw new \Graphpinator\Exception\Constraint\InnerListNotList();
-            }
-
             self::recursiveValidateFactoryMethod($options->innerList, $innerValue);
         }
     }
 
     private static function getOptions(\stdClass $class) : \stdClass
     {
-        if (!isset($class->minItems)) {
+        if (!\property_exists($class, 'minItems')) {
             $class->minItems = null;
         }
 
-        if (!isset($class->maxItems)) {
+        if (!\property_exists($class, 'maxItems')) {
             $class->maxItems = null;
         }
 
@@ -119,11 +139,11 @@ final class ListConstraint extends \Graphpinator\Argument\Constraint\Constraint
             throw new \Graphpinator\Exception\Constraint\NegativeCountParameter();
         }
 
-        if (!isset($class->unique)) {
+        if (!\property_exists($class, 'unique')) {
             $class->unique = false;
         }
 
-        $class->innerList = isset($class->innerList)
+        $class->innerList = \property_exists($class, 'innerList') && $class->innerList instanceof \stdClass
             ? self::getOptions($class->innerList)
             : null;
 
