@@ -4,24 +4,21 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Argument\Constraint;
 
-abstract class LeafConstraint extends Constraint
+abstract class LeafConstraint extends \Graphpinator\Argument\Constraint\Constraint
 {
     public function validate(\Graphpinator\Resolver\Value\ValidatedValue $inputValue) : void
     {
-        if ($inputValue instanceof \Graphpinator\Resolver\Value\NullValue) {
-            return;
-        }
+        switch (\get_class($inputValue)) {
+            case \Graphpinator\Resolver\Value\NullValue::class:
+                return;
+            case \Graphpinator\Resolver\Value\ListValue::class:
+                foreach ($inputValue as $value) {
+                    $this->validate($value);
+                }
 
-        if ($inputValue instanceof \Graphpinator\Resolver\Value\LeafValue) {
-            $this->validateFactoryMethod($inputValue->getRawValue());
-
-            return;
-        }
-
-        if ($inputValue instanceof \Graphpinator\Resolver\Value\ListValue) {
-            foreach ($inputValue as $value) {
-                $this->validate($value);
-            }
+                return;
+            default:
+                $this->validateFactoryMethod($inputValue->getRawValue());
         }
     }
 }
