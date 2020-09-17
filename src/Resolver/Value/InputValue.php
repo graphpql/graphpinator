@@ -19,9 +19,7 @@ final class InputValue extends \Graphpinator\Resolver\Value\ValidatedValue imple
                 ? $usedValue
                 : $argument->getType()->createValue($usedValue);
 
-            if ($argument->getConstraint() instanceof \Graphpinator\Argument\Constraint\Constraint) {
-                $argument->getConstraint()->validate($value->{$argument->getName()});
-            }
+            $argument->validateConstraints($value->{$argument->getName()});
         }
 
         foreach ($fields as $name => $temp) {

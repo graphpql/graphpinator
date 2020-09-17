@@ -153,6 +153,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           listMaxArg: [Int] @listConstraint(maxItems: 3)
           listUniqueArg: [Int] @listConstraint(unique: true)
           listInnerListArg: [[Int]] @listConstraint(innerList: {minItems: 1, maxItems: 3})
+          listMinIntMinArg: [Int] @listConstraint(minItems: 3) @intConstraint(min: 3)
         }
         
         input DefaultsInput {
@@ -282,6 +283,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           listMaxArg: [Int] @listConstraint(maxItems: 3)
           listUniqueArg: [Int] @listConstraint(unique: true)
           listInnerListArg: [[Int]] @listConstraint(innerList: {minItems: 1, maxItems: 3})
+          listMinIntMinArg: [Int] @listConstraint(minItems: 3) @intConstraint(min: 3)
         }
         
         input DefaultsInput {
@@ -427,6 +429,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           listMaxArg: [Int] @listConstraint(maxItems: 3)
           listUniqueArg: [Int] @listConstraint(unique: true)
           listInnerListArg: [[Int]] @listConstraint(innerList: {minItems: 1, maxItems: 3})
+          listMinIntMinArg: [Int] @listConstraint(minItems: 3) @intConstraint(min: 3)
         }
         
         input DefaultsInput {
@@ -556,6 +559,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           listMaxArg: [Int] @listConstraint(maxItems: 3)
           listUniqueArg: [Int] @listConstraint(unique: true)
           listInnerListArg: [[Int]] @listConstraint(innerList: {minItems: 1, maxItems: 3})
+          listMinIntMinArg: [Int] @listConstraint(minItems: 3) @intConstraint(min: 3)
         }
         
         input DefaultsInput {

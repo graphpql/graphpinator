@@ -57,9 +57,7 @@ final class ArgumentValueSet extends \Infinityloop\Utils\ObjectSet
 
     private function appendUnique(\Graphpinator\Argument\Argument $argument, \Graphpinator\Resolver\Value\ValidatedValue $value) : void
     {
-        if ($argument->getConstraint() instanceof \Graphpinator\Argument\Constraint\Constraint) {
-            $argument->getConstraint()->validate($value);
-        }
+        $argument->validateConstraints($value);
 
         if ($this->offsetExists($argument->getName())) {
             throw new \Exception('Duplicated item.');

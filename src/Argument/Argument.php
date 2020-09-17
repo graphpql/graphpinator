@@ -11,13 +11,14 @@ final class Argument implements \Graphpinator\Printable\Printable
 
     private string $name;
     private \Graphpinator\Type\Contract\Inputable $type;
+    private \Graphpinator\Argument\Constraint\ConstraintSet $constraints;
     private ?\Graphpinator\Resolver\Value\ValidatedValue $defaultValue;
-    private ?\Graphpinator\Argument\Constraint\Constraint $constraint = null;
 
     public function __construct(string $name, \Graphpinator\Type\Contract\Inputable $type, $defaultValue = null)
     {
         $this->name = $name;
         $this->type = $type;
+        $this->constraints = new \Graphpinator\Argument\Constraint\ConstraintSet([]);
 
         if (\func_num_args() === 3) {
             $defaultValue = $type->createValue($defaultValue);
@@ -41,18 +42,25 @@ final class Argument implements \Graphpinator\Printable\Printable
         return $this->defaultValue;
     }
 
-    public function getConstraint() : ?\Graphpinator\Argument\Constraint\Constraint
+    public function getConstraints() : ?\Graphpinator\Argument\Constraint\ConstraintSet
     {
-        return $this->constraint;
+        return $this->constraints;
     }
 
-    public function setConstraint(\Graphpinator\Argument\Constraint\Constraint $constraint) : self
+    public function validateConstraints(\Graphpinator\Resolver\Value\ValidatedValue $value) : void
     {
-        $this->constraint = $constraint;
+        foreach ($this->constraints as $constraint) {
+            $constraint->validate($value);
+        }
+    }
 
-        if (!$this->constraint->validateType($this->type)) {
+    public function addConstraint(\Graphpinator\Argument\Constraint\Constraint $constraint) : self
+    {
+        if (!$constraint->validateType($this->type)) {
             throw new \Graphpinator\Exception\Constraint\InvalidConstraintType();
         }
+
+        $this->constraints[] = $constraint;
 
         return $this;
     }
@@ -65,8 +73,8 @@ final class Argument implements \Graphpinator\Printable\Printable
             $schema .= ' = ' . $this->defaultValue->printValue();
         }
 
-        if ($this->constraint instanceof \Graphpinator\Argument\Constraint\Constraint) {
-            $schema .= ' ' . $this->constraint->printConstraint();
+        foreach ($this->constraints as $constraint) {
+            $schema .= ' ' . $constraint->printConstraint();
         }
 
         return $schema;

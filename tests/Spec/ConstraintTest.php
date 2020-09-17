@@ -57,6 +57,12 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
                 ]),
                 \Graphpinator\Json::fromObject((object) ['data' => ['fieldConstraint' => 1]]),
             ],
+            [
+                \Graphpinator\Json::fromObject((object) [
+                    'query' => 'query queryName { fieldConstraint(arg: {listMinIntMinArg: [3, 3, 3]}) }',
+                ]),
+                \Graphpinator\Json::fromObject((object) ['data' => ['fieldConstraint' => 1]]),
+            ],
         ];
     }
 
@@ -155,6 +161,18 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
                 ]),
                 \Graphpinator\Exception\Constraint\UniqueConstraintNotSatisfied::class,
             ],
+            [
+                \Graphpinator\Json::fromObject((object) [
+                    'query' => 'query queryName { fieldConstraint(arg: {listMinIntMinArg: [3]}) }',
+                ]),
+                \Graphpinator\Exception\Constraint\MinItemsConstraintNotSatisfied::class,
+            ],
+            [
+                \Graphpinator\Json::fromObject((object) [
+                    'query' => 'query queryName { fieldConstraint(arg: {listMinIntMinArg: [1, 1, 1]}) }',
+                ]),
+                \Graphpinator\Exception\Constraint\MinConstraintNotSatisfied::class,
+            ],
         ];
     }
 
@@ -186,7 +204,7 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
                     (new \Graphpinator\Argument\Argument(
                         'arg',
                         \Graphpinator\Type\Container\Container::Int(),
-                    ))->setConstraint(new \Graphpinator\Argument\Constraint\StringConstraint()),
+                    ))->addConstraint(new \Graphpinator\Argument\Constraint\StringConstraint()),
                 ]);
             }
         };
@@ -208,7 +226,7 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
                     (new \Graphpinator\Argument\Argument(
                         'arg',
                         \Graphpinator\Type\Container\Container::String(),
-                    ))->setConstraint(new \Graphpinator\Argument\Constraint\StringConstraint(-20)),
+                    ))->addConstraint(new \Graphpinator\Argument\Constraint\StringConstraint(-20)),
                 ]);
             }
         };
@@ -230,7 +248,7 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
                     (new \Graphpinator\Argument\Argument(
                         'arg',
                         \Graphpinator\Type\Container\Container::String(),
-                    ))->setConstraint(new \Graphpinator\Argument\Constraint\StringConstraint(null, -20)),
+                    ))->addConstraint(new \Graphpinator\Argument\Constraint\StringConstraint(null, -20)),
                 ]);
             }
         };
@@ -252,7 +270,7 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
                     (new \Graphpinator\Argument\Argument(
                         'arg',
                         \Graphpinator\Type\Container\Container::String()->list(),
-                    ))->setConstraint(new \Graphpinator\Argument\Constraint\ListConstraint(-20)),
+                    ))->addConstraint(new \Graphpinator\Argument\Constraint\ListConstraint(-20)),
                 ]);
             }
         };
@@ -274,7 +292,7 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
                     (new \Graphpinator\Argument\Argument(
                         'arg',
                         \Graphpinator\Type\Container\Container::String()->list()->notNull(),
-                    ))->setConstraint(new \Graphpinator\Argument\Constraint\ListConstraint(null, -20)),
+                    ))->addConstraint(new \Graphpinator\Argument\Constraint\ListConstraint(null, -20)),
                 ]);
             }
         };
@@ -296,7 +314,7 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
                     (new \Graphpinator\Argument\Argument(
                         'arg',
                         \Graphpinator\Type\Container\Container::String()->list()->notNull(),
-                    ))->setConstraint(new \Graphpinator\Argument\Constraint\ListConstraint(null, null, false, (object) ['minItems' => -20])),
+                    ))->addConstraint(new \Graphpinator\Argument\Constraint\ListConstraint(null, null, false, (object) ['minItems' => -20])),
                 ]);
             }
         };
@@ -318,7 +336,7 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
                     (new \Graphpinator\Argument\Argument(
                         'arg',
                         \Graphpinator\Type\Container\Container::Int(),
-                    ))->setConstraint(new \Graphpinator\Argument\Constraint\IntConstraint(null, null, ['string'])),
+                    ))->addConstraint(new \Graphpinator\Argument\Constraint\IntConstraint(null, null, ['string'])),
                 ]);
             }
         };
@@ -340,7 +358,7 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
                     (new \Graphpinator\Argument\Argument(
                         'arg',
                         \Graphpinator\Type\Container\Container::Float(),
-                    ))->setConstraint(new \Graphpinator\Argument\Constraint\FloatConstraint(null, null, ['string'])),
+                    ))->addConstraint(new \Graphpinator\Argument\Constraint\FloatConstraint(null, null, ['string'])),
                 ]);
             }
         };
@@ -362,7 +380,7 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
                     (new \Graphpinator\Argument\Argument(
                         'arg',
                         \Graphpinator\Type\Container\Container::String(),
-                    ))->setConstraint(new \Graphpinator\Argument\Constraint\StringConstraint(null, null, null, [1])),
+                    ))->addConstraint(new \Graphpinator\Argument\Constraint\StringConstraint(null, null, null, [1])),
                 ]);
             }
         };
