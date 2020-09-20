@@ -91,6 +91,46 @@ abstract class Container
     }
 
     /**
+     * Built-in Deprecated directive.
+     */
+    public static function directiveDeprecated() : \Graphpinator\Directive\DeprecatedDirective
+    {
+        return new \Graphpinator\Directive\DeprecatedDirective();
+    }
+
+    /**
+     * Built-in IntConstraint directive.
+     */
+    public static function directiveIntConstraint() : \Graphpinator\Directive\IntConstraintDirective
+    {
+        return new \Graphpinator\Directive\IntConstraintDirective();
+    }
+
+    /**
+     * Built-in FloatConstraint directive.
+     */
+    public static function directiveFloatConstraint() : \Graphpinator\Directive\FloatConstraintDirective
+    {
+        return new \Graphpinator\Directive\FloatConstraintDirective();
+    }
+
+    /**
+     * Built-in StringConstraint directive.
+     */
+    public static function directiveStringConstraint() : \Graphpinator\Directive\StringConstraintDirective
+    {
+        return new \Graphpinator\Directive\StringConstraintDirective();
+    }
+
+    /**
+     * Built-in ListConstraint directive.
+     */
+    public static function directiveListConstraint() : \Graphpinator\Directive\ListConstraintDirective
+    {
+        return new \Graphpinator\Directive\ListConstraintDirective();
+    }
+
+    /**
      * Built-in __Schema type.
      */
     public function introspectionSchema() : \Graphpinator\Type\Introspection\Schema

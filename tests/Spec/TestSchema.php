@@ -503,7 +503,7 @@ final class TestSchema
 
     public static function getTestDirective() : \Graphpinator\Directive\Directive
     {
-        return new class extends \Graphpinator\Directive\Directive
+        return new class extends \Graphpinator\Directive\ExecutableDirective
         {
             protected const NAME = 'testDirective';
             public static $count = 0;
@@ -511,14 +511,14 @@ final class TestSchema
             public function __construct()
             {
                 parent::__construct(
+                    [\Graphpinator\Directive\ExecutableDirectiveLocation::FIELD],
+                    true,
                     new \Graphpinator\Argument\ArgumentSet([]),
                     static function() {
                         ++self::$count;
 
                         return \Graphpinator\Directive\DirectiveResult::NONE;
                     },
-                    [\Graphpinator\Directive\DirectiveLocation::FIELD],
-                    true,
                 );
             }
         };
@@ -526,19 +526,19 @@ final class TestSchema
 
     public static function getInvalidDirective() : \Graphpinator\Directive\Directive
     {
-        return new class extends \Graphpinator\Directive\Directive
+        return new class extends \Graphpinator\Directive\ExecutableDirective
         {
             protected const NAME = 'invalidDirective';
 
             public function __construct()
             {
                 parent::__construct(
+                    [\Graphpinator\Directive\ExecutableDirectiveLocation::FIELD],
+                    true,
                     new \Graphpinator\Argument\ArgumentSet([]),
                     static function() {
                         return 'blahblah';
                     },
-                    [\Graphpinator\Directive\DirectiveLocation::FIELD],
-                    true,
                 );
             }
         };

@@ -100,7 +100,7 @@ final class ParserTest extends \PHPUnit\Framework\TestCase
         self::assertArrayHasKey('field', $operation->getFields());
         self::assertCount(1, $operation->getFields()->offsetGet('field')->getDirectives());
         self::assertSame(
-            \Graphpinator\Directive\DirectiveLocation::FIELD,
+            \Graphpinator\Directive\ExecutableDirectiveLocation::FIELD,
             $operation->getFields()->offsetGet('field')->getDirectives()->getLocation(),
         );
         self::assertArrayHasKey(0, $operation->getFields()->offsetGet('field')->getDirectives());

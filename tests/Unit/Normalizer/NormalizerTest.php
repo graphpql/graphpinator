@@ -54,7 +54,7 @@ final class NormalizerTest extends \PHPUnit\Framework\TestCase
                     new \Graphpinator\Parser\FieldSet([
                         new \Graphpinator\Parser\Field('fieldName', null, null, null, new \Graphpinator\Parser\Directive\DirectiveSet([
                             new \Graphpinator\Parser\Directive\Directive('skip', null),
-                        ], \Graphpinator\Directive\DirectiveLocation::FIELD)),
+                        ], \Graphpinator\Directive\ExecutableDirectiveLocation::FIELD)),
                     ], new \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet([
                         new \Graphpinator\Parser\FragmentSpread\InlineFragmentSpread(
                             new \Graphpinator\Parser\FieldSet([
@@ -62,13 +62,13 @@ final class NormalizerTest extends \PHPUnit\Framework\TestCase
                             ]),
                             new \Graphpinator\Parser\Directive\DirectiveSet([
                                 new \Graphpinator\Parser\Directive\Directive('skip', null),
-                            ], \Graphpinator\Directive\DirectiveLocation::INLINE_FRAGMENT),
+                            ], \Graphpinator\Directive\ExecutableDirectiveLocation::INLINE_FRAGMENT),
                         ),
                         new \Graphpinator\Parser\FragmentSpread\NamedFragmentSpread(
                             'fragmentName',
                             new \Graphpinator\Parser\Directive\DirectiveSet([
                                 new \Graphpinator\Parser\Directive\Directive('include', null),
-                            ], \Graphpinator\Directive\DirectiveLocation::FRAGMENT_SPREAD),
+                            ], \Graphpinator\Directive\ExecutableDirectiveLocation::FRAGMENT_SPREAD),
                         ),
                     ])),
                     \Graphpinator\Tokenizer\OperationType::QUERY,
@@ -97,7 +97,7 @@ final class NormalizerTest extends \PHPUnit\Framework\TestCase
         self::assertCount(1, $operation->getFields()->offsetGet(0)->getDirectives());
         self::assertArrayHasKey(0, $operation->getFields()->offsetGet(0)->getDirectives());
         self::assertSame(
-            \Graphpinator\Directive\DirectiveLocation::FIELD,
+            \Graphpinator\Directive\ExecutableDirectiveLocation::FIELD,
             $operation->getFields()->offsetGet(0)->getDirectives()->getLocation(),
         );
         self::assertInstanceOf(
@@ -110,7 +110,7 @@ final class NormalizerTest extends \PHPUnit\Framework\TestCase
         self::assertCount(1, $operation->getFields()->offsetGet(1)->getDirectives());
         self::assertArrayHasKey(0, $operation->getFields()->offsetGet(1)->getDirectives());
         self::assertSame(
-            \Graphpinator\Directive\DirectiveLocation::FIELD,
+            \Graphpinator\Directive\ExecutableDirectiveLocation::FIELD,
             $operation->getFields()->offsetGet(1)->getDirectives()->getLocation(),
         );
         self::assertInstanceOf(
@@ -123,7 +123,7 @@ final class NormalizerTest extends \PHPUnit\Framework\TestCase
         self::assertCount(1, $operation->getFields()->offsetGet(2)->getDirectives());
         self::assertArrayHasKey(0, $operation->getFields()->offsetGet(2)->getDirectives());
         self::assertSame(
-            \Graphpinator\Directive\DirectiveLocation::FIELD,
+            \Graphpinator\Directive\ExecutableDirectiveLocation::FIELD,
             $operation->getFields()->offsetGet(2)->getDirectives()->getLocation(),
         );
         self::assertInstanceOf(

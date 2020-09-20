@@ -177,7 +177,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           C
         
           "single line description"
-          D @deprecated
+          D @deprecated(reason: "reason")
         }
         
         type Query {
@@ -222,8 +222,16 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           enumList: [SimpleEnum]
         }
         
+        directive @floatConstraint on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+
+        directive @intConstraint on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+        
         directive @invalidDirective repeatable on FIELD
         
+        directive @listConstraint on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+
+        directive @stringConstraint on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+
         directive @testDirective repeatable on FIELD
         EOL;
 
@@ -307,7 +315,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           C
         
           "single line description"
-          D @deprecated
+          D @deprecated(reason: "reason")
         }
         
         type Query {
@@ -352,8 +360,16 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           enumList: [SimpleEnum]
         }
         
+        directive @floatConstraint on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+
+        directive @intConstraint on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+        
         directive @invalidDirective repeatable on FIELD
         
+        directive @listConstraint on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+
+        directive @stringConstraint on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+
         directive @testDirective repeatable on FIELD
         EOL;
 
@@ -472,7 +488,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           C
         
           "single line description"
-          D @deprecated
+          D @deprecated(reason: "reason")
         }
         
         enum SimpleEnum {
@@ -482,8 +498,16 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           D
         }
         
+        directive @floatConstraint on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+
+        directive @intConstraint on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+        
         directive @invalidDirective repeatable on FIELD
         
+        directive @listConstraint on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+
+        directive @stringConstraint on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+
         directive @testDirective repeatable on FIELD
         EOL;
 
@@ -602,7 +626,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           C
         
           "single line description"
-          D @deprecated
+          D @deprecated(reason: "reason")
         }
         
         enum SimpleEnum {
@@ -612,8 +636,16 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           D
         }
         
+        directive @floatConstraint on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+
+        directive @intConstraint on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+        
         directive @invalidDirective repeatable on FIELD
         
+        directive @listConstraint on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+
+        directive @stringConstraint on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+
         directive @testDirective repeatable on FIELD
         EOL;
 

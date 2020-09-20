@@ -132,6 +132,34 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                                     'isRepeatable' => true,
                                 ],
                                 [
+                                    'name' => 'intConstraint',
+                                    'description' => 'Graphpinator intConstraint directive.',
+                                    'args' => [],
+                                    'locations' => ['ARGUMENT_DEFINITION', 'INPUT_FIELD_DEFINITION'],
+                                    'isRepeatable' => false,
+                                ],
+                                [
+                                    'name' => 'floatConstraint',
+                                    'description' => 'Graphpinator floatConstraint directive.',
+                                    'args' => [],
+                                    'locations' => ['ARGUMENT_DEFINITION', 'INPUT_FIELD_DEFINITION'],
+                                    'isRepeatable' => false,
+                                ],
+                                [
+                                    'name' => 'stringConstraint',
+                                    'description' => 'Graphpinator stringConstraint directive.',
+                                    'args' => [],
+                                    'locations' => ['ARGUMENT_DEFINITION', 'INPUT_FIELD_DEFINITION'],
+                                    'isRepeatable' => false,
+                                ],
+                                [
+                                    'name' => 'listConstraint',
+                                    'description' => 'Graphpinator listConstraint directive.',
+                                    'args' => [],
+                                    'locations' => ['ARGUMENT_DEFINITION', 'INPUT_FIELD_DEFINITION'],
+                                    'isRepeatable' => false,
+                                ],
+                                [
                                     'name' => 'skip',
                                     'description' => 'Built-in skip directive.',
                                     'args' => [
@@ -139,11 +167,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                                             'name' => 'if',
                                         ],
                                     ],
-                                    'locations' => [
-                                        'FIELD',
-                                        'FRAGMENT_SPREAD',
-                                        'INLINE_FRAGMENT',
-                                    ],
+                                    'locations' => ['FIELD', 'FRAGMENT_SPREAD', 'INLINE_FRAGMENT'],
                                     'isRepeatable' => false,
                                 ],
                                 [
@@ -154,11 +178,14 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                                             'name' => 'if',
                                         ],
                                     ],
-                                    'locations' => [
-                                        'FIELD',
-                                        'FRAGMENT_SPREAD',
-                                        'INLINE_FRAGMENT',
-                                    ],
+                                    'locations' => ['FIELD', 'FRAGMENT_SPREAD', 'INLINE_FRAGMENT'],
+                                    'isRepeatable' => false,
+                                ],
+                                [
+                                    'name' => 'deprecated',
+                                    'description' => 'Built-in deprecated directive.',
+                                    'args' => [],
+                                    'locations' => ['FIELD_DEFINITION', 'ENUM_VALUE'],
                                     'isRepeatable' => false,
                                 ],
                             ],

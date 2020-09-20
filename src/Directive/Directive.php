@@ -11,18 +11,16 @@ abstract class Directive
     protected const NAME = '';
     protected const DESCRIPTION = null;
 
-    private \Graphpinator\Argument\ArgumentSet $arguments;
-    private \Closure $resolveFn;
     private array $locations;
     private bool $repeatable;
 
-    public function __construct(\Graphpinator\Argument\ArgumentSet $arguments, callable $resolveFn, array $locations, bool $repeatable)
+    public function __construct(array $locations, bool $repeatable)
     {
-        $this->arguments = $arguments;
-        $this->resolveFn = $resolveFn;
         $this->locations = $locations;
         $this->repeatable = $repeatable;
     }
+
+    abstract public function getArguments() : \Graphpinator\Argument\ArgumentSet;
 
     public function getName() : string
     {
@@ -34,11 +32,6 @@ abstract class Directive
         return static::DESCRIPTION;
     }
 
-    public function getArguments() : \Graphpinator\Argument\ArgumentSet
-    {
-        return $this->arguments;
-    }
-
     public function getLocations() : array
     {
         return $this->locations;
@@ -47,17 +40,6 @@ abstract class Directive
     public function isRepeatable() : bool
     {
         return $this->repeatable;
-    }
-
-    public function resolve(\Graphpinator\Resolver\ArgumentValueSet $arguments) : string
-    {
-        $result = \call_user_func_array($this->resolveFn, $arguments->getRawValues());
-
-        if (\is_string($result) && \array_key_exists($result, DirectiveResult::ENUM)) {
-            return $result;
-        }
-
-        throw new \Graphpinator\Exception\Resolver\InvalidDirectiveResult();
     }
 
     public function printSchema() : string

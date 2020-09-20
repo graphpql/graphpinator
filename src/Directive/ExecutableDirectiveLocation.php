@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Directive;
 
-final class DirectiveLocation
+final class ExecutableDirectiveLocation
 {
     use \Nette\StaticClass;
 
