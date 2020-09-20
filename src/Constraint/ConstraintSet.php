@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Argument\Constraint;
+namespace Graphpinator\Constraint;
 
 final class ConstraintSet extends \Infinityloop\Utils\ObjectSet
 {
@@ -16,5 +16,12 @@ final class ConstraintSet extends \Infinityloop\Utils\ObjectSet
     public function offsetGet($offset) : Constraint
     {
         return parent::offsetGet($offset);
+    }
+
+    public function validate($rawValue) : void
+    {
+        foreach ($this as $constraint) {
+            $constraint->validate($rawValue);
+        }
     }
 }

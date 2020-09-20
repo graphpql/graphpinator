@@ -160,6 +160,13 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                                     'isRepeatable' => false,
                                 ],
                                 [
+                                    'name' => 'inputConstraint',
+                                    'description' => 'Graphpinator inputConstraint directive.',
+                                    'args' => [],
+                                    'locations' => ['INPUT_OBJECT'],
+                                    'isRepeatable' => false,
+                                ],
+                                [
                                     'name' => 'skip',
                                     'description' => 'Built-in skip directive.',
                                     'args' => [

@@ -224,6 +224,8 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         
         directive @floatConstraint on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
 
+        directive @inputConstraint on INPUT_OBJECT
+
         directive @intConstraint on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
         
         directive @invalidDirective repeatable on FIELD
@@ -361,6 +363,8 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         }
         
         directive @floatConstraint on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+
+        directive @inputConstraint on INPUT_OBJECT
 
         directive @intConstraint on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
         
@@ -500,6 +504,8 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         
         directive @floatConstraint on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
 
+        directive @inputConstraint on INPUT_OBJECT
+
         directive @intConstraint on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
         
         directive @invalidDirective repeatable on FIELD
@@ -637,6 +643,8 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         }
         
         directive @floatConstraint on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+
+        directive @inputConstraint on INPUT_OBJECT
 
         directive @intConstraint on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
         

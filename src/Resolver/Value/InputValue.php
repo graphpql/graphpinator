@@ -8,6 +8,14 @@ final class InputValue extends \Graphpinator\Resolver\Value\ValidatedValue imple
 {
     public function __construct(\stdClass $fields, \Graphpinator\Type\InputType $type)
     {
+        foreach ($fields as $name => $temp) {
+            if (isset($type->getArguments()[$name])) {
+                continue;
+            }
+
+            throw new \Exception('Unknown field for input value');
+        }
+
         $value = new \stdClass();
 
         foreach ($type->getArguments() as $argument) {
@@ -22,15 +30,9 @@ final class InputValue extends \Graphpinator\Resolver\Value\ValidatedValue imple
             $argument->validateConstraints($value->{$argument->getName()});
         }
 
-        foreach ($fields as $name => $temp) {
-            if (isset($type->getArguments()[$name])) {
-                continue;
-            }
-
-            throw new \Exception('Unknown field for input value');
-        }
-
         parent::__construct($value, $type);
+
+        $type->validateConstraints($this);
     }
 
     public function getRawValue() : \stdClass

@@ -131,6 +131,14 @@ abstract class Container
     }
 
     /**
+     * Built-in ObjectConstraint directive.
+     */
+    public static function directiveInputConstraint() : \Graphpinator\Directive\InputConstraintDirective
+    {
+        return new \Graphpinator\Directive\InputConstraintDirective();
+    }
+
+    /**
      * Built-in __Schema type.
      */
     public function introspectionSchema() : \Graphpinator\Type\Introspection\Schema

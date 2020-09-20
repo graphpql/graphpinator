@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Argument\Constraint;
 
-final class ListConstraint extends \Graphpinator\Argument\Constraint\Constraint
+final class ListConstraint extends \Graphpinator\Argument\Constraint\ArgumentConstraint
 {
     private ?\stdClass $options;
 
@@ -18,7 +18,7 @@ final class ListConstraint extends \Graphpinator\Argument\Constraint\Constraint
         ]);
     }
 
-    public function printConstraint() : string
+    public function print() : string
     {
         return '@listConstraint(' . self::recursivePrintConstraint($this->options) . ')';
     }

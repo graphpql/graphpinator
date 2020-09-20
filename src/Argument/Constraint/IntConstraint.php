@@ -25,7 +25,7 @@ final class IntConstraint extends \Graphpinator\Argument\Constraint\LeafConstrai
         $this->oneOf = $oneOf;
     }
 
-    public function printConstraint() : string
+    public function print() : string
     {
         $components = [];
 

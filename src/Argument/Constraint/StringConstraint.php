@@ -32,7 +32,7 @@ final class StringConstraint extends \Graphpinator\Argument\Constraint\LeafConst
         $this->oneOf = $oneOf;
     }
 
-    public function printConstraint() : string
+    public function print() : string
     {
         $components = [];
 

@@ -8,17 +8,17 @@ final class Argument implements \Graphpinator\Printable\Printable
 {
     use \Nette\SmartObject;
     use \Graphpinator\Utils\TOptionalDescription;
+    use \Graphpinator\Utils\THasConstraints;
 
     private string $name;
     private \Graphpinator\Type\Contract\Inputable $type;
-    private \Graphpinator\Argument\Constraint\ConstraintSet $constraints;
     private ?\Graphpinator\Resolver\Value\ValidatedValue $defaultValue;
 
     public function __construct(string $name, \Graphpinator\Type\Contract\Inputable $type, $defaultValue = null)
     {
         $this->name = $name;
         $this->type = $type;
-        $this->constraints = new \Graphpinator\Argument\Constraint\ConstraintSet([]);
+        $this->constraints = new \Graphpinator\Constraint\ConstraintSet([]);
 
         if (\func_num_args() === 3) {
             $defaultValue = $type->createValue($defaultValue);
@@ -42,19 +42,7 @@ final class Argument implements \Graphpinator\Printable\Printable
         return $this->defaultValue;
     }
 
-    public function getConstraints() : ?\Graphpinator\Argument\Constraint\ConstraintSet
-    {
-        return $this->constraints;
-    }
-
-    public function validateConstraints(\Graphpinator\Resolver\Value\ValidatedValue $value) : void
-    {
-        foreach ($this->constraints as $constraint) {
-            $constraint->validate($value);
-        }
-    }
-
-    public function addConstraint(\Graphpinator\Argument\Constraint\Constraint $constraint) : self
+    public function addConstraint(\Graphpinator\Argument\Constraint\ArgumentConstraint $constraint) : self
     {
         if (!$constraint->validateType($this->type)) {
             throw new \Graphpinator\Exception\Constraint\InvalidConstraintType();
@@ -74,7 +62,7 @@ final class Argument implements \Graphpinator\Printable\Printable
         }
 
         foreach ($this->constraints as $constraint) {
-            $schema .= ' ' . $constraint->printConstraint();
+            $schema .= ' ' . $constraint->print();
         }
 
         return $schema;

@@ -25,7 +25,7 @@ final class FloatConstraint extends \Graphpinator\Argument\Constraint\LeafConstr
         $this->oneOf = $oneOf;
     }
 
-    public function printConstraint() : string
+    public function print() : string
     {
         $components = [];
 
