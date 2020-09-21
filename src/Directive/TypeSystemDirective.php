@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Directive;
 
-abstract class TypeSystemDirective extends Directive
+abstract class TypeSystemDirective extends \Graphpinator\Directive\Directive
 {
     public function getArguments() : \Graphpinator\Argument\ArgumentSet
     {

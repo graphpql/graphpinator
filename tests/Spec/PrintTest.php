@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Spec;
 
+// @phpcs:disable SlevomatCodingStandard.Files.LineLength.LineTooLong
 final class PrintTest extends \PHPUnit\Framework\TestCase
 {
     public function simpleDataProvider() : array
@@ -692,3 +693,4 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         self::assertSame($expected, TestSchema::getFullSchema()->printSchema(new \Graphpinator\Utils\Sort\TypeKindSorter()));
     }
 }
+// @phpcs:enable SlevomatCodingStandard.Files.LineLength.LineTooLong

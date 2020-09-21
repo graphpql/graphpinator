@@ -77,18 +77,20 @@ final class InputConstraint implements \Graphpinator\Constraint\Constraint
             }
         }
 
-        if (\is_array($this->exactlyOne)) {
-            $count = 0;
+        if (!\is_array($this->exactlyOne)) {
+            return;
+        }
 
-            foreach ($this->exactlyOne as $item) {
-                if (isset($rawValue->{$item}) && $rawValue->{$item} !== null) {
-                    ++$count;
-                }
-            }
+        $count = 0;
 
-            if ($count !== 1) {
-                throw new \Graphpinator\Exception\Constraint\ExactlyOneConstraintNotSatisfied();
+        foreach ($this->exactlyOne as $item) {
+            if (isset($rawValue->{$item}) && $rawValue->{$item} !== null) {
+                ++$count;
             }
+        }
+
+        if ($count !== 1) {
+            throw new \Graphpinator\Exception\Constraint\ExactlyOneConstraintNotSatisfied();
         }
     }
 

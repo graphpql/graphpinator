@@ -75,6 +75,12 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
                 ]),
                 \Graphpinator\Json::fromObject((object) ['data' => ['fieldExactlyOne' => 1]]),
             ],
+            [
+                \Graphpinator\Json::fromObject((object) [
+                    'query' => 'query queryName { fieldExactlyOne(arg: {int1: null, int2: 3}) }',
+                ]),
+                \Graphpinator\Json::fromObject((object) ['data' => ['fieldExactlyOne' => 1]]),
+            ],
         ];
     }
 
@@ -193,6 +199,12 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
+                    'query' => 'query queryName { fieldConstraint(arg: {intMinArg: null}) }',
+                ]),
+                \Graphpinator\Exception\Constraint\AtLeastOneConstraintNotSatisfied::class,
+            ],
+            [
+                \Graphpinator\Json::fromObject((object) [
                     'query' => 'query queryName { fieldExactlyOne(arg: {int1: 3, int2: 3}) }',
                 ]),
                 \Graphpinator\Exception\Constraint\ExactlyOneConstraintNotSatisfied::class,
@@ -200,6 +212,18 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
             [
                 \Graphpinator\Json::fromObject((object) [
                     'query' => 'query queryName { fieldExactlyOne(arg: {}) }',
+                ]),
+                \Graphpinator\Exception\Constraint\ExactlyOneConstraintNotSatisfied::class,
+            ],
+            [
+                \Graphpinator\Json::fromObject((object) [
+                    'query' => 'query queryName { fieldExactlyOne(arg: {int1: null}) }',
+                ]),
+                \Graphpinator\Exception\Constraint\ExactlyOneConstraintNotSatisfied::class,
+            ],
+            [
+                \Graphpinator\Json::fromObject((object) [
+                    'query' => 'query queryName { fieldExactlyOne(arg: {int1: null, int2: null}) }',
                 ]),
                 \Graphpinator\Exception\Constraint\ExactlyOneConstraintNotSatisfied::class,
             ],

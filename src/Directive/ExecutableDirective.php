@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Directive;
 
-abstract class ExecutableDirective extends Directive
+abstract class ExecutableDirective extends \Graphpinator\Directive\Directive
 {
     private \Graphpinator\Argument\ArgumentSet $arguments;
     private \Closure $resolveFn;
