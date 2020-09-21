@@ -24,4 +24,15 @@ trait THasConstraints
     {
         $this->getConstraints()->validate($rawValue);
     }
+
+    public function printConstraints() : string
+    {
+        $return = '';
+
+        foreach ($this->getConstraints() as $constraint) {
+            $return .= ' ' . $constraint->print();
+        }
+
+        return $return;
+    }
 }

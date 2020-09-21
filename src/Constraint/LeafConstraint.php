@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Argument\Constraint;
+namespace Graphpinator\Constraint;
 
-abstract class LeafConstraint extends \Graphpinator\Argument\Constraint\ArgumentConstraint
+abstract class LeafConstraint extends \Graphpinator\Constraint\ArgumentConstraint
 {
     public function validate(\Graphpinator\Resolver\Value\ValidatedValue $inputValue) : void
     {

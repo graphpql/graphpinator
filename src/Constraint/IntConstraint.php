@@ -2,19 +2,19 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Argument\Constraint;
+namespace Graphpinator\Constraint;
 
-final class FloatConstraint extends \Graphpinator\Argument\Constraint\LeafConstraint
+final class IntConstraint extends \Graphpinator\Constraint\LeafConstraint
 {
-    private ?float $min;
-    private ?float $max;
+    private ?int $min;
+    private ?int $max;
     private ?array $oneOf;
 
-    public function __construct(?float $min = null, ?float $max = null, ?array $oneOf = null)
+    public function __construct(?int $min = null, ?int $max = null, ?array $oneOf = null)
     {
         if (\is_array($oneOf)) {
             foreach ($oneOf as $item) {
-                if (!\is_float($item)) {
+                if (!\is_int($item)) {
                     throw new \Graphpinator\Exception\Constraint\InvalidOneOfParameter();
                 }
             }
@@ -29,11 +29,11 @@ final class FloatConstraint extends \Graphpinator\Argument\Constraint\LeafConstr
     {
         $components = [];
 
-        if (\is_float($this->min)) {
+        if (\is_int($this->min)) {
             $components[] = 'min: ' . $this->min;
         }
 
-        if (\is_float($this->max)) {
+        if (\is_int($this->max)) {
             $components[] = 'max: ' . $this->max;
         }
 
@@ -41,23 +41,23 @@ final class FloatConstraint extends \Graphpinator\Argument\Constraint\LeafConstr
             $components[] = 'oneOf: [' . \implode(', ', $this->oneOf) . ']';
         }
 
-        return '@floatConstraint(' . \implode(', ', $components) . ')';
+        return '@intConstraint(' . \implode(', ', $components) . ')';
     }
 
     public function validateType(\Graphpinator\Type\Contract\Inputable $type) : bool
     {
-        return $type->getNamedType() instanceof \Graphpinator\Type\Scalar\FloatType;
+        return $type->getNamedType() instanceof \Graphpinator\Type\Scalar\IntType;
     }
 
     protected function validateFactoryMethod($inputValue) : void
     {
-        \assert(\is_float($inputValue));
+        \assert(\is_int($inputValue));
 
-        if (\is_float($this->min) && $inputValue < $this->min) {
+        if (\is_int($this->min) && $inputValue < $this->min) {
             throw new \Graphpinator\Exception\Constraint\MinConstraintNotSatisfied();
         }
 
-        if (\is_float($this->max) && $inputValue > $this->max) {
+        if (\is_int($this->max) && $inputValue > $this->max) {
             throw new \Graphpinator\Exception\Constraint\MaxConstraintNotSatisfied();
         }
 

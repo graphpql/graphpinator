@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Argument\Constraint;
+namespace Graphpinator\Constraint;
 
 abstract class ArgumentConstraint implements \Graphpinator\Constraint\Constraint
 {

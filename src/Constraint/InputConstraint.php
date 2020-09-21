@@ -2,15 +2,16 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Type\Constraint;
+namespace Graphpinator\Constraint;
 
 final class InputConstraint implements \Graphpinator\Constraint\Constraint
 {
     use \Nette\SmartObject;
 
     private ?array $atLeastOne;
+    private ?array $exactlyOne;
 
-    public function __construct(?array $atLeastOne = null)
+    public function __construct(?array $atLeastOne = null, ?array $exactlyOne = null)
     {
         if (\is_array($atLeastOne)) {
             foreach ($atLeastOne as $item) {

@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Argument\Constraint;
+namespace Graphpinator\Constraint;
 
-final class StringConstraint extends \Graphpinator\Argument\Constraint\LeafConstraint
+final class StringConstraint extends \Graphpinator\Constraint\LeafConstraint
 {
     private ?int $minLength;
     private ?int $maxLength;

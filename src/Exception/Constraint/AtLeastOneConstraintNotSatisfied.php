@@ -6,5 +6,5 @@ namespace Graphpinator\Exception\Constraint;
 
 final class AtLeastOneConstraintNotSatisfied extends \Graphpinator\Exception\Constraint\ConstraintError
 {
-    public const MESSAGE = 'At least one constraint was not satisfied.';
+    public const MESSAGE = 'AtLeastOne constraint was not satisfied.';
 }

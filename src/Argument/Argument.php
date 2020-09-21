@@ -42,7 +42,7 @@ final class Argument implements \Graphpinator\Printable\Printable
         return $this->defaultValue;
     }
 
-    public function addConstraint(\Graphpinator\Argument\Constraint\ArgumentConstraint $constraint) : self
+    public function addConstraint(\Graphpinator\Constraint\ArgumentConstraint $constraint) : self
     {
         if (!$constraint->validateType($this->type)) {
             throw new \Graphpinator\Exception\Constraint\InvalidConstraintType();
@@ -61,9 +61,7 @@ final class Argument implements \Graphpinator\Printable\Printable
             $schema .= ' = ' . $this->defaultValue->printValue();
         }
 
-        foreach ($this->constraints as $constraint) {
-            $schema .= ' ' . $constraint->print();
-        }
+        $schema .= $this->printConstraints();
 
         return $schema;
     }

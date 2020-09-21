@@ -39,7 +39,7 @@ abstract class InputType extends \Graphpinator\Type\Contract\ConcreteDefinition 
         return \Graphpinator\Type\Introspection\TypeKind::INPUT_OBJECT;
     }
 
-    public function addConstraint(\Graphpinator\Type\Constraint\InputConstraint $constraint) : self
+    public function addConstraint(\Graphpinator\Constraint\InputConstraint $constraint) : self
     {
         if (!$constraint->validateType($this)) {
             throw new \Graphpinator\Exception\Constraint\InvalidConstraintType();
@@ -53,7 +53,7 @@ abstract class InputType extends \Graphpinator\Type\Contract\ConcreteDefinition 
     final public function printSchema() : string
     {
         return $this->printDescription()
-            . 'input ' . $this->getName() . ' {' . \PHP_EOL
+            . 'input ' . $this->getName() . $this->printConstraints() . ' {' . \PHP_EOL
             . $this->printItems($this->getArguments())
             . '}';
     }

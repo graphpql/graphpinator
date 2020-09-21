@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Argument\Constraint;
+namespace Graphpinator\Constraint;
 
-final class ListConstraint extends \Graphpinator\Argument\Constraint\ArgumentConstraint
+final class ListConstraint extends \Graphpinator\Constraint\ArgumentConstraint
 {
     private ?\stdClass $options;
 

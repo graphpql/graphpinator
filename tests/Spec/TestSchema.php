@@ -330,71 +330,71 @@ final class TestSchema
                     (new \Graphpinator\Argument\Argument(
                         'intMinArg',
                         \Graphpinator\Type\Container\Container::Int(),
-                    ))->addConstraint(new \Graphpinator\Argument\Constraint\IntConstraint(-20)),
+                    ))->addConstraint(new \Graphpinator\Constraint\IntConstraint(-20)),
                     (new \Graphpinator\Argument\Argument(
                         'intMaxArg',
                         \Graphpinator\Type\Container\Container::Int(),
-                    ))->addConstraint(new \Graphpinator\Argument\Constraint\IntConstraint(null, 20)),
+                    ))->addConstraint(new \Graphpinator\Constraint\IntConstraint(null, 20)),
                     (new \Graphpinator\Argument\Argument(
                         'intOneOfArg',
                         \Graphpinator\Type\Container\Container::Int(),
-                    ))->addConstraint(new \Graphpinator\Argument\Constraint\IntConstraint(null, null, [1, 2, 3])),
+                    ))->addConstraint(new \Graphpinator\Constraint\IntConstraint(null, null, [1, 2, 3])),
                     (new \Graphpinator\Argument\Argument(
                         'floatMinArg',
                         \Graphpinator\Type\Container\Container::Float(),
-                    ))->addConstraint(new \Graphpinator\Argument\Constraint\FloatConstraint(4.01)),
+                    ))->addConstraint(new \Graphpinator\Constraint\FloatConstraint(4.01)),
                     (new \Graphpinator\Argument\Argument(
                         'floatMaxArg',
                         \Graphpinator\Type\Container\Container::Float(),
-                    ))->addConstraint(new \Graphpinator\Argument\Constraint\FloatConstraint(null, 20.101)),
+                    ))->addConstraint(new \Graphpinator\Constraint\FloatConstraint(null, 20.101)),
                     (new \Graphpinator\Argument\Argument(
                         'floatOneOfArg',
                         \Graphpinator\Type\Container\Container::Float(),
-                    ))->addConstraint(new \Graphpinator\Argument\Constraint\FloatConstraint(null, null, [1.01, 2.02, 3.0])),
+                    ))->addConstraint(new \Graphpinator\Constraint\FloatConstraint(null, null, [1.01, 2.02, 3.0])),
                     (new \Graphpinator\Argument\Argument(
                         'stringMinArg',
                         \Graphpinator\Type\Container\Container::String(),
-                    ))->addConstraint(new \Graphpinator\Argument\Constraint\StringConstraint(4)),
+                    ))->addConstraint(new \Graphpinator\Constraint\StringConstraint(4)),
                     (new \Graphpinator\Argument\Argument(
                         'stringMaxArg',
                         \Graphpinator\Type\Container\Container::String(),
-                    ))->addConstraint(new \Graphpinator\Argument\Constraint\StringConstraint(null, 10)),
+                    ))->addConstraint(new \Graphpinator\Constraint\StringConstraint(null, 10)),
                     (new \Graphpinator\Argument\Argument(
                         'stringRegexArg',
                         \Graphpinator\Type\Container\Container::String(),
-                    ))->addConstraint(new \Graphpinator\Argument\Constraint\StringConstraint(null, null, '/^(abc)|(foo)$/')),
+                    ))->addConstraint(new \Graphpinator\Constraint\StringConstraint(null, null, '/^(abc)|(foo)$/')),
                     (new \Graphpinator\Argument\Argument(
                         'stringOneOfArg',
                         \Graphpinator\Type\Container\Container::String(),
-                    ))->addConstraint(new \Graphpinator\Argument\Constraint\StringConstraint(null, null, null, ['abc', 'foo'])),
+                    ))->addConstraint(new \Graphpinator\Constraint\StringConstraint(null, null, null, ['abc', 'foo'])),
                     (new \Graphpinator\Argument\Argument(
                         'stringOneOfEmptyArg',
                         \Graphpinator\Type\Container\Container::String(),
-                    ))->addConstraint(new \Graphpinator\Argument\Constraint\StringConstraint(null, null, null, [])),
+                    ))->addConstraint(new \Graphpinator\Constraint\StringConstraint(null, null, null, [])),
                     (new \Graphpinator\Argument\Argument(
                         'listMinArg',
                         \Graphpinator\Type\Container\Container::Int()->list(),
-                    ))->addConstraint(new \Graphpinator\Argument\Constraint\ListConstraint(1)),
+                    ))->addConstraint(new \Graphpinator\Constraint\ListConstraint(1)),
                     (new \Graphpinator\Argument\Argument(
                         'listMaxArg',
                         \Graphpinator\Type\Container\Container::Int()->list(),
-                    ))->addConstraint(new \Graphpinator\Argument\Constraint\ListConstraint(null, 3)),
+                    ))->addConstraint(new \Graphpinator\Constraint\ListConstraint(null, 3)),
                     (new \Graphpinator\Argument\Argument(
                         'listUniqueArg',
                         \Graphpinator\Type\Container\Container::Int()->list(),
-                    ))->addConstraint(new \Graphpinator\Argument\Constraint\ListConstraint(null, null, true)),
+                    ))->addConstraint(new \Graphpinator\Constraint\ListConstraint(null, null, true)),
                     (new \Graphpinator\Argument\Argument(
                         'listInnerListArg',
                         \Graphpinator\Type\Container\Container::Int()->list()->list(),
-                    ))->addConstraint(new \Graphpinator\Argument\Constraint\ListConstraint(null, null, false, (object) [
+                    ))->addConstraint(new \Graphpinator\Constraint\ListConstraint(null, null, false, (object) [
                         'minItems' => 1,
                         'maxItems' => 3,
                     ])),
                     (new \Graphpinator\Argument\Argument(
                         'listMinIntMinArg',
                         \Graphpinator\Type\Container\Container::Int()->list(),
-                    ))->addConstraint(new \Graphpinator\Argument\Constraint\ListConstraint(3))
-                    ->addConstraint(new \Graphpinator\Argument\Constraint\IntConstraint(3)),
+                    ))->addConstraint(new \Graphpinator\Constraint\ListConstraint(3))
+                    ->addConstraint(new \Graphpinator\Constraint\IntConstraint(3)),
                 ]);
             }
         };
