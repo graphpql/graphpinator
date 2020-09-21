@@ -137,7 +137,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           innerNotNull: SimpleInput!
         }
         
-        input ConstraintInput {
+        input ConstraintInput @inputConstraint(atLeastOne: ["intMinArg", "intMaxArg", "intOneOfArg", "floatMinArg", "floatMaxArg", "floatOneOfArg", "stringMinArg", "stringMaxArg", "stringRegexArg", "stringOneOfArg", "stringOneOfEmptyArg", "listMinArg", "listMaxArg", "listUniqueArg", "listInnerListArg", "listMinIntMinArg"]) {
           intMinArg: Int @intConstraint(min: -20)
           intMaxArg: Int @intConstraint(max: 20)
           intOneOfArg: Int @intConstraint(oneOf: [1, 2, 3])
@@ -277,7 +277,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           innerNotNull: SimpleInput!
         }
         
-        input ConstraintInput {
+        input ConstraintInput @inputConstraint(atLeastOne: ["intMinArg", "intMaxArg", "intOneOfArg", "floatMinArg", "floatMaxArg", "floatOneOfArg", "stringMinArg", "stringMaxArg", "stringRegexArg", "stringOneOfArg", "stringOneOfEmptyArg", "listMinArg", "listMaxArg", "listUniqueArg", "listInnerListArg", "listMinIntMinArg"]) {
           intMinArg: Int @intConstraint(min: -20)
           intMaxArg: Int @intConstraint(max: 20)
           intOneOfArg: Int @intConstraint(oneOf: [1, 2, 3])
@@ -433,7 +433,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           innerNotNull: SimpleInput!
         }
         
-        input ConstraintInput {
+        input ConstraintInput @inputConstraint(atLeastOne: ["intMinArg", "intMaxArg", "intOneOfArg", "floatMinArg", "floatMaxArg", "floatOneOfArg", "stringMinArg", "stringMaxArg", "stringRegexArg", "stringOneOfArg", "stringOneOfEmptyArg", "listMinArg", "listMaxArg", "listUniqueArg", "listInnerListArg", "listMinIntMinArg"]) {
           intMinArg: Int @intConstraint(min: -20)
           intMaxArg: Int @intConstraint(max: 20)
           intOneOfArg: Int @intConstraint(oneOf: [1, 2, 3])
@@ -573,7 +573,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           innerNotNull: SimpleInput!
         }
         
-        input ConstraintInput {
+        input ConstraintInput @inputConstraint(atLeastOne: ["intMinArg", "intMaxArg", "intOneOfArg", "floatMinArg", "floatMaxArg", "floatOneOfArg", "stringMinArg", "stringMaxArg", "stringRegexArg", "stringOneOfArg", "stringOneOfEmptyArg", "listMinArg", "listMaxArg", "listUniqueArg", "listInnerListArg", "listMinIntMinArg"]) {
           intMinArg: Int @intConstraint(min: -20)
           intMaxArg: Int @intConstraint(max: 20)
           intOneOfArg: Int @intConstraint(oneOf: [1, 2, 3])

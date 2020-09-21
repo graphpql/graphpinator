@@ -173,6 +173,12 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
                 ]),
                 \Graphpinator\Exception\Constraint\MinConstraintNotSatisfied::class,
             ],
+            [
+                \Graphpinator\Json::fromObject((object) [
+                    'query' => 'query queryName { fieldConstraint(arg: {}) }',
+                ]),
+                \Graphpinator\Exception\Constraint\AtLeastOneConstraintNotSatisfied::class,
+            ],
         ];
     }
 
@@ -474,5 +480,103 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
         };
 
         $type->getArguments();
+    }
+
+    public function testInvalidAtLeastOneParameter() : void
+    {
+        $this->expectException(\Graphpinator\Exception\Constraint\InvalidAtLeastOneParameter::class);
+        $this->expectExceptionMessage(\Graphpinator\Exception\Constraint\InvalidAtLeastOneParameter::MESSAGE);
+
+        $type = new class extends \Graphpinator\Type\InputType {
+            protected const NAME = 'ConstraintInput';
+
+            public function __construct()
+            {
+                $this->addConstraint(new \Graphpinator\Constraint\InputConstraint(['string', 1]));
+            }
+
+            protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
+            {
+                return new \Graphpinator\Argument\ArgumentSet([]);
+            }
+        };
+    }
+
+    public function testInvalidExactlyOneParameter() : void
+    {
+        $this->expectException(\Graphpinator\Exception\Constraint\InvalidExactlyOneParameter::class);
+        $this->expectExceptionMessage(\Graphpinator\Exception\Constraint\InvalidExactlyOneParameter::MESSAGE);
+
+        new class extends \Graphpinator\Type\InputType {
+            protected const NAME = 'ConstraintInput';
+
+            public function __construct()
+            {
+                $this->addConstraint(new \Graphpinator\Constraint\InputConstraint(null, ['string', 1]));
+            }
+
+            protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
+            {
+                return new \Graphpinator\Argument\ArgumentSet([]);
+            }
+        };
+    }
+
+    public function testInvalidConstraintTypeInput() : void
+    {
+        $this->expectException(\Graphpinator\Exception\Constraint\InvalidConstraintType::class);
+        $this->expectExceptionMessage(\Graphpinator\Exception\Constraint\InvalidConstraintType::MESSAGE);
+
+        new class extends \Graphpinator\Type\InputType {
+            protected const NAME = 'ConstraintInput';
+
+            public function __construct()
+            {
+                $this->addConstraint(new \Graphpinator\Constraint\InputConstraint(null, ['arg1', 'arg2']));
+            }
+
+            protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
+            {
+                return new \Graphpinator\Argument\ArgumentSet([
+                    new \Graphpinator\Argument\Argument(
+                        'arg1',
+                        \Graphpinator\Type\Container\Container::Int(),
+                    ),
+                    new \Graphpinator\Argument\Argument(
+                        'arg3',
+                        \Graphpinator\Type\Container\Container::Int(),
+                    ),
+                ]);
+            }
+        };
+    }
+
+    public function testInvalidConstraintTypeInput2() : void
+    {
+        $this->expectException(\Graphpinator\Exception\Constraint\InvalidConstraintType::class);
+        $this->expectExceptionMessage(\Graphpinator\Exception\Constraint\InvalidConstraintType::MESSAGE);
+
+        new class extends \Graphpinator\Type\InputType {
+            protected const NAME = 'ConstraintInput';
+
+            public function __construct()
+            {
+                $this->addConstraint(new \Graphpinator\Constraint\InputConstraint(['arg1', 'arg2']));
+            }
+
+            protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
+            {
+                return new \Graphpinator\Argument\ArgumentSet([
+                    new \Graphpinator\Argument\Argument(
+                        'arg1',
+                        \Graphpinator\Type\Container\Container::Int(),
+                    ),
+                    new \Graphpinator\Argument\Argument(
+                        'arg3',
+                        \Graphpinator\Type\Container\Container::Int(),
+                    ),
+                ]);
+            }
+        };
     }
 }

@@ -324,6 +324,28 @@ final class TestSchema
         {
             protected const NAME = 'ConstraintInput';
 
+            public function __construct()
+            {
+                $this->addConstraint(new \Graphpinator\Constraint\InputConstraint([
+                    'intMinArg',
+                    'intMaxArg',
+                    'intOneOfArg',
+                    'floatMinArg',
+                    'floatMaxArg',
+                    'floatOneOfArg',
+                    'stringMinArg',
+                    'stringMaxArg',
+                    'stringRegexArg',
+                    'stringOneOfArg',
+                    'stringOneOfEmptyArg',
+                    'listMinArg',
+                    'listMaxArg',
+                    'listUniqueArg',
+                    'listInnerListArg',
+                    'listMinIntMinArg',
+                ]));
+            }
+
             protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
             {
                 return new \Graphpinator\Argument\ArgumentSet([

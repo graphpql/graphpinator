@@ -16,12 +16,21 @@ final class InputConstraint implements \Graphpinator\Constraint\Constraint
         if (\is_array($atLeastOne)) {
             foreach ($atLeastOne as $item) {
                 if (!\is_string($item)) {
-                    throw new \Graphpinator\Exception\Constraint\OneOfConstraintNotSatisfied();
+                    throw new \Graphpinator\Exception\Constraint\InvalidAtLeastOneParameter();
+                }
+            }
+        }
+
+        if (\is_array($exactlyOne)) {
+            foreach ($exactlyOne as $item) {
+                if (!\is_string($item)) {
+                    throw new \Graphpinator\Exception\Constraint\InvalidExactlyOneParameter();
                 }
             }
         }
 
         $this->atLeastOne = $atLeastOne;
+        $this->exactlyOne = $exactlyOne;
     }
 
     public function print() : string
@@ -34,11 +43,18 @@ final class InputConstraint implements \Graphpinator\Constraint\Constraint
                 : 'atLeastOne: ["' . \implode('", "', $this->atLeastOne) . '"]';
         }
 
+        if (\is_array($this->exactlyOne)) {
+            $components[] = \count($this->exactlyOne) === 0
+                ? 'exactlyOne: []'
+                : 'exactlyOne: ["' . \implode('", "', $this->exactlyOne) . '"]';
+        }
+
         return '@inputConstraint(' . \implode(', ', $components) . ')';
     }
 
-    public function validate($rawValue) : void
+    public function validate(\Graphpinator\Resolver\Value\ValidatedValue $value) : void
     {
+        $rawValue = $value->getRawValue();
         \assert($rawValue instanceof \stdClass);
 
         if (\is_array($this->atLeastOne)) {
@@ -56,6 +72,20 @@ final class InputConstraint implements \Graphpinator\Constraint\Constraint
                 throw new \Graphpinator\Exception\Constraint\AtLeastOneConstraintNotSatisfied();
             }
         }
+
+        if (\is_array($this->exactlyOne)) {
+            $count = 0;
+
+            foreach ($this->exactlyOne as $item) {
+                if (isset($rawValue->{$item}) && $rawValue->{$item} !== null) {
+                    ++$count;
+                }
+            }
+
+            if ($count !== 1) {
+                throw new \Graphpinator\Exception\Constraint\ExactlyOneConstraintNotSatisfied();
+            }
+        }
     }
 
     public function validateType(\Graphpinator\Type\Contract\Inputable $definition) : bool
@@ -66,9 +96,19 @@ final class InputConstraint implements \Graphpinator\Constraint\Constraint
 
         $fields = $definition->getArguments();
 
-        foreach ($this->atLeastOne as $item) {
-            if (isset($fields[$item])) {
-                return false;
+        if (\is_array($this->atLeastOne)) {
+            foreach ($this->atLeastOne as $item) {
+                if (!isset($fields[$item])) {
+                    return false;
+                }
+            }
+        }
+
+        if (\is_array($this->exactlyOne)) {
+            foreach ($this->exactlyOne as $item) {
+                if (!isset($fields[$item])) {
+                    return false;
+                }
             }
         }
 
