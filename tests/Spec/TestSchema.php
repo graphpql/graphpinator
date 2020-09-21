@@ -39,6 +39,7 @@ final class TestSchema
             'SimpleInput' => self::getSimpleInput(),
             'DefaultsInput' => self::getDefaultsInput(),
             'ConstraintInput' => self::getConstraintInput(),
+            'ExactlyOneInput' => self::getExactlyOneInput(),
             'SimpleEnum' => self::getSimpleEnum(),
             'ArrayEnum' => self::getArrayEnum(),
             'DescriptionEnum' => self::getDescriptionEnum(),
@@ -75,6 +76,19 @@ final class TestSchema
                             new \Graphpinator\Argument\Argument(
                                 'arg',
                                 TestSchema::getConstraintInput(),
+                            ),
+                        ]),
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'fieldExactlyOne',
+                        \Graphpinator\Type\Container\Container::Int(),
+                        static function ($parent, \stdClass $arg) : int {
+                            return 1;
+                        },
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'arg',
+                                TestSchema::getExactlyOneInput(),
                             ),
                         ]),
                     ),
@@ -417,6 +431,36 @@ final class TestSchema
                         \Graphpinator\Type\Container\Container::Int()->list(),
                     ))->addConstraint(new \Graphpinator\Constraint\ListConstraint(3))
                     ->addConstraint(new \Graphpinator\Constraint\IntConstraint(3)),
+                ]);
+            }
+        };
+    }
+
+    public static function getExactlyOneInput() : \Graphpinator\Type\InputType
+    {
+        return new class extends \Graphpinator\Type\InputType
+        {
+            protected const NAME = 'ExactlyOneInput';
+
+            public function __construct()
+            {
+                $this->addConstraint(new \Graphpinator\Constraint\InputConstraint(null, [
+                    'int1',
+                    'int2',
+                ]));
+            }
+
+            protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
+            {
+                return new \Graphpinator\Argument\ArgumentSet([
+                    new \Graphpinator\Argument\Argument(
+                        'int1',
+                        \Graphpinator\Type\Container\Container::Int(),
+                    ),
+                    new \Graphpinator\Argument\Argument(
+                        'int2',
+                        \Graphpinator\Type\Container\Container::Int(),
+                    ),
                 ]);
             }
         };

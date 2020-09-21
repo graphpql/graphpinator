@@ -180,10 +180,18 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           D @deprecated(reason: "reason")
         }
         
+        input ExactlyOneInput @inputConstraint(exactlyOne: ["int1", "int2"]) {
+          int1: Int
+          int2: Int
+        }
+        
         type Query {
           fieldValid: TestUnion
           fieldConstraint(
             arg: ConstraintInput
+          ): Int
+          fieldExactlyOne(
+            arg: ExactlyOneInput
           ): Int
           fieldInvalidType: TestUnion
           fieldInvalidReturn: TestUnion
@@ -320,10 +328,18 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           D @deprecated(reason: "reason")
         }
         
+        input ExactlyOneInput @inputConstraint(exactlyOne: ["int1", "int2"]) {
+          int1: Int
+          int2: Int
+        }
+        
         type Query {
           fieldValid: TestUnion
           fieldConstraint(
             arg: ConstraintInput
+          ): Int
+          fieldExactlyOne(
+            arg: ExactlyOneInput
           ): Int
           fieldInvalidType: TestUnion
           fieldInvalidReturn: TestUnion
@@ -411,6 +427,9 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldConstraint(
             arg: ConstraintInput
           ): Int
+          fieldExactlyOne(
+            arg: ExactlyOneInput
+          ): Int
           fieldInvalidType: TestUnion
           fieldInvalidReturn: TestUnion
           fieldThrow: TestUnion
@@ -458,6 +477,11 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           list: [String!]! = ["string1","string2"]
           object: SimpleInput! = {name:"string",number:[1,2],bool:null}
           listObjects: [SimpleInput!]! = [{name:"string",number:[1],bool:null},{name:"string",number:[],bool:null}]
+        }
+        
+        input ExactlyOneInput @inputConstraint(exactlyOne: ["int1", "int2"]) {
+          int1: Int
+          int2: Int
         }
         
         input SimpleInput {
@@ -551,6 +575,9 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldConstraint(
             arg: ConstraintInput
           ): Int
+          fieldExactlyOne(
+            arg: ExactlyOneInput
+          ): Int
           fieldInvalidType: TestUnion
           fieldInvalidReturn: TestUnion
           fieldThrow: TestUnion
@@ -598,6 +625,11 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           list: [String!]! = ["string1","string2"]
           object: SimpleInput! = {name:"string",number:[1,2],bool:null}
           listObjects: [SimpleInput!]! = [{name:"string",number:[1],bool:null},{name:"string",number:[],bool:null}]
+        }
+        
+        input ExactlyOneInput @inputConstraint(exactlyOne: ["int1", "int2"]) {
+          int1: Int
+          int2: Int
         }
         
         input SimpleInput {

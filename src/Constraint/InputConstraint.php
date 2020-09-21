@@ -14,6 +14,10 @@ final class InputConstraint implements \Graphpinator\Constraint\Constraint
     public function __construct(?array $atLeastOne = null, ?array $exactlyOne = null)
     {
         if (\is_array($atLeastOne)) {
+            if (\count($atLeastOne) === 0) {
+                throw new \Graphpinator\Exception\Constraint\InvalidAtLeastOneParameter();
+            }
+
             foreach ($atLeastOne as $item) {
                 if (!\is_string($item)) {
                     throw new \Graphpinator\Exception\Constraint\InvalidAtLeastOneParameter();
@@ -22,6 +26,10 @@ final class InputConstraint implements \Graphpinator\Constraint\Constraint
         }
 
         if (\is_array($exactlyOne)) {
+            if (\count($exactlyOne) === 0) {
+                throw new \Graphpinator\Exception\Constraint\InvalidExactlyOneParameter();
+            }
+
             foreach ($exactlyOne as $item) {
                 if (!\is_string($item)) {
                     throw new \Graphpinator\Exception\Constraint\InvalidExactlyOneParameter();
@@ -38,15 +46,11 @@ final class InputConstraint implements \Graphpinator\Constraint\Constraint
         $components = [];
 
         if (\is_array($this->atLeastOne)) {
-            $components[] = \count($this->atLeastOne) === 0
-                ? 'atLeastOne: []'
-                : 'atLeastOne: ["' . \implode('", "', $this->atLeastOne) . '"]';
+            $components[] = 'atLeastOne: ["' . \implode('", "', $this->atLeastOne) . '"]';
         }
 
         if (\is_array($this->exactlyOne)) {
-            $components[] = \count($this->exactlyOne) === 0
-                ? 'exactlyOne: []'
-                : 'exactlyOne: ["' . \implode('", "', $this->exactlyOne) . '"]';
+            $components[] = 'exactlyOne: ["' . \implode('", "', $this->exactlyOne) . '"]';
         }
 
         return '@inputConstraint(' . \implode(', ', $components) . ')';

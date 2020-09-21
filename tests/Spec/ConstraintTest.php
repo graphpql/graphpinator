@@ -63,6 +63,18 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
                 ]),
                 \Graphpinator\Json::fromObject((object) ['data' => ['fieldConstraint' => 1]]),
             ],
+            [
+                \Graphpinator\Json::fromObject((object) [
+                    'query' => 'query queryName { fieldExactlyOne(arg: {int1: 3}) }',
+                ]),
+                \Graphpinator\Json::fromObject((object) ['data' => ['fieldExactlyOne' => 1]]),
+            ],
+            [
+                \Graphpinator\Json::fromObject((object) [
+                    'query' => 'query queryName { fieldExactlyOne(arg: {int2: 3}) }',
+                ]),
+                \Graphpinator\Json::fromObject((object) ['data' => ['fieldExactlyOne' => 1]]),
+            ],
         ];
     }
 
@@ -178,6 +190,18 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
                     'query' => 'query queryName { fieldConstraint(arg: {}) }',
                 ]),
                 \Graphpinator\Exception\Constraint\AtLeastOneConstraintNotSatisfied::class,
+            ],
+            [
+                \Graphpinator\Json::fromObject((object) [
+                    'query' => 'query queryName { fieldExactlyOne(arg: {int1: 3, int2: 3}) }',
+                ]),
+                \Graphpinator\Exception\Constraint\ExactlyOneConstraintNotSatisfied::class,
+            ],
+            [
+                \Graphpinator\Json::fromObject((object) [
+                    'query' => 'query queryName { fieldExactlyOne(arg: {}) }',
+                ]),
+                \Graphpinator\Exception\Constraint\ExactlyOneConstraintNotSatisfied::class,
             ],
         ];
     }
@@ -487,7 +511,27 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
         $this->expectException(\Graphpinator\Exception\Constraint\InvalidAtLeastOneParameter::class);
         $this->expectExceptionMessage(\Graphpinator\Exception\Constraint\InvalidAtLeastOneParameter::MESSAGE);
 
-        $type = new class extends \Graphpinator\Type\InputType {
+        new class extends \Graphpinator\Type\InputType {
+            protected const NAME = 'ConstraintInput';
+
+            public function __construct()
+            {
+                $this->addConstraint(new \Graphpinator\Constraint\InputConstraint([]));
+            }
+
+            protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
+            {
+                return new \Graphpinator\Argument\ArgumentSet([]);
+            }
+        };
+    }
+
+    public function testInvalidAtLeastOneParameter2() : void
+    {
+        $this->expectException(\Graphpinator\Exception\Constraint\InvalidAtLeastOneParameter::class);
+        $this->expectExceptionMessage(\Graphpinator\Exception\Constraint\InvalidAtLeastOneParameter::MESSAGE);
+
+        new class extends \Graphpinator\Type\InputType {
             protected const NAME = 'ConstraintInput';
 
             public function __construct()
@@ -522,6 +566,26 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
         };
     }
 
+    public function testInvalidExactlyOneParameter2() : void
+    {
+        $this->expectException(\Graphpinator\Exception\Constraint\InvalidExactlyOneParameter::class);
+        $this->expectExceptionMessage(\Graphpinator\Exception\Constraint\InvalidExactlyOneParameter::MESSAGE);
+
+        new class extends \Graphpinator\Type\InputType {
+            protected const NAME = 'ConstraintInput';
+
+            public function __construct()
+            {
+                $this->addConstraint(new \Graphpinator\Constraint\InputConstraint(null, []));
+            }
+
+            protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
+            {
+                return new \Graphpinator\Argument\ArgumentSet([]);
+            }
+        };
+    }
+
     public function testInvalidConstraintTypeInput() : void
     {
         $this->expectException(\Graphpinator\Exception\Constraint\InvalidConstraintType::class);
@@ -532,7 +596,7 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
 
             public function __construct()
             {
-                $this->addConstraint(new \Graphpinator\Constraint\InputConstraint(null, ['arg1', 'arg2']));
+                $this->addConstraint(new \Graphpinator\Constraint\InputConstraint(['arg1', 'arg2']));
             }
 
             protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
@@ -561,7 +625,7 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
 
             public function __construct()
             {
-                $this->addConstraint(new \Graphpinator\Constraint\InputConstraint(['arg1', 'arg2']));
+                $this->addConstraint(new \Graphpinator\Constraint\InputConstraint(null, ['arg1', 'arg2']));
             }
 
             protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
