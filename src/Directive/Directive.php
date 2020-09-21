@@ -7,6 +7,7 @@ namespace Graphpinator\Directive;
 abstract class Directive
 {
     use \Nette\SmartObject;
+    use \Graphpinator\Printable\TRepeatablePrint;
 
     protected const NAME = '';
     protected const DESCRIPTION = null;
@@ -50,6 +51,10 @@ abstract class Directive
     public function printSchema() : string
     {
         $schema = 'directive @' . $this->getName();
+
+        if ($this->arguments->count() > 0) {
+            $schema.= '(' . \PHP_EOL . $this->printItems($this->getArguments()) . ')';
+        }
 
         if ($this->repeatable) {
             $schema .= ' repeatable';

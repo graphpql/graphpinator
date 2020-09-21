@@ -238,17 +238,38 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           enumList: [SimpleEnum]
         }
         
-        directive @floatConstraint on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+        directive @floatConstraint(
+          min: Float
+          max: Float
+          oneOf: [Float!]
+        ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
 
-        directive @inputConstraint on INPUT_OBJECT
+        directive @inputConstraint(
+          atLeastOne: [String!]
+          exactlyOne: [String!]
+        ) on INPUT_OBJECT
 
-        directive @intConstraint on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+        directive @intConstraint(
+          min: Int
+          max: Int
+          oneOf: [Int!]
+        ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
         
         directive @invalidDirective repeatable on FIELD
         
-        directive @listConstraint on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+        directive @listConstraint(
+          minItems: Int
+          maxItems: Int
+          unique: Boolean = false
+          innerList: ListConstraintInput
+        ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
 
-        directive @stringConstraint on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+        directive @stringConstraint(
+          minLength: Int
+          maxLength: Int
+          regex: String
+          oneOf: [String!]
+        ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
 
         directive @testDirective repeatable on FIELD
         EOL;
@@ -393,17 +414,38 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           enumList: [SimpleEnum]
         }
         
-        directive @floatConstraint on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+        directive @floatConstraint(
+          min: Float
+          max: Float
+          oneOf: [Float!]
+        ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
 
-        directive @inputConstraint on INPUT_OBJECT
+        directive @inputConstraint(
+          atLeastOne: [String!]
+          exactlyOne: [String!]
+        ) on INPUT_OBJECT
 
-        directive @intConstraint on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+        directive @intConstraint(
+          min: Int
+          max: Int
+          oneOf: [Int!]
+        ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
         
         directive @invalidDirective repeatable on FIELD
         
-        directive @listConstraint on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+        directive @listConstraint(
+          minItems: Int
+          maxItems: Int
+          unique: Boolean = false
+          innerList: ListConstraintInput
+        ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
 
-        directive @stringConstraint on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+        directive @stringConstraint(
+          minLength: Int
+          maxLength: Int
+          regex: String
+          oneOf: [String!]
+        ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
 
         directive @testDirective repeatable on FIELD
         EOL;
@@ -548,17 +590,38 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           D
         }
         
-        directive @floatConstraint on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+        directive @floatConstraint(
+          min: Float
+          max: Float
+          oneOf: [Float!]
+        ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
 
-        directive @inputConstraint on INPUT_OBJECT
+        directive @inputConstraint(
+          atLeastOne: [String!]
+          exactlyOne: [String!]
+        ) on INPUT_OBJECT
 
-        directive @intConstraint on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+        directive @intConstraint(
+          min: Int
+          max: Int
+          oneOf: [Int!]
+        ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
         
         directive @invalidDirective repeatable on FIELD
         
-        directive @listConstraint on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+        directive @listConstraint(
+          minItems: Int
+          maxItems: Int
+          unique: Boolean = false
+          innerList: ListConstraintInput
+        ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
 
-        directive @stringConstraint on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+        directive @stringConstraint(
+          minLength: Int
+          maxLength: Int
+          regex: String
+          oneOf: [String!]
+        ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
 
         directive @testDirective repeatable on FIELD
         EOL;
@@ -703,17 +766,38 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           D
         }
         
-        directive @floatConstraint on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+        directive @floatConstraint(
+          min: Float
+          max: Float
+          oneOf: [Float!]
+        ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
 
-        directive @inputConstraint on INPUT_OBJECT
+        directive @inputConstraint(
+          atLeastOne: [String!]
+          exactlyOne: [String!]
+        ) on INPUT_OBJECT
 
-        directive @intConstraint on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+        directive @intConstraint(
+          min: Int
+          max: Int
+          oneOf: [Int!]
+        ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
         
         directive @invalidDirective repeatable on FIELD
         
-        directive @listConstraint on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+        directive @listConstraint(
+          minItems: Int
+          maxItems: Int
+          unique: Boolean = false
+          innerList: ListConstraintInput
+        ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
 
-        directive @stringConstraint on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+        directive @stringConstraint(
+          minLength: Int
+          maxLength: Int
+          regex: String
+          oneOf: [String!]
+        ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
 
         directive @testDirective repeatable on FIELD
         EOL;
