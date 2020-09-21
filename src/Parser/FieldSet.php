@@ -69,9 +69,4 @@ final class FieldSet extends \Infinityloop\Utils\ObjectSet
 
         return $return;
     }
-
-    protected function getKey(object $object) : string
-    {
-        return $object->getName();
-    }
 }
