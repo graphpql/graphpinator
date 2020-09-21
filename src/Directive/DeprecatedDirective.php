@@ -17,6 +17,9 @@ final class DeprecatedDirective extends \Graphpinator\Directive\TypeSystemDirect
                 TypeSystemDirectiveLocation::ENUM_VALUE,
             ],
             false,
+            new \Graphpinator\Argument\ArgumentSet([
+                new \Graphpinator\Argument\Argument('reason', \Graphpinator\Type\Container\Container::String()),
+            ]),
         );
     }
 }

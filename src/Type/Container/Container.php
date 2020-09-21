@@ -99,7 +99,7 @@ abstract class Container
     }
 
     /**
-     * Built-in IntConstraint directive.
+     * Graphpinator IntConstraint directive.
      */
     public static function directiveIntConstraint() : \Graphpinator\Directive\IntConstraintDirective
     {
@@ -107,7 +107,7 @@ abstract class Container
     }
 
     /**
-     * Built-in FloatConstraint directive.
+     * Graphpinator FloatConstraint directive.
      */
     public static function directiveFloatConstraint() : \Graphpinator\Directive\FloatConstraintDirective
     {
@@ -115,7 +115,7 @@ abstract class Container
     }
 
     /**
-     * Built-in StringConstraint directive.
+     * Graphpinator StringConstraint directive.
      */
     public static function directiveStringConstraint() : \Graphpinator\Directive\StringConstraintDirective
     {
@@ -123,7 +123,7 @@ abstract class Container
     }
 
     /**
-     * Built-in ListConstraint directive.
+     * Graphpinator ListConstraint directive.
      */
     public static function directiveListConstraint() : \Graphpinator\Directive\ListConstraintDirective
     {
@@ -131,11 +131,19 @@ abstract class Container
     }
 
     /**
-     * Built-in ObjectConstraint directive.
+     * Graphpinator ObjectConstraint directive.
      */
     public static function directiveInputConstraint() : \Graphpinator\Directive\InputConstraintDirective
     {
         return new \Graphpinator\Directive\InputConstraintDirective();
+    }
+
+    /**
+     * Graphpinator ListConstraint input.
+     */
+    public static function listConstraintInput() : \Graphpinator\Constraint\ListConstraintInput
+    {
+        return new \Graphpinator\Constraint\ListConstraintInput();
     }
 
     /**

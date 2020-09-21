@@ -10,7 +10,7 @@ final class SimpleContainerTest extends \PHPUnit\Framework\TestCase
     {
         $container = new \Graphpinator\Type\Container\SimpleContainer([], []);
 
-        self::assertCount(0, $container->getTypes());
+        self::assertCount(1, $container->getTypes());
         self::assertCount(5, $container->getDirectives());
 
         foreach ([

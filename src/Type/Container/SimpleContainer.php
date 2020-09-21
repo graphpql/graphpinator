@@ -54,6 +54,7 @@ class SimpleContainer extends \Graphpinator\Type\Container\Container
             'deprecated' => self::directiveDeprecated(),
         ];
 
+        $this->types['ListConstraintInput'] = self::listConstraintInput();
         $this->directives['intConstraint'] = self::directiveIntConstraint();
         $this->directives['floatConstraint'] = self::directiveFloatConstraint();
         $this->directives['stringConstraint'] = self::directiveStringConstraint();

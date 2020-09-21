@@ -92,6 +92,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                                 ['name' => 'ArrayEnum'],
                                 ['name' => 'DescriptionEnum'],
                                 ['name' => 'TestScalar'],
+                                ['name' => 'ListConstraintInput'],
                                 ['name' => 'ID'],
                                 ['name' => 'Int'],
                                 ['name' => 'Float'],
@@ -135,35 +136,56 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                                 [
                                     'name' => 'intConstraint',
                                     'description' => 'Graphpinator intConstraint directive.',
-                                    'args' => [],
+                                    'args' => [
+                                        ['name' => 'min'],
+                                        ['name' => 'max'],
+                                        ['name' => 'oneOf'],
+                                    ],
                                     'locations' => ['ARGUMENT_DEFINITION', 'INPUT_FIELD_DEFINITION'],
                                     'isRepeatable' => false,
                                 ],
                                 [
                                     'name' => 'floatConstraint',
                                     'description' => 'Graphpinator floatConstraint directive.',
-                                    'args' => [],
+                                    'args' => [
+                                        ['name' => 'min'],
+                                        ['name' => 'max'],
+                                        ['name' => 'oneOf'],
+                                    ],
                                     'locations' => ['ARGUMENT_DEFINITION', 'INPUT_FIELD_DEFINITION'],
                                     'isRepeatable' => false,
                                 ],
                                 [
                                     'name' => 'stringConstraint',
                                     'description' => 'Graphpinator stringConstraint directive.',
-                                    'args' => [],
+                                    'args' => [
+                                        ['name' => 'minLength'],
+                                        ['name' => 'maxLength'],
+                                        ['name' => 'regex'],
+                                        ['name' => 'oneOf'],
+                                    ],
                                     'locations' => ['ARGUMENT_DEFINITION', 'INPUT_FIELD_DEFINITION'],
                                     'isRepeatable' => false,
                                 ],
                                 [
                                     'name' => 'listConstraint',
                                     'description' => 'Graphpinator listConstraint directive.',
-                                    'args' => [],
+                                    'args' => [
+                                        ['name' => 'minItems'],
+                                        ['name' => 'maxItems'],
+                                        ['name' => 'unique'],
+                                        ['name' => 'innerList'],
+                                    ],
                                     'locations' => ['ARGUMENT_DEFINITION', 'INPUT_FIELD_DEFINITION'],
                                     'isRepeatable' => false,
                                 ],
                                 [
                                     'name' => 'inputConstraint',
                                     'description' => 'Graphpinator inputConstraint directive.',
-                                    'args' => [],
+                                    'args' => [
+                                        ['name' => 'atLeastOne'],
+                                        ['name' => 'exactlyOne'],
+                                    ],
                                     'locations' => ['INPUT_OBJECT'],
                                     'isRepeatable' => false,
                                 ],
@@ -171,9 +193,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                                     'name' => 'skip',
                                     'description' => 'Built-in skip directive.',
                                     'args' => [
-                                        [
-                                            'name' => 'if',
-                                        ],
+                                        ['name' => 'if'],
                                     ],
                                     'locations' => ['FIELD', 'FRAGMENT_SPREAD', 'INLINE_FRAGMENT'],
                                     'isRepeatable' => false,
@@ -182,9 +202,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                                     'name' => 'include',
                                     'description' => 'Built-in include directive.',
                                     'args' => [
-                                        [
-                                            'name' => 'if',
-                                        ],
+                                        ['name' => 'if'],
                                     ],
                                     'locations' => ['FIELD', 'FRAGMENT_SPREAD', 'INLINE_FRAGMENT'],
                                     'isRepeatable' => false,
@@ -192,7 +210,9 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                                 [
                                     'name' => 'deprecated',
                                     'description' => 'Built-in deprecated directive.',
-                                    'args' => [],
+                                    'args' => [
+                                        ['name' => 'reason'],
+                                    ],
                                     'locations' => ['FIELD_DEFINITION', 'ENUM_VALUE'],
                                     'isRepeatable' => false,
                                 ],
@@ -864,5 +884,27 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
             $result->toString(),
             \json_encode($graphpinator->runQuery($request), \JSON_THROW_ON_ERROR, 512),
         );
+    }
+
+    public function testConstraintDirectivesSync() : void
+    {
+        $array = [
+            \Graphpinator\Constraint\IntConstraint::class => \Graphpinator\Type\Container\Container::directiveIntConstraint(),
+            \Graphpinator\Constraint\FloatConstraint::class => \Graphpinator\Type\Container\Container::directiveFloatConstraint(),
+            \Graphpinator\Constraint\StringConstraint::class => \Graphpinator\Type\Container\Container::directiveStringConstraint(),
+            \Graphpinator\Constraint\ListConstraint::class => \Graphpinator\Type\Container\Container::directiveListConstraint(),
+            \Graphpinator\Constraint\InputConstraint::class => \Graphpinator\Type\Container\Container::directiveInputConstraint(),
+        ];
+
+        foreach ($array as $constraintClass => $directive) {
+            \assert($directive instanceof \Graphpinator\Directive\Directive);
+
+            $reflection = new \ReflectionClass($constraintClass);
+            $constructorArgs = $reflection->getConstructor()->getParameters();
+
+            foreach ($constructorArgs as $arg) {
+                self::assertTrue(isset($directive->getArguments()[$arg->getName()]));
+            }
+        }
     }
 }

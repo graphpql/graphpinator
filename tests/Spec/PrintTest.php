@@ -186,6 +186,13 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           int2: Int
         }
         
+        input ListConstraintInput {
+          minItems: Int
+          maxItems: Int
+          unique: Boolean = false
+          innerList: ListConstraintInput
+        }
+        
         type Query {
           fieldValid: TestUnion
           fieldConstraint(
@@ -332,6 +339,13 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         input ExactlyOneInput @inputConstraint(exactlyOne: ["int1", "int2"]) {
           int1: Int
           int2: Int
+        }
+        
+        input ListConstraintInput {
+          minItems: Int
+          maxItems: Int
+          unique: Boolean = false
+          innerList: ListConstraintInput
         }
         
         type Query {
@@ -485,6 +499,13 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           int2: Int
         }
         
+        input ListConstraintInput {
+          minItems: Int
+          maxItems: Int
+          unique: Boolean = false
+          innerList: ListConstraintInput
+        }
+        
         input SimpleInput {
           name: String!
           number: [Int!]!
@@ -631,6 +652,13 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         input ExactlyOneInput @inputConstraint(exactlyOne: ["int1", "int2"]) {
           int1: Int
           int2: Int
+        }
+        
+        input ListConstraintInput {
+          minItems: Int
+          maxItems: Int
+          unique: Boolean = false
+          innerList: ListConstraintInput
         }
         
         input SimpleInput {

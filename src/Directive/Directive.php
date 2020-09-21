@@ -13,14 +13,14 @@ abstract class Directive
 
     private array $locations;
     private bool $repeatable;
+    private \Graphpinator\Argument\ArgumentSet $arguments;
 
-    public function __construct(array $locations, bool $repeatable)
+    public function __construct(array $locations, bool $repeatable, \Graphpinator\Argument\ArgumentSet $arguments)
     {
         $this->locations = $locations;
         $this->repeatable = $repeatable;
+        $this->arguments = $arguments;
     }
-
-    abstract public function getArguments() : \Graphpinator\Argument\ArgumentSet;
 
     public function getName() : string
     {
@@ -40,6 +40,11 @@ abstract class Directive
     public function isRepeatable() : bool
     {
         return $this->repeatable;
+    }
+
+    public function getArguments() : \Graphpinator\Argument\ArgumentSet
+    {
+        return $this->arguments;
     }
 
     public function printSchema() : string

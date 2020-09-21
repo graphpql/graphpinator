@@ -6,20 +6,13 @@ namespace Graphpinator\Directive;
 
 abstract class ExecutableDirective extends \Graphpinator\Directive\Directive
 {
-    private \Graphpinator\Argument\ArgumentSet $arguments;
     private \Closure $resolveFn;
 
     public function __construct(array $locations, bool $repeatable, \Graphpinator\Argument\ArgumentSet $arguments, callable $resolveFn)
     {
-        parent::__construct($locations, $repeatable);
+        parent::__construct($locations, $repeatable, $arguments);
 
-        $this->arguments = $arguments;
         $this->resolveFn = $resolveFn;
-    }
-
-    public function getArguments() : \Graphpinator\Argument\ArgumentSet
-    {
-        return $this->arguments;
     }
 
     public function resolve(\Graphpinator\Resolver\ArgumentValueSet $arguments) : string
