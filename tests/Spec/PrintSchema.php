@@ -46,6 +46,7 @@ final class PrintSchema
             'TestSecondScalar' => self::getTestSecondScalar(),
             'TestScalar' => self::getTestScalar(),
             'TestDefaultValue' => self::getDefaultValue(),
+            'TestAddonDefaultValue' => self::getAddonDefaultValue(),
         ], [
             'testDirective' => self::getTestDirective(),
             'invalidDirective' => self::getInvalidDirective(),
@@ -424,6 +425,11 @@ final class PrintSchema
                 );
             }
         };
+    }
+
+    public static function getAddonDefaultValue() : \Graphpinator\Type\InputType
+    {
+        return TestSchema::getAddonType();
     }
 
     public static function getDefaultValue() : \Graphpinator\Type\InputType

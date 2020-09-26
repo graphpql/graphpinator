@@ -155,6 +155,25 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldThrow: TestUnion
         }
         
+        input TestAddonType {
+          DateTimeType: DateTime = "01-01-2000 04:02:10"
+          DateType: Date = "01-01-2000"
+          EmailAddressType: EmailAddress = "test@test.com"
+          HslaType: HSLA = {"hue":1,"saturation":2,"lightness":3,"alpha":0.5}
+          HslType: HSL = {"hue":1,"saturation":2,"lightness":3}
+          IPv4Type: IPv4 = "128.0.1.0"
+          IPv6Type: IPv6 = "2001:0DB8:85A3:0000:0000:8A2E:0370:7334"
+          JsonType: JSON = {"data":{"field0":{"field1":{"name":"Test 123"}}}}
+          MacType: MAC = "00-D5-61-A2-AB-13"
+          PhoneNumberType: PhoneNumber = "+420123456789"
+          PostalCodeType: PostalCode = "111 22"
+          RgbaType: RGBA = {"red":1,"green":2,"blue":3,"alpha":0.5}
+          RgbType: RGB = {"red":1,"green":2,"blue":3}
+          TimeType: Time = "04:02:55"
+          UrlType: URL = "www.test.com"
+          VoidType: Void
+        }
+        
         input TestDefaultValue1 {
           stringArgument1: String = null
           stringArgument2: String = "testValue"
@@ -317,6 +336,25 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldInvalidType: TestUnion
           fieldAbstract: TestUnion
           fieldThrow: TestUnion
+        }
+        
+        input TestAddonType {
+          DateTimeType: DateTime = "01-01-2000 04:02:10"
+          DateType: Date = "01-01-2000"
+          EmailAddressType: EmailAddress = "test@test.com"
+          HslaType: HSLA = {"hue":1,"saturation":2,"lightness":3,"alpha":0.5}
+          HslType: HSL = {"hue":1,"saturation":2,"lightness":3}
+          IPv4Type: IPv4 = "128.0.1.0"
+          IPv6Type: IPv6 = "2001:0DB8:85A3:0000:0000:8A2E:0370:7334"
+          JsonType: JSON = {"data":{"field0":{"field1":{"name":"Test 123"}}}}
+          MacType: MAC = "00-D5-61-A2-AB-13"
+          PhoneNumberType: PhoneNumber = "+420123456789"
+          PostalCodeType: PostalCode = "111 22"
+          RgbaType: RGBA = {"red":1,"green":2,"blue":3,"alpha":0.5}
+          RgbType: RGB = {"red":1,"green":2,"blue":3}
+          TimeType: Time = "04:02:55"
+          UrlType: URL = "www.test.com"
+          VoidType: Void
         }
         
         input TestDefaultValue1 {
@@ -485,6 +523,25 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         
         union UTestUnion = Abc | Xyz
         
+        input TestAddonType {
+          DateTimeType: DateTime = "01-01-2000 04:02:10"
+          DateType: Date = "01-01-2000"
+          EmailAddressType: EmailAddress = "test@test.com"
+          HslaType: HSLA = {"hue":1,"saturation":2,"lightness":3,"alpha":0.5}
+          HslType: HSL = {"hue":1,"saturation":2,"lightness":3}
+          IPv4Type: IPv4 = "128.0.1.0"
+          IPv6Type: IPv6 = "2001:0DB8:85A3:0000:0000:8A2E:0370:7334"
+          JsonType: JSON = {"data":{"field0":{"field1":{"name":"Test 123"}}}}
+          MacType: MAC = "00-D5-61-A2-AB-13"
+          PhoneNumberType: PhoneNumber = "+420123456789"
+          PostalCodeType: PostalCode = "111 22"
+          RgbaType: RGBA = {"red":1,"green":2,"blue":3,"alpha":0.5}
+          RgbType: RGB = {"red":1,"green":2,"blue":3}
+          TimeType: Time = "04:02:55"
+          UrlType: URL = "www.test.com"
+          VoidType: Void
+        }
+        
         input TestDefaultValue1 {
           stringArgument1: String = null
           stringArgument2: String = "testValue"
@@ -648,6 +705,25 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         union TestUnion = Abc | Xyz
         
         union UTestUnion = Abc | Xyz
+        
+        input TestAddonType {
+          DateTimeType: DateTime = "01-01-2000 04:02:10"
+          DateType: Date = "01-01-2000"
+          EmailAddressType: EmailAddress = "test@test.com"
+          HslaType: HSLA = {"hue":1,"saturation":2,"lightness":3,"alpha":0.5}
+          HslType: HSL = {"hue":1,"saturation":2,"lightness":3}
+          IPv4Type: IPv4 = "128.0.1.0"
+          IPv6Type: IPv6 = "2001:0DB8:85A3:0000:0000:8A2E:0370:7334"
+          JsonType: JSON = {"data":{"field0":{"field1":{"name":"Test 123"}}}}
+          MacType: MAC = "00-D5-61-A2-AB-13"
+          PhoneNumberType: PhoneNumber = "+420123456789"
+          PostalCodeType: PostalCode = "111 22"
+          RgbaType: RGBA = {"red":1,"green":2,"blue":3,"alpha":0.5}
+          RgbType: RGB = {"red":1,"green":2,"blue":3}
+          TimeType: Time = "04:02:55"
+          UrlType: URL = "www.test.com"
+          VoidType: Void
+        }
         
         input TestDefaultValue1 {
           stringArgument1: String = null

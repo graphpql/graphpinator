@@ -40,6 +40,7 @@ final class TestSchema
             'TestEnum' => self::getEnum(),
             'TestExplicitEnum' => self::getExplicitEnum(),
             'TestScalar' => self::getTestScalar(),
+            'TestAddonType' => self::getAddonType(),
         ], [
             'testDirective' => self::getTestDirective(),
             'invalidDirective' => self::getInvalidDirective(),
@@ -366,6 +367,99 @@ final class TestSchema
                     [\Graphpinator\Directive\DirectiveLocation::FIELD],
                     true,
                 );
+            }
+        };
+    }
+
+    public static function getAddonType() : \Graphpinator\Type\InputType
+    {
+        return new class extends \Graphpinator\Type\InputType
+        {
+            protected const NAME = 'TestAddonType';
+
+            protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
+            {
+                return new \Graphpinator\Argument\ArgumentSet([
+                    new \Graphpinator\Argument\Argument(
+                        'DateTimeType',
+                        new \Graphpinator\Type\Addon\DateTimeType(),
+                        '01-01-2000 04:02:10',
+                    ),
+                    new \Graphpinator\Argument\Argument(
+                        'DateType',
+                        new \Graphpinator\Type\Addon\DateType(),
+                        '01-01-2000',
+                    ),
+                    new \Graphpinator\Argument\Argument(
+                        'EmailAddressType',
+                        new \Graphpinator\Type\Addon\EmailAddressType(),
+                        'test@test.com',
+                    ),
+                    new \Graphpinator\Argument\Argument(
+                        'HslaType',
+                        new \Graphpinator\Type\Addon\HslaType(),
+                        ['hue' => 1, 'saturation' => 2, 'lightness' => 3, 'alpha' => 0.5],
+                    ),
+                    new \Graphpinator\Argument\Argument(
+                        'HslType',
+                        new \Graphpinator\Type\Addon\HslType(),
+                        ['hue' => 1, 'saturation' => 2, 'lightness' => 3],
+                    ),
+                    new \Graphpinator\Argument\Argument(
+                        'IPv4Type',
+                        new \Graphpinator\Type\Addon\IPv4Type(),
+                        '128.0.1.0',
+                    ),
+                    new \Graphpinator\Argument\Argument(
+                        'IPv6Type',
+                        new \Graphpinator\Type\Addon\IPv6Type(),
+                        '2001:0DB8:85A3:0000:0000:8A2E:0370:7334',
+                    ),
+                    new \Graphpinator\Argument\Argument(
+                        'JsonType',
+                        new \Graphpinator\Type\Addon\JsonType(),
+                        (object) ['data' => ['field0' => ['field1' => ['name' => 'Test 123']]]],
+                    ),
+                    new \Graphpinator\Argument\Argument(
+                        'MacType',
+                        new \Graphpinator\Type\Addon\MacType(),
+                        '00-D5-61-A2-AB-13',
+                    ),
+                    new \Graphpinator\Argument\Argument(
+                        'PhoneNumberType',
+                        new \Graphpinator\Type\Addon\PhoneNumberType(),
+                        '+420123456789',
+                    ),
+                    new \Graphpinator\Argument\Argument(
+                        'PostalCodeType',
+                        new \Graphpinator\Type\Addon\PostalCodeType(),
+                        '111 22',
+                    ),
+                    new \Graphpinator\Argument\Argument(
+                        'RgbaType',
+                        new \Graphpinator\Type\Addon\RgbaType(),
+                        ['red' => 1, 'green' => 2, 'blue' => 3, 'alpha' => 0.5],
+                    ),
+                    new \Graphpinator\Argument\Argument(
+                        'RgbType',
+                        new \Graphpinator\Type\Addon\RgbType(),
+                        ['red' => 1, 'green' => 2, 'blue' => 3],
+                    ),
+                    new \Graphpinator\Argument\Argument(
+                        'TimeType',
+                        new \Graphpinator\Type\Addon\TimeType(),
+                        '04:02:55',
+                    ),
+                    new \Graphpinator\Argument\Argument(
+                        'UrlType',
+                        new \Graphpinator\Type\Addon\UrlType(),
+                        'www.test.com',
+                    ),
+                    new \Graphpinator\Argument\Argument(
+                        'VoidType',
+                        new \Graphpinator\Type\Addon\VoidType(),
+                    ),
+                ]);
             }
         };
     }

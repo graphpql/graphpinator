@@ -88,6 +88,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                                 ['name' => 'TestEnum'],
                                 ['name' => 'TestExplicitEnum'],
                                 ['name' => 'TestScalar'],
+                                ['name' => 'TestAddonType'],
                                 ['name' => 'ID'],
                                 ['name' => 'Int'],
                                 ['name' => 'Float'],
