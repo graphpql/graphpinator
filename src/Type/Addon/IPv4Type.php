@@ -11,7 +11,6 @@ final class IPv4Type extends \Graphpinator\Type\Scalar\ScalarType
 
     protected function validateNonNullValue($rawValue) : bool
     {
-        return \filter_var($rawValue, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV4)
-            ?? true;
+        return (bool) \filter_var($rawValue, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV4);
     }
 }
