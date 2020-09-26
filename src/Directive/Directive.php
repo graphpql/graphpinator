@@ -7,21 +7,20 @@ namespace Graphpinator\Directive;
 abstract class Directive
 {
     use \Nette\SmartObject;
+    use \Graphpinator\Printable\TRepeatablePrint;
 
     protected const NAME = '';
     protected const DESCRIPTION = null;
 
-    private \Graphpinator\Argument\ArgumentSet $arguments;
-    private \Closure $resolveFn;
     private array $locations;
     private bool $repeatable;
+    private \Graphpinator\Argument\ArgumentSet $arguments;
 
-    public function __construct(\Graphpinator\Argument\ArgumentSet $arguments, callable $resolveFn, array $locations, bool $repeatable)
+    public function __construct(array $locations, bool $repeatable, \Graphpinator\Argument\ArgumentSet $arguments)
     {
-        $this->arguments = $arguments;
-        $this->resolveFn = $resolveFn;
         $this->locations = $locations;
         $this->repeatable = $repeatable;
+        $this->arguments = $arguments;
     }
 
     public function getName() : string
@@ -34,11 +33,6 @@ abstract class Directive
         return static::DESCRIPTION;
     }
 
-    public function getArguments() : \Graphpinator\Argument\ArgumentSet
-    {
-        return $this->arguments;
-    }
-
     public function getLocations() : array
     {
         return $this->locations;
@@ -49,20 +43,18 @@ abstract class Directive
         return $this->repeatable;
     }
 
-    public function resolve(\Graphpinator\Resolver\ArgumentValueSet $arguments) : string
+    public function getArguments() : \Graphpinator\Argument\ArgumentSet
     {
-        $result = \call_user_func($this->resolveFn, $arguments);
-
-        if (\is_string($result) && \array_key_exists($result, DirectiveResult::ENUM)) {
-            return $result;
-        }
-
-        throw new \Graphpinator\Exception\Resolver\InvalidDirectiveResult();
+        return $this->arguments;
     }
 
     public function printSchema() : string
     {
         $schema = 'directive @' . $this->getName();
+
+        if ($this->arguments->count() > 0) {
+            $schema .= '(' . \PHP_EOL . $this->printItems($this->getArguments()) . ')';
+        }
 
         if ($this->repeatable) {
             $schema .= ' repeatable';

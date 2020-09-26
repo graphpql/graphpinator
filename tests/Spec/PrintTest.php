@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Spec;
 
+// @phpcs:disable SlevomatCodingStandard.Files.LineLength.LineTooLong
 final class PrintTest extends \PHPUnit\Framework\TestCase
 {
     public function simpleDataProvider() : array
@@ -60,12 +61,12 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
                   name: String
                   description: String
                   fields(
-                    includeDeprecated: Boolean = false
+                    includeDeprecated: Boolean! = false
                   ): [__Field!]
                   interfaces: [__Type!]
                   possibleTypes: [__Type!]
                   enumValues(
-                    includeDeprecated: Boolean = false
+                    includeDeprecated: Boolean! = false
                   ): [__EnumValue!]
                   inputFields: [__InputValue!]
                   ofType: __Type
@@ -115,46 +116,96 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         type Abc {
           field1(
             arg1: Int = 123
-            arg2: TestInput
+            arg2: CompositeInput
           ): TestInterface @deprecated
         }
         
-        """
-        ETestEnum description
-        """
-        enum ETestEnum {
+        enum ArrayEnum {
+          "First description"
+          A
+        
+          "Second description"
+          B
+        
+          "Third description"
+          C
+        }
+        
+        input CompositeInput {
+          name: String!
+          inner: SimpleInput
+          innerList: [SimpleInput!]!
+          innerNotNull: SimpleInput!
+        }
+        
+        input ConstraintInput @inputConstraint(atLeastOne: ["intMinArg", "intMaxArg", "intOneOfArg", "floatMinArg", "floatMaxArg", "floatOneOfArg", "stringMinArg", "stringMaxArg", "stringRegexArg", "stringOneOfArg", "stringOneOfEmptyArg", "listMinArg", "listMaxArg", "listUniqueArg", "listInnerListArg", "listMinIntMinArg"]) {
+          intMinArg: Int @intConstraint(min: -20)
+          intMaxArg: Int @intConstraint(max: 20)
+          intOneOfArg: Int @intConstraint(oneOf: [1, 2, 3])
+          floatMinArg: Float @floatConstraint(min: 4.01)
+          floatMaxArg: Float @floatConstraint(max: 20.101)
+          floatOneOfArg: Float @floatConstraint(oneOf: [1.01, 2.02, 3])
+          stringMinArg: String @stringConstraint(minLength: 4)
+          stringMaxArg: String @stringConstraint(maxLength: 10)
+          stringRegexArg: String @stringConstraint(regex: "/^(abc)|(foo)$/")
+          stringOneOfArg: String @stringConstraint(oneOf: ["abc", "foo"])
+          stringOneOfEmptyArg: String @stringConstraint(oneOf: [])
+          listMinArg: [Int] @listConstraint(minItems: 1)
+          listMaxArg: [Int] @listConstraint(maxItems: 3)
+          listUniqueArg: [Int] @listConstraint(unique: true)
+          listInnerListArg: [[Int]] @listConstraint(innerList: {minItems: 1, maxItems: 3})
+          listMinIntMinArg: [Int] @listConstraint(minItems: 3) @intConstraint(min: 3)
+        }
+        
+        input DefaultsInput {
+          scalar: String! = "defaultString"
+          enum: SimpleEnum! = "A"
+          list: [String!]! = ["string1","string2"]
+          object: SimpleInput! = {name:"string",number:[1,2],bool:null}
+          listObjects: [SimpleInput!]! = [{name:"string",number:[1],bool:null},{name:"string",number:[],bool:null}]
+        }
+        
+        enum DescriptionEnum {
           "single line description"
           A
         
-          "single line description"
-          B
+          B @deprecated
         
-          "single line description"
+          """
+          multi line
+          description
+          """
           C
         
           "single line description"
-          D
+          D @deprecated(reason: "reason")
         }
         
-        interface ITestInterface {
-          name: String!
+        input ExactlyOneInput @inputConstraint(exactlyOne: ["int1", "int2"]) {
+          int1: Int
+          int2: Int
         }
         
-        """
-        ITestInterface2 Description
-        """
-        interface ITestInterface2 {
-          "single line description"
-          name: String!
+        input ListConstraintInput {
+          minItems: Int
+          maxItems: Int
+          unique: Boolean = false
+          innerList: ListConstraintInput
         }
         
         type Query {
-          field0: TestUnion
+          fieldValid: TestUnion
+          fieldConstraint(
+            arg: ConstraintInput
+          ): Int
+          fieldExactlyOne(
+            arg: ExactlyOneInput
+          ): Int
           fieldInvalidType: TestUnion
-          fieldAbstract: TestUnion
+          fieldInvalidReturn: TestUnion
           fieldThrow: TestUnion
         }
-        
+
         input TestAddonType {
           DateTimeType: DateTime = "01-01-2000 04:02:10"
           DateType: Date = "01-01-2000"
@@ -188,68 +239,18 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             notNullStringArgument1: "notNullValue"
           }
         }
-        
-        enum TestEnum {
+
+        enum SimpleEnum {
           A
-        
-          "single line description"
           B
-        
           C
-        
-          """
-          multi line
-          description
-          """
           D
         }
         
-        enum TestExplicitEnum {
-          "single line description"
-          A
-        
-          B @deprecated
-        
-          """
-          multi line
-          description
-          """
-          C
-        
-          "single line description 2"
-          D @deprecated
-        }
-        
-        input TestInnerInput {
+        input SimpleInput {
           name: String!
-        
-          "single line description"
           number: [Int!]!
-        
-          """
-          multi line
-          description
-          """
           bool: Boolean
-        }
-        
-        input TestInput {
-          name: String!
-        
-          """
-          multi line
-          description
-          """
-          inner: TestInnerInput
-        
-          """
-          multi line
-          description
-          """
-          innerList: [TestInnerInput!]!
-        
-          "single line description"
-          innerNotNull: TestInnerInput!
         }
         
         """
@@ -260,27 +261,54 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         }
         
         scalar TestScalar
-
-        scalar TestSecondScalar
         
         union TestUnion = Abc | Xyz
-        
-        union UTestUnion = Abc | Xyz
         
         type Xyz implements TestInterface {
           name: String!
         }
         
         type Zzz {
-          enumList: [TestEnum]
+          enumList: [SimpleEnum]
         }
+        
+        directive @floatConstraint(
+          min: Float
+          max: Float
+          oneOf: [Float!]
+        ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+
+        directive @inputConstraint(
+          atLeastOne: [String!]
+          exactlyOne: [String!]
+        ) on INPUT_OBJECT
+
+        directive @intConstraint(
+          min: Int
+          max: Int
+          oneOf: [Int!]
+        ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
         
         directive @invalidDirective repeatable on FIELD
         
+        directive @listConstraint(
+          minItems: Int
+          maxItems: Int
+          unique: Boolean = false
+          innerList: ListConstraintInput
+        ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+
+        directive @stringConstraint(
+          minLength: Int
+          maxLength: Int
+          regex: String
+          oneOf: [String!]
+        ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+
         directive @testDirective repeatable on FIELD
         EOL;
 
-        self::assertSame($expected, PrintSchema::getSchema()->printSchema());
+        self::assertSame($expected, TestSchema::getSchema()->printSchema());
     }
 
     public function testPrintFullSchema() : void
@@ -298,46 +326,96 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         type Abc {
           field1(
             arg1: Int = 123
-            arg2: TestInput
+            arg2: CompositeInput
           ): TestInterface @deprecated
         }
         
-        """
-        ETestEnum description
-        """
-        enum ETestEnum {
+        enum ArrayEnum {
+          "First description"
+          A
+        
+          "Second description"
+          B
+        
+          "Third description"
+          C
+        }
+        
+        input CompositeInput {
+          name: String!
+          inner: SimpleInput
+          innerList: [SimpleInput!]!
+          innerNotNull: SimpleInput!
+        }
+        
+        input ConstraintInput @inputConstraint(atLeastOne: ["intMinArg", "intMaxArg", "intOneOfArg", "floatMinArg", "floatMaxArg", "floatOneOfArg", "stringMinArg", "stringMaxArg", "stringRegexArg", "stringOneOfArg", "stringOneOfEmptyArg", "listMinArg", "listMaxArg", "listUniqueArg", "listInnerListArg", "listMinIntMinArg"]) {
+          intMinArg: Int @intConstraint(min: -20)
+          intMaxArg: Int @intConstraint(max: 20)
+          intOneOfArg: Int @intConstraint(oneOf: [1, 2, 3])
+          floatMinArg: Float @floatConstraint(min: 4.01)
+          floatMaxArg: Float @floatConstraint(max: 20.101)
+          floatOneOfArg: Float @floatConstraint(oneOf: [1.01, 2.02, 3])
+          stringMinArg: String @stringConstraint(minLength: 4)
+          stringMaxArg: String @stringConstraint(maxLength: 10)
+          stringRegexArg: String @stringConstraint(regex: "/^(abc)|(foo)$/")
+          stringOneOfArg: String @stringConstraint(oneOf: ["abc", "foo"])
+          stringOneOfEmptyArg: String @stringConstraint(oneOf: [])
+          listMinArg: [Int] @listConstraint(minItems: 1)
+          listMaxArg: [Int] @listConstraint(maxItems: 3)
+          listUniqueArg: [Int] @listConstraint(unique: true)
+          listInnerListArg: [[Int]] @listConstraint(innerList: {minItems: 1, maxItems: 3})
+          listMinIntMinArg: [Int] @listConstraint(minItems: 3) @intConstraint(min: 3)
+        }
+        
+        input DefaultsInput {
+          scalar: String! = "defaultString"
+          enum: SimpleEnum! = "A"
+          list: [String!]! = ["string1","string2"]
+          object: SimpleInput! = {name:"string",number:[1,2],bool:null}
+          listObjects: [SimpleInput!]! = [{name:"string",number:[1],bool:null},{name:"string",number:[],bool:null}]
+        }
+        
+        enum DescriptionEnum {
           "single line description"
           A
         
-          "single line description"
-          B
+          B @deprecated
         
-          "single line description"
+          """
+          multi line
+          description
+          """
           C
         
           "single line description"
-          D
+          D @deprecated(reason: "reason")
         }
         
-        interface ITestInterface {
-          name: String!
+        input ExactlyOneInput @inputConstraint(exactlyOne: ["int1", "int2"]) {
+          int1: Int
+          int2: Int
         }
         
-        """
-        ITestInterface2 Description
-        """
-        interface ITestInterface2 {
-          "single line description"
-          name: String!
+        input ListConstraintInput {
+          minItems: Int
+          maxItems: Int
+          unique: Boolean = false
+          innerList: ListConstraintInput
         }
         
         type Query {
-          field0: TestUnion
+          fieldValid: TestUnion
+          fieldConstraint(
+            arg: ConstraintInput
+          ): Int
+          fieldExactlyOne(
+            arg: ExactlyOneInput
+          ): Int
           fieldInvalidType: TestUnion
-          fieldAbstract: TestUnion
+          fieldInvalidReturn: TestUnion
           fieldThrow: TestUnion
         }
-        
+
         input TestAddonType {
           DateTimeType: DateTime = "01-01-2000 04:02:10"
           DateType: Date = "01-01-2000"
@@ -372,67 +450,17 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           }
         }
         
-        enum TestEnum {
+        enum SimpleEnum {
           A
-        
-          "single line description"
           B
-        
           C
-        
-          """
-          multi line
-          description
-          """
           D
         }
         
-        enum TestExplicitEnum {
-          "single line description"
-          A
-        
-          B @deprecated
-        
-          """
-          multi line
-          description
-          """
-          C
-        
-          "single line description 2"
-          D @deprecated
-        }
-        
-        input TestInnerInput {
+        input SimpleInput {
           name: String!
-        
-          "single line description"
           number: [Int!]!
-        
-          """
-          multi line
-          description
-          """
           bool: Boolean
-        }
-        
-        input TestInput {
-          name: String!
-        
-          """
-          multi line
-          description
-          """
-          inner: TestInnerInput
-        
-          """
-          multi line
-          description
-          """
-          innerList: [TestInnerInput!]!
-        
-          "single line description"
-          innerNotNull: TestInnerInput!
         }
         
         """
@@ -443,27 +471,54 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         }
         
         scalar TestScalar
-
-        scalar TestSecondScalar
         
         union TestUnion = Abc | Xyz
-        
-        union UTestUnion = Abc | Xyz
         
         type Xyz implements TestInterface {
           name: String!
         }
         
         type Zzz {
-          enumList: [TestEnum]
+          enumList: [SimpleEnum]
         }
+        
+        directive @floatConstraint(
+          min: Float
+          max: Float
+          oneOf: [Float!]
+        ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+
+        directive @inputConstraint(
+          atLeastOne: [String!]
+          exactlyOne: [String!]
+        ) on INPUT_OBJECT
+
+        directive @intConstraint(
+          min: Int
+          max: Int
+          oneOf: [Int!]
+        ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
         
         directive @invalidDirective repeatable on FIELD
         
+        directive @listConstraint(
+          minItems: Int
+          maxItems: Int
+          unique: Boolean = false
+          innerList: ListConstraintInput
+        ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+
+        directive @stringConstraint(
+          minLength: Int
+          maxLength: Int
+          regex: String
+          oneOf: [String!]
+        ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+
         directive @testDirective repeatable on FIELD
         EOL;
 
-        self::assertSame($expected, PrintSchema::getFullSchema()->printSchema());
+        self::assertSame($expected, TestSchema::getFullSchema()->printSchema());
     }
 
     public function testPrintTypeKindSorterSchema() : void
@@ -475,18 +530,6 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           subscription: null
         }
         
-        interface ITestInterface {
-          name: String!
-        }
-        
-        """
-        ITestInterface2 Description
-        """
-        interface ITestInterface2 {
-          "single line description"
-          name: String!
-        }
-        
         """
         TestInterface Description
         """
@@ -500,14 +543,20 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         type Abc {
           field1(
             arg1: Int = 123
-            arg2: TestInput
+            arg2: CompositeInput
           ): TestInterface @deprecated
         }
         
         type Query {
-          field0: TestUnion
+          fieldValid: TestUnion
+          fieldConstraint(
+            arg: ConstraintInput
+          ): Int
+          fieldExactlyOne(
+            arg: ExactlyOneInput
+          ): Int
           fieldInvalidType: TestUnion
-          fieldAbstract: TestUnion
+          fieldInvalidReturn: TestUnion
           fieldThrow: TestUnion
         }
         
@@ -516,12 +565,10 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         }
         
         type Zzz {
-          enumList: [TestEnum]
+          enumList: [SimpleEnum]
         }
         
         union TestUnion = Abc | Xyz
-        
-        union UTestUnion = Abc | Xyz
         
         input TestAddonType {
           DateTimeType: DateTime = "01-01-2000 04:02:10"
@@ -556,76 +603,73 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             notNullStringArgument1: "notNullValue"
           }
         }
-        
-        input TestInnerInput {
+
+        input CompositeInput {
           name: String!
+          inner: SimpleInput
+          innerList: [SimpleInput!]!
+          innerNotNull: SimpleInput!
+        }
         
-          "single line description"
+        input ConstraintInput @inputConstraint(atLeastOne: ["intMinArg", "intMaxArg", "intOneOfArg", "floatMinArg", "floatMaxArg", "floatOneOfArg", "stringMinArg", "stringMaxArg", "stringRegexArg", "stringOneOfArg", "stringOneOfEmptyArg", "listMinArg", "listMaxArg", "listUniqueArg", "listInnerListArg", "listMinIntMinArg"]) {
+          intMinArg: Int @intConstraint(min: -20)
+          intMaxArg: Int @intConstraint(max: 20)
+          intOneOfArg: Int @intConstraint(oneOf: [1, 2, 3])
+          floatMinArg: Float @floatConstraint(min: 4.01)
+          floatMaxArg: Float @floatConstraint(max: 20.101)
+          floatOneOfArg: Float @floatConstraint(oneOf: [1.01, 2.02, 3])
+          stringMinArg: String @stringConstraint(minLength: 4)
+          stringMaxArg: String @stringConstraint(maxLength: 10)
+          stringRegexArg: String @stringConstraint(regex: "/^(abc)|(foo)$/")
+          stringOneOfArg: String @stringConstraint(oneOf: ["abc", "foo"])
+          stringOneOfEmptyArg: String @stringConstraint(oneOf: [])
+          listMinArg: [Int] @listConstraint(minItems: 1)
+          listMaxArg: [Int] @listConstraint(maxItems: 3)
+          listUniqueArg: [Int] @listConstraint(unique: true)
+          listInnerListArg: [[Int]] @listConstraint(innerList: {minItems: 1, maxItems: 3})
+          listMinIntMinArg: [Int] @listConstraint(minItems: 3) @intConstraint(min: 3)
+        }
+        
+        input DefaultsInput {
+          scalar: String! = "defaultString"
+          enum: SimpleEnum! = "A"
+          list: [String!]! = ["string1","string2"]
+          object: SimpleInput! = {name:"string",number:[1,2],bool:null}
+          listObjects: [SimpleInput!]! = [{name:"string",number:[1],bool:null},{name:"string",number:[],bool:null}]
+        }
+        
+        input ExactlyOneInput @inputConstraint(exactlyOne: ["int1", "int2"]) {
+          int1: Int
+          int2: Int
+        }
+        
+        input ListConstraintInput {
+          minItems: Int
+          maxItems: Int
+          unique: Boolean = false
+          innerList: ListConstraintInput
+        }
+        
+        input SimpleInput {
+          name: String!
           number: [Int!]!
-        
-          """
-          multi line
-          description
-          """
           bool: Boolean
         }
         
-        input TestInput {
-          name: String!
-        
-          """
-          multi line
-          description
-          """
-          inner: TestInnerInput
-        
-          """
-          multi line
-          description
-          """
-          innerList: [TestInnerInput!]!
-        
-          "single line description"
-          innerNotNull: TestInnerInput!
-        }
-        
         scalar TestScalar
-
-        scalar TestSecondScalar
         
-        """
-        ETestEnum description
-        """
-        enum ETestEnum {
-          "single line description"
+        enum ArrayEnum {
+          "First description"
           A
         
-          "single line description"
+          "Second description"
           B
         
-          "single line description"
+          "Third description"
           C
-        
-          "single line description"
-          D
         }
         
-        enum TestEnum {
-          A
-        
-          "single line description"
-          B
-        
-          C
-        
-          """
-          multi line
-          description
-          """
-          D
-        }
-        
-        enum TestExplicitEnum {
+        enum DescriptionEnum {
           "single line description"
           A
         
@@ -637,16 +681,54 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           """
           C
         
-          "single line description 2"
-          D @deprecated
+          "single line description"
+          D @deprecated(reason: "reason")
         }
+        
+        enum SimpleEnum {
+          A
+          B
+          C
+          D
+        }
+        
+        directive @floatConstraint(
+          min: Float
+          max: Float
+          oneOf: [Float!]
+        ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+
+        directive @inputConstraint(
+          atLeastOne: [String!]
+          exactlyOne: [String!]
+        ) on INPUT_OBJECT
+
+        directive @intConstraint(
+          min: Int
+          max: Int
+          oneOf: [Int!]
+        ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
         
         directive @invalidDirective repeatable on FIELD
         
+        directive @listConstraint(
+          minItems: Int
+          maxItems: Int
+          unique: Boolean = false
+          innerList: ListConstraintInput
+        ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+
+        directive @stringConstraint(
+          minLength: Int
+          maxLength: Int
+          regex: String
+          oneOf: [String!]
+        ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+
         directive @testDirective repeatable on FIELD
         EOL;
 
-        self::assertSame($expected, PrintSchema::getSchema()->printSchema(new \Graphpinator\Utils\Sort\TypeKindSorter()));
+        self::assertSame($expected, TestSchema::getSchema()->printSchema(new \Graphpinator\Utils\Sort\TypeKindSorter()));
     }
 
     public function testPrintTypeKindSorterFullSchema() : void
@@ -658,18 +740,6 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           subscription: Query
         }
         
-        interface ITestInterface {
-          name: String!
-        }
-        
-        """
-        ITestInterface2 Description
-        """
-        interface ITestInterface2 {
-          "single line description"
-          name: String!
-        }
-        
         """
         TestInterface Description
         """
@@ -683,14 +753,20 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         type Abc {
           field1(
             arg1: Int = 123
-            arg2: TestInput
+            arg2: CompositeInput
           ): TestInterface @deprecated
         }
         
         type Query {
-          field0: TestUnion
+          fieldValid: TestUnion
+          fieldConstraint(
+            arg: ConstraintInput
+          ): Int
+          fieldExactlyOne(
+            arg: ExactlyOneInput
+          ): Int
           fieldInvalidType: TestUnion
-          fieldAbstract: TestUnion
+          fieldInvalidReturn: TestUnion
           fieldThrow: TestUnion
         }
         
@@ -699,12 +775,10 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         }
         
         type Zzz {
-          enumList: [TestEnum]
+          enumList: [SimpleEnum]
         }
         
         union TestUnion = Abc | Xyz
-        
-        union UTestUnion = Abc | Xyz
         
         input TestAddonType {
           DateTimeType: DateTime = "01-01-2000 04:02:10"
@@ -739,76 +813,73 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             notNullStringArgument1: "notNullValue"
           }
         }
-        
-        input TestInnerInput {
+
+        input CompositeInput {
           name: String!
+          inner: SimpleInput
+          innerList: [SimpleInput!]!
+          innerNotNull: SimpleInput!
+        }
         
-          "single line description"
+        input ConstraintInput @inputConstraint(atLeastOne: ["intMinArg", "intMaxArg", "intOneOfArg", "floatMinArg", "floatMaxArg", "floatOneOfArg", "stringMinArg", "stringMaxArg", "stringRegexArg", "stringOneOfArg", "stringOneOfEmptyArg", "listMinArg", "listMaxArg", "listUniqueArg", "listInnerListArg", "listMinIntMinArg"]) {
+          intMinArg: Int @intConstraint(min: -20)
+          intMaxArg: Int @intConstraint(max: 20)
+          intOneOfArg: Int @intConstraint(oneOf: [1, 2, 3])
+          floatMinArg: Float @floatConstraint(min: 4.01)
+          floatMaxArg: Float @floatConstraint(max: 20.101)
+          floatOneOfArg: Float @floatConstraint(oneOf: [1.01, 2.02, 3])
+          stringMinArg: String @stringConstraint(minLength: 4)
+          stringMaxArg: String @stringConstraint(maxLength: 10)
+          stringRegexArg: String @stringConstraint(regex: "/^(abc)|(foo)$/")
+          stringOneOfArg: String @stringConstraint(oneOf: ["abc", "foo"])
+          stringOneOfEmptyArg: String @stringConstraint(oneOf: [])
+          listMinArg: [Int] @listConstraint(minItems: 1)
+          listMaxArg: [Int] @listConstraint(maxItems: 3)
+          listUniqueArg: [Int] @listConstraint(unique: true)
+          listInnerListArg: [[Int]] @listConstraint(innerList: {minItems: 1, maxItems: 3})
+          listMinIntMinArg: [Int] @listConstraint(minItems: 3) @intConstraint(min: 3)
+        }
+        
+        input DefaultsInput {
+          scalar: String! = "defaultString"
+          enum: SimpleEnum! = "A"
+          list: [String!]! = ["string1","string2"]
+          object: SimpleInput! = {name:"string",number:[1,2],bool:null}
+          listObjects: [SimpleInput!]! = [{name:"string",number:[1],bool:null},{name:"string",number:[],bool:null}]
+        }
+        
+        input ExactlyOneInput @inputConstraint(exactlyOne: ["int1", "int2"]) {
+          int1: Int
+          int2: Int
+        }
+        
+        input ListConstraintInput {
+          minItems: Int
+          maxItems: Int
+          unique: Boolean = false
+          innerList: ListConstraintInput
+        }
+        
+        input SimpleInput {
+          name: String!
           number: [Int!]!
-        
-          """
-          multi line
-          description
-          """
           bool: Boolean
         }
         
-        input TestInput {
-          name: String!
-        
-          """
-          multi line
-          description
-          """
-          inner: TestInnerInput
-        
-          """
-          multi line
-          description
-          """
-          innerList: [TestInnerInput!]!
-        
-          "single line description"
-          innerNotNull: TestInnerInput!
-        }
-        
         scalar TestScalar
-
-        scalar TestSecondScalar
         
-        """
-        ETestEnum description
-        """
-        enum ETestEnum {
-          "single line description"
+        enum ArrayEnum {
+          "First description"
           A
         
-          "single line description"
+          "Second description"
           B
         
-          "single line description"
+          "Third description"
           C
-        
-          "single line description"
-          D
         }
         
-        enum TestEnum {
-          A
-        
-          "single line description"
-          B
-        
-          C
-        
-          """
-          multi line
-          description
-          """
-          D
-        }
-        
-        enum TestExplicitEnum {
+        enum DescriptionEnum {
           "single line description"
           A
         
@@ -820,15 +891,54 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           """
           C
         
-          "single line description 2"
-          D @deprecated
+          "single line description"
+          D @deprecated(reason: "reason")
         }
+        
+        enum SimpleEnum {
+          A
+          B
+          C
+          D
+        }
+        
+        directive @floatConstraint(
+          min: Float
+          max: Float
+          oneOf: [Float!]
+        ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+
+        directive @inputConstraint(
+          atLeastOne: [String!]
+          exactlyOne: [String!]
+        ) on INPUT_OBJECT
+
+        directive @intConstraint(
+          min: Int
+          max: Int
+          oneOf: [Int!]
+        ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
         
         directive @invalidDirective repeatable on FIELD
         
+        directive @listConstraint(
+          minItems: Int
+          maxItems: Int
+          unique: Boolean = false
+          innerList: ListConstraintInput
+        ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+
+        directive @stringConstraint(
+          minLength: Int
+          maxLength: Int
+          regex: String
+          oneOf: [String!]
+        ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+
         directive @testDirective repeatable on FIELD
         EOL;
 
-        self::assertSame($expected, PrintSchema::getFullSchema()->printSchema(new \Graphpinator\Utils\Sort\TypeKindSorter()));
+        self::assertSame($expected, TestSchema::getFullSchema()->printSchema(new \Graphpinator\Utils\Sort\TypeKindSorter()));
     }
 }
+// @phpcs:enable SlevomatCodingStandard.Files.LineLength.LineTooLong

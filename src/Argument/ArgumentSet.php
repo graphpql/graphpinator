@@ -10,7 +10,7 @@ final class ArgumentSet extends \Infinityloop\Utils\ObjectSet implements \Graphp
 
     private array $defaults = [];
 
-    public function getDefaults() : array
+    public function getRawDefaults() : array
     {
         return $this->defaults;
     }
@@ -30,7 +30,7 @@ final class ArgumentSet extends \Infinityloop\Utils\ObjectSet implements \Graphp
         $defaultValue = $object->getDefaultValue();
 
         if ($defaultValue instanceof \Graphpinator\Resolver\Value\ValidatedValue) {
-            $this->defaults[$object->getName()] = $defaultValue;
+            $this->defaults[$object->getName()] = $defaultValue->getRawValue();
         }
 
         return $object->getName();

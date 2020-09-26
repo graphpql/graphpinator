@@ -41,13 +41,14 @@ final class FieldSet extends \Infinityloop\Utils\ObjectSet
             }
 
             $conflicts = $this->fieldNames[$field->getAlias()];
+            $fieldTypeCond = $field->getTypeCondition();
 
             foreach ($conflicts as $conflict) {
                 \assert($conflict instanceof Field);
 
-                if ($conflict->getTypeCondition() === null ||
-                    $field->getTypeCondition() === null ||
-                    $conflict->getTypeCondition() === $field->getTypeCondition()) {
+                $conflictTypeCond = $conflict->getTypeCondition();
+
+                if ($conflictTypeCond === null || $fieldTypeCond === null || $conflictTypeCond === $fieldTypeCond) {
                     $conflict->mergeField($field);
 
                     continue 2;

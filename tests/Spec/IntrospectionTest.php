@@ -17,9 +17,9 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => '{ field0 { __typename } }',
+                    'query' => '{ fieldValid { __typename } }',
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['field0' => ['__typename' => 'Abc']]]),
+                \Graphpinator\Json::fromObject((object) ['data' => ['fieldValid' => ['__typename' => 'Abc']]]),
             ],
         ];
     }
@@ -83,12 +83,17 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                                 ['name' => 'Zzz'],
                                 ['name' => 'TestInterface'],
                                 ['name' => 'TestUnion'],
-                                ['name' => 'TestInput'],
-                                ['name' => 'TestInnerInput'],
-                                ['name' => 'TestEnum'],
-                                ['name' => 'TestExplicitEnum'],
+                                ['name' => 'CompositeInput'],
+                                ['name' => 'SimpleInput'],
+                                ['name' => 'DefaultsInput'],
+                                ['name' => 'ConstraintInput'],
+                                ['name' => 'ExactlyOneInput'],
+                                ['name' => 'SimpleEnum'],
+                                ['name' => 'ArrayEnum'],
+                                ['name' => 'DescriptionEnum'],
                                 ['name' => 'TestScalar'],
                                 ['name' => 'TestAddonType'],
+                                ['name' => 'ListConstraintInput'],
                                 ['name' => 'ID'],
                                 ['name' => 'Int'],
                                 ['name' => 'Float'],
@@ -130,33 +135,86 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                                     'isRepeatable' => true,
                                 ],
                                 [
+                                    'name' => 'intConstraint',
+                                    'description' => 'Graphpinator intConstraint directive.',
+                                    'args' => [
+                                        ['name' => 'min'],
+                                        ['name' => 'max'],
+                                        ['name' => 'oneOf'],
+                                    ],
+                                    'locations' => ['ARGUMENT_DEFINITION', 'INPUT_FIELD_DEFINITION'],
+                                    'isRepeatable' => false,
+                                ],
+                                [
+                                    'name' => 'floatConstraint',
+                                    'description' => 'Graphpinator floatConstraint directive.',
+                                    'args' => [
+                                        ['name' => 'min'],
+                                        ['name' => 'max'],
+                                        ['name' => 'oneOf'],
+                                    ],
+                                    'locations' => ['ARGUMENT_DEFINITION', 'INPUT_FIELD_DEFINITION'],
+                                    'isRepeatable' => false,
+                                ],
+                                [
+                                    'name' => 'stringConstraint',
+                                    'description' => 'Graphpinator stringConstraint directive.',
+                                    'args' => [
+                                        ['name' => 'minLength'],
+                                        ['name' => 'maxLength'],
+                                        ['name' => 'regex'],
+                                        ['name' => 'oneOf'],
+                                    ],
+                                    'locations' => ['ARGUMENT_DEFINITION', 'INPUT_FIELD_DEFINITION'],
+                                    'isRepeatable' => false,
+                                ],
+                                [
+                                    'name' => 'listConstraint',
+                                    'description' => 'Graphpinator listConstraint directive.',
+                                    'args' => [
+                                        ['name' => 'minItems'],
+                                        ['name' => 'maxItems'],
+                                        ['name' => 'unique'],
+                                        ['name' => 'innerList'],
+                                    ],
+                                    'locations' => ['ARGUMENT_DEFINITION', 'INPUT_FIELD_DEFINITION'],
+                                    'isRepeatable' => false,
+                                ],
+                                [
+                                    'name' => 'inputConstraint',
+                                    'description' => 'Graphpinator inputConstraint directive.',
+                                    'args' => [
+                                        ['name' => 'atLeastOne'],
+                                        ['name' => 'exactlyOne'],
+                                    ],
+                                    'locations' => ['INPUT_OBJECT'],
+                                    'isRepeatable' => false,
+                                ],
+                                [
                                     'name' => 'skip',
                                     'description' => 'Built-in skip directive.',
                                     'args' => [
-                                        [
-                                            'name' => 'if',
-                                        ],
+                                        ['name' => 'if'],
                                     ],
-                                    'locations' => [
-                                        'FIELD',
-                                        'FRAGMENT_SPREAD',
-                                        'INLINE_FRAGMENT',
-                                    ],
+                                    'locations' => ['FIELD', 'FRAGMENT_SPREAD', 'INLINE_FRAGMENT'],
                                     'isRepeatable' => false,
                                 ],
                                 [
                                     'name' => 'include',
                                     'description' => 'Built-in include directive.',
                                     'args' => [
-                                        [
-                                            'name' => 'if',
-                                        ],
+                                        ['name' => 'if'],
                                     ],
-                                    'locations' => [
-                                        'FIELD',
-                                        'FRAGMENT_SPREAD',
-                                        'INLINE_FRAGMENT',
+                                    'locations' => ['FIELD', 'FRAGMENT_SPREAD', 'INLINE_FRAGMENT'],
+                                    'isRepeatable' => false,
+                                ],
+                                [
+                                    'name' => 'deprecated',
+                                    'description' => 'Built-in deprecated directive.',
+                                    'args' => [
+                                        ['name' => 'reason'],
                                     ],
+                                    'locations' => ['FIELD_DEFINITION', 'ENUM_VALUE'],
                                     'isRepeatable' => false,
                                 ],
                             ],
@@ -191,7 +249,8 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                 \Graphpinator\Json::fromObject((object) [
                     'query' => '{ 
                         __type(name: "Abc") { 
-                            kind name description fields {
+                            kind name description 
+                            fields(includeDeprecated: true) {
                                 name
                             } 
                             interfaces {
@@ -208,7 +267,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                             } 
                             ofType {
                                 name
-                            } 
+                            }
                         } 
                     }',
                 ]),
@@ -217,7 +276,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                         '__type' => [
                             'kind' => 'OBJECT',
                             'name' => 'Abc',
-                            'description' => null,
+                            'description' => 'Test Abc description',
                             'fields' => [['name' => 'field1']],
                             'interfaces' => [],
                             'possibleTypes' => null,
@@ -299,7 +358,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                         '__type' => [
                             'kind' => 'INTERFACE',
                             'name' => 'TestInterface',
-                            'description' => null,
+                            'description' => 'TestInterface Description',
                             'fields' => [['name' => 'name']],
                             'interfaces' => [],
                             'possibleTypes' => [['name' => 'Xyz']],
@@ -343,7 +402,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
             [
                 \Graphpinator\Json::fromObject((object) [
                     'query' => '{ 
-                        __type(name: "TestInnerInput") { 
+                        __type(name: "SimpleInput") { 
                             kind name description 
                             fields { name }
                             interfaces { name }
@@ -358,7 +417,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                     'data' => [
                         '__type' => [
                             'kind' => 'INPUT_OBJECT',
-                            'name' => 'TestInnerInput',
+                            'name' => 'SimpleInput',
                             'description' => null,
                             'fields' => null,
                             'interfaces' => null,
@@ -373,7 +432,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
             [
                 \Graphpinator\Json::fromObject((object) [
                     'query' => '{ 
-                        __type(name: "TestEnum") { 
+                        __type(name: "SimpleEnum") { 
                             kind name description 
                             fields { name }
                             interfaces { name }
@@ -388,7 +447,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                     'data' => [
                         '__type' => [
                             'kind' => 'ENUM',
-                            'name' => 'TestEnum',
+                            'name' => 'SimpleEnum',
                             'description' => null,
                             'fields' => null,
                             'interfaces' => null,
@@ -407,7 +466,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => '{ __type(name: "TestExplicitEnum") { 
+                    'query' => '{ __type(name: "DescriptionEnum") { 
                         enumValues(includeDeprecated: true){name description isDeprecated deprecationReason} } 
                     }',
                 ]),
@@ -415,10 +474,30 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                     'data' => [
                         '__type' => [
                             'enumValues' => [
-                                ['name' => 'A', 'description' => null, 'isDeprecated' => false, 'deprecationReason' => null],
-                                ['name' => 'B', 'description' => null, 'isDeprecated' => false, 'deprecationReason' => null],
-                                ['name' => 'C', 'description' => null, 'isDeprecated' => false, 'deprecationReason' => null],
-                                ['name' => 'D', 'description' => null, 'isDeprecated' => false, 'deprecationReason' => null],
+                                [
+                                    'name' => 'A',
+                                    'description' => 'single line description',
+                                    'isDeprecated' => false,
+                                    'deprecationReason' => null,
+                                ],
+                                [
+                                    'name' => 'B',
+                                    'description' => null,
+                                    'isDeprecated' => true,
+                                    'deprecationReason' => null,
+                                ],
+                                [
+                                    'name' => 'C',
+                                    'description' => 'multi line' . \PHP_EOL . 'description',
+                                    'isDeprecated' => false,
+                                    'deprecationReason' => null,
+                                ],
+                                [
+                                    'name' => 'D',
+                                    'description' => 'single line description',
+                                    'isDeprecated' => true,
+                                    'deprecationReason' => 'reason',
+                                ],
                             ],
                         ],
                     ],
@@ -426,7 +505,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => '{ __type(name: "TestExplicitEnum") { 
+                    'query' => '{ __type(name: "DescriptionEnum") { 
                         enumValues(includeDeprecated: false){name description isDeprecated deprecationReason} } 
                     }',
                 ]),
@@ -434,10 +513,18 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                     'data' => [
                         '__type' => [
                             'enumValues' => [
-                                ['name' => 'A', 'description' => null, 'isDeprecated' => false, 'deprecationReason' => null],
-                                ['name' => 'B', 'description' => null, 'isDeprecated' => false, 'deprecationReason' => null],
-                                ['name' => 'C', 'description' => null, 'isDeprecated' => false, 'deprecationReason' => null],
-                                ['name' => 'D', 'description' => null, 'isDeprecated' => false, 'deprecationReason' => null],
+                                [
+                                    'name' => 'A',
+                                    'description' => 'single line description',
+                                    'isDeprecated' => false,
+                                    'deprecationReason' => null,
+                                ],
+                                [
+                                    'name' => 'C',
+                                    'description' => 'multi line' . \PHP_EOL . 'description',
+                                    'isDeprecated' => false,
+                                    'deprecationReason' => null,
+                                ],
                             ],
                         ],
                     ],
@@ -490,29 +577,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                 \Graphpinator\Json::fromObject((object) [
                     'data' => [
                         '__type' => [
-                            'fields' => [
-                                [
-                                    'name' => 'field1',
-                                    'description' => null,
-                                    'isDeprecated' => false,
-                                    'deprecationReason' => null,
-                                    'type' => ['name' => 'TestInterface'],
-                                    'args' => [
-                                        [
-                                            'name' => 'arg1',
-                                            'description' => null,
-                                            'type' => ['name' => 'Int'],
-                                            'defaultValue' => '123',
-                                        ],
-                                        [
-                                            'name' => 'arg2',
-                                            'description' => null,
-                                            'type' => ['name' => 'TestInput'],
-                                            'defaultValue' => null,
-                                        ],
-                                    ],
-                                ],
-                            ],
+                            'fields' => [],
                         ],
                     ],
                 ]),
@@ -538,7 +603,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                                 [
                                     'name' => 'field1',
                                     'description' => null,
-                                    'isDeprecated' => false,
+                                    'isDeprecated' => true,
                                     'deprecationReason' => null,
                                     'type' => ['name' => 'TestInterface'],
                                     'args' => [
@@ -551,10 +616,54 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                                         [
                                             'name' => 'arg2',
                                             'description' => null,
-                                            'type' => ['name' => 'TestInput'],
+                                            'type' => ['name' => 'CompositeInput'],
                                             'defaultValue' => null,
                                         ],
                                     ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ]),
+            ],
+            [
+                \Graphpinator\Json::fromObject((object) [
+                    'query' => '{ 
+                        __type(name: "DefaultsInput") { 
+                            inputFields {
+                                name description defaultValue
+                            } 
+                        } 
+                    }',
+                ]),
+                \Graphpinator\Json::fromObject((object) [
+                    'data' => [
+                        '__type' => [
+                            'inputFields' => [
+                                [
+                                    'name' => 'scalar',
+                                    'description' => null,
+                                    'defaultValue' => '"defaultString"',
+                                ],
+                                [
+                                    'name' => 'enum',
+                                    'description' => null,
+                                    'defaultValue' => '"A"',
+                                ],
+                                [
+                                    'name' => 'list',
+                                    'description' => null,
+                                    'defaultValue' => '["string1","string2"]',
+                                ],
+                                [
+                                    'name' => 'object',
+                                    'description' => null,
+                                    'defaultValue' => '{name:"string",number:[1,2],bool:null}',
+                                ],
+                                [
+                                    'name' => 'listObjects',
+                                    'description' => null,
+                                    'defaultValue' => '[{name:"string",number:[1],bool:null},{name:"string",number:[],bool:null}]',
                                 ],
                             ],
                         ],
@@ -588,7 +697,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                                         'name' => null,
                                         'kind' => 'LIST',
                                         'ofType' => [
-                                            'name' => 'TestEnum',
+                                            'name' => 'SimpleEnum',
                                         ],
                                     ],
                                 ],
@@ -642,7 +751,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                 } 
             }',
         ]);
-        $graphpinator = new \Graphpinator\Graphpinator(PrintSchema::getSchema());
+        $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
         $result = \Graphpinator\Json::fromObject((object) [
             'data' => [
                 '__type' => [
@@ -681,7 +790,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                 } 
             }',
         ]);
-        $graphpinator = new \Graphpinator\Graphpinator(PrintSchema::getSchema());
+        $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
         $result = \Graphpinator\Json::fromObject((object) [
             'data' => [
                 '__type' => [
@@ -699,11 +808,11 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
     public function testDeprecatedFalseEnum() : void
     {
         $request = \Graphpinator\Json::fromObject((object) [
-            'query' => '{ __type(name: "TestExplicitEnum") { 
+            'query' => '{ __type(name: "DescriptionEnum") { 
                 enumValues(includeDeprecated: false){ name description isDeprecated deprecationReason } } 
             }',
         ]);
-        $graphpinator = new \Graphpinator\Graphpinator(PrintSchema::getSchema());
+        $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
         $result = \Graphpinator\Json::fromObject((object) [
             'data' => [
                 '__type' => [
@@ -734,11 +843,11 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
     public function testDeprecatedTrueEnum() : void
     {
         $request = \Graphpinator\Json::fromObject((object) [
-            'query' => '{ __type(name: "TestExplicitEnum") { 
+            'query' => '{ __type(name: "DescriptionEnum") { 
                 enumValues(includeDeprecated: true){name description isDeprecated deprecationReason} } 
             }',
         ]);
-        $graphpinator = new \Graphpinator\Graphpinator(PrintSchema::getSchema());
+        $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
         $result = \Graphpinator\Json::fromObject((object) [
             'data' => [
                 '__type' => [
@@ -763,7 +872,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                         ],
                         [
                             'name' => 'D',
-                            'description' => 'single line description 2',
+                            'description' => 'single line description',
                             'isDeprecated' => true,
                             'deprecationReason' => 'reason',
                         ],
@@ -776,5 +885,27 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
             $result->toString(),
             \json_encode($graphpinator->runQuery($request), \JSON_THROW_ON_ERROR, 512),
         );
+    }
+
+    public function testConstraintDirectivesSync() : void
+    {
+        $array = [
+            \Graphpinator\Constraint\IntConstraint::class => \Graphpinator\Type\Container\Container::directiveIntConstraint(),
+            \Graphpinator\Constraint\FloatConstraint::class => \Graphpinator\Type\Container\Container::directiveFloatConstraint(),
+            \Graphpinator\Constraint\StringConstraint::class => \Graphpinator\Type\Container\Container::directiveStringConstraint(),
+            \Graphpinator\Constraint\ListConstraint::class => \Graphpinator\Type\Container\Container::directiveListConstraint(),
+            \Graphpinator\Constraint\InputConstraint::class => \Graphpinator\Type\Container\Container::directiveInputConstraint(),
+        ];
+
+        foreach ($array as $constraintClass => $directive) {
+            \assert($directive instanceof \Graphpinator\Directive\Directive);
+
+            $reflection = new \ReflectionClass($constraintClass);
+            $constructorArgs = $reflection->getConstructor()->getParameters();
+
+            foreach ($constructorArgs as $arg) {
+                self::assertTrue(isset($directive->getArguments()[$arg->getName()]));
+            }
+        }
     }
 }

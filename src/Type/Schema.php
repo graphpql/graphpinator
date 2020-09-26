@@ -36,8 +36,8 @@ final class Schema
         $this->query->addMetaField(new \Graphpinator\Field\ResolvableField(
             '__type',
             $this->container->introspectionType(),
-            function($parent, \Graphpinator\Resolver\ArgumentValueSet $args) : \Graphpinator\Type\Contract\Definition {
-                return $this->container->getType($args['name']->getRawValue());
+            function($parent, string $name) : \Graphpinator\Type\Contract\Definition {
+                return $this->container->getType($name);
             },
             new \Graphpinator\Argument\ArgumentSet([
                 new \Graphpinator\Argument\Argument('name', \Graphpinator\Type\Container\Container::String()->notNull()),
@@ -69,9 +69,6 @@ final class Schema
     {
         $sorter ??= new \Graphpinator\Utils\Sort\AlphabeticalSorter();
 
-        $query = $this->query instanceof Type
-            ? $this->query->getName()
-            : 'null';
         $mutation = $this->mutation instanceof Type
             ? $this->mutation->getName()
             : 'null';
@@ -81,7 +78,7 @@ final class Schema
 
         $schemaDef = $this->printDescription() . <<<EOL
         schema {
-          query: {$query}
+          query: {$this->query->getName()}
           mutation: {$mutation}
           subscription: {$subscription}
         }

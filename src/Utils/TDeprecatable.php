@@ -38,8 +38,12 @@ trait TDeprecatable
 
     private function printDeprecated() : string
     {
-        return $this->isDeprecated()
-            ? ' @deprecated'
-            : '';
+        if (!$this->isDeprecated()) {
+            return '';
+        }
+
+        return $this->getDeprecationReason()
+            ? ' @deprecated(reason: "' . $this->getDeprecationReason() . '")'
+            : ' @deprecated';
     }
 }

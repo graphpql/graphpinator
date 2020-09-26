@@ -30,7 +30,7 @@ final class Field
         $this->arguments = $arguments
             ?? new \Graphpinator\Parser\Value\NamedValueSet([]);
         $this->directives = $directives
-            ?? new \Graphpinator\Normalizer\Directive\DirectiveSet([], \Graphpinator\Directive\DirectiveLocation::FIELD);
+            ?? new \Graphpinator\Normalizer\Directive\DirectiveSet([], \Graphpinator\Directive\ExecutableDirectiveLocation::FIELD);
         $this->children = $children;
         $this->typeCond = $typeCond;
     }

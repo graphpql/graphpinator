@@ -6,10 +6,43 @@ namespace Graphpinator\Tests\Unit\Value;
 
 final class InputValueTest extends \PHPUnit\Framework\TestCase
 {
-    public function testNull() : void
+    public function testImmutabilitySet() : void
     {
-        $type = $this->createMock(\Graphpinator\Type\InputType::class);
+        $this->expectException(\Graphpinator\Exception\OperationNotSupported::class);
+        $this->expectDeprecationMessage(\Graphpinator\Exception\OperationNotSupported::MESSAGE);
 
-        self::assertInstanceOf(\Graphpinator\Resolver\Value\NullValue::class, \Graphpinator\Resolver\Value\InputValue::create(null, $type));
+        $type = $this->createTestInput();
+        $value = \Graphpinator\Resolver\Value\InputValue::create((object) [], $type);
+
+        $value['field'] = 'text';
+    }
+
+    public function testImmutabilityUnset() : void
+    {
+        $this->expectException(\Graphpinator\Exception\OperationNotSupported::class);
+        $this->expectDeprecationMessage(\Graphpinator\Exception\OperationNotSupported::MESSAGE);
+
+        $type = $this->createTestInput();
+        $value = \Graphpinator\Resolver\Value\InputValue::create((object) ['field' => 'text'], $type);
+
+        unset($value['field']);
+    }
+
+    protected function createTestInput() : \Graphpinator\Type\InputType
+    {
+        return new class extends \Graphpinator\Type\InputType {
+            protected const NAME = 'Abc';
+
+            protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
+            {
+                return new \Graphpinator\Argument\ArgumentSet([
+                    new \Graphpinator\Argument\Argument(
+                        'field',
+                        \Graphpinator\Type\Container\Container::String(),
+                        'random',
+                    ),
+                ]);
+            }
+        };
     }
 }

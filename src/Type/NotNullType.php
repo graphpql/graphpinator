@@ -11,7 +11,7 @@ final class NotNullType extends \Graphpinator\Type\Contract\ModifierDefinition
         $value = $this->innerType->createValue($rawValue);
 
         if ($value instanceof \Graphpinator\Resolver\Value\NullValue) {
-            throw new \Exception('Value cannot be null.');
+            throw new \Graphpinator\Exception\Value\ValueCannotBeNull();
         }
 
         return $value;
@@ -20,7 +20,7 @@ final class NotNullType extends \Graphpinator\Type\Contract\ModifierDefinition
     public function validateValue($rawValue) : void
     {
         if ($rawValue === null) {
-            throw new \Exception('Value cannot be null.');
+            throw new \Graphpinator\Exception\Value\ValueCannotBeNull();
         }
 
         $this->innerType->validateValue($rawValue);

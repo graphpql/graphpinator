@@ -43,8 +43,12 @@ final class ListType extends \Graphpinator\Type\Contract\ModifierDefinition
         }
     }
 
-    public function applyDefaults($value) : array
+    public function applyDefaults($value) : ?array
     {
+        if ($value === null) {
+            return null;
+        }
+
         if (!\is_iterable($value)) {
             throw new \Exception('Value has to be list.');
         }

@@ -11,31 +11,31 @@ final class VariableTest extends \PHPUnit\Framework\TestCase
         return [
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName ($var1: Int) { field0 { field1(arg1: $var1) { name } } }',
+                    'query' => 'query queryName ($var1: Int) { fieldValid { field1(arg1: $var1) { name } } }',
                     'variables' => (object) ['var1' => 456],
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['field0' => ['field1' => ['name' => 'Test 456']]]]),
+                \Graphpinator\Json::fromObject((object) ['data' => ['fieldValid' => ['field1' => ['name' => 'Test 456']]]]),
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName ($var1: Int) { field0 { field1(arg1: $var1) { name } } }',
+                    'query' => 'query queryName ($var1: Int) { fieldValid { field1(arg1: $var1) { name } } }',
                     'variables' => (object) ['var1' => 123],
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['field0' => ['field1' => ['name' => 'Test 123']]]]),
+                \Graphpinator\Json::fromObject((object) ['data' => ['fieldValid' => ['field1' => ['name' => 'Test 123']]]]),
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName ($var1: Int = 456) { field0 { field1(arg1: $var1) { name } } }',
+                    'query' => 'query queryName ($var1: Int = 456) { fieldValid { field1(arg1: $var1) { name } } }',
                     'variables' => (object) [],
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['field0' => ['field1' => ['name' => 'Test 456']]]]),
+                \Graphpinator\Json::fromObject((object) ['data' => ['fieldValid' => ['field1' => ['name' => 'Test 456']]]]),
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName ($var1: Int = 123) { field0 { field1(arg1: $var1) { name } } }',
+                    'query' => 'query queryName ($var1: Int = 123) { fieldValid { field1(arg1: $var1) { name } } }',
                     'variables' => (object) [],
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['field0' => ['field1' => ['name' => 'Test 123']]]]),
+                \Graphpinator\Json::fromObject((object) ['data' => ['fieldValid' => ['field1' => ['name' => 'Test 123']]]]),
             ],
         ];
     }
@@ -60,25 +60,25 @@ final class VariableTest extends \PHPUnit\Framework\TestCase
         return [
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName ($var1: Int = "123") { field0 { field1 { name } } }',
+                    'query' => 'query queryName ($var1: Int = "123") { fieldValid { field1 { name } } }',
                     'variables' => (object) [],
                 ]),
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName ($var1: Int = "123") { field0 { field1 { name } } }',
+                    'query' => 'query queryName ($var1: Int = "123") { fieldValid { field1 { name } } }',
                     'variables' => ['var1' => '123'],
                 ]),
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName ($var1: Int!) { field0 { field1 { name } } }',
+                    'query' => 'query queryName ($var1: Int!) { fieldValid { field1 { name } } }',
                     'variables' => (object) [],
                 ]),
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { field0 { field1(arg1: $varNonExistent) { name } } }',
+                    'query' => 'query queryName { fieldValid { field1(arg1: $varNonExistent) { name } } }',
                     'variables' => (object) [],
                 ]),
             ],

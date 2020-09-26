@@ -7,6 +7,7 @@ namespace Graphpinator\Type;
 abstract class InputType extends \Graphpinator\Type\Contract\ConcreteDefinition implements \Graphpinator\Type\Contract\Inputable
 {
     use \Graphpinator\Printable\TRepeatablePrint;
+    use \Graphpinator\Utils\THasConstraints;
 
     protected ?\Graphpinator\Argument\ArgumentSet $arguments = null;
 
@@ -18,10 +19,10 @@ abstract class InputType extends \Graphpinator\Type\Contract\ConcreteDefinition 
     final public function applyDefaults($value) : \stdClass
     {
         if (!$value instanceof \stdClass) {
-            throw new \Exception('Composite input type without fields specified.');
+            throw new \Graphpinator\Exception\Resolver\SelectionOnComposite();
         }
 
-        return self::merge($value, $this->getArguments()->getDefaults());
+        return self::merge($value, (object) $this->getArguments()->getRawDefaults());
     }
 
     final public function getArguments() : \Graphpinator\Argument\ArgumentSet
@@ -38,22 +39,34 @@ abstract class InputType extends \Graphpinator\Type\Contract\ConcreteDefinition 
         return \Graphpinator\Type\Introspection\TypeKind::INPUT_OBJECT;
     }
 
+    public function addConstraint(\Graphpinator\Constraint\InputConstraint $constraint) : self
+    {
+        if (!$constraint->validateType($this)) {
+            throw new \Graphpinator\Exception\Constraint\InvalidConstraintType();
+        }
+
+        $this->getConstraints()[] = $constraint;
+
+        return $this;
+    }
+
     final public function printSchema() : string
     {
         return $this->printDescription()
-            . 'input ' . $this->getName() . ' {' . \PHP_EOL
+            . 'input ' . $this->getName() . $this->printConstraints() . ' {' . \PHP_EOL
             . $this->printItems($this->getArguments())
             . '}';
     }
 
     abstract protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet;
 
-    private static function merge(\stdClass $core, iterable $supplement) : \stdClass
+    private static function merge(\stdClass $core, \stdClass $supplement) : \stdClass
     {
         foreach ($supplement as $key => $value) {
             if (\property_exists($core, $key)) {
-                if ($core->{$key} instanceof \stdClass) {
-                    $core->{$key} = self::merge($core->{$key}, $supplement[$key]);
+                if ($core->{$key} instanceof \stdClass &&
+                    $supplement->{$key} instanceof \stdClass) {
+                    $core->{$key} = self::merge($core->{$key}, $supplement->{$key});
                 }
 
                 continue;

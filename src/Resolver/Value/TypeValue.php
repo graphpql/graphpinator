@@ -14,6 +14,6 @@ final class TypeValue extends \Graphpinator\Resolver\Value\ValidatedValue
 
     public function printValue(bool $prettyPrint = false) : string
     {
-        throw new \Exception('This value cannot be printed');
+        throw new \Graphpinator\Exception\OperationNotSupported();
     }
 }

@@ -4,10 +4,18 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Resolver\Value;
 
-final class InputValue extends \Graphpinator\Resolver\Value\ValidatedValue implements \Iterator, \ArrayAccess
+final class InputValue extends \Graphpinator\Resolver\Value\ValidatedValue implements \ArrayAccess
 {
     public function __construct(\stdClass $fields, \Graphpinator\Type\InputType $type)
     {
+        foreach ($fields as $name => $temp) {
+            if (isset($type->getArguments()[$name])) {
+                continue;
+            }
+
+            throw new \Exception('Unknown field for input value');
+        }
+
         $value = new \stdClass();
 
         foreach ($type->getArguments() as $argument) {
@@ -18,17 +26,13 @@ final class InputValue extends \Graphpinator\Resolver\Value\ValidatedValue imple
             $value->{$argument->getName()} = $usedValue instanceof \Graphpinator\Resolver\Value\ValidatedValue
                 ? $usedValue
                 : $argument->getType()->createValue($usedValue);
-        }
 
-        foreach ($fields as $name => $temp) {
-            if (isset($type->getArguments()[$name])) {
-                continue;
-            }
-
-            throw new \Exception('Unknown field for input value');
+            $argument->validateConstraints($value->{$argument->getName()});
         }
 
         parent::__construct($value, $type);
+
+        $type->validateConstraints($this);
     }
 
     public function getRawValue() : \stdClass
@@ -63,31 +67,6 @@ final class InputValue extends \Graphpinator\Resolver\Value\ValidatedValue imple
             : '{' . \implode(',', $component) . '}';
     }
 
-    public function current() : ValidatedValue
-    {
-        return \current($this->value);
-    }
-
-    public function next() : void
-    {
-        \next($this->value);
-    }
-
-    public function key() : ?string
-    {
-        return \key($this->value);
-    }
-
-    public function valid() : bool
-    {
-        return \key($this->value) !== null;
-    }
-
-    public function rewind() : void
-    {
-        \reset($this->value);
-    }
-
     public function offsetExists($name) : bool
     {
         return \property_exists($this->value, $name);
@@ -100,11 +79,11 @@ final class InputValue extends \Graphpinator\Resolver\Value\ValidatedValue imple
 
     public function offsetSet($offset, $value) : void
     {
-        throw new \Exception();
+        throw new \Graphpinator\Exception\OperationNotSupported();
     }
 
     public function offsetUnset($offset) : void
     {
-        throw new \Exception();
+        throw new \Graphpinator\Exception\OperationNotSupported();
     }
 }

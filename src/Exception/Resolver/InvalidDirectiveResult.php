@@ -7,4 +7,9 @@ namespace Graphpinator\Exception\Resolver;
 final class InvalidDirectiveResult extends \Graphpinator\Exception\Resolver\ResolverError
 {
     public const MESSAGE = 'Directive callback must return DirectiveResult string.';
+
+    public function isOutputable() : bool
+    {
+        return false;
+    }
 }

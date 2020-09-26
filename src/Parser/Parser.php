@@ -206,7 +206,7 @@ final class Parser
             $arguments = $this->parseArguments();
         }
 
-        $directives = $this->parseDirectives(\Graphpinator\Directive\DirectiveLocation::FIELD);
+        $directives = $this->parseDirectives(\Graphpinator\Directive\ExecutableDirectiveLocation::FIELD);
 
         if ($this->tokenizer->peekNext()->getType() === TokenType::CUR_O) {
             $this->tokenizer->getNext();
@@ -228,11 +228,11 @@ final class Parser
             case TokenType::NAME:
                 return new \Graphpinator\Parser\FragmentSpread\NamedFragmentSpread(
                     $this->tokenizer->getCurrent()->getValue(),
-                    $this->parseDirectives(\Graphpinator\Directive\DirectiveLocation::FRAGMENT_SPREAD),
+                    $this->parseDirectives(\Graphpinator\Directive\ExecutableDirectiveLocation::FRAGMENT_SPREAD),
                 );
             case TokenType::ON:
                 $typeCond = $this->parseType(true);
-                $directives = $this->parseDirectives(\Graphpinator\Directive\DirectiveLocation::INLINE_FRAGMENT);
+                $directives = $this->parseDirectives(\Graphpinator\Directive\ExecutableDirectiveLocation::INLINE_FRAGMENT);
                 $this->tokenizer->assertNext(TokenType::CUR_O, \Graphpinator\Exception\Parser\ExpectedSelectionSet::class);
 
                 return new \Graphpinator\Parser\FragmentSpread\InlineFragmentSpread(
@@ -242,7 +242,7 @@ final class Parser
                 );
             case TokenType::DIRECTIVE:
                 $this->tokenizer->getPrev();
-                $directives = $this->parseDirectives(\Graphpinator\Directive\DirectiveLocation::INLINE_FRAGMENT);
+                $directives = $this->parseDirectives(\Graphpinator\Directive\ExecutableDirectiveLocation::INLINE_FRAGMENT);
                 $this->tokenizer->assertNext(TokenType::CUR_O, \Graphpinator\Exception\Parser\ExpectedSelectionSet::class);
 
                 return new \Graphpinator\Parser\FragmentSpread\InlineFragmentSpread(

@@ -91,6 +91,62 @@ abstract class Container
     }
 
     /**
+     * Built-in Deprecated directive.
+     */
+    public static function directiveDeprecated() : \Graphpinator\Directive\DeprecatedDirective
+    {
+        return new \Graphpinator\Directive\DeprecatedDirective();
+    }
+
+    /**
+     * Graphpinator IntConstraint directive.
+     */
+    public static function directiveIntConstraint() : \Graphpinator\Directive\IntConstraintDirective
+    {
+        return new \Graphpinator\Directive\IntConstraintDirective();
+    }
+
+    /**
+     * Graphpinator FloatConstraint directive.
+     */
+    public static function directiveFloatConstraint() : \Graphpinator\Directive\FloatConstraintDirective
+    {
+        return new \Graphpinator\Directive\FloatConstraintDirective();
+    }
+
+    /**
+     * Graphpinator StringConstraint directive.
+     */
+    public static function directiveStringConstraint() : \Graphpinator\Directive\StringConstraintDirective
+    {
+        return new \Graphpinator\Directive\StringConstraintDirective();
+    }
+
+    /**
+     * Graphpinator ListConstraint directive.
+     */
+    public static function directiveListConstraint() : \Graphpinator\Directive\ListConstraintDirective
+    {
+        return new \Graphpinator\Directive\ListConstraintDirective();
+    }
+
+    /**
+     * Graphpinator ObjectConstraint directive.
+     */
+    public static function directiveInputConstraint() : \Graphpinator\Directive\InputConstraintDirective
+    {
+        return new \Graphpinator\Directive\InputConstraintDirective();
+    }
+
+    /**
+     * Graphpinator ListConstraint input.
+     */
+    public static function listConstraintInput() : \Graphpinator\Constraint\ListConstraintInput
+    {
+        return new \Graphpinator\Constraint\ListConstraintInput();
+    }
+
+    /**
      * Built-in __Schema type.
      */
     public function introspectionSchema() : \Graphpinator\Type\Introspection\Schema

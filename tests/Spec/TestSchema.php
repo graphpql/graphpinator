@@ -35,10 +35,14 @@ final class TestSchema
             'Zzz' => self::getTypeZzz(),
             'TestInterface' => self::getInterface(),
             'TestUnion' => self::getUnion(),
-            'TestInput' => self::getInput(),
-            'TestInnerInput' => self::getInnerInput(),
-            'TestEnum' => self::getEnum(),
-            'TestExplicitEnum' => self::getExplicitEnum(),
+            'CompositeInput' => self::getCompositeInput(),
+            'SimpleInput' => self::getSimpleInput(),
+            'DefaultsInput' => self::getDefaultsInput(),
+            'ConstraintInput' => self::getConstraintInput(),
+            'ExactlyOneInput' => self::getExactlyOneInput(),
+            'SimpleEnum' => self::getSimpleEnum(),
+            'ArrayEnum' => self::getArrayEnum(),
+            'DescriptionEnum' => self::getDescriptionEnum(),
             'TestScalar' => self::getTestScalar(),
             'TestAddonType' => self::getAddonType(),
         ], [
@@ -56,18 +60,60 @@ final class TestSchema
             protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
             {
                 return new \Graphpinator\Field\ResolvableFieldSet([
-                    new \Graphpinator\Field\ResolvableField('field0', TestSchema::getUnion(), static function () {
-                        return \Graphpinator\Resolver\FieldResult::fromRaw(TestSchema::getTypeAbc(), 1);
-                    }),
-                    new \Graphpinator\Field\ResolvableField('fieldInvalidType', TestSchema::getUnion(), static function () {
-                        return \Graphpinator\Resolver\FieldResult::fromRaw(\Graphpinator\Type\Container\Container::Int(), 1);
-                    }),
-                    new \Graphpinator\Field\ResolvableField('fieldAbstract', TestSchema::getUnion(), static function () {
-                        return 1;
-                    }),
-                    new \Graphpinator\Field\ResolvableField('fieldThrow', TestSchema::getUnion(), static function () : void {
-                        throw new \Exception('Random exception');
-                    }),
+                    new \Graphpinator\Field\ResolvableField(
+                        'fieldValid',
+                        TestSchema::getUnion(),
+                        static function () {
+                            return \Graphpinator\Resolver\FieldResult::fromRaw(TestSchema::getTypeAbc(), 1);
+                        },
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'fieldConstraint',
+                        \Graphpinator\Type\Container\Container::Int(),
+                        static function ($parent, \stdClass $arg) : int {
+                            return 1;
+                        },
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'arg',
+                                TestSchema::getConstraintInput(),
+                            ),
+                        ]),
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'fieldExactlyOne',
+                        \Graphpinator\Type\Container\Container::Int(),
+                        static function ($parent, \stdClass $arg) : int {
+                            return 1;
+                        },
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'arg',
+                                TestSchema::getExactlyOneInput(),
+                            ),
+                        ]),
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'fieldInvalidType',
+                        TestSchema::getUnion(),
+                        static function () {
+                            return \Graphpinator\Resolver\FieldResult::fromRaw(\Graphpinator\Type\Container\Container::Int(), 1);
+                        },
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'fieldInvalidReturn',
+                        TestSchema::getUnion(),
+                        static function () {
+                            return 1;
+                        },
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'fieldThrow',
+                        TestSchema::getUnion(),
+                        static function () : void {
+                            throw new \Exception('Random exception');
+                        },
+                    ),
                 ]);
             }
 
@@ -83,7 +129,7 @@ final class TestSchema
         return new class extends \Graphpinator\Type\Type
         {
             protected const NAME = 'Abc';
-            protected const DESCRIPTION = null;
+            protected const DESCRIPTION = 'Test Abc description';
 
             protected function validateNonNullValue($rawValue) : bool
             {
@@ -93,14 +139,14 @@ final class TestSchema
             protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
             {
                 return new \Graphpinator\Field\ResolvableFieldSet([
-                    new \Graphpinator\Field\ResolvableField(
+                    (new \Graphpinator\Field\ResolvableField(
                         'field1',
                         TestSchema::getInterface(),
-                        static function (int $parent, \Graphpinator\Resolver\ArgumentValueSet $args) : \Graphpinator\Resolver\FieldResult {
+                        static function (int $parent, ?int $arg1, ?\stdClass $arg2) : \Graphpinator\Resolver\FieldResult {
                             $object = new \stdClass();
 
-                            if ($args['arg2']->getRawValue() === null) {
-                                $object->name = 'Test ' . $args['arg1']->getRawValue();
+                            if ($arg2 === null) {
+                                $object->name = 'Test ' . $arg1;
                             } else {
                                 $concat = static function (\stdClass $objectVal) use (&$concat) : string {
                                     $str = '';
@@ -122,16 +168,16 @@ final class TestSchema
                                     return $str;
                                 };
 
-                                $object->name = $concat($args['arg2']->getRawValue());
+                                $object->name = $concat($arg2);
                             }
 
                             return \Graphpinator\Resolver\FieldResult::fromRaw(TestSchema::getTypeXyz(), $object);
                         },
                         new \Graphpinator\Argument\ArgumentSet([
-                        new \Graphpinator\Argument\Argument('arg1', \Graphpinator\Type\Container\Container::Int(), 123),
-                        new \Graphpinator\Argument\Argument('arg2', TestSchema::getInput()),
+                            new \Graphpinator\Argument\Argument('arg1', \Graphpinator\Type\Container\Container::Int(), 123),
+                            new \Graphpinator\Argument\Argument('arg2', TestSchema::getCompositeInput()),
                         ]),
-                    ),
+                    ))->setDeprecated(true),
                 ]);
             }
         };
@@ -179,7 +225,7 @@ final class TestSchema
             protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
             {
                 return new \Graphpinator\Field\ResolvableFieldSet([
-                    new \Graphpinator\Field\ResolvableField('enumList', TestSchema::getEnum()->list(), static function () {
+                    new \Graphpinator\Field\ResolvableField('enumList', TestSchema::getSimpleEnum()->list(), static function () {
                         return ['A', 'B'];
                     }),
                 ]);
@@ -192,11 +238,11 @@ final class TestSchema
         };
     }
 
-    public static function getInput() : \Graphpinator\Type\InputType
+    public static function getCompositeInput() : \Graphpinator\Type\InputType
     {
         return new class extends \Graphpinator\Type\InputType
         {
-            protected const NAME = 'TestInput';
+            protected const NAME = 'CompositeInput';
 
             protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
             {
@@ -207,26 +253,26 @@ final class TestSchema
                     ),
                     new \Graphpinator\Argument\Argument(
                         'inner',
-                        TestSchema::getInnerInput(),
+                        TestSchema::getSimpleInput(),
                     ),
                     new \Graphpinator\Argument\Argument(
                         'innerList',
-                        TestSchema::getInnerInput()->notNullList(),
+                        TestSchema::getSimpleInput()->notNullList(),
                     ),
                     new \Graphpinator\Argument\Argument(
                         'innerNotNull',
-                        TestSchema::getInnerInput()->notNull(),
+                        TestSchema::getSimpleInput()->notNull(),
                     ),
                 ]);
             }
         };
     }
 
-    public static function getInnerInput() : \Graphpinator\Type\InputType
+    public static function getSimpleInput() : \Graphpinator\Type\InputType
     {
         return new class extends \Graphpinator\Type\InputType
         {
-            protected const NAME = 'TestInnerInput';
+            protected const NAME = 'SimpleInput';
 
             protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
             {
@@ -248,11 +294,185 @@ final class TestSchema
         };
     }
 
+    public static function getDefaultsInput() : \Graphpinator\Type\InputType
+    {
+        return new class extends \Graphpinator\Type\InputType
+        {
+            protected const NAME = 'DefaultsInput';
+
+            protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
+            {
+                return new \Graphpinator\Argument\ArgumentSet([
+                    new \Graphpinator\Argument\Argument(
+                        'scalar',
+                        \Graphpinator\Type\Container\Container::String()->notNull(),
+                        'defaultString',
+                    ),
+                    new \Graphpinator\Argument\Argument(
+                        'enum',
+                        TestSchema::getSimpleEnum()->notNull(),
+                        'A',
+                    ),
+                    new \Graphpinator\Argument\Argument(
+                        'list',
+                        \Graphpinator\Type\Container\Container::String()->notNullList(),
+                        ['string1', 'string2'],
+                    ),
+                    new \Graphpinator\Argument\Argument(
+                        'object',
+                        TestSchema::getSimpleInput()->notNull(),
+                        (object) ['name' => 'string', 'number' => [1, 2]],
+                    ),
+                    new \Graphpinator\Argument\Argument(
+                        'listObjects',
+                        TestSchema::getSimpleInput()->notNullList(),
+                        [(object) ['name' => 'string', 'number' => [1]], (object) ['name' => 'string', 'number' => []]],
+                    ),
+                ]);
+            }
+        };
+    }
+
+    public static function getConstraintInput() : \Graphpinator\Type\InputType
+    {
+        return new class extends \Graphpinator\Type\InputType
+        {
+            protected const NAME = 'ConstraintInput';
+
+            public function __construct()
+            {
+                $this->addConstraint(new \Graphpinator\Constraint\InputConstraint([
+                    'intMinArg',
+                    'intMaxArg',
+                    'intOneOfArg',
+                    'floatMinArg',
+                    'floatMaxArg',
+                    'floatOneOfArg',
+                    'stringMinArg',
+                    'stringMaxArg',
+                    'stringRegexArg',
+                    'stringOneOfArg',
+                    'stringOneOfEmptyArg',
+                    'listMinArg',
+                    'listMaxArg',
+                    'listUniqueArg',
+                    'listInnerListArg',
+                    'listMinIntMinArg',
+                ]));
+            }
+
+            protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
+            {
+                return new \Graphpinator\Argument\ArgumentSet([
+                    (new \Graphpinator\Argument\Argument(
+                        'intMinArg',
+                        \Graphpinator\Type\Container\Container::Int(),
+                    ))->addConstraint(new \Graphpinator\Constraint\IntConstraint(-20)),
+                    (new \Graphpinator\Argument\Argument(
+                        'intMaxArg',
+                        \Graphpinator\Type\Container\Container::Int(),
+                    ))->addConstraint(new \Graphpinator\Constraint\IntConstraint(null, 20)),
+                    (new \Graphpinator\Argument\Argument(
+                        'intOneOfArg',
+                        \Graphpinator\Type\Container\Container::Int(),
+                    ))->addConstraint(new \Graphpinator\Constraint\IntConstraint(null, null, [1, 2, 3])),
+                    (new \Graphpinator\Argument\Argument(
+                        'floatMinArg',
+                        \Graphpinator\Type\Container\Container::Float(),
+                    ))->addConstraint(new \Graphpinator\Constraint\FloatConstraint(4.01)),
+                    (new \Graphpinator\Argument\Argument(
+                        'floatMaxArg',
+                        \Graphpinator\Type\Container\Container::Float(),
+                    ))->addConstraint(new \Graphpinator\Constraint\FloatConstraint(null, 20.101)),
+                    (new \Graphpinator\Argument\Argument(
+                        'floatOneOfArg',
+                        \Graphpinator\Type\Container\Container::Float(),
+                    ))->addConstraint(new \Graphpinator\Constraint\FloatConstraint(null, null, [1.01, 2.02, 3.0])),
+                    (new \Graphpinator\Argument\Argument(
+                        'stringMinArg',
+                        \Graphpinator\Type\Container\Container::String(),
+                    ))->addConstraint(new \Graphpinator\Constraint\StringConstraint(4)),
+                    (new \Graphpinator\Argument\Argument(
+                        'stringMaxArg',
+                        \Graphpinator\Type\Container\Container::String(),
+                    ))->addConstraint(new \Graphpinator\Constraint\StringConstraint(null, 10)),
+                    (new \Graphpinator\Argument\Argument(
+                        'stringRegexArg',
+                        \Graphpinator\Type\Container\Container::String(),
+                    ))->addConstraint(new \Graphpinator\Constraint\StringConstraint(null, null, '/^(abc)|(foo)$/')),
+                    (new \Graphpinator\Argument\Argument(
+                        'stringOneOfArg',
+                        \Graphpinator\Type\Container\Container::String(),
+                    ))->addConstraint(new \Graphpinator\Constraint\StringConstraint(null, null, null, ['abc', 'foo'])),
+                    (new \Graphpinator\Argument\Argument(
+                        'stringOneOfEmptyArg',
+                        \Graphpinator\Type\Container\Container::String(),
+                    ))->addConstraint(new \Graphpinator\Constraint\StringConstraint(null, null, null, [])),
+                    (new \Graphpinator\Argument\Argument(
+                        'listMinArg',
+                        \Graphpinator\Type\Container\Container::Int()->list(),
+                    ))->addConstraint(new \Graphpinator\Constraint\ListConstraint(1)),
+                    (new \Graphpinator\Argument\Argument(
+                        'listMaxArg',
+                        \Graphpinator\Type\Container\Container::Int()->list(),
+                    ))->addConstraint(new \Graphpinator\Constraint\ListConstraint(null, 3)),
+                    (new \Graphpinator\Argument\Argument(
+                        'listUniqueArg',
+                        \Graphpinator\Type\Container\Container::Int()->list(),
+                    ))->addConstraint(new \Graphpinator\Constraint\ListConstraint(null, null, true)),
+                    (new \Graphpinator\Argument\Argument(
+                        'listInnerListArg',
+                        \Graphpinator\Type\Container\Container::Int()->list()->list(),
+                    ))->addConstraint(new \Graphpinator\Constraint\ListConstraint(null, null, false, (object) [
+                        'minItems' => 1,
+                        'maxItems' => 3,
+                    ])),
+                    (new \Graphpinator\Argument\Argument(
+                        'listMinIntMinArg',
+                        \Graphpinator\Type\Container\Container::Int()->list(),
+                    ))->addConstraint(new \Graphpinator\Constraint\ListConstraint(3))
+                    ->addConstraint(new \Graphpinator\Constraint\IntConstraint(3)),
+                ]);
+            }
+        };
+    }
+
+    public static function getExactlyOneInput() : \Graphpinator\Type\InputType
+    {
+        return new class extends \Graphpinator\Type\InputType
+        {
+            protected const NAME = 'ExactlyOneInput';
+
+            public function __construct()
+            {
+                $this->addConstraint(new \Graphpinator\Constraint\InputConstraint(null, [
+                    'int1',
+                    'int2',
+                ]));
+            }
+
+            protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
+            {
+                return new \Graphpinator\Argument\ArgumentSet([
+                    new \Graphpinator\Argument\Argument(
+                        'int1',
+                        \Graphpinator\Type\Container\Container::Int(),
+                    ),
+                    new \Graphpinator\Argument\Argument(
+                        'int2',
+                        \Graphpinator\Type\Container\Container::Int(),
+                    ),
+                ]);
+            }
+        };
+    }
+
     public static function getInterface() : \Graphpinator\Type\InterfaceType
     {
         return new class extends \Graphpinator\Type\InterfaceType
         {
             protected const NAME = 'TestInterface';
+            protected const DESCRIPTION = 'TestInterface Description';
 
             protected function getFieldDefinition() : \Graphpinator\Field\FieldSet
             {
@@ -279,16 +499,16 @@ final class TestSchema
         };
     }
 
-    public static function getEnum() : \Graphpinator\Type\EnumType
+    public static function getSimpleEnum() : \Graphpinator\Type\EnumType
     {
         return new class extends \Graphpinator\Type\EnumType
         {
-            public const A = 'a';
-            public const B = 'b';
-            public const C = 'c';
-            public const D = 'd';
+            public const A = 'A';
+            public const B = 'B';
+            public const C = 'C';
+            public const D = 'D';
 
-            protected const NAME = 'TestEnum';
+            protected const NAME = 'SimpleEnum';
 
             public function __construct()
             {
@@ -297,19 +517,39 @@ final class TestSchema
         };
     }
 
-    public static function getExplicitEnum() : \Graphpinator\Type\EnumType
+    public static function getArrayEnum() : \Graphpinator\Type\EnumType
     {
         return new class extends \Graphpinator\Type\EnumType
         {
-            protected const NAME = 'TestExplicitEnum';
+            public const A = ['A', 'First description'];
+            public const B = ['B', 'Second description'];
+            public const C = ['C', 'Third description'];
+
+            protected const NAME = 'ArrayEnum';
+
+            public function __construct()
+            {
+                parent::__construct(self::fromConstants());
+            }
+        };
+    }
+
+    public static function getDescriptionEnum() : \Graphpinator\Type\EnumType
+    {
+        return new class extends \Graphpinator\Type\EnumType
+        {
+            protected const NAME = 'DescriptionEnum';
 
             public function __construct()
             {
                 parent::__construct(new \Graphpinator\Type\Enum\EnumItemSet([
-                    new \Graphpinator\Type\Enum\EnumItem('A'),
-                    new \Graphpinator\Type\Enum\EnumItem('B'),
-                    new \Graphpinator\Type\Enum\EnumItem('C'),
-                    new \Graphpinator\Type\Enum\EnumItem('D'),
+                    new \Graphpinator\Type\Enum\EnumItem('A', 'single line description'),
+                    (new \Graphpinator\Type\Enum\EnumItem('B'))
+                        ->setDeprecated(true),
+                    new \Graphpinator\Type\Enum\EnumItem('C', 'multi line' . \PHP_EOL . 'description'),
+                    (new \Graphpinator\Type\Enum\EnumItem('D', 'single line description'))
+                        ->setDeprecated(true)
+                        ->setDeprecationReason('reason'),
                 ]));
             }
         };
@@ -330,7 +570,7 @@ final class TestSchema
 
     public static function getTestDirective() : \Graphpinator\Directive\Directive
     {
-        return new class extends \Graphpinator\Directive\Directive
+        return new class extends \Graphpinator\Directive\ExecutableDirective
         {
             protected const NAME = 'testDirective';
             public static $count = 0;
@@ -338,14 +578,14 @@ final class TestSchema
             public function __construct()
             {
                 parent::__construct(
+                    [\Graphpinator\Directive\ExecutableDirectiveLocation::FIELD],
+                    true,
                     new \Graphpinator\Argument\ArgumentSet([]),
                     static function() {
                         ++self::$count;
 
                         return \Graphpinator\Directive\DirectiveResult::NONE;
                     },
-                    [\Graphpinator\Directive\DirectiveLocation::FIELD],
-                    true,
                 );
             }
         };
@@ -353,19 +593,19 @@ final class TestSchema
 
     public static function getInvalidDirective() : \Graphpinator\Directive\Directive
     {
-        return new class extends \Graphpinator\Directive\Directive
+        return new class extends \Graphpinator\Directive\ExecutableDirective
         {
             protected const NAME = 'invalidDirective';
 
             public function __construct()
             {
                 parent::__construct(
+                    [\Graphpinator\Directive\ExecutableDirectiveLocation::FIELD],
+                    true,
                     new \Graphpinator\Argument\ArgumentSet([]),
                     static function() {
                         return 'blahblah';
                     },
-                    [\Graphpinator\Directive\DirectiveLocation::FIELD],
-                    true,
                 );
             }
         };
