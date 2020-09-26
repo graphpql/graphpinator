@@ -44,14 +44,14 @@ final class InputValue extends \Graphpinator\Resolver\Value\ValidatedValue imple
         return $return;
     }
 
-    public function printValue(bool $prettyPrint) : string
+    public function printValue(bool $prettyPrint = false) : string
     {
         $component = [];
 
         foreach ($this->value as $key => $value) {
             \assert($value instanceof ValidatedValue);
 
-            $component[$key] = $key . ($prettyPrint ? ': ' : ':') . $value->printValue(true);
+            $component[$key] = $key . ($prettyPrint ? ': ' : ':') . $value->printValue($prettyPrint);
         }
 
         if (!$component) {

@@ -15,7 +15,7 @@ final class NullValue extends \Graphpinator\Resolver\Value\ValidatedValue
         parent::__construct(null, $type);
     }
 
-    public function printValue(bool $prettyPrint) : string
+    public function printValue(bool $prettyPrint = false) : string
     {
         return 'null';
     }

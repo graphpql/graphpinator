@@ -12,7 +12,7 @@ final class TypeValue extends \Graphpinator\Resolver\Value\ValidatedValue
         parent::__construct($resolvedValue, $type);
     }
 
-    public function printValue(bool $prettyPrint) : string
+    public function printValue(bool $prettyPrint = false) : string
     {
         throw new \Exception('This value cannot be printed');
     }

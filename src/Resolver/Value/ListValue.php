@@ -34,14 +34,14 @@ final class ListValue extends \Graphpinator\Resolver\Value\ValidatedValue implem
         return $return;
     }
 
-    public function printValue(bool $prettyPrint) : string
+    public function printValue(bool $prettyPrint = false) : string
     {
         $component = [];
 
         foreach ($this->value as $value) {
             \assert($value instanceof ValidatedValue);
 
-            $component[] = $value->printValue(true);
+            $component[] = $value->printValue($prettyPrint);
         }
 
         return '[' . \implode($prettyPrint ? ', ' : ',', $component) . ']';
