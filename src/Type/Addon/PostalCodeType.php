@@ -11,6 +11,10 @@ final class PostalCodeType extends \Graphpinator\Type\Scalar\ScalarType
 
     protected function validateNonNullValue($rawValue) : bool
     {
+        if (!\is_string($rawValue)) {
+            return false;
+        }
+
         return \preg_match('/^[0-9]{3}\s[0-9]{2}$/', $rawValue) === 1;
     }
 }

@@ -11,6 +11,10 @@ final class HslType extends \Graphpinator\Type\Scalar\ScalarType
 
     protected function validateNonNullValue($rawValue) : bool
     {
+        if (!\is_array($rawValue)) {
+            return false;
+        }
+
         if (!\array_key_exists('hue', $rawValue) ||
             !\array_key_exists('saturation', $rawValue) ||
             !\array_key_exists('lightness', $rawValue)) {
@@ -18,6 +22,10 @@ final class HslType extends \Graphpinator\Type\Scalar\ScalarType
         }
 
         foreach ($rawValue as $key => $value) {
+            if (!\is_int($value)) {
+                return false;
+            }
+
             if ($key === 'hue' && ($value > 360 || $value < 0)) {
                 return false;
             }

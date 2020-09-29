@@ -11,6 +11,10 @@ final class DateTimeType extends \Graphpinator\Type\Scalar\ScalarType
 
     protected function validateNonNullValue($rawValue) : bool
     {
-        return (bool) \Nette\Utils\DateTime::createFromFormat('d-m-Y H:i:s', $rawValue);
+        if (!\is_string($rawValue)) {
+            return false;
+        }
+
+        return \Nette\Utils\DateTime::createFromFormat('d-m-Y H:i:s', $rawValue) instanceof \Nette\Utils\DateTime;
     }
 }

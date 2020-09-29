@@ -11,6 +11,10 @@ final class RgbType extends \Graphpinator\Type\Scalar\ScalarType
 
     protected function validateNonNullValue($rawValue) : bool
     {
+        if (!\is_array($rawValue)) {
+            return false;
+        }
+
         if (!\array_key_exists('red', $rawValue) ||
             !\array_key_exists('green', $rawValue) ||
             !\array_key_exists('blue', $rawValue)) {
@@ -18,6 +22,10 @@ final class RgbType extends \Graphpinator\Type\Scalar\ScalarType
         }
 
         foreach ($rawValue as $key => $value) {
+            if (!\is_int($value)) {
+                return false;
+            }
+
             if ($value > 255 || $value < 0) {
                 return false;
             }

@@ -11,6 +11,18 @@ final class JsonType extends \Graphpinator\Type\Scalar\ScalarType
 
     protected function validateNonNullValue($rawValue) : bool
     {
-        return \Graphpinator\Json::fromObject($rawValue)->isValid() || \Graphpinator\Json::fromString($rawValue)->isValid();
+        if (\is_array($rawValue) && \count($rawValue) > 0) {
+            return \Infinityloop\Utils\Json::fromArray($rawValue)->isValid();
+        }
+
+        if (\is_string($rawValue)) {
+            return \Graphpinator\Json::fromString($rawValue)->isValid();
+        }
+
+        if (\is_object($rawValue)) {
+            return \Graphpinator\Json::fromObject((object) $rawValue)->isValid();
+        }
+
+        return false;
     }
 }

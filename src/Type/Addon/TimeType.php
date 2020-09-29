@@ -11,6 +11,10 @@ final class TimeType extends \Graphpinator\Type\Scalar\ScalarType
 
     protected function validateNonNullValue($rawValue) : bool
     {
-        return \preg_match('/^(?:2[0-3]|[01][0-9]):[0-5][0-9]:[0-5][0-9]$/', $rawValue) === 1;
+        if (!\is_string($rawValue)) {
+            return false;
+        }
+
+        return \Nette\Utils\DateTime::createFromFormat('H:i:s', $rawValue) instanceof \Nette\Utils\DateTime;
     }
 }

@@ -11,6 +11,10 @@ final class UrlType extends \Graphpinator\Type\Scalar\ScalarType
 
     protected function validateNonNullValue($rawValue) : bool
     {
-        return \preg_match("/\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/i", $rawValue) === 1;
+        if (!\is_string($rawValue)) {
+            return false;
+        }
+
+        return (bool) \filter_var($rawValue, \FILTER_VALIDATE_URL);
     }
 }

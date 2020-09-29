@@ -11,6 +11,10 @@ final class IPv6Type extends \Graphpinator\Type\Scalar\ScalarType
 
     protected function validateNonNullValue($rawValue) : bool
     {
+        if (!\is_string($rawValue)) {
+            return false;
+        }
+
         return (bool) \filter_var($rawValue, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV6);
     }
 }
