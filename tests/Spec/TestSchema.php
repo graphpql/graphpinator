@@ -693,7 +693,7 @@ final class TestSchema
                     new \Graphpinator\Argument\Argument(
                         'UrlType',
                         new \Graphpinator\Type\Addon\UrlType(),
-                        'www.test.com',
+                        'https://www.test.com',
                     ),
                     new \Graphpinator\Argument\Argument(
                         'VoidType',

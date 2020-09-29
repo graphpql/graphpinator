@@ -160,9 +160,21 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         input DefaultsInput {
           scalar: String! = "defaultString"
           enum: SimpleEnum! = "A"
-          list: [String!]! = ["string1","string2"]
-          object: SimpleInput! = {name:"string",number:[1,2],bool:null}
-          listObjects: [SimpleInput!]! = [{name:"string",number:[1],bool:null},{name:"string",number:[],bool:null}]
+          list: [String!]! = ["string1", "string2"]
+          object: SimpleInput! = {
+            name: "string",
+            number: [1, 2],
+            bool: null
+          }
+          listObjects: [SimpleInput!]! = [{
+            name: "string",
+            number: [1],
+            bool: null
+          }, {
+            name: "string",
+            number: [],
+            bool: null
+          }]
         }
         
         enum DescriptionEnum {
@@ -206,6 +218,19 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldThrow: TestUnion
         }
 
+        enum SimpleEnum {
+          A
+          B
+          C
+          D
+        }
+        
+        input SimpleInput {
+          name: String!
+          number: [Int!]!
+          bool: Boolean
+        }
+
         input TestAddonType {
           DateTimeType: DateTime = "01-01-2000 04:02:10"
           DateType: Date = "01-01-2000"
@@ -221,36 +246,8 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           RgbaType: RGBA = {"red":1,"green":2,"blue":3,"alpha":0.5}
           RgbType: RGB = {"red":1,"green":2,"blue":3}
           TimeType: Time = "04:02:55"
-          UrlType: URL = "www.test.com"
+          UrlType: URL = "https:\/\/www.test.com"
           VoidType: Void
-        }
-        
-        input TestDefaultValue1 {
-          stringArgument1: String = null
-          stringArgument2: String = "testValue"
-          intArgument1: Int = null
-          intArgument2: Int = 6247
-          inputArgument1: TestDefaultValue2 = {
-            notNullListIntArgument1: [66, 55],
-            listIntArgument1: [66, null],
-            notNullIntArgument1: 420,
-            notNullListStringArgument1: ["Boo", "Baz"],
-            listStringArgument1: ["Boo", null],
-            notNullStringArgument1: "notNullValue"
-          }
-        }
-
-        enum SimpleEnum {
-          A
-          B
-          C
-          D
-        }
-        
-        input SimpleInput {
-          name: String!
-          number: [Int!]!
-          bool: Boolean
         }
         
         """
@@ -370,9 +367,21 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         input DefaultsInput {
           scalar: String! = "defaultString"
           enum: SimpleEnum! = "A"
-          list: [String!]! = ["string1","string2"]
-          object: SimpleInput! = {name:"string",number:[1,2],bool:null}
-          listObjects: [SimpleInput!]! = [{name:"string",number:[1],bool:null},{name:"string",number:[],bool:null}]
+          list: [String!]! = ["string1", "string2"]
+          object: SimpleInput! = {
+            name: "string",
+            number: [1, 2],
+            bool: null
+          }
+          listObjects: [SimpleInput!]! = [{
+            name: "string",
+            number: [1],
+            bool: null
+          }, {
+            name: "string",
+            number: [],
+            bool: null
+          }]
         }
         
         enum DescriptionEnum {
@@ -415,6 +424,19 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldInvalidReturn: TestUnion
           fieldThrow: TestUnion
         }
+        
+        enum SimpleEnum {
+          A
+          B
+          C
+          D
+        }
+        
+        input SimpleInput {
+          name: String!
+          number: [Int!]!
+          bool: Boolean
+        }
 
         input TestAddonType {
           DateTimeType: DateTime = "01-01-2000 04:02:10"
@@ -431,36 +453,8 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           RgbaType: RGBA = {"red":1,"green":2,"blue":3,"alpha":0.5}
           RgbType: RGB = {"red":1,"green":2,"blue":3}
           TimeType: Time = "04:02:55"
-          UrlType: URL = "www.test.com"
+          UrlType: URL = "https:\/\/www.test.com"
           VoidType: Void
-        }
-        
-        input TestDefaultValue1 {
-          stringArgument1: String = null
-          stringArgument2: String = "testValue"
-          intArgument1: Int = null
-          intArgument2: Int = 6247
-          inputArgument1: TestDefaultValue2 = {
-            notNullListIntArgument1: [66, 55],
-            listIntArgument1: [66, null],
-            notNullIntArgument1: 420,
-            notNullListStringArgument1: ["Boo", "Baz"],
-            listStringArgument1: ["Boo", null],
-            notNullStringArgument1: "notNullValue"
-          }
-        }
-        
-        enum SimpleEnum {
-          A
-          B
-          C
-          D
-        }
-        
-        input SimpleInput {
-          name: String!
-          number: [Int!]!
-          bool: Boolean
         }
         
         """
@@ -569,40 +563,6 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         }
         
         union TestUnion = Abc | Xyz
-        
-        input TestAddonType {
-          DateTimeType: DateTime = "01-01-2000 04:02:10"
-          DateType: Date = "01-01-2000"
-          EmailAddressType: EmailAddress = "test@test.com"
-          HslaType: HSLA = {"hue":1,"saturation":2,"lightness":3,"alpha":0.5}
-          HslType: HSL = {"hue":1,"saturation":2,"lightness":3}
-          IPv4Type: IPv4 = "128.0.1.0"
-          IPv6Type: IPv6 = "2001:0DB8:85A3:0000:0000:8A2E:0370:7334"
-          JsonType: JSON = {"data":{"field0":{"field1":{"name":"Test 123"}}}}
-          MacType: MAC = "00-D5-61-A2-AB-13"
-          PhoneNumberType: PhoneNumber = "+420123456789"
-          PostalCodeType: PostalCode = "111 22"
-          RgbaType: RGBA = {"red":1,"green":2,"blue":3,"alpha":0.5}
-          RgbType: RGB = {"red":1,"green":2,"blue":3}
-          TimeType: Time = "04:02:55"
-          UrlType: URL = "www.test.com"
-          VoidType: Void
-        }
-        
-        input TestDefaultValue1 {
-          stringArgument1: String = null
-          stringArgument2: String = "testValue"
-          intArgument1: Int = null
-          intArgument2: Int = 6247
-          inputArgument1: TestDefaultValue2 = {
-            notNullListIntArgument1: [66, 55],
-            listIntArgument1: [66, null],
-            notNullIntArgument1: 420,
-            notNullListStringArgument1: ["Boo", "Baz"],
-            listStringArgument1: ["Boo", null],
-            notNullStringArgument1: "notNullValue"
-          }
-        }
 
         input CompositeInput {
           name: String!
@@ -633,9 +593,21 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         input DefaultsInput {
           scalar: String! = "defaultString"
           enum: SimpleEnum! = "A"
-          list: [String!]! = ["string1","string2"]
-          object: SimpleInput! = {name:"string",number:[1,2],bool:null}
-          listObjects: [SimpleInput!]! = [{name:"string",number:[1],bool:null},{name:"string",number:[],bool:null}]
+          list: [String!]! = ["string1", "string2"]
+          object: SimpleInput! = {
+            name: "string",
+            number: [1, 2],
+            bool: null
+          }
+          listObjects: [SimpleInput!]! = [{
+            name: "string",
+            number: [1],
+            bool: null
+          }, {
+            name: "string",
+            number: [],
+            bool: null
+          }]
         }
         
         input ExactlyOneInput @inputConstraint(exactlyOne: ["int1", "int2"]) {
@@ -654,6 +626,25 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           name: String!
           number: [Int!]!
           bool: Boolean
+        }
+        
+        input TestAddonType {
+          DateTimeType: DateTime = "01-01-2000 04:02:10"
+          DateType: Date = "01-01-2000"
+          EmailAddressType: EmailAddress = "test@test.com"
+          HslaType: HSLA = {"hue":1,"saturation":2,"lightness":3,"alpha":0.5}
+          HslType: HSL = {"hue":1,"saturation":2,"lightness":3}
+          IPv4Type: IPv4 = "128.0.1.0"
+          IPv6Type: IPv6 = "2001:0DB8:85A3:0000:0000:8A2E:0370:7334"
+          JsonType: JSON = {"data":{"field0":{"field1":{"name":"Test 123"}}}}
+          MacType: MAC = "00-D5-61-A2-AB-13"
+          PhoneNumberType: PhoneNumber = "+420123456789"
+          PostalCodeType: PostalCode = "111 22"
+          RgbaType: RGBA = {"red":1,"green":2,"blue":3,"alpha":0.5}
+          RgbType: RGB = {"red":1,"green":2,"blue":3}
+          TimeType: Time = "04:02:55"
+          UrlType: URL = "https:\/\/www.test.com"
+          VoidType: Void
         }
         
         scalar TestScalar
@@ -779,40 +770,6 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         }
         
         union TestUnion = Abc | Xyz
-        
-        input TestAddonType {
-          DateTimeType: DateTime = "01-01-2000 04:02:10"
-          DateType: Date = "01-01-2000"
-          EmailAddressType: EmailAddress = "test@test.com"
-          HslaType: HSLA = {"hue":1,"saturation":2,"lightness":3,"alpha":0.5}
-          HslType: HSL = {"hue":1,"saturation":2,"lightness":3}
-          IPv4Type: IPv4 = "128.0.1.0"
-          IPv6Type: IPv6 = "2001:0DB8:85A3:0000:0000:8A2E:0370:7334"
-          JsonType: JSON = {"data":{"field0":{"field1":{"name":"Test 123"}}}}
-          MacType: MAC = "00-D5-61-A2-AB-13"
-          PhoneNumberType: PhoneNumber = "+420123456789"
-          PostalCodeType: PostalCode = "111 22"
-          RgbaType: RGBA = {"red":1,"green":2,"blue":3,"alpha":0.5}
-          RgbType: RGB = {"red":1,"green":2,"blue":3}
-          TimeType: Time = "04:02:55"
-          UrlType: URL = "www.test.com"
-          VoidType: Void
-        }
-        
-        input TestDefaultValue1 {
-          stringArgument1: String = null
-          stringArgument2: String = "testValue"
-          intArgument1: Int = null
-          intArgument2: Int = 6247
-          inputArgument1: TestDefaultValue2 = {
-            notNullListIntArgument1: [66, 55],
-            listIntArgument1: [66, null],
-            notNullIntArgument1: 420,
-            notNullListStringArgument1: ["Boo", "Baz"],
-            listStringArgument1: ["Boo", null],
-            notNullStringArgument1: "notNullValue"
-          }
-        }
 
         input CompositeInput {
           name: String!
@@ -843,9 +800,21 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         input DefaultsInput {
           scalar: String! = "defaultString"
           enum: SimpleEnum! = "A"
-          list: [String!]! = ["string1","string2"]
-          object: SimpleInput! = {name:"string",number:[1,2],bool:null}
-          listObjects: [SimpleInput!]! = [{name:"string",number:[1],bool:null},{name:"string",number:[],bool:null}]
+          list: [String!]! = ["string1", "string2"]
+          object: SimpleInput! = {
+            name: "string",
+            number: [1, 2],
+            bool: null
+          }
+          listObjects: [SimpleInput!]! = [{
+            name: "string",
+            number: [1],
+            bool: null
+          }, {
+            name: "string",
+            number: [],
+            bool: null
+          }]
         }
         
         input ExactlyOneInput @inputConstraint(exactlyOne: ["int1", "int2"]) {
@@ -864,6 +833,25 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           name: String!
           number: [Int!]!
           bool: Boolean
+        }
+        
+        input TestAddonType {
+          DateTimeType: DateTime = "01-01-2000 04:02:10"
+          DateType: Date = "01-01-2000"
+          EmailAddressType: EmailAddress = "test@test.com"
+          HslaType: HSLA = {"hue":1,"saturation":2,"lightness":3,"alpha":0.5}
+          HslType: HSL = {"hue":1,"saturation":2,"lightness":3}
+          IPv4Type: IPv4 = "128.0.1.0"
+          IPv6Type: IPv6 = "2001:0DB8:85A3:0000:0000:8A2E:0370:7334"
+          JsonType: JSON = {"data":{"field0":{"field1":{"name":"Test 123"}}}}
+          MacType: MAC = "00-D5-61-A2-AB-13"
+          PhoneNumberType: PhoneNumber = "+420123456789"
+          PostalCodeType: PostalCode = "111 22"
+          RgbaType: RGBA = {"red":1,"green":2,"blue":3,"alpha":0.5}
+          RgbType: RGB = {"red":1,"green":2,"blue":3}
+          TimeType: Time = "04:02:55"
+          UrlType: URL = "https:\/\/www.test.com"
+          VoidType: Void
         }
         
         scalar TestScalar

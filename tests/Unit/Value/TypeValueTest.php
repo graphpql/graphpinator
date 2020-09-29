@@ -26,8 +26,8 @@ final class TypeValueTest extends \PHPUnit\Framework\TestCase
     public function testPrintValue() : void
     {
         //phpcs:ignore SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly.ReferencedGeneralException
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('This value cannot be printed');
+        $this->expectException(\Graphpinator\Exception\OperationNotSupported::class);
+        $this->expectExceptionMessage('This method is not supported on this object.');
 
         $value = \Graphpinator\Resolver\Value\TypeValue::create(123, $this->createTestType());
         $value->printValue(true);
