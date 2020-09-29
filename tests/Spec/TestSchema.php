@@ -44,6 +44,7 @@ final class TestSchema
             'ArrayEnum' => self::getArrayEnum(),
             'DescriptionEnum' => self::getDescriptionEnum(),
             'TestScalar' => self::getTestScalar(),
+            'TestDefaultValue' => self::getDefaultValue(),
         ], [
             'testDirective' => self::getTestDirective(),
             'invalidDirective' => self::getInvalidDirective(),
@@ -606,6 +607,68 @@ final class TestSchema
                         return 'blahblah';
                     },
                 );
+            }
+        };
+    }
+
+    public static function getDefaultValue() : \Graphpinator\Type\InputType
+    {
+        return new class extends \Graphpinator\Type\InputType
+        {
+            protected const NAME = 'TestDefaultValue';
+
+            protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
+            {
+                return new \Graphpinator\Argument\ArgumentSet([
+                    new \Graphpinator\Argument\Argument('stringArgument1', \Graphpinator\Type\Container\Container::String(), null),
+                    new \Graphpinator\Argument\Argument('stringArgument2', \Graphpinator\Type\Container\Container::String(), 'testValue'),
+                    new \Graphpinator\Argument\Argument('intArgument1', \Graphpinator\Type\Container\Container::Int(), null),
+                    new \Graphpinator\Argument\Argument('intArgument2', \Graphpinator\Type\Container\Container::Int(), 6247),
+                    new \Graphpinator\Argument\Argument(
+                        'inputArgument1',
+                        new class extends \Graphpinator\Type\InputType
+                        {
+                            protected const NAME = 'TestDefaultValue2';
+
+                            protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
+                            {
+                                return new \Graphpinator\Argument\ArgumentSet([
+                                    new \Graphpinator\Argument\Argument(
+                                        'notNullListIntArgument1',
+                                        \Graphpinator\Type\Container\Container::Int()->notNullList(),
+                                        [66, 55],
+                                    ),
+                                    new \Graphpinator\Argument\Argument(
+                                        'listIntArgument1',
+                                        \Graphpinator\Type\Container\Container::Int()->list(),
+                                        [66, null],
+                                    ),
+                                    new \Graphpinator\Argument\Argument(
+                                        'notNullIntArgument1',
+                                        \Graphpinator\Type\Container\Container::Int()->notNull(),
+                                        420,
+                                    ),
+                                    new \Graphpinator\Argument\Argument(
+                                        'notNullListStringArgument1',
+                                        \Graphpinator\Type\Container\Container::String()->notNullList(),
+                                        ['Boo', 'Baz'],
+                                    ),
+                                    new \Graphpinator\Argument\Argument(
+                                        'listStringArgument1',
+                                        \Graphpinator\Type\Container\Container::String()->list(),
+                                        ['Boo', null],
+                                    ),
+                                    new \Graphpinator\Argument\Argument(
+                                        'notNullStringArgument1',
+                                        \Graphpinator\Type\Container\Container::String()->notNull(),
+                                        'notNullValue',
+                                    ),
+                                ]);
+                            }
+                        },
+                        new \stdClass(),
+                    ),
+                ]);
             }
         };
     }

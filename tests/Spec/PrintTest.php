@@ -160,9 +160,21 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         input DefaultsInput {
           scalar: String! = "defaultString"
           enum: SimpleEnum! = "A"
-          list: [String!]! = ["string1","string2"]
-          object: SimpleInput! = {name:"string",number:[1,2],bool:null}
-          listObjects: [SimpleInput!]! = [{name:"string",number:[1],bool:null},{name:"string",number:[],bool:null}]
+          list: [String!]! = ["string1", "string2"]
+          object: SimpleInput! = {
+            name: "string",
+            number: [1, 2],
+            bool: null
+          }
+          listObjects: [SimpleInput!]! = [{
+            name: "string",
+            number: [1],
+            bool: null
+          }, {
+            name: "string",
+            number: [],
+            bool: null
+          }]
         }
         
         enum DescriptionEnum {
@@ -217,6 +229,21 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           name: String!
           number: [Int!]!
           bool: Boolean
+        }
+        
+        input TestDefaultValue {
+          stringArgument1: String = null
+          stringArgument2: String = "testValue"
+          intArgument1: Int = null
+          intArgument2: Int = 6247
+          inputArgument1: TestDefaultValue2 = {
+            notNullListIntArgument1: [66, 55],
+            listIntArgument1: [66, null],
+            notNullIntArgument1: 420,
+            notNullListStringArgument1: ["Boo", "Baz"],
+            listStringArgument1: ["Boo", null],
+            notNullStringArgument1: "notNullValue"
+          }
         }
         
         """
@@ -336,9 +363,21 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         input DefaultsInput {
           scalar: String! = "defaultString"
           enum: SimpleEnum! = "A"
-          list: [String!]! = ["string1","string2"]
-          object: SimpleInput! = {name:"string",number:[1,2],bool:null}
-          listObjects: [SimpleInput!]! = [{name:"string",number:[1],bool:null},{name:"string",number:[],bool:null}]
+          list: [String!]! = ["string1", "string2"]
+          object: SimpleInput! = {
+            name: "string",
+            number: [1, 2],
+            bool: null
+          }
+          listObjects: [SimpleInput!]! = [{
+            name: "string",
+            number: [1],
+            bool: null
+          }, {
+            name: "string",
+            number: [],
+            bool: null
+          }]
         }
         
         enum DescriptionEnum {
@@ -393,6 +432,21 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           name: String!
           number: [Int!]!
           bool: Boolean
+        }
+        
+        input TestDefaultValue {
+          stringArgument1: String = null
+          stringArgument2: String = "testValue"
+          intArgument1: Int = null
+          intArgument2: Int = 6247
+          inputArgument1: TestDefaultValue2 = {
+            notNullListIntArgument1: [66, 55],
+            listIntArgument1: [66, null],
+            notNullIntArgument1: 420,
+            notNullListStringArgument1: ["Boo", "Baz"],
+            listStringArgument1: ["Boo", null],
+            notNullStringArgument1: "notNullValue"
+          }
         }
         
         """
@@ -531,9 +585,21 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         input DefaultsInput {
           scalar: String! = "defaultString"
           enum: SimpleEnum! = "A"
-          list: [String!]! = ["string1","string2"]
-          object: SimpleInput! = {name:"string",number:[1,2],bool:null}
-          listObjects: [SimpleInput!]! = [{name:"string",number:[1],bool:null},{name:"string",number:[],bool:null}]
+          list: [String!]! = ["string1", "string2"]
+          object: SimpleInput! = {
+            name: "string",
+            number: [1, 2],
+            bool: null
+          }
+          listObjects: [SimpleInput!]! = [{
+            name: "string",
+            number: [1],
+            bool: null
+          }, {
+            name: "string",
+            number: [],
+            bool: null
+          }]
         }
         
         input ExactlyOneInput @inputConstraint(exactlyOne: ["int1", "int2"]) {
@@ -552,6 +618,21 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           name: String!
           number: [Int!]!
           bool: Boolean
+        }
+        
+        input TestDefaultValue {
+          stringArgument1: String = null
+          stringArgument2: String = "testValue"
+          intArgument1: Int = null
+          intArgument2: Int = 6247
+          inputArgument1: TestDefaultValue2 = {
+            notNullListIntArgument1: [66, 55],
+            listIntArgument1: [66, null],
+            notNullIntArgument1: 420,
+            notNullListStringArgument1: ["Boo", "Baz"],
+            listStringArgument1: ["Boo", null],
+            notNullStringArgument1: "notNullValue"
+          }
         }
         
         scalar TestScalar
@@ -707,9 +788,21 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         input DefaultsInput {
           scalar: String! = "defaultString"
           enum: SimpleEnum! = "A"
-          list: [String!]! = ["string1","string2"]
-          object: SimpleInput! = {name:"string",number:[1,2],bool:null}
-          listObjects: [SimpleInput!]! = [{name:"string",number:[1],bool:null},{name:"string",number:[],bool:null}]
+          list: [String!]! = ["string1", "string2"]
+          object: SimpleInput! = {
+            name: "string",
+            number: [1, 2],
+            bool: null
+          }
+          listObjects: [SimpleInput!]! = [{
+            name: "string",
+            number: [1],
+            bool: null
+          }, {
+            name: "string",
+            number: [],
+            bool: null
+          }]
         }
         
         input ExactlyOneInput @inputConstraint(exactlyOne: ["int1", "int2"]) {
@@ -728,6 +821,21 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           name: String!
           number: [Int!]!
           bool: Boolean
+        }
+        
+        input TestDefaultValue {
+          stringArgument1: String = null
+          stringArgument2: String = "testValue"
+          intArgument1: Int = null
+          intArgument2: Int = 6247
+          inputArgument1: TestDefaultValue2 = {
+            notNullListIntArgument1: [66, 55],
+            listIntArgument1: [66, null],
+            notNullIntArgument1: 420,
+            notNullListStringArgument1: ["Boo", "Baz"],
+            listStringArgument1: ["Boo", null],
+            notNullStringArgument1: "notNullValue"
+          }
         }
         
         scalar TestScalar

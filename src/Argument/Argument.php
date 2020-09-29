@@ -58,7 +58,7 @@ final class Argument implements \Graphpinator\Printable\Printable
         $schema = $this->printDescription($indentLevel) . $this->getName() . ': ' . $this->type->printName();
 
         if ($this->defaultValue instanceof \Graphpinator\Resolver\Value\ValidatedValue) {
-            $schema .= ' = ' . $this->defaultValue->printValue();
+            $schema .= ' = ' . $this->defaultValue->printValue(true);
         }
 
         $schema .= $this->printConstraints();

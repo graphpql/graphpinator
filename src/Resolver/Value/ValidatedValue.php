@@ -30,7 +30,7 @@ abstract class ValidatedValue implements \JsonSerializable
         return new static($rawValue, $type);
     }
 
-    abstract public function printValue() : string;
+    abstract public function printValue(bool $prettyPrint = false) : string;
 
     public function getType() : \Graphpinator\Type\Contract\Definition
     {
