@@ -51,13 +51,12 @@ final class PhoneNumberTypeTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider simpleDataProvider
      * @param string $rawValue
+     * @doesNotPerformAssertions
      */
     public function testValidateValue(string $rawValue) : void
     {
         $phoneNumber = new \Graphpinator\Type\Addon\PhoneNumberType();
         $phoneNumber->validateValue($rawValue);
-
-        self::assertSame($phoneNumber->getName(), 'phoneNumber');
     }
 
     /**

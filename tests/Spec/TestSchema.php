@@ -621,82 +621,82 @@ final class TestSchema
             {
                 return new \Graphpinator\Argument\ArgumentSet([
                     new \Graphpinator\Argument\Argument(
-                        'DateTimeType',
+                        'dateTimeType',
                         new \Graphpinator\Type\Addon\DateTimeType(),
                         '01-01-2000 04:02:10',
                     ),
                     new \Graphpinator\Argument\Argument(
-                        'DateType',
+                        'dateType',
                         new \Graphpinator\Type\Addon\DateType(),
                         '01-01-2000',
                     ),
                     new \Graphpinator\Argument\Argument(
-                        'EmailAddressType',
+                        'emailAddressType',
                         new \Graphpinator\Type\Addon\EmailAddressType(),
                         'test@test.com',
                     ),
                     new \Graphpinator\Argument\Argument(
-                        'HslaType',
+                        'hslaType',
                         new \Graphpinator\Type\Addon\HslaType(),
                         ['hue' => 1, 'saturation' => 2, 'lightness' => 3, 'alpha' => 0.5],
                     ),
                     new \Graphpinator\Argument\Argument(
-                        'HslType',
+                        'hslType',
                         new \Graphpinator\Type\Addon\HslType(),
                         ['hue' => 1, 'saturation' => 2, 'lightness' => 3],
                     ),
                     new \Graphpinator\Argument\Argument(
-                        'IPv4Type',
+                        'ipv4Type',
                         new \Graphpinator\Type\Addon\IPv4Type(),
                         '128.0.1.0',
                     ),
                     new \Graphpinator\Argument\Argument(
-                        'IPv6Type',
+                        'ipv6Type',
                         new \Graphpinator\Type\Addon\IPv6Type(),
                         '2001:0DB8:85A3:0000:0000:8A2E:0370:7334',
                     ),
                     new \Graphpinator\Argument\Argument(
-                        'JsonType',
+                        'jsonType',
                         new \Graphpinator\Type\Addon\JsonType(),
                         '{"testName":"testValue"}',
                     ),
                     new \Graphpinator\Argument\Argument(
-                        'MacType',
+                        'macType',
                         new \Graphpinator\Type\Addon\MacType(),
                         '00-D5-61-A2-AB-13',
                     ),
                     new \Graphpinator\Argument\Argument(
-                        'PhoneNumberType',
+                        'phoneNumberType',
                         new \Graphpinator\Type\Addon\PhoneNumberType(),
                         '+420123456789',
                     ),
                     new \Graphpinator\Argument\Argument(
-                        'PostalCodeType',
+                        'postalCodeType',
                         new \Graphpinator\Type\Addon\PostalCodeType(),
                         '111 22',
                     ),
                     new \Graphpinator\Argument\Argument(
-                        'RgbaType',
+                        'rgbaType',
                         new \Graphpinator\Type\Addon\RgbaType(),
                         ['red' => 1, 'green' => 2, 'blue' => 3, 'alpha' => 0.5],
                     ),
                     new \Graphpinator\Argument\Argument(
-                        'RgbType',
+                        'rgbType',
                         new \Graphpinator\Type\Addon\RgbType(),
                         ['red' => 1, 'green' => 2, 'blue' => 3],
                     ),
                     new \Graphpinator\Argument\Argument(
-                        'TimeType',
+                        'timeType',
                         new \Graphpinator\Type\Addon\TimeType(),
                         '04:02:55',
                     ),
                     new \Graphpinator\Argument\Argument(
-                        'UrlType',
+                        'urlType',
                         new \Graphpinator\Type\Addon\UrlType(),
                         'https://www.test.com',
                     ),
                     new \Graphpinator\Argument\Argument(
-                        'VoidType',
+                        'voidType',
                         new \Graphpinator\Type\Addon\VoidType(),
                         null,
                     ),

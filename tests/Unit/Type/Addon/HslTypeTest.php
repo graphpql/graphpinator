@@ -48,13 +48,12 @@ final class HslTypeTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider simpleDataProvider
      * @param array $rawValue
+     * @doesNotPerformAssertions
      */
     public function testValidateValue($rawValue) : void
     {
         $hsl = new \Graphpinator\Type\Addon\HslType();
         $hsl->validateValue($rawValue);
-
-        self::assertSame($hsl->getName(), 'hsl');
     }
 
     /**

@@ -48,13 +48,12 @@ final class RgbTypeTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider simpleDataProvider
      * @param array $rawValue
+     * @doesNotPerformAssertions
      */
     public function testValidateValue($rawValue) : void
     {
         $rgb = new \Graphpinator\Type\Addon\RgbType();
         $rgb->validateValue($rawValue);
-
-        self::assertSame($rgb->getName(), 'rgb');
     }
 
     /**

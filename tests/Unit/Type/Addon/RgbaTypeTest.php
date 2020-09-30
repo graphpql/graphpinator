@@ -53,13 +53,12 @@ final class RgbaTypeTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider simpleDataProvider
      * @param array $rawValue
+     * @doesNotPerformAssertions
      */
     public function testValidateValue($rawValue) : void
     {
         $rgba = new \Graphpinator\Type\Addon\RgbaType();
         $rgba->validateValue($rawValue);
-
-        self::assertSame($rgba->getName(), 'rgba');
     }
 
     /**

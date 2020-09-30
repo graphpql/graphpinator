@@ -6,7 +6,7 @@ namespace Graphpinator\Type\Addon;
 
 final class VoidType extends \Graphpinator\Type\Scalar\ScalarType
 {
-    protected const NAME = 'void';
+    protected const NAME = 'Void';
     protected const DESCRIPTION = 'This add on scalar validates void input.
     Example - null';
 

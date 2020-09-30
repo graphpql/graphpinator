@@ -49,13 +49,12 @@ final class MacTypeTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider simpleDataProvider
      * @param string $rawValue
+     * @doesNotPerformAssertions
      */
     public function testValidateValue(string $rawValue) : void
     {
         $mac = new \Graphpinator\Type\Addon\MacType();
         $mac->validateValue($rawValue);
-
-        self::assertSame($mac->getName(), 'mac');
     }
 
     /**

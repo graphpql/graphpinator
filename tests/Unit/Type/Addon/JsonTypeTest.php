@@ -30,13 +30,12 @@ final class JsonTypeTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider simpleDataProvider
      * @param string|array $rawValue
+     * @doesNotPerformAssertions
      */
     public function testValidateValue($rawValue) : void
     {
         $json = new \Graphpinator\Type\Addon\JsonType();
         $json->validateValue($rawValue);
-
-        self::assertSame($json->getName(), 'json');
     }
 
     /**

@@ -62,13 +62,12 @@ final class IPv6TypeTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider simpleDataProvider
      * @param string $rawValue
+     * @doesNotPerformAssertions
      */
     public function testValidateValue(string $rawValue) : void
     {
         $ipv6 = new \Graphpinator\Type\Addon\IPv6Type();
         $ipv6->validateValue($rawValue);
-
-        self::assertSame($ipv6->getName(), 'ipv6');
     }
 
     /**

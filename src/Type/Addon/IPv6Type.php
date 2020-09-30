@@ -6,7 +6,7 @@ namespace Graphpinator\Type\Addon;
 
 final class IPv6Type extends \Graphpinator\Type\Scalar\ScalarType
 {
-    protected const NAME = 'ipv6';
+    protected const NAME = 'Ipv6';
     protected const DESCRIPTION = 'This add on scalar validates ipv6 string input via filter_var function.
     Examples - aaaa:aaaa:aaaa:aaaa:aaaa:aaaa:aaaa:aaaa, ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff,
                0000:0000:0000:0000:0000:0000:0000:0000, 9999:9999:9999:9999:9999:9999:9999:9999,

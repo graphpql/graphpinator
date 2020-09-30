@@ -43,13 +43,12 @@ final class TimeTypeTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider simpleDataProvider
      * @param string $rawValue
+     * @doesNotPerformAssertions
      */
     public function testValidateValue(string $rawValue) : void
     {
         $dateTime = new \Graphpinator\Type\Addon\TimeType();
         $dateTime->validateValue($rawValue);
-
-        self::assertSame($dateTime->getName(), 'time');
     }
 
     /**

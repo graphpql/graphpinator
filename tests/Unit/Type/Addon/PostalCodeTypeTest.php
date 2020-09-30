@@ -41,13 +41,12 @@ final class PostalCodeTypeTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider simpleDataProvider
      * @param string $rawValue
+     * @doesNotPerformAssertions
      */
     public function testValidateValue(string $rawValue) : void
     {
         $postalCode = new \Graphpinator\Type\Addon\PostalCodeType();
         $postalCode->validateValue($rawValue);
-
-        self::assertSame($postalCode->getName(), 'postalCode');
     }
 
     /**

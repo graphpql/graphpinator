@@ -220,22 +220,22 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         }
         
         input TestAddonDefaultValue {
-          DateTimeType: dateTime = "01-01-2000 04:02:10"
-          DateType: date = "01-01-2000"
-          EmailAddressType: emailAddress = "test@test.com"
-          HslaType: hsla = {"hue":1,"saturation":2,"lightness":3,"alpha":0.5}
-          HslType: hsl = {"hue":1,"saturation":2,"lightness":3}
-          IPv4Type: ipv4 = "128.0.1.0"
-          IPv6Type: ipv6 = "2001:0DB8:85A3:0000:0000:8A2E:0370:7334"
-          JsonType: json = "{\"testName\":\"testValue\"}"
-          MacType: mac = "00-D5-61-A2-AB-13"
-          PhoneNumberType: phoneNumber = "+420123456789"
-          PostalCodeType: postalCode = "111 22"
-          RgbaType: rgba = {"red":1,"green":2,"blue":3,"alpha":0.5}
-          RgbType: rgb = {"red":1,"green":2,"blue":3}
-          TimeType: time = "04:02:55"
-          UrlType: url = "https:\/\/www.test.com"
-          VoidType: void = null
+          dateTimeType: DateTime = "01-01-2000 04:02:10"
+          dateType: Date = "01-01-2000"
+          emailAddressType: EmailAddress = "test@test.com"
+          hslaType: Hsla = {"hue":1,"saturation":2,"lightness":3,"alpha":0.5}
+          hslType: Hsl = {"hue":1,"saturation":2,"lightness":3}
+          ipv4Type: Ipv4 = "128.0.1.0"
+          ipv6Type: Ipv6 = "2001:0DB8:85A3:0000:0000:8A2E:0370:7334"
+          jsonType: Json = "{\"testName\":\"testValue\"}"
+          macType: Mac = "00-D5-61-A2-AB-13"
+          phoneNumberType: PhoneNumber = "+420123456789"
+          postalCodeType: PostalCode = "111 22"
+          rgbaType: Rgba = {"red":1,"green":2,"blue":3,"alpha":0.5}
+          rgbType: Rgb = {"red":1,"green":2,"blue":3}
+          timeType: Time = "04:02:55"
+          urlType: Url = "https:\/\/www.test.com"
+          voidType: Void = null
         }
         
         """
@@ -415,22 +415,22 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         }
         
         input TestAddonDefaultValue {
-          DateTimeType: dateTime = "01-01-2000 04:02:10"
-          DateType: date = "01-01-2000"
-          EmailAddressType: emailAddress = "test@test.com"
-          HslaType: hsla = {"hue":1,"saturation":2,"lightness":3,"alpha":0.5}
-          HslType: hsl = {"hue":1,"saturation":2,"lightness":3}
-          IPv4Type: ipv4 = "128.0.1.0"
-          IPv6Type: ipv6 = "2001:0DB8:85A3:0000:0000:8A2E:0370:7334"
-          JsonType: json = "{\"testName\":\"testValue\"}"
-          MacType: mac = "00-D5-61-A2-AB-13"
-          PhoneNumberType: phoneNumber = "+420123456789"
-          PostalCodeType: postalCode = "111 22"
-          RgbaType: rgba = {"red":1,"green":2,"blue":3,"alpha":0.5}
-          RgbType: rgb = {"red":1,"green":2,"blue":3}
-          TimeType: time = "04:02:55"
-          UrlType: url = "https:\/\/www.test.com"
-          VoidType: void = null
+          dateTimeType: DateTime = "01-01-2000 04:02:10"
+          dateType: Date = "01-01-2000"
+          emailAddressType: EmailAddress = "test@test.com"
+          hslaType: Hsla = {"hue":1,"saturation":2,"lightness":3,"alpha":0.5}
+          hslType: Hsl = {"hue":1,"saturation":2,"lightness":3}
+          ipv4Type: Ipv4 = "128.0.1.0"
+          ipv6Type: Ipv6 = "2001:0DB8:85A3:0000:0000:8A2E:0370:7334"
+          jsonType: Json = "{\"testName\":\"testValue\"}"
+          macType: Mac = "00-D5-61-A2-AB-13"
+          phoneNumberType: PhoneNumber = "+420123456789"
+          postalCodeType: PostalCode = "111 22"
+          rgbaType: Rgba = {"red":1,"green":2,"blue":3,"alpha":0.5}
+          rgbType: Rgb = {"red":1,"green":2,"blue":3}
+          timeType: Time = "04:02:55"
+          urlType: Url = "https:\/\/www.test.com"
+          voidType: Void = null
         }
         
         """
@@ -593,22 +593,22 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         }
         
         input TestAddonDefaultValue {
-          DateTimeType: dateTime = "01-01-2000 04:02:10"
-          DateType: date = "01-01-2000"
-          EmailAddressType: emailAddress = "test@test.com"
-          HslaType: hsla = {"hue":1,"saturation":2,"lightness":3,"alpha":0.5}
-          HslType: hsl = {"hue":1,"saturation":2,"lightness":3}
-          IPv4Type: ipv4 = "128.0.1.0"
-          IPv6Type: ipv6 = "2001:0DB8:85A3:0000:0000:8A2E:0370:7334"
-          JsonType: json = "{\"testName\":\"testValue\"}"
-          MacType: mac = "00-D5-61-A2-AB-13"
-          PhoneNumberType: phoneNumber = "+420123456789"
-          PostalCodeType: postalCode = "111 22"
-          RgbaType: rgba = {"red":1,"green":2,"blue":3,"alpha":0.5}
-          RgbType: rgb = {"red":1,"green":2,"blue":3}
-          TimeType: time = "04:02:55"
-          UrlType: url = "https:\/\/www.test.com"
-          VoidType: void = null
+          dateTimeType: DateTime = "01-01-2000 04:02:10"
+          dateType: Date = "01-01-2000"
+          emailAddressType: EmailAddress = "test@test.com"
+          hslaType: Hsla = {"hue":1,"saturation":2,"lightness":3,"alpha":0.5}
+          hslType: Hsl = {"hue":1,"saturation":2,"lightness":3}
+          ipv4Type: Ipv4 = "128.0.1.0"
+          ipv6Type: Ipv6 = "2001:0DB8:85A3:0000:0000:8A2E:0370:7334"
+          jsonType: Json = "{\"testName\":\"testValue\"}"
+          macType: Mac = "00-D5-61-A2-AB-13"
+          phoneNumberType: PhoneNumber = "+420123456789"
+          postalCodeType: PostalCode = "111 22"
+          rgbaType: Rgba = {"red":1,"green":2,"blue":3,"alpha":0.5}
+          rgbType: Rgb = {"red":1,"green":2,"blue":3}
+          timeType: Time = "04:02:55"
+          urlType: Url = "https:\/\/www.test.com"
+          voidType: Void = null
         }
         
         scalar TestScalar
@@ -788,22 +788,22 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         }
         
         input TestAddonDefaultValue {
-          DateTimeType: dateTime = "01-01-2000 04:02:10"
-          DateType: date = "01-01-2000"
-          EmailAddressType: emailAddress = "test@test.com"
-          HslaType: hsla = {"hue":1,"saturation":2,"lightness":3,"alpha":0.5}
-          HslType: hsl = {"hue":1,"saturation":2,"lightness":3}
-          IPv4Type: ipv4 = "128.0.1.0"
-          IPv6Type: ipv6 = "2001:0DB8:85A3:0000:0000:8A2E:0370:7334"
-          JsonType: json = "{\"testName\":\"testValue\"}"
-          MacType: mac = "00-D5-61-A2-AB-13"
-          PhoneNumberType: phoneNumber = "+420123456789"
-          PostalCodeType: postalCode = "111 22"
-          RgbaType: rgba = {"red":1,"green":2,"blue":3,"alpha":0.5}
-          RgbType: rgb = {"red":1,"green":2,"blue":3}
-          TimeType: time = "04:02:55"
-          UrlType: url = "https:\/\/www.test.com"
-          VoidType: void = null
+          dateTimeType: DateTime = "01-01-2000 04:02:10"
+          dateType: Date = "01-01-2000"
+          emailAddressType: EmailAddress = "test@test.com"
+          hslaType: Hsla = {"hue":1,"saturation":2,"lightness":3,"alpha":0.5}
+          hslType: Hsl = {"hue":1,"saturation":2,"lightness":3}
+          ipv4Type: Ipv4 = "128.0.1.0"
+          ipv6Type: Ipv6 = "2001:0DB8:85A3:0000:0000:8A2E:0370:7334"
+          jsonType: Json = "{\"testName\":\"testValue\"}"
+          macType: Mac = "00-D5-61-A2-AB-13"
+          phoneNumberType: PhoneNumber = "+420123456789"
+          postalCodeType: PostalCode = "111 22"
+          rgbaType: Rgba = {"red":1,"green":2,"blue":3,"alpha":0.5}
+          rgbType: Rgb = {"red":1,"green":2,"blue":3}
+          timeType: Time = "04:02:55"
+          urlType: Url = "https:\/\/www.test.com"
+          voidType: Void = null
         }
         
         scalar TestScalar

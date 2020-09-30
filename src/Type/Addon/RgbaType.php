@@ -6,7 +6,7 @@ namespace Graphpinator\Type\Addon;
 
 final class RgbaType extends \Graphpinator\Type\Scalar\ScalarType
 {
-    protected const NAME = 'rgba';
+    protected const NAME = 'Rgba';
     protected const DESCRIPTION = 'This add on scalar validates rgba array input with keys and its values -
     red (0-255), green (0-255), blue (0-255), alpha (0-1).
     Examples - [\'red\' => 100, \'green\' => 50, \'blue\' => 50, \'alpha\' => 0.5],

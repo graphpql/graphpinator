@@ -54,13 +54,12 @@ final class DateTypeTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider simpleDataProvider
      * @param string $rawValue
+     * @doesNotPerformAssertions
      */
     public function testValidateValue(string $rawValue) : void
     {
         $date = new \Graphpinator\Type\Addon\DateType();
         $date->validateValue($rawValue);
-
-        self::assertSame($date->getName(), 'date');
     }
 
     /**

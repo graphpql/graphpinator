@@ -6,7 +6,7 @@ namespace Graphpinator\Type\Addon;
 
 final class HslType extends \Graphpinator\Type\Scalar\ScalarType
 {
-    protected const NAME = 'hsl';
+    protected const NAME = 'Hsl';
     protected const DESCRIPTION = 'This add on scalar validates hsl array input with keys and its values -
     hue (0-360), saturation (0-100), lightness (0-100).
     Examples - [\'hue\' => 180, \'saturation\' => 50, \'lightness\' => 50],

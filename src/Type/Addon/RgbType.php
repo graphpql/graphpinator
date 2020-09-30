@@ -6,7 +6,7 @@ namespace Graphpinator\Type\Addon;
 
 final class RgbType extends \Graphpinator\Type\Scalar\ScalarType
 {
-    protected const NAME = 'rgb';
+    protected const NAME = 'Rgb';
     protected const DESCRIPTION = 'This add on scalar validates rgb array input with keys and its values -
     red (0-255), green (0-255), blue (0-255).
     Examples - [\'red\' => 100, \'green\' => 50, \'blue\' => 50],

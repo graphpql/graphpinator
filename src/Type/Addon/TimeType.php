@@ -6,7 +6,7 @@ namespace Graphpinator\Type\Addon;
 
 final class TimeType extends \Graphpinator\Type\Scalar\ScalarType
 {
-    protected const NAME = 'time';
+    protected const NAME = 'Time';
     protected const DESCRIPTION = 'This add on scalar validates time string input with format H:i:s.
     Examples - 05:05:20, 10:10:50, 00:00:00';
 
