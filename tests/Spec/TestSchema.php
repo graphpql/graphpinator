@@ -130,6 +130,13 @@ final class TestSchema
                             throw new \Exception('Random exception');
                         },
                     ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'fieldAddonType',
+                        TestSchema::getAddonDefaultValue(),
+                        static function () : \Graphpinator\Type\Type {
+                            return TestSchema::getAddonDefaultValue();
+                        },
+                    ),
                 ]);
             }
 
@@ -681,7 +688,7 @@ final class TestSchema
                     new \Graphpinator\Field\ResolvableField(
                         'hsla',
                         new \Graphpinator\Type\Addon\HslaType(),
-                        static function ($parent, string $hsla) : string {
+                        static function ($parent, array $hsla) : array {
                             return $hsla;
                         },
                         new \Graphpinator\Argument\ArgumentSet([
@@ -695,7 +702,7 @@ final class TestSchema
                     new \Graphpinator\Field\ResolvableField(
                         'hsl',
                         new \Graphpinator\Type\Addon\HslType(),
-                        static function ($parent, string $hsl) : string {
+                        static function ($parent, array $hsl) : array {
                             return $hsl;
                         },
                         new \Graphpinator\Argument\ArgumentSet([
@@ -793,7 +800,7 @@ final class TestSchema
                     new \Graphpinator\Field\ResolvableField(
                         'rgba',
                         new \Graphpinator\Type\Addon\RgbaType(),
-                        static function ($parent, string $rgba) : string {
+                        static function ($parent, array $rgba) : array {
                             return $rgba;
                         },
                         new \Graphpinator\Argument\ArgumentSet([
@@ -807,7 +814,7 @@ final class TestSchema
                     new \Graphpinator\Field\ResolvableField(
                         'rgb',
                         new \Graphpinator\Type\Addon\RgbType(),
-                        static function ($parent, string $rgb) : string {
+                        static function ($parent, array $rgb) : array {
                             return $rgb;
                         },
                         new \Graphpinator\Argument\ArgumentSet([
@@ -849,7 +856,7 @@ final class TestSchema
                     new \Graphpinator\Field\ResolvableField(
                         'void',
                         new \Graphpinator\Type\Addon\VoidType(),
-                        static function ($parent, string $void) : string {
+                        static function ($parent, $void) {
                             return $void;
                         },
                         new \Graphpinator\Argument\ArgumentSet([

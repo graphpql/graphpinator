@@ -226,6 +226,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldInvalidType: TestUnion
           fieldInvalidReturn: TestUnion
           fieldThrow: TestUnion
+          fieldAddonType: TestAddonDefaultValue
         }
         
         scalar Rgb
@@ -485,6 +486,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldInvalidType: TestUnion
           fieldInvalidReturn: TestUnion
           fieldThrow: TestUnion
+          fieldAddonType: TestAddonDefaultValue
         }
         
         scalar Rgb
@@ -656,6 +658,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldInvalidType: TestUnion
           fieldInvalidReturn: TestUnion
           fieldThrow: TestUnion
+          fieldAddonType: TestAddonDefaultValue
         }
         
         type TestAddonDefaultValue {
@@ -915,6 +918,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldInvalidType: TestUnion
           fieldInvalidReturn: TestUnion
           fieldThrow: TestUnion
+          fieldAddonType: TestAddonDefaultValue
         }
         
         type TestAddonDefaultValue {
