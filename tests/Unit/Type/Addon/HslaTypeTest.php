@@ -9,8 +9,8 @@ final class HslaTypeTest extends \PHPUnit\Framework\TestCase
     public function simpleDataProvider() : array
     {
         return [
-            [['hue' => 360, 'saturation' => 100, 'lightness' => 100, 'alpha' => 1]],
-            [['hue' => 0, 'saturation' => 0, 'lightness' => 0, 'alpha' => 0]],
+            [['hue' => 360, 'saturation' => 100, 'lightness' => 100, 'alpha' => 1.0]],
+            [['hue' => 0, 'saturation' => 0, 'lightness' => 0, 'alpha' => 0.0]],
             [['hue' => 180, 'saturation' => 50, 'lightness' => 50, 'alpha' => 0.5]],
             [['hue' => 150, 'saturation' => 20, 'lightness' => 80, 'alpha' => 0.8]],
         ];

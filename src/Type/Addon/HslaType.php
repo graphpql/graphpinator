@@ -10,8 +10,8 @@ final class HslaType extends \Graphpinator\Type\Scalar\ScalarType
     protected const DESCRIPTION = 'This add on scalar validates hsla array input with keys and its values -
     hue (0-360), saturation (0-100), lightness (0-100), alpha (0-1).
     Examples - [\'hue\' => 180, \'saturation\' => 50, \'lightness\' => 50, \'alpha\' => 0.5],
-               [\'hue\' => 360, \'saturation\' => 100, \'lightness\' => 100, \'alpha\' => 1],
-               [\'hue\' => 0, \'saturation\' => 0, \'lightness\' => 0, \'alpha\' => 0]';
+               [\'hue\' => 360, \'saturation\' => 100, \'lightness\' => 100, \'alpha\' => 1.0],
+               [\'hue\' => 0, \'saturation\' => 0, \'lightness\' => 0, \'alpha\' => 0.0]';
 
     protected function validateNonNullValue($rawValue) : bool
     {
@@ -23,8 +23,7 @@ final class HslaType extends \Graphpinator\Type\Scalar\ScalarType
             && \is_int($rawValue['hue'])
             && \is_int($rawValue['saturation'])
             && \is_int($rawValue['lightness'])
-            && (\is_float($rawValue['alpha'])
-            || \is_int($rawValue['alpha']))
+            && \is_float($rawValue['alpha'])
             && $rawValue['hue'] <= 360
             && $rawValue['hue'] >= 0
             && $rawValue['saturation'] <= 100

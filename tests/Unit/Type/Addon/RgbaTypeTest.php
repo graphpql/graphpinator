@@ -9,8 +9,8 @@ final class RgbaTypeTest extends \PHPUnit\Framework\TestCase
     public function simpleDataProvider() : array
     {
         return [
-            [['red' => 255, 'green' => 255, 'blue' => 255, 'alpha' => 1]],
-            [['red' => 0, 'green' => 0, 'blue' => 0, 'alpha' => 0]],
+            [['red' => 255, 'green' => 255, 'blue' => 255, 'alpha' => 1.0]],
+            [['red' => 0, 'green' => 0, 'blue' => 0, 'alpha' => 0.0]],
             [['red' => 180, 'green' => 50, 'blue' => 50, 'alpha' => 0.5]],
             [['red' => 150, 'green' => 20, 'blue' => 80, 'alpha' => 0.8]],
         ];

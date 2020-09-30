@@ -157,6 +157,10 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           listMinIntMinArg: [Int] @listConstraint(minItems: 3) @intConstraint(min: 3)
         }
         
+        scalar Date
+        
+        scalar DateTime
+        
         input DefaultsInput {
           scalar: String! = "defaultString"
           enum: SimpleEnum! = "A"
@@ -181,10 +185,22 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           D @deprecated(reason: "reason")
         }
         
+        scalar EmailAddress
+        
         input ExactlyOneInput @inputConstraint(exactlyOne: ["int1", "int2"]) {
           int1: Int
           int2: Int
         }
+        
+        scalar Hsl
+        
+        scalar Hsla
+        
+        scalar Ipv4
+        
+        scalar Ipv6
+        
+        scalar Json
         
         input ListConstraintInput {
           minItems: Int
@@ -192,6 +208,12 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           unique: Boolean = false
           innerList: ListConstraintInput
         }
+        
+        scalar Mac
+        
+        scalar PhoneNumber
+        
+        scalar PostalCode
         
         type Query {
           fieldValid: TestUnion
@@ -205,6 +227,10 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldInvalidReturn: TestUnion
           fieldThrow: TestUnion
         }
+        
+        scalar Rgb
+        
+        scalar Rgba
         
         enum SimpleEnum {
           A
@@ -248,6 +274,12 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         scalar TestScalar
         
         union TestUnion = Abc | Xyz
+        
+        scalar Time
+        
+        scalar Url
+        
+        scalar Void
         
         type Xyz implements TestInterface {
           name: String!
@@ -352,6 +384,10 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           listMinIntMinArg: [Int] @listConstraint(minItems: 3) @intConstraint(min: 3)
         }
         
+        scalar Date
+        
+        scalar DateTime
+        
         input DefaultsInput {
           scalar: String! = "defaultString"
           enum: SimpleEnum! = "A"
@@ -376,10 +412,22 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           D @deprecated(reason: "reason")
         }
         
+        scalar EmailAddress
+        
         input ExactlyOneInput @inputConstraint(exactlyOne: ["int1", "int2"]) {
           int1: Int
           int2: Int
         }
+        
+        scalar Hsl
+        
+        scalar Hsla
+        
+        scalar Ipv4
+        
+        scalar Ipv6
+        
+        scalar Json
         
         input ListConstraintInput {
           minItems: Int
@@ -387,6 +435,12 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           unique: Boolean = false
           innerList: ListConstraintInput
         }
+        
+        scalar Mac
+        
+        scalar PhoneNumber
+        
+        scalar PostalCode
         
         type Query {
           fieldValid: TestUnion
@@ -400,6 +454,10 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldInvalidReturn: TestUnion
           fieldThrow: TestUnion
         }
+        
+        scalar Rgb
+        
+        scalar Rgba
         
         enum SimpleEnum {
           A
@@ -443,6 +501,12 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         scalar TestScalar
         
         union TestUnion = Abc | Xyz
+        
+        scalar Time
+        
+        scalar Url
+        
+        scalar Void
         
         type Xyz implements TestInterface {
           name: String!
@@ -611,7 +675,39 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           voidType: Void = null
         }
         
+        scalar Date
+        
+        scalar DateTime
+        
+        scalar EmailAddress
+        
+        scalar Hsl
+        
+        scalar Hsla
+        
+        scalar Ipv4
+        
+        scalar Ipv6
+        
+        scalar Json
+        
+        scalar Mac
+        
+        scalar PhoneNumber
+        
+        scalar PostalCode
+        
+        scalar Rgb
+        
+        scalar Rgba
+        
         scalar TestScalar
+        
+        scalar Time
+        
+        scalar Url
+        
+        scalar Void
         
         enum ArrayEnum {
           "First description"
@@ -806,7 +902,39 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           voidType: Void = null
         }
         
+        scalar Date
+        
+        scalar DateTime
+        
+        scalar EmailAddress
+        
+        scalar Hsl
+        
+        scalar Hsla
+        
+        scalar Ipv4
+        
+        scalar Ipv6
+        
+        scalar Json
+        
+        scalar Mac
+        
+        scalar PhoneNumber
+        
+        scalar PostalCode
+        
+        scalar Rgb
+        
+        scalar Rgba
+        
         scalar TestScalar
+        
+        scalar Time
+        
+        scalar Url
+        
+        scalar Void
         
         enum ArrayEnum {
           "First description"
