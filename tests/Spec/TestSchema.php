@@ -627,96 +627,243 @@ final class TestSchema
         };
     }
 
-    public static function getAddonDefaultValue() : \Graphpinator\Type\InputType
+    public static function getAddonDefaultValue() : \Graphpinator\Type\Type
     {
-        return new class extends \Graphpinator\Type\InputType
+        return new class extends \Graphpinator\Type\Type
         {
             protected const NAME = 'TestAddonDefaultValue';
 
-            protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
+            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
             {
-                return new \Graphpinator\Argument\ArgumentSet([
-                    new \Graphpinator\Argument\Argument(
-                        'dateTimeType',
+                return new \Graphpinator\Field\ResolvableFieldSet([
+                    new \Graphpinator\Field\ResolvableField(
+                        'dateTime',
                         new \Graphpinator\Type\Addon\DateTimeType(),
-                        '01-01-2000 04:02:10',
+                        static function ($parent, string $dateTime) : string {
+                            return $dateTime;
+                        },
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'dateTime',
+                                new \Graphpinator\Type\Addon\DateTimeType(),
+                                '01-01-2010 12:12:50',
+                            ),
+                        ]),
                     ),
-                    new \Graphpinator\Argument\Argument(
-                        'dateType',
+                    new \Graphpinator\Field\ResolvableField(
+                        'date',
                         new \Graphpinator\Type\Addon\DateType(),
-                        '01-01-2000',
+                        static function ($parent, string $date) : string {
+                            return $date;
+                        },
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'date',
+                                new \Graphpinator\Type\Addon\DateType(),
+                                '01-01-2010'
+                            ),
+                        ]),
                     ),
-                    new \Graphpinator\Argument\Argument(
-                        'emailAddressType',
+                    new \Graphpinator\Field\ResolvableField(
+                        'emailAddress',
                         new \Graphpinator\Type\Addon\EmailAddressType(),
-                        'test@test.com',
+                        static function ($parent, string $emailAddress) : string {
+                            return $emailAddress;
+                        },
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'emailAddress',
+                                new \Graphpinator\Type\Addon\EmailAddressType(),
+                                'test@test.com',
+                            ),
+                        ]),
                     ),
-                    new \Graphpinator\Argument\Argument(
-                        'hslaType',
+                    new \Graphpinator\Field\ResolvableField(
+                        'hsla',
                         new \Graphpinator\Type\Addon\HslaType(),
-                        ['hue' => 1, 'saturation' => 2, 'lightness' => 3, 'alpha' => 0.5],
+                        static function ($parent, string $hsla) : string {
+                            return $hsla;
+                        },
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument('hsla',
+                            new \Graphpinator\Type\Addon\HslaType(),
+                                ['hue' => 180, 'saturation' => 50, 'lightness' => 50, 'alpha' => 0.5],
+                            ),
+                        ]),
                     ),
-                    new \Graphpinator\Argument\Argument(
-                        'hslType',
+                    new \Graphpinator\Field\ResolvableField(
+                        'hsl',
                         new \Graphpinator\Type\Addon\HslType(),
-                        ['hue' => 1, 'saturation' => 2, 'lightness' => 3],
+                        static function ($parent, string $hsl) : string {
+                            return $hsl;
+                        },
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'hsl',
+                                new \Graphpinator\Type\Addon\HslType(),
+                                ['hue' => 180, 'saturation' => 50, 'lightness' => 50],
+                            ),
+                        ]),
                     ),
-                    new \Graphpinator\Argument\Argument(
-                        'ipv4Type',
+                    new \Graphpinator\Field\ResolvableField(
+                        'ipv4',
                         new \Graphpinator\Type\Addon\IPv4Type(),
-                        '128.0.1.0',
+                        static function ($parent, string $ipv4) : string {
+                            return $ipv4;
+                        },
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'ipv4',
+                                new \Graphpinator\Type\Addon\IPv4Type(),
+                                '128.0.1.1',
+                            ),
+                        ]),
                     ),
-                    new \Graphpinator\Argument\Argument(
-                        'ipv6Type',
+                    new \Graphpinator\Field\ResolvableField(
+                        'ipv6',
                         new \Graphpinator\Type\Addon\IPv6Type(),
-                        '2001:0DB8:85A3:0000:0000:8A2E:0370:7334',
+                        static function ($parent, string $ipv6) : string {
+                            return $ipv6;
+                        },
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'ipv6',
+                                new \Graphpinator\Type\Addon\IPv6Type(),
+                                'AAAA:1111:FFFF:9999:1111:AAAA:9999:FFFF',
+                            ),
+                        ]),
                     ),
-                    new \Graphpinator\Argument\Argument(
-                        'jsonType',
+                    new \Graphpinator\Field\ResolvableField(
+                        'json',
                         new \Graphpinator\Type\Addon\JsonType(),
-                        '{"testName":"testValue"}',
+                        static function ($parent, string $json) : string {
+                            return $json;
+                        },
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'json',
+                                new \Graphpinator\Type\Addon\JsonType(),
+                                '{"testName":"testValue"}',
+                            ),
+                        ]),
                     ),
-                    new \Graphpinator\Argument\Argument(
-                        'macType',
+                    new \Graphpinator\Field\ResolvableField(
+                        'mac',
                         new \Graphpinator\Type\Addon\MacType(),
-                        '00-D5-61-A2-AB-13',
+                        static function ($parent, string $mac) : string {
+                            return $mac;
+                        },
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'mac',
+                                new \Graphpinator\Type\Addon\MacType(),
+                                'AA:11:FF:99:11:AA',
+                            ),
+                        ]),
                     ),
-                    new \Graphpinator\Argument\Argument(
-                        'phoneNumberType',
+                    new \Graphpinator\Field\ResolvableField(
+                        'phoneNumber',
                         new \Graphpinator\Type\Addon\PhoneNumberType(),
-                        '+420123456789',
+                        static function ($parent, string $phoneNumber) : string {
+                            return $phoneNumber;
+                        },
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'phoneNumber',
+                                new \Graphpinator\Type\Addon\PhoneNumberType(),
+                                '+999123456789',
+                            ),
+                        ]),
                     ),
-                    new \Graphpinator\Argument\Argument(
-                        'postalCodeType',
+                    new \Graphpinator\Field\ResolvableField(
+                        'postalCode',
                         new \Graphpinator\Type\Addon\PostalCodeType(),
-                        '111 22',
+                        static function ($parent, string $postalCode) : string {
+                            return $postalCode;
+                        },
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'postalCode',
+                                new \Graphpinator\Type\Addon\PostalCodeType(),
+                                '111 22',
+                            ),
+                        ]),
                     ),
-                    new \Graphpinator\Argument\Argument(
-                        'rgbaType',
+                    new \Graphpinator\Field\ResolvableField(
+                        'rgba',
                         new \Graphpinator\Type\Addon\RgbaType(),
-                        ['red' => 1, 'green' => 2, 'blue' => 3, 'alpha' => 0.5],
+                        static function ($parent, string $rgba) : string {
+                            return $rgba;
+                        },
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'rgba',
+                                new \Graphpinator\Type\Addon\RgbaType(),
+                                ['red' => 150, 'green' => 150, 'blue' => 150, 'alpha' => 0.5],
+                            ),
+                        ]),
                     ),
-                    new \Graphpinator\Argument\Argument(
-                        'rgbType',
+                    new \Graphpinator\Field\ResolvableField(
+                        'rgb',
                         new \Graphpinator\Type\Addon\RgbType(),
-                        ['red' => 1, 'green' => 2, 'blue' => 3],
+                        static function ($parent, string $rgb) : string {
+                            return $rgb;
+                        },
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'rgb',
+                                new \Graphpinator\Type\Addon\RgbType(),
+                                ['red' => 150, 'green' => 150, 'blue' => 150],
+                            ),
+                        ]),
                     ),
-                    new \Graphpinator\Argument\Argument(
-                        'timeType',
+                    new \Graphpinator\Field\ResolvableField(
+                        'time',
                         new \Graphpinator\Type\Addon\TimeType(),
-                        '04:02:55',
+                        static function ($parent, string $time) : string {
+                            return $time;
+                        },
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'time',
+                                new \Graphpinator\Type\Addon\TimeType(),
+                                '12:12:50',
+                            ),
+                        ]),
                     ),
-                    new \Graphpinator\Argument\Argument(
-                        'urlType',
+                    new \Graphpinator\Field\ResolvableField(
+                        'url',
                         new \Graphpinator\Type\Addon\UrlType(),
-                        'https://www.test.com',
-                    ),
-                    new \Graphpinator\Argument\Argument(
-                        'voidType',
+                        static function ($parent, string $url) : string {
+                            return $url;
+                        },
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'url',
+                                new \Graphpinator\Type\Addon\UrlType(),
+                                'https://test.com/boo/blah.php?testValue=test&testName=name',
+                            ),
+                        ]),
+                    ),new \Graphpinator\Field\ResolvableField(
+                        'void',
                         new \Graphpinator\Type\Addon\VoidType(),
-                        null,
+                        static function ($parent, string $void) : string {
+                            return $void;
+                        },
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'void',
+                                new \Graphpinator\Type\Addon\VoidType(),
+                                null,
+                            ),
+                        ]),
                     ),
                 ]);
+            }
+
+            protected function validateNonNullValue($rawValue) : bool
+            {
+                return true;
             }
         };
     }
