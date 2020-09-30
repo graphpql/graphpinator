@@ -660,7 +660,7 @@ final class TestSchema
                             new \Graphpinator\Argument\Argument(
                                 'date',
                                 new \Graphpinator\Type\Addon\DateType(),
-                                '01-01-2010'
+                                '01-01-2010',
                             ),
                         ]),
                     ),
@@ -685,8 +685,9 @@ final class TestSchema
                             return $hsla;
                         },
                         new \Graphpinator\Argument\ArgumentSet([
-                            new \Graphpinator\Argument\Argument('hsla',
-                            new \Graphpinator\Type\Addon\HslaType(),
+                            new \Graphpinator\Argument\Argument(
+                                'hsla',
+                                new \Graphpinator\Type\Addon\HslaType(),
                                 ['hue' => 180, 'saturation' => 50, 'lightness' => 50, 'alpha' => 0.5],
                             ),
                         ]),
@@ -844,7 +845,8 @@ final class TestSchema
                                 'https://test.com/boo/blah.php?testValue=test&testName=name',
                             ),
                         ]),
-                    ),new \Graphpinator\Field\ResolvableField(
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
                         'void',
                         new \Graphpinator\Type\Addon\VoidType(),
                         static function ($parent, string $void) : string {
