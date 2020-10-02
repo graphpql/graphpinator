@@ -6,12 +6,8 @@ namespace Graphpinator\Type\Addon;
 
 final class HslaInput extends \Graphpinator\Type\Addon\HslInput
 {
-    protected const NAME = 'Hsla';
-    protected const DESCRIPTION = 'This add on scalar validates hsla object input with keys and its values -
-    hue (0-360), saturation (0-100), lightness (0-100), alpha (0-1).
-    Examples - (object) ["hue" => 180, "saturation\" => 50, "lightness" => 50, "alpha" => 0.5],
-               (object) ["hue" => 360, "saturation\" => 100, "lightness" => 100, "alpha" => 1.0],
-               (object) ["hue" => 0, "saturation" => 0, "lightness" => 0, "alpha" => 0.0]';
+    protected const NAME = 'HslaInput';
+    protected const DESCRIPTION = 'Hsla input - input for the HSL color model with added alpha (transparency).';
 
     protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
     {

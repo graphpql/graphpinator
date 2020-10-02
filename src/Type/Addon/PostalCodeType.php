@@ -7,8 +7,7 @@ namespace Graphpinator\Type\Addon;
 final class PostalCodeType extends \Graphpinator\Type\Scalar\ScalarType
 {
     protected const NAME = 'PostalCode';
-    protected const DESCRIPTION = 'This add on scalar validates string postal code input and its format.
-    Examples - 111 11, 222 22, 123 45';
+    protected const DESCRIPTION = 'PostalCode type - string which contains valid postal code (ZIP code) in "NNN NN" format.';
 
     protected function validateNonNullValue($rawValue) : bool
     {

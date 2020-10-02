@@ -16,7 +16,7 @@ final class AddonTypeTest extends \PHPUnit\Framework\TestCase
                 \Graphpinator\Json::fromObject((object) [
                     'data' => [
                         'fieldAddonType' => [
-                            'dateTime' => '01-01-2010 12:12:50',
+                            'dateTime' => '2010-01-01 12:12:50',
                         ],
                     ],
                 ]),
@@ -28,7 +28,7 @@ final class AddonTypeTest extends \PHPUnit\Framework\TestCase
                 \Graphpinator\Json::fromObject((object) [
                     'data' => [
                         'fieldAddonType' => [
-                            'date' => '01-01-2010',
+                            'date' => '2010-01-01',
                         ],
                     ],
                 ]),

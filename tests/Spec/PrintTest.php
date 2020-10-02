@@ -14,7 +14,12 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         return [
             [
                 \Graphpinator\Type\Container\Container::Int(),
-                'scalar Int',
+                <<<'EOL'
+                """
+                Int built-in type
+                """
+                scalar Int
+                EOL,
             ],
             [
                 $container->introspectionTypeKind(),
@@ -157,8 +162,14 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           listMinIntMinArg: [Int] @listConstraint(minItems: 3) @intConstraint(min: 3)
         }
         
+        """
+        Date type - string which contains valid date in "<YYYY>-<MM>-<DD>" format.
+        """
         scalar Date
         
+        """
+        DateTime type - string which contains valid date in "<YYYY>-<MM>-<DD> <HH>:<MM>:<SS>" format.
+        """
         scalar DateTime
         
         input DefaultsInput {
@@ -185,6 +196,9 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           D @deprecated(reason: "reason")
         }
         
+        """
+        EmailAddress type - string which contains valid email address.
+        """
         scalar EmailAddress
         
         input ExactlyOneInput @inputConstraint(exactlyOne: ["int1", "int2"]) {
@@ -193,11 +207,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         }
         
         """
-        This add on scalar validates hsl array input with keys and its values -
-            hue (0-360), saturation (0-100), lightness (0-100).
-            Examples - ["hue" => 180, "saturation\" => 50, "lightness" => 50],
-                       ["hue" => 360, "saturation\" => 100, "lightness" => 100],
-                       ["hue" => 0, "saturation" => 0, "lightness" => 0]
+        Hsl type - type representing the HSL color model.
         """
         type Hsl {
           hue: Int!
@@ -206,11 +216,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         }
         
         """
-        This add on scalar validates hsla array input with keys and its values -
-            hue (0-360), saturation (0-100), lightness (0-100), alpha (0-1).
-            Examples - ["hue" => 180, "saturation\" => 50, "lightness" => 50, "alpha" => 0.5],
-                       ["hue" => 360, "saturation\" => 100, "lightness" => 100, "alpha" => 1.0],
-                       ["hue" => 0, "saturation" => 0, "lightness" => 0, "alpha" => 0.0]
+        Hsla type - type representing the HSL color model with added alpha (transparency).
         """
         type Hsla {
           hue: Int!
@@ -219,10 +225,19 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           alpha: Float!
         }
         
+        """
+        Ipv4 type - string which contains valid IPv4 address.
+        """
         scalar Ipv4
         
+        """
+        Ipv6 type - string which contains valid IPv6 address.
+        """
         scalar Ipv6
         
+        """
+        Json type - string which contains valid JSON.
+        """
         scalar Json
         
         input ListConstraintInput {
@@ -232,10 +247,20 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           innerList: ListConstraintInput
         }
         
+        """
+        Mac type - string which contains valid MAC (media access control) address.
+        """
         scalar Mac
         
+        """
+        PhoneNumber type - string which contains valid phone number.
+        The accepted format is without spaces and other special characters, but the leading plus is required.
+        """
         scalar PhoneNumber
         
+        """
+        PostalCode type - string which contains valid postal code (ZIP code) in "NNN NN" format.
+        """
         scalar PostalCode
         
         type Query {
@@ -253,11 +278,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         }
         
         """
-        This add on scalar validates rgb array input with keys and its values -
-            red (0-255), green (0-255), blue (0-255).
-            Examples - ["red" => 100, "green" => 50, "blue" => 50, "alpha" => 0.5],
-                       ["red" => 255, "green" => 255, "blue" => 255, "alpha" => 1.0],
-                       ["red" => 0, "green" => 0, "blue" => 0, "alpha" => 0.0]
+        Rgb type - type representing the RGB color model.
         """
         type Rgb {
           red: Int!
@@ -266,11 +287,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         }
         
         """
-        This add on scalar validates rgba array input with keys and its values -
-            red (0-255), green (0-255), blue (0-255), alpha (0-1).
-            Examples - ["red" => 100, "green" => 50,  "blue" => 50,  "alpha" => 0.5],
-                       ["red" => 255, "green" => 255, "blue" => 255, "alpha" => 1.0],
-                       ["red" => 0,   "green" => 0,   "blue" => 0,   "alpha" => 0.0]
+        Rgba type - type representing the RGB color model with added alpha (transparency).
         """
         type Rgba {
           red: Int!
@@ -294,19 +311,19 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         
         type TestAddonDefaultValue {
           dateTime(
-            dateTime: DateTime = "01-01-2010 12:12:50"
+            dateTime: DateTime = "2010-01-01 12:12:50"
           ): DateTime
           date(
-            date: Date = "01-01-2010"
+            date: Date = "2010-01-01"
           ): Date
           emailAddress(
             emailAddress: EmailAddress = "test@test.com"
           ): EmailAddress
           hsla(
-            hsla: Hsla = {hue:180,saturation:50,lightness:50,alpha:0.5}
+            hsla: HslaInput = {hue:180,saturation:50,lightness:50,alpha:0.5}
           ): Hsla
           hsl(
-            hsl: Hsl = {hue:180,saturation:50,lightness:50}
+            hsl: HslInput = {hue:180,saturation:50,lightness:50}
           ): Hsl
           ipv4(
             ipv4: Ipv4 = "128.0.1.1"
@@ -327,10 +344,10 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             postalCode: PostalCode = "111 22"
           ): PostalCode
           rgba(
-            rgba: Rgba = {red:150,green:150,blue:150,alpha:0.5}
+            rgba: RgbaInput = {red:150,green:150,blue:150,alpha:0.5}
           ): Rgba
           rgb(
-            rgb: Rgb = {red:150,green:150,blue:150}
+            rgb: RgbInput = {red:150,green:150,blue:150}
           ): Rgb
           time(
             time: Time = "12:12:50"
@@ -354,10 +371,19 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         
         union TestUnion = Abc | Xyz
         
+        """
+        Time type - string which contains time in "<HH>:<MM>:<SS>" format.
+        """
         scalar Time
         
+        """
+        Url type - string which contains valid URL (Uniform Resource Locator).
+        """
         scalar Url
         
+        """
+        Void type - accepts null only.
+        """
         scalar Void
         
         type Xyz implements TestInterface {
@@ -463,8 +489,14 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           listMinIntMinArg: [Int] @listConstraint(minItems: 3) @intConstraint(min: 3)
         }
         
+        """
+        Date type - string which contains valid date in "<YYYY>-<MM>-<DD>" format.
+        """
         scalar Date
         
+        """
+        DateTime type - string which contains valid date in "<YYYY>-<MM>-<DD> <HH>:<MM>:<SS>" format.
+        """
         scalar DateTime
         
         input DefaultsInput {
@@ -491,6 +523,9 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           D @deprecated(reason: "reason")
         }
         
+        """
+        EmailAddress type - string which contains valid email address.
+        """
         scalar EmailAddress
         
         input ExactlyOneInput @inputConstraint(exactlyOne: ["int1", "int2"]) {
@@ -499,11 +534,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         }
         
         """
-        This add on scalar validates hsl array input with keys and its values -
-            hue (0-360), saturation (0-100), lightness (0-100).
-            Examples - ["hue" => 180, "saturation\" => 50, "lightness" => 50],
-                       ["hue" => 360, "saturation\" => 100, "lightness" => 100],
-                       ["hue" => 0, "saturation" => 0, "lightness" => 0]
+        Hsl type - type representing the HSL color model.
         """
         type Hsl {
           hue: Int!
@@ -512,11 +543,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         }
         
         """
-        This add on scalar validates hsla array input with keys and its values -
-            hue (0-360), saturation (0-100), lightness (0-100), alpha (0-1).
-            Examples - ["hue" => 180, "saturation\" => 50, "lightness" => 50, "alpha" => 0.5],
-                       ["hue" => 360, "saturation\" => 100, "lightness" => 100, "alpha" => 1.0],
-                       ["hue" => 0, "saturation" => 0, "lightness" => 0, "alpha" => 0.0]
+        Hsla type - type representing the HSL color model with added alpha (transparency).
         """
         type Hsla {
           hue: Int!
@@ -525,10 +552,19 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           alpha: Float!
         }
         
+        """
+        Ipv4 type - string which contains valid IPv4 address.
+        """
         scalar Ipv4
         
+        """
+        Ipv6 type - string which contains valid IPv6 address.
+        """
         scalar Ipv6
         
+        """
+        Json type - string which contains valid JSON.
+        """
         scalar Json
         
         input ListConstraintInput {
@@ -538,10 +574,20 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           innerList: ListConstraintInput
         }
         
+        """
+        Mac type - string which contains valid MAC (media access control) address.
+        """
         scalar Mac
         
+        """
+        PhoneNumber type - string which contains valid phone number.
+        The accepted format is without spaces and other special characters, but the leading plus is required.
+        """
         scalar PhoneNumber
         
+        """
+        PostalCode type - string which contains valid postal code (ZIP code) in "NNN NN" format.
+        """
         scalar PostalCode
         
         type Query {
@@ -559,11 +605,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         }
         
         """
-        This add on scalar validates rgb array input with keys and its values -
-            red (0-255), green (0-255), blue (0-255).
-            Examples - ["red" => 100, "green" => 50, "blue" => 50, "alpha" => 0.5],
-                       ["red" => 255, "green" => 255, "blue" => 255, "alpha" => 1.0],
-                       ["red" => 0, "green" => 0, "blue" => 0, "alpha" => 0.0]
+        Rgb type - type representing the RGB color model.
         """
         type Rgb {
           red: Int!
@@ -572,11 +614,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         }
         
         """
-        This add on scalar validates rgba array input with keys and its values -
-            red (0-255), green (0-255), blue (0-255), alpha (0-1).
-            Examples - ["red" => 100, "green" => 50,  "blue" => 50,  "alpha" => 0.5],
-                       ["red" => 255, "green" => 255, "blue" => 255, "alpha" => 1.0],
-                       ["red" => 0,   "green" => 0,   "blue" => 0,   "alpha" => 0.0]
+        Rgba type - type representing the RGB color model with added alpha (transparency).
         """
         type Rgba {
           red: Int!
@@ -600,19 +638,19 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         
         type TestAddonDefaultValue {
           dateTime(
-            dateTime: DateTime = "01-01-2010 12:12:50"
+            dateTime: DateTime = "2010-01-01 12:12:50"
           ): DateTime
           date(
-            date: Date = "01-01-2010"
+            date: Date = "2010-01-01"
           ): Date
           emailAddress(
             emailAddress: EmailAddress = "test@test.com"
           ): EmailAddress
           hsla(
-            hsla: Hsla = {hue:180,saturation:50,lightness:50,alpha:0.5}
+            hsla: HslaInput = {hue:180,saturation:50,lightness:50,alpha:0.5}
           ): Hsla
           hsl(
-            hsl: Hsl = {hue:180,saturation:50,lightness:50}
+            hsl: HslInput = {hue:180,saturation:50,lightness:50}
           ): Hsl
           ipv4(
             ipv4: Ipv4 = "128.0.1.1"
@@ -633,10 +671,10 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             postalCode: PostalCode = "111 22"
           ): PostalCode
           rgba(
-            rgba: Rgba = {red:150,green:150,blue:150,alpha:0.5}
+            rgba: RgbaInput = {red:150,green:150,blue:150,alpha:0.5}
           ): Rgba
           rgb(
-            rgb: Rgb = {red:150,green:150,blue:150}
+            rgb: RgbInput = {red:150,green:150,blue:150}
           ): Rgb
           time(
             time: Time = "12:12:50"
@@ -660,10 +698,19 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         
         union TestUnion = Abc | Xyz
         
+        """
+        Time type - string which contains time in "<HH>:<MM>:<SS>" format.
+        """
         scalar Time
         
+        """
+        Url type - string which contains valid URL (Uniform Resource Locator).
+        """
         scalar Url
         
+        """
+        Void type - accepts null only.
+        """
         scalar Void
         
         type Xyz implements TestInterface {
@@ -740,11 +787,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         }
         
         """
-        This add on scalar validates hsl array input with keys and its values -
-            hue (0-360), saturation (0-100), lightness (0-100).
-            Examples - ["hue" => 180, "saturation\" => 50, "lightness" => 50],
-                       ["hue" => 360, "saturation\" => 100, "lightness" => 100],
-                       ["hue" => 0, "saturation" => 0, "lightness" => 0]
+        Hsl type - type representing the HSL color model.
         """
         type Hsl {
           hue: Int!
@@ -753,11 +796,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         }
         
         """
-        This add on scalar validates hsla array input with keys and its values -
-            hue (0-360), saturation (0-100), lightness (0-100), alpha (0-1).
-            Examples - ["hue" => 180, "saturation\" => 50, "lightness" => 50, "alpha" => 0.5],
-                       ["hue" => 360, "saturation\" => 100, "lightness" => 100, "alpha" => 1.0],
-                       ["hue" => 0, "saturation" => 0, "lightness" => 0, "alpha" => 0.0]
+        Hsla type - type representing the HSL color model with added alpha (transparency).
         """
         type Hsla {
           hue: Int!
@@ -781,11 +820,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         }
         
         """
-        This add on scalar validates rgb array input with keys and its values -
-            red (0-255), green (0-255), blue (0-255).
-            Examples - ["red" => 100, "green" => 50, "blue" => 50, "alpha" => 0.5],
-                       ["red" => 255, "green" => 255, "blue" => 255, "alpha" => 1.0],
-                       ["red" => 0, "green" => 0, "blue" => 0, "alpha" => 0.0]
+        Rgb type - type representing the RGB color model.
         """
         type Rgb {
           red: Int!
@@ -794,11 +829,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         }
         
         """
-        This add on scalar validates rgba array input with keys and its values -
-            red (0-255), green (0-255), blue (0-255), alpha (0-1).
-            Examples - ["red" => 100, "green" => 50,  "blue" => 50,  "alpha" => 0.5],
-                       ["red" => 255, "green" => 255, "blue" => 255, "alpha" => 1.0],
-                       ["red" => 0,   "green" => 0,   "blue" => 0,   "alpha" => 0.0]
+        Rgba type - type representing the RGB color model with added alpha (transparency).
         """
         type Rgba {
           red: Int!
@@ -809,19 +840,19 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         
         type TestAddonDefaultValue {
           dateTime(
-            dateTime: DateTime = "01-01-2010 12:12:50"
+            dateTime: DateTime = "2010-01-01 12:12:50"
           ): DateTime
           date(
-            date: Date = "01-01-2010"
+            date: Date = "2010-01-01"
           ): Date
           emailAddress(
             emailAddress: EmailAddress = "test@test.com"
           ): EmailAddress
           hsla(
-            hsla: Hsla = {hue:180,saturation:50,lightness:50,alpha:0.5}
+            hsla: HslaInput = {hue:180,saturation:50,lightness:50,alpha:0.5}
           ): Hsla
           hsl(
-            hsl: Hsl = {hue:180,saturation:50,lightness:50}
+            hsl: HslInput = {hue:180,saturation:50,lightness:50}
           ): Hsl
           ipv4(
             ipv4: Ipv4 = "128.0.1.1"
@@ -842,10 +873,10 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             postalCode: PostalCode = "111 22"
           ): PostalCode
           rgba(
-            rgba: Rgba = {red:150,green:150,blue:150,alpha:0.5}
+            rgba: RgbaInput = {red:150,green:150,blue:150,alpha:0.5}
           ): Rgba
           rgb(
-            rgb: Rgb = {red:150,green:150,blue:150}
+            rgb: RgbInput = {red:150,green:150,blue:150}
           ): Rgb
           time(
             time: Time = "12:12:50"
@@ -920,30 +951,67 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           bool: Boolean
         }
         
+        """
+        Date type - string which contains valid date in "<YYYY>-<MM>-<DD>" format.
+        """
         scalar Date
         
+        """
+        DateTime type - string which contains valid date in "<YYYY>-<MM>-<DD> <HH>:<MM>:<SS>" format.
+        """
         scalar DateTime
         
+        """
+        EmailAddress type - string which contains valid email address.
+        """
         scalar EmailAddress
         
+        """
+        Ipv4 type - string which contains valid IPv4 address.
+        """
         scalar Ipv4
         
+        """
+        Ipv6 type - string which contains valid IPv6 address.
+        """
         scalar Ipv6
         
+        """
+        Json type - string which contains valid JSON.
+        """
         scalar Json
         
+        """
+        Mac type - string which contains valid MAC (media access control) address.
+        """
         scalar Mac
         
+        """
+        PhoneNumber type - string which contains valid phone number.
+        The accepted format is without spaces and other special characters, but the leading plus is required.
+        """
         scalar PhoneNumber
         
+        """
+        PostalCode type - string which contains valid postal code (ZIP code) in "NNN NN" format.
+        """
         scalar PostalCode
         
         scalar TestScalar
         
+        """
+        Time type - string which contains time in "<HH>:<MM>:<SS>" format.
+        """
         scalar Time
         
+        """
+        Url type - string which contains valid URL (Uniform Resource Locator).
+        """
         scalar Url
         
+        """
+        Void type - accepts null only.
+        """
         scalar Void
         
         enum ArrayEnum {
@@ -1046,11 +1114,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         }
         
         """
-        This add on scalar validates hsl array input with keys and its values -
-            hue (0-360), saturation (0-100), lightness (0-100).
-            Examples - ["hue" => 180, "saturation\" => 50, "lightness" => 50],
-                       ["hue" => 360, "saturation\" => 100, "lightness" => 100],
-                       ["hue" => 0, "saturation" => 0, "lightness" => 0]
+        Hsl type - type representing the HSL color model.
         """
         type Hsl {
           hue: Int!
@@ -1059,11 +1123,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         }
         
         """
-        This add on scalar validates hsla array input with keys and its values -
-            hue (0-360), saturation (0-100), lightness (0-100), alpha (0-1).
-            Examples - ["hue" => 180, "saturation\" => 50, "lightness" => 50, "alpha" => 0.5],
-                       ["hue" => 360, "saturation\" => 100, "lightness" => 100, "alpha" => 1.0],
-                       ["hue" => 0, "saturation" => 0, "lightness" => 0, "alpha" => 0.0]
+        Hsla type - type representing the HSL color model with added alpha (transparency).
         """
         type Hsla {
           hue: Int!
@@ -1087,11 +1147,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         }
         
         """
-        This add on scalar validates rgb array input with keys and its values -
-            red (0-255), green (0-255), blue (0-255).
-            Examples - ["red" => 100, "green" => 50, "blue" => 50, "alpha" => 0.5],
-                       ["red" => 255, "green" => 255, "blue" => 255, "alpha" => 1.0],
-                       ["red" => 0, "green" => 0, "blue" => 0, "alpha" => 0.0]
+        Rgb type - type representing the RGB color model.
         """
         type Rgb {
           red: Int!
@@ -1100,11 +1156,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         }
         
         """
-        This add on scalar validates rgba array input with keys and its values -
-            red (0-255), green (0-255), blue (0-255), alpha (0-1).
-            Examples - ["red" => 100, "green" => 50,  "blue" => 50,  "alpha" => 0.5],
-                       ["red" => 255, "green" => 255, "blue" => 255, "alpha" => 1.0],
-                       ["red" => 0,   "green" => 0,   "blue" => 0,   "alpha" => 0.0]
+        Rgba type - type representing the RGB color model with added alpha (transparency).
         """
         type Rgba {
           red: Int!
@@ -1115,19 +1167,19 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
 
         type TestAddonDefaultValue {
           dateTime(
-            dateTime: DateTime = "01-01-2010 12:12:50"
+            dateTime: DateTime = "2010-01-01 12:12:50"
           ): DateTime
           date(
-            date: Date = "01-01-2010"
+            date: Date = "2010-01-01"
           ): Date
           emailAddress(
             emailAddress: EmailAddress = "test@test.com"
           ): EmailAddress
           hsla(
-            hsla: Hsla = {hue:180,saturation:50,lightness:50,alpha:0.5}
+            hsla: HslaInput = {hue:180,saturation:50,lightness:50,alpha:0.5}
           ): Hsla
           hsl(
-            hsl: Hsl = {hue:180,saturation:50,lightness:50}
+            hsl: HslInput = {hue:180,saturation:50,lightness:50}
           ): Hsl
           ipv4(
             ipv4: Ipv4 = "128.0.1.1"
@@ -1148,10 +1200,10 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             postalCode: PostalCode = "111 22"
           ): PostalCode
           rgba(
-            rgba: Rgba = {red:150,green:150,blue:150,alpha:0.5}
+            rgba: RgbaInput = {red:150,green:150,blue:150,alpha:0.5}
           ): Rgba
           rgb(
-            rgb: Rgb = {red:150,green:150,blue:150}
+            rgb: RgbInput = {red:150,green:150,blue:150}
           ): Rgb
           time(
             time: Time = "12:12:50"
@@ -1226,30 +1278,67 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           bool: Boolean
         }
         
+        """
+        Date type - string which contains valid date in "<YYYY>-<MM>-<DD>" format.
+        """
         scalar Date
         
+        """
+        DateTime type - string which contains valid date in "<YYYY>-<MM>-<DD> <HH>:<MM>:<SS>" format.
+        """
         scalar DateTime
         
+        """
+        EmailAddress type - string which contains valid email address.
+        """
         scalar EmailAddress
         
+        """
+        Ipv4 type - string which contains valid IPv4 address.
+        """
         scalar Ipv4
         
+        """
+        Ipv6 type - string which contains valid IPv6 address.
+        """
         scalar Ipv6
         
+        """
+        Json type - string which contains valid JSON.
+        """
         scalar Json
         
+        """
+        Mac type - string which contains valid MAC (media access control) address.
+        """
         scalar Mac
         
+        """
+        PhoneNumber type - string which contains valid phone number.
+        The accepted format is without spaces and other special characters, but the leading plus is required.
+        """
         scalar PhoneNumber
         
+        """
+        PostalCode type - string which contains valid postal code (ZIP code) in "NNN NN" format.
+        """
         scalar PostalCode
         
         scalar TestScalar
         
+        """
+        Time type - string which contains time in "<HH>:<MM>:<SS>" format.
+        """
         scalar Time
         
+        """
+        Url type - string which contains valid URL (Uniform Resource Locator).
+        """
         scalar Url
         
+        """
+        Void type - accepts null only.
+        """
         scalar Void
         
         enum ArrayEnum {

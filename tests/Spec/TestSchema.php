@@ -653,7 +653,7 @@ final class TestSchema
                             new \Graphpinator\Argument\Argument(
                                 'dateTime',
                                 new \Graphpinator\Type\Addon\DateTimeType(),
-                                '01-01-2010 12:12:50',
+                                '2010-01-01 12:12:50',
                             ),
                         ]),
                     ),
@@ -667,7 +667,7 @@ final class TestSchema
                             new \Graphpinator\Argument\Argument(
                                 'date',
                                 new \Graphpinator\Type\Addon\DateType(),
-                                '01-01-2010',
+                                '2010-01-01',
                             ),
                         ]),
                     ),

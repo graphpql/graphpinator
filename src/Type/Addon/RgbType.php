@@ -7,11 +7,7 @@ namespace Graphpinator\Type\Addon;
 class RgbType extends \Graphpinator\Type\Type
 {
     protected const NAME = 'Rgb';
-    protected const DESCRIPTION = 'This add on scalar validates rgb array input with keys and its values -
-    red (0-255), green (0-255), blue (0-255).
-    Examples - ["red" => 100, "green" => 50, "blue" => 50, "alpha" => 0.5],
-               ["red" => 255, "green" => 255, "blue" => 255, "alpha" => 1.0],
-               ["red" => 0, "green" => 0, "blue" => 0, "alpha" => 0.0]';
+    protected const DESCRIPTION = 'Rgb type - type representing the RGB color model.';
 
     protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
     {

@@ -7,8 +7,8 @@ namespace Graphpinator\Type\Addon;
 final class PhoneNumberType extends \Graphpinator\Type\Scalar\ScalarType
 {
     protected const NAME = 'PhoneNumber';
-    protected const DESCRIPTION = 'This add on scalar validates string phone number input in global prefixes and number counts by countries standards.
-    Examples - +420123456789, +99123456789, +9123456789, +99912345678, +9912345678, +912345678';
+    protected const DESCRIPTION = 'PhoneNumber type - string which contains valid phone number.'
+        . \PHP_EOL . 'The accepted format is without spaces and other special characters, but the leading plus is required.';
 
     protected function validateNonNullValue($rawValue) : bool
     {
