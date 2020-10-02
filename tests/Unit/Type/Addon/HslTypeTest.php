@@ -75,7 +75,7 @@ final class HslTypeTest extends \PHPUnit\Framework\TestCase
         $args = $hsl->getArguments()->toArray();
 
         self::assertSame(0, $args['hue']->getDefaultValue()->getRawValue());
-        self::assertSame(0,$args['saturation']->getDefaultValue()->getRawValue());
+        self::assertSame(0, $args['saturation']->getDefaultValue()->getRawValue());
         self::assertSame(0, $args['lightness']->getDefaultValue()->getRawValue());
     }
 

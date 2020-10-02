@@ -75,7 +75,7 @@ final class RgbTypeTest extends \PHPUnit\Framework\TestCase
         $args = $rgb->getArguments()->toArray();
 
         self::assertSame(0, $args['red']->getDefaultValue()->getRawValue());
-        self::assertSame(0,$args['green']->getDefaultValue()->getRawValue());
+        self::assertSame(0, $args['green']->getDefaultValue()->getRawValue());
         self::assertSame(0, $args['blue']->getDefaultValue()->getRawValue());
     }
 

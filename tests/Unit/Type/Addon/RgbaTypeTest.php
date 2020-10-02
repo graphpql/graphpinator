@@ -80,7 +80,7 @@ final class RgbaTypeTest extends \PHPUnit\Framework\TestCase
         $args = $rgba->getArguments()->toArray();
 
         self::assertSame(0, $args['red']->getDefaultValue()->getRawValue());
-        self::assertSame(0,$args['green']->getDefaultValue()->getRawValue());
+        self::assertSame(0, $args['green']->getDefaultValue()->getRawValue());
         self::assertSame(0, $args['blue']->getDefaultValue()->getRawValue());
         self::assertSame(0.0, $args['alpha']->getDefaultValue()->getRawValue());
     }

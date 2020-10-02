@@ -80,7 +80,7 @@ final class HslaTypeTest extends \PHPUnit\Framework\TestCase
         $args = $hsla->getArguments()->toArray();
 
         self::assertSame(0, $args['hue']->getDefaultValue()->getRawValue());
-        self::assertSame(0,$args['saturation']->getDefaultValue()->getRawValue());
+        self::assertSame(0, $args['saturation']->getDefaultValue()->getRawValue());
         self::assertSame(0, $args['lightness']->getDefaultValue()->getRawValue());
         self::assertSame(0.0, $args['alpha']->getDefaultValue()->getRawValue());
     }
