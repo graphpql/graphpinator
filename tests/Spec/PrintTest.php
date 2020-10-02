@@ -157,6 +157,10 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           listMinIntMinArg: [Int] @listConstraint(minItems: 3) @intConstraint(min: 3)
         }
         
+        scalar Date
+        
+        scalar DateTime
+        
         input DefaultsInput {
           scalar: String! = "defaultString"
           enum: SimpleEnum! = "A"
@@ -181,10 +185,45 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           D @deprecated(reason: "reason")
         }
         
+        scalar EmailAddress
+        
         input ExactlyOneInput @inputConstraint(exactlyOne: ["int1", "int2"]) {
           int1: Int
           int2: Int
         }
+        
+        """
+        This add on scalar validates hsl array input with keys and its values -
+            hue (0-360), saturation (0-100), lightness (0-100).
+            Examples - ["hue" => 180, "saturation\" => 50, "lightness" => 50],
+                       ["hue" => 360, "saturation\" => 100, "lightness" => 100],
+                       ["hue" => 0, "saturation" => 0, "lightness" => 0]
+        """
+        type Hsl {
+          hue: Int!
+          saturation: Int!
+          lightness: Int!
+        }
+        
+        """
+        This add on scalar validates hsla array input with keys and its values -
+            hue (0-360), saturation (0-100), lightness (0-100), alpha (0-1).
+            Examples - ["hue" => 180, "saturation\" => 50, "lightness" => 50, "alpha" => 0.5],
+                       ["hue" => 360, "saturation\" => 100, "lightness" => 100, "alpha" => 1.0],
+                       ["hue" => 0, "saturation" => 0, "lightness" => 0, "alpha" => 0.0]
+        """
+        type Hsla {
+          hue: Int!
+          saturation: Int!
+          lightness: Int!
+          alpha: Float!
+        }
+        
+        scalar Ipv4
+        
+        scalar Ipv6
+        
+        scalar Json
         
         input ListConstraintInput {
           minItems: Int
@@ -192,6 +231,12 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           unique: Boolean = false
           innerList: ListConstraintInput
         }
+        
+        scalar Mac
+        
+        scalar PhoneNumber
+        
+        scalar PostalCode
         
         type Query {
           fieldValid: TestUnion
@@ -204,6 +249,34 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldInvalidType: TestUnion
           fieldInvalidReturn: TestUnion
           fieldThrow: TestUnion
+          fieldAddonType: TestAddonDefaultValue
+        }
+        
+        """
+        This add on scalar validates rgb array input with keys and its values -
+            red (0-255), green (0-255), blue (0-255).
+            Examples - ["red" => 100, "green" => 50, "blue" => 50, "alpha" => 0.5],
+                       ["red" => 255, "green" => 255, "blue" => 255, "alpha" => 1.0],
+                       ["red" => 0, "green" => 0, "blue" => 0, "alpha" => 0.0]
+        """
+        type Rgb {
+          red: Int!
+          green: Int!
+          blue: Int!
+        }
+        
+        """
+        This add on scalar validates rgba array input with keys and its values -
+            red (0-255), green (0-255), blue (0-255), alpha (0-1).
+            Examples - ["red" => 100, "green" => 50,  "blue" => 50,  "alpha" => 0.5],
+                       ["red" => 255, "green" => 255, "blue" => 255, "alpha" => 1.0],
+                       ["red" => 0,   "green" => 0,   "blue" => 0,   "alpha" => 0.0]
+        """
+        type Rgba {
+          red: Int!
+          green: Int!
+          blue: Int!
+          alpha: Float!
         }
         
         enum SimpleEnum {
@@ -219,6 +292,57 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           bool: Boolean
         }
         
+        type TestAddonDefaultValue {
+          dateTime(
+            dateTime: DateTime = "01-01-2010 12:12:50"
+          ): DateTime
+          date(
+            date: Date = "01-01-2010"
+          ): Date
+          emailAddress(
+            emailAddress: EmailAddress = "test@test.com"
+          ): EmailAddress
+          hsla(
+            hsla: Hsla = {hue:180,saturation:50,lightness:50,alpha:0.5}
+          ): Hsla
+          hsl(
+            hsl: Hsl = {hue:180,saturation:50,lightness:50}
+          ): Hsl
+          ipv4(
+            ipv4: Ipv4 = "128.0.1.1"
+          ): Ipv4
+          ipv6(
+            ipv6: Ipv6 = "AAAA:1111:FFFF:9999:1111:AAAA:9999:FFFF"
+          ): Ipv6
+          json(
+            json: Json = "{\"testName\":\"testValue\"}"
+          ): Json
+          mac(
+            mac: Mac = "AA:11:FF:99:11:AA"
+          ): Mac
+          phoneNumber(
+            phoneNumber: PhoneNumber = "+999123456789"
+          ): PhoneNumber
+          postalCode(
+            postalCode: PostalCode = "111 22"
+          ): PostalCode
+          rgba(
+            rgba: Rgba = {red:150,green:150,blue:150,alpha:0.5}
+          ): Rgba
+          rgb(
+            rgb: Rgb = {red:150,green:150,blue:150}
+          ): Rgb
+          time(
+            time: Time = "12:12:50"
+          ): Time
+          url(
+            url: Url = "https:\/\/test.com\/boo\/blah.php?testValue=test&testName=name"
+          ): Url
+          void(
+            void: Void = null
+          ): Void
+        }
+        
         """
         TestInterface Description
         """
@@ -229,6 +353,12 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         scalar TestScalar
         
         union TestUnion = Abc | Xyz
+        
+        scalar Time
+        
+        scalar Url
+        
+        scalar Void
         
         type Xyz implements TestInterface {
           name: String!
@@ -333,6 +463,10 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           listMinIntMinArg: [Int] @listConstraint(minItems: 3) @intConstraint(min: 3)
         }
         
+        scalar Date
+        
+        scalar DateTime
+        
         input DefaultsInput {
           scalar: String! = "defaultString"
           enum: SimpleEnum! = "A"
@@ -357,10 +491,45 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           D @deprecated(reason: "reason")
         }
         
+        scalar EmailAddress
+        
         input ExactlyOneInput @inputConstraint(exactlyOne: ["int1", "int2"]) {
           int1: Int
           int2: Int
         }
+        
+        """
+        This add on scalar validates hsl array input with keys and its values -
+            hue (0-360), saturation (0-100), lightness (0-100).
+            Examples - ["hue" => 180, "saturation\" => 50, "lightness" => 50],
+                       ["hue" => 360, "saturation\" => 100, "lightness" => 100],
+                       ["hue" => 0, "saturation" => 0, "lightness" => 0]
+        """
+        type Hsl {
+          hue: Int!
+          saturation: Int!
+          lightness: Int!
+        }
+        
+        """
+        This add on scalar validates hsla array input with keys and its values -
+            hue (0-360), saturation (0-100), lightness (0-100), alpha (0-1).
+            Examples - ["hue" => 180, "saturation\" => 50, "lightness" => 50, "alpha" => 0.5],
+                       ["hue" => 360, "saturation\" => 100, "lightness" => 100, "alpha" => 1.0],
+                       ["hue" => 0, "saturation" => 0, "lightness" => 0, "alpha" => 0.0]
+        """
+        type Hsla {
+          hue: Int!
+          saturation: Int!
+          lightness: Int!
+          alpha: Float!
+        }
+        
+        scalar Ipv4
+        
+        scalar Ipv6
+        
+        scalar Json
         
         input ListConstraintInput {
           minItems: Int
@@ -368,6 +537,12 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           unique: Boolean = false
           innerList: ListConstraintInput
         }
+        
+        scalar Mac
+        
+        scalar PhoneNumber
+        
+        scalar PostalCode
         
         type Query {
           fieldValid: TestUnion
@@ -380,6 +555,34 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldInvalidType: TestUnion
           fieldInvalidReturn: TestUnion
           fieldThrow: TestUnion
+          fieldAddonType: TestAddonDefaultValue
+        }
+        
+        """
+        This add on scalar validates rgb array input with keys and its values -
+            red (0-255), green (0-255), blue (0-255).
+            Examples - ["red" => 100, "green" => 50, "blue" => 50, "alpha" => 0.5],
+                       ["red" => 255, "green" => 255, "blue" => 255, "alpha" => 1.0],
+                       ["red" => 0, "green" => 0, "blue" => 0, "alpha" => 0.0]
+        """
+        type Rgb {
+          red: Int!
+          green: Int!
+          blue: Int!
+        }
+        
+        """
+        This add on scalar validates rgba array input with keys and its values -
+            red (0-255), green (0-255), blue (0-255), alpha (0-1).
+            Examples - ["red" => 100, "green" => 50,  "blue" => 50,  "alpha" => 0.5],
+                       ["red" => 255, "green" => 255, "blue" => 255, "alpha" => 1.0],
+                       ["red" => 0,   "green" => 0,   "blue" => 0,   "alpha" => 0.0]
+        """
+        type Rgba {
+          red: Int!
+          green: Int!
+          blue: Int!
+          alpha: Float!
         }
         
         enum SimpleEnum {
@@ -395,6 +598,57 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           bool: Boolean
         }
         
+        type TestAddonDefaultValue {
+          dateTime(
+            dateTime: DateTime = "01-01-2010 12:12:50"
+          ): DateTime
+          date(
+            date: Date = "01-01-2010"
+          ): Date
+          emailAddress(
+            emailAddress: EmailAddress = "test@test.com"
+          ): EmailAddress
+          hsla(
+            hsla: Hsla = {hue:180,saturation:50,lightness:50,alpha:0.5}
+          ): Hsla
+          hsl(
+            hsl: Hsl = {hue:180,saturation:50,lightness:50}
+          ): Hsl
+          ipv4(
+            ipv4: Ipv4 = "128.0.1.1"
+          ): Ipv4
+          ipv6(
+            ipv6: Ipv6 = "AAAA:1111:FFFF:9999:1111:AAAA:9999:FFFF"
+          ): Ipv6
+          json(
+            json: Json = "{\"testName\":\"testValue\"}"
+          ): Json
+          mac(
+            mac: Mac = "AA:11:FF:99:11:AA"
+          ): Mac
+          phoneNumber(
+            phoneNumber: PhoneNumber = "+999123456789"
+          ): PhoneNumber
+          postalCode(
+            postalCode: PostalCode = "111 22"
+          ): PostalCode
+          rgba(
+            rgba: Rgba = {red:150,green:150,blue:150,alpha:0.5}
+          ): Rgba
+          rgb(
+            rgb: Rgb = {red:150,green:150,blue:150}
+          ): Rgb
+          time(
+            time: Time = "12:12:50"
+          ): Time
+          url(
+            url: Url = "https:\/\/test.com\/boo\/blah.php?testValue=test&testName=name"
+          ): Url
+          void(
+            void: Void = null
+          ): Void
+        }
+        
         """
         TestInterface Description
         """
@@ -405,6 +659,12 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         scalar TestScalar
         
         union TestUnion = Abc | Xyz
+        
+        scalar Time
+        
+        scalar Url
+        
+        scalar Void
         
         type Xyz implements TestInterface {
           name: String!
@@ -479,6 +739,33 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           ): TestInterface @deprecated
         }
         
+        """
+        This add on scalar validates hsl array input with keys and its values -
+            hue (0-360), saturation (0-100), lightness (0-100).
+            Examples - ["hue" => 180, "saturation\" => 50, "lightness" => 50],
+                       ["hue" => 360, "saturation\" => 100, "lightness" => 100],
+                       ["hue" => 0, "saturation" => 0, "lightness" => 0]
+        """
+        type Hsl {
+          hue: Int!
+          saturation: Int!
+          lightness: Int!
+        }
+        
+        """
+        This add on scalar validates hsla array input with keys and its values -
+            hue (0-360), saturation (0-100), lightness (0-100), alpha (0-1).
+            Examples - ["hue" => 180, "saturation\" => 50, "lightness" => 50, "alpha" => 0.5],
+                       ["hue" => 360, "saturation\" => 100, "lightness" => 100, "alpha" => 1.0],
+                       ["hue" => 0, "saturation" => 0, "lightness" => 0, "alpha" => 0.0]
+        """
+        type Hsla {
+          hue: Int!
+          saturation: Int!
+          lightness: Int!
+          alpha: Float!
+        }
+        
         type Query {
           fieldValid: TestUnion
           fieldConstraint(
@@ -490,6 +777,85 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldInvalidType: TestUnion
           fieldInvalidReturn: TestUnion
           fieldThrow: TestUnion
+          fieldAddonType: TestAddonDefaultValue
+        }
+        
+        """
+        This add on scalar validates rgb array input with keys and its values -
+            red (0-255), green (0-255), blue (0-255).
+            Examples - ["red" => 100, "green" => 50, "blue" => 50, "alpha" => 0.5],
+                       ["red" => 255, "green" => 255, "blue" => 255, "alpha" => 1.0],
+                       ["red" => 0, "green" => 0, "blue" => 0, "alpha" => 0.0]
+        """
+        type Rgb {
+          red: Int!
+          green: Int!
+          blue: Int!
+        }
+        
+        """
+        This add on scalar validates rgba array input with keys and its values -
+            red (0-255), green (0-255), blue (0-255), alpha (0-1).
+            Examples - ["red" => 100, "green" => 50,  "blue" => 50,  "alpha" => 0.5],
+                       ["red" => 255, "green" => 255, "blue" => 255, "alpha" => 1.0],
+                       ["red" => 0,   "green" => 0,   "blue" => 0,   "alpha" => 0.0]
+        """
+        type Rgba {
+          red: Int!
+          green: Int!
+          blue: Int!
+          alpha: Float!
+        }
+        
+        type TestAddonDefaultValue {
+          dateTime(
+            dateTime: DateTime = "01-01-2010 12:12:50"
+          ): DateTime
+          date(
+            date: Date = "01-01-2010"
+          ): Date
+          emailAddress(
+            emailAddress: EmailAddress = "test@test.com"
+          ): EmailAddress
+          hsla(
+            hsla: Hsla = {hue:180,saturation:50,lightness:50,alpha:0.5}
+          ): Hsla
+          hsl(
+            hsl: Hsl = {hue:180,saturation:50,lightness:50}
+          ): Hsl
+          ipv4(
+            ipv4: Ipv4 = "128.0.1.1"
+          ): Ipv4
+          ipv6(
+            ipv6: Ipv6 = "AAAA:1111:FFFF:9999:1111:AAAA:9999:FFFF"
+          ): Ipv6
+          json(
+            json: Json = "{\"testName\":\"testValue\"}"
+          ): Json
+          mac(
+            mac: Mac = "AA:11:FF:99:11:AA"
+          ): Mac
+          phoneNumber(
+            phoneNumber: PhoneNumber = "+999123456789"
+          ): PhoneNumber
+          postalCode(
+            postalCode: PostalCode = "111 22"
+          ): PostalCode
+          rgba(
+            rgba: Rgba = {red:150,green:150,blue:150,alpha:0.5}
+          ): Rgba
+          rgb(
+            rgb: Rgb = {red:150,green:150,blue:150}
+          ): Rgb
+          time(
+            time: Time = "12:12:50"
+          ): Time
+          url(
+            url: Url = "https:\/\/test.com\/boo\/blah.php?testValue=test&testName=name"
+          ): Url
+          void(
+            void: Void = null
+          ): Void
         }
         
         type Xyz implements TestInterface {
@@ -554,7 +920,31 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           bool: Boolean
         }
         
+        scalar Date
+        
+        scalar DateTime
+        
+        scalar EmailAddress
+        
+        scalar Ipv4
+        
+        scalar Ipv6
+        
+        scalar Json
+        
+        scalar Mac
+        
+        scalar PhoneNumber
+        
+        scalar PostalCode
+        
         scalar TestScalar
+        
+        scalar Time
+        
+        scalar Url
+        
+        scalar Void
         
         enum ArrayEnum {
           "First description"
@@ -655,6 +1045,33 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           ): TestInterface @deprecated
         }
         
+        """
+        This add on scalar validates hsl array input with keys and its values -
+            hue (0-360), saturation (0-100), lightness (0-100).
+            Examples - ["hue" => 180, "saturation\" => 50, "lightness" => 50],
+                       ["hue" => 360, "saturation\" => 100, "lightness" => 100],
+                       ["hue" => 0, "saturation" => 0, "lightness" => 0]
+        """
+        type Hsl {
+          hue: Int!
+          saturation: Int!
+          lightness: Int!
+        }
+        
+        """
+        This add on scalar validates hsla array input with keys and its values -
+            hue (0-360), saturation (0-100), lightness (0-100), alpha (0-1).
+            Examples - ["hue" => 180, "saturation\" => 50, "lightness" => 50, "alpha" => 0.5],
+                       ["hue" => 360, "saturation\" => 100, "lightness" => 100, "alpha" => 1.0],
+                       ["hue" => 0, "saturation" => 0, "lightness" => 0, "alpha" => 0.0]
+        """
+        type Hsla {
+          hue: Int!
+          saturation: Int!
+          lightness: Int!
+          alpha: Float!
+        }
+        
         type Query {
           fieldValid: TestUnion
           fieldConstraint(
@@ -666,6 +1083,85 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldInvalidType: TestUnion
           fieldInvalidReturn: TestUnion
           fieldThrow: TestUnion
+          fieldAddonType: TestAddonDefaultValue
+        }
+        
+        """
+        This add on scalar validates rgb array input with keys and its values -
+            red (0-255), green (0-255), blue (0-255).
+            Examples - ["red" => 100, "green" => 50, "blue" => 50, "alpha" => 0.5],
+                       ["red" => 255, "green" => 255, "blue" => 255, "alpha" => 1.0],
+                       ["red" => 0, "green" => 0, "blue" => 0, "alpha" => 0.0]
+        """
+        type Rgb {
+          red: Int!
+          green: Int!
+          blue: Int!
+        }
+        
+        """
+        This add on scalar validates rgba array input with keys and its values -
+            red (0-255), green (0-255), blue (0-255), alpha (0-1).
+            Examples - ["red" => 100, "green" => 50,  "blue" => 50,  "alpha" => 0.5],
+                       ["red" => 255, "green" => 255, "blue" => 255, "alpha" => 1.0],
+                       ["red" => 0,   "green" => 0,   "blue" => 0,   "alpha" => 0.0]
+        """
+        type Rgba {
+          red: Int!
+          green: Int!
+          blue: Int!
+          alpha: Float!
+        }
+
+        type TestAddonDefaultValue {
+          dateTime(
+            dateTime: DateTime = "01-01-2010 12:12:50"
+          ): DateTime
+          date(
+            date: Date = "01-01-2010"
+          ): Date
+          emailAddress(
+            emailAddress: EmailAddress = "test@test.com"
+          ): EmailAddress
+          hsla(
+            hsla: Hsla = {hue:180,saturation:50,lightness:50,alpha:0.5}
+          ): Hsla
+          hsl(
+            hsl: Hsl = {hue:180,saturation:50,lightness:50}
+          ): Hsl
+          ipv4(
+            ipv4: Ipv4 = "128.0.1.1"
+          ): Ipv4
+          ipv6(
+            ipv6: Ipv6 = "AAAA:1111:FFFF:9999:1111:AAAA:9999:FFFF"
+          ): Ipv6
+          json(
+            json: Json = "{\"testName\":\"testValue\"}"
+          ): Json
+          mac(
+            mac: Mac = "AA:11:FF:99:11:AA"
+          ): Mac
+          phoneNumber(
+            phoneNumber: PhoneNumber = "+999123456789"
+          ): PhoneNumber
+          postalCode(
+            postalCode: PostalCode = "111 22"
+          ): PostalCode
+          rgba(
+            rgba: Rgba = {red:150,green:150,blue:150,alpha:0.5}
+          ): Rgba
+          rgb(
+            rgb: Rgb = {red:150,green:150,blue:150}
+          ): Rgb
+          time(
+            time: Time = "12:12:50"
+          ): Time
+          url(
+            url: Url = "https:\/\/test.com\/boo\/blah.php?testValue=test&testName=name"
+          ): Url
+          void(
+            void: Void = null
+          ): Void
         }
         
         type Xyz implements TestInterface {
@@ -730,7 +1226,31 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           bool: Boolean
         }
         
+        scalar Date
+        
+        scalar DateTime
+        
+        scalar EmailAddress
+        
+        scalar Ipv4
+        
+        scalar Ipv6
+        
+        scalar Json
+        
+        scalar Mac
+        
+        scalar PhoneNumber
+        
+        scalar PostalCode
+        
         scalar TestScalar
+        
+        scalar Time
+        
+        scalar Url
+        
+        scalar Void
         
         enum ArrayEnum {
           "First description"
