@@ -321,21 +321,6 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           bool: Boolean
         }
 
-        
-        input TestDefaultValue {
-          stringArgument1: String = null
-          stringArgument2: String = "testValue"
-          intArgument1: Int = null
-          intArgument2: Int = 6247
-          inputArgument1: TestDefaultValue2 = {
-            notNullListIntArgument1: [66, 55],
-            listIntArgument1: [66, null],
-            notNullIntArgument1: 420,
-            notNullListStringArgument1: ["Boo", "Baz"],
-            listStringArgument1: ["Boo", null],
-            notNullStringArgument1: "notNullValue"
-         }
-          
         type TestAddonDefaultValue {
           dateTime(
             dateTime: DateTime = "2010-01-01 12:12:50"
@@ -347,10 +332,19 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             emailAddress: EmailAddress = "test@test.com"
           ): EmailAddress
           hsla(
-            hsla: HslaInput = {hue:180,saturation:50,lightness:50,alpha:0.5}
+            hsla: HslaInput = {
+            hue: 180,
+            saturation: 50,
+            lightness: 50,
+            alpha: 0.5
+          }
           ): Hsla
           hsl(
-            hsl: HslInput = {hue:180,saturation:50,lightness:50}
+            hsl: HslInput = {
+            hue: 180,
+            saturation: 50,
+            lightness: 50
+          }
           ): Hsl
           ipv4(
             ipv4: Ipv4 = "128.0.1.1"
@@ -371,10 +365,19 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             postalCode: PostalCode = "111 22"
           ): PostalCode
           rgba(
-            rgba: RgbaInput = {red:150,green:150,blue:150,alpha:0.5}
+            rgba: RgbaInput = {
+            red: 150,
+            green: 150,
+            blue: 150,
+            alpha: 0.5
+          }
           ): Rgba
           rgb(
-            rgb: RgbInput = {red:150,green:150,blue:150}
+            rgb: RgbInput = {
+            red: 150,
+            green: 150,
+            blue: 150
+          }
           ): Rgb
           time(
             time: Time = "12:12:50"
@@ -385,6 +388,21 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           void(
             void: Void = null
           ): Void
+        }
+        
+        input TestDefaultValue {
+          stringArgument1: String = null
+          stringArgument2: String = "testValue"
+          intArgument1: Int = null
+          intArgument2: Int = 6247
+          inputArgument1: TestDefaultValue2 = {
+            notNullListIntArgument1: [66, 55],
+            listIntArgument1: [66, null],
+            notNullIntArgument1: 420,
+            notNullListStringArgument1: ["Boo", "Baz"],
+            listStringArgument1: ["Boo", null],
+            notNullStringArgument1: "notNullValue"
+          }
         }
         
         """
@@ -675,20 +693,6 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           bool: Boolean
         }
 
-        input TestDefaultValue {
-          stringArgument1: String = null
-          stringArgument2: String = "testValue"
-          intArgument1: Int = null
-          intArgument2: Int = 6247
-          inputArgument1: TestDefaultValue2 = {
-            notNullListIntArgument1: [66, 55],
-            listIntArgument1: [66, null],
-            notNullIntArgument1: 420,
-            notNullListStringArgument1: ["Boo", "Baz"],
-            listStringArgument1: ["Boo", null],
-            notNullStringArgument1: "notNullValue"
-         }
-          
         type TestAddonDefaultValue {
           dateTime(
             dateTime: DateTime = "2010-01-01 12:12:50"
@@ -700,10 +704,19 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             emailAddress: EmailAddress = "test@test.com"
           ): EmailAddress
           hsla(
-            hsla: HslaInput = {hue:180,saturation:50,lightness:50,alpha:0.5}
+            hsla: HslaInput = {
+            hue: 180,
+            saturation: 50,
+            lightness: 50,
+            alpha: 0.5
+          }
           ): Hsla
           hsl(
-            hsl: HslInput = {hue:180,saturation:50,lightness:50}
+            hsl: HslInput = {
+            hue: 180,
+            saturation: 50,
+            lightness: 50
+          }
           ): Hsl
           ipv4(
             ipv4: Ipv4 = "128.0.1.1"
@@ -724,10 +737,19 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             postalCode: PostalCode = "111 22"
           ): PostalCode
           rgba(
-            rgba: RgbaInput = {red:150,green:150,blue:150,alpha:0.5}
+            rgba: RgbaInput = {
+            red: 150,
+            green: 150,
+            blue: 150,
+            alpha: 0.5
+          }
           ): Rgba
           rgb(
-            rgb: RgbInput = {red:150,green:150,blue:150}
+            rgb: RgbInput = {
+            red: 150,
+            green: 150,
+            blue: 150
+          }
           ): Rgb
           time(
             time: Time = "12:12:50"
@@ -739,7 +761,22 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             void: Void = null
           ): Void
         }
-        
+
+        input TestDefaultValue {
+          stringArgument1: String = null
+          stringArgument2: String = "testValue"
+          intArgument1: Int = null
+          intArgument2: Int = 6247
+          inputArgument1: TestDefaultValue2 = {
+            notNullListIntArgument1: [66, 55],
+            listIntArgument1: [66, null],
+            notNullIntArgument1: 420,
+            notNullListStringArgument1: ["Boo", "Baz"],
+            listStringArgument1: ["Boo", null],
+            notNullStringArgument1: "notNullValue"
+          }
+        }
+
         """
         TestInterface Description
         """
@@ -902,10 +939,19 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             emailAddress: EmailAddress = "test@test.com"
           ): EmailAddress
           hsla(
-            hsla: HslaInput = {hue:180,saturation:50,lightness:50,alpha:0.5}
+            hsla: HslaInput = {
+            hue: 180,
+            saturation: 50,
+            lightness: 50,
+            alpha: 0.5
+          }
           ): Hsla
           hsl(
-            hsl: HslInput = {hue:180,saturation:50,lightness:50}
+            hsl: HslInput = {
+            hue: 180,
+            saturation: 50,
+            lightness: 50
+          }
           ): Hsl
           ipv4(
             ipv4: Ipv4 = "128.0.1.1"
@@ -926,10 +972,19 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             postalCode: PostalCode = "111 22"
           ): PostalCode
           rgba(
-            rgba: RgbaInput = {red:150,green:150,blue:150,alpha:0.5}
+            rgba: RgbaInput = {
+            red: 150,
+            green: 150,
+            blue: 150,
+            alpha: 0.5
+          }
           ): Rgba
           rgb(
-            rgb: RgbInput = {red:150,green:150,blue:150}
+            rgb: RgbInput = {
+            red: 150,
+            green: 150,
+            blue: 150
+          }
           ): Rgb
           time(
             time: Time = "12:12:50"
@@ -1256,10 +1311,19 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             emailAddress: EmailAddress = "test@test.com"
           ): EmailAddress
           hsla(
-            hsla: HslaInput = {hue:180,saturation:50,lightness:50,alpha:0.5}
+            hsla: HslaInput = {
+            hue: 180,
+            saturation: 50,
+            lightness: 50,
+            alpha: 0.5
+          }
           ): Hsla
           hsl(
-            hsl: HslInput = {hue:180,saturation:50,lightness:50}
+            hsl: HslInput = {
+            hue: 180,
+            saturation: 50,
+            lightness: 50
+          }
           ): Hsl
           ipv4(
             ipv4: Ipv4 = "128.0.1.1"
@@ -1280,10 +1344,19 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             postalCode: PostalCode = "111 22"
           ): PostalCode
           rgba(
-            rgba: RgbaInput = {red:150,green:150,blue:150,alpha:0.5}
+            rgba: RgbaInput = {
+            red: 150,
+            green: 150,
+            blue: 150,
+            alpha: 0.5
+          }
           ): Rgba
           rgb(
-            rgb: RgbInput = {red:150,green:150,blue:150}
+            rgb: RgbInput = {
+            red: 150,
+            green: 150,
+            blue: 150
+          }
           ): Rgb
           time(
             time: Time = "12:12:50"
