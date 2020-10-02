@@ -14,7 +14,12 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         return [
             [
                 \Graphpinator\Type\Container\Container::Int(),
-                'scalar Int',
+                <<<'EOL'
+                """
+                Int built-in type
+                """
+                scalar Int
+                EOL,
             ],
             [
                 $container->introspectionTypeKind(),
@@ -157,6 +162,16 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           listMinIntMinArg: [Int] @listConstraint(minItems: 3) @intConstraint(min: 3)
         }
         
+        """
+        Date type - string which contains valid date in "<YYYY>-<MM>-<DD>" format.
+        """
+        scalar Date
+        
+        """
+        DateTime type - string which contains valid date in "<YYYY>-<MM>-<DD> <HH>:<MM>:<SS>" format.
+        """
+        scalar DateTime
+        
         input DefaultsInput {
           scalar: String! = "defaultString"
           enum: SimpleEnum! = "A"
@@ -193,10 +208,49 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           D @deprecated(reason: "reason")
         }
         
+        """
+        EmailAddress type - string which contains valid email address.
+        """
+        scalar EmailAddress
+        
         input ExactlyOneInput @inputConstraint(exactlyOne: ["int1", "int2"]) {
           int1: Int
           int2: Int
         }
+        
+        """
+        Hsl type - type representing the HSL color model.
+        """
+        type Hsl {
+          hue: Int!
+          saturation: Int!
+          lightness: Int!
+        }
+        
+        """
+        Hsla type - type representing the HSL color model with added alpha (transparency).
+        """
+        type Hsla {
+          hue: Int!
+          saturation: Int!
+          lightness: Int!
+          alpha: Float!
+        }
+        
+        """
+        Ipv4 type - string which contains valid IPv4 address.
+        """
+        scalar Ipv4
+        
+        """
+        Ipv6 type - string which contains valid IPv6 address.
+        """
+        scalar Ipv6
+        
+        """
+        Json type - string which contains valid JSON.
+        """
+        scalar Json
         
         input ListConstraintInput {
           minItems: Int
@@ -204,6 +258,22 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           unique: Boolean = false
           innerList: ListConstraintInput
         }
+        
+        """
+        Mac type - string which contains valid MAC (media access control) address.
+        """
+        scalar Mac
+        
+        """
+        PhoneNumber type - string which contains valid phone number.
+        The accepted format is without spaces and other special characters, but the leading plus is required.
+        """
+        scalar PhoneNumber
+        
+        """
+        PostalCode type - string which contains valid postal code (ZIP code) in "NNN NN" format.
+        """
+        scalar PostalCode
         
         type Query {
           fieldValid: TestUnion
@@ -216,6 +286,26 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldInvalidType: TestUnion
           fieldInvalidReturn: TestUnion
           fieldThrow: TestUnion
+          fieldAddonType: TestAddonDefaultValue
+        }
+        
+        """
+        Rgb type - type representing the RGB color model.
+        """
+        type Rgb {
+          red: Int!
+          green: Int!
+          blue: Int!
+        }
+        
+        """
+        Rgba type - type representing the RGB color model with added alpha (transparency).
+        """
+        type Rgba {
+          red: Int!
+          green: Int!
+          blue: Int!
+          alpha: Float!
         }
         
         enum SimpleEnum {
@@ -230,6 +320,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           number: [Int!]!
           bool: Boolean
         }
+
         
         input TestDefaultValue {
           stringArgument1: String = null
@@ -243,7 +334,57 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             notNullListStringArgument1: ["Boo", "Baz"],
             listStringArgument1: ["Boo", null],
             notNullStringArgument1: "notNullValue"
-          }
+         }
+          
+        type TestAddonDefaultValue {
+          dateTime(
+            dateTime: DateTime = "2010-01-01 12:12:50"
+          ): DateTime
+          date(
+            date: Date = "2010-01-01"
+          ): Date
+          emailAddress(
+            emailAddress: EmailAddress = "test@test.com"
+          ): EmailAddress
+          hsla(
+            hsla: HslaInput = {hue:180,saturation:50,lightness:50,alpha:0.5}
+          ): Hsla
+          hsl(
+            hsl: HslInput = {hue:180,saturation:50,lightness:50}
+          ): Hsl
+          ipv4(
+            ipv4: Ipv4 = "128.0.1.1"
+          ): Ipv4
+          ipv6(
+            ipv6: Ipv6 = "AAAA:1111:FFFF:9999:1111:AAAA:9999:FFFF"
+          ): Ipv6
+          json(
+            json: Json = "{\"testName\":\"testValue\"}"
+          ): Json
+          mac(
+            mac: Mac = "AA:11:FF:99:11:AA"
+          ): Mac
+          phoneNumber(
+            phoneNumber: PhoneNumber = "+999123456789"
+          ): PhoneNumber
+          postalCode(
+            postalCode: PostalCode = "111 22"
+          ): PostalCode
+          rgba(
+            rgba: RgbaInput = {red:150,green:150,blue:150,alpha:0.5}
+          ): Rgba
+          rgb(
+            rgb: RgbInput = {red:150,green:150,blue:150}
+          ): Rgb
+          time(
+            time: Time = "12:12:50"
+          ): Time
+          url(
+            url: Url = "https:\/\/test.com\/boo\/blah.php?testValue=test&testName=name"
+          ): Url
+          void(
+            void: Void = null
+          ): Void
         }
         
         """
@@ -256,6 +397,21 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         scalar TestScalar
         
         union TestUnion = Abc | Xyz
+        
+        """
+        Time type - string which contains time in "<HH>:<MM>:<SS>" format.
+        """
+        scalar Time
+        
+        """
+        Url type - string which contains valid URL (Uniform Resource Locator).
+        """
+        scalar Url
+        
+        """
+        Void type - accepts null only.
+        """
+        scalar Void
         
         type Xyz implements TestInterface {
           name: String!
@@ -360,6 +516,16 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           listMinIntMinArg: [Int] @listConstraint(minItems: 3) @intConstraint(min: 3)
         }
         
+        """
+        Date type - string which contains valid date in "<YYYY>-<MM>-<DD>" format.
+        """
+        scalar Date
+        
+        """
+        DateTime type - string which contains valid date in "<YYYY>-<MM>-<DD> <HH>:<MM>:<SS>" format.
+        """
+        scalar DateTime
+        
         input DefaultsInput {
           scalar: String! = "defaultString"
           enum: SimpleEnum! = "A"
@@ -396,10 +562,49 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           D @deprecated(reason: "reason")
         }
         
+        """
+        EmailAddress type - string which contains valid email address.
+        """
+        scalar EmailAddress
+        
         input ExactlyOneInput @inputConstraint(exactlyOne: ["int1", "int2"]) {
           int1: Int
           int2: Int
         }
+        
+        """
+        Hsl type - type representing the HSL color model.
+        """
+        type Hsl {
+          hue: Int!
+          saturation: Int!
+          lightness: Int!
+        }
+        
+        """
+        Hsla type - type representing the HSL color model with added alpha (transparency).
+        """
+        type Hsla {
+          hue: Int!
+          saturation: Int!
+          lightness: Int!
+          alpha: Float!
+        }
+        
+        """
+        Ipv4 type - string which contains valid IPv4 address.
+        """
+        scalar Ipv4
+        
+        """
+        Ipv6 type - string which contains valid IPv6 address.
+        """
+        scalar Ipv6
+        
+        """
+        Json type - string which contains valid JSON.
+        """
+        scalar Json
         
         input ListConstraintInput {
           minItems: Int
@@ -407,6 +612,22 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           unique: Boolean = false
           innerList: ListConstraintInput
         }
+        
+        """
+        Mac type - string which contains valid MAC (media access control) address.
+        """
+        scalar Mac
+        
+        """
+        PhoneNumber type - string which contains valid phone number.
+        The accepted format is without spaces and other special characters, but the leading plus is required.
+        """
+        scalar PhoneNumber
+        
+        """
+        PostalCode type - string which contains valid postal code (ZIP code) in "NNN NN" format.
+        """
+        scalar PostalCode
         
         type Query {
           fieldValid: TestUnion
@@ -419,6 +640,26 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldInvalidType: TestUnion
           fieldInvalidReturn: TestUnion
           fieldThrow: TestUnion
+          fieldAddonType: TestAddonDefaultValue
+        }
+        
+        """
+        Rgb type - type representing the RGB color model.
+        """
+        type Rgb {
+          red: Int!
+          green: Int!
+          blue: Int!
+        }
+        
+        """
+        Rgba type - type representing the RGB color model with added alpha (transparency).
+        """
+        type Rgba {
+          red: Int!
+          green: Int!
+          blue: Int!
+          alpha: Float!
         }
         
         enum SimpleEnum {
@@ -433,7 +674,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           number: [Int!]!
           bool: Boolean
         }
-        
+
         input TestDefaultValue {
           stringArgument1: String = null
           stringArgument2: String = "testValue"
@@ -446,7 +687,57 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             notNullListStringArgument1: ["Boo", "Baz"],
             listStringArgument1: ["Boo", null],
             notNullStringArgument1: "notNullValue"
-          }
+         }
+          
+        type TestAddonDefaultValue {
+          dateTime(
+            dateTime: DateTime = "2010-01-01 12:12:50"
+          ): DateTime
+          date(
+            date: Date = "2010-01-01"
+          ): Date
+          emailAddress(
+            emailAddress: EmailAddress = "test@test.com"
+          ): EmailAddress
+          hsla(
+            hsla: HslaInput = {hue:180,saturation:50,lightness:50,alpha:0.5}
+          ): Hsla
+          hsl(
+            hsl: HslInput = {hue:180,saturation:50,lightness:50}
+          ): Hsl
+          ipv4(
+            ipv4: Ipv4 = "128.0.1.1"
+          ): Ipv4
+          ipv6(
+            ipv6: Ipv6 = "AAAA:1111:FFFF:9999:1111:AAAA:9999:FFFF"
+          ): Ipv6
+          json(
+            json: Json = "{\"testName\":\"testValue\"}"
+          ): Json
+          mac(
+            mac: Mac = "AA:11:FF:99:11:AA"
+          ): Mac
+          phoneNumber(
+            phoneNumber: PhoneNumber = "+999123456789"
+          ): PhoneNumber
+          postalCode(
+            postalCode: PostalCode = "111 22"
+          ): PostalCode
+          rgba(
+            rgba: RgbaInput = {red:150,green:150,blue:150,alpha:0.5}
+          ): Rgba
+          rgb(
+            rgb: RgbInput = {red:150,green:150,blue:150}
+          ): Rgb
+          time(
+            time: Time = "12:12:50"
+          ): Time
+          url(
+            url: Url = "https:\/\/test.com\/boo\/blah.php?testValue=test&testName=name"
+          ): Url
+          void(
+            void: Void = null
+          ): Void
         }
         
         """
@@ -459,6 +750,21 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         scalar TestScalar
         
         union TestUnion = Abc | Xyz
+        
+        """
+        Time type - string which contains time in "<HH>:<MM>:<SS>" format.
+        """
+        scalar Time
+        
+        """
+        Url type - string which contains valid URL (Uniform Resource Locator).
+        """
+        scalar Url
+        
+        """
+        Void type - accepts null only.
+        """
+        scalar Void
         
         type Xyz implements TestInterface {
           name: String!
@@ -533,6 +839,25 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           ): TestInterface @deprecated
         }
         
+        """
+        Hsl type - type representing the HSL color model.
+        """
+        type Hsl {
+          hue: Int!
+          saturation: Int!
+          lightness: Int!
+        }
+        
+        """
+        Hsla type - type representing the HSL color model with added alpha (transparency).
+        """
+        type Hsla {
+          hue: Int!
+          saturation: Int!
+          lightness: Int!
+          alpha: Float!
+        }
+        
         type Query {
           fieldValid: TestUnion
           fieldConstraint(
@@ -544,6 +869,77 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldInvalidType: TestUnion
           fieldInvalidReturn: TestUnion
           fieldThrow: TestUnion
+          fieldAddonType: TestAddonDefaultValue
+        }
+        
+        """
+        Rgb type - type representing the RGB color model.
+        """
+        type Rgb {
+          red: Int!
+          green: Int!
+          blue: Int!
+        }
+        
+        """
+        Rgba type - type representing the RGB color model with added alpha (transparency).
+        """
+        type Rgba {
+          red: Int!
+          green: Int!
+          blue: Int!
+          alpha: Float!
+        }
+        
+        type TestAddonDefaultValue {
+          dateTime(
+            dateTime: DateTime = "2010-01-01 12:12:50"
+          ): DateTime
+          date(
+            date: Date = "2010-01-01"
+          ): Date
+          emailAddress(
+            emailAddress: EmailAddress = "test@test.com"
+          ): EmailAddress
+          hsla(
+            hsla: HslaInput = {hue:180,saturation:50,lightness:50,alpha:0.5}
+          ): Hsla
+          hsl(
+            hsl: HslInput = {hue:180,saturation:50,lightness:50}
+          ): Hsl
+          ipv4(
+            ipv4: Ipv4 = "128.0.1.1"
+          ): Ipv4
+          ipv6(
+            ipv6: Ipv6 = "AAAA:1111:FFFF:9999:1111:AAAA:9999:FFFF"
+          ): Ipv6
+          json(
+            json: Json = "{\"testName\":\"testValue\"}"
+          ): Json
+          mac(
+            mac: Mac = "AA:11:FF:99:11:AA"
+          ): Mac
+          phoneNumber(
+            phoneNumber: PhoneNumber = "+999123456789"
+          ): PhoneNumber
+          postalCode(
+            postalCode: PostalCode = "111 22"
+          ): PostalCode
+          rgba(
+            rgba: RgbaInput = {red:150,green:150,blue:150,alpha:0.5}
+          ): Rgba
+          rgb(
+            rgb: RgbInput = {red:150,green:150,blue:150}
+          ): Rgb
+          time(
+            time: Time = "12:12:50"
+          ): Time
+          url(
+            url: Url = "https:\/\/test.com\/boo\/blah.php?testValue=test&testName=name"
+          ): Url
+          void(
+            void: Void = null
+          ): Void
         }
         
         type Xyz implements TestInterface {
@@ -619,7 +1015,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           number: [Int!]!
           bool: Boolean
         }
-        
+
         input TestDefaultValue {
           stringArgument1: String = null
           stringArgument2: String = "testValue"
@@ -635,7 +1031,68 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           }
         }
         
+        """
+        Date type - string which contains valid date in "<YYYY>-<MM>-<DD>" format.
+        """
+        scalar Date
+        
+        """
+        DateTime type - string which contains valid date in "<YYYY>-<MM>-<DD> <HH>:<MM>:<SS>" format.
+        """
+        scalar DateTime
+        
+        """
+        EmailAddress type - string which contains valid email address.
+        """
+        scalar EmailAddress
+        
+        """
+        Ipv4 type - string which contains valid IPv4 address.
+        """
+        scalar Ipv4
+        
+        """
+        Ipv6 type - string which contains valid IPv6 address.
+        """
+        scalar Ipv6
+        
+        """
+        Json type - string which contains valid JSON.
+        """
+        scalar Json
+        
+        """
+        Mac type - string which contains valid MAC (media access control) address.
+        """
+        scalar Mac
+        
+        """
+        PhoneNumber type - string which contains valid phone number.
+        The accepted format is without spaces and other special characters, but the leading plus is required.
+        """
+        scalar PhoneNumber
+        
+        """
+        PostalCode type - string which contains valid postal code (ZIP code) in "NNN NN" format.
+        """
+        scalar PostalCode
+        
         scalar TestScalar
+        
+        """
+        Time type - string which contains time in "<HH>:<MM>:<SS>" format.
+        """
+        scalar Time
+        
+        """
+        Url type - string which contains valid URL (Uniform Resource Locator).
+        """
+        scalar Url
+        
+        """
+        Void type - accepts null only.
+        """
+        scalar Void
         
         enum ArrayEnum {
           "First description"
@@ -736,6 +1193,25 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           ): TestInterface @deprecated
         }
         
+        """
+        Hsl type - type representing the HSL color model.
+        """
+        type Hsl {
+          hue: Int!
+          saturation: Int!
+          lightness: Int!
+        }
+        
+        """
+        Hsla type - type representing the HSL color model with added alpha (transparency).
+        """
+        type Hsla {
+          hue: Int!
+          saturation: Int!
+          lightness: Int!
+          alpha: Float!
+        }
+        
         type Query {
           fieldValid: TestUnion
           fieldConstraint(
@@ -747,6 +1223,77 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldInvalidType: TestUnion
           fieldInvalidReturn: TestUnion
           fieldThrow: TestUnion
+          fieldAddonType: TestAddonDefaultValue
+        }
+        
+        """
+        Rgb type - type representing the RGB color model.
+        """
+        type Rgb {
+          red: Int!
+          green: Int!
+          blue: Int!
+        }
+        
+        """
+        Rgba type - type representing the RGB color model with added alpha (transparency).
+        """
+        type Rgba {
+          red: Int!
+          green: Int!
+          blue: Int!
+          alpha: Float!
+        }
+
+        type TestAddonDefaultValue {
+          dateTime(
+            dateTime: DateTime = "2010-01-01 12:12:50"
+          ): DateTime
+          date(
+            date: Date = "2010-01-01"
+          ): Date
+          emailAddress(
+            emailAddress: EmailAddress = "test@test.com"
+          ): EmailAddress
+          hsla(
+            hsla: HslaInput = {hue:180,saturation:50,lightness:50,alpha:0.5}
+          ): Hsla
+          hsl(
+            hsl: HslInput = {hue:180,saturation:50,lightness:50}
+          ): Hsl
+          ipv4(
+            ipv4: Ipv4 = "128.0.1.1"
+          ): Ipv4
+          ipv6(
+            ipv6: Ipv6 = "AAAA:1111:FFFF:9999:1111:AAAA:9999:FFFF"
+          ): Ipv6
+          json(
+            json: Json = "{\"testName\":\"testValue\"}"
+          ): Json
+          mac(
+            mac: Mac = "AA:11:FF:99:11:AA"
+          ): Mac
+          phoneNumber(
+            phoneNumber: PhoneNumber = "+999123456789"
+          ): PhoneNumber
+          postalCode(
+            postalCode: PostalCode = "111 22"
+          ): PostalCode
+          rgba(
+            rgba: RgbaInput = {red:150,green:150,blue:150,alpha:0.5}
+          ): Rgba
+          rgb(
+            rgb: RgbInput = {red:150,green:150,blue:150}
+          ): Rgb
+          time(
+            time: Time = "12:12:50"
+          ): Time
+          url(
+            url: Url = "https:\/\/test.com\/boo\/blah.php?testValue=test&testName=name"
+          ): Url
+          void(
+            void: Void = null
+          ): Void
         }
         
         type Xyz implements TestInterface {
@@ -838,7 +1385,68 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           }
         }
         
+        """
+        Date type - string which contains valid date in "<YYYY>-<MM>-<DD>" format.
+        """
+        scalar Date
+        
+        """
+        DateTime type - string which contains valid date in "<YYYY>-<MM>-<DD> <HH>:<MM>:<SS>" format.
+        """
+        scalar DateTime
+        
+        """
+        EmailAddress type - string which contains valid email address.
+        """
+        scalar EmailAddress
+        
+        """
+        Ipv4 type - string which contains valid IPv4 address.
+        """
+        scalar Ipv4
+        
+        """
+        Ipv6 type - string which contains valid IPv6 address.
+        """
+        scalar Ipv6
+        
+        """
+        Json type - string which contains valid JSON.
+        """
+        scalar Json
+        
+        """
+        Mac type - string which contains valid MAC (media access control) address.
+        """
+        scalar Mac
+        
+        """
+        PhoneNumber type - string which contains valid phone number.
+        The accepted format is without spaces and other special characters, but the leading plus is required.
+        """
+        scalar PhoneNumber
+        
+        """
+        PostalCode type - string which contains valid postal code (ZIP code) in "NNN NN" format.
+        """
+        scalar PostalCode
+        
         scalar TestScalar
+        
+        """
+        Time type - string which contains time in "<HH>:<MM>:<SS>" format.
+        """
+        scalar Time
+        
+        """
+        Url type - string which contains valid URL (Uniform Resource Locator).
+        """
+        scalar Url
+        
+        """
+        Void type - accepts null only.
+        """
+        scalar Void
         
         enum ArrayEnum {
           "First description"
