@@ -73,4 +73,26 @@ final class RgbaTypeTest extends \PHPUnit\Framework\TestCase
         $rgba = new \Graphpinator\Type\Addon\RgbaType();
         $rgba->validateValue($rawValue);
     }
+
+    public function testInputDefaultValue() : void
+    {
+        $rgba = new \Graphpinator\Type\Addon\RgbaInput();
+        $args = $rgba->getArguments()->toArray();
+
+        self::assertSame(0, $args['red']->getDefaultValue()->getRawValue());
+        self::assertSame(0,$args['green']->getDefaultValue()->getRawValue());
+        self::assertSame(0, $args['blue']->getDefaultValue()->getRawValue());
+        self::assertSame(0.0, $args['alpha']->getDefaultValue()->getRawValue());
+    }
+
+    public function testInputConstraintDefaultValue() : void
+    {
+        $rgba = new \Graphpinator\Type\Addon\RgbaInput();
+        $args = $rgba->getArguments()->toArray();
+
+        self::assertSame(' @intConstraint(min: 0, max: 255)', $args['red']->printConstraints());
+        self::assertSame(' @intConstraint(min: 0, max: 255)', $args['green']->printConstraints());
+        self::assertSame(' @intConstraint(min: 0, max: 255)', $args['blue']->printConstraints());
+        self::assertSame(' @floatConstraint(min: 0, max: 1)', $args['alpha']->printConstraints());
+    }
 }

@@ -218,44 +218,4 @@ final class AddonTypeTest extends \PHPUnit\Framework\TestCase
         self::assertSame($expected['data'], \json_decode(\json_encode($result->getData()), true));
         self::assertNull($result->getErrors());
     }
-
-    public function invalidDataProvider() : array
-    {
-        return [
-            [
-                \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName ($dateTime: DateTime = 01-01-2010 12:12:50) { fieldAddonType { dateTime } }',
-                ]),
-            ],
-            [
-                \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName ($dateTime: DateTime = "01-01-2010 12:12:50") { fieldAddonType { dateTime } }',
-                    'variables' => ['dateTime' => ['01-01-2010 12:12:50']],
-                ]),
-            ],
-            [
-                \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName ($dateTime: DateTime!) { fieldAddonType { dateTime } }',
-                ]),
-            ],
-            [
-                \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldAddonType { dateTime(dateTime: $varNonExistent) } }',
-                ]),
-            ],
-        ];
-    }
-
-    /**
-     * @dataProvider invalidDataProvider
-     * @param \Graphpinator\Json $request
-     */
-    public function testInvalid(\Graphpinator\Json $request) : void
-    {
-        //phpcs:ignore SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly.ReferencedGeneralException
-        $this->expectException(\Exception::class);
-
-        $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
-        $graphpinator->runQuery($request);
-    }
 }
