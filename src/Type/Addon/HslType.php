@@ -43,9 +43,9 @@ class HslType extends \Graphpinator\Type\Type
     protected function validateNonNullValue($rawValue) : bool
     {
         return $rawValue instanceof \stdClass
-            && \array_key_exists('hue', (array) $rawValue)
-            && \array_key_exists('saturation', (array) $rawValue)
-            && \array_key_exists('lightness', (array) $rawValue)
+            && \property_exists($rawValue, 'hue')
+            && \property_exists($rawValue, 'saturation')
+            && \property_exists($rawValue, 'lightness')
             && \is_int($rawValue->hue)
             && \is_int($rawValue->saturation)
             && \is_int($rawValue->lightness)

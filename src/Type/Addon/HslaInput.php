@@ -15,27 +15,14 @@ final class HslaInput extends \Graphpinator\Type\Addon\HslInput
 
     protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
     {
-        return new \Graphpinator\Argument\ArgumentSet([
-            (new \Graphpinator\Argument\Argument(
-                'hue',
-                \Graphpinator\Type\Container\Container::Int()->notNull(),
-                0,
-            ))->addConstraint(new \Graphpinator\Constraint\IntConstraint(0, 360)),
-            (new \Graphpinator\Argument\Argument(
-                'saturation',
-                \Graphpinator\Type\Container\Container::Int()->notNull(),
-                0,
-            ))->addConstraint(new \Graphpinator\Constraint\IntConstraint(0, 100)),
-            (new \Graphpinator\Argument\Argument(
-                'lightness',
-                \Graphpinator\Type\Container\Container::Int()->notNull(),
-                0,
-            ))->addConstraint(new \Graphpinator\Constraint\IntConstraint(0, 100)),
-            (new \Graphpinator\Argument\Argument(
-                'alpha',
-                \Graphpinator\Type\Container\Container::Float()->notNull(),
-                0.0,
-            ))->addConstraint(new \Graphpinator\Constraint\FloatConstraint(0, 1)),
-        ]);
+        return parent::getFieldDefinition()->merge(
+            new \Graphpinator\Argument\ArgumentSet([
+                (new \Graphpinator\Argument\Argument(
+                    'alpha',
+                    \Graphpinator\Type\Container\Container::Float()->notNull(),
+                    0.0,
+                ))->addConstraint(new \Graphpinator\Constraint\FloatConstraint(0, 1)),
+            ]),
+        );
     }
 }

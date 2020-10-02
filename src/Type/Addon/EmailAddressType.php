@@ -12,7 +12,7 @@ final class EmailAddressType extends \Graphpinator\Type\Scalar\ScalarType
 
     protected function validateNonNullValue($rawValue) : bool
     {
-        return \is_string($rawValue) &&
-            (bool) \filter_var($rawValue, \FILTER_VALIDATE_EMAIL);
+        return \is_string($rawValue)
+            && (bool) \filter_var($rawValue, \FILTER_VALIDATE_EMAIL);
     }
 }

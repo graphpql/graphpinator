@@ -15,42 +15,23 @@ final class RgbaType extends \Graphpinator\Type\Addon\RgbType
 
     protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
     {
-        return new \Graphpinator\Field\ResolvableFieldSet([
-            new \Graphpinator\Field\ResolvableField(
-                'red',
-                \Graphpinator\Type\Container\Container::Int()->notNull(),
-                static function (\stdClass $rgba) {
-                    return $rgba->red;
-                },
-            ),
-            new \Graphpinator\Field\ResolvableField(
-                'green',
-                \Graphpinator\Type\Container\Container::Int()->notNull(),
-                static function (\stdClass $rgba) {
-                    return $rgba->green;
-                },
-            ),
-            new \Graphpinator\Field\ResolvableField(
-                'blue',
-                \Graphpinator\Type\Container\Container::Int()->notNull(),
-                static function (\stdClass $rgba) {
-                    return $rgba->blue;
-                },
-            ),
-            new \Graphpinator\Field\ResolvableField(
-                'alpha',
-                \Graphpinator\Type\Container\Container::Float()->notNull(),
-                static function (\stdClass $rgba) {
-                    return $rgba->alpha;
-                },
-            ),
-        ]);
+        return parent::getFieldDefinition()->merge(
+            new \Graphpinator\Field\ResolvableFieldSet([
+                new \Graphpinator\Field\ResolvableField(
+                    'alpha',
+                    \Graphpinator\Type\Container\Container::Float()->notNull(),
+                    static function (\stdClass $rgba) {
+                        return $rgba->alpha;
+                    },
+                ),
+            ]),
+        );
     }
 
     protected function validateNonNullValue($rawValue) : bool
     {
         return parent::validateNonNullValue($rawValue)
-            && \array_key_exists('alpha', (array) $rawValue)
+            && \property_exists($rawValue, 'alpha')
             && \is_float($rawValue->alpha)
             && $rawValue->alpha <= 1
             && $rawValue->alpha >= 0;

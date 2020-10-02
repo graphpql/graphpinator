@@ -43,9 +43,9 @@ class RgbType extends \Graphpinator\Type\Type
     protected function validateNonNullValue($rawValue) : bool
     {
         return $rawValue instanceof \stdClass
-            && \array_key_exists('red', (array) $rawValue)
-            && \array_key_exists('green', (array) $rawValue)
-            && \array_key_exists('blue', (array) $rawValue)
+            && \property_exists($rawValue, 'red')
+            && \property_exists($rawValue, 'green')
+            && \property_exists($rawValue, 'blue')
             && \is_int($rawValue->red)
             && \is_int($rawValue->green)
             && \is_int($rawValue->blue)

@@ -15,27 +15,14 @@ final class RgbaInput extends \Graphpinator\Type\Addon\RgbInput
 
     protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
     {
-        return new \Graphpinator\Argument\ArgumentSet([
-            (new \Graphpinator\Argument\Argument(
-                'red',
-                \Graphpinator\Type\Container\Container::Int()->notNull(),
-                0,
-            ))->addConstraint(new \Graphpinator\Constraint\IntConstraint(0, 255)),
-            (new \Graphpinator\Argument\Argument(
-                'green',
-                \Graphpinator\Type\Container\Container::Int()->notNull(),
-                0,
-            ))->addConstraint(new \Graphpinator\Constraint\IntConstraint(0, 255)),
-            (new \Graphpinator\Argument\Argument(
-                'blue',
-                \Graphpinator\Type\Container\Container::Int()->notNull(),
-                0,
-            ))->addConstraint(new \Graphpinator\Constraint\IntConstraint(0, 255)),
-            (new \Graphpinator\Argument\Argument(
-                'alpha',
-                \Graphpinator\Type\Container\Container::Float()->notNull(),
-                0.0,
-            ))->addConstraint(new \Graphpinator\Constraint\FloatConstraint(0, 1)),
-        ]);
+        return parent::getFieldDefinition()->merge(
+            new \Graphpinator\Argument\ArgumentSet([
+                (new \Graphpinator\Argument\Argument(
+                    'alpha',
+                    \Graphpinator\Type\Container\Container::Float()->notNull(),
+                    0.0,
+                ))->addConstraint(new \Graphpinator\Constraint\FloatConstraint(0, 1)),
+            ]),
+        );
     }
 }

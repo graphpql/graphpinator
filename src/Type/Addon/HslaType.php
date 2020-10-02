@@ -15,42 +15,23 @@ final class HslaType extends \Graphpinator\Type\Addon\HslType
 
     protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
     {
-        return new \Graphpinator\Field\ResolvableFieldSet([
-            new \Graphpinator\Field\ResolvableField(
-                'hue',
-                \Graphpinator\Type\Container\Container::Int()->notNull(),
-                static function (\stdClass $hsla) {
-                    return $hsla->hue;
-                },
-            ),
-            new \Graphpinator\Field\ResolvableField(
-                'saturation',
-                \Graphpinator\Type\Container\Container::Int()->notNull(),
-                static function (\stdClass $hsla) {
-                    return $hsla->saturation;
-                },
-            ),
-            new \Graphpinator\Field\ResolvableField(
-                'lightness',
-                \Graphpinator\Type\Container\Container::Int()->notNull(),
-                static function (\stdClass $hsla) {
-                    return $hsla->lightness;
-                },
-            ),
-            new \Graphpinator\Field\ResolvableField(
-                'alpha',
-                \Graphpinator\Type\Container\Container::Float()->notNull(),
-                static function (\stdClass $hsla) {
-                    return $hsla->alpha;
-                },
-            ),
-        ]);
+        return parent::getFieldDefinition()->merge(
+            new \Graphpinator\Field\ResolvableFieldSet([
+                new \Graphpinator\Field\ResolvableField(
+                    'alpha',
+                    \Graphpinator\Type\Container\Container::Float()->notNull(),
+                    static function (\stdClass $hsla) {
+                        return $hsla->alpha;
+                    },
+                ),
+            ]),
+        );
     }
 
     protected function validateNonNullValue($rawValue) : bool
     {
         return parent::validateNonNullValue($rawValue)
-            && \array_key_exists('alpha', (array) $rawValue)
+            && \property_exists($rawValue, 'alpha')
             && \is_float($rawValue->alpha)
             && $rawValue->alpha <= 1
             && $rawValue->alpha >= 0;

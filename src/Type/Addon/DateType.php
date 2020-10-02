@@ -12,7 +12,7 @@ final class DateType extends \Graphpinator\Type\Scalar\ScalarType
 
     protected function validateNonNullValue($rawValue) : bool
     {
-        return \is_string($rawValue) &&
-            \Nette\Utils\DateTime::createFromFormat('d-m-Y', $rawValue) instanceof \Nette\Utils\DateTime;
+        return \is_string($rawValue)
+            && \Nette\Utils\DateTime::createFromFormat('d-m-Y', $rawValue) instanceof \Nette\Utils\DateTime;
     }
 }
