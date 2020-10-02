@@ -47,7 +47,7 @@ final class AddonTypeTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldAddonType { hsla } }',
+                    'query' => 'query queryName { fieldAddonType { hsla { hue saturation lightness alpha } } }',
                 ]),
                 \Graphpinator\Json::fromObject((object) [
                     'data' => [
@@ -59,7 +59,7 @@ final class AddonTypeTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldAddonType { hsl } }',
+                    'query' => 'query queryName { fieldAddonType { hsl { hue saturation lightness } } }',
                 ]),
                 \Graphpinator\Json::fromObject((object) [
                     'data' => [
@@ -143,7 +143,7 @@ final class AddonTypeTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldAddonType { rgba } }',
+                    'query' => 'query queryName { fieldAddonType { rgba { red green blue alpha } } }',
                 ]),
                 \Graphpinator\Json::fromObject((object) [
                     'data' => [
@@ -155,7 +155,7 @@ final class AddonTypeTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldAddonType { rgb } }',
+                    'query' => 'query queryName { fieldAddonType { rgb { red green blue } } }',
                 ]),
                 \Graphpinator\Json::fromObject((object) [
                     'data' => [

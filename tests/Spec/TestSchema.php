@@ -688,28 +688,28 @@ final class TestSchema
                     new \Graphpinator\Field\ResolvableField(
                         'hsla',
                         new \Graphpinator\Type\Addon\HslaType(),
-                        static function ($parent, array $hsla) : array {
+                        static function ($parent, \stdClass $hsla) : \stdClass {
                             return $hsla;
                         },
                         new \Graphpinator\Argument\ArgumentSet([
                             new \Graphpinator\Argument\Argument(
                                 'hsla',
-                                new \Graphpinator\Type\Addon\HslaType(),
-                                ['hue' => 180, 'saturation' => 50, 'lightness' => 50, 'alpha' => 0.5],
+                                new \Graphpinator\Type\Addon\HslaInput(),
+                                (object) ['hue' => 180, 'saturation' => 50, 'lightness' => 50, 'alpha' => 0.5],
                             ),
                         ]),
                     ),
                     new \Graphpinator\Field\ResolvableField(
                         'hsl',
                         new \Graphpinator\Type\Addon\HslType(),
-                        static function ($parent, array $hsl) : array {
+                        static function ($parent, \stdClass $hsl) : \stdClass {
                             return $hsl;
                         },
                         new \Graphpinator\Argument\ArgumentSet([
                             new \Graphpinator\Argument\Argument(
                                 'hsl',
-                                new \Graphpinator\Type\Addon\HslType(),
-                                ['hue' => 180, 'saturation' => 50, 'lightness' => 50],
+                                new \Graphpinator\Type\Addon\HslInput(),
+                                (object) ['hue' => 180, 'saturation' => 50, 'lightness' => 50],
                             ),
                         ]),
                     ),
@@ -800,28 +800,28 @@ final class TestSchema
                     new \Graphpinator\Field\ResolvableField(
                         'rgba',
                         new \Graphpinator\Type\Addon\RgbaType(),
-                        static function ($parent, array $rgba) : array {
+                        static function ($parent, \stdClass $rgba) : \stdClass {
                             return $rgba;
                         },
                         new \Graphpinator\Argument\ArgumentSet([
                             new \Graphpinator\Argument\Argument(
                                 'rgba',
-                                new \Graphpinator\Type\Addon\RgbaType(),
-                                ['red' => 150, 'green' => 150, 'blue' => 150, 'alpha' => 0.5],
+                                new \Graphpinator\Type\Addon\RgbaInput(),
+                                (object) ['red' => 150, 'green' => 150, 'blue' => 150, 'alpha' => 0.5],
                             ),
                         ]),
                     ),
                     new \Graphpinator\Field\ResolvableField(
                         'rgb',
                         new \Graphpinator\Type\Addon\RgbType(),
-                        static function ($parent, array $rgb) : array {
+                        static function ($parent, \stdClass $rgb) : \stdClass {
                             return $rgb;
                         },
                         new \Graphpinator\Argument\ArgumentSet([
                             new \Graphpinator\Argument\Argument(
                                 'rgb',
-                                new \Graphpinator\Type\Addon\RgbType(),
-                                ['red' => 150, 'green' => 150, 'blue' => 150],
+                                new \Graphpinator\Type\Addon\RgbInput(),
+                                (object) ['red' => 150, 'green' => 150, 'blue' => 150],
                             ),
                         ]),
                     ),

@@ -192,9 +192,32 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           int2: Int
         }
         
-        scalar Hsl
+        """
+        This add on scalar validates hsl array input with keys and its values -
+            hue (0-360), saturation (0-100), lightness (0-100).
+            Examples - ["hue" => 180, "saturation\" => 50, "lightness" => 50],
+                       ["hue" => 360, "saturation\" => 100, "lightness" => 100],
+                       ["hue" => 0, "saturation" => 0, "lightness" => 0]
+        """
+        type Hsl {
+          hue: Int!
+          saturation: Int!
+          lightness: Int!
+        }
         
-        scalar Hsla
+        """
+        This add on scalar validates hsla array input with keys and its values -
+            hue (0-360), saturation (0-100), lightness (0-100), alpha (0-1).
+            Examples - ["hue" => 180, "saturation\" => 50, "lightness" => 50, "alpha" => 0.5],
+                       ["hue" => 360, "saturation\" => 100, "lightness" => 100, "alpha" => 1.0],
+                       ["hue" => 0, "saturation" => 0, "lightness" => 0, "alpha" => 0.0]
+        """
+        type Hsla {
+          hue: Int!
+          saturation: Int!
+          lightness: Int!
+          alpha: Float!
+        }
         
         scalar Ipv4
         
@@ -229,9 +252,32 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldAddonType: TestAddonDefaultValue
         }
         
-        scalar Rgb
+        """
+        This add on scalar validates rgb array input with keys and its values -
+            red (0-255), green (0-255), blue (0-255).
+            Examples - ["red" => 100, "green" => 50, "blue" => 50, "alpha" => 0.5],
+                       ["red" => 255, "green" => 255, "blue" => 255, "alpha" => 1.0],
+                       ["red" => 0, "green" => 0, "blue" => 0, "alpha" => 0.0]
+        """
+        type Rgb {
+          red: Int!
+          green: Int!
+          blue: Int!
+        }
         
-        scalar Rgba
+        """
+        This add on scalar validates rgba array input with keys and its values -
+            red (0-255), green (0-255), blue (0-255), alpha (0-1).
+            Examples - ["red" => 100, "green" => 50,  "blue" => 50,  "alpha" => 0.5],
+                       ["red" => 255, "green" => 255, "blue" => 255, "alpha" => 1.0],
+                       ["red" => 0,   "green" => 0,   "blue" => 0,   "alpha" => 0.0]
+        """
+        type Rgba {
+          red: Int!
+          green: Int!
+          blue: Int!
+          alpha: Float!
+        }
         
         enum SimpleEnum {
           A
@@ -257,10 +303,10 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             emailAddress: EmailAddress = "test@test.com"
           ): EmailAddress
           hsla(
-            hsla: Hsla = {"hue":180,"saturation":50,"lightness":50,"alpha":0.5}
+            hsla: Hsla = {hue:180,saturation:50,lightness:50,alpha:0.5}
           ): Hsla
           hsl(
-            hsl: Hsl = {"hue":180,"saturation":50,"lightness":50}
+            hsl: Hsl = {hue:180,saturation:50,lightness:50}
           ): Hsl
           ipv4(
             ipv4: Ipv4 = "128.0.1.1"
@@ -281,10 +327,10 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             postalCode: PostalCode = "111 22"
           ): PostalCode
           rgba(
-            rgba: Rgba = {"red":150,"green":150,"blue":150,"alpha":0.5}
+            rgba: Rgba = {red:150,green:150,blue:150,alpha:0.5}
           ): Rgba
           rgb(
-            rgb: Rgb = {"red":150,"green":150,"blue":150}
+            rgb: Rgb = {red:150,green:150,blue:150}
           ): Rgb
           time(
             time: Time = "12:12:50"
@@ -452,9 +498,32 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           int2: Int
         }
         
-        scalar Hsl
+        """
+        This add on scalar validates hsl array input with keys and its values -
+            hue (0-360), saturation (0-100), lightness (0-100).
+            Examples - ["hue" => 180, "saturation\" => 50, "lightness" => 50],
+                       ["hue" => 360, "saturation\" => 100, "lightness" => 100],
+                       ["hue" => 0, "saturation" => 0, "lightness" => 0]
+        """
+        type Hsl {
+          hue: Int!
+          saturation: Int!
+          lightness: Int!
+        }
         
-        scalar Hsla
+        """
+        This add on scalar validates hsla array input with keys and its values -
+            hue (0-360), saturation (0-100), lightness (0-100), alpha (0-1).
+            Examples - ["hue" => 180, "saturation\" => 50, "lightness" => 50, "alpha" => 0.5],
+                       ["hue" => 360, "saturation\" => 100, "lightness" => 100, "alpha" => 1.0],
+                       ["hue" => 0, "saturation" => 0, "lightness" => 0, "alpha" => 0.0]
+        """
+        type Hsla {
+          hue: Int!
+          saturation: Int!
+          lightness: Int!
+          alpha: Float!
+        }
         
         scalar Ipv4
         
@@ -489,9 +558,32 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldAddonType: TestAddonDefaultValue
         }
         
-        scalar Rgb
+        """
+        This add on scalar validates rgb array input with keys and its values -
+            red (0-255), green (0-255), blue (0-255).
+            Examples - ["red" => 100, "green" => 50, "blue" => 50, "alpha" => 0.5],
+                       ["red" => 255, "green" => 255, "blue" => 255, "alpha" => 1.0],
+                       ["red" => 0, "green" => 0, "blue" => 0, "alpha" => 0.0]
+        """
+        type Rgb {
+          red: Int!
+          green: Int!
+          blue: Int!
+        }
         
-        scalar Rgba
+        """
+        This add on scalar validates rgba array input with keys and its values -
+            red (0-255), green (0-255), blue (0-255), alpha (0-1).
+            Examples - ["red" => 100, "green" => 50,  "blue" => 50,  "alpha" => 0.5],
+                       ["red" => 255, "green" => 255, "blue" => 255, "alpha" => 1.0],
+                       ["red" => 0,   "green" => 0,   "blue" => 0,   "alpha" => 0.0]
+        """
+        type Rgba {
+          red: Int!
+          green: Int!
+          blue: Int!
+          alpha: Float!
+        }
         
         enum SimpleEnum {
           A
@@ -517,10 +609,10 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             emailAddress: EmailAddress = "test@test.com"
           ): EmailAddress
           hsla(
-            hsla: Hsla = {"hue":180,"saturation":50,"lightness":50,"alpha":0.5}
+            hsla: Hsla = {hue:180,saturation:50,lightness:50,alpha:0.5}
           ): Hsla
           hsl(
-            hsl: Hsl = {"hue":180,"saturation":50,"lightness":50}
+            hsl: Hsl = {hue:180,saturation:50,lightness:50}
           ): Hsl
           ipv4(
             ipv4: Ipv4 = "128.0.1.1"
@@ -541,10 +633,10 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             postalCode: PostalCode = "111 22"
           ): PostalCode
           rgba(
-            rgba: Rgba = {"red":150,"green":150,"blue":150,"alpha":0.5}
+            rgba: Rgba = {red:150,green:150,blue:150,alpha:0.5}
           ): Rgba
           rgb(
-            rgb: Rgb = {"red":150,"green":150,"blue":150}
+            rgb: Rgb = {red:150,green:150,blue:150}
           ): Rgb
           time(
             time: Time = "12:12:50"
@@ -647,6 +739,33 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           ): TestInterface @deprecated
         }
         
+        """
+        This add on scalar validates hsl array input with keys and its values -
+            hue (0-360), saturation (0-100), lightness (0-100).
+            Examples - ["hue" => 180, "saturation\" => 50, "lightness" => 50],
+                       ["hue" => 360, "saturation\" => 100, "lightness" => 100],
+                       ["hue" => 0, "saturation" => 0, "lightness" => 0]
+        """
+        type Hsl {
+          hue: Int!
+          saturation: Int!
+          lightness: Int!
+        }
+        
+        """
+        This add on scalar validates hsla array input with keys and its values -
+            hue (0-360), saturation (0-100), lightness (0-100), alpha (0-1).
+            Examples - ["hue" => 180, "saturation\" => 50, "lightness" => 50, "alpha" => 0.5],
+                       ["hue" => 360, "saturation\" => 100, "lightness" => 100, "alpha" => 1.0],
+                       ["hue" => 0, "saturation" => 0, "lightness" => 0, "alpha" => 0.0]
+        """
+        type Hsla {
+          hue: Int!
+          saturation: Int!
+          lightness: Int!
+          alpha: Float!
+        }
+        
         type Query {
           fieldValid: TestUnion
           fieldConstraint(
@@ -661,6 +780,33 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldAddonType: TestAddonDefaultValue
         }
         
+        """
+        This add on scalar validates rgb array input with keys and its values -
+            red (0-255), green (0-255), blue (0-255).
+            Examples - ["red" => 100, "green" => 50, "blue" => 50, "alpha" => 0.5],
+                       ["red" => 255, "green" => 255, "blue" => 255, "alpha" => 1.0],
+                       ["red" => 0, "green" => 0, "blue" => 0, "alpha" => 0.0]
+        """
+        type Rgb {
+          red: Int!
+          green: Int!
+          blue: Int!
+        }
+        
+        """
+        This add on scalar validates rgba array input with keys and its values -
+            red (0-255), green (0-255), blue (0-255), alpha (0-1).
+            Examples - ["red" => 100, "green" => 50,  "blue" => 50,  "alpha" => 0.5],
+                       ["red" => 255, "green" => 255, "blue" => 255, "alpha" => 1.0],
+                       ["red" => 0,   "green" => 0,   "blue" => 0,   "alpha" => 0.0]
+        """
+        type Rgba {
+          red: Int!
+          green: Int!
+          blue: Int!
+          alpha: Float!
+        }
+        
         type TestAddonDefaultValue {
           dateTime(
             dateTime: DateTime = "01-01-2010 12:12:50"
@@ -672,10 +818,10 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             emailAddress: EmailAddress = "test@test.com"
           ): EmailAddress
           hsla(
-            hsla: Hsla = {"hue":180,"saturation":50,"lightness":50,"alpha":0.5}
+            hsla: Hsla = {hue:180,saturation:50,lightness:50,alpha:0.5}
           ): Hsla
           hsl(
-            hsl: Hsl = {"hue":180,"saturation":50,"lightness":50}
+            hsl: Hsl = {hue:180,saturation:50,lightness:50}
           ): Hsl
           ipv4(
             ipv4: Ipv4 = "128.0.1.1"
@@ -696,10 +842,10 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             postalCode: PostalCode = "111 22"
           ): PostalCode
           rgba(
-            rgba: Rgba = {"red":150,"green":150,"blue":150,"alpha":0.5}
+            rgba: Rgba = {red:150,green:150,blue:150,alpha:0.5}
           ): Rgba
           rgb(
-            rgb: Rgb = {"red":150,"green":150,"blue":150}
+            rgb: Rgb = {red:150,green:150,blue:150}
           ): Rgb
           time(
             time: Time = "12:12:50"
@@ -780,10 +926,6 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         
         scalar EmailAddress
         
-        scalar Hsl
-        
-        scalar Hsla
-        
         scalar Ipv4
         
         scalar Ipv6
@@ -795,10 +937,6 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         scalar PhoneNumber
         
         scalar PostalCode
-        
-        scalar Rgb
-        
-        scalar Rgba
         
         scalar TestScalar
         
@@ -907,6 +1045,33 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           ): TestInterface @deprecated
         }
         
+        """
+        This add on scalar validates hsl array input with keys and its values -
+            hue (0-360), saturation (0-100), lightness (0-100).
+            Examples - ["hue" => 180, "saturation\" => 50, "lightness" => 50],
+                       ["hue" => 360, "saturation\" => 100, "lightness" => 100],
+                       ["hue" => 0, "saturation" => 0, "lightness" => 0]
+        """
+        type Hsl {
+          hue: Int!
+          saturation: Int!
+          lightness: Int!
+        }
+        
+        """
+        This add on scalar validates hsla array input with keys and its values -
+            hue (0-360), saturation (0-100), lightness (0-100), alpha (0-1).
+            Examples - ["hue" => 180, "saturation\" => 50, "lightness" => 50, "alpha" => 0.5],
+                       ["hue" => 360, "saturation\" => 100, "lightness" => 100, "alpha" => 1.0],
+                       ["hue" => 0, "saturation" => 0, "lightness" => 0, "alpha" => 0.0]
+        """
+        type Hsla {
+          hue: Int!
+          saturation: Int!
+          lightness: Int!
+          alpha: Float!
+        }
+        
         type Query {
           fieldValid: TestUnion
           fieldConstraint(
@@ -921,6 +1086,33 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldAddonType: TestAddonDefaultValue
         }
         
+        """
+        This add on scalar validates rgb array input with keys and its values -
+            red (0-255), green (0-255), blue (0-255).
+            Examples - ["red" => 100, "green" => 50, "blue" => 50, "alpha" => 0.5],
+                       ["red" => 255, "green" => 255, "blue" => 255, "alpha" => 1.0],
+                       ["red" => 0, "green" => 0, "blue" => 0, "alpha" => 0.0]
+        """
+        type Rgb {
+          red: Int!
+          green: Int!
+          blue: Int!
+        }
+        
+        """
+        This add on scalar validates rgba array input with keys and its values -
+            red (0-255), green (0-255), blue (0-255), alpha (0-1).
+            Examples - ["red" => 100, "green" => 50,  "blue" => 50,  "alpha" => 0.5],
+                       ["red" => 255, "green" => 255, "blue" => 255, "alpha" => 1.0],
+                       ["red" => 0,   "green" => 0,   "blue" => 0,   "alpha" => 0.0]
+        """
+        type Rgba {
+          red: Int!
+          green: Int!
+          blue: Int!
+          alpha: Float!
+        }
+
         type TestAddonDefaultValue {
           dateTime(
             dateTime: DateTime = "01-01-2010 12:12:50"
@@ -932,10 +1124,10 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             emailAddress: EmailAddress = "test@test.com"
           ): EmailAddress
           hsla(
-            hsla: Hsla = {"hue":180,"saturation":50,"lightness":50,"alpha":0.5}
+            hsla: Hsla = {hue:180,saturation:50,lightness:50,alpha:0.5}
           ): Hsla
           hsl(
-            hsl: Hsl = {"hue":180,"saturation":50,"lightness":50}
+            hsl: Hsl = {hue:180,saturation:50,lightness:50}
           ): Hsl
           ipv4(
             ipv4: Ipv4 = "128.0.1.1"
@@ -956,10 +1148,10 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             postalCode: PostalCode = "111 22"
           ): PostalCode
           rgba(
-            rgba: Rgba = {"red":150,"green":150,"blue":150,"alpha":0.5}
+            rgba: Rgba = {red:150,green:150,blue:150,alpha:0.5}
           ): Rgba
           rgb(
-            rgb: Rgb = {"red":150,"green":150,"blue":150}
+            rgb: Rgb = {red:150,green:150,blue:150}
           ): Rgb
           time(
             time: Time = "12:12:50"
@@ -1040,10 +1232,6 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         
         scalar EmailAddress
         
-        scalar Hsl
-        
-        scalar Hsla
-        
         scalar Ipv4
         
         scalar Ipv6
@@ -1055,10 +1243,6 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         scalar PhoneNumber
         
         scalar PostalCode
-        
-        scalar Rgb
-        
-        scalar Rgba
         
         scalar TestScalar
         
