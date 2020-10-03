@@ -46,10 +46,10 @@ final class Operation
         return $this->name;
     }
 
-    public function execute(\stdClass $variables) : \Graphpinator\Resolver\OperationResult
+    public function resolve(\Graphpinator\Resolver\VariableValueSet $variables) : \Graphpinator\Resolver\OperationResult
     {
         $data = $this->operation->resolve(
-            $this->children->applyVariables(new \Graphpinator\Resolver\VariableValueSet($this->variables, $variables)),
+            $this->children->applyVariables($variables),
             \Graphpinator\Resolver\FieldResult::fromRaw($this->operation, null),
         );
 
