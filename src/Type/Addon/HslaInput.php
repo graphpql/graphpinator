@@ -15,7 +15,7 @@ final class HslaInput extends \Graphpinator\Type\Addon\HslInput
             new \Graphpinator\Argument\ArgumentSet([
                 (new \Graphpinator\Argument\Argument(
                     'alpha',
-                    \Graphpinator\Type\Container\Container::Float()->notNull(),
+                    \Graphpinator\Container\Container::Float()->notNull(),
                     0.0,
                 ))->addConstraint(new \Graphpinator\Constraint\FloatConstraint(0, 1)),
             ]),

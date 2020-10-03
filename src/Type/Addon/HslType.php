@@ -14,21 +14,21 @@ class HslType extends \Graphpinator\Type\Type
         return new \Graphpinator\Field\ResolvableFieldSet([
             new \Graphpinator\Field\ResolvableField(
                 'hue',
-                \Graphpinator\Type\Container\Container::Int()->notNull(),
+                \Graphpinator\Container\Container::Int()->notNull(),
                 static function (\stdClass $hsl) {
                     return $hsl->hue;
                 },
             ),
             new \Graphpinator\Field\ResolvableField(
                 'saturation',
-                \Graphpinator\Type\Container\Container::Int()->notNull(),
+                \Graphpinator\Container\Container::Int()->notNull(),
                 static function (\stdClass $hsl) {
                     return $hsl->saturation;
                 },
             ),
             new \Graphpinator\Field\ResolvableField(
                 'lightness',
-                \Graphpinator\Type\Container\Container::Int()->notNull(),
+                \Graphpinator\Container\Container::Int()->notNull(),
                 static function (\stdClass $hsl) {
                     return $hsl->lightness;
                 },

@@ -9,9 +9,9 @@ final class Schema extends \Graphpinator\Type\Type
     protected const NAME = '__Schema';
     protected const DESCRIPTION = 'Built-in introspection type.';
 
-    private \Graphpinator\Type\Container\Container $container;
+    private \Graphpinator\Container\Container $container;
 
-    public function __construct(\Graphpinator\Type\Container\Container $container)
+    public function __construct(\Graphpinator\Container\Container $container)
     {
         parent::__construct();
 
@@ -28,7 +28,7 @@ final class Schema extends \Graphpinator\Type\Type
         return new \Graphpinator\Field\ResolvableFieldSet([
             new \Graphpinator\Field\ResolvableField(
                 'description',
-                \Graphpinator\Type\Container\Container::String(),
+                \Graphpinator\Container\Container::String(),
                 static function (\Graphpinator\Type\Schema $schema) : ?string {
                     return $schema->getDescription();
                 },

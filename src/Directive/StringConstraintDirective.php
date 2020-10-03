@@ -18,10 +18,10 @@ final class StringConstraintDirective extends \Graphpinator\Directive\TypeSystem
             ],
             false,
             new \Graphpinator\Argument\ArgumentSet([
-                new \Graphpinator\Argument\Argument('minLength', \Graphpinator\Type\Container\Container::Int()),
-                new \Graphpinator\Argument\Argument('maxLength', \Graphpinator\Type\Container\Container::Int()),
-                new \Graphpinator\Argument\Argument('regex', \Graphpinator\Type\Container\Container::String()),
-                new \Graphpinator\Argument\Argument('oneOf', \Graphpinator\Type\Container\Container::String()->notNull()->list()),
+                new \Graphpinator\Argument\Argument('minLength', \Graphpinator\Container\Container::Int()),
+                new \Graphpinator\Argument\Argument('maxLength', \Graphpinator\Container\Container::Int()),
+                new \Graphpinator\Argument\Argument('regex', \Graphpinator\Container\Container::String()),
+                new \Graphpinator\Argument\Argument('oneOf', \Graphpinator\Container\Container::String()->notNull()->list()),
             ]),
         );
     }

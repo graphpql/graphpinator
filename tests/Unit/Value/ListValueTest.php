@@ -51,7 +51,7 @@ final class ListValueTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Argument\ArgumentSet([
                     new \Graphpinator\Argument\Argument(
                         'field',
-                        \Graphpinator\Type\Container\Container::String(),
+                        \Graphpinator\Container\Container::String(),
                         'random',
                     ),
                 ]);

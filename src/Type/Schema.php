@@ -9,13 +9,13 @@ final class Schema
     use \Nette\SmartObject;
     use \Graphpinator\Utils\TOptionalDescription;
 
-    private \Graphpinator\Type\Container\Container $container;
+    private \Graphpinator\Container\Container $container;
     private \Graphpinator\Type\Type $query;
     private ?\Graphpinator\Type\Type $mutation;
     private ?\Graphpinator\Type\Type $subscription;
 
     public function __construct(
-        \Graphpinator\Type\Container\Container $typeContainer,
+        \Graphpinator\Container\Container $typeContainer,
         \Graphpinator\Type\Type $query,
         ?\Graphpinator\Type\Type $mutation = null,
         ?\Graphpinator\Type\Type $subscription = null
@@ -40,12 +40,12 @@ final class Schema
                 return $this->container->getType($name);
             },
             new \Graphpinator\Argument\ArgumentSet([
-                new \Graphpinator\Argument\Argument('name', \Graphpinator\Type\Container\Container::String()->notNull()),
+                new \Graphpinator\Argument\Argument('name', \Graphpinator\Container\Container::String()->notNull()),
             ]),
         ));
     }
 
-    public function getContainer() : \Graphpinator\Type\Container\Container
+    public function getContainer() : \Graphpinator\Container\Container
     {
         return $this->container;
     }

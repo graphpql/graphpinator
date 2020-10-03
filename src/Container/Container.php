@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Type\Container;
+namespace Graphpinator\Container;
 
 /**
  * Class Container which is responsible for fetching instances of type classes.

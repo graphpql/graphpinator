@@ -105,7 +105,7 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
         return new \Graphpinator\Field\ResolvableFieldSet([
             new \Graphpinator\Field\ResolvableField(
                 '__typename',
-                \Graphpinator\Type\Container\Container::String()->notNull(),
+                \Graphpinator\Container\Container::String()->notNull(),
                 function() {
                     return $this->getName();
                 },

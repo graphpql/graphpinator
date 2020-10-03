@@ -40,7 +40,7 @@ final class InlineFragmentSpread implements \Graphpinator\Parser\FragmentSpread\
     }
 
     public function normalize(
-        \Graphpinator\Type\Container\Container $typeContainer,
+        \Graphpinator\Container\Container $typeContainer,
         \Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions
     ) : \Graphpinator\Normalizer\FragmentSpread\FragmentSpread
     {

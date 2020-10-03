@@ -17,8 +17,8 @@ final class InputConstraintDirective extends \Graphpinator\Directive\TypeSystemD
             ],
             false,
             new \Graphpinator\Argument\ArgumentSet([
-                new \Graphpinator\Argument\Argument('atLeastOne', \Graphpinator\Type\Container\Container::String()->notNull()->list()),
-                new \Graphpinator\Argument\Argument('exactlyOne', \Graphpinator\Type\Container\Container::String()->notNull()->list()),
+                new \Graphpinator\Argument\Argument('atLeastOne', \Graphpinator\Container\Container::String()->notNull()->list()),
+                new \Graphpinator\Argument\Argument('exactlyOne', \Graphpinator\Container\Container::String()->notNull()->list()),
             ]),
         );
     }

@@ -19,7 +19,7 @@ final class SkipDirective extends \Graphpinator\Directive\ExecutableDirective
             ],
             false,
             new \Graphpinator\Argument\ArgumentSet([
-                new \Graphpinator\Argument\Argument('if', \Graphpinator\Type\Container\Container::Boolean()->notNull()),
+                new \Graphpinator\Argument\Argument('if', \Graphpinator\Container\Container::Boolean()->notNull()),
             ]),
             static function (bool $if) : string {
                 return $if

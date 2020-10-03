@@ -9,9 +9,9 @@ final class Field extends \Graphpinator\Type\Type
     protected const NAME = '__Field';
     protected const DESCRIPTION = 'Built-in introspection type.';
 
-    private \Graphpinator\Type\Container\Container $container;
+    private \Graphpinator\Container\Container $container;
 
-    public function __construct(\Graphpinator\Type\Container\Container $container)
+    public function __construct(\Graphpinator\Container\Container $container)
     {
         parent::__construct();
 
@@ -28,14 +28,14 @@ final class Field extends \Graphpinator\Type\Type
         return new \Graphpinator\Field\ResolvableFieldSet([
             new \Graphpinator\Field\ResolvableField(
                 'name',
-                \Graphpinator\Type\Container\Container::String()->notNull(),
+                \Graphpinator\Container\Container::String()->notNull(),
                 static function (\Graphpinator\Field\Field $field) : string {
                     return $field->getName();
                 },
             ),
             new \Graphpinator\Field\ResolvableField(
                 'description',
-                \Graphpinator\Type\Container\Container::String(),
+                \Graphpinator\Container\Container::String(),
                 static function (\Graphpinator\Field\Field $field) : ?string {
                     return $field->getDescription();
                 },
@@ -56,14 +56,14 @@ final class Field extends \Graphpinator\Type\Type
             ),
             new \Graphpinator\Field\ResolvableField(
                 'isDeprecated',
-                \Graphpinator\Type\Container\Container::Boolean()->notNull(),
+                \Graphpinator\Container\Container::Boolean()->notNull(),
                 static function (\Graphpinator\Field\Field $field) : bool {
                     return $field->isDeprecated();
                 },
             ),
             new \Graphpinator\Field\ResolvableField(
                 'deprecationReason',
-                \Graphpinator\Type\Container\Container::String(),
+                \Graphpinator\Container\Container::String(),
                 static function (\Graphpinator\Field\Field $field) : ?string {
                     return $field->getDeprecationReason();
                 },

@@ -11,9 +11,9 @@ final class Type extends \Graphpinator\Type\Type
     protected const NAME = '__Type';
     protected const DESCRIPTION = 'Built-in introspection type.';
 
-    private \Graphpinator\Type\Container\Container $container;
+    private \Graphpinator\Container\Container $container;
 
-    public function __construct(\Graphpinator\Type\Container\Container $container)
+    public function __construct(\Graphpinator\Container\Container $container)
     {
         parent::__construct();
 
@@ -37,7 +37,7 @@ final class Type extends \Graphpinator\Type\Type
             ),
             new \Graphpinator\Field\ResolvableField(
                 'name',
-                \Graphpinator\Type\Container\Container::String(),
+                \Graphpinator\Container\Container::String(),
                 static function (Definition $definition) : ?string {
                     return $definition instanceof \Graphpinator\Type\Contract\NamedDefinition
                         ? $definition->getName()
@@ -46,7 +46,7 @@ final class Type extends \Graphpinator\Type\Type
             ),
             new \Graphpinator\Field\ResolvableField(
                 'description',
-                \Graphpinator\Type\Container\Container::String(),
+                \Graphpinator\Container\Container::String(),
                 static function (Definition $definition) : ?string {
                     return $definition instanceof \Graphpinator\Type\Contract\NamedDefinition
                         ? $definition->getDescription()
@@ -78,7 +78,7 @@ final class Type extends \Graphpinator\Type\Type
                     return new \Graphpinator\Field\FieldSet($filtered);
                 },
                 new \Graphpinator\Argument\ArgumentSet([
-                    new \Graphpinator\Argument\Argument('includeDeprecated', \Graphpinator\Type\Container\Container::Boolean()->notNull(), false),
+                    new \Graphpinator\Argument\Argument('includeDeprecated', \Graphpinator\Container\Container::Boolean()->notNull(), false),
                 ]),
             ),
             new \Graphpinator\Field\ResolvableField(
@@ -139,7 +139,7 @@ final class Type extends \Graphpinator\Type\Type
                     return new \Graphpinator\Type\Enum\EnumItemSet($filtered);
                 },
                 new \Graphpinator\Argument\ArgumentSet([
-                    new \Graphpinator\Argument\Argument('includeDeprecated', \Graphpinator\Type\Container\Container::Boolean()->notNull(), false),
+                    new \Graphpinator\Argument\Argument('includeDeprecated', \Graphpinator\Container\Container::Boolean()->notNull(), false),
                 ]),
             ),
             new \Graphpinator\Field\ResolvableField(

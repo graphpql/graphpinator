@@ -51,7 +51,7 @@ final class FieldSet extends \Infinityloop\Utils\ObjectSet
     }
 
     public function normalize(
-        \Graphpinator\Type\Container\Container $typeContainer,
+        \Graphpinator\Container\Container $typeContainer,
         \Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions
     ) : \Graphpinator\Normalizer\FieldSet
     {

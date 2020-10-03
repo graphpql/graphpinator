@@ -55,7 +55,7 @@ final class Field
     }
 
     public function normalize(
-        \Graphpinator\Type\Container\Container $typeContainer,
+        \Graphpinator\Container\Container $typeContainer,
         \Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions
     ) : \Graphpinator\Normalizer\Field
     {

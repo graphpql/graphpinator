@@ -29,7 +29,7 @@ final class NamedFragmentSpread implements \Graphpinator\Parser\FragmentSpread\F
     }
 
     public function normalize(
-        \Graphpinator\Type\Container\Container $typeContainer,
+        \Graphpinator\Container\Container $typeContainer,
         \Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions
     ) : \Graphpinator\Normalizer\FragmentSpread\FragmentSpread
     {

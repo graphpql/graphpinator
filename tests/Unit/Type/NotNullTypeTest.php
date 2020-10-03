@@ -16,7 +16,7 @@ final class NotNullTypeTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Field\ResolvableFieldSet([
                     new \Graphpinator\Field\ResolvableField(
                         'field',
-                        \Graphpinator\Type\Container\Container::String(),
+                        \Graphpinator\Container\Container::String(),
                         static function (int $parent) {
                             if ($parent !== 123) {
                                 throw new \Exception();
@@ -52,13 +52,13 @@ final class NotNullTypeTest extends \PHPUnit\Framework\TestCase
 
     public function testValidateValue() : void
     {
-        $type = \Graphpinator\Type\Container\Container::String()->notNull();
+        $type = \Graphpinator\Container\Container::String()->notNull();
         self::assertNull($type->validateValue('123'));
     }
 
     public function testApplyDefaults() : void
     {
-        $type = \Graphpinator\Type\Container\Container::String()->notNull();
+        $type = \Graphpinator\Container\Container::String()->notNull();
         self::assertSame('123', $type->applyDefaults('123'));
     }
 
@@ -67,13 +67,13 @@ final class NotNullTypeTest extends \PHPUnit\Framework\TestCase
         //phpcs:ignore SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly.ReferencedGeneralException
         $this->expectException(\Exception::class);
 
-        $type = \Graphpinator\Type\Container\Container::String()->notNull();
+        $type = \Graphpinator\Container\Container::String()->notNull();
         $type->validateValue(null);
     }
 
     public function testInstanceOf() : void
     {
-        $type = \Graphpinator\Type\Container\Container::String()->notNull();
+        $type = \Graphpinator\Container\Container::String()->notNull();
 
         self::assertTrue($type->isInstanceOf($type));
         self::assertFalse($type->isInstanceOf($type->getInnerType()));

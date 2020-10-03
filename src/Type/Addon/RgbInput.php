@@ -14,17 +14,17 @@ class RgbInput extends \Graphpinator\Type\InputType
         return new \Graphpinator\Argument\ArgumentSet([
             (new \Graphpinator\Argument\Argument(
                 'red',
-                \Graphpinator\Type\Container\Container::Int()->notNull(),
+                \Graphpinator\Container\Container::Int()->notNull(),
                 0,
             ))->addConstraint(new \Graphpinator\Constraint\IntConstraint(0, 255)),
             (new \Graphpinator\Argument\Argument(
                 'green',
-                \Graphpinator\Type\Container\Container::Int()->notNull(),
+                \Graphpinator\Container\Container::Int()->notNull(),
                 0,
             ))->addConstraint(new \Graphpinator\Constraint\IntConstraint(0, 255)),
             (new \Graphpinator\Argument\Argument(
                 'blue',
-                \Graphpinator\Type\Container\Container::Int()->notNull(),
+                \Graphpinator\Container\Container::Int()->notNull(),
                 0,
             ))->addConstraint(new \Graphpinator\Constraint\IntConstraint(0, 255)),
         ]);

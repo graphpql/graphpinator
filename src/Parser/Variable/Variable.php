@@ -39,7 +39,7 @@ final class Variable
     }
 
     public function normalize(
-        \Graphpinator\Type\Container\Container $typeContainer
+        \Graphpinator\Container\Container $typeContainer
     ) : \Graphpinator\Normalizer\Variable\Variable
     {
         return new \Graphpinator\Normalizer\Variable\Variable(

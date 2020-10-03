@@ -18,9 +18,9 @@ final class IntConstraintDirective extends \Graphpinator\Directive\TypeSystemDir
             ],
             false,
             new \Graphpinator\Argument\ArgumentSet([
-                new \Graphpinator\Argument\Argument('min', \Graphpinator\Type\Container\Container::Int()),
-                new \Graphpinator\Argument\Argument('max', \Graphpinator\Type\Container\Container::Int()),
-                new \Graphpinator\Argument\Argument('oneOf', \Graphpinator\Type\Container\Container::Int()->notNull()->list()),
+                new \Graphpinator\Argument\Argument('min', \Graphpinator\Container\Container::Int()),
+                new \Graphpinator\Argument\Argument('max', \Graphpinator\Container\Container::Int()),
+                new \Graphpinator\Argument\Argument('oneOf', \Graphpinator\Container\Container::Int()->notNull()->list()),
             ]),
         );
     }

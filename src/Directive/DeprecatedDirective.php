@@ -18,7 +18,7 @@ final class DeprecatedDirective extends \Graphpinator\Directive\TypeSystemDirect
             ],
             false,
             new \Graphpinator\Argument\ArgumentSet([
-                new \Graphpinator\Argument\Argument('reason', \Graphpinator\Type\Container\Container::String()),
+                new \Graphpinator\Argument\Argument('reason', \Graphpinator\Container\Container::String()),
             ]),
         );
     }

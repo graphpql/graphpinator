@@ -14,21 +14,21 @@ class RgbType extends \Graphpinator\Type\Type
         return new \Graphpinator\Field\ResolvableFieldSet([
             new \Graphpinator\Field\ResolvableField(
                 'red',
-                \Graphpinator\Type\Container\Container::Int()->notNull(),
+                \Graphpinator\Container\Container::Int()->notNull(),
                 static function (\stdClass $rgb) {
                     return $rgb->red;
                 },
             ),
             new \Graphpinator\Field\ResolvableField(
                 'green',
-                \Graphpinator\Type\Container\Container::Int()->notNull(),
+                \Graphpinator\Container\Container::Int()->notNull(),
                 static function (\stdClass $rgb) {
                     return $rgb->green;
                 },
             ),
             new \Graphpinator\Field\ResolvableField(
                 'blue',
-                \Graphpinator\Type\Container\Container::Int()->notNull(),
+                \Graphpinator\Container\Container::Int()->notNull(),
                 static function (\stdClass $rgb) {
                     return $rgb->blue;
                 },
