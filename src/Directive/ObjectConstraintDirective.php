@@ -4,16 +4,18 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Directive;
 
-final class InputConstraintDirective extends \Graphpinator\Directive\TypeSystemDirective
+final class ObjectConstraintDirective extends \Graphpinator\Directive\TypeSystemDirective
 {
-    protected const NAME = 'inputConstraint';
-    protected const DESCRIPTION = 'Graphpinator inputConstraint directive.';
+    protected const NAME = 'objectConstraint';
+    protected const DESCRIPTION = 'Graphpinator objectConstraint directive.';
 
     public function __construct()
     {
         parent::__construct(
             [
                 TypeSystemDirectiveLocation::INPUT_OBJECT,
+                TypeSystemDirectiveLocation::INTERFACE,
+                TypeSystemDirectiveLocation::OBJECT,
             ],
             false,
             new \Graphpinator\Argument\ArgumentSet([

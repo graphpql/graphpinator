@@ -180,13 +180,20 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                                     'isRepeatable' => false,
                                 ],
                                 [
-                                    'name' => 'inputConstraint',
-                                    'description' => 'Graphpinator inputConstraint directive.',
+                                    'name' => 'objectConstraint',
+                                    'description' => 'Graphpinator objectConstraint directive.',
                                     'args' => [
                                         ['name' => 'atLeastOne'],
                                         ['name' => 'exactlyOne'],
                                     ],
-                                    'locations' => ['INPUT_OBJECT'],
+                                    'locations' => ['INPUT_OBJECT', 'INTERFACE', 'OBJECT'],
+                                    'isRepeatable' => false,
+                                ],
+                                [
+                                    'name' => 'argumentFieldConstraint',
+                                    'description' => 'Graphpinator argumentFieldConstraint directive.',
+                                    'args' => [],
+                                    'locations' => ['ARGUMENT_DEFINITION', 'FIELD_DEFINITION', 'INPUT_FIELD_DEFINITION'],
                                     'isRepeatable' => false,
                                 ],
                                 [
@@ -893,7 +900,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
             \Graphpinator\Constraint\FloatConstraint::class => \Graphpinator\Type\Container\Container::directiveFloatConstraint(),
             \Graphpinator\Constraint\StringConstraint::class => \Graphpinator\Type\Container\Container::directiveStringConstraint(),
             \Graphpinator\Constraint\ListConstraint::class => \Graphpinator\Type\Container\Container::directiveListConstraint(),
-            \Graphpinator\Constraint\InputConstraint::class => \Graphpinator\Type\Container\Container::directiveInputConstraint(),
+            \Graphpinator\Constraint\ObjectConstraint::class => \Graphpinator\Type\Container\Container::directiveObjectConstraint(),
         ];
 
         foreach ($array as $constraintClass => $directive) {

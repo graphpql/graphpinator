@@ -8,7 +8,7 @@ interface Constraint
 {
     public function validate(\Graphpinator\Resolver\Value\ValidatedValue $value) : void;
 
-    public function validateType(\Graphpinator\Type\Contract\Inputable $type) : bool;
+    public function validateType(\Graphpinator\Type\Contract\Definition $type) : bool;
 
     public function print() : string;
 }

@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Constraint;
 
-final class ListConstraint extends \Graphpinator\Constraint\ArgumentConstraint
+final class ListConstraint extends \Graphpinator\Constraint\ArgumentFieldConstraint
 {
     private ?\stdClass $options;
 
@@ -23,7 +23,7 @@ final class ListConstraint extends \Graphpinator\Constraint\ArgumentConstraint
         return '@listConstraint(' . self::recursivePrintConstraint($this->options) . ')';
     }
 
-    public function validateType(\Graphpinator\Type\Contract\Inputable $type) : bool
+    public function validateType(\Graphpinator\Type\Contract\Definition $type) : bool
     {
         return self::recursiveValidateType($this->options, $type);
     }
@@ -58,7 +58,7 @@ final class ListConstraint extends \Graphpinator\Constraint\ArgumentConstraint
          return \implode(', ', $components);
     }
 
-    private static function recursiveValidateType(\stdClass $options, \Graphpinator\Type\Contract\Inputable $type) : bool
+    private static function recursiveValidateType(\stdClass $options, \Graphpinator\Type\Contract\Definition $type) : bool
     {
         $usedType = $type;
 

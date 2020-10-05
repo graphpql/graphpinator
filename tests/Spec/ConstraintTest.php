@@ -540,7 +540,7 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
 
             public function __construct()
             {
-                $this->addConstraint(new \Graphpinator\Constraint\InputConstraint([]));
+                $this->addConstraint(new \Graphpinator\Constraint\ObjectConstraint([]));
             }
 
             protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
@@ -560,7 +560,7 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
 
             public function __construct()
             {
-                $this->addConstraint(new \Graphpinator\Constraint\InputConstraint(['string', 1]));
+                $this->addConstraint(new \Graphpinator\Constraint\ObjectConstraint(['string', 1]));
             }
 
             protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
@@ -580,7 +580,7 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
 
             public function __construct()
             {
-                $this->addConstraint(new \Graphpinator\Constraint\InputConstraint(null, ['string', 1]));
+                $this->addConstraint(new \Graphpinator\Constraint\ObjectConstraint(null, ['string', 1]));
             }
 
             protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
@@ -600,7 +600,7 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
 
             public function __construct()
             {
-                $this->addConstraint(new \Graphpinator\Constraint\InputConstraint(null, []));
+                $this->addConstraint(new \Graphpinator\Constraint\ObjectConstraint(null, []));
             }
 
             protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
@@ -620,7 +620,7 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
 
             public function __construct()
             {
-                $this->addConstraint(new \Graphpinator\Constraint\InputConstraint(['arg1', 'arg2']));
+                $this->addConstraint(new \Graphpinator\Constraint\ObjectConstraint(['arg1', 'arg2']));
             }
 
             protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
@@ -649,7 +649,7 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
 
             public function __construct()
             {
-                $this->addConstraint(new \Graphpinator\Constraint\InputConstraint(null, ['arg1', 'arg2']));
+                $this->addConstraint(new \Graphpinator\Constraint\ObjectConstraint(null, ['arg1', 'arg2']));
             }
 
             protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet

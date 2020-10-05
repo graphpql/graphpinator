@@ -8,7 +8,7 @@ final class Argument implements \Graphpinator\Printable\Printable
 {
     use \Nette\SmartObject;
     use \Graphpinator\Utils\TOptionalDescription;
-    use \Graphpinator\Utils\THasConstraints;
+    use \Graphpinator\Utils\TArgumentFieldHasConstraints;
 
     private string $name;
     private \Graphpinator\Type\Contract\Inputable $type;
@@ -40,17 +40,6 @@ final class Argument implements \Graphpinator\Printable\Printable
     public function getDefaultValue() : ?\Graphpinator\Resolver\Value\ValidatedValue
     {
         return $this->defaultValue;
-    }
-
-    public function addConstraint(\Graphpinator\Constraint\ArgumentConstraint $constraint) : self
-    {
-        if (!$constraint->validateType($this->type)) {
-            throw new \Graphpinator\Exception\Constraint\InvalidConstraintType();
-        }
-
-        $this->constraints[] = $constraint;
-
-        return $this;
     }
 
     public function printSchema(int $indentLevel = 1) : string

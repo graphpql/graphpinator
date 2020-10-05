@@ -59,7 +59,8 @@ class SimpleContainer extends \Graphpinator\Type\Container\Container
         $this->directives['floatConstraint'] = self::directiveFloatConstraint();
         $this->directives['stringConstraint'] = self::directiveStringConstraint();
         $this->directives['listConstraint'] = self::directiveListConstraint();
-        $this->directives['inputConstraint'] = self::directiveInputConstraint();
+        $this->directives['objectConstraint'] = self::directiveObjectConstraint();
+        $this->directives['argumentFieldConstraint'] = self::directiveArgumentFieldConstraint();
 
         $this->combinedTypes = \array_merge($this->types, $this->builtInTypes);
         $this->combinedDirectives = \array_merge($this->directives, $this->builtInDirectives);

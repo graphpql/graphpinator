@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Constraint;
 
-final class InputConstraint implements \Graphpinator\Constraint\Constraint
+final class ObjectConstraint implements \Graphpinator\Constraint\Constraint
 {
     use \Nette\SmartObject;
 
@@ -53,7 +53,7 @@ final class InputConstraint implements \Graphpinator\Constraint\Constraint
             $components[] = 'exactlyOne: ["' . \implode('", "', $this->exactlyOne) . '"]';
         }
 
-        return '@inputConstraint(' . \implode(', ', $components) . ')';
+        return '@objectConstraint(' . \implode(', ', $components) . ')';
     }
 
     public function validate(\Graphpinator\Resolver\Value\ValidatedValue $value) : void
@@ -94,7 +94,7 @@ final class InputConstraint implements \Graphpinator\Constraint\Constraint
         }
     }
 
-    public function validateType(\Graphpinator\Type\Contract\Inputable $definition) : bool
+    public function validateType(\Graphpinator\Type\Contract\Definition $definition) : bool
     {
         if (!$definition instanceof \Graphpinator\Type\InputType) {
             return false;

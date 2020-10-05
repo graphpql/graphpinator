@@ -340,7 +340,7 @@ final class TestSchema
 
             public function __construct()
             {
-                $this->addConstraint(new \Graphpinator\Constraint\InputConstraint([
+                $this->addConstraint(new \Graphpinator\Constraint\ObjectConstraint([
                     'intMinArg',
                     'intMaxArg',
                     'intOneOfArg',
@@ -444,7 +444,7 @@ final class TestSchema
 
             public function __construct()
             {
-                $this->addConstraint(new \Graphpinator\Constraint\InputConstraint(null, [
+                $this->addConstraint(new \Graphpinator\Constraint\ObjectConstraint(null, [
                     'int1',
                     'int2',
                 ]));
