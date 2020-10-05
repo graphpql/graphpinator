@@ -13,6 +13,7 @@ abstract class ScalarType extends \Graphpinator\Type\Contract\LeafDefinition
 
     final public function printSchema() : string
     {
-        return 'scalar ' . $this->getName();
+        return $this->printDescription()
+            . 'scalar ' . $this->getName();
     }
 }
