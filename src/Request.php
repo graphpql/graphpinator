@@ -24,4 +24,14 @@ final class Request
     {
         return $this->operation->resolve($this->variables);
     }
+
+    public function getOperation() : \Graphpinator\Normalizer\Operation\Operation
+    {
+        return $this->operation;
+    }
+
+    public function getVariables() : \Graphpinator\Resolver\VariableValueSet
+    {
+        return $this->variables;
+    }
 }
