@@ -22,12 +22,6 @@ abstract class LeafDefinition extends \Graphpinator\Type\Contract\ConcreteDefini
         return $parentResult->getResult();
     }
 
-    //@phpcs:ignore SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingAnyTypeHint
-    final public function applyDefaults($value)
-    {
-        return $value;
-    }
-
     final public function createValue($rawValue) : \Graphpinator\Resolver\Value\ValidatedValue
     {
         return \Graphpinator\Resolver\Value\LeafValue::create($rawValue, $this);

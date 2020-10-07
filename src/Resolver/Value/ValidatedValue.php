@@ -23,10 +23,6 @@ abstract class ValidatedValue implements \JsonSerializable
             return new \Graphpinator\Resolver\Value\NullValue($type);
         }
 
-        if ($type instanceof \Graphpinator\Type\Contract\Inputable && $type->isInputable()) {
-            $rawValue = $type->applyDefaults($rawValue);
-        }
-
         return new static($rawValue, $type);
     }
 

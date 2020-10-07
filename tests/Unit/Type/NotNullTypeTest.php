@@ -56,12 +56,6 @@ final class NotNullTypeTest extends \PHPUnit\Framework\TestCase
         self::assertNull($type->validateValue('123'));
     }
 
-    public function testApplyDefaults() : void
-    {
-        $type = \Graphpinator\Container\Container::String()->notNull();
-        self::assertSame('123', $type->applyDefaults('123'));
-    }
-
     public function testValidateValueInvalidValue() : void
     {
         //phpcs:ignore SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly.ReferencedGeneralException

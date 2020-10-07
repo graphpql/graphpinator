@@ -16,15 +16,6 @@ abstract class InputType extends \Graphpinator\Type\Contract\ConcreteDefinition 
         return \Graphpinator\Resolver\Value\InputValue::create($rawValue, $this);
     }
 
-    final public function applyDefaults($value) : \stdClass
-    {
-        if (!$value instanceof \stdClass) {
-            throw new \Graphpinator\Exception\Resolver\SelectionOnComposite();
-        }
-
-        return self::merge($value, (object) $this->getArguments()->getRawDefaults());
-    }
-
     final public function getArguments() : \Graphpinator\Argument\ArgumentSet
     {
         if (!$this->arguments instanceof \Graphpinator\Argument\ArgumentSet) {
@@ -59,22 +50,4 @@ abstract class InputType extends \Graphpinator\Type\Contract\ConcreteDefinition 
     }
 
     abstract protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet;
-
-    private static function merge(\stdClass $core, \stdClass $supplement) : \stdClass
-    {
-        foreach ($supplement as $key => $value) {
-            if (\property_exists($core, $key)) {
-                if ($core->{$key} instanceof \stdClass &&
-                    $supplement->{$key} instanceof \stdClass) {
-                    $core->{$key} = self::merge($core->{$key}, $supplement->{$key});
-                }
-
-                continue;
-            }
-
-            $core->{$key} = $value;
-        }
-
-        return $core;
-    }
 }
