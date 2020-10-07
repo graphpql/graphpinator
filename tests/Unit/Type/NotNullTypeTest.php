@@ -53,7 +53,7 @@ final class NotNullTypeTest extends \PHPUnit\Framework\TestCase
     public function testValidateValue() : void
     {
         $type = \Graphpinator\Container\Container::String()->notNull();
-        self::assertNull($type->validateValue('123'));
+        self::assertNull($type->validateResolvedValue('123'));
     }
 
     public function testApplyDefaults() : void
@@ -68,7 +68,7 @@ final class NotNullTypeTest extends \PHPUnit\Framework\TestCase
         $this->expectException(\Exception::class);
 
         $type = \Graphpinator\Container\Container::String()->notNull();
-        $type->validateValue(null);
+        $type->validateResolvedValue(null);
     }
 
     public function testInstanceOf() : void

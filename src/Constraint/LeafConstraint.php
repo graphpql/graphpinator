@@ -6,19 +6,16 @@ namespace Graphpinator\Constraint;
 
 abstract class LeafConstraint extends \Graphpinator\Constraint\ArgumentConstraint
 {
-    public function validate(\Graphpinator\Resolver\Value\ValidatedValue $inputValue) : void
+    public function validate(\Graphpinator\Value\InputableValue $value) : void
     {
-        switch (\get_class($inputValue)) {
-            case \Graphpinator\Resolver\Value\NullValue::class:
-                return;
-            case \Graphpinator\Resolver\Value\ListValue::class:
-                foreach ($inputValue as $value) {
-                    $this->validate($value);
-                }
+        if ($value instanceof \Graphpinator\Value\InputableListValue) {
+            foreach ($value as $item) {
+                $this->validate($item);
+            }
 
-                return;
-            default:
-                $this->validateFactoryMethod($inputValue->getRawValue());
+            return;
         }
+
+        parent::validate($value);
     }
 }

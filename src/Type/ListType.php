@@ -6,16 +6,28 @@ namespace Graphpinator\Type;
 
 final class ListType extends \Graphpinator\Type\Contract\ModifierDefinition
 {
-    public function createValue($rawValue) : \Graphpinator\Resolver\Value\ValidatedValue
+    public function createInputableValue($rawValue) : \Graphpinator\Value\InputableValue
     {
-        return \Graphpinator\Resolver\Value\ListValue::create($rawValue, $this);
+        if ($rawValue === null) {
+            return new \Graphpinator\Value\NullValue($this);
+        }
+
+        return new \Graphpinator\Value\InputableListValue($this, $rawValue);
     }
 
-    public function resolve(?\Graphpinator\Normalizer\FieldSet $requestedFields, \Graphpinator\Resolver\FieldResult $parentResult) : array
+    public function createResolvableValue($rawValue) : \Graphpinator\Value\ResolvableValue
     {
-        $listValue = $parentResult->getResult();
+        return new \Graphpinator\Value\ResolvableListValue($this, $rawValue);
+    }
 
-        if (!$listValue instanceof \Graphpinator\Resolver\Value\ListValue) {
+    public function resolve(
+        ?\Graphpinator\Normalizer\FieldSet $requestedFields,
+        \Graphpinator\Value\FieldValue $parentResult
+    ) : \Graphpinator\Value\ResolvableListValue
+    {
+        $listValue = $parentResult->getValue();
+
+        if (!$listValue instanceof \Graphpinator\Value\ResolvableListValue) {
             throw new \Exception('Cannot create list');
         }
 
@@ -25,12 +37,12 @@ final class ListType extends \Graphpinator\Type\Contract\ModifierDefinition
             $return[] = $val->getType()->resolve($requestedFields, \Graphpinator\Resolver\FieldResult::fromValidated($val));
         }
 
-        return $return;
+        return new \Graphpinator\Value\ResolvableListValue($this, $return);
     }
 
-    public function validateValue($rawValue) : void
+    public function validateResolvedValue($rawValue) : void
     {
-        if ($rawValue === null || $rawValue instanceof \Graphpinator\Resolver\Value\ValidatedValue) {
+        if ($rawValue === null) {
             return;
         }
 
@@ -39,27 +51,8 @@ final class ListType extends \Graphpinator\Type\Contract\ModifierDefinition
         }
 
         foreach ($rawValue as $val) {
-            $this->innerType->validateValue($val);
+            $this->innerType->validateResolvedValue($val);
         }
-    }
-
-    public function applyDefaults($value) : ?array
-    {
-        if ($value === null) {
-            return null;
-        }
-
-        if (!\is_iterable($value)) {
-            throw new \Exception('Value has to be list.');
-        }
-
-        $return = [];
-
-        foreach ($value as $val) {
-            $return[] = $this->innerType->applyDefaults($val);
-        }
-
-        return $return;
     }
 
     public function isInstanceOf(\Graphpinator\Type\Contract\Definition $type) : bool

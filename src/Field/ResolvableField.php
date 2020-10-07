@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Field;
 
-use \Graphpinator\Resolver\FieldResult;
+use Graphpinator\Value\FieldValue;
 
 final class ResolvableField extends \Graphpinator\Field\Field
 {
@@ -21,18 +21,18 @@ final class ResolvableField extends \Graphpinator\Field\Field
         $this->resolveFn = $resolveFn;
     }
 
-    public function resolve(FieldResult $parentValue, \Graphpinator\Resolver\ArgumentValueSet $arguments) : FieldResult
+    public function resolve(FieldValue $parentValue, \Graphpinator\Resolver\ArgumentValueSet $arguments) : FieldValue
     {
         $args = $arguments->getRawValues();
-        \array_unshift($args, $parentValue->getResult()->getRawValue());
+        \array_unshift($args, $parentValue->getValue()->getRawValue());
 
         $result = \call_user_func_array($this->resolveFn, $args);
 
-        if (!$result instanceof FieldResult) {
-            return FieldResult::fromRaw($this->type, $result);
+        if (!$result instanceof FieldValue) {
+            return new FieldValue($this->type, $result);
         }
 
-        if ($result->getType()->isInstanceOf($this->type)) {
+        if ($result->getField()->getType()->isInstanceOf($this->type)) {
             return $result;
         }
 

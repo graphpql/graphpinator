@@ -50,7 +50,7 @@ final class Operation
     {
         $data = $this->operation->resolve(
             $this->children->applyVariables($variables),
-            \Graphpinator\Resolver\FieldResult::fromRaw($this->operation, null),
+            new \Graphpinator\Value\FieldValue($this->operation, null),
         );
 
         return new \Graphpinator\Resolver\OperationResult($data);

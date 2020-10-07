@@ -58,7 +58,7 @@ final class RgbaTypeTest extends \PHPUnit\Framework\TestCase
     public function testValidateValue($rawValue) : void
     {
         $rgba = new \Graphpinator\Type\Addon\RgbaType();
-        $rgba->validateValue($rawValue);
+        $rgba->validateResolvedValue($rawValue);
     }
 
     /**
@@ -71,7 +71,7 @@ final class RgbaTypeTest extends \PHPUnit\Framework\TestCase
         $this->expectException(\Exception::class);
 
         $rgba = new \Graphpinator\Type\Addon\RgbaType();
-        $rgba->validateValue($rawValue);
+        $rgba->validateResolvedValue($rawValue);
     }
 
     public function testInputDefaultValue() : void

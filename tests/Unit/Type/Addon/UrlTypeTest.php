@@ -107,7 +107,7 @@ final class UrlTypeTest extends \PHPUnit\Framework\TestCase
     public function testValidateValue(string $rawValue) : void
     {
         $url = new \Graphpinator\Type\Addon\UrlType();
-        $url->validateValue($rawValue);
+        $url->validateResolvedValue($rawValue);
     }
 
     /**
@@ -120,6 +120,6 @@ final class UrlTypeTest extends \PHPUnit\Framework\TestCase
         $this->expectException(\Exception::class);
 
         $url = new \Graphpinator\Type\Addon\UrlType();
-        $url->validateValue($rawValue);
+        $url->validateResolvedValue($rawValue);
     }
 }

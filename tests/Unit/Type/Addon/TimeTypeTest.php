@@ -48,7 +48,7 @@ final class TimeTypeTest extends \PHPUnit\Framework\TestCase
     public function testValidateValue(string $rawValue) : void
     {
         $dateTime = new \Graphpinator\Type\Addon\TimeType();
-        $dateTime->validateValue($rawValue);
+        $dateTime->validateResolvedValue($rawValue);
     }
 
     /**
@@ -61,6 +61,6 @@ final class TimeTypeTest extends \PHPUnit\Framework\TestCase
         $this->expectException(\Exception::class);
 
         $dateTime = new \Graphpinator\Type\Addon\TimeType();
-        $dateTime->validateValue($rawValue);
+        $dateTime->validateResolvedValue($rawValue);
     }
 }

@@ -8,16 +8,16 @@ final class OperationResult implements \JsonSerializable
 {
     use \Nette\SmartObject;
 
-    private ?\stdClass $data;
+    private ?\Graphpinator\Value\TypeValue $data;
     private ?array $errors;
 
-    public function __construct(?\stdClass $data = null, ?array $errors = null)
+    public function __construct(?\Graphpinator\Value\TypeValue $data = null, ?array $errors = null)
     {
         $this->data = $data;
         $this->errors = $errors;
     }
 
-    public function getData() : ?\stdClass
+    public function getData() : ?\Graphpinator\Value\TypeValue
     {
         return $this->data;
     }
@@ -32,7 +32,7 @@ final class OperationResult implements \JsonSerializable
     {
         $return = [];
 
-        if ($this->data instanceof \stdClass) {
+        if ($this->data instanceof \Graphpinator\Value\TypeValue) {
             $return['data'] = $this->data;
         }
 

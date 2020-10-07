@@ -6,8 +6,10 @@ namespace Graphpinator\Type\Contract;
 
 interface Resolvable extends \Graphpinator\Type\Contract\Outputable
 {
-    //@phpcs:ignore SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
-    public function resolve(?\Graphpinator\Normalizer\FieldSet $requestedFields, \Graphpinator\Resolver\FieldResult $parentResult);
+    public function resolve(
+        ?\Graphpinator\Normalizer\FieldSet $requestedFields,
+        \Graphpinator\Value\FieldValue $parentResult
+    ) : \Graphpinator\Value\ResolvableValue;
 
-    public function validateValue($rawValue) : void;
+    public function validateResolvedValue($rawValue) : void;
 }

@@ -4,8 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Type;
 
-abstract class UnionType extends \Graphpinator\Type\Contract\AbstractDefinition implements
-    \Graphpinator\Type\Contract\Outputable
+abstract class UnionType extends \Graphpinator\Type\Contract\AbstractDefinition
 {
     protected \Graphpinator\Utils\ConcreteSet $types;
 

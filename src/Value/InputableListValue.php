@@ -2,23 +2,28 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Resolver\Value;
+namespace Graphpinator\Value;
 
-final class ListValue extends \Graphpinator\Resolver\Value\ValidatedValue implements \Iterator, \Countable
+final class InputableListValue implements InputableValue, \Iterator, \Countable
 {
-    public function __construct($list, \Graphpinator\Type\ListType $type)
+    use \Nette\SmartObject;
+
+    private \Graphpinator\Type\ListType $type;
+    private array $value;
+
+    public function __construct(\Graphpinator\Type\ListType $type, array $rawValue)
     {
-        if (!\is_iterable($list)) {
-            throw new \Exception('Value must be list or null.');
-        }
+        $innerType = $type->getInnerType();
+        \assert($innerType instanceof \Graphpinator\Type\Contract\Inputable);
 
         $value = [];
 
-        foreach ($list as $item) {
-            $value[] = $type->getInnerType()->createValue($item);
+        foreach ($rawValue as $item) {
+            $value[] = $innerType->createInputableValue($item);
         }
 
-        parent::__construct($value, $type);
+        $this->type = $type;
+        $this->value = $value;
     }
 
     public function getRawValue() : array
@@ -26,7 +31,7 @@ final class ListValue extends \Graphpinator\Resolver\Value\ValidatedValue implem
         $return = [];
 
         foreach ($this->value as $listItem) {
-            \assert($listItem instanceof ValidatedValue);
+            \assert($listItem instanceof InputableValue);
 
             $return[] = $listItem->getRawValue();
         }
@@ -34,12 +39,17 @@ final class ListValue extends \Graphpinator\Resolver\Value\ValidatedValue implem
         return $return;
     }
 
+    public function getType() : \Graphpinator\Type\ListType
+    {
+        return $this->type;
+    }
+
     public function printValue() : string
     {
         $component = [];
 
         foreach ($this->value as $value) {
-            \assert($value instanceof ValidatedValue);
+            \assert($value instanceof InputableValue);
 
             $component[] = $value->printValue();
         }
@@ -47,7 +57,12 @@ final class ListValue extends \Graphpinator\Resolver\Value\ValidatedValue implem
         return '[' . \implode(',', $component) . ']';
     }
 
-    public function current() : ValidatedValue
+    public function isNull() : bool
+    {
+        return false;
+    }
+
+    public function current() : InputableValue
     {
         return \current($this->value);
     }

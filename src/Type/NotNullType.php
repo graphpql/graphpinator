@@ -6,36 +6,31 @@ namespace Graphpinator\Type;
 
 final class NotNullType extends \Graphpinator\Type\Contract\ModifierDefinition
 {
-    public function createValue($rawValue) : \Graphpinator\Resolver\Value\ValidatedValue
+    public function createInputableValue($rawValue) : \Graphpinator\Value\InputableListValue
     {
-        $value = $this->innerType->createValue($rawValue);
-
-        if ($value instanceof \Graphpinator\Resolver\Value\NullValue) {
-            throw new \Graphpinator\Exception\Value\ValueCannotBeNull();
-        }
-
-        return $value;
+        return $this->innerType->createInputableValue($rawValue);
     }
 
-    public function validateValue($rawValue) : void
+    public function createResolvableValue($rawValue) : \Graphpinator\Value\ResolvableValue
+    {
+        return $this->innerType->createResolvableValue($rawValue);
+    }
+
+    public function validateResolvedValue($rawValue) : void
     {
         if ($rawValue === null) {
             throw new \Graphpinator\Exception\Value\ValueCannotBeNull();
         }
 
-        $this->innerType->validateValue($rawValue);
+        $this->innerType->validateResolvedValue($rawValue);
     }
 
-    //@phpcs:ignore SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingAnyTypeHint
-    public function resolve(?\Graphpinator\Normalizer\FieldSet $requestedFields, \Graphpinator\Resolver\FieldResult $parentResult)
+    public function resolve(
+        ?\Graphpinator\Normalizer\FieldSet $requestedFields,
+        \Graphpinator\Value\FieldValue $parentResult
+    ) : \Graphpinator\Value\ResolvableValue
     {
         return $this->innerType->resolve($requestedFields, $parentResult);
-    }
-
-    //@phpcs:ignore SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingAnyTypeHint
-    public function applyDefaults($value)
-    {
-        return $this->innerType->applyDefaults($value);
     }
 
     public function isInstanceOf(\Graphpinator\Type\Contract\Definition $type) : bool

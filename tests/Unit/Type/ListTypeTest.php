@@ -49,8 +49,8 @@ final class ListTypeTest extends \PHPUnit\Framework\TestCase
     public function testValidateValue() : void
     {
         $type = \Graphpinator\Container\Container::String()->list();
-        self::assertNull($type->validateValue(['123', '123']));
-        self::assertNull($type->validateValue(null));
+        self::assertNull($type->validateResolvedValue(['123', '123']));
+        self::assertNull($type->validateResolvedValue(null));
     }
 
     public function testValidateValueInvalidValue() : void
@@ -59,7 +59,7 @@ final class ListTypeTest extends \PHPUnit\Framework\TestCase
         $this->expectException(\Exception::class);
 
         $type = \Graphpinator\Container\Container::String()->list();
-        $type->validateValue(['123', 123]);
+        $type->validateResolvedValue(['123', 123]);
     }
 
     public function testValidateValueNoArray() : void
@@ -68,7 +68,7 @@ final class ListTypeTest extends \PHPUnit\Framework\TestCase
         $this->expectException(\Exception::class);
 
         $type = \Graphpinator\Container\Container::String()->list();
-        $type->validateValue(123);
+        $type->validateResolvedValue(123);
     }
 
     public function testInstanceOf() : void

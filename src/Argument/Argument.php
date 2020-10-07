@@ -37,7 +37,7 @@ final class Argument implements \Graphpinator\Printable\Printable
         return $this->type;
     }
 
-    public function getDefaultValue() : ?\Graphpinator\Resolver\Value\ValidatedValue
+    public function getDefaultValue() : ?\Graphpinator\Value\InputableValue
     {
         return $this->defaultValue;
     }

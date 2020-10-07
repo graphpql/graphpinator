@@ -12,23 +12,22 @@ abstract class LeafDefinition extends \Graphpinator\Type\Contract\ConcreteDefini
 
     final public function resolve(
         ?\Graphpinator\Normalizer\FieldSet $requestedFields,
-        \Graphpinator\Resolver\FieldResult $parentResult
-    ) : \Graphpinator\Resolver\Value\ValidatedValue
+        \Graphpinator\Value\FieldValue $parentResult
+    ) : \Graphpinator\Value\LeafValue
     {
         if ($requestedFields instanceof \Graphpinator\Normalizer\FieldSet) {
             throw new \Graphpinator\Exception\Resolver\SelectionOnLeaf();
         }
 
-        return $parentResult->getResult();
+        return $parentResult->getValue();
     }
 
-    //@phpcs:ignore SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingAnyTypeHint
-    final public function applyDefaults($value)
+    final public function createInputableValue($rawValue) : \Graphpinator\Value\InputableValue
     {
-        return $value;
+        return \Graphpinator\Resolver\Value\LeafValue::create($rawValue, $this);
     }
 
-    final public function createValue($rawValue) : \Graphpinator\Resolver\Value\ValidatedValue
+    final public function createResolvableValue($rawValue) : \Graphpinator\Value\ResolvableValue
     {
         return \Graphpinator\Resolver\Value\LeafValue::create($rawValue, $this);
     }

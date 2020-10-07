@@ -32,7 +32,7 @@ final class IntTypeTest extends \PHPUnit\Framework\TestCase
     public function testValidateValue($rawValue) : void
     {
         $int = new \Graphpinator\Type\Scalar\IntType();
-        $int->validateValue($rawValue);
+        $int->validateResolvedValue($rawValue);
 
         self::assertSame($int->getName(), 'Int');
     }
@@ -47,6 +47,6 @@ final class IntTypeTest extends \PHPUnit\Framework\TestCase
         $this->expectException(\Exception::class);
 
         $int = new \Graphpinator\Type\Scalar\IntType();
-        $int->validateValue($rawValue);
+        $int->validateResolvedValue($rawValue);
     }
 }

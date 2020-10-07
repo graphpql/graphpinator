@@ -58,7 +58,7 @@ final class HslaTypeTest extends \PHPUnit\Framework\TestCase
     public function testValidateValue($rawValue) : void
     {
         $hsla = new \Graphpinator\Type\Addon\HslaType();
-        $hsla->validateValue($rawValue);
+        $hsla->validateResolvedValue($rawValue);
     }
 
     /**
@@ -71,7 +71,7 @@ final class HslaTypeTest extends \PHPUnit\Framework\TestCase
         $this->expectException(\Exception::class);
 
         $hsla = new \Graphpinator\Type\Addon\HslaType();
-        $hsla->validateValue($rawValue);
+        $hsla->validateResolvedValue($rawValue);
     }
 
     public function testInputDefaultValue() : void
