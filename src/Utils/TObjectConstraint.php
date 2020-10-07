@@ -4,13 +4,13 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Utils;
 
-trait TArgumentFieldHasConstraints
+trait TObjectConstraint
 {
     use \Graphpinator\Utils\THasConstraints;
 
-    public function addConstraint(\Graphpinator\Constraint\ArgumentFieldConstraint $constraint) : self
+    public function addConstraint(\Graphpinator\Constraint\ObjectConstraint $constraint) : self
     {
-        if (!$constraint->validateType($this->getType())) {
+        if (!$constraint->validateType($this)) {
             throw new \Graphpinator\Exception\Constraint\InvalidConstraintType();
         }
 

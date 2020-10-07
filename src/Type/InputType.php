@@ -7,7 +7,7 @@ namespace Graphpinator\Type;
 abstract class InputType extends \Graphpinator\Type\Contract\ConcreteDefinition implements \Graphpinator\Type\Contract\Inputable
 {
     use \Graphpinator\Printable\TRepeatablePrint;
-    use \Graphpinator\Utils\TObjectHasConstraints;
+    use \Graphpinator\Utils\TObjectConstraint;
 
     protected ?\Graphpinator\Argument\ArgumentSet $arguments = null;
 

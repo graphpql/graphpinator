@@ -158,7 +158,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                                         ['name' => 'max'],
                                         ['name' => 'oneOf'],
                                     ],
-                                    'locations' => ['ARGUMENT_DEFINITION', 'INPUT_FIELD_DEFINITION'],
+                                    'locations' => ['ARGUMENT_DEFINITION', 'INPUT_FIELD_DEFINITION', 'FIELD_DEFINITION'],
                                     'isRepeatable' => false,
                                 ],
                                 [
@@ -169,7 +169,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                                         ['name' => 'max'],
                                         ['name' => 'oneOf'],
                                     ],
-                                    'locations' => ['ARGUMENT_DEFINITION', 'INPUT_FIELD_DEFINITION'],
+                                    'locations' => ['ARGUMENT_DEFINITION', 'INPUT_FIELD_DEFINITION', 'FIELD_DEFINITION'],
                                     'isRepeatable' => false,
                                 ],
                                 [
@@ -181,7 +181,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                                         ['name' => 'regex'],
                                         ['name' => 'oneOf'],
                                     ],
-                                    'locations' => ['ARGUMENT_DEFINITION', 'INPUT_FIELD_DEFINITION'],
+                                    'locations' => ['ARGUMENT_DEFINITION', 'INPUT_FIELD_DEFINITION', 'FIELD_DEFINITION'],
                                     'isRepeatable' => false,
                                 ],
                                 [
@@ -193,7 +193,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                                         ['name' => 'unique'],
                                         ['name' => 'innerList'],
                                     ],
-                                    'locations' => ['ARGUMENT_DEFINITION', 'INPUT_FIELD_DEFINITION'],
+                                    'locations' => ['ARGUMENT_DEFINITION', 'INPUT_FIELD_DEFINITION', 'FIELD_DEFINITION'],
                                     'isRepeatable' => false,
                                 ],
                                 [
@@ -204,13 +204,6 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                                         ['name' => 'exactlyOne'],
                                     ],
                                     'locations' => ['INPUT_OBJECT', 'INTERFACE', 'OBJECT'],
-                                    'isRepeatable' => false,
-                                ],
-                                [
-                                    'name' => 'argumentFieldConstraint',
-                                    'description' => 'Graphpinator argumentFieldConstraint directive.',
-                                    'args' => [],
-                                    'locations' => ['ARGUMENT_DEFINITION', 'FIELD_DEFINITION', 'INPUT_FIELD_DEFINITION'],
                                     'isRepeatable' => false,
                                 ],
                                 [

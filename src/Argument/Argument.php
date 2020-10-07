@@ -8,7 +8,7 @@ final class Argument implements \Graphpinator\Printable\Printable
 {
     use \Nette\SmartObject;
     use \Graphpinator\Utils\TOptionalDescription;
-    use \Graphpinator\Utils\TArgumentFieldHasConstraints;
+    use \Graphpinator\Utils\TFieldConstraint;
 
     private string $name;
     private \Graphpinator\Type\Contract\Inputable $type;

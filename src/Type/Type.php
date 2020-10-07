@@ -10,7 +10,7 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
 {
     use \Graphpinator\Type\Contract\TResolvable;
     use \Graphpinator\Type\Contract\TInterfaceImplementor;
-    use \Graphpinator\Utils\TObjectHasConstraints;
+    use \Graphpinator\Utils\TObjectConstraint;
     use \Graphpinator\Printable\TRepeatablePrint;
 
     protected ?\Graphpinator\Field\ResolvableFieldSet $metaFields = null;

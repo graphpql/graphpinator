@@ -10,7 +10,7 @@ abstract class InterfaceType extends \Graphpinator\Type\Contract\AbstractDefinit
 {
     use \Graphpinator\Type\Contract\TInterfaceImplementor;
     use \Graphpinator\Printable\TRepeatablePrint;
-    use \Graphpinator\Utils\TObjectHasConstraints;
+    use \Graphpinator\Utils\TObjectConstraint;
 
     public function __construct(?\Graphpinator\Utils\InterfaceSet $implements = null)
     {

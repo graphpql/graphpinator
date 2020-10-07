@@ -139,14 +139,6 @@ abstract class Container
     }
 
     /**
-     * Graphpinator ArgumentFieldConstraint directive.
-     */
-    public static function directiveArgumentFieldConstraint() : \Graphpinator\Directive\ArgumentFieldConstraintDirective
-    {
-        return new \Graphpinator\Directive\ArgumentFieldConstraintDirective();
-    }
-
-    /**
      * Graphpinator ListConstraint input.
      */
     public static function listConstraintInput() : \Graphpinator\Constraint\ListConstraintInput
