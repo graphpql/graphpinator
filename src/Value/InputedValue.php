@@ -6,7 +6,7 @@ namespace Graphpinator\Value;
 
 interface InputedValue extends Value
 {
-    public function printValue() : string;
+    public function printValue(bool $prettyPrint = false, int $indentLevel = 1) : string;
 
     public function getType() : \Graphpinator\Type\Contract\Inputable;
 }

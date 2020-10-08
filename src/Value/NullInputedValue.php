@@ -30,7 +30,7 @@ final class NullInputedValue implements InputedValue, NullValue
         return $this->type;
     }
 
-    public function printValue() : string
+    public function printValue(bool $prettyPrint = false, int $indentLevel = 1) : string
     {
         return 'null';
     }

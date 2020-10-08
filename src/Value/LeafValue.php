@@ -36,7 +36,7 @@ final class LeafValue implements InputedValue, OutputValue
         return $this->rawValue;
     }
 
-    public function printValue() : string
+    public function printValue(bool $prettyPrint = false, int $indentLevel = 1) : string
     {
         return \json_encode($this->rawValue, \JSON_THROW_ON_ERROR);
     }

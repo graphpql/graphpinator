@@ -44,8 +44,12 @@ final class ListInputedValue implements InputedValue, ListValue, \Iterator
         return $this->type;
     }
 
-    public function printValue() : string
+    public function printValue(bool $prettyPrint = false, int $indentLevel = 1) : string
     {
+        if ($prettyPrint) {
+            return $this->prettyPrint($indentLevel);
+        }
+
         $component = [];
 
         foreach ($this->value as $value) {
@@ -80,5 +84,24 @@ final class ListInputedValue implements InputedValue, ListValue, \Iterator
     public function rewind() : void
     {
         \reset($this->value);
+    }
+
+    private function prettyPrint(int $indentLevel = 1) : string
+    {
+        if (\count($this->value) === 0) {
+            return '[]';
+        }
+
+        $component = [];
+        $indent = \str_repeat('  ', $indentLevel);
+        $innerIndent = $indent . '  ';
+
+        foreach ($this->value as $value) {
+            \assert($value instanceof InputedValue);
+
+            $component[] = $value->printValue(true, $indentLevel + 1);
+        }
+
+        return '[' . \PHP_EOL . $innerIndent . \implode(',' . \PHP_EOL . $innerIndent, $component) . \PHP_EOL . $indent . ']';
     }
 }
