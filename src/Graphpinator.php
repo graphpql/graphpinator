@@ -29,7 +29,7 @@ final class Graphpinator
             : new \Graphpinator\Module\ModuleSet([]);
     }
 
-    public function runQuery(\Graphpinator\Json $request) : \Graphpinator\Resolver\OperationResult
+    public function runQuery(\Graphpinator\Json $request) : \Graphpinator\Response
     {
         try {
             $this->validateRequest($request);
@@ -54,7 +54,7 @@ final class Graphpinator
                 throw $exception;
             }
 
-            return new \Graphpinator\Resolver\OperationResult(null, [
+            return new \Graphpinator\Response(null, [
                 $exception instanceof \Graphpinator\Exception\GraphpinatorBase
                     ? $exception
                     : \Graphpinator\Exception\GraphpinatorBase::notOutputableResponse(),
