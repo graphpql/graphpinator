@@ -24,13 +24,13 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldValid { ',
+                    'query' => 'query queryName { fieldUnion { ',
                 ]),
                 \Graphpinator\Json::fromObject((object) ['errors' => [['message' => \Graphpinator\Exception\Parser\UnexpectedEnd::MESSAGE]]]),
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldValid @invalidDirective() { field1 { name } } }',
+                    'query' => 'query queryName { fieldUnion @invalidDirective() { field1 { name } } }',
                 ]),
                 \Graphpinator\Json::fromObject((object) ['errors' => [['message' => 'Server responded with unknown error.']]]),
             ],

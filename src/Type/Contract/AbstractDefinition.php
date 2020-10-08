@@ -10,8 +10,5 @@ abstract class AbstractDefinition extends \Graphpinator\Type\Contract\NamedDefin
 {
     abstract public function isImplementedBy(\Graphpinator\Type\Contract\Definition $definition) : bool;
     
-    public function createResolvableValue($rawValue) : \Graphpinator\Value\ResolvableValue
-    {
-        throw new \Graphpinator\Exception\Resolver\FieldResultAbstract();
-    }
+    abstract public function createResolvedValue($rawValue) : \Graphpinator\Value\TypeIntermediateValue;
 }

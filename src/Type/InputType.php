@@ -11,9 +11,13 @@ abstract class InputType extends \Graphpinator\Type\Contract\ConcreteDefinition 
 
     protected ?\Graphpinator\Argument\ArgumentSet $arguments = null;
 
-    final public function createInputableValue($rawValue) : \Graphpinator\Value\InputableValue
+    final public function createInputedValue($rawValue) : \Graphpinator\Value\InputedValue
     {
-        return \Graphpinator\Resolver\Value\InputValue::create($rawValue, $this);
+        if ($rawValue instanceof \stdClass) {
+            return new \Graphpinator\Value\InputValue($this, $rawValue);
+        }
+
+        return new \Graphpinator\Value\NullInputedValue($this);
     }
 
     final public function getArguments() : \Graphpinator\Argument\ArgumentSet

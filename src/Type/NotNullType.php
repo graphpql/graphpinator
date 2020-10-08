@@ -6,29 +6,34 @@ namespace Graphpinator\Type;
 
 final class NotNullType extends \Graphpinator\Type\Contract\ModifierDefinition
 {
-    public function createInputableValue($rawValue) : \Graphpinator\Value\InputableListValue
+    public function createInputedValue($rawValue) : \Graphpinator\Value\InputedValue
     {
-        return $this->innerType->createInputableValue($rawValue);
-    }
+        \assert($this->innerType instanceof \Graphpinator\Type\Contract\Inputable);
+        $value = $this->innerType->createInputedValue($rawValue);
 
-    public function createResolvableValue($rawValue) : \Graphpinator\Value\ResolvableValue
-    {
-        return $this->innerType->createResolvableValue($rawValue);
-    }
-
-    public function validateResolvedValue($rawValue) : void
-    {
-        if ($rawValue === null) {
+        if ($value instanceof \Graphpinator\Value\NullValue) {
             throw new \Graphpinator\Exception\Value\ValueCannotBeNull();
         }
 
-        $this->innerType->validateResolvedValue($rawValue);
+        return $value;
+    }
+
+    public function createResolvedValue($rawValue): \Graphpinator\Value\ResolvedValue
+    {
+        \assert($this->innerType instanceof \Graphpinator\Type\Contract\Resolvable);
+        $value = $this->innerType->createResolvedValue($rawValue);
+
+        if ($value instanceof \Graphpinator\Value\NullValue) {
+            throw new \Graphpinator\Exception\Value\ValueCannotBeNull();
+        }
+
+        return $value;
     }
 
     public function resolve(
         ?\Graphpinator\Normalizer\FieldSet $requestedFields,
-        \Graphpinator\Value\FieldValue $parentResult
-    ) : \Graphpinator\Value\ResolvableValue
+        \Graphpinator\Value\ResolvedValue $parentResult
+    ) : \Graphpinator\Value\ResolvedValue
     {
         return $this->innerType->resolve($requestedFields, $parentResult);
     }

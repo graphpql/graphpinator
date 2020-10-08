@@ -6,5 +6,5 @@ namespace Graphpinator\Type\Contract;
 
 interface Inputable extends \Graphpinator\Type\Contract\Definition
 {
-    public function createInputableValue($rawValue) : \Graphpinator\Value\InputableValue;
+    public function createInputedValue($rawValue) : \Graphpinator\Value\InputedValue;
 }

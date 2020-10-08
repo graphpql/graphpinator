@@ -19,23 +19,23 @@ final class ArgumentValueSet extends \Infinityloop\Utils\ObjectSet
 
         foreach ($argumentSet as $argument) {
             if ($namedValueSet->offsetExists($argument->getName())) {
-                $value = $argument->getType()->createInputableValue($namedValueSet[$argument->getName()]->getRawValue());
-            } elseif ($argument->getDefaultValue() instanceof \Graphpinator\Value\InputableValue) {
+                $value = $argument->getType()->createInputedValue($namedValueSet[$argument->getName()]->getRawValue());
+            } elseif ($argument->getDefaultValue() instanceof \Graphpinator\Value\InputedValue) {
                 $value = $argument->getDefaultValue();
             } else {
-                $value = $argument->getType()->createInputableValue(null);
+                $value = $argument->getType()->createInputedValue(null);
             }
 
             $this->appendUnique($argument, $value);
         }
     }
 
-    public function current() : \Graphpinator\Value\InputableValue
+    public function current() : \Graphpinator\Value\InputedValue
     {
         return parent::current();
     }
 
-    public function offsetGet($offset) : \Graphpinator\Value\InputableValue
+    public function offsetGet($offset) : \Graphpinator\Value\InputedValue
     {
         return parent::offsetGet($offset);
     }
@@ -51,7 +51,7 @@ final class ArgumentValueSet extends \Infinityloop\Utils\ObjectSet
         return $return;
     }
 
-    private function appendUnique(\Graphpinator\Argument\Argument $argument, \Graphpinator\Value\InputableValue $value) : void
+    private function appendUnique(\Graphpinator\Argument\Argument $argument, \Graphpinator\Value\InputedValue $value) : void
     {
         $argument->validateConstraints($value);
 

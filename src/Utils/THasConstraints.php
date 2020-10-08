@@ -20,7 +20,7 @@ trait THasConstraints
         return $this->constraints;
     }
 
-    public function validateConstraints(\Graphpinator\Value\InputableValue $value) : void
+    public function validateConstraints(\Graphpinator\Value\Value $value) : void
     {
         $this->getConstraints()->validate($value);
     }

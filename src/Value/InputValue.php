@@ -4,7 +4,9 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Value;
 
-final class InputValue implements InputableValue
+use Graphpinator\Argument\ArgumentValue;
+
+final class InputValue implements InputedValue
 {
     use \Nette\SmartObject;
 
@@ -26,13 +28,13 @@ final class InputValue implements InputableValue
         $value = new \stdClass();
 
         foreach ($type->getArguments() as $argument) {
-            $value->{$argument->getName()} = new ArgumentValue($rawValue->{$argument->getName()}, $argument);
+            $value->{$argument->getName()} = new ArgumentValue($argument, $rawValue->{$argument->getName()} ?? null);
         }
-
-        $type->validateConstraints($value);
 
         $this->type = $type;
         $this->value = $value;
+
+        $type->validateConstraints($this);
     }
 
     public function getRawValue() : \stdClass
@@ -40,9 +42,9 @@ final class InputValue implements InputableValue
         $return = new \stdClass();
 
         foreach ($this->value as $fieldName => $fieldValue) {
-            \assert($fieldValue instanceof InputableValue);
+            \assert($fieldValue instanceof ArgumentValue);
 
-            $return->{$fieldName} = $fieldValue->getRawValue();
+            $return->{$fieldName} = $fieldValue->getValue()->getRawValue();
         }
 
         return $return;
@@ -58,17 +60,12 @@ final class InputValue implements InputableValue
         $component = [];
 
         foreach ($this->value as $key => $value) {
-            \assert($value instanceof InputableValue);
+            \assert($value instanceof ArgumentValue);
 
-            $component[$key] = $key . ':' . $value->printValue();
+            $component[$key] = $key . ':' . $value->getValue()->printValue();
         }
 
         return '{' . \implode(',', $component) . '}';
-    }
-
-    public function isNull() : bool
-    {
-        return false;
     }
 
     public function __isset($offset) : bool

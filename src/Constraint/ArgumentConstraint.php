@@ -12,9 +12,9 @@ abstract class ArgumentConstraint implements \Graphpinator\Constraint\Constraint
 
     abstract public function validateType(\Graphpinator\Type\Contract\Inputable $type) : bool;
 
-    public function validate(\Graphpinator\Value\InputableValue $value) : void
+    public function validate(\Graphpinator\Value\Value $value) : void
     {
-        if ($value->isNull()) {
+        if ($value instanceof \Graphpinator\Value\NullValue) {
             return;
         }
 

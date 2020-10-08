@@ -12,16 +12,16 @@ final class VariableValueSet extends \Infinityloop\Utils\ObjectSet
     )
     {
         foreach ($definedVariables as $variable) {
-            $this->array[$variable->getName()] = $variable->createValue($providedValues);
+            $this->array[$variable->getName()] = $variable->createInputedValue($providedValues);
         }
     }
 
-    public function current() : \Graphpinator\Value\InputableValue
+    public function current() : \Graphpinator\Value\InputedValue
     {
         return parent::current();
     }
 
-    public function offsetGet($offset) : \Graphpinator\Value\InputableValue
+    public function offsetGet($offset) : \Graphpinator\Value\InputedValue
     {
         return parent::offsetGet($offset);
     }

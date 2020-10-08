@@ -10,6 +10,4 @@ interface Value
     public function getRawValue();
 
     public function getType() : \Graphpinator\Type\Contract\Definition;
-
-    public function isNull() : bool;
 }

@@ -77,10 +77,10 @@ final class TestSchema
             {
                 return new \Graphpinator\Field\ResolvableFieldSet([
                     new \Graphpinator\Field\ResolvableField(
-                        'fieldValid',
+                        'fieldUnion',
                         TestSchema::getUnion(),
                         static function () {
-                            return \Graphpinator\Resolver\FieldResult::fromRaw(TestSchema::getTypeAbc(), 1);
+                            return 1;
                         },
                     ),
                     new \Graphpinator\Field\ResolvableField(
@@ -113,14 +113,7 @@ final class TestSchema
                         'fieldInvalidType',
                         TestSchema::getUnion(),
                         static function () {
-                            return \Graphpinator\Resolver\FieldResult::fromRaw(\Graphpinator\Container\Container::Int(), 1);
-                        },
-                    ),
-                    new \Graphpinator\Field\ResolvableField(
-                        'fieldInvalidReturn',
-                        TestSchema::getUnion(),
-                        static function () {
-                            return 1;
+                            return 'invalidType';
                         },
                     ),
                     new \Graphpinator\Field\ResolvableField(
@@ -165,7 +158,7 @@ final class TestSchema
                     (new \Graphpinator\Field\ResolvableField(
                         'field1',
                         TestSchema::getInterface(),
-                        static function (int $parent, ?int $arg1, ?\stdClass $arg2) : \Graphpinator\Resolver\FieldResult {
+                        static function (int $parent, ?int $arg1, ?\stdClass $arg2) {
                             $object = new \stdClass();
 
                             if ($arg2 === null) {
@@ -194,7 +187,7 @@ final class TestSchema
                                 $object->name = $concat($arg2);
                             }
 
-                            return \Graphpinator\Resolver\FieldResult::fromRaw(TestSchema::getTypeXyz(), $object);
+                            return $object;
                         },
                         new \Graphpinator\Argument\ArgumentSet([
                             new \Graphpinator\Argument\Argument('arg1', \Graphpinator\Container\Container::Int(), 123),
@@ -248,8 +241,11 @@ final class TestSchema
             protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
             {
                 return new \Graphpinator\Field\ResolvableFieldSet([
-                    new \Graphpinator\Field\ResolvableField('enumList', TestSchema::getSimpleEnum()->list(), static function () {
-                        return ['A', 'B'];
+                    new \Graphpinator\Field\ResolvableField(
+                        'enumList',
+                        TestSchema::getSimpleEnum()->list(),
+                        static function () {
+                            return ['A', 'B'];
                     }),
                 ]);
             }
@@ -503,6 +499,11 @@ final class TestSchema
                     new \Graphpinator\Field\Field('name', \Graphpinator\Container\Container::String()->notNull()),
                 ]);
             }
+
+            public function createResolvedValue($rawValue) : \Graphpinator\Value\TypeIntermediateValue
+            {
+                return new \Graphpinator\Value\TypeIntermediateValue(TestSchema::getTypeXyz(), $rawValue);
+            }
         };
     }
 
@@ -518,6 +519,15 @@ final class TestSchema
                     TestSchema::getTypeAbc(),
                     TestSchema::getTypeXyz(),
                 ]));
+            }
+
+            public function createResolvedValue($rawValue) : \Graphpinator\Value\TypeIntermediateValue
+            {
+                if ($rawValue === 'invalidType') {
+                    return new \Graphpinator\Value\TypeIntermediateValue(TestSchema::getTypeZzz(), $rawValue);
+                }
+
+                return new \Graphpinator\Value\TypeIntermediateValue(TestSchema::getTypeAbc(), $rawValue);
             }
         };
     }

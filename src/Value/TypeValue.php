@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Value;
 
-final class TypeValue implements ResolvableValue
+final class TypeValue implements OutputValue
 {
     use \Nette\SmartObject;
 
@@ -32,10 +32,5 @@ final class TypeValue implements ResolvableValue
     public function jsonSerialize() : \stdClass
     {
         return $this->value;
-    }
-
-    public function isNull() : bool
-    {
-        return false;
     }
 }

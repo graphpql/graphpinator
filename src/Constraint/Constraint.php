@@ -6,7 +6,7 @@ namespace Graphpinator\Constraint;
 
 interface Constraint
 {
-    public function validate(\Graphpinator\Value\InputableValue $value) : void;
+    public function validate(\Graphpinator\Value\Value $value) : void;
 
     public function validateType(\Graphpinator\Type\Contract\Inputable $type) : bool;
 

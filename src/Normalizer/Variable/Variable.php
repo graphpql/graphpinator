@@ -10,7 +10,7 @@ final class Variable
 
     private string $name;
     private \Graphpinator\Type\Contract\Inputable $type;
-    private ?\Graphpinator\Value\InputableValue $default;
+    private ?\Graphpinator\Value\InputedValue $defaultValue;
 
     public function __construct(
         string $name,
@@ -20,8 +20,8 @@ final class Variable
     {
         $this->name = $name;
         $this->type = $type;
-        $this->default = $default instanceof \Graphpinator\Parser\Value\Value
-            ? $type->createInputableValue($default->getRawValue())
+        $this->defaultValue = $default instanceof \Graphpinator\Parser\Value\Value
+            ? $type->createInputedValue($default->getRawValue())
             : null;
     }
 
@@ -35,21 +35,21 @@ final class Variable
         return $this->type;
     }
 
-    public function getDefault() : ?\Graphpinator\Value\InputableValue
+    public function getDefaultValue() : ?\Graphpinator\Value\InputedValue
     {
-        return $this->default;
+        return $this->defaultValue;
     }
 
-    public function createValue(\stdClass $variables) : \Graphpinator\Value\InputableValue
+    public function createInputedValue(\stdClass $variables) : \Graphpinator\Value\InputedValue
     {
         $value = null;
 
         if (isset($variables->{$this->name})) {
             $value = $variables->{$this->name};
-        } elseif ($this->default instanceof \Graphpinator\Value\InputableValue) {
-            return $this->default;
+        } elseif ($this->defaultValue instanceof \Graphpinator\Value\InputedValue) {
+            return $this->defaultValue;
         }
 
-        return $this->type->createInputableValue($value);
+        return $this->type->createInputedValue($value);
     }
 }

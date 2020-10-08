@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Value;
 
-interface InputableValue extends Value
+interface InputedValue extends Value
 {
     public function printValue() : string;
 

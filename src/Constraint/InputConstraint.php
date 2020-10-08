@@ -56,13 +56,16 @@ final class InputConstraint implements \Graphpinator\Constraint\Constraint
         return '@inputConstraint(' . \implode(', ', $components) . ')';
     }
 
-    public function validate(\Graphpinator\Value\InputableValue $value) : void
+    public function validate(\Graphpinator\Value\Value $value) : void
     {
+        \assert($value instanceof \Graphpinator\Value\InputValue);
+
         if (\is_array($this->atLeastOne)) {
             $valid = false;
 
-            foreach ($this->atLeastOne as $item) {
-                if (isset($value->{$item}) && !$value->{$item}->getValue()->isNull()) {
+            foreach ($this->atLeastOne as $fieldName) {
+                if (isset($value->{$fieldName}) &&
+                    !$value->{$fieldName}->getValue() instanceof \Graphpinator\Value\NullValue) {
                     $valid = true;
 
                     break;
@@ -80,8 +83,9 @@ final class InputConstraint implements \Graphpinator\Constraint\Constraint
 
         $count = 0;
 
-        foreach ($this->exactlyOne as $item) {
-            if (isset($value->{$item}) && !$value->{$item}->getValue()->isNull()) {
+        foreach ($this->exactlyOne as $fieldName) {
+            if (isset($value->{$fieldName}) &&
+                !$value->{$fieldName}->getValue() instanceof \Graphpinator\Value\NullValue) {
                 ++$count;
             }
         }

@@ -12,23 +12,31 @@ abstract class LeafDefinition extends \Graphpinator\Type\Contract\ConcreteDefini
 
     final public function resolve(
         ?\Graphpinator\Normalizer\FieldSet $requestedFields,
-        \Graphpinator\Value\FieldValue $parentResult
+        \Graphpinator\Value\ResolvedValue $parentResult
     ) : \Graphpinator\Value\LeafValue
     {
         if ($requestedFields instanceof \Graphpinator\Normalizer\FieldSet) {
             throw new \Graphpinator\Exception\Resolver\SelectionOnLeaf();
         }
 
-        return $parentResult->getValue();
+        return $parentResult;
     }
 
-    final public function createInputableValue($rawValue) : \Graphpinator\Value\InputableValue
+    final public function createInputedValue($rawValue) : \Graphpinator\Value\InputedValue
     {
-        return \Graphpinator\Resolver\Value\LeafValue::create($rawValue, $this);
+        if ($rawValue === null) {
+            return new \Graphpinator\Value\NullInputedValue($this);
+        }
+
+        return new \Graphpinator\Value\LeafValue($this, $rawValue);
     }
 
-    final public function createResolvableValue($rawValue) : \Graphpinator\Value\ResolvableValue
+    final public function createResolvedValue($rawValue) : \Graphpinator\Value\ResolvedValue
     {
-        return \Graphpinator\Resolver\Value\LeafValue::create($rawValue, $this);
+        if ($rawValue === null) {
+            return new \Graphpinator\Value\NullResolvedValue($this);
+        }
+
+        return new \Graphpinator\Value\LeafValue($this, $rawValue);
     }
 }

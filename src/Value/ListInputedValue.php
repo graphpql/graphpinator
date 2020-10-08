@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Value;
 
-final class InputableListValue implements InputableValue, \Iterator, \Countable
+final class ListInputedValue implements InputedValue, ListValue, \Iterator
 {
     use \Nette\SmartObject;
 
@@ -19,7 +19,7 @@ final class InputableListValue implements InputableValue, \Iterator, \Countable
         $value = [];
 
         foreach ($rawValue as $item) {
-            $value[] = $innerType->createInputableValue($item);
+            $value[] = $innerType->createInputedValue($item);
         }
 
         $this->type = $type;
@@ -31,7 +31,7 @@ final class InputableListValue implements InputableValue, \Iterator, \Countable
         $return = [];
 
         foreach ($this->value as $listItem) {
-            \assert($listItem instanceof InputableValue);
+            \assert($listItem instanceof InputedValue);
 
             $return[] = $listItem->getRawValue();
         }
@@ -49,7 +49,7 @@ final class InputableListValue implements InputableValue, \Iterator, \Countable
         $component = [];
 
         foreach ($this->value as $value) {
-            \assert($value instanceof InputableValue);
+            \assert($value instanceof InputedValue);
 
             $component[] = $value->printValue();
         }
@@ -57,12 +57,7 @@ final class InputableListValue implements InputableValue, \Iterator, \Countable
         return '[' . \implode(',', $component) . ']';
     }
 
-    public function isNull() : bool
-    {
-        return false;
-    }
-
-    public function current() : InputableValue
+    public function current() : InputedValue
     {
         return \current($this->value);
     }
@@ -85,10 +80,5 @@ final class InputableListValue implements InputableValue, \Iterator, \Countable
     public function rewind() : void
     {
         \reset($this->value);
-    }
-
-    public function count() : int
-    {
-        return \count($this->value);
     }
 }

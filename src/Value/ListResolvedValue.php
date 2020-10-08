@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Value;
 
-final class ResolvableListValue implements ResolvableValue, \Iterator, \Countable
+final class ListResolvedValue implements OutputValue, ListValue
 {
     use \Nette\SmartObject;
 
@@ -22,7 +22,7 @@ final class ResolvableListValue implements ResolvableValue, \Iterator, \Countabl
         $return = [];
 
         foreach ($this->value as $listItem) {
-            \assert($listItem instanceof ResolvableValue);
+            \assert($listItem instanceof ResolvedValue);
 
             $return[] = $listItem->getRawValue();
         }
@@ -38,40 +38,5 @@ final class ResolvableListValue implements ResolvableValue, \Iterator, \Countabl
     public function jsonSerialize() : array
     {
         return $this->value;
-    }
-
-    public function isNull() : bool
-    {
-        return false;
-    }
-
-    public function current() : ResolvableValue
-    {
-        return \current($this->value);
-    }
-
-    public function next() : void
-    {
-        \next($this->value);
-    }
-
-    public function key() : int
-    {
-        return \key($this->value);
-    }
-
-    public function valid() : bool
-    {
-        return \key($this->value) !== null;
-    }
-
-    public function rewind() : void
-    {
-        \reset($this->value);
-    }
-
-    public function count() : int
-    {
-        return \count($this->value);
     }
 }

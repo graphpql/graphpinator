@@ -50,7 +50,7 @@ final class Operation
     {
         $data = $this->operation->resolve(
             $this->children->applyVariables($variables),
-            new \Graphpinator\Value\FieldValue($this->operation, null),
+            new \Graphpinator\Value\TypeIntermediateValue($this->operation, null),
         );
 
         return new \Graphpinator\Resolver\OperationResult($data);

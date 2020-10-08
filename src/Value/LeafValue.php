@@ -4,28 +4,28 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Value;
 
-final class LeafValue implements InputableValue, ResolvableValue
+final class LeafValue implements InputedValue, OutputValue
 {
     use \Nette\SmartObject;
 
     protected \Graphpinator\Type\Contract\LeafDefinition $type;
-    protected $value;
+    protected $rawValue;
 
     public function __construct(\Graphpinator\Type\Contract\LeafDefinition $type, $rawValue)
     {
         $type->validateResolvedValue($rawValue);
 
         $this->type = $type;
-        $this->value = $rawValue;
+        $this->rawValue = $rawValue;
     }
 
     /** @return string|int|float|bool */
     public function getRawValue()
     {
-        return $this->value;
+        return $this->rawValue;
     }
 
-    public function getType(): \Graphpinator\Type\Contract\LeafDefinition
+    public function getType() : \Graphpinator\Type\Contract\LeafDefinition
     {
         return $this->type;
     }
@@ -33,16 +33,11 @@ final class LeafValue implements InputableValue, ResolvableValue
     /** @return string|int|float|bool */
     public function jsonSerialize()
     {
-        return \json_encode($this->value, \JSON_THROW_ON_ERROR);
+        return $this->rawValue;
     }
 
     public function printValue() : string
     {
-        return \json_encode($this->value, \JSON_THROW_ON_ERROR);
-    }
-
-    public function isNull() : bool
-    {
-        return false;
+        return \json_encode($this->rawValue, \JSON_THROW_ON_ERROR);
     }
 }
