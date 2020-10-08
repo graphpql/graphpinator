@@ -4,8 +4,6 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Field;
 
-use \Graphpinator\Resolver\FieldResult;
-
 final class ResolvableField extends \Graphpinator\Field\Field
 {
     private \Closure $resolveFn;
@@ -21,21 +19,26 @@ final class ResolvableField extends \Graphpinator\Field\Field
         $this->resolveFn = $resolveFn;
     }
 
-    public function resolve(FieldResult $parentValue, \Graphpinator\Resolver\ArgumentValueSet $arguments) : FieldResult
+    public function resolve(
+        \Graphpinator\Value\ResolvedValue $parentValue,
+        \Graphpinator\Normalizer\Field $field
+    ) : \Graphpinator\Field\FieldValue
     {
-        $args = $arguments->getRawValues();
-        \array_unshift($args, $parentValue->getResult()->getRawValue());
+        $arguments = new \Graphpinator\Resolver\ArgumentValueSet($field->getArguments(), $this->getArguments());
+        $rawArguments = $arguments->getRawValues();
+        \array_unshift($rawArguments, $parentValue->getRawValue());
 
-        $result = \call_user_func_array($this->resolveFn, $args);
+        $result = \call_user_func_array($this->resolveFn, $rawArguments);
+        $value = $this->type->createResolvedValue($result);
 
-        if (!$result instanceof FieldResult) {
-            return FieldResult::fromRaw($this->type, $result);
+        if (!$value->getType()->isInstanceOf($this->type)) {
+            throw new \Graphpinator\Exception\Resolver\FieldResultTypeMismatch();
         }
 
-        if ($result->getType()->isInstanceOf($this->type)) {
-            return $result;
-        }
+        $fieldValue = $value instanceof \Graphpinator\Value\NullValue
+            ? $value
+            : $value->getType()->resolve($field->getFields(), $value);
 
-        throw new \Graphpinator\Exception\Resolver\FieldResultTypeMismatch();
+        return new \Graphpinator\Field\FieldValue($this, $fieldValue);
     }
 }

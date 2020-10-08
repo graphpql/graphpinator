@@ -18,10 +18,10 @@ final class ConstraintSet extends \Infinityloop\Utils\ObjectSet
         return parent::offsetGet($offset);
     }
 
-    public function validate($rawValue) : void
+    public function validate(\Graphpinator\Value\Value $value) : void
     {
         foreach ($this as $constraint) {
-            $constraint->validate($rawValue);
+            $constraint->validate($value);
         }
     }
 }

@@ -22,7 +22,7 @@ final class EnumTypeTest extends \PHPUnit\Framework\TestCase
     public function testValidateValue($rawValue) : void
     {
         $enum = $this->createTestEnum();
-        $enum->validateValue($rawValue);
+        $enum->validateResolvedValue($rawValue);
 
         self::assertSame($enum->getName(), 'abc');
     }
@@ -50,7 +50,7 @@ final class EnumTypeTest extends \PHPUnit\Framework\TestCase
         $this->expectException(\Exception::class);
 
         $enum = $this->createTestEnum();
-        $enum->validateValue($rawValue);
+        $enum->validateResolvedValue($rawValue);
     }
 
     public function testGetItems() : void

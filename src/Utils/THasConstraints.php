@@ -20,9 +20,9 @@ trait THasConstraints
         return $this->constraints;
     }
 
-    public function validateConstraints($rawValue) : void
+    public function validateConstraints(\Graphpinator\Value\Value $value) : void
     {
-        $this->getConstraints()->validate($rawValue);
+        $this->getConstraints()->validate($value);
     }
 
     public function printConstraints() : string

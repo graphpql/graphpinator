@@ -32,7 +32,7 @@ final class BooleanTypeTest extends \PHPUnit\Framework\TestCase
     public function testValidateValue($rawValue) : void
     {
         $bool = new \Graphpinator\Type\Scalar\BooleanType();
-        $bool->validateValue($rawValue);
+        $bool->validateResolvedValue($rawValue);
 
         self::assertSame($bool->getName(), 'Boolean');
     }
@@ -47,6 +47,6 @@ final class BooleanTypeTest extends \PHPUnit\Framework\TestCase
         $this->expectException(\Exception::class);
 
         $bool = new \Graphpinator\Type\Scalar\BooleanType();
-        $bool->validateValue($rawValue);
+        $bool->validateResolvedValue($rawValue);
     }
 }

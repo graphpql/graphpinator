@@ -46,7 +46,7 @@ final class PostalCodeTypeTest extends \PHPUnit\Framework\TestCase
     public function testValidateValue(string $rawValue) : void
     {
         $postalCode = new \Graphpinator\Type\Addon\PostalCodeType();
-        $postalCode->validateValue($rawValue);
+        $postalCode->validateResolvedValue($rawValue);
     }
 
     /**
@@ -59,6 +59,6 @@ final class PostalCodeTypeTest extends \PHPUnit\Framework\TestCase
         $this->expectException(\Exception::class);
 
         $postalCode = new \Graphpinator\Type\Addon\PostalCodeType();
-        $postalCode->validateValue($rawValue);
+        $postalCode->validateResolvedValue($rawValue);
     }
 }

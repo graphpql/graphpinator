@@ -264,7 +264,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         scalar PostalCode
         
         type Query {
-          fieldValid: TestUnion
+          fieldUnion: TestUnion
           fieldConstraint(
             arg: ConstraintInput
           ): Int
@@ -272,7 +272,6 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             arg: ExactlyOneInput
           ): Int
           fieldInvalidType: TestUnion
-          fieldInvalidReturn: TestUnion
           fieldThrow: TestUnion
           fieldAddonType: TestAddonDefaultValue
         }
@@ -591,7 +590,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         scalar PostalCode
         
         type Query {
-          fieldValid: TestUnion
+          fieldUnion: TestUnion
           fieldConstraint(
             arg: ConstraintInput
           ): Int
@@ -599,7 +598,6 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             arg: ExactlyOneInput
           ): Int
           fieldInvalidType: TestUnion
-          fieldInvalidReturn: TestUnion
           fieldThrow: TestUnion
           fieldAddonType: TestAddonDefaultValue
         }
@@ -806,7 +804,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         }
         
         type Query {
-          fieldValid: TestUnion
+          fieldUnion: TestUnion
           fieldConstraint(
             arg: ConstraintInput
           ): Int
@@ -814,7 +812,6 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             arg: ExactlyOneInput
           ): Int
           fieldInvalidType: TestUnion
-          fieldInvalidReturn: TestUnion
           fieldThrow: TestUnion
           fieldAddonType: TestAddonDefaultValue
         }
@@ -1133,7 +1130,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         }
         
         type Query {
-          fieldValid: TestUnion
+          fieldUnion: TestUnion
           fieldConstraint(
             arg: ConstraintInput
           ): Int
@@ -1141,7 +1138,6 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             arg: ExactlyOneInput
           ): Int
           fieldInvalidType: TestUnion
-          fieldInvalidReturn: TestUnion
           fieldThrow: TestUnion
           fieldAddonType: TestAddonDefaultValue
         }

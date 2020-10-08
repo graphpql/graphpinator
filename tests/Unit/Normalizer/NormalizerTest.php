@@ -35,12 +35,12 @@ final class NormalizerTest extends \PHPUnit\Framework\TestCase
         self::assertCount(2, $operation->getVariables());
         self::assertArrayHasKey('varName', $operation->getVariables());
         self::assertSame('varName', $operation->getVariables()->offsetGet('varName')->getName());
-        self::assertNull($operation->getVariables()->offsetGet('varName')->getDefault());
+        self::assertNull($operation->getVariables()->offsetGet('varName')->getDefaultValue());
         self::assertInstanceOf(\Graphpinator\Type\NotNullType::class, $operation->getVariables()->offsetGet('varName')->getType());
         self::assertSame('Abc', $operation->getVariables()->offsetGet('varName')->getType()->getNamedType()->getName());
         self::assertArrayHasKey('varNameList', $operation->getVariables());
         self::assertSame('varNameList', $operation->getVariables()->offsetGet('varNameList')->getName());
-        self::assertNull($operation->getVariables()->offsetGet('varNameList')->getDefault());
+        self::assertNull($operation->getVariables()->offsetGet('varNameList')->getDefaultValue());
         self::assertInstanceOf(\Graphpinator\Type\ListType::class, $operation->getVariables()->offsetGet('varNameList')->getType());
         self::assertSame('Abc', $operation->getVariables()->offsetGet('varNameList')->getType()->getNamedType()->getName());
     }

@@ -53,6 +53,11 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
                     ),
                 ]);
             }
+
+            public function createResolvedValue($rawValue) : \Graphpinator\Value\TypeIntermediateValue
+            {
+                return new \Graphpinator\Value\TypeIntermediateValue(InterfaceTypeTest::getTypeImplementingInterface(), 123);
+            }
         };
     }
 
@@ -69,6 +74,11 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
                         \Graphpinator\Container\Container::Int(),
                     ),
                 ]);
+            }
+
+            public function createResolvedValue($rawValue) : \Graphpinator\Value\TypeIntermediateValue
+            {
+                return new \Graphpinator\Value\TypeIntermediateValue(InterfaceTypeTest::getTypeImplementingInterface(), 123);
             }
         };
     }

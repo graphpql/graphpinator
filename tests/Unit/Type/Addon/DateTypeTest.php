@@ -59,7 +59,7 @@ final class DateTypeTest extends \PHPUnit\Framework\TestCase
     public function testValidateValue(string $rawValue) : void
     {
         $date = new \Graphpinator\Type\Addon\DateType();
-        $date->validateValue($rawValue);
+        $date->validateResolvedValue($rawValue);
     }
 
     /**
@@ -72,6 +72,6 @@ final class DateTypeTest extends \PHPUnit\Framework\TestCase
         $this->expectException(\Exception::class);
 
         $date = new \Graphpinator\Type\Addon\DateType();
-        $date->validateValue($rawValue);
+        $date->validateResolvedValue($rawValue);
     }
 }
