@@ -25,29 +25,29 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Field\FieldSet([
                     new \Graphpinator\Field\Field(
                         'field',
-                        \Graphpinator\Type\Container\Container::Int(),
+                        \Graphpinator\Container\Container::Int(),
                     ),
                     new \Graphpinator\Field\Field(
                         'fieldNotNull',
-                        \Graphpinator\Type\Container\Container::Int()->notNull(),
+                        \Graphpinator\Container\Container::Int()->notNull(),
                     ),
                     new \Graphpinator\Field\Field(
                         'argument',
-                        \Graphpinator\Type\Container\Container::Int()->notNull(),
+                        \Graphpinator\Container\Container::Int()->notNull(),
                         new \Graphpinator\Argument\ArgumentSet([
                             new \Graphpinator\Argument\Argument(
                                 'argumentName',
-                                \Graphpinator\Type\Container\Container::Int(),
+                                \Graphpinator\Container\Container::Int(),
                             ),
                         ]),
                     ),
                     new \Graphpinator\Field\Field(
                         'argumentNotNull',
-                        \Graphpinator\Type\Container\Container::Int()->notNull(),
+                        \Graphpinator\Container\Container::Int()->notNull(),
                         new \Graphpinator\Argument\ArgumentSet([
                             new \Graphpinator\Argument\Argument(
                                 'argumentName',
-                                \Graphpinator\Type\Container\Container::Int()->notNull(),
+                                \Graphpinator\Container\Container::Int()->notNull(),
                             ),
                         ]),
                     ),
@@ -66,7 +66,7 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Field\FieldSet([
                     new \Graphpinator\Field\Field(
                         'field',
-                        \Graphpinator\Type\Container\Container::Int(),
+                        \Graphpinator\Container\Container::Int(),
                     ),
                 ]);
             }
@@ -118,37 +118,37 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Field\ResolvableFieldSet([
                     new \Graphpinator\Field\ResolvableField(
                         'field',
-                        \Graphpinator\Type\Container\Container::Int(),
+                        \Graphpinator\Container\Container::Int(),
                         static function () : void {
                         },
                     ),
                     new \Graphpinator\Field\ResolvableField(
                         'fieldNotNull',
-                        \Graphpinator\Type\Container\Container::Boolean()->notNull(),
+                        \Graphpinator\Container\Container::Boolean()->notNull(),
                         static function () : void {
                         },
                     ),
                     new \Graphpinator\Field\ResolvableField(
                         'argument',
-                        \Graphpinator\Type\Container\Container::Int()->notNull(),
+                        \Graphpinator\Container\Container::Int()->notNull(),
                         static function () : void {
                         },
                         new \Graphpinator\Argument\ArgumentSet([
                             new \Graphpinator\Argument\Argument(
                                 'argumentName',
-                                \Graphpinator\Type\Container\Container::Int(),
+                                \Graphpinator\Container\Container::Int(),
                             ),
                         ]),
                     ),
                     new \Graphpinator\Field\ResolvableField(
                         'argumentNotNull',
-                        \Graphpinator\Type\Container\Container::Int()->notNull(),
+                        \Graphpinator\Container\Container::Int()->notNull(),
                         static function () : void {
                         },
                         new \Graphpinator\Argument\ArgumentSet([
                             new \Graphpinator\Argument\Argument(
                                 'argumentName',
-                                \Graphpinator\Type\Container\Container::Int()->notNull(),
+                                \Graphpinator\Container\Container::Int()->notNull(),
                             ),
                         ]),
                     ),
@@ -181,37 +181,37 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Field\ResolvableFieldSet([
                     new \Graphpinator\Field\ResolvableField(
                         'field',
-                        \Graphpinator\Type\Container\Container::Int(),
+                        \Graphpinator\Container\Container::Int(),
                         static function () : void {
                         },
                     ),
                     new \Graphpinator\Field\ResolvableField(
                         'fieldNotNull',
-                        \Graphpinator\Type\Container\Container::Int(),
+                        \Graphpinator\Container\Container::Int(),
                         static function () : void {
                         },
                     ),
                     new \Graphpinator\Field\ResolvableField(
                         'argument',
-                        \Graphpinator\Type\Container\Container::Int()->notNull(),
+                        \Graphpinator\Container\Container::Int()->notNull(),
                         static function () : void {
                         },
                         new \Graphpinator\Argument\ArgumentSet([
                             new \Graphpinator\Argument\Argument(
                                 'argumentName',
-                                \Graphpinator\Type\Container\Container::Int(),
+                                \Graphpinator\Container\Container::Int(),
                             ),
                         ]),
                     ),
                     new \Graphpinator\Field\ResolvableField(
                         'argumentNotNull',
-                        \Graphpinator\Type\Container\Container::Int()->notNull(),
+                        \Graphpinator\Container\Container::Int()->notNull(),
                         static function () : void {
                         },
                         new \Graphpinator\Argument\ArgumentSet([
                             new \Graphpinator\Argument\Argument(
                                 'argumentName',
-                                \Graphpinator\Type\Container\Container::Int()->notNull(),
+                                \Graphpinator\Container\Container::Int()->notNull(),
                             ),
                         ]),
                     ),
@@ -244,31 +244,31 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Field\ResolvableFieldSet([
                     new \Graphpinator\Field\ResolvableField(
                         'field',
-                        \Graphpinator\Type\Container\Container::Int(),
+                        \Graphpinator\Container\Container::Int(),
                         static function () : void {
                         },
                     ),
                     new \Graphpinator\Field\ResolvableField(
                         'fieldNotNull',
-                        \Graphpinator\Type\Container\Container::Int()->notNull(),
+                        \Graphpinator\Container\Container::Int()->notNull(),
                         static function () : void {
                         },
                     ),
                     new \Graphpinator\Field\ResolvableField(
                         'argument',
-                        \Graphpinator\Type\Container\Container::Int()->notNull(),
+                        \Graphpinator\Container\Container::Int()->notNull(),
                         static function () : void {
                         },
                     ),
                     new \Graphpinator\Field\ResolvableField(
                         'argumentNotNull',
-                        \Graphpinator\Type\Container\Container::Int()->notNull(),
+                        \Graphpinator\Container\Container::Int()->notNull(),
                         static function () : void {
                         },
                         new \Graphpinator\Argument\ArgumentSet([
                             new \Graphpinator\Argument\Argument(
                                 'argumentName',
-                                \Graphpinator\Type\Container\Container::Int()->notNull(),
+                                \Graphpinator\Container\Container::Int()->notNull(),
                             ),
                         ]),
                     ),
@@ -301,37 +301,37 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Field\ResolvableFieldSet([
                     new \Graphpinator\Field\ResolvableField(
                         'field',
-                        \Graphpinator\Type\Container\Container::Int(),
+                        \Graphpinator\Container\Container::Int(),
                         static function () : void {
                         },
                     ),
                     new \Graphpinator\Field\ResolvableField(
                         'fieldNotNull',
-                        \Graphpinator\Type\Container\Container::Int()->notNull(),
+                        \Graphpinator\Container\Container::Int()->notNull(),
                         static function () : void {
                         },
                     ),
                     new \Graphpinator\Field\ResolvableField(
                         'argument',
-                        \Graphpinator\Type\Container\Container::Int()->notNull(),
+                        \Graphpinator\Container\Container::Int()->notNull(),
                         static function () : void {
                         },
                         new \Graphpinator\Argument\ArgumentSet([
                             new \Graphpinator\Argument\Argument(
                                 'argumentName',
-                                \Graphpinator\Type\Container\Container::Int(),
+                                \Graphpinator\Container\Container::Int(),
                             ),
                         ]),
                     ),
                     new \Graphpinator\Field\ResolvableField(
                         'argumentNotNull',
-                        \Graphpinator\Type\Container\Container::Int()->notNull(),
+                        \Graphpinator\Container\Container::Int()->notNull(),
                         static function () : void {
                         },
                         new \Graphpinator\Argument\ArgumentSet([
                             new \Graphpinator\Argument\Argument(
                                 'argumentName',
-                                \Graphpinator\Type\Container\Container::Boolean()->notNull(),
+                                \Graphpinator\Container\Container::Boolean()->notNull(),
                             ),
                         ]),
                     ),
@@ -364,37 +364,37 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Field\ResolvableFieldSet([
                     new \Graphpinator\Field\ResolvableField(
                         'field',
-                        \Graphpinator\Type\Container\Container::Int(),
+                        \Graphpinator\Container\Container::Int(),
                         static function () : void {
                         },
                     ),
                     new \Graphpinator\Field\ResolvableField(
                         'fieldNotNull',
-                        \Graphpinator\Type\Container\Container::Int()->notNull(),
+                        \Graphpinator\Container\Container::Int()->notNull(),
                         static function () : void {
                         },
                     ),
                     new \Graphpinator\Field\ResolvableField(
                         'argument',
-                        \Graphpinator\Type\Container\Container::Int()->notNull(),
+                        \Graphpinator\Container\Container::Int()->notNull(),
                         static function () : void {
                         },
                         new \Graphpinator\Argument\ArgumentSet([
                             new \Graphpinator\Argument\Argument(
                                 'argumentName',
-                                \Graphpinator\Type\Container\Container::Int()->notNull(),
+                                \Graphpinator\Container\Container::Int()->notNull(),
                             ),
                         ]),
                     ),
                     new \Graphpinator\Field\ResolvableField(
                         'argumentNotNull',
-                        \Graphpinator\Type\Container\Container::Int()->notNull(),
+                        \Graphpinator\Container\Container::Int()->notNull(),
                         static function () : void {
                         },
                         new \Graphpinator\Argument\ArgumentSet([
                             new \Graphpinator\Argument\Argument(
                                 'argumentName',
-                                \Graphpinator\Type\Container\Container::Int()->notNull(),
+                                \Graphpinator\Container\Container::Int()->notNull(),
                             ),
                         ]),
                     ),
@@ -444,37 +444,37 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Field\ResolvableFieldSet([
                     new \Graphpinator\Field\ResolvableField(
                         'field',
-                        \Graphpinator\Type\Container\Container::Int(),
+                        \Graphpinator\Container\Container::Int(),
                         static function () : void {
                         },
                     ),
                     new \Graphpinator\Field\ResolvableField(
                         'fieldNotNull',
-                        \Graphpinator\Type\Container\Container::Int()->notNull(),
+                        \Graphpinator\Container\Container::Int()->notNull(),
                         static function () : void {
                         },
                     ),
                     new \Graphpinator\Field\ResolvableField(
                         'argument',
-                        \Graphpinator\Type\Container\Container::Int()->notNull(),
+                        \Graphpinator\Container\Container::Int()->notNull(),
                         static function () : void {
                         },
                         new \Graphpinator\Argument\ArgumentSet([
                             new \Graphpinator\Argument\Argument(
                                 'argumentName',
-                                \Graphpinator\Type\Container\Container::Int(),
+                                \Graphpinator\Container\Container::Int(),
                             ),
                         ]),
                     ),
                     new \Graphpinator\Field\ResolvableField(
                         'argumentNotNull',
-                        \Graphpinator\Type\Container\Container::Int()->notNull(),
+                        \Graphpinator\Container\Container::Int()->notNull(),
                         static function () : void {
                         },
                         new \Graphpinator\Argument\ArgumentSet([
                             new \Graphpinator\Argument\Argument(
                                 'argumentName',
-                                \Graphpinator\Type\Container\Container::Int()->notNull(),
+                                \Graphpinator\Container\Container::Int()->notNull(),
                             ),
                         ]),
                     ),
@@ -507,7 +507,7 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Field\ResolvableFieldSet([
                     new \Graphpinator\Field\ResolvableField(
                         'field',
-                        \Graphpinator\Type\Container\Container::Int(),
+                        \Graphpinator\Container\Container::Int(),
                         static function () : void {
                         },
                     ),

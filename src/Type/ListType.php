@@ -43,25 +43,6 @@ final class ListType extends \Graphpinator\Type\Contract\ModifierDefinition
         }
     }
 
-    public function applyDefaults($value) : ?array
-    {
-        if ($value === null) {
-            return null;
-        }
-
-        if (!\is_iterable($value)) {
-            throw new \Exception('Value has to be list.');
-        }
-
-        $return = [];
-
-        foreach ($value as $val) {
-            $return[] = $this->innerType->applyDefaults($val);
-        }
-
-        return $return;
-    }
-
     public function isInstanceOf(\Graphpinator\Type\Contract\Definition $type) : bool
     {
         if ($type instanceof self) {

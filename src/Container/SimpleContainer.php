@@ -2,12 +2,12 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Type\Container;
+namespace Graphpinator\Container;
 
 /**
  * Simple Container implementation
  */
-class SimpleContainer extends \Graphpinator\Type\Container\Container
+class SimpleContainer extends \Graphpinator\Container\Container
 {
     protected array $types = [];
     protected array $directives = [];

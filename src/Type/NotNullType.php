@@ -32,12 +32,6 @@ final class NotNullType extends \Graphpinator\Type\Contract\ModifierDefinition
         return $this->innerType->resolve($requestedFields, $parentResult);
     }
 
-    //@phpcs:ignore SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingAnyTypeHint
-    public function applyDefaults($value)
-    {
-        return $this->innerType->applyDefaults($value);
-    }
-
     public function isInstanceOf(\Graphpinator\Type\Contract\Definition $type) : bool
     {
         if ($type instanceof self) {

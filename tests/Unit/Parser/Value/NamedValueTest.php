@@ -35,7 +35,7 @@ final class NamedValueTest extends \PHPUnit\Framework\TestCase
     {
         $variables = new \Graphpinator\Resolver\VariableValueSet(
             new \Graphpinator\Normalizer\Variable\VariableSet([
-                new \Graphpinator\Normalizer\Variable\Variable('var1', \Graphpinator\Type\Container\Container::String()),
+                new \Graphpinator\Normalizer\Variable\Variable('var1', \Graphpinator\Container\Container::String()),
             ]),
             (object) ['var1' => 'val1'],
         );

@@ -20,7 +20,7 @@ final class ListTypeRef implements \Graphpinator\Parser\TypeRef\TypeRef
         return $this->innerRef;
     }
 
-    public function normalize(\Graphpinator\Type\Container\Container $typeContainer) : \Graphpinator\Type\ListType
+    public function normalize(\Graphpinator\Container\Container $typeContainer) : \Graphpinator\Type\ListType
     {
         return new \Graphpinator\Type\ListType($this->innerRef->normalize($typeContainer));
     }

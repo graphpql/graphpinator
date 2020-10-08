@@ -6,9 +6,15 @@ namespace Graphpinator\Resolver\Value;
 
 final class InputValue extends \Graphpinator\Resolver\Value\ValidatedValue implements \ArrayAccess
 {
-    public function __construct(\stdClass $fields, \Graphpinator\Type\InputType $type)
+    public function __construct($rawValue, \Graphpinator\Type\InputType $type)
     {
-        foreach ($fields as $name => $temp) {
+        if (!$rawValue instanceof \stdClass) {
+            throw new \Graphpinator\Exception\Resolver\SelectionOnComposite();
+        }
+
+        $rawValue = self::merge($rawValue, (object) $type->getArguments()->getRawDefaults());
+
+        foreach ($rawValue as $name => $temp) {
             if (isset($type->getArguments()[$name])) {
                 continue;
             }
@@ -19,7 +25,7 @@ final class InputValue extends \Graphpinator\Resolver\Value\ValidatedValue imple
         $value = new \stdClass();
 
         foreach ($type->getArguments() as $argument) {
-            $usedValue = $fields->{$argument->getName()}
+            $usedValue = $rawValue->{$argument->getName()}
                 ?? $argument->getDefaultValue();
 
             // default values are already validated
@@ -79,5 +85,23 @@ final class InputValue extends \Graphpinator\Resolver\Value\ValidatedValue imple
     public function offsetUnset($offset) : void
     {
         throw new \Graphpinator\Exception\OperationNotSupported();
+    }
+
+    private static function merge(\stdClass $core, \stdClass $supplement) : \stdClass
+    {
+        foreach ($supplement as $key => $value) {
+            if (\property_exists($core, $key)) {
+                if ($core->{$key} instanceof \stdClass &&
+                    $supplement->{$key} instanceof \stdClass) {
+                    $core->{$key} = self::merge($core->{$key}, $supplement->{$key});
+                }
+
+                continue;
+            }
+
+            $core->{$key} = $value;
+        }
+
+        return $core;
     }
 }

@@ -24,28 +24,28 @@ final class EnumValue extends \Graphpinator\Type\Type
         return new \Graphpinator\Field\ResolvableFieldSet([
             new \Graphpinator\Field\ResolvableField(
                 'name',
-                \Graphpinator\Type\Container\Container::String()->notNull(),
+                \Graphpinator\Container\Container::String()->notNull(),
                 static function (\Graphpinator\Type\Enum\EnumItem $item) : string {
                     return $item->getName();
                 },
             ),
             new \Graphpinator\Field\ResolvableField(
                 'description',
-                \Graphpinator\Type\Container\Container::String(),
+                \Graphpinator\Container\Container::String(),
                 static function (\Graphpinator\Type\Enum\EnumItem $item) : ?string {
                     return $item->getDescription();
                 },
             ),
             new \Graphpinator\Field\ResolvableField(
                 'isDeprecated',
-                \Graphpinator\Type\Container\Container::Boolean()->notNull(),
+                \Graphpinator\Container\Container::Boolean()->notNull(),
                 static function (\Graphpinator\Type\Enum\EnumItem $item) : bool {
                     return $item->isDeprecated();
                 },
             ),
             new \Graphpinator\Field\ResolvableField(
                 'deprecationReason',
-                \Graphpinator\Type\Container\Container::String(),
+                \Graphpinator\Container\Container::String(),
                 static function (\Graphpinator\Type\Enum\EnumItem $item) : ?string {
                     return $item->getDeprecationReason();
                 },

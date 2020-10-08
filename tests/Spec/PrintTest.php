@@ -9,11 +9,11 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
 {
     public function simpleDataProvider() : array
     {
-        $container = new \Graphpinator\Type\Container\SimpleContainer([], []);
+        $container = new \Graphpinator\Container\SimpleContainer([], []);
 
         return [
             [
-                \Graphpinator\Type\Container\Container::Int(),
+                \Graphpinator\Container\Container::Int(),
                 <<<'EOL'
                 """
                 Int built-in type

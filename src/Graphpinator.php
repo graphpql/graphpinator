@@ -13,12 +13,20 @@ final class Graphpinator
     public const OPERATION_NAME = 'operationName';
 
     private \Graphpinator\Type\Schema $schema;
+    private \Graphpinator\Module\ModuleSet $modules;
     private bool $catchExceptions;
 
-    public function __construct(\Graphpinator\Type\Schema $schema, bool $catchExceptions = false)
+    public function __construct(
+        \Graphpinator\Type\Schema $schema,
+        bool $catchExceptions = false,
+        ?\Graphpinator\Module\ModuleSet $modules = null
+    )
     {
         $this->schema = $schema;
         $this->catchExceptions = $catchExceptions;
+        $this->modules = $modules instanceof \Graphpinator\Module\ModuleSet
+            ? $modules
+            : new \Graphpinator\Module\ModuleSet([]);
     }
 
     public function runQuery(\Graphpinator\Json $request) : \Graphpinator\Resolver\OperationResult
@@ -32,9 +40,15 @@ final class Graphpinator
             $operationName = $request[self::OPERATION_NAME]
                 ?? null;
 
-            return \Graphpinator\Parser\Parser::parseString($query)
+            $requestObject = \Graphpinator\Parser\Parser::parseString($query)
                 ->normalize($this->schema)
-                ->execute($operationName, $variables);
+                ->createRequest($operationName, $variables);
+
+            foreach ($this->modules as $module) {
+                $requestObject = $module->process($requestObject);
+            }
+
+            return $requestObject->execute();
         } catch (\Throwable $exception) {
             if (!$this->catchExceptions) {
                 throw $exception;

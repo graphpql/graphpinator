@@ -8,7 +8,7 @@ final class FieldTest extends \PHPUnit\Framework\TestCase
 {
     public function testFieldPrintSchema() : void
     {
-        $fieldSchema = (new \Graphpinator\Field\Field('name', \Graphpinator\Type\Container\Container::String()->notNull()))->printSchema();
+        $fieldSchema = (new \Graphpinator\Field\Field('name', \Graphpinator\Container\Container::String()->notNull()))->printSchema();
 
         self::assertSame('  name: String!', $fieldSchema);
     }

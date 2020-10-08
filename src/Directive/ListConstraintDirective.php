@@ -18,7 +18,7 @@ final class ListConstraintDirective extends \Graphpinator\Directive\TypeSystemDi
                 TypeSystemDirectiveLocation::FIELD_DEFINITION,
             ],
             false,
-            \Graphpinator\Type\Container\Container::listConstraintInput()->getArguments(),
+            \Graphpinator\Container\Container::listConstraintInput()->getArguments(),
         );
     }
 }

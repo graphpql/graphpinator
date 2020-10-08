@@ -32,7 +32,7 @@ final class DirectiveSet extends \Infinityloop\Utils\ObjectSet
         return $this->location;
     }
 
-    public function normalize(\Graphpinator\Type\Container\Container $typeContainer) : \Graphpinator\Normalizer\Directive\DirectiveSet
+    public function normalize(\Graphpinator\Container\Container $typeContainer) : \Graphpinator\Normalizer\Directive\DirectiveSet
     {
         $normalized = [];
 

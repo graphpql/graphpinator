@@ -8,7 +8,7 @@ final class SimpleContainerTest extends \PHPUnit\Framework\TestCase
 {
     public function testSimple() : void
     {
-        $container = new \Graphpinator\Type\Container\SimpleContainer([], []);
+        $container = new \Graphpinator\Container\SimpleContainer([], []);
 
         self::assertCount(1, $container->getTypes());
         self::assertCount(5, $container->getDirectives());

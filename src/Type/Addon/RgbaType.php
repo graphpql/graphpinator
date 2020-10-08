@@ -15,7 +15,7 @@ final class RgbaType extends \Graphpinator\Type\Addon\RgbType
             new \Graphpinator\Field\ResolvableFieldSet([
                 new \Graphpinator\Field\ResolvableField(
                     'alpha',
-                    \Graphpinator\Type\Container\Container::Float()->notNull(),
+                    \Graphpinator\Container\Container::Float()->notNull(),
                     static function (\stdClass $rgba) {
                         return $rgba->alpha;
                     },

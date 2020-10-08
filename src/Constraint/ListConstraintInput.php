@@ -11,9 +11,9 @@ final class ListConstraintInput extends \Graphpinator\Type\InputType
     protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
     {
         return new \Graphpinator\Argument\ArgumentSet([
-            new \Graphpinator\Argument\Argument('minItems', \Graphpinator\Type\Container\Container::Int()),
-            new \Graphpinator\Argument\Argument('maxItems', \Graphpinator\Type\Container\Container::Int()),
-            new \Graphpinator\Argument\Argument('unique', \Graphpinator\Type\Container\Container::Boolean(), false),
+            new \Graphpinator\Argument\Argument('minItems', \Graphpinator\Container\Container::Int()),
+            new \Graphpinator\Argument\Argument('maxItems', \Graphpinator\Container\Container::Int()),
+            new \Graphpinator\Argument\Argument('unique', \Graphpinator\Container\Container::Boolean(), false),
             new \Graphpinator\Argument\Argument('innerList', $this),
         ]);
     }

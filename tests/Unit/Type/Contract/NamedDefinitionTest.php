@@ -8,7 +8,7 @@ final class NamedDefinitionTest extends \PHPUnit\Framework\TestCase
 {
     public function testModifiers() : void
     {
-        $base = \Graphpinator\Type\Container\Container::String();
+        $base = \Graphpinator\Container\Container::String();
 
         self::assertSame('String', $base->getName());
         self::assertSame('String built-in type', $base->getDescription());

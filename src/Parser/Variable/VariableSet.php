@@ -18,7 +18,7 @@ final class VariableSet extends \Infinityloop\Utils\ObjectSet
         return parent::offsetGet($offset);
     }
 
-    public function normalize(\Graphpinator\Type\Container\Container $typeContainer) : \Graphpinator\Normalizer\Variable\VariableSet
+    public function normalize(\Graphpinator\Container\Container $typeContainer) : \Graphpinator\Normalizer\Variable\VariableSet
     {
         $variables = [];
 

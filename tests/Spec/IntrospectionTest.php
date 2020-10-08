@@ -906,11 +906,11 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
     public function testConstraintDirectivesSync() : void
     {
         $array = [
-            \Graphpinator\Constraint\IntConstraint::class => \Graphpinator\Type\Container\Container::directiveIntConstraint(),
-            \Graphpinator\Constraint\FloatConstraint::class => \Graphpinator\Type\Container\Container::directiveFloatConstraint(),
-            \Graphpinator\Constraint\StringConstraint::class => \Graphpinator\Type\Container\Container::directiveStringConstraint(),
-            \Graphpinator\Constraint\ListConstraint::class => \Graphpinator\Type\Container\Container::directiveListConstraint(),
-            \Graphpinator\Constraint\ObjectConstraint::class => \Graphpinator\Type\Container\Container::directiveObjectConstraint(),
+            \Graphpinator\Constraint\IntConstraint::class => \Graphpinator\Container\Container::directiveIntConstraint(),
+            \Graphpinator\Constraint\FloatConstraint::class => \Graphpinator\Container\Container::directiveFloatConstraint(),
+            \Graphpinator\Constraint\StringConstraint::class => \Graphpinator\Container\Container::directiveStringConstraint(),
+            \Graphpinator\Constraint\ListConstraint::class => \Graphpinator\Container\Container::directiveListConstraint(),
+            \Graphpinator\Constraint\ObjectConstraint::class => \Graphpinator\Container\Container::directiveObjectConstraint(),
         ];
 
         foreach ($array as $constraintClass => $directive) {
