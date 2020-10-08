@@ -30,12 +30,6 @@ final class NullInputedValue implements InputedValue, NullValue
         return $this->type;
     }
 
-    /** @return null */
-    public function jsonSerialize()
-    {
-        return null;
-    }
-
     public function printValue() : string
     {
         return 'null';
