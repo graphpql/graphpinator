@@ -12,7 +12,7 @@ final class LeafValue extends \Graphpinator\Resolver\Value\ValidatedValue
         parent::__construct($value, $type);
     }
 
-    public function printValue() : string
+    public function printValue(bool $prettyPrint = false, int $indentLevel = 0) : string
     {
         return \json_encode($this->value, \JSON_THROW_ON_ERROR);
     }

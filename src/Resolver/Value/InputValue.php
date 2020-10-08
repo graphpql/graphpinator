@@ -54,17 +54,32 @@ final class InputValue extends \Graphpinator\Resolver\Value\ValidatedValue imple
         return $return;
     }
 
-    public function printValue() : string
+    public function printValue(bool $prettyPrint = false, int $indentLevel = 0) : string
     {
         $component = [];
+        $indentation = \str_repeat('  ', $indentLevel);
 
         foreach ($this->value as $key => $value) {
             \assert($value instanceof ValidatedValue);
 
-            $component[$key] = $key . ':' . $value->printValue();
+            $prettyPrint
+                ? $component[$key] = $indentation . $key . ': ' . $value->printValue($prettyPrint, $indentLevel) . ',' . \PHP_EOL
+                : $component[$key] = $key . ':' . $value->printValue($prettyPrint, $indentLevel);
         }
 
-        return '{' . \implode(',', $component) . '}';
+        if (!$component) {
+            return '{}';
+        }
+
+        if ($prettyPrint) {
+            foreach ($component as $key => $value) {
+                $component[$key] = \str_replace(\PHP_EOL, \PHP_EOL . $indentation, $value);
+            }
+        }
+
+        return $prettyPrint
+            ? '{' . \PHP_EOL . $indentation . \implode($component) . '}'
+            : '{' . \implode(',', $component) . '}';
     }
 
     public function offsetExists($name) : bool

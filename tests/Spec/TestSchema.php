@@ -44,7 +44,8 @@ final class TestSchema
             'ArrayEnum' => self::getArrayEnum(),
             'DescriptionEnum' => self::getDescriptionEnum(),
             'TestScalar' => self::getTestScalar(),
-            'TestAddonDefaultValue' => self::getAddonDefaultValue(),
+            'AddonType' => self::getAddonType(),
+            'ComplexDefaultsInput' => self::getComplexDefaultInput(),
             'DateTime' => new \Graphpinator\Type\Addon\DateTimeType(),
             'Date' => new \Graphpinator\Type\Addon\DateType(),
             'EmailAddress' => new \Graphpinator\Type\Addon\EmailAddressType(),
@@ -132,9 +133,9 @@ final class TestSchema
                     ),
                     new \Graphpinator\Field\ResolvableField(
                         'fieldAddonType',
-                        TestSchema::getAddonDefaultValue(),
+                        TestSchema::getAddonType(),
                         static function () : \Graphpinator\Type\Type {
-                            return TestSchema::getAddonDefaultValue();
+                            return TestSchema::getAddonType();
                         },
                     ),
                 ]);
@@ -634,11 +635,62 @@ final class TestSchema
         };
     }
 
-    public static function getAddonDefaultValue() : \Graphpinator\Type\Type
+    // @phpcs:disable Squiz.Arrays.ArrayDeclaration.ValueNoNewline
+    public static function getComplexDefaultInput() : \Graphpinator\Type\InputType
+    {
+        return new class extends \Graphpinator\Type\InputType
+        {
+            protected const NAME = 'ComplexDefaultsInput';
+
+            protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
+            {
+                return new \Graphpinator\Argument\ArgumentSet([
+                    new \Graphpinator\Argument\Argument(
+                        'innerObject',
+                        TestSchema::getCompositeInput(),
+                        (object) [
+                            'name' => 'testName',
+                            'inner' => (object) ['name' => 'string', 'number' => [1, 2, 3]],
+                            'innerList' => [(object) ['name' => 'string', 'number' => [1]], (object) ['name' => 'string', 'number' => [1, 2, 3, 4]]],
+                            'innerNotNull' => (object) ['name' => 'string', 'number' => [1, 2]],
+                        ],
+                    ),
+                    new \Graphpinator\Argument\Argument(
+                        'innerListObjects',
+                        TestSchema::getCompositeInput()->list(),
+                        [
+                            (object) [
+                                'name' => 'testName',
+                                'inner' => (object) ['name' => 'string', 'number' => [1, 2, 3]],
+                                'innerList' => [
+                                    (object) ['name' => 'string', 'number' => [1]],
+                                    (object) ['name' => 'string', 'number' => [1, 2, 3, 4]],
+                                    ],
+                                'innerNotNull' => (object) ['name' => 'string', 'number' => [1, 2]],
+                            ],
+                            (object) [
+                                'name' => 'testName2',
+                                'inner' => (object) ['name' => 'string2', 'number' => [11, 22, 33]],
+                                'innerList' => [
+                                    (object) ['name' => 'string2', 'number' => [11]],
+                                    (object) ['name' => 'string2', 'number' => [11, 22, 33, 44]],
+                                    ],
+                                'innerNotNull' => (object) ['name' => 'string2', 'number' => [11, 22]],
+                            ],
+                        ],
+                    ),
+                ]);
+            }
+        };
+    }
+
+    // @phpcs:enable Squiz.Arrays.ArrayDeclaration.ValueNoNewline
+
+    public static function getAddonType() : \Graphpinator\Type\Type
     {
         return new class extends \Graphpinator\Type\Type
         {
-            protected const NAME = 'TestAddonDefaultValue';
+            protected const NAME = 'AddonType';
 
             protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
             {
