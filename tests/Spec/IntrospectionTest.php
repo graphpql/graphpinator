@@ -32,7 +32,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
     public function testSimple(\Graphpinator\Json $request, \Graphpinator\Json $expected) : void
     {
         $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
-        $result = $graphpinator->runQuery($request);
+        $result = $graphpinator->runQuery(\Graphpinator\Request::fromJson($request));
 
         self::assertSame($expected->toString(), \json_encode($result, \JSON_THROW_ON_ERROR, 512));
         self::assertSame(
@@ -255,7 +255,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
 
         self::assertSame(
             $result->toString(),
-            \json_encode($graphpinator->runQuery($request), \JSON_THROW_ON_ERROR, 512),
+            \json_encode($graphpinator->runQuery(\Graphpinator\Request::fromJson($request)), \JSON_THROW_ON_ERROR, 512),
         );
     }
 
@@ -750,7 +750,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
 
         self::assertSame(
             $result->toString(),
-            \json_encode($graphpinator->runQuery($request), \JSON_THROW_ON_ERROR, 512),
+            \json_encode($graphpinator->runQuery(\Graphpinator\Request::fromJson($request)), \JSON_THROW_ON_ERROR, 512),
         );
     }
 
@@ -787,7 +787,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
 
         self::assertSame(
             $result->toString(),
-            \json_encode($graphpinator->runQuery($request), \JSON_THROW_ON_ERROR, 512),
+            \json_encode($graphpinator->runQuery(\Graphpinator\Request::fromJson($request)), \JSON_THROW_ON_ERROR, 512),
         );
     }
 
@@ -818,7 +818,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
 
         self::assertSame(
             $result->toString(),
-            \json_encode($graphpinator->runQuery($request), \JSON_THROW_ON_ERROR, 512),
+            \json_encode($graphpinator->runQuery(\Graphpinator\Request::fromJson($request)), \JSON_THROW_ON_ERROR, 512),
         );
     }
 
@@ -853,7 +853,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
 
         self::assertSame(
             $result->toString(),
-            \json_encode($graphpinator->runQuery($request), \JSON_THROW_ON_ERROR, 512),
+            \json_encode($graphpinator->runQuery(\Graphpinator\Request::fromJson($request)), \JSON_THROW_ON_ERROR, 512),
         );
     }
 
@@ -900,7 +900,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
 
         self::assertSame(
             $result->toString(),
-            \json_encode($graphpinator->runQuery($request), \JSON_THROW_ON_ERROR, 512),
+            \json_encode($graphpinator->runQuery(\Graphpinator\Request::fromJson($request)), \JSON_THROW_ON_ERROR, 512),
         );
     }
 

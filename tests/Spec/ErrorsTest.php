@@ -51,7 +51,7 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
     public function testSimple(\Graphpinator\Json $request, \Graphpinator\Json $expected) : void
     {
         $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema(), true);
-        $result = $graphpinator->runQuery($request);
+        $result = $graphpinator->runQuery(\Graphpinator\Request::fromJson($request));
 
         self::assertSame($expected->toString(), \json_encode($result, \JSON_THROW_ON_ERROR, 512));
         self::assertSame(

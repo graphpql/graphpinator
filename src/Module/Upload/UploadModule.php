@@ -15,12 +15,12 @@ final class UploadModule implements \Graphpinator\Module\Module
         $this->fileProvider = $fileProvider;
     }
 
-    public function process(\Graphpinator\Request $request) : \Graphpinator\Request
+    public function process(\Graphpinator\ParsedRequest $request) : \Graphpinator\ParsedRequest
     {
         foreach ($this->fileProvider->getMap() as $fileKey => $locations) {
-            $fileValue = \Graphpinator\Resolver\Value\LeafValue::create(
-                $this->fileProvider->getFile($fileKey),
+            $fileValue = new \Graphpinator\Value\LeafValue(
                 new \Graphpinator\Type\Addon\UploadType(),
+                $this->fileProvider->getFile($fileKey),
             );
 
             foreach ($locations as $location) {
@@ -40,28 +40,28 @@ final class UploadModule implements \Graphpinator\Module\Module
 
                     if ($level === $lastLevel) {
                         if (\is_numeric($key) &&
-                            $variable[$key] instanceof \Graphpinator\Resolver\Value\ListValue) {
+                            $variable[$key] instanceof \Graphpinator\Value\ListValue) {
                             $variable[$key] = $fileValue;
 
                             break;
                         }
 
                         if (\is_string($key) &&
-                            $variable[$key] instanceof \Graphpinator\Resolver\Value\InputValue) {
+                            $variable[$key] instanceof \Graphpinator\Value\InputValue) {
                             $variable[$key] = $fileValue;
 
                             break;
                         }
                     } else {
                         if (\is_numeric($key) &&
-                            $variable[$key] instanceof \Graphpinator\Resolver\Value\ListValue) {
+                            $variable[$key] instanceof \Graphpinator\Value\ListValue) {
                             $variable[$key] = $fileValue;
 
                             break;
                         }
 
                         if (\is_string($key) &&
-                            $variable[$key] instanceof \Graphpinator\Resolver\Value\InputValue) {
+                            $variable[$key] instanceof \Graphpinator\Value\InputValue) {
                             $variable[$key] = $fileValue;
 
                             break;
@@ -76,7 +76,7 @@ final class UploadModule implements \Graphpinator\Module\Module
     }
 
     private function setFile(
-        \Graphpinator\Resolver\Value\LeafValue $file,
+        \Graphpinator\Value\LeafValue $file,
         \Graphpinator\Resolver\Value\ValidatedValue $value,
         array $location
     ) : void
@@ -88,15 +88,11 @@ final class UploadModule implements \Graphpinator\Module\Module
         if (\is_numeric($key) &&
             $value instanceof \Graphpinator\Resolver\Value\ListValue) {
             $variable[(int) $key] = $fileValue;
-
-            break;
         }
 
         if (\is_string($key) &&
             $value instanceof \Graphpinator\Resolver\Value\InputValue) {
             $variable[$key] = $fileValue;
-
-            break;
         }
     }
 }

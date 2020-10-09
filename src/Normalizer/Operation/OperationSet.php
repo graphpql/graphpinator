@@ -18,13 +18,13 @@ final class OperationSet extends \Infinityloop\Utils\ObjectSet
         return parent::offsetGet($offset);
     }
 
-    public function createRequest(?string $operationName, \stdClass $variables) : \Graphpinator\Request
+    public function createRequest(?string $operationName, \stdClass $variables) : \Graphpinator\ParsedRequest
     {
         $operation = $operationName === null
             ? $this->current()
             : $this->offsetGet($operationName);
 
-        return new \Graphpinator\Request($operation, $variables);
+        return new \Graphpinator\ParsedRequest($operation, $variables);
     }
 
     protected function getKey(object $object) : ?string

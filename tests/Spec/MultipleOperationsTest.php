@@ -45,7 +45,7 @@ final class MultipleOperationsTest extends \PHPUnit\Framework\TestCase
     public function testOperationName(\Graphpinator\Json $request, \Graphpinator\Json $expected) : void
     {
         $graphpinator = new \Graphpinator\Graphpinator(\Graphpinator\Tests\Spec\TestSchema::getSchema());
-        $result = $graphpinator->runQuery($request);
+        $result = $graphpinator->runQuery(\Graphpinator\Request::fromJson($request));
 
         self::assertSame($expected->toString(), \json_encode($result, \JSON_THROW_ON_ERROR, 512));
     }

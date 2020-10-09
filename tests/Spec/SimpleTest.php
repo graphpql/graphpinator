@@ -32,7 +32,7 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
     public function testSimple(\Graphpinator\Json $request, \Graphpinator\Json $expected) : void
     {
         $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
-        $result = $graphpinator->runQuery($request);
+        $result = $graphpinator->runQuery(\Graphpinator\Request::fromJson($request));
 
         self::assertSame($expected->toString(), \json_encode($result, \JSON_THROW_ON_ERROR, 512));
         self::assertSame($expected['data'], \json_decode(\json_encode($result->getData()), true));
@@ -55,6 +55,67 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
             ?? new \stdClass();
 
         $result = $parser->parse()->normalize(TestSchema::getSchema())->createRequest($operationName, $variables)->execute();
+
+        self::assertSame($expected->toString(), \json_encode($result, \JSON_THROW_ON_ERROR, 512));
+        self::assertSame($expected['data'], \json_decode(\json_encode($result->getData()), true));
+        self::assertNull($result->getErrors());
+    }
+
+    /**
+     * @dataProvider simpleDataProvider
+     * @param \Graphpinator\Json $request
+     * @param \Graphpinator\Json $expected
+     */
+    public function testHttpJsonBody(\Graphpinator\Json $request, \Graphpinator\Json $expected) : void
+    {
+        $stream = $this->createStub(\Psr\Http\Message\StreamInterface::class);
+        $stream->method('getContents')->willReturn($request->toString());
+        $httpRequest = $this->createStub(\Psr\Http\Message\ServerRequestInterface::class);
+        $httpRequest->method('getHeader')->willReturn(['application/json']);
+        $httpRequest->method('getBody')->willReturn($stream);
+
+        $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
+        $result = $graphpinator->runQuery(\Graphpinator\Request::fromHttpRequest($httpRequest));
+
+        self::assertSame($expected->toString(), \json_encode($result, \JSON_THROW_ON_ERROR, 512));
+        self::assertSame($expected['data'], \json_decode(\json_encode($result->getData()), true));
+        self::assertNull($result->getErrors());
+    }
+
+    /**
+     * @dataProvider simpleDataProvider
+     * @param \Graphpinator\Json $request
+     * @param \Graphpinator\Json $expected
+     */
+    public function testHttpGraphQlBody(\Graphpinator\Json $request, \Graphpinator\Json $expected) : void
+    {
+        $stream = $this->createStub(\Psr\Http\Message\StreamInterface::class);
+        $stream->method('getContents')->willReturn($request['query']);
+        $httpRequest = $this->createStub(\Psr\Http\Message\ServerRequestInterface::class);
+        $httpRequest->method('getHeader')->willReturn(['application/graphql']);
+        $httpRequest->method('getBody')->willReturn($stream);
+
+        $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
+        $result = $graphpinator->runQuery(\Graphpinator\Request::fromHttpRequest($httpRequest));
+
+        self::assertSame($expected->toString(), \json_encode($result, \JSON_THROW_ON_ERROR, 512));
+        self::assertSame($expected['data'], \json_decode(\json_encode($result->getData()), true));
+        self::assertNull($result->getErrors());
+    }
+
+    /**
+     * @dataProvider simpleDataProvider
+     * @param \Graphpinator\Json $request
+     * @param \Graphpinator\Json $expected
+     */
+    public function testHttpParamsBody(\Graphpinator\Json $request, \Graphpinator\Json $expected) : void
+    {
+        $httpRequest = $this->createStub(\Psr\Http\Message\ServerRequestInterface::class);
+        $httpRequest->method('getHeader')->willReturn([]);
+        $httpRequest->method('getQueryParams')->willReturn((array) $request->toObject());
+
+        $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
+        $result = $graphpinator->runQuery(\Graphpinator\Request::fromHttpRequest($httpRequest));
 
         self::assertSame($expected->toString(), \json_encode($result, \JSON_THROW_ON_ERROR, 512));
         self::assertSame($expected['data'], \json_decode(\json_encode($result->getData()), true));
@@ -135,6 +196,6 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
         $this->expectException($exception);
 
         $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
-        $graphpinator->runQuery($request);
+        $graphpinator->runQuery(\Graphpinator\Request::fromJson($request));
     }
 }

@@ -102,7 +102,7 @@ final class DirectiveTest extends \PHPUnit\Framework\TestCase
     public function testSimple(\Graphpinator\Json $request, \Graphpinator\Json $expected) : void
     {
         $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
-        $result = $graphpinator->runQuery($request);
+        $result = $graphpinator->runQuery(\Graphpinator\Request::fromJson($request));
 
         self::assertSame($expected->toString(), \json_encode($result, \JSON_THROW_ON_ERROR, 512));
         self::assertNull($result->getErrors());
@@ -116,9 +116,11 @@ final class DirectiveTest extends \PHPUnit\Framework\TestCase
         self::assertSame(
             \Graphpinator\Json::fromObject((object) ['data' => ['fieldUnion' => ['field1' => ['name' => 'Test 123']]]])->toString(),
             \json_encode($graphpinator->runQuery(
-                \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldUnion { field1 @testDirective @testDirective @testDirective { name } } }',
-                ]),
+                \Graphpinator\Request::fromJson(
+                    \Graphpinator\Json::fromObject((object) [
+                        'query' => 'query queryName { fieldUnion { field1 @testDirective @testDirective @testDirective { name } } }',
+                    ]),
+                ),
             ), \JSON_THROW_ON_ERROR, 512),
         );
         self::assertSame(3, TestSchema::getSchema()->getContainer()->getDirective('testDirective')::$count);
@@ -177,6 +179,6 @@ final class DirectiveTest extends \PHPUnit\Framework\TestCase
         $this->expectExceptionMessage(\constant($exception . '::MESSAGE'));
 
         $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
-        $graphpinator->runQuery($request);
+        $graphpinator->runQuery(\Graphpinator\Request::fromJson($request));
     }
 }
