@@ -4,9 +4,9 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Value;
 
-use Graphpinator\Argument\ArgumentValue;
+use \Graphpinator\Argument\ArgumentValue;
 
-final class InputValue implements InputedValue
+final class InputValue implements \Graphpinator\Value\InputedValue
 {
     use \Nette\SmartObject;
 
@@ -28,7 +28,8 @@ final class InputValue implements InputedValue
         $value = new \stdClass();
 
         foreach ($type->getArguments() as $argument) {
-            $value->{$argument->getName()} = new ArgumentValue($argument, $rawValue->{$argument->getName()} ?? null);
+            $value->{$argument->getName()} = new \Graphpinator\Argument\ArgumentValue($argument, $rawValue->{$argument->getName()}
+                ?? null);
         }
 
         $this->type = $type;
@@ -72,16 +73,6 @@ final class InputValue implements InputedValue
         return '{' . \implode(',', $component) . '}';
     }
 
-    public function __isset($offset) : bool
-    {
-        return \property_exists($this->value, $offset);
-    }
-
-    public function __get($offset) : ArgumentValue
-    {
-        return $this->value->{$offset};
-    }
-
     private static function merge(\stdClass $core, \stdClass $supplement) : \stdClass
     {
         foreach ($supplement as $key => $value) {
@@ -116,6 +107,16 @@ final class InputValue implements InputedValue
             $component[] = $key . ': ' . $value->getValue()->printValue(true, $indentLevel + 1);
         }
 
-        return '{' . \PHP_EOL . $innerIndent . \implode(',' . \PHP_EOL . $innerIndent , $component) . \PHP_EOL . $indent . '}';
+        return '{' . \PHP_EOL . $innerIndent . \implode(',' . \PHP_EOL . $innerIndent, $component) . \PHP_EOL . $indent . '}';
+    }
+
+    public function __isset($offset) : bool
+    {
+        return \property_exists($this->value, $offset);
+    }
+
+    public function __get($offset) : ArgumentValue
+    {
+        return $this->value->{$offset};
     }
 }

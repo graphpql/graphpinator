@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Value;
 
-final class ListResolvedValue implements OutputValue, ListValue
+final class ListResolvedValue implements \Graphpinator\Value\OutputValue, \Graphpinator\Value\ListValue
 {
     use \Nette\SmartObject;
 

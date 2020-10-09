@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Value;
 
-final class ListInputedValue implements InputedValue, ListValue, \Iterator
+final class ListInputedValue implements \Graphpinator\Value\InputedValue, \Graphpinator\Value\ListValue, \Iterator
 {
     use \Nette\SmartObject;
 

@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Value;
 
-final class TypeValue implements OutputValue
+final class TypeValue implements \Graphpinator\Value\OutputValue
 {
     use \Nette\SmartObject;
 

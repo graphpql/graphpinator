@@ -8,8 +8,8 @@ final class FieldValue implements \JsonSerializable
 {
     use \Nette\SmartObject;
 
-    protected \Graphpinator\Field\Field $field;
-    protected \Graphpinator\Value\ResolvedValue $value;
+    private \Graphpinator\Field\Field $field;
+    private \Graphpinator\Value\ResolvedValue $value;
 
     public function __construct(\Graphpinator\Field\Field $field, \Graphpinator\Value\ResolvedValue $value)
     {

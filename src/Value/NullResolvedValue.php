@@ -4,11 +4,11 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Value;
 
-final class NullResolvedValue implements OutputValue, NullValue
+final class NullResolvedValue implements \Graphpinator\Value\OutputValue, \Graphpinator\Value\NullValue
 {
     use \Nette\SmartObject;
 
-    protected \Graphpinator\Type\Contract\Resolvable $type;
+    private \Graphpinator\Type\Contract\Resolvable $type;
 
     public function __construct(\Graphpinator\Type\Contract\Resolvable $type)
     {

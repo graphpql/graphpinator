@@ -15,7 +15,7 @@ final class ListType extends \Graphpinator\Type\Contract\ModifierDefinition
         return new \Graphpinator\Value\NullInputedValue($this);
     }
 
-    public function createResolvedValue($rawValue): \Graphpinator\Value\ResolvedValue
+    public function createResolvedValue($rawValue) : \Graphpinator\Value\ResolvedValue
     {
         if (\is_iterable($rawValue)) {
             return new \Graphpinator\Value\ListIntermediateValue($this, $rawValue);

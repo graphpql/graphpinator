@@ -4,12 +4,12 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Value;
 
-final class LeafValue implements InputedValue, OutputValue
+final class LeafValue implements \Graphpinator\Value\InputedValue, \Graphpinator\Value\OutputValue
 {
     use \Nette\SmartObject;
 
-    protected \Graphpinator\Type\Contract\LeafDefinition $type;
-    protected $rawValue;
+    private \Graphpinator\Type\Contract\LeafDefinition $type;
+    private $rawValue;
 
     public function __construct(\Graphpinator\Type\Contract\LeafDefinition $type, $rawValue)
     {

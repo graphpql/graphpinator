@@ -20,7 +20,7 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
             ?? new \Graphpinator\Utils\InterfaceSet([]);
     }
 
-    final public function createResolvedValue($rawValue): \Graphpinator\Value\ResolvedValue
+    final public function createResolvedValue($rawValue) : \Graphpinator\Value\ResolvedValue
     {
         if ($rawValue === null) {
             return new \Graphpinator\Value\NullResolvedValue($this);

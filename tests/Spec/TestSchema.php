@@ -660,7 +660,10 @@ final class TestSchema
                         (object) [
                             'name' => 'testName',
                             'inner' => (object) ['name' => 'string', 'number' => [1, 2, 3]],
-                            'innerList' => [(object) ['name' => 'string', 'number' => [1]], (object) ['name' => 'string', 'number' => [1, 2, 3, 4]]],
+                            'innerList' => [
+                                (object) ['name' => 'string', 'number' => [1]],
+                                (object) ['name' => 'string', 'number' => [1, 2, 3, 4]],
+                            ],
                             'innerNotNull' => (object) ['name' => 'string', 'number' => [1, 2]],
                         ],
                     ),
@@ -674,7 +677,7 @@ final class TestSchema
                                 'innerList' => [
                                     (object) ['name' => 'string', 'number' => [1]],
                                     (object) ['name' => 'string', 'number' => [1, 2, 3, 4]],
-                                    ],
+                                ],
                                 'innerNotNull' => (object) ['name' => 'string', 'number' => [1, 2]],
                             ],
                             (object) [
@@ -683,7 +686,7 @@ final class TestSchema
                                 'innerList' => [
                                     (object) ['name' => 'string2', 'number' => [11]],
                                     (object) ['name' => 'string2', 'number' => [11, 22, 33, 44]],
-                                    ],
+                                ],
                                 'innerNotNull' => (object) ['name' => 'string2', 'number' => [11, 22]],
                             ],
                         ],

@@ -4,11 +4,11 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Value;
 
-final class NullInputedValue implements InputedValue, NullValue
+final class NullInputedValue implements \Graphpinator\Value\InputedValue, \Graphpinator\Value\NullValue
 {
     use \Nette\SmartObject;
 
-    protected \Graphpinator\Type\Contract\Inputable $type;
+    private \Graphpinator\Type\Contract\Inputable $type;
 
     public function __construct(\Graphpinator\Type\Contract\Inputable $type)
     {

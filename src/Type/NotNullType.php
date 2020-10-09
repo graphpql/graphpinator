@@ -18,7 +18,7 @@ final class NotNullType extends \Graphpinator\Type\Contract\ModifierDefinition
         return $value;
     }
 
-    public function createResolvedValue($rawValue): \Graphpinator\Value\ResolvedValue
+    public function createResolvedValue($rawValue) : \Graphpinator\Value\ResolvedValue
     {
         \assert($this->innerType instanceof \Graphpinator\Type\Contract\Resolvable);
         $value = $this->innerType->createResolvedValue($rawValue);
