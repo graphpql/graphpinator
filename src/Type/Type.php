@@ -21,31 +21,29 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
             ?? new \Graphpinator\Utils\InterfaceSet([]);
     }
 
-    final public function createValue($rawValue) : \Graphpinator\Resolver\Value\ValidatedValue
+    final public function createResolvedValue($rawValue) : \Graphpinator\Value\ResolvedValue
     {
-        return \Graphpinator\Resolver\Value\TypeValue::create($rawValue, $this);
-    }
-
-    final public function isInstanceOf(\Graphpinator\Type\Contract\Definition $type) : bool
-    {
-        if ($type instanceof \Graphpinator\Type\Contract\AbstractDefinition) {
-            return $type->isImplementedBy($this);
+        if ($rawValue === null) {
+            return new \Graphpinator\Value\NullResolvedValue($this);
         }
 
-        return parent::isInstanceOf($type);
+        return new \Graphpinator\Value\TypeIntermediateValue($this, $rawValue);
     }
 
-    final public function resolve(?\Graphpinator\Normalizer\FieldSet $requestedFields, \Graphpinator\Resolver\FieldResult $parentResult) : \stdClass
+    final public function resolve(
+        ?\Graphpinator\Normalizer\FieldSet $requestedFields,
+        \Graphpinator\Value\ResolvedValue $parentResult
+    ) : \Graphpinator\Value\TypeValue
     {
         if ($requestedFields === null) {
             throw new \Graphpinator\Exception\Resolver\SelectionOnComposite();
         }
 
-        $resolved = [];
+        $resolved = new \stdClass();
 
         foreach ($requestedFields as $field) {
             if ($field->getTypeCondition() instanceof \Graphpinator\Type\Contract\NamedDefinition &&
-                !$parentResult->getResult()->getType()->isInstanceOf($field->getTypeCondition())) {
+                !$parentResult->getType()->isInstanceOf($field->getTypeCondition())) {
                 continue;
             }
 
@@ -61,20 +59,24 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
 
             $fieldDef = $this->getMetaFields()[$field->getName()]
                 ?? $this->getFields()[$field->getName()];
-            $arguments = new \Graphpinator\Resolver\ArgumentValueSet($field->getArguments(), $fieldDef->getArguments());
-            $innerResult = $fieldDef->resolve($parentResult, $arguments);
-
-            $resolved[$field->getAlias()] = $innerResult->getResult() instanceof \Graphpinator\Resolver\Value\NullValue
-                ? $innerResult->getResult()
-                : $innerResult->getResult()->getType()->resolve($field->getFields(), $innerResult);
+            $resolved->{$field->getAlias()} = $fieldDef->resolve($parentResult, $field);
         }
 
-        return (object) $resolved;
+        return new \Graphpinator\Value\TypeValue($this, $resolved);
     }
 
     final public function addMetaField(\Graphpinator\Field\ResolvableField $field) : void
     {
         $this->getMetaFields()->offsetSet($field->getName(), $field);
+    }
+
+    final public function isInstanceOf(\Graphpinator\Type\Contract\Definition $type) : bool
+    {
+        if ($type instanceof \Graphpinator\Type\Contract\AbstractDefinition) {
+            return $type->isImplementedBy($this);
+        }
+
+        return parent::isInstanceOf($type);
     }
 
     final public function getTypeKind() : string
@@ -92,7 +94,7 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
 
     abstract protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet;
 
-    final protected function getMetaFields() : \Graphpinator\Field\ResolvableFieldSet
+    private function getMetaFields() : \Graphpinator\Field\ResolvableFieldSet
     {
         if (!$this->metaFields instanceof \Graphpinator\Field\ResolvableFieldSet) {
             $this->metaFields = $this->getMetaFieldDefinition();

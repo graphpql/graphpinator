@@ -51,7 +51,7 @@ final class InputValue extends \Graphpinator\Type\Type
                 'defaultValue',
                 \Graphpinator\Container\Container::String(),
                 static function (\Graphpinator\Argument\Argument $argument) : ?string {
-                    return $argument->getDefaultValue() instanceof \Graphpinator\Resolver\Value\ValidatedValue
+                    return $argument->getDefaultValue() instanceof \Graphpinator\Value\InputedValue
                         ? $argument->getDefaultValue()->printValue()
                         : null;
                 },

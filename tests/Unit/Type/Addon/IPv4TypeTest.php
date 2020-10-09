@@ -39,7 +39,7 @@ final class IPv4TypeTest extends \PHPUnit\Framework\TestCase
     public function testValidateValue(string $rawValue) : void
     {
         $ipv4 = new \Graphpinator\Type\Addon\IPv4Type();
-        $ipv4->validateValue($rawValue);
+        $ipv4->validateResolvedValue($rawValue);
     }
 
     /**
@@ -52,6 +52,6 @@ final class IPv4TypeTest extends \PHPUnit\Framework\TestCase
         $this->expectException(\Exception::class);
 
         $ipv4 = new \Graphpinator\Type\Addon\IPv4Type();
-        $ipv4->validateValue($rawValue);
+        $ipv4->validateResolvedValue($rawValue);
     }
 }

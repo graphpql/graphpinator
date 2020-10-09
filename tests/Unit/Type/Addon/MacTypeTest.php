@@ -54,7 +54,7 @@ final class MacTypeTest extends \PHPUnit\Framework\TestCase
     public function testValidateValue(string $rawValue) : void
     {
         $mac = new \Graphpinator\Type\Addon\MacType();
-        $mac->validateValue($rawValue);
+        $mac->validateResolvedValue($rawValue);
     }
 
     /**
@@ -67,6 +67,6 @@ final class MacTypeTest extends \PHPUnit\Framework\TestCase
         $this->expectException(\Exception::class);
 
         $mac = new \Graphpinator\Type\Addon\MacType();
-        $mac->validateValue($rawValue);
+        $mac->validateResolvedValue($rawValue);
     }
 }

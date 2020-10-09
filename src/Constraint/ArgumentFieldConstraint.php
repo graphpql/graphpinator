@@ -12,9 +12,9 @@ abstract class ArgumentFieldConstraint implements \Graphpinator\Constraint\Const
 
     abstract public function validateType(\Graphpinator\Type\Contract\Definition $type) : bool;
 
-    public function validate(\Graphpinator\Resolver\Value\ValidatedValue $value) : void
+    public function validate(\Graphpinator\Value\Value $value) : void
     {
-        if ($value instanceof \Graphpinator\Resolver\Value\NullValue) {
+        if ($value instanceof \Graphpinator\Value\NullValue) {
             return;
         }
 

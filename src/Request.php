@@ -20,7 +20,7 @@ final class Request
         $this->variables = new \Graphpinator\Resolver\VariableValueSet($operation->getVariables(), $variables);
     }
 
-    public function execute() : \Graphpinator\Resolver\OperationResult
+    public function execute() : \Graphpinator\Response
     {
         return $this->operation->resolve($this->variables);
     }

@@ -11,13 +11,13 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
         return [
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldValid { field1 { name } } }',
+                    'query' => 'query queryName { fieldUnion { field1 { name } } }',
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['fieldValid' => ['field1' => ['name' => 'Test 123']]]]),
+                \Graphpinator\Json::fromObject((object) ['data' => ['fieldUnion' => ['field1' => ['name' => 'Test 123']]]]),
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { aliasName: fieldValid { field1 { name } } }',
+                    'query' => 'query queryName { aliasName: fieldUnion { field1 { name } } }',
                 ]),
                 \Graphpinator\Json::fromObject((object) ['data' => ['aliasName' => ['field1' => ['name' => 'Test 123']]]]),
             ],
@@ -66,20 +66,20 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
         return [
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldValid { field1 } }',
+                    'query' => 'query queryName { fieldUnion { field1 } }',
                 ]),
                 \Graphpinator\Exception\Resolver\SelectionOnComposite::class,
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldValid { field1 { nonExisting } } }',
+                    'query' => 'query queryName { fieldUnion { field1 { nonExisting } } }',
                 ]),
                 //phpcs:ignore SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly.ReferencedGeneralException
                 \Exception::class,
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldValid { field1 { name { nonExisting } } } }',
+                    'query' => 'query queryName { fieldUnion { field1 { name { nonExisting } } } }',
                 ]),
                 //phpcs:ignore SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly.ReferencedGeneralException
                 \Exception::class,
@@ -89,12 +89,6 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
                     'query' => 'query queryName { fieldInvalidType { } }',
                 ]),
                 \Graphpinator\Exception\Resolver\FieldResultTypeMismatch::class,
-            ],
-            [
-                \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldInvalidReturn { } }',
-                ]),
-                \Graphpinator\Exception\Resolver\FieldResultAbstract::class,
             ],
             [
                 \Graphpinator\Json::fromObject((object) []),

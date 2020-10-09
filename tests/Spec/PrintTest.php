@@ -125,6 +125,75 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           ): TestInterface @deprecated
         }
         
+        type AddonType {
+          dateTime(
+            dateTime: DateTime = "2010-01-01 12:12:50"
+          ): DateTime
+          date(
+            date: Date = "2010-01-01"
+          ): Date
+          emailAddress(
+            emailAddress: EmailAddress = "test@test.com"
+          ): EmailAddress
+          hsla(
+            hsla: HslaInput = {
+              hue: 180,
+              saturation: 50,
+              lightness: 50,
+              alpha: 0.5
+            }
+          ): Hsla
+          hsl(
+            hsl: HslInput = {
+              hue: 180,
+              saturation: 50,
+              lightness: 50
+            }
+          ): Hsl
+          ipv4(
+            ipv4: Ipv4 = "128.0.1.1"
+          ): Ipv4
+          ipv6(
+            ipv6: Ipv6 = "AAAA:1111:FFFF:9999:1111:AAAA:9999:FFFF"
+          ): Ipv6
+          json(
+            json: Json = "{\"testName\":\"testValue\"}"
+          ): Json
+          mac(
+            mac: Mac = "AA:11:FF:99:11:AA"
+          ): Mac
+          phoneNumber(
+            phoneNumber: PhoneNumber = "+999123456789"
+          ): PhoneNumber
+          postalCode(
+            postalCode: PostalCode = "111 22"
+          ): PostalCode
+          rgba(
+            rgba: RgbaInput = {
+              red: 150,
+              green: 150,
+              blue: 150,
+              alpha: 0.5
+            }
+          ): Rgba
+          rgb(
+            rgb: RgbInput = {
+              red: 150,
+              green: 150,
+              blue: 150
+            }
+          ): Rgb
+          time(
+            time: Time = "12:12:50"
+          ): Time
+          url(
+            url: Url = "https:\/\/test.com\/boo\/blah.php?testValue=test&testName=name"
+          ): Url
+          void(
+            void: Void = null
+          ): Void
+        }
+        
         enum ArrayEnum {
           "First description"
           A
@@ -134,6 +203,128 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         
           "Third description"
           C
+        }
+        
+        input ComplexDefaultsInput {
+          innerObject: CompositeInput = {
+            name: "testName",
+            inner: {
+              name: "string",
+              number: [
+                1,
+                2,
+                3
+              ],
+              bool: null
+            },
+            innerList: [
+              {
+                name: "string",
+                number: [
+                  1
+                ],
+                bool: null
+              },
+              {
+                name: "string",
+                number: [
+                  1,
+                  2,
+                  3,
+                  4
+                ],
+                bool: null
+              }
+            ],
+            innerNotNull: {
+              name: "string",
+              number: [
+                1,
+                2
+              ],
+              bool: null
+            }
+          }
+          innerListObjects: [CompositeInput] = [
+            {
+              name: "testName",
+              inner: {
+                name: "string",
+                number: [
+                  1,
+                  2,
+                  3
+                ],
+                bool: null
+              },
+              innerList: [
+                {
+                  name: "string",
+                  number: [
+                    1
+                  ],
+                  bool: null
+                },
+                {
+                  name: "string",
+                  number: [
+                    1,
+                    2,
+                    3,
+                    4
+                  ],
+                  bool: null
+                }
+              ],
+              innerNotNull: {
+                name: "string",
+                number: [
+                  1,
+                  2
+                ],
+                bool: null
+              }
+            },
+            {
+              name: "testName2",
+              inner: {
+                name: "string2",
+                number: [
+                  11,
+                  22,
+                  33
+                ],
+                bool: null
+              },
+              innerList: [
+                {
+                  name: "string2",
+                  number: [
+                    11
+                  ],
+                  bool: null
+                },
+                {
+                  name: "string2",
+                  number: [
+                    11,
+                    22,
+                    33,
+                    44
+                  ],
+                  bool: null
+                }
+              ],
+              innerNotNull: {
+                name: "string2",
+                number: [
+                  11,
+                  22
+                ],
+                bool: null
+              }
+            }
+          ]
         }
         
         input CompositeInput {
@@ -175,9 +366,32 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         input DefaultsInput {
           scalar: String! = "defaultString"
           enum: SimpleEnum! = "A"
-          list: [String!]! = ["string1","string2"]
-          object: SimpleInput! = {name:"string",number:[1,2],bool:null}
-          listObjects: [SimpleInput!]! = [{name:"string",number:[1],bool:null},{name:"string",number:[],bool:null}]
+          list: [String!]! = [
+            "string1",
+            "string2"
+          ]
+          object: SimpleInput! = {
+            name: "string",
+            number: [
+              1,
+              2
+            ],
+            bool: null
+          }
+          listObjects: [SimpleInput!]! = [
+            {
+              name: "string",
+              number: [
+                1
+              ],
+              bool: null
+            },
+            {
+              name: "string",
+              number: [],
+              bool: null
+            }
+          ]
         }
         
         enum DescriptionEnum {
@@ -264,7 +478,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         scalar PostalCode
         
         type Query {
-          fieldValid: TestUnion
+          fieldUnion: TestUnion
           fieldConstraint(
             arg: ConstraintInput
           ): Int
@@ -272,9 +486,8 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             arg: ExactlyOneInput
           ): Int
           fieldInvalidType: TestUnion
-          fieldInvalidReturn: TestUnion
           fieldThrow: TestUnion
-          fieldAddonType: TestAddonDefaultValue
+          fieldAddonType: AddonType
         }
         
         """
@@ -307,57 +520,6 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           name: String!
           number: [Int!]!
           bool: Boolean
-        }
-        
-        type TestAddonDefaultValue {
-          dateTime(
-            dateTime: DateTime = "2010-01-01 12:12:50"
-          ): DateTime
-          date(
-            date: Date = "2010-01-01"
-          ): Date
-          emailAddress(
-            emailAddress: EmailAddress = "test@test.com"
-          ): EmailAddress
-          hsla(
-            hsla: HslaInput = {hue:180,saturation:50,lightness:50,alpha:0.5}
-          ): Hsla
-          hsl(
-            hsl: HslInput = {hue:180,saturation:50,lightness:50}
-          ): Hsl
-          ipv4(
-            ipv4: Ipv4 = "128.0.1.1"
-          ): Ipv4
-          ipv6(
-            ipv6: Ipv6 = "AAAA:1111:FFFF:9999:1111:AAAA:9999:FFFF"
-          ): Ipv6
-          json(
-            json: Json = "{\"testName\":\"testValue\"}"
-          ): Json
-          mac(
-            mac: Mac = "AA:11:FF:99:11:AA"
-          ): Mac
-          phoneNumber(
-            phoneNumber: PhoneNumber = "+999123456789"
-          ): PhoneNumber
-          postalCode(
-            postalCode: PostalCode = "111 22"
-          ): PostalCode
-          rgba(
-            rgba: RgbaInput = {red:150,green:150,blue:150,alpha:0.5}
-          ): Rgba
-          rgb(
-            rgb: RgbInput = {red:150,green:150,blue:150}
-          ): Rgb
-          time(
-            time: Time = "12:12:50"
-          ): Time
-          url(
-            url: Url = "https:\/\/test.com\/boo\/blah.php?testValue=test&testName=name"
-          ): Url
-          void(
-            void: Void = null
-          ): Void
         }
         
         """
@@ -452,6 +614,75 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           ): TestInterface @deprecated
         }
         
+        type AddonType {
+          dateTime(
+            dateTime: DateTime = "2010-01-01 12:12:50"
+          ): DateTime
+          date(
+            date: Date = "2010-01-01"
+          ): Date
+          emailAddress(
+            emailAddress: EmailAddress = "test@test.com"
+          ): EmailAddress
+          hsla(
+            hsla: HslaInput = {
+              hue: 180,
+              saturation: 50,
+              lightness: 50,
+              alpha: 0.5
+            }
+          ): Hsla
+          hsl(
+            hsl: HslInput = {
+              hue: 180,
+              saturation: 50,
+              lightness: 50
+            }
+          ): Hsl
+          ipv4(
+            ipv4: Ipv4 = "128.0.1.1"
+          ): Ipv4
+          ipv6(
+            ipv6: Ipv6 = "AAAA:1111:FFFF:9999:1111:AAAA:9999:FFFF"
+          ): Ipv6
+          json(
+            json: Json = "{\"testName\":\"testValue\"}"
+          ): Json
+          mac(
+            mac: Mac = "AA:11:FF:99:11:AA"
+          ): Mac
+          phoneNumber(
+            phoneNumber: PhoneNumber = "+999123456789"
+          ): PhoneNumber
+          postalCode(
+            postalCode: PostalCode = "111 22"
+          ): PostalCode
+          rgba(
+            rgba: RgbaInput = {
+              red: 150,
+              green: 150,
+              blue: 150,
+              alpha: 0.5
+            }
+          ): Rgba
+          rgb(
+            rgb: RgbInput = {
+              red: 150,
+              green: 150,
+              blue: 150
+            }
+          ): Rgb
+          time(
+            time: Time = "12:12:50"
+          ): Time
+          url(
+            url: Url = "https:\/\/test.com\/boo\/blah.php?testValue=test&testName=name"
+          ): Url
+          void(
+            void: Void = null
+          ): Void
+        }
+        
         enum ArrayEnum {
           "First description"
           A
@@ -461,6 +692,128 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         
           "Third description"
           C
+        }
+        
+        input ComplexDefaultsInput {
+          innerObject: CompositeInput = {
+            name: "testName",
+            inner: {
+              name: "string",
+              number: [
+                1,
+                2,
+                3
+              ],
+              bool: null
+            },
+            innerList: [
+              {
+                name: "string",
+                number: [
+                  1
+                ],
+                bool: null
+              },
+              {
+                name: "string",
+                number: [
+                  1,
+                  2,
+                  3,
+                  4
+                ],
+                bool: null
+              }
+            ],
+            innerNotNull: {
+              name: "string",
+              number: [
+                1,
+                2
+              ],
+              bool: null
+            }
+          }
+          innerListObjects: [CompositeInput] = [
+            {
+              name: "testName",
+              inner: {
+                name: "string",
+                number: [
+                  1,
+                  2,
+                  3
+                ],
+                bool: null
+              },
+              innerList: [
+                {
+                  name: "string",
+                  number: [
+                    1
+                  ],
+                  bool: null
+                },
+                {
+                  name: "string",
+                  number: [
+                    1,
+                    2,
+                    3,
+                    4
+                  ],
+                  bool: null
+                }
+              ],
+              innerNotNull: {
+                name: "string",
+                number: [
+                  1,
+                  2
+                ],
+                bool: null
+              }
+            },
+            {
+              name: "testName2",
+              inner: {
+                name: "string2",
+                number: [
+                  11,
+                  22,
+                  33
+                ],
+                bool: null
+              },
+              innerList: [
+                {
+                  name: "string2",
+                  number: [
+                    11
+                  ],
+                  bool: null
+                },
+                {
+                  name: "string2",
+                  number: [
+                    11,
+                    22,
+                    33,
+                    44
+                  ],
+                  bool: null
+                }
+              ],
+              innerNotNull: {
+                name: "string2",
+                number: [
+                  11,
+                  22
+                ],
+                bool: null
+              }
+            }
+          ]
         }
         
         input CompositeInput {
@@ -502,9 +855,32 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         input DefaultsInput {
           scalar: String! = "defaultString"
           enum: SimpleEnum! = "A"
-          list: [String!]! = ["string1","string2"]
-          object: SimpleInput! = {name:"string",number:[1,2],bool:null}
-          listObjects: [SimpleInput!]! = [{name:"string",number:[1],bool:null},{name:"string",number:[],bool:null}]
+          list: [String!]! = [
+            "string1",
+            "string2"
+          ]
+          object: SimpleInput! = {
+            name: "string",
+            number: [
+              1,
+              2
+            ],
+            bool: null
+          }
+          listObjects: [SimpleInput!]! = [
+            {
+              name: "string",
+              number: [
+                1
+              ],
+              bool: null
+            },
+            {
+              name: "string",
+              number: [],
+              bool: null
+            }
+          ]
         }
         
         enum DescriptionEnum {
@@ -591,7 +967,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         scalar PostalCode
         
         type Query {
-          fieldValid: TestUnion
+          fieldUnion: TestUnion
           fieldConstraint(
             arg: ConstraintInput
           ): Int
@@ -599,9 +975,8 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             arg: ExactlyOneInput
           ): Int
           fieldInvalidType: TestUnion
-          fieldInvalidReturn: TestUnion
           fieldThrow: TestUnion
-          fieldAddonType: TestAddonDefaultValue
+          fieldAddonType: AddonType
         }
         
         """
@@ -634,57 +1009,6 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           name: String!
           number: [Int!]!
           bool: Boolean
-        }
-        
-        type TestAddonDefaultValue {
-          dateTime(
-            dateTime: DateTime = "2010-01-01 12:12:50"
-          ): DateTime
-          date(
-            date: Date = "2010-01-01"
-          ): Date
-          emailAddress(
-            emailAddress: EmailAddress = "test@test.com"
-          ): EmailAddress
-          hsla(
-            hsla: HslaInput = {hue:180,saturation:50,lightness:50,alpha:0.5}
-          ): Hsla
-          hsl(
-            hsl: HslInput = {hue:180,saturation:50,lightness:50}
-          ): Hsl
-          ipv4(
-            ipv4: Ipv4 = "128.0.1.1"
-          ): Ipv4
-          ipv6(
-            ipv6: Ipv6 = "AAAA:1111:FFFF:9999:1111:AAAA:9999:FFFF"
-          ): Ipv6
-          json(
-            json: Json = "{\"testName\":\"testValue\"}"
-          ): Json
-          mac(
-            mac: Mac = "AA:11:FF:99:11:AA"
-          ): Mac
-          phoneNumber(
-            phoneNumber: PhoneNumber = "+999123456789"
-          ): PhoneNumber
-          postalCode(
-            postalCode: PostalCode = "111 22"
-          ): PostalCode
-          rgba(
-            rgba: RgbaInput = {red:150,green:150,blue:150,alpha:0.5}
-          ): Rgba
-          rgb(
-            rgb: RgbInput = {red:150,green:150,blue:150}
-          ): Rgb
-          time(
-            time: Time = "12:12:50"
-          ): Time
-          url(
-            url: Url = "https:\/\/test.com\/boo\/blah.php?testValue=test&testName=name"
-          ): Url
-          void(
-            void: Void = null
-          ): Void
         }
         
         """
@@ -786,6 +1110,75 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           ): TestInterface @deprecated
         }
         
+        type AddonType {
+          dateTime(
+            dateTime: DateTime = "2010-01-01 12:12:50"
+          ): DateTime
+          date(
+            date: Date = "2010-01-01"
+          ): Date
+          emailAddress(
+            emailAddress: EmailAddress = "test@test.com"
+          ): EmailAddress
+          hsla(
+            hsla: HslaInput = {
+              hue: 180,
+              saturation: 50,
+              lightness: 50,
+              alpha: 0.5
+            }
+          ): Hsla
+          hsl(
+            hsl: HslInput = {
+              hue: 180,
+              saturation: 50,
+              lightness: 50
+            }
+          ): Hsl
+          ipv4(
+            ipv4: Ipv4 = "128.0.1.1"
+          ): Ipv4
+          ipv6(
+            ipv6: Ipv6 = "AAAA:1111:FFFF:9999:1111:AAAA:9999:FFFF"
+          ): Ipv6
+          json(
+            json: Json = "{\"testName\":\"testValue\"}"
+          ): Json
+          mac(
+            mac: Mac = "AA:11:FF:99:11:AA"
+          ): Mac
+          phoneNumber(
+            phoneNumber: PhoneNumber = "+999123456789"
+          ): PhoneNumber
+          postalCode(
+            postalCode: PostalCode = "111 22"
+          ): PostalCode
+          rgba(
+            rgba: RgbaInput = {
+              red: 150,
+              green: 150,
+              blue: 150,
+              alpha: 0.5
+            }
+          ): Rgba
+          rgb(
+            rgb: RgbInput = {
+              red: 150,
+              green: 150,
+              blue: 150
+            }
+          ): Rgb
+          time(
+            time: Time = "12:12:50"
+          ): Time
+          url(
+            url: Url = "https:\/\/test.com\/boo\/blah.php?testValue=test&testName=name"
+          ): Url
+          void(
+            void: Void = null
+          ): Void
+        }
+        
         """
         Hsl type - type representing the HSL color model.
         """
@@ -806,7 +1199,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         }
         
         type Query {
-          fieldValid: TestUnion
+          fieldUnion: TestUnion
           fieldConstraint(
             arg: ConstraintInput
           ): Int
@@ -814,9 +1207,8 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             arg: ExactlyOneInput
           ): Int
           fieldInvalidType: TestUnion
-          fieldInvalidReturn: TestUnion
           fieldThrow: TestUnion
-          fieldAddonType: TestAddonDefaultValue
+          fieldAddonType: AddonType
         }
         
         """
@@ -838,57 +1230,6 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           alpha: Float!
         }
         
-        type TestAddonDefaultValue {
-          dateTime(
-            dateTime: DateTime = "2010-01-01 12:12:50"
-          ): DateTime
-          date(
-            date: Date = "2010-01-01"
-          ): Date
-          emailAddress(
-            emailAddress: EmailAddress = "test@test.com"
-          ): EmailAddress
-          hsla(
-            hsla: HslaInput = {hue:180,saturation:50,lightness:50,alpha:0.5}
-          ): Hsla
-          hsl(
-            hsl: HslInput = {hue:180,saturation:50,lightness:50}
-          ): Hsl
-          ipv4(
-            ipv4: Ipv4 = "128.0.1.1"
-          ): Ipv4
-          ipv6(
-            ipv6: Ipv6 = "AAAA:1111:FFFF:9999:1111:AAAA:9999:FFFF"
-          ): Ipv6
-          json(
-            json: Json = "{\"testName\":\"testValue\"}"
-          ): Json
-          mac(
-            mac: Mac = "AA:11:FF:99:11:AA"
-          ): Mac
-          phoneNumber(
-            phoneNumber: PhoneNumber = "+999123456789"
-          ): PhoneNumber
-          postalCode(
-            postalCode: PostalCode = "111 22"
-          ): PostalCode
-          rgba(
-            rgba: RgbaInput = {red:150,green:150,blue:150,alpha:0.5}
-          ): Rgba
-          rgb(
-            rgb: RgbInput = {red:150,green:150,blue:150}
-          ): Rgb
-          time(
-            time: Time = "12:12:50"
-          ): Time
-          url(
-            url: Url = "https:\/\/test.com\/boo\/blah.php?testValue=test&testName=name"
-          ): Url
-          void(
-            void: Void = null
-          ): Void
-        }
-        
         type Xyz implements TestInterface {
           name: String!
         }
@@ -898,6 +1239,128 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         }
         
         union TestUnion = Abc | Xyz
+        
+        input ComplexDefaultsInput {
+          innerObject: CompositeInput = {
+            name: "testName",
+            inner: {
+              name: "string",
+              number: [
+                1,
+                2,
+                3
+              ],
+              bool: null
+            },
+            innerList: [
+              {
+                name: "string",
+                number: [
+                  1
+                ],
+                bool: null
+              },
+              {
+                name: "string",
+                number: [
+                  1,
+                  2,
+                  3,
+                  4
+                ],
+                bool: null
+              }
+            ],
+            innerNotNull: {
+              name: "string",
+              number: [
+                1,
+                2
+              ],
+              bool: null
+            }
+          }
+          innerListObjects: [CompositeInput] = [
+            {
+              name: "testName",
+              inner: {
+                name: "string",
+                number: [
+                  1,
+                  2,
+                  3
+                ],
+                bool: null
+              },
+              innerList: [
+                {
+                  name: "string",
+                  number: [
+                    1
+                  ],
+                  bool: null
+                },
+                {
+                  name: "string",
+                  number: [
+                    1,
+                    2,
+                    3,
+                    4
+                  ],
+                  bool: null
+                }
+              ],
+              innerNotNull: {
+                name: "string",
+                number: [
+                  1,
+                  2
+                ],
+                bool: null
+              }
+            },
+            {
+              name: "testName2",
+              inner: {
+                name: "string2",
+                number: [
+                  11,
+                  22,
+                  33
+                ],
+                bool: null
+              },
+              innerList: [
+                {
+                  name: "string2",
+                  number: [
+                    11
+                  ],
+                  bool: null
+                },
+                {
+                  name: "string2",
+                  number: [
+                    11,
+                    22,
+                    33,
+                    44
+                  ],
+                  bool: null
+                }
+              ],
+              innerNotNull: {
+                name: "string2",
+                number: [
+                  11,
+                  22
+                ],
+                bool: null
+              }
+            }
+          ]
+        }
         
         input CompositeInput {
           name: String!
@@ -928,9 +1391,32 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         input DefaultsInput {
           scalar: String! = "defaultString"
           enum: SimpleEnum! = "A"
-          list: [String!]! = ["string1","string2"]
-          object: SimpleInput! = {name:"string",number:[1,2],bool:null}
-          listObjects: [SimpleInput!]! = [{name:"string",number:[1],bool:null},{name:"string",number:[],bool:null}]
+          list: [String!]! = [
+            "string1",
+            "string2"
+          ]
+          object: SimpleInput! = {
+            name: "string",
+            number: [
+              1,
+              2
+            ],
+            bool: null
+          }
+          listObjects: [SimpleInput!]! = [
+            {
+              name: "string",
+              number: [
+                1
+              ],
+              bool: null
+            },
+            {
+              name: "string",
+              number: [],
+              bool: null
+            }
+          ]
         }
         
         input ExactlyOneInput @objectConstraint(exactlyOne: ["int1", "int2"]) {
@@ -1113,6 +1599,75 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           ): TestInterface @deprecated
         }
         
+        type AddonType {
+          dateTime(
+            dateTime: DateTime = "2010-01-01 12:12:50"
+          ): DateTime
+          date(
+            date: Date = "2010-01-01"
+          ): Date
+          emailAddress(
+            emailAddress: EmailAddress = "test@test.com"
+          ): EmailAddress
+          hsla(
+            hsla: HslaInput = {
+              hue: 180,
+              saturation: 50,
+              lightness: 50,
+              alpha: 0.5
+            }
+          ): Hsla
+          hsl(
+            hsl: HslInput = {
+              hue: 180,
+              saturation: 50,
+              lightness: 50
+            }
+          ): Hsl
+          ipv4(
+            ipv4: Ipv4 = "128.0.1.1"
+          ): Ipv4
+          ipv6(
+            ipv6: Ipv6 = "AAAA:1111:FFFF:9999:1111:AAAA:9999:FFFF"
+          ): Ipv6
+          json(
+            json: Json = "{\"testName\":\"testValue\"}"
+          ): Json
+          mac(
+            mac: Mac = "AA:11:FF:99:11:AA"
+          ): Mac
+          phoneNumber(
+            phoneNumber: PhoneNumber = "+999123456789"
+          ): PhoneNumber
+          postalCode(
+            postalCode: PostalCode = "111 22"
+          ): PostalCode
+          rgba(
+            rgba: RgbaInput = {
+              red: 150,
+              green: 150,
+              blue: 150,
+              alpha: 0.5
+            }
+          ): Rgba
+          rgb(
+            rgb: RgbInput = {
+              red: 150,
+              green: 150,
+              blue: 150
+            }
+          ): Rgb
+          time(
+            time: Time = "12:12:50"
+          ): Time
+          url(
+            url: Url = "https:\/\/test.com\/boo\/blah.php?testValue=test&testName=name"
+          ): Url
+          void(
+            void: Void = null
+          ): Void
+        }
+        
         """
         Hsl type - type representing the HSL color model.
         """
@@ -1133,7 +1688,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         }
         
         type Query {
-          fieldValid: TestUnion
+          fieldUnion: TestUnion
           fieldConstraint(
             arg: ConstraintInput
           ): Int
@@ -1141,9 +1696,8 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             arg: ExactlyOneInput
           ): Int
           fieldInvalidType: TestUnion
-          fieldInvalidReturn: TestUnion
           fieldThrow: TestUnion
-          fieldAddonType: TestAddonDefaultValue
+          fieldAddonType: AddonType
         }
         
         """
@@ -1165,57 +1719,6 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           alpha: Float!
         }
 
-        type TestAddonDefaultValue {
-          dateTime(
-            dateTime: DateTime = "2010-01-01 12:12:50"
-          ): DateTime
-          date(
-            date: Date = "2010-01-01"
-          ): Date
-          emailAddress(
-            emailAddress: EmailAddress = "test@test.com"
-          ): EmailAddress
-          hsla(
-            hsla: HslaInput = {hue:180,saturation:50,lightness:50,alpha:0.5}
-          ): Hsla
-          hsl(
-            hsl: HslInput = {hue:180,saturation:50,lightness:50}
-          ): Hsl
-          ipv4(
-            ipv4: Ipv4 = "128.0.1.1"
-          ): Ipv4
-          ipv6(
-            ipv6: Ipv6 = "AAAA:1111:FFFF:9999:1111:AAAA:9999:FFFF"
-          ): Ipv6
-          json(
-            json: Json = "{\"testName\":\"testValue\"}"
-          ): Json
-          mac(
-            mac: Mac = "AA:11:FF:99:11:AA"
-          ): Mac
-          phoneNumber(
-            phoneNumber: PhoneNumber = "+999123456789"
-          ): PhoneNumber
-          postalCode(
-            postalCode: PostalCode = "111 22"
-          ): PostalCode
-          rgba(
-            rgba: RgbaInput = {red:150,green:150,blue:150,alpha:0.5}
-          ): Rgba
-          rgb(
-            rgb: RgbInput = {red:150,green:150,blue:150}
-          ): Rgb
-          time(
-            time: Time = "12:12:50"
-          ): Time
-          url(
-            url: Url = "https:\/\/test.com\/boo\/blah.php?testValue=test&testName=name"
-          ): Url
-          void(
-            void: Void = null
-          ): Void
-        }
-        
         type Xyz implements TestInterface {
           name: String!
         }
@@ -1225,6 +1728,128 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         }
         
         union TestUnion = Abc | Xyz
+
+        input ComplexDefaultsInput {
+          innerObject: CompositeInput = {
+            name: "testName",
+            inner: {
+              name: "string",
+              number: [
+                1,
+                2,
+                3
+              ],
+              bool: null
+            },
+            innerList: [
+              {
+                name: "string",
+                number: [
+                  1
+                ],
+                bool: null
+              },
+              {
+                name: "string",
+                number: [
+                  1,
+                  2,
+                  3,
+                  4
+                ],
+                bool: null
+              }
+            ],
+            innerNotNull: {
+              name: "string",
+              number: [
+                1,
+                2
+              ],
+              bool: null
+            }
+          }
+          innerListObjects: [CompositeInput] = [
+            {
+              name: "testName",
+              inner: {
+                name: "string",
+                number: [
+                  1,
+                  2,
+                  3
+                ],
+                bool: null
+              },
+              innerList: [
+                {
+                  name: "string",
+                  number: [
+                    1
+                  ],
+                  bool: null
+                },
+                {
+                  name: "string",
+                  number: [
+                    1,
+                    2,
+                    3,
+                    4
+                  ],
+                  bool: null
+                }
+              ],
+              innerNotNull: {
+                name: "string",
+                number: [
+                  1,
+                  2
+                ],
+                bool: null
+              }
+            },
+            {
+              name: "testName2",
+              inner: {
+                name: "string2",
+                number: [
+                  11,
+                  22,
+                  33
+                ],
+                bool: null
+              },
+              innerList: [
+                {
+                  name: "string2",
+                  number: [
+                    11
+                  ],
+                  bool: null
+                },
+                {
+                  name: "string2",
+                  number: [
+                    11,
+                    22,
+                    33,
+                    44
+                  ],
+                  bool: null
+                }
+              ],
+              innerNotNull: {
+                name: "string2",
+                number: [
+                  11,
+                  22
+                ],
+                bool: null
+              }
+            }
+          ]
+        }
         
         input CompositeInput {
           name: String!
@@ -1255,9 +1880,32 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         input DefaultsInput {
           scalar: String! = "defaultString"
           enum: SimpleEnum! = "A"
-          list: [String!]! = ["string1","string2"]
-          object: SimpleInput! = {name:"string",number:[1,2],bool:null}
-          listObjects: [SimpleInput!]! = [{name:"string",number:[1],bool:null},{name:"string",number:[],bool:null}]
+          list: [String!]! = [
+            "string1",
+            "string2"
+          ]
+          object: SimpleInput! = {
+            name: "string",
+            number: [
+              1,
+              2
+            ],
+            bool: null
+          }
+          listObjects: [SimpleInput!]! = [
+            {
+              name: "string",
+              number: [
+                1
+              ],
+              bool: null
+            },
+            {
+              name: "string",
+              number: [],
+              bool: null
+            }
+          ]
         }
         
         input ExactlyOneInput @objectConstraint(exactlyOne: ["int1", "int2"]) {

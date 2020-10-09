@@ -56,16 +56,16 @@ final class ObjectConstraint implements \Graphpinator\Constraint\Constraint
         return '@objectConstraint(' . \implode(', ', $components) . ')';
     }
 
-    public function validate(\Graphpinator\Resolver\Value\ValidatedValue $value) : void
+    public function validate(\Graphpinator\Value\Value $value) : void
     {
-        $rawValue = $value->getRawValue();
-        \assert($rawValue instanceof \stdClass);
+        \assert($value instanceof \Graphpinator\Value\InputValue);
 
         if (\is_array($this->atLeastOne)) {
             $valid = false;
 
-            foreach ($this->atLeastOne as $item) {
-                if (isset($rawValue->{$item}) && $rawValue->{$item} !== null) {
+            foreach ($this->atLeastOne as $fieldName) {
+                if (isset($value->{$fieldName}) &&
+                    !$value->{$fieldName}->getValue() instanceof \Graphpinator\Value\NullValue) {
                     $valid = true;
 
                     break;
@@ -83,8 +83,9 @@ final class ObjectConstraint implements \Graphpinator\Constraint\Constraint
 
         $count = 0;
 
-        foreach ($this->exactlyOne as $item) {
-            if (isset($rawValue->{$item}) && $rawValue->{$item} !== null) {
+        foreach ($this->exactlyOne as $fieldName) {
+            if (isset($value->{$fieldName}) &&
+                !$value->{$fieldName}->getValue() instanceof \Graphpinator\Value\NullValue) {
                 ++$count;
             }
         }

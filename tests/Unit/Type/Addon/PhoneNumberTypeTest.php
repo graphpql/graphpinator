@@ -56,7 +56,7 @@ final class PhoneNumberTypeTest extends \PHPUnit\Framework\TestCase
     public function testValidateValue(string $rawValue) : void
     {
         $phoneNumber = new \Graphpinator\Type\Addon\PhoneNumberType();
-        $phoneNumber->validateValue($rawValue);
+        $phoneNumber->validateResolvedValue($rawValue);
     }
 
     /**
@@ -69,6 +69,6 @@ final class PhoneNumberTypeTest extends \PHPUnit\Framework\TestCase
         $this->expectException(\Exception::class);
 
         $phoneNumber = new \Graphpinator\Type\Addon\PhoneNumberType();
-        $phoneNumber->validateValue($rawValue);
+        $phoneNumber->validateResolvedValue($rawValue);
     }
 }

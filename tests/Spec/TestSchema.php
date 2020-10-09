@@ -44,7 +44,8 @@ final class TestSchema
             'ArrayEnum' => self::getArrayEnum(),
             'DescriptionEnum' => self::getDescriptionEnum(),
             'TestScalar' => self::getTestScalar(),
-            'TestAddonDefaultValue' => self::getAddonDefaultValue(),
+            'AddonType' => self::getAddonType(),
+            'ComplexDefaultsInput' => self::getComplexDefaultsInput(),
             'DateTime' => new \Graphpinator\Type\Addon\DateTimeType(),
             'Date' => new \Graphpinator\Type\Addon\DateType(),
             'EmailAddress' => new \Graphpinator\Type\Addon\EmailAddressType(),
@@ -77,10 +78,10 @@ final class TestSchema
             {
                 return new \Graphpinator\Field\ResolvableFieldSet([
                     new \Graphpinator\Field\ResolvableField(
-                        'fieldValid',
+                        'fieldUnion',
                         TestSchema::getUnion(),
                         static function () {
-                            return \Graphpinator\Resolver\FieldResult::fromRaw(TestSchema::getTypeAbc(), 1);
+                            return 1;
                         },
                     ),
                     new \Graphpinator\Field\ResolvableField(
@@ -113,14 +114,7 @@ final class TestSchema
                         'fieldInvalidType',
                         TestSchema::getUnion(),
                         static function () {
-                            return \Graphpinator\Resolver\FieldResult::fromRaw(\Graphpinator\Container\Container::Int(), 1);
-                        },
-                    ),
-                    new \Graphpinator\Field\ResolvableField(
-                        'fieldInvalidReturn',
-                        TestSchema::getUnion(),
-                        static function () {
-                            return 1;
+                            return 'invalidType';
                         },
                     ),
                     new \Graphpinator\Field\ResolvableField(
@@ -132,9 +126,9 @@ final class TestSchema
                     ),
                     new \Graphpinator\Field\ResolvableField(
                         'fieldAddonType',
-                        TestSchema::getAddonDefaultValue(),
+                        TestSchema::getAddonType(),
                         static function () : \Graphpinator\Type\Type {
-                            return TestSchema::getAddonDefaultValue();
+                            return TestSchema::getAddonType();
                         },
                     ),
                 ]);
@@ -165,7 +159,7 @@ final class TestSchema
                     (new \Graphpinator\Field\ResolvableField(
                         'field1',
                         TestSchema::getInterface(),
-                        static function (int $parent, ?int $arg1, ?\stdClass $arg2) : \Graphpinator\Resolver\FieldResult {
+                        static function (int $parent, ?int $arg1, ?\stdClass $arg2) {
                             $object = new \stdClass();
 
                             if ($arg2 === null) {
@@ -194,7 +188,7 @@ final class TestSchema
                                 $object->name = $concat($arg2);
                             }
 
-                            return \Graphpinator\Resolver\FieldResult::fromRaw(TestSchema::getTypeXyz(), $object);
+                            return $object;
                         },
                         new \Graphpinator\Argument\ArgumentSet([
                             new \Graphpinator\Argument\Argument('arg1', \Graphpinator\Container\Container::Int(), 123),
@@ -248,8 +242,11 @@ final class TestSchema
             protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
             {
                 return new \Graphpinator\Field\ResolvableFieldSet([
-                    new \Graphpinator\Field\ResolvableField('enumList', TestSchema::getSimpleEnum()->list(), static function () {
-                        return ['A', 'B'];
+                    new \Graphpinator\Field\ResolvableField(
+                        'enumList',
+                        TestSchema::getSimpleEnum()->list(),
+                        static function () {
+                            return ['A', 'B'];
                     }),
                 ]);
             }
@@ -503,6 +500,11 @@ final class TestSchema
                     new \Graphpinator\Field\Field('name', \Graphpinator\Container\Container::String()->notNull()),
                 ]);
             }
+
+            public function createResolvedValue($rawValue) : \Graphpinator\Value\TypeIntermediateValue
+            {
+                return new \Graphpinator\Value\TypeIntermediateValue(TestSchema::getTypeXyz(), $rawValue);
+            }
         };
     }
 
@@ -518,6 +520,15 @@ final class TestSchema
                     TestSchema::getTypeAbc(),
                     TestSchema::getTypeXyz(),
                 ]));
+            }
+
+            public function createResolvedValue($rawValue) : \Graphpinator\Value\TypeIntermediateValue
+            {
+                if ($rawValue === 'invalidType') {
+                    return new \Graphpinator\Value\TypeIntermediateValue(TestSchema::getTypeZzz(), $rawValue);
+                }
+
+                return new \Graphpinator\Value\TypeIntermediateValue(TestSchema::getTypeAbc(), $rawValue);
             }
         };
     }
@@ -634,11 +645,62 @@ final class TestSchema
         };
     }
 
-    public static function getAddonDefaultValue() : \Graphpinator\Type\Type
+    public static function getComplexDefaultsInput() : \Graphpinator\Type\InputType
+    {
+        return new class extends \Graphpinator\Type\InputType
+        {
+            protected const NAME = 'ComplexDefaultsInput';
+
+            protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
+            {
+                return new \Graphpinator\Argument\ArgumentSet([
+                    new \Graphpinator\Argument\Argument(
+                        'innerObject',
+                        TestSchema::getCompositeInput(),
+                        (object) [
+                            'name' => 'testName',
+                            'inner' => (object) ['name' => 'string', 'number' => [1, 2, 3]],
+                            'innerList' => [
+                                (object) ['name' => 'string', 'number' => [1]],
+                                (object) ['name' => 'string', 'number' => [1, 2, 3, 4]],
+                            ],
+                            'innerNotNull' => (object) ['name' => 'string', 'number' => [1, 2]],
+                        ],
+                    ),
+                    new \Graphpinator\Argument\Argument(
+                        'innerListObjects',
+                        TestSchema::getCompositeInput()->list(),
+                        [
+                            (object) [
+                                'name' => 'testName',
+                                'inner' => (object) ['name' => 'string', 'number' => [1, 2, 3]],
+                                'innerList' => [
+                                    (object) ['name' => 'string', 'number' => [1]],
+                                    (object) ['name' => 'string', 'number' => [1, 2, 3, 4]],
+                                ],
+                                'innerNotNull' => (object) ['name' => 'string', 'number' => [1, 2]],
+                            ],
+                            (object) [
+                                'name' => 'testName2',
+                                'inner' => (object) ['name' => 'string2', 'number' => [11, 22, 33]],
+                                'innerList' => [
+                                    (object) ['name' => 'string2', 'number' => [11]],
+                                    (object) ['name' => 'string2', 'number' => [11, 22, 33, 44]],
+                                ],
+                                'innerNotNull' => (object) ['name' => 'string2', 'number' => [11, 22]],
+                            ],
+                        ],
+                    ),
+                ]);
+            }
+        };
+    }
+
+    public static function getAddonType() : \Graphpinator\Type\Type
     {
         return new class extends \Graphpinator\Type\Type
         {
-            protected const NAME = 'TestAddonDefaultValue';
+            protected const NAME = 'AddonType';
 
             protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
             {

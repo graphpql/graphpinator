@@ -43,7 +43,7 @@ final class EmailAddressTypeTest extends \PHPUnit\Framework\TestCase
     public function testValidateValue(string $rawValue) : void
     {
         $date = new \Graphpinator\Type\Addon\EmailAddressType();
-        $date->validateValue($rawValue);
+        $date->validateResolvedValue($rawValue);
     }
 
     /**
@@ -56,6 +56,6 @@ final class EmailAddressTypeTest extends \PHPUnit\Framework\TestCase
         $this->expectException(\Exception::class);
 
         $date = new \Graphpinator\Type\Addon\EmailAddressType();
-        $date->validateValue($rawValue);
+        $date->validateResolvedValue($rawValue);
     }
 }

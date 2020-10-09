@@ -2,22 +2,22 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Resolver;
+namespace Graphpinator;
 
-final class OperationResult implements \JsonSerializable
+final class Response implements \JsonSerializable
 {
     use \Nette\SmartObject;
 
-    private ?\stdClass $data;
+    private ?\Graphpinator\Value\TypeValue $data;
     private ?array $errors;
 
-    public function __construct(?\stdClass $data = null, ?array $errors = null)
+    public function __construct(?\Graphpinator\Value\TypeValue $data = null, ?array $errors = null)
     {
         $this->data = $data;
         $this->errors = $errors;
     }
 
-    public function getData() : ?\stdClass
+    public function getData() : ?\Graphpinator\Value\TypeValue
     {
         return $this->data;
     }
@@ -27,12 +27,11 @@ final class OperationResult implements \JsonSerializable
         return $this->errors;
     }
 
-    //@phpcs:ignore SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingAnyTypeHint
-    public function jsonSerialize()
+    public function jsonSerialize() : array
     {
         $return = [];
 
-        if ($this->data instanceof \stdClass) {
+        if ($this->data instanceof \Graphpinator\Value\TypeValue) {
             $return['data'] = $this->data;
         }
 

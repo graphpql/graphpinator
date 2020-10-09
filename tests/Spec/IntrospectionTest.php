@@ -17,9 +17,9 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => '{ fieldValid { __typename } }',
+                    'query' => '{ fieldUnion { __typename } }',
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['fieldValid' => ['__typename' => 'Abc']]]),
+                \Graphpinator\Json::fromObject((object) ['data' => ['fieldUnion' => ['__typename' => 'Abc']]]),
             ],
         ];
     }
@@ -92,7 +92,8 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                                 ['name' => 'ArrayEnum'],
                                 ['name' => 'DescriptionEnum'],
                                 ['name' => 'TestScalar'],
-                                ['name' => 'TestAddonDefaultValue'],
+                                ['name' => 'AddonType'],
+                                ['name' => 'ComplexDefaultsInput'],
                                 ['name' => 'DateTime'],
                                 ['name' => 'Date'],
                                 ['name' => 'EmailAddress'],

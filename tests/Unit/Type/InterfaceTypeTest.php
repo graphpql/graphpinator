@@ -20,6 +20,11 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
                 );
             }
 
+            public function createResolvedValue($rawValue) : \Graphpinator\Value\TypeIntermediateValue
+            {
+                return new \Graphpinator\Value\TypeIntermediateValue(InterfaceTypeTest::getTypeImplementingInterface(), 123);
+            }
+
             protected function getFieldDefinition() : \Graphpinator\Field\FieldSet
             {
                 return new \Graphpinator\Field\FieldSet([
@@ -60,6 +65,11 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
     {
         return new class extends \Graphpinator\Type\InterfaceType {
             protected const NAME = 'Bar';
+
+            public function createResolvedValue($rawValue) : \Graphpinator\Value\TypeIntermediateValue
+            {
+                return new \Graphpinator\Value\TypeIntermediateValue(InterfaceTypeTest::getTypeImplementingInterface(), 123);
+            }
 
             protected function getFieldDefinition() : \Graphpinator\Field\FieldSet
             {

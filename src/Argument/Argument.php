@@ -12,7 +12,7 @@ final class Argument implements \Graphpinator\Printable\Printable
 
     private string $name;
     private \Graphpinator\Type\Contract\Inputable $type;
-    private ?\Graphpinator\Resolver\Value\ValidatedValue $defaultValue;
+    private ?\Graphpinator\Value\InputedValue $defaultValue;
 
     public function __construct(string $name, \Graphpinator\Type\Contract\Inputable $type, $defaultValue = null)
     {
@@ -21,7 +21,7 @@ final class Argument implements \Graphpinator\Printable\Printable
         $this->constraints = new \Graphpinator\Constraint\ConstraintSet([]);
 
         if (\func_num_args() === 3) {
-            $defaultValue = $type->createValue($defaultValue);
+            $defaultValue = $type->createInputedValue($defaultValue);
         }
 
         $this->defaultValue = $defaultValue;
@@ -37,7 +37,7 @@ final class Argument implements \Graphpinator\Printable\Printable
         return $this->type;
     }
 
-    public function getDefaultValue() : ?\Graphpinator\Resolver\Value\ValidatedValue
+    public function getDefaultValue() : ?\Graphpinator\Value\InputedValue
     {
         return $this->defaultValue;
     }
@@ -46,8 +46,8 @@ final class Argument implements \Graphpinator\Printable\Printable
     {
         $schema = $this->printDescription($indentLevel) . $this->getName() . ': ' . $this->type->printName();
 
-        if ($this->defaultValue instanceof \Graphpinator\Resolver\Value\ValidatedValue) {
-            $schema .= ' = ' . $this->defaultValue->printValue();
+        if ($this->defaultValue instanceof \Graphpinator\Value\InputedValue) {
+            $schema .= ' = ' . $this->defaultValue->printValue(true, $indentLevel);
         }
 
         $schema .= $this->printConstraints();

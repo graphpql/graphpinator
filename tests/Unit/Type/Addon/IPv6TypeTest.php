@@ -67,7 +67,7 @@ final class IPv6TypeTest extends \PHPUnit\Framework\TestCase
     public function testValidateValue(string $rawValue) : void
     {
         $ipv6 = new \Graphpinator\Type\Addon\IPv6Type();
-        $ipv6->validateValue($rawValue);
+        $ipv6->validateResolvedValue($rawValue);
     }
 
     /**
@@ -80,6 +80,6 @@ final class IPv6TypeTest extends \PHPUnit\Framework\TestCase
         $this->expectException(\Exception::class);
 
         $ipv6 = new \Graphpinator\Type\Addon\IPv6Type();
-        $ipv6->validateValue($rawValue);
+        $ipv6->validateResolvedValue($rawValue);
     }
 }

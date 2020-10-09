@@ -32,7 +32,7 @@ final class VoidTypeTest extends \PHPUnit\Framework\TestCase
     public function testValidateValue($rawValue) : void
     {
         $void = new \Graphpinator\Type\Addon\VoidType();
-        $void->validateValue($rawValue);
+        $void->validateResolvedValue($rawValue);
     }
 
     /**
@@ -45,6 +45,6 @@ final class VoidTypeTest extends \PHPUnit\Framework\TestCase
         $this->expectException(\Exception::class);
 
         $void = new \Graphpinator\Type\Addon\VoidType();
-        $void->validateValue($rawValue);
+        $void->validateResolvedValue($rawValue);
     }
 }

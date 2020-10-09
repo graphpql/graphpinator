@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace Graphpinator\Type;
 
 abstract class InterfaceType extends \Graphpinator\Type\Contract\AbstractDefinition implements
-    \Graphpinator\Type\Contract\Outputable,
     \Graphpinator\Type\Contract\InterfaceImplementor
 {
     use \Graphpinator\Type\Contract\TInterfaceImplementor;

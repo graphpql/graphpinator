@@ -53,7 +53,7 @@ final class RgbTypeTest extends \PHPUnit\Framework\TestCase
     public function testValidateValue($rawValue) : void
     {
         $rgb = new \Graphpinator\Type\Addon\RgbType();
-        $rgb->validateValue($rawValue);
+        $rgb->validateResolvedValue($rawValue);
     }
 
     /**
@@ -66,7 +66,7 @@ final class RgbTypeTest extends \PHPUnit\Framework\TestCase
         $this->expectException(\Exception::class);
 
         $rgb = new \Graphpinator\Type\Addon\RgbType();
-        $rgb->validateValue($rawValue);
+        $rgb->validateResolvedValue($rawValue);
     }
 
     public function testInputDefaultValue() : void

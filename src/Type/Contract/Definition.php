@@ -19,6 +19,4 @@ interface Definition
     public function isOutputable() : bool;
 
     public function isResolvable() : bool;
-    
-    public function createValue($rawValue) : \Graphpinator\Resolver\Value\ValidatedValue;
 }
