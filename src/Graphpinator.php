@@ -29,7 +29,7 @@ final class Graphpinator
             : new \Graphpinator\Module\ModuleSet([]);
     }
 
-    public function run(Request $request) : \Graphpinator\Response
+    public function run(\Graphpinator\Request $request) : \Graphpinator\Response
     {
         try {
             $parsedRequest = \Graphpinator\Parser\Parser::parseString($request->getQuery())
