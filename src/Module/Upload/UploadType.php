@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Type\Addon;
+namespace Graphpinator\Module\Upload;
 
 final class UploadType extends \Graphpinator\Type\Scalar\ScalarType
 {

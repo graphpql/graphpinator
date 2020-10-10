@@ -17,82 +17,79 @@ final class UploadModule implements \Graphpinator\Module\Module
 
     public function process(\Graphpinator\ParsedRequest $request) : \Graphpinator\ParsedRequest
     {
+        $variables = $request->getVariables();
+
         foreach ($this->fileProvider->getMap() as $fileKey => $locations) {
             $fileValue = new \Graphpinator\Value\LeafValue(
-                new \Graphpinator\Type\Addon\UploadType(),
+                new \Graphpinator\Module\Upload\UploadType(),
                 $this->fileProvider->getFile($fileKey),
             );
 
             foreach ($locations as $location) {
-                $keys = \explode('.', $location);
+                /**
+                 * Array reverse is done so we can use array_pop (O(1)) instead of array_shift (O(n))
+                 */
+                $keys = \array_reverse(\explode('.', $location));
 
-                if (\array_shift($keys) !== 'variables') {
+                if (\array_pop($keys) !== 'variables') {
                     throw new \Nette\NotSupportedException;
                 }
 
-                $variable = $request->getVariables()[\array_shift($keys)];
+                $currentKey = \array_pop($keys);
+                $currentValue = &$variables[$currentKey];
+                $currentType = $currentValue->getType();
 
-                $level = 0;
-                $lastLevel = \count($keys);
-
-                foreach ($keys as $key) {
-                    ++$level;
-
-                    if ($level === $lastLevel) {
-                        if (\is_numeric($key) &&
-                            $variable[$key] instanceof \Graphpinator\Value\ListValue) {
-                            $variable[$key] = $fileValue;
-
-                            break;
+                while (true) {
+                    if ($currentType instanceof \Graphpinator\Module\Upload\UploadType &&
+                        $currentValue instanceof \Graphpinator\Value\NullValue) {
+                        if (!empty($keys)) {
+                            throw new \Nette\NotSupportedException();
                         }
 
-                        if (\is_string($key) &&
-                            $variable[$key] instanceof \Graphpinator\Value\InputValue) {
-                            $variable[$key] = $fileValue;
+                        $currentValue = $fileValue;
 
-                            break;
+                        break;
+                    }
+
+                    if ($currentType instanceof \Graphpinator\Type\NotNullType) {
+                        $currentType = $currentType->getInnerType();
+
+                        continue;
+                    }
+
+                    if ($currentType instanceof \Graphpinator\Type\ListType &&
+                        $currentValue instanceof \Graphpinator\Value\ListInputedValue) {
+                        $index = \array_pop($keys);
+
+                        if (!\is_numeric($index)) {
+                            throw new \Nette\NotSupportedException();
                         }
-                    } else {
-                        if (\is_numeric($key) &&
-                            $variable[$key] instanceof \Graphpinator\Value\ListValue) {
-                            $variable[$key] = $fileValue;
 
-                            break;
+                        $currentType = $currentType->getInnerType();
+                        $currentValue = &$currentValue[(int) $index];
+
+                        continue;
+                    }
+
+                    if ($currentType instanceof \Graphpinator\Type\InputType &&
+                        $currentValue instanceof \Graphpinator\Value\InputValue) {
+                        $index = \array_pop($keys);
+
+                        if (\is_numeric($index)) {
+                            throw new \Nette\NotSupportedException();
                         }
 
-                        if (\is_string($key) &&
-                            $variable[$key] instanceof \Graphpinator\Value\InputValue) {
-                            $variable[$key] = $fileValue;
+                        $currentType = $currentType->getArguments()[$index];
+                        $currentValue = &$currentValue->{$index};
 
-                            break;
-                        }
+                        continue;
                     }
 
                     throw new \Nette\NotSupportedException();
                 }
-
             }
         }
-    }
 
-    private function setFile(
-        \Graphpinator\Value\LeafValue $file,
-        \Graphpinator\Resolver\Value\ValidatedValue $value,
-        array $location
-    ) : void
-    {
-        $key = \array_shift($location);
-
-        if ($key)
-
-        if (\is_numeric($key) &&
-            $value instanceof \Graphpinator\Resolver\Value\ListValue) {
-            $variable[(int) $key] = $fileValue;
-        }
-
-        if (\is_string($key) &&
-            $value instanceof \Graphpinator\Resolver\Value\InputValue) {
-            $variable[$key] = $fileValue;
-        }
+        return $request;
     }
 }
