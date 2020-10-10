@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Value;
 
-final class ListInputedValue implements \Graphpinator\Value\InputedValue, \Graphpinator\Value\ListValue, \Iterator
+final class ListInputedValue implements \Graphpinator\Value\InputedValue, \Graphpinator\Value\ListValue, \Iterator, \ArrayAccess
 {
     use \Nette\SmartObject;
 
@@ -103,5 +103,25 @@ final class ListInputedValue implements \Graphpinator\Value\InputedValue, \Graph
         }
 
         return '[' . \PHP_EOL . $innerIndent . \implode(',' . \PHP_EOL . $innerIndent, $component) . \PHP_EOL . $indent . ']';
+    }
+
+    public function offsetExists($offset) : bool
+    {
+        return \array_key_exists($offset, $this->value);
+    }
+
+    public function offsetGet($offset)
+    {
+        return $this->value[$offset];
+    }
+
+    public function offsetSet($offset, $value) : void
+    {
+        $this->value[$offset] = $value;
+    }
+
+    public function offsetUnset($offset) : void
+    {
+        unset($this->value[$offset]);
     }
 }

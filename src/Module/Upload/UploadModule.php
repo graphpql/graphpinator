@@ -35,61 +35,80 @@ final class UploadModule implements \Graphpinator\Module\Module
                     throw new \Nette\NotSupportedException;
                 }
 
-                $currentKey = \array_pop($keys);
-                $currentValue = &$variables[$currentKey];
-                $currentType = $currentValue->getType();
-
-                while (true) {
-                    if ($currentType instanceof \Graphpinator\Module\Upload\UploadType &&
-                        $currentValue instanceof \Graphpinator\Value\NullValue) {
-                        if (!empty($keys)) {
-                            throw new \Nette\NotSupportedException();
-                        }
-
-                        $currentValue = $fileValue;
-
-                        break;
-                    }
-
-                    if ($currentType instanceof \Graphpinator\Type\NotNullType) {
-                        $currentType = $currentType->getInnerType();
-
-                        continue;
-                    }
-
-                    if ($currentType instanceof \Graphpinator\Type\ListType &&
-                        $currentValue instanceof \Graphpinator\Value\ListInputedValue) {
-                        $index = \array_pop($keys);
-
-                        if (!\is_numeric($index)) {
-                            throw new \Nette\NotSupportedException();
-                        }
-
-                        $currentType = $currentType->getInnerType();
-                        $currentValue = &$currentValue[(int) $index];
-
-                        continue;
-                    }
-
-                    if ($currentType instanceof \Graphpinator\Type\InputType &&
-                        $currentValue instanceof \Graphpinator\Value\InputValue) {
-                        $index = \array_pop($keys);
-
-                        if (\is_numeric($index)) {
-                            throw new \Nette\NotSupportedException();
-                        }
-
-                        $currentType = $currentType->getArguments()[$index];
-                        $currentValue = &$currentValue->{$index};
-
-                        continue;
-                    }
-
-                    throw new \Nette\NotSupportedException();
-                }
+                $variableName = \array_pop($keys);
+                $variable = $variables[$variableName];
+                $variables[$variableName] = $this->insertFiles($keys, $variable, $variable->getType(), $fileValue);
             }
         }
 
         return $request;
+    }
+
+    private function insertFiles(
+        array& $keys,
+        \Graphpinator\Value\InputedValue $currentValue,
+        \Graphpinator\Type\Contract\Definition $type,
+        \Graphpinator\Value\LeafValue $fileValue
+    ) : \Graphpinator\Value\InputedValue
+    {
+        if ($type instanceof \Graphpinator\Module\Upload\UploadType && $currentValue instanceof \Graphpinator\Value\NullValue) {
+            if (empty($keys)) {
+                return $fileValue;
+            }
+
+            throw new \Nette\NotSupportedException();
+        }
+
+        if ($type instanceof \Graphpinator\Type\NotNullType) {
+            return $this->insertFiles($keys, $currentValue, $type->getInnerType(), $fileValue);
+        }
+
+        if ($type instanceof \Graphpinator\Type\ListType) {
+            $index = \array_pop($keys);
+
+            if (!\is_numeric($index)) {
+                throw new \Nette\NotSupportedException();
+            }
+
+            $index = (int) $index;
+
+            if ($currentValue instanceof \Graphpinator\Value\NullValue) {
+                $currentValue = new \Graphpinator\Value\ListInputedValue($type, []);
+            }
+
+            if (!isset($currentValue[$index])) {
+                $currentValue[$index] = new \Graphpinator\Value\NullInputedValue($type->getInnerType());
+            }
+
+            $currentValue[$index] = $this->insertFiles($keys, $currentValue[$index], $type->getInnerType(), $fileValue);
+
+            return $currentValue;
+        }
+
+        if ($type instanceof \Graphpinator\Type\InputType && $currentValue instanceof \Graphpinator\Value\InputValue) {
+            $index = \array_pop($keys);
+
+            if (\is_numeric($index)) {
+                throw new \Nette\NotSupportedException();
+            }
+
+            if ($currentValue instanceof \Graphpinator\Value\NullValue) {
+                $currentValue = new \Graphpinator\Value\InputValue($type, new \stdClass());
+            }
+
+            // WIP
+
+            if (!isset($currentValue->{$index})) {
+                $currentValue->{$index} = new \Graphpinator\Value\NullInputedValue($type);
+            }
+
+            $currentValue->{$index} = $this->insertFiles($keys, $currentValue->{$index}->getValue(), $type->getInnerType(), $fileValue);
+
+            // WIP
+
+            return $currentValue;
+        }
+
+        throw new \Nette\NotSupportedException();
     }
 }

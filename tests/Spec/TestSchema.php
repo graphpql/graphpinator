@@ -45,6 +45,7 @@ final class TestSchema
             'DescriptionEnum' => self::getDescriptionEnum(),
             'TestScalar' => self::getTestScalar(),
             'AddonType' => self::getAddonType(),
+            'UploadType' => self::getUploadType(),
             'ComplexDefaultsInput' => self::getComplexDefaultsInput(),
             'DateTime' => new \Graphpinator\Type\Addon\DateTimeType(),
             'Date' => new \Graphpinator\Type\Addon\DateType(),
@@ -62,6 +63,7 @@ final class TestSchema
             'Time' => new \Graphpinator\Type\Addon\TimeType(),
             'Url' => new \Graphpinator\Type\Addon\UrlType(),
             'Void' => new \Graphpinator\Type\Addon\VoidType(),
+            'Upload' => new \Graphpinator\Module\Upload\UploadType(),
         ], [
             'testDirective' => self::getTestDirective(),
             'invalidDirective' => self::getInvalidDirective(),
@@ -127,9 +129,35 @@ final class TestSchema
                     new \Graphpinator\Field\ResolvableField(
                         'fieldAddonType',
                         TestSchema::getAddonType(),
-                        static function () : \Graphpinator\Type\Type {
-                            return TestSchema::getAddonType();
+                        static function () {
+                            return 1;
                         },
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'fieldUpload',
+                        TestSchema::getUploadType()->notNull(),
+                        static function ($parent, ?\Psr\Http\Message\UploadedFileInterface $file) {
+                            return $file;
+                        },
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'file',
+                                new \Graphpinator\Module\Upload\UploadType(),
+                            ),
+                        ]),
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'fieldMultiUpload',
+                        TestSchema::getUploadType()->notNullList(),
+                        static function ($parent, array $files) {
+                            return $files;
+                        },
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'files',
+                                (new \Graphpinator\Module\Upload\UploadType())->list(),
+                            ),
+                        ]),
                     ),
                 ]);
             }
@@ -928,6 +956,39 @@ final class TestSchema
                                 null,
                             ),
                         ]),
+                    ),
+                ]);
+            }
+
+            protected function validateNonNullValue($rawValue) : bool
+            {
+                return true;
+            }
+        };
+    }
+
+    public static function getUploadType() : \Graphpinator\Type\Type
+    {
+        return new class extends \Graphpinator\Type\Type
+        {
+            protected const NAME = 'UploadType';
+
+            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+            {
+                return new \Graphpinator\Field\ResolvableFieldSet([
+                    new \Graphpinator\Field\ResolvableField(
+                        'fileName',
+                        \Graphpinator\Container\Container::String(),
+                        static function (\Psr\Http\Message\UploadedFileInterface $file) : string {
+                            return $file->getClientFilename();
+                        },
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'fileContent',
+                        \Graphpinator\Container\Container::String(),
+                        static function (\Psr\Http\Message\UploadedFileInterface $file) : string {
+                            return $file->getStream()->getContents();
+                        },
                     ),
                 ]);
             }

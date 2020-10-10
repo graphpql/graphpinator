@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Spec;
 
-// @phpcs:disable SlevomatCodingStandard.Files.LineLength.LineTooLong
 final class PrintTest extends \PHPUnit\Framework\TestCase
 {
     public function simpleDataProvider() : array
@@ -488,6 +487,12 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldInvalidType: TestUnion
           fieldThrow: TestUnion
           fieldAddonType: AddonType
+          fieldUpload(
+            file: Upload
+          ): UploadType!
+          fieldMultiUpload(
+            files: [Upload]
+          ): [UploadType!]!
         }
         
         """
@@ -537,6 +542,17 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         Time type - string which contains time in "<HH>:<MM>:<SS>" format.
         """
         scalar Time
+        
+        """
+        Upload type - represents file which was send to server.
+        By GraphQL viewpoint it is scalar type, but it must be used as input only.
+        """
+        scalar Upload
+        
+        type UploadType {
+          fileName: String
+          fileContent: String
+        }
         
         """
         Url type - string which contains valid URL (Uniform Resource Locator).
@@ -977,6 +993,12 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldInvalidType: TestUnion
           fieldThrow: TestUnion
           fieldAddonType: AddonType
+          fieldUpload(
+            file: Upload
+          ): UploadType!
+          fieldMultiUpload(
+            files: [Upload]
+          ): [UploadType!]!
         }
         
         """
@@ -1026,6 +1048,17 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         Time type - string which contains time in "<HH>:<MM>:<SS>" format.
         """
         scalar Time
+        
+        """
+        Upload type - represents file which was send to server.
+        By GraphQL viewpoint it is scalar type, but it must be used as input only.
+        """
+        scalar Upload
+        
+        type UploadType {
+          fileName: String
+          fileContent: String
+        }
         
         """
         Url type - string which contains valid URL (Uniform Resource Locator).
@@ -1209,6 +1242,12 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldInvalidType: TestUnion
           fieldThrow: TestUnion
           fieldAddonType: AddonType
+          fieldUpload(
+            file: Upload
+          ): UploadType!
+          fieldMultiUpload(
+            files: [Upload]
+          ): [UploadType!]!
         }
         
         """
@@ -1228,6 +1267,11 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           green: Int!
           blue: Int!
           alpha: Float!
+        }
+        
+        type UploadType {
+          fileName: String
+          fileContent: String
         }
         
         type Xyz implements TestInterface {
@@ -1489,6 +1533,12 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         Time type - string which contains time in "<HH>:<MM>:<SS>" format.
         """
         scalar Time
+        
+        """
+        Upload type - represents file which was send to server.
+        By GraphQL viewpoint it is scalar type, but it must be used as input only.
+        """
+        scalar Upload
         
         """
         Url type - string which contains valid URL (Uniform Resource Locator).
@@ -1698,6 +1748,12 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldInvalidType: TestUnion
           fieldThrow: TestUnion
           fieldAddonType: AddonType
+          fieldUpload(
+            file: Upload
+          ): UploadType!
+          fieldMultiUpload(
+            files: [Upload]
+          ): [UploadType!]!
         }
         
         """
@@ -1717,6 +1773,11 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           green: Int!
           blue: Int!
           alpha: Float!
+        }
+        
+        type UploadType {
+          fileName: String
+          fileContent: String
         }
 
         type Xyz implements TestInterface {
@@ -1980,6 +2041,12 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         scalar Time
         
         """
+        Upload type - represents file which was send to server.
+        By GraphQL viewpoint it is scalar type, but it must be used as input only.
+        """
+        scalar Upload
+        
+        """
         Url type - string which contains valid URL (Uniform Resource Locator).
         """
         scalar Url
@@ -2062,4 +2129,3 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         self::assertSame($expected, TestSchema::getFullSchema()->printSchema(new \Graphpinator\Utils\Sort\TypeKindSorter()));
     }
 }
-// @phpcs:enable SlevomatCodingStandard.Files.LineLength.LineTooLong
