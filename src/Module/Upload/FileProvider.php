@@ -8,5 +8,5 @@ interface FileProvider
 {
     public function getMap() : \Graphpinator\Json;
 
-    public function getFile(int $key) : \Psr\Http\Message\UploadedFileInterface;
+    public function getFile(string $key) : \Psr\Http\Message\UploadedFileInterface;
 }
