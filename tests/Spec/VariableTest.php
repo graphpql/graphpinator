@@ -50,9 +50,7 @@ final class VariableTest extends \PHPUnit\Framework\TestCase
         $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
         $result = $graphpinator->run(\Graphpinator\Request::fromJson($request));
 
-        self::assertSame($expected->toString(), \json_encode($result, \JSON_THROW_ON_ERROR, 512));
-        self::assertSame($expected['data'], \json_decode(\json_encode($result->getData()), true));
-        self::assertNull($result->getErrors());
+        self::assertSame($expected->toString(), $result->toString());
     }
 
     public function invalidDataProvider() : array

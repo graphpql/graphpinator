@@ -72,8 +72,7 @@ final class FragmentTest extends \PHPUnit\Framework\TestCase
         $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
         $result = $graphpinator->run(\Graphpinator\Request::fromJson($request));
 
-        self::assertSame($expected->toString(), \json_encode($result, \JSON_THROW_ON_ERROR, 512));
-        self::assertNull($result->getErrors());
+        self::assertSame($expected->toString(), $result->toString());
     }
 
     public function fieldSelectionMergingDataProvider() : array
@@ -171,8 +170,7 @@ final class FragmentTest extends \PHPUnit\Framework\TestCase
         $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
         $result = $graphpinator->run(\Graphpinator\Request::fromJson($request));
 
-        self::assertSame($expected->toString(), \json_encode($result, \JSON_THROW_ON_ERROR, 512));
-        self::assertNull($result->getErrors());
+        self::assertSame($expected->toString(), $result->toString());
     }
 
     public function invalidDataProvider() : array
