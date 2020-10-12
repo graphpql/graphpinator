@@ -36,8 +36,13 @@ final class LeafValue implements \Graphpinator\Value\InputedValue, \Graphpinator
         return $this->rawValue;
     }
 
-    public function printValue(bool $prettyPrint = false, int $indentLevel = 1) : string
+    public function printValue() : string
     {
         return \json_encode($this->rawValue, \JSON_THROW_ON_ERROR);
+    }
+
+    public function prettyPrint(int $indentLevel) : string
+    {
+        return $this->printValue();
     }
 }

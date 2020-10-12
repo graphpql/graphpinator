@@ -29,26 +29,18 @@ final class Graphpinator
             : new \Graphpinator\Module\ModuleSet([]);
     }
 
-    public function runQuery(\Graphpinator\Json $request) : \Graphpinator\Response
+    public function run(\Graphpinator\Request $request) : \Graphpinator\Response
     {
         try {
-            $this->validateRequest($request);
-
-            $query = $request[self::QUERY];
-            $variables = $request[self::VARIABLES]
-                ?? new \stdClass();
-            $operationName = $request[self::OPERATION_NAME]
-                ?? null;
-
-            $requestObject = \Graphpinator\Parser\Parser::parseString($query)
+            $parsedRequest = \Graphpinator\Parser\Parser::parseString($request->getQuery())
                 ->normalize($this->schema)
-                ->createRequest($operationName, $variables);
+                ->createRequest($request->getOperationName(), $request->getVariables());
 
             foreach ($this->modules as $module) {
-                $requestObject = $module->process($requestObject);
+                $parsedRequest = $module->process($parsedRequest);
             }
 
-            return $requestObject->execute();
+            return $parsedRequest->execute();
         } catch (\Throwable $exception) {
             if (!$this->catchExceptions) {
                 throw $exception;
@@ -59,31 +51,6 @@ final class Graphpinator
                     ? $exception
                     : \Graphpinator\Exception\GraphpinatorBase::notOutputableResponse(),
             ]);
-        }
-    }
-
-    private function validateRequest(\Graphpinator\Json $request) : void
-    {
-        if (!isset($request[self::QUERY])) {
-            throw new \Graphpinator\Exception\Request\QueryMissing();
-        }
-
-        if (!\is_string($request[self::QUERY])) {
-            throw new \Graphpinator\Exception\Request\QueryNotString();
-        }
-
-        if (isset($request[self::VARIABLES]) && !$request[self::VARIABLES] instanceof \stdClass) {
-            throw new \Graphpinator\Exception\Request\VariablesNotObject();
-        }
-
-        if (isset($request[self::OPERATION_NAME]) && !\is_string($request[self::OPERATION_NAME])) {
-            throw new \Graphpinator\Exception\Request\OperationNameNotString();
-        }
-
-        foreach ($request as $key => $value) {
-            if (!\in_array($key, [self::QUERY, self::VARIABLES, self::OPERATION_NAME], true)) {
-                throw new \Graphpinator\Exception\Request\UnknownKey();
-            }
         }
     }
 }

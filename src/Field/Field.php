@@ -39,7 +39,7 @@ class Field implements \Graphpinator\Printable\Printable
         return $this->arguments;
     }
 
-    public function printSchema(int $indentLevel = 1) : string
+    public function printSchema(int $indentLevel) : string
     {
         return $this->printDescription($indentLevel)
             . $this->getName() . $this->printArguments() . ': ' . $this->getType()->printName() . $this->printDeprecated()

@@ -50,7 +50,7 @@ abstract class EnumType extends \Graphpinator\Type\Contract\LeafDefinition
     {
         return $this->printDescription()
             . 'enum ' . $this->getName() . ' {' . \PHP_EOL
-            . $this->printItems($this->getItems())
+            . $this->printItems($this->getItems(), 1)
             . '}';
     }
 

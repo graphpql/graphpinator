@@ -6,5 +6,5 @@ namespace Graphpinator\Module;
 
 interface Module
 {
-    public function process(\Graphpinator\Request $request) : \Graphpinator\Request;
+    public function process(\Graphpinator\ParsedRequest $request) : \Graphpinator\ParsedRequest;
 }

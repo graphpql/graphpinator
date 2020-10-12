@@ -6,7 +6,7 @@ namespace Graphpinator\Printable;
 
 trait TRepeatablePrint
 {
-    private function printItems(PrintableSet $set, int $indentLevel = 1) : string
+    private function printItems(PrintableSet $set, int $indentLevel) : string
     {
         $result = '';
         $previousHasDescription = false;

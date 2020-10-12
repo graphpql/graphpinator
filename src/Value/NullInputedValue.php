@@ -30,8 +30,13 @@ final class NullInputedValue implements \Graphpinator\Value\InputedValue, \Graph
         return $this->type;
     }
 
-    public function printValue(bool $prettyPrint = false, int $indentLevel = 1) : string
+    public function printValue() : string
     {
         return 'null';
+    }
+
+    public function prettyPrint(int $indentLevel) : string
+    {
+        return $this->printValue();
     }
 }

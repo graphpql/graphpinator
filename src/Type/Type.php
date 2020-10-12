@@ -88,7 +88,7 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
     {
         return $this->printDescription()
             . 'type ' . $this->getName() . $this->printImplements() . $this->printConstraints() . ' {' . \PHP_EOL
-            . $this->printItems($this->getFields())
+            . $this->printItems($this->getFields(), 1)
             . '}';
     }
 

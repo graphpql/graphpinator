@@ -32,14 +32,9 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
     public function testSimple(\Graphpinator\Json $request, \Graphpinator\Json $expected) : void
     {
         $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
-        $result = $graphpinator->runQuery($request);
+        $result = $graphpinator->run(\Graphpinator\Request::fromJson($request));
 
-        self::assertSame($expected->toString(), \json_encode($result, \JSON_THROW_ON_ERROR, 512));
-        self::assertSame(
-            $expected['data'],
-            \json_decode(\json_encode($result->getData(), \JSON_THROW_ON_ERROR, 512), true, 512, \JSON_THROW_ON_ERROR),
-        );
-        self::assertNull($result->getErrors());
+        self::assertSame($expected->toString(), $result->toString());
     }
 
     public function schemaDataProvider() : array
@@ -93,6 +88,8 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                                 ['name' => 'DescriptionEnum'],
                                 ['name' => 'TestScalar'],
                                 ['name' => 'AddonType'],
+                                ['name' => 'UploadType'],
+                                ['name' => 'UploadInput'],
                                 ['name' => 'ComplexDefaultsInput'],
                                 ['name' => 'DateTime'],
                                 ['name' => 'Date'],
@@ -110,6 +107,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                                 ['name' => 'Time'],
                                 ['name' => 'Url'],
                                 ['name' => 'Void'],
+                                ['name' => 'Upload'],
                                 ['name' => 'ListConstraintInput'],
                                 ['name' => 'ID'],
                                 ['name' => 'Int'],
@@ -245,18 +243,16 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider schemaDataProvider
      * @param \Graphpinator\Json $request
-     * @param \Graphpinator\Json $result
+     * @param \Graphpinator\Json $expected
      */
-    public function testSchema(\Graphpinator\Json $request, \Graphpinator\Json $result) : void
+    public function testSchema(\Graphpinator\Json $request, \Graphpinator\Json $expected) : void
     {
         $schema = TestSchema::getSchema();
         $schema->setDescription('Test schema description');
         $graphpinator = new \Graphpinator\Graphpinator($schema);
+        $result = $graphpinator->run(\Graphpinator\Request::fromJson($request));
 
-        self::assertSame(
-            $result->toString(),
-            \json_encode($graphpinator->runQuery($request), \JSON_THROW_ON_ERROR, 512),
-        );
+        self::assertSame($expected->toString(), $result->toString());
     }
 
     public function typeDataProvider() : array
@@ -742,16 +738,14 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider typeDataProvider
      * @param \Graphpinator\Json $request
-     * @param \Graphpinator\Json $result
+     * @param \Graphpinator\Json $expected
      */
-    public function testType(\Graphpinator\Json $request, \Graphpinator\Json $result) : void
+    public function testType(\Graphpinator\Json $request, \Graphpinator\Json $expected) : void
     {
         $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
+        $result = $graphpinator->run(\Graphpinator\Request::fromJson($request));
 
-        self::assertSame(
-            $result->toString(),
-            \json_encode($graphpinator->runQuery($request), \JSON_THROW_ON_ERROR, 512),
-        );
+        self::assertSame($expected->toString(), $result->toString());
     }
 
     public function testDescription() : void
@@ -768,8 +762,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                 } 
             }',
         ]);
-        $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
-        $result = \Graphpinator\Json::fromObject((object) [
+        $expected = \Graphpinator\Json::fromObject((object) [
             'data' => [
                 '__type' => [
                     'kind' => 'OBJECT',
@@ -784,11 +777,10 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                 ],
             ],
         ]);
+        $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
+        $result = $graphpinator->run(\Graphpinator\Request::fromJson($request));
 
-        self::assertSame(
-            $result->toString(),
-            \json_encode($graphpinator->runQuery($request), \JSON_THROW_ON_ERROR, 512),
-        );
+        self::assertSame($expected->toString(), $result->toString());
     }
 
     public function testDeprecatedFields() : void
@@ -807,19 +799,17 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                 } 
             }',
         ]);
-        $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
-        $result = \Graphpinator\Json::fromObject((object) [
+        $expected = \Graphpinator\Json::fromObject((object) [
             'data' => [
                 '__type' => [
                     'fields' => [],
                 ],
             ],
         ]);
+        $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
+        $result = $graphpinator->run(\Graphpinator\Request::fromJson($request));
 
-        self::assertSame(
-            $result->toString(),
-            \json_encode($graphpinator->runQuery($request), \JSON_THROW_ON_ERROR, 512),
-        );
+        self::assertSame($expected->toString(), $result->toString());
     }
 
     public function testDeprecatedFalseEnum() : void
@@ -829,8 +819,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                 enumValues(includeDeprecated: false){ name description isDeprecated deprecationReason } } 
             }',
         ]);
-        $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
-        $result = \Graphpinator\Json::fromObject((object) [
+        $expected = \Graphpinator\Json::fromObject((object) [
             'data' => [
                 '__type' => [
                     'enumValues' => [
@@ -850,11 +839,10 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                 ],
             ],
         ]);
+        $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
+        $result = $graphpinator->run(\Graphpinator\Request::fromJson($request));
 
-        self::assertSame(
-            $result->toString(),
-            \json_encode($graphpinator->runQuery($request), \JSON_THROW_ON_ERROR, 512),
-        );
+        self::assertSame($expected->toString(), $result->toString());
     }
 
     public function testDeprecatedTrueEnum() : void
@@ -864,8 +852,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                 enumValues(includeDeprecated: true){name description isDeprecated deprecationReason} } 
             }',
         ]);
-        $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
-        $result = \Graphpinator\Json::fromObject((object) [
+        $expected = \Graphpinator\Json::fromObject((object) [
             'data' => [
                 '__type' => [
                     'enumValues' => [
@@ -897,11 +884,10 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                 ],
             ],
         ]);
+        $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
+        $result = $graphpinator->run(\Graphpinator\Request::fromJson($request));
 
-        self::assertSame(
-            $result->toString(),
-            \json_encode($graphpinator->runQuery($request), \JSON_THROW_ON_ERROR, 512),
-        );
+        self::assertSame($expected->toString(), $result->toString());
     }
 
     public function testConstraintDirectivesSync() : void
