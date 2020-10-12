@@ -23,7 +23,7 @@ final class EnumItem implements \Graphpinator\Printable\Printable
         return $this->name;
     }
 
-    public function printSchema(int $indentLevel = 1) : string
+    public function printSchema(int $indentLevel) : string
     {
         return $this->printDescription($indentLevel) . $this->getName() . $this->printDeprecated();
     }

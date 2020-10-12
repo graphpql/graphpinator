@@ -6,7 +6,7 @@ namespace Graphpinator\Printable;
 
 interface Printable
 {
-    public function printSchema(int $indentLevel = 1) : string;
+    public function printSchema(int $indentLevel) : string;
 
     public function hasDescription() : bool;
 }

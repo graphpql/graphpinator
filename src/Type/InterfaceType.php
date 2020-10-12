@@ -56,7 +56,7 @@ abstract class InterfaceType extends \Graphpinator\Type\Contract\AbstractDefinit
     {
         return $this->printDescription()
             . 'interface ' . $this->getName() . $this->printImplements() . ' {' . \PHP_EOL
-            . $this->printItems($this->getFields())
+            . $this->printItems($this->getFields(), 1)
             . '}';
     }
 

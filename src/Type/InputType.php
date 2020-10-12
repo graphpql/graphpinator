@@ -49,7 +49,7 @@ abstract class InputType extends \Graphpinator\Type\Contract\ConcreteDefinition 
     {
         return $this->printDescription()
             . 'input ' . $this->getName() . $this->printConstraints() . ' {' . \PHP_EOL
-            . $this->printItems($this->getArguments())
+            . $this->printItems($this->getArguments(), 1)
             . '}';
     }
 

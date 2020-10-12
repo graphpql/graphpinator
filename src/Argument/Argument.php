@@ -53,7 +53,7 @@ final class Argument implements \Graphpinator\Printable\Printable
         return $this;
     }
 
-    public function printSchema(int $indentLevel = 1) : string
+    public function printSchema(int $indentLevel) : string
     {
         $schema = $this->printDescription($indentLevel) . $this->getName() . ': ' . $this->type->printName();
 
