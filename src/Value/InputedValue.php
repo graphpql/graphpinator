@@ -6,7 +6,15 @@ namespace Graphpinator\Value;
 
 interface InputedValue extends \Graphpinator\Value\Value
 {
-    public function printValue(bool $prettyPrint = false, int $indentLevel = 1) : string;
+    /**
+     * Function used to print value in introspection.
+     */
+    public function printValue() : string;
+
+    /**
+     * Function used to print value in more readable form (used in schema printing).
+     */
+    public function prettyPrint(int $indentLevel) : string;
 
     public function getType() : \Graphpinator\Type\Contract\Inputable;
 }

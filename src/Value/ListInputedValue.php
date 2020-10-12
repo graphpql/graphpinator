@@ -44,12 +44,8 @@ final class ListInputedValue implements \Graphpinator\Value\InputedValue, \Graph
         return $this->type;
     }
 
-    public function printValue(bool $prettyPrint = false, int $indentLevel = 1) : string
+    public function printValue() : string
     {
-        if ($prettyPrint) {
-            return $this->prettyPrint($indentLevel);
-        }
-
         $component = [];
 
         foreach ($this->value as $value) {
@@ -59,6 +55,25 @@ final class ListInputedValue implements \Graphpinator\Value\InputedValue, \Graph
         }
 
         return '[' . \implode(',', $component) . ']';
+    }
+
+    public function prettyPrint(int $indentLevel) : string
+    {
+        if (\count($this->value) === 0) {
+            return '[]';
+        }
+
+        $component = [];
+        $indent = \str_repeat('  ', $indentLevel);
+        $innerIndent = $indent . '  ';
+
+        foreach ($this->value as $value) {
+            \assert($value instanceof InputedValue);
+
+            $component[] = $value->prettyPrint($indentLevel + 1);
+        }
+
+        return '[' . \PHP_EOL . $innerIndent . \implode(',' . \PHP_EOL . $innerIndent, $component) . \PHP_EOL . $indent . ']';
     }
 
     public function current() : InputedValue
@@ -104,24 +119,5 @@ final class ListInputedValue implements \Graphpinator\Value\InputedValue, \Graph
     public function offsetUnset($offset) : void
     {
         unset($this->value[$offset]);
-    }
-
-    private function prettyPrint(int $indentLevel = 1) : string
-    {
-        if (\count($this->value) === 0) {
-            return '[]';
-        }
-
-        $component = [];
-        $indent = \str_repeat('  ', $indentLevel);
-        $innerIndent = $indent . '  ';
-
-        foreach ($this->value as $value) {
-            \assert($value instanceof InputedValue);
-
-            $component[] = $value->printValue(true, $indentLevel + 1);
-        }
-
-        return '[' . \PHP_EOL . $innerIndent . \implode(',' . \PHP_EOL . $innerIndent, $component) . \PHP_EOL . $indent . ']';
     }
 }
