@@ -32,7 +32,7 @@ final class UploadModule implements \Graphpinator\Module\Module
                 $keys = \array_reverse(\explode('.', $location));
 
                 if (\array_pop($keys) !== 'variables') {
-                    throw new \Nette\NotSupportedException;
+                    throw new \Nette\NotSupportedException();
                 }
 
                 $variableName = \array_pop($keys);
@@ -45,7 +45,7 @@ final class UploadModule implements \Graphpinator\Module\Module
     }
 
     private function insertFiles(
-        array& $keys,
+        array &$keys,
         \Graphpinator\Value\InputedValue $currentValue,
         \Graphpinator\Type\Contract\Definition $type,
         \Graphpinator\Value\LeafValue $fileValue

@@ -21,10 +21,14 @@ final class UploadModuleTest extends \PHPUnit\Framework\TestCase
                 \Graphpinator\Json::fromObject((object) [
                     'query' => 'query queryName($var1: [Upload]) { fieldMultiUpload(files: $var1) { fileName fileContent } }',
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['fieldMultiUpload' => [
-                    ['fileName' => 'a.txt', 'fileContent' => 'test file'],
-                    ['fileName' => 'a.txt', 'fileContent' => 'test file'],
-                ]]]),
+                \Graphpinator\Json::fromObject((object) [
+                    'data' => [
+                        'fieldMultiUpload' => [
+                            ['fileName' => 'a.txt', 'fileContent' => 'test file'],
+                            ['fileName' => 'a.txt', 'fileContent' => 'test file'],
+                        ],
+                    ],
+                ]),
             ],
         ];
     }

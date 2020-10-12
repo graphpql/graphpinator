@@ -275,7 +275,8 @@ final class TestSchema
                         TestSchema::getSimpleEnum()->list(),
                         static function () {
                             return ['A', 'B'];
-                    }),
+                        },
+                    ),
                 ]);
             }
 
@@ -522,16 +523,16 @@ final class TestSchema
             protected const NAME = 'TestInterface';
             protected const DESCRIPTION = 'TestInterface Description';
 
+            public function createResolvedValue($rawValue) : \Graphpinator\Value\TypeIntermediateValue
+            {
+                return new \Graphpinator\Value\TypeIntermediateValue(TestSchema::getTypeXyz(), $rawValue);
+            }
+
             protected function getFieldDefinition() : \Graphpinator\Field\FieldSet
             {
                 return new \Graphpinator\Field\FieldSet([
                     new \Graphpinator\Field\Field('name', \Graphpinator\Container\Container::String()->notNull()),
                 ]);
-            }
-
-            public function createResolvedValue($rawValue) : \Graphpinator\Value\TypeIntermediateValue
-            {
-                return new \Graphpinator\Value\TypeIntermediateValue(TestSchema::getTypeXyz(), $rawValue);
             }
         };
     }

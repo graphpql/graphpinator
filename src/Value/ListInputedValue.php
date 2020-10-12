@@ -86,25 +86,6 @@ final class ListInputedValue implements \Graphpinator\Value\InputedValue, \Graph
         \reset($this->value);
     }
 
-    private function prettyPrint(int $indentLevel = 1) : string
-    {
-        if (\count($this->value) === 0) {
-            return '[]';
-        }
-
-        $component = [];
-        $indent = \str_repeat('  ', $indentLevel);
-        $innerIndent = $indent . '  ';
-
-        foreach ($this->value as $value) {
-            \assert($value instanceof InputedValue);
-
-            $component[] = $value->printValue(true, $indentLevel + 1);
-        }
-
-        return '[' . \PHP_EOL . $innerIndent . \implode(',' . \PHP_EOL . $innerIndent, $component) . \PHP_EOL . $indent . ']';
-    }
-
     public function offsetExists($offset) : bool
     {
         return \array_key_exists($offset, $this->value);
@@ -123,5 +104,24 @@ final class ListInputedValue implements \Graphpinator\Value\InputedValue, \Graph
     public function offsetUnset($offset) : void
     {
         unset($this->value[$offset]);
+    }
+
+    private function prettyPrint(int $indentLevel = 1) : string
+    {
+        if (\count($this->value) === 0) {
+            return '[]';
+        }
+
+        $component = [];
+        $indent = \str_repeat('  ', $indentLevel);
+        $innerIndent = $indent . '  ';
+
+        foreach ($this->value as $value) {
+            \assert($value instanceof InputedValue);
+
+            $component[] = $value->printValue(true, $indentLevel + 1);
+        }
+
+        return '[' . \PHP_EOL . $innerIndent . \implode(',' . \PHP_EOL . $innerIndent, $component) . \PHP_EOL . $indent . ']';
     }
 }
