@@ -59,9 +59,18 @@ final class Request
 
     public static function fromHttpRequest(\Psr\Http\Message\ServerRequestInterface $request) : self
     {
-        $contentType = $request->getHeader('Content-Type');
+        $contentTypes = $request->getHeader('Content-Type');
+        $contentType = \array_pop($contentTypes);
 
-        switch (\array_pop($contentType)) {
+        if (\str_starts_with($contentType, 'multipart/form-data')) {
+            if ($request->getMethod() === 'POST' && \array_key_exists('operations', $request->getParsedBody())) {
+                return self::fromJson(Json::fromString($request->getParsedBody()['operations']));
+            }
+
+            throw new \Graphpinator\Exception\Request\InvalidMultipartRequest();
+        }
+
+        switch ($contentType) {
             case 'application/graphql':
                 return new self($request->getBody()->getContents());
             case 'application/json':
