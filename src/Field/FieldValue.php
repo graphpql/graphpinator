@@ -16,7 +16,7 @@ final class FieldValue implements \JsonSerializable
         $this->field = $field;
         $this->value = $value;
 
-        //$field->validateConstraints($this->value);
+        $field->validateConstraints($this->value);
     }
 
     public function jsonSerialize() : \Graphpinator\Value\ResolvedValue

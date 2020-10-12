@@ -16,7 +16,7 @@ final class TypeValue implements \Graphpinator\Value\OutputValue
         $this->type = $type;
         $this->value = $rawValue;
 
-        //$type->validateConstraints($this);
+        $type->validateConstraints($this);
     }
 
     public function getRawValue() : \stdClass
