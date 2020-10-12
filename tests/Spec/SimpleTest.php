@@ -69,6 +69,27 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
         $httpRequest = $this->createStub(\Psr\Http\Message\ServerRequestInterface::class);
         $httpRequest->method('getHeader')->willReturn(['application/json']);
         $httpRequest->method('getBody')->willReturn($stream);
+        $httpRequest->method('getMethod')->willReturn('GET');
+
+        $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
+        $result = $graphpinator->run(\Graphpinator\Request::fromHttpRequest($httpRequest));
+
+        self::assertSame($expected->toString(), $result->toString());
+    }
+
+    /**
+     * @dataProvider simpleDataProvider
+     * @param \Graphpinator\Json $request
+     * @param \Graphpinator\Json $expected
+     */
+    public function testHttpJsonBodyPost(\Graphpinator\Json $request, \Graphpinator\Json $expected) : void
+    {
+        $stream = $this->createStub(\Psr\Http\Message\StreamInterface::class);
+        $stream->method('getContents')->willReturn($request->toString());
+        $httpRequest = $this->createStub(\Psr\Http\Message\ServerRequestInterface::class);
+        $httpRequest->method('getHeader')->willReturn(['application/json']);
+        $httpRequest->method('getBody')->willReturn($stream);
+        $httpRequest->method('getMethod')->willReturn('POST');
 
         $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
         $result = $graphpinator->run(\Graphpinator\Request::fromHttpRequest($httpRequest));
@@ -88,6 +109,7 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
         $httpRequest = $this->createStub(\Psr\Http\Message\ServerRequestInterface::class);
         $httpRequest->method('getHeader')->willReturn(['application/graphql']);
         $httpRequest->method('getBody')->willReturn($stream);
+        $httpRequest->method('getMethod')->willReturn('GET');
 
         $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
         $result = $graphpinator->run(\Graphpinator\Request::fromHttpRequest($httpRequest));
@@ -105,6 +127,7 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
         $httpRequest = $this->createStub(\Psr\Http\Message\ServerRequestInterface::class);
         $httpRequest->method('getHeader')->willReturn([]);
         $httpRequest->method('getQueryParams')->willReturn((array) $request->toObject());
+        $httpRequest->method('getMethod')->willReturn('GET');
 
         $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
         $result = $graphpinator->run(\Graphpinator\Request::fromHttpRequest($httpRequest));

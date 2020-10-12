@@ -28,7 +28,7 @@ final class InputValue implements \Graphpinator\Value\InputedValue
         $value = new \stdClass();
 
         foreach ($type->getArguments() as $argument) {
-            $value->{$argument->getName()} = new \Graphpinator\Argument\ArgumentValue($argument, $rawValue->{$argument->getName()}
+            $value->{$argument->getName()} = \Graphpinator\Argument\ArgumentValue::fromRaw($argument, $rawValue->{$argument->getName()}
                 ?? null);
         }
 
@@ -110,13 +110,22 @@ final class InputValue implements \Graphpinator\Value\InputedValue
         return '{' . \PHP_EOL . $innerIndent . \implode(',' . \PHP_EOL . $innerIndent, $component) . \PHP_EOL . $indent . '}';
     }
 
-    public function __isset($offset) : bool
+    public function __isset(string $offset) : bool
     {
         return \property_exists($this->value, $offset);
     }
 
-    public function __get($offset) : ArgumentValue
+    public function __get(string $offset) : ArgumentValue
     {
         return $this->value->{$offset};
+    }
+
+    public function __set(string $offset, ArgumentValue $value) : void
+    {
+        if ($value->getArgument() !== $this->type->getArguments()[$offset]) {
+            throw new \Exception();
+        }
+
+        $this->value->{$offset} = $value;
     }
 }

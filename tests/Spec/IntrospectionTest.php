@@ -89,6 +89,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                                 ['name' => 'TestScalar'],
                                 ['name' => 'AddonType'],
                                 ['name' => 'UploadType'],
+                                ['name' => 'UploadInput'],
                                 ['name' => 'ComplexDefaultsInput'],
                                 ['name' => 'DateTime'],
                                 ['name' => 'Date'],

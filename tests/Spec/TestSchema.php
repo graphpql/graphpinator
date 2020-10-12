@@ -46,6 +46,7 @@ final class TestSchema
             'TestScalar' => self::getTestScalar(),
             'AddonType' => self::getAddonType(),
             'UploadType' => self::getUploadType(),
+            'UploadInput' => self::getUploadInput(),
             'ComplexDefaultsInput' => self::getComplexDefaultsInput(),
             'DateTime' => new \Graphpinator\Type\Addon\DateTimeType(),
             'Date' => new \Graphpinator\Type\Addon\DateType(),
@@ -136,7 +137,7 @@ final class TestSchema
                     new \Graphpinator\Field\ResolvableField(
                         'fieldUpload',
                         TestSchema::getUploadType()->notNull(),
-                        static function ($parent, ?\Psr\Http\Message\UploadedFileInterface $file) {
+                        static function ($parent, ?\Psr\Http\Message\UploadedFileInterface $file) : \Psr\Http\Message\UploadedFileInterface {
                             return $file;
                         },
                         new \Graphpinator\Argument\ArgumentSet([
@@ -149,13 +150,77 @@ final class TestSchema
                     new \Graphpinator\Field\ResolvableField(
                         'fieldMultiUpload',
                         TestSchema::getUploadType()->notNullList(),
-                        static function ($parent, array $files) {
+                        static function ($parent, array $files) : array {
                             return $files;
                         },
                         new \Graphpinator\Argument\ArgumentSet([
                             new \Graphpinator\Argument\Argument(
                                 'files',
                                 (new \Graphpinator\Module\Upload\UploadType())->list(),
+                            ),
+                        ]),
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'fieldInputUpload',
+                        TestSchema::getUploadType()->notNull(),
+                        static function ($parent, \stdClass $fileInput) : \Psr\Http\Message\UploadedFileInterface {
+                            return $fileInput->file;
+                        },
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'fileInput',
+                                TestSchema::getUploadInput()->notNull(),
+                            ),
+                        ]),
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'fieldInputMultiUpload',
+                        TestSchema::getUploadType()->notNullList(),
+                        static function ($parent, \stdClass $fileInput) : array {
+                            return $fileInput->files;
+                        },
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'fileInput',
+                                TestSchema::getUploadInput()->notNull(),
+                            ),
+                        ]),
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'fieldMultiInputUpload',
+                        TestSchema::getUploadType()->notNullList(),
+                        static function ($parent, array $fileInputs) {
+                            $return = [];
+
+                            foreach ($fileInputs as $fileInput) {
+                                $return[] = $fileInput->file;
+                            }
+
+                            return $return;
+                        },
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'fileInputs',
+                                TestSchema::getUploadInput()->notNull()->list(),
+                            ),
+                        ]),
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'fieldMultiInputMultiUpload',
+                        TestSchema::getUploadType()->notNullList(),
+                        static function ($parent, array $fileInputs) {
+                            $return = [];
+
+                            foreach ($fileInputs as $fileInput) {
+                                $return += $fileInput->files;
+                            }
+
+                            return $return;
+                        },
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'fileInputs',
+                                TestSchema::getUploadInput()->notNull()->list(),
                             ),
                         ]),
                     ),
@@ -997,6 +1062,28 @@ final class TestSchema
             protected function validateNonNullValue($rawValue) : bool
             {
                 return true;
+            }
+        };
+    }
+
+    public static function getUploadInput() : \Graphpinator\Type\InputType
+    {
+        return new class extends \Graphpinator\Type\InputType
+        {
+            protected const NAME = 'UploadInput';
+
+            protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
+            {
+                return new \Graphpinator\Argument\ArgumentSet([
+                    new \Graphpinator\Argument\Argument(
+                        'file',
+                        new \Graphpinator\Module\Upload\UploadType(),
+                    ),
+                    new \Graphpinator\Argument\Argument(
+                        'files',
+                        (new \Graphpinator\Module\Upload\UploadType())->list(),
+                    ),
+                ]);
             }
         };
     }

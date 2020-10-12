@@ -68,7 +68,7 @@ final class Request
         $contentTypes = $request->getHeader('Content-Type');
         $contentType = \array_pop($contentTypes);
 
-        if (\str_starts_with($contentType, 'multipart/form-data')) {
+        if (\is_string($contentType) && \str_starts_with($contentType, 'multipart/form-data')) {
             if ($method === 'POST' && \array_key_exists('operations', $request->getParsedBody())) {
                 return self::fromJson(Json::fromString($request->getParsedBody()['operations']));
             }

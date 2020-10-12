@@ -52,7 +52,7 @@ final class UploadModule implements \Graphpinator\Module\Module
     ) : \Graphpinator\Value\InputedValue
     {
         if ($type instanceof \Graphpinator\Module\Upload\UploadType && $currentValue instanceof \Graphpinator\Value\NullValue) {
-            if (empty($keys)) {
+            if (\count($keys) === 0) {
                 return $fileValue;
             }
 
@@ -92,19 +92,12 @@ final class UploadModule implements \Graphpinator\Module\Module
                 throw new \Nette\NotSupportedException();
             }
 
-            if ($currentValue instanceof \Graphpinator\Value\NullValue) {
-                $currentValue = new \Graphpinator\Value\InputValue($type, new \stdClass());
-            }
+            $argument = $type->getArguments()[$index];
 
-            // WIP
-
-            if (!isset($currentValue->{$index})) {
-                $currentValue->{$index} = new \Graphpinator\Value\NullInputedValue($type);
-            }
-
-            $currentValue->{$index} = $this->insertFiles($keys, $currentValue->{$index}->getValue(), $type->getInnerType(), $fileValue);
-
-            // WIP
+            $currentValue->{$index} = \Graphpinator\Argument\ArgumentValue::fromInputed(
+                $argument,
+                $this->insertFiles($keys, $currentValue->{$index}->getValue(), $argument->getType(), $fileValue)
+            );
 
             return $currentValue;
         }

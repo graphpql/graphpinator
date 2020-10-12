@@ -14,7 +14,11 @@ final class UploadModuleTest extends \PHPUnit\Framework\TestCase
                 \Graphpinator\Json::fromObject((object) [
                     'query' => 'query queryName($var1: Upload) { fieldUpload(file: $var1) { fileName fileContent } }',
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['fieldUpload' => ['fileName' => 'a.txt', 'fileContent' => 'test file']]]),
+                \Graphpinator\Json::fromObject((object) [
+                    'data' => [
+                        'fieldUpload' => ['fileName' => 'a.txt', 'fileContent' => 'test file'],
+                    ],
+                ]),
             ],
             [
                 '{ "0": ["variables.var1.0", "variables.var1.1"] }',
@@ -30,11 +34,64 @@ final class UploadModuleTest extends \PHPUnit\Framework\TestCase
                     ],
                 ]),
             ],
+            [
+                '{ "0": ["variables.var1.file"] }',
+                \Graphpinator\Json::fromObject((object) [
+                    'query' => 'query queryName($var1: UploadInput = {}) { fieldInputUpload(fileInput: $var1) { fileName fileContent } }',
+                ]),
+                \Graphpinator\Json::fromObject((object) [
+                    'data' => [
+                        'fieldInputUpload' => ['fileName' => 'a.txt', 'fileContent' => 'test file'],
+                    ],
+                ]),
+            ],
+            [
+                '{ "0": ["variables.var1.files.0", "variables.var1.files.1"] }',
+                \Graphpinator\Json::fromObject((object) [
+                    'query' => 'query queryName($var1: UploadInput = {}) { fieldInputMultiUpload(fileInput: $var1) { fileName fileContent } }',
+                ]),
+                \Graphpinator\Json::fromObject((object) [
+                    'data' => [
+                        'fieldInputMultiUpload' => [
+                            ['fileName' => 'a.txt', 'fileContent' => 'test file'],
+                            ['fileName' => 'a.txt', 'fileContent' => 'test file'],
+                        ],
+                    ],
+                ]),
+            ],
+            [
+                '{ "0": ["variables.var1.0.file"] }',
+                \Graphpinator\Json::fromObject((object) [
+                    'query' => 'query queryName($var1: [UploadInput] = [{}]) { fieldMultiInputUpload(fileInputs: $var1) { fileName fileContent } }',
+                ]),
+                \Graphpinator\Json::fromObject((object) [
+                    'data' => [
+                        'fieldMultiInputUpload' => [
+                            ['fileName' => 'a.txt', 'fileContent' => 'test file'],
+                        ],
+                    ],
+                ]),
+            ],
+            [
+                '{ "0": ["variables.var1.0.files.0", "variables.var1.0.files.1"] }',
+                \Graphpinator\Json::fromObject((object) [
+                    'query' => 'query queryName($var1: [UploadInput] = [{}]) { fieldMultiInputMultiUpload(fileInputs: $var1) { fileName fileContent } }',
+                ]),
+                \Graphpinator\Json::fromObject((object) [
+                    'data' => [
+                        'fieldMultiInputMultiUpload' => [
+                            ['fileName' => 'a.txt', 'fileContent' => 'test file'],
+                            ['fileName' => 'a.txt', 'fileContent' => 'test file'],
+                        ],
+                    ],
+                ]),
+            ],
         ];
     }
 
     /**
      * @dataProvider simpleDataProvider
+     * @param string $map
      * @param \Graphpinator\Json $request
      * @param \Graphpinator\Json $expected
      */

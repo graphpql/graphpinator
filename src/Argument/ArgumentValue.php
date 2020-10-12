@@ -11,16 +11,37 @@ final class ArgumentValue
     private \Graphpinator\Argument\Argument $argument;
     private \Graphpinator\Value\InputedValue $value;
 
-    public function __construct(\Graphpinator\Argument\Argument $argument, $rawValue)
+    private function __construct(\Graphpinator\Argument\Argument $argument, \Graphpinator\Value\InputedValue $value)
     {
         $this->argument = $argument;
+        $this->value = $value;
+
+        $argument->validateConstraints($this->value);
+    }
+
+    public static function fromRaw(Argument $argument, $rawValue) : self
+    {
         $default = $argument->getDefaultValue();
 
-        $this->value = $rawValue === null && $default instanceof \Graphpinator\Value\InputedValue
+        $value = $rawValue === null && $default instanceof \Graphpinator\Value\InputedValue
             ? $default
             : $argument->getType()->createInputedValue($rawValue);
 
-        $argument->validateConstraints($this->value);
+        return new self($argument, $value);
+    }
+
+    public static function fromInputed(Argument $argument, \Graphpinator\Value\InputedValue $value) : self
+    {
+        if (!$value->getType()->isInstanceOf($argument->getType())) {
+            throw new \Exception();
+        }
+
+        return new self($argument, $value);
+    }
+
+    public function getArgument() : Argument
+    {
+        return $this->argument;
     }
 
     public function getValue() : \Graphpinator\Value\InputedValue

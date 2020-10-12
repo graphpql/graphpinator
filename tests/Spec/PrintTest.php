@@ -493,6 +493,18 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldMultiUpload(
             files: [Upload]
           ): [UploadType!]!
+          fieldInputUpload(
+            fileInput: UploadInput!
+          ): UploadType!
+          fieldInputMultiUpload(
+            fileInput: UploadInput!
+          ): [UploadType!]!
+          fieldMultiInputUpload(
+            fileInputs: [UploadInput!]
+          ): [UploadType!]!
+          fieldMultiInputMultiUpload(
+            fileInputs: [UploadInput!]
+          ): [UploadType!]!
         }
         
         """
@@ -548,6 +560,11 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         By GraphQL viewpoint it is scalar type, but it must be used as input only.
         """
         scalar Upload
+        
+        input UploadInput {
+          file: Upload
+          files: [Upload]
+        }
         
         type UploadType {
           fileName: String
@@ -999,6 +1016,18 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldMultiUpload(
             files: [Upload]
           ): [UploadType!]!
+          fieldInputUpload(
+            fileInput: UploadInput!
+          ): UploadType!
+          fieldInputMultiUpload(
+            fileInput: UploadInput!
+          ): [UploadType!]!
+          fieldMultiInputUpload(
+            fileInputs: [UploadInput!]
+          ): [UploadType!]!
+          fieldMultiInputMultiUpload(
+            fileInputs: [UploadInput!]
+          ): [UploadType!]!
         }
         
         """
@@ -1054,6 +1083,11 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         By GraphQL viewpoint it is scalar type, but it must be used as input only.
         """
         scalar Upload
+        
+        input UploadInput {
+          file: Upload
+          files: [Upload]
+        }
         
         type UploadType {
           fileName: String
@@ -1247,6 +1281,18 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           ): UploadType!
           fieldMultiUpload(
             files: [Upload]
+          ): [UploadType!]!
+          fieldInputUpload(
+            fileInput: UploadInput!
+          ): UploadType!
+          fieldInputMultiUpload(
+            fileInput: UploadInput!
+          ): [UploadType!]!
+          fieldMultiInputUpload(
+            fileInputs: [UploadInput!]
+          ): [UploadType!]!
+          fieldMultiInputMultiUpload(
+            fileInputs: [UploadInput!]
           ): [UploadType!]!
         }
         
@@ -1479,6 +1525,11 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           name: String!
           number: [Int!]!
           bool: Boolean
+        }
+        
+        input UploadInput {
+          file: Upload
+          files: [Upload]
         }
         
         """
@@ -1754,6 +1805,18 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldMultiUpload(
             files: [Upload]
           ): [UploadType!]!
+          fieldInputUpload(
+            fileInput: UploadInput!
+          ): UploadType!
+          fieldInputMultiUpload(
+            fileInput: UploadInput!
+          ): [UploadType!]!
+          fieldMultiInputUpload(
+            fileInputs: [UploadInput!]
+          ): [UploadType!]!
+          fieldMultiInputMultiUpload(
+            fileInputs: [UploadInput!]
+          ): [UploadType!]!
         }
         
         """
@@ -1985,6 +2048,11 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           name: String!
           number: [Int!]!
           bool: Boolean
+        }
+        
+        input UploadInput {
+          file: Upload
+          files: [Upload]
         }
         
         """
