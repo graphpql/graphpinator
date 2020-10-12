@@ -37,7 +37,9 @@ final class UploadModuleTest extends \PHPUnit\Framework\TestCase
             [
                 '{ "0": ["variables.var1.file"] }',
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName($var1: UploadInput! = {}) { fieldInputUpload(fileInput: $var1) { fileName fileContent } }',
+                    'query' => 'query queryName($var1: UploadInput! = {}) { 
+                        fieldInputUpload(fileInput: $var1) { fileName fileContent } 
+                    }',
                 ]),
                 \Graphpinator\Json::fromObject((object) [
                     'data' => [
@@ -48,7 +50,9 @@ final class UploadModuleTest extends \PHPUnit\Framework\TestCase
             [
                 '{ "0": ["variables.var1.files.0", "variables.var1.files.1"] }',
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName($var1: UploadInput! = {}) { fieldInputMultiUpload(fileInput: $var1) { fileName fileContent } }',
+                    'query' => 'query queryName($var1: UploadInput! = {}) { 
+                        fieldInputMultiUpload(fileInput: $var1) { fileName fileContent } 
+                    }',
                 ]),
                 \Graphpinator\Json::fromObject((object) [
                     'data' => [
@@ -62,7 +66,9 @@ final class UploadModuleTest extends \PHPUnit\Framework\TestCase
             [
                 '{ "0": ["variables.var1.0.file"] }',
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName($var1: [UploadInput!]! = [{}]) { fieldMultiInputUpload(fileInputs: $var1) { fileName fileContent } }',
+                    'query' => 'query queryName($var1: [UploadInput!]! = [{}]) { 
+                        fieldMultiInputUpload(fileInputs: $var1) { fileName fileContent } 
+                    }',
                 ]),
                 \Graphpinator\Json::fromObject((object) [
                     'data' => [
@@ -75,7 +81,9 @@ final class UploadModuleTest extends \PHPUnit\Framework\TestCase
             [
                 '{ "0": ["variables.var1.0.files.0", "variables.var1.0.files.1"] }',
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName($var1: [UploadInput!]! = [{}]) { fieldMultiInputMultiUpload(fileInputs: $var1) { fileName fileContent } }',
+                    'query' => 'query queryName($var1: [UploadInput!]! = [{}]) { 
+                        fieldMultiInputMultiUpload(fileInputs: $var1) { fileName fileContent } 
+                    }',
                 ]),
                 \Graphpinator\Json::fromObject((object) [
                     'data' => [
@@ -165,7 +173,7 @@ final class UploadModuleTest extends \PHPUnit\Framework\TestCase
      * @dataProvider invalidDataProvider
      * @param string $map
      * @param \Graphpinator\Json $request
-     * @param \Graphpinator\Json $expected
+     * @param string $exception
      */
     public function testInvalid(string $map, \Graphpinator\Json $request, string $exception) : void
     {

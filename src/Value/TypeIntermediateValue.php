@@ -19,6 +19,9 @@ final class TypeIntermediateValue implements \Graphpinator\Value\ResolvedValue
         $this->rawValue = $rawValue;
     }
 
+    /**
+     * @return array|bool|float|int|\stdClass|string|null
+     */
     public function getRawValue()
     {
         return $this->rawValue;

@@ -106,7 +106,7 @@ final class ListInputedValue implements \Graphpinator\Value\InputedValue, \Graph
         return \array_key_exists($offset, $this->value);
     }
 
-    public function offsetGet($offset)
+    public function offsetGet($offset) : InputedValue
     {
         return $this->value[$offset];
     }

@@ -96,7 +96,7 @@ final class UploadModule implements \Graphpinator\Module\Module
 
             $currentValue->{$index} = \Graphpinator\Argument\ArgumentValue::fromInputed(
                 $argument,
-                $this->insertFiles($keys, $currentValue->{$index}->getValue(), $argument->getType(), $fileValue)
+                $this->insertFiles($keys, $currentValue->{$index}->getValue(), $argument->getType(), $fileValue),
             );
 
             return $currentValue;
