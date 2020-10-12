@@ -500,10 +500,10 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             fileInput: UploadInput!
           ): [UploadType!]!
           fieldMultiInputUpload(
-            fileInputs: [UploadInput!]
+            fileInputs: [UploadInput!]!
           ): [UploadType!]!
           fieldMultiInputMultiUpload(
-            fileInputs: [UploadInput!]
+            fileInputs: [UploadInput!]!
           ): [UploadType!]!
         }
         
@@ -1023,10 +1023,10 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             fileInput: UploadInput!
           ): [UploadType!]!
           fieldMultiInputUpload(
-            fileInputs: [UploadInput!]
+            fileInputs: [UploadInput!]!
           ): [UploadType!]!
           fieldMultiInputMultiUpload(
-            fileInputs: [UploadInput!]
+            fileInputs: [UploadInput!]!
           ): [UploadType!]!
         }
         
@@ -1289,10 +1289,10 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             fileInput: UploadInput!
           ): [UploadType!]!
           fieldMultiInputUpload(
-            fileInputs: [UploadInput!]
+            fileInputs: [UploadInput!]!
           ): [UploadType!]!
           fieldMultiInputMultiUpload(
-            fileInputs: [UploadInput!]
+            fileInputs: [UploadInput!]!
           ): [UploadType!]!
         }
         
@@ -1812,10 +1812,10 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             fileInput: UploadInput!
           ): [UploadType!]!
           fieldMultiInputUpload(
-            fileInputs: [UploadInput!]
+            fileInputs: [UploadInput!]!
           ): [UploadType!]!
           fieldMultiInputMultiUpload(
-            fileInputs: [UploadInput!]
+            fileInputs: [UploadInput!]!
           ): [UploadType!]!
         }
         

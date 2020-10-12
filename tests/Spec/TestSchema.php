@@ -201,7 +201,7 @@ final class TestSchema
                         new \Graphpinator\Argument\ArgumentSet([
                             new \Graphpinator\Argument\Argument(
                                 'fileInputs',
-                                TestSchema::getUploadInput()->notNull()->list(),
+                                TestSchema::getUploadInput()->notNullList(),
                             ),
                         ]),
                     ),
@@ -220,7 +220,7 @@ final class TestSchema
                         new \Graphpinator\Argument\ArgumentSet([
                             new \Graphpinator\Argument\Argument(
                                 'fileInputs',
-                                TestSchema::getUploadInput()->notNull()->list(),
+                                TestSchema::getUploadInput()->notNullList(),
                             ),
                         ]),
                     ),

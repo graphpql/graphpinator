@@ -32,7 +32,7 @@ final class UploadModule implements \Graphpinator\Module\Module
                 $keys = \array_reverse(\explode('.', $location));
 
                 if (\array_pop($keys) !== 'variables') {
-                    throw new \Nette\NotSupportedException();
+                    throw new \Graphpinator\Exception\Upload\OnlyVariablesSupported();
                 }
 
                 $variableName = \array_pop($keys);
@@ -56,7 +56,7 @@ final class UploadModule implements \Graphpinator\Module\Module
                 return $fileValue;
             }
 
-            throw new \Nette\NotSupportedException();
+            throw new \Graphpinator\Exception\Upload\InvalidMap();
         }
 
         if ($type instanceof \Graphpinator\Type\NotNullType) {
@@ -67,7 +67,7 @@ final class UploadModule implements \Graphpinator\Module\Module
             $index = \array_pop($keys);
 
             if (!\is_numeric($index)) {
-                throw new \Nette\NotSupportedException();
+                throw new \Graphpinator\Exception\Upload\InvalidMap();
             }
 
             $index = (int) $index;
@@ -89,7 +89,7 @@ final class UploadModule implements \Graphpinator\Module\Module
             $index = \array_pop($keys);
 
             if (\is_numeric($index)) {
-                throw new \Nette\NotSupportedException();
+                throw new \Graphpinator\Exception\Upload\InvalidMap();
             }
 
             $argument = $type->getArguments()[$index];
@@ -102,6 +102,6 @@ final class UploadModule implements \Graphpinator\Module\Module
             return $currentValue;
         }
 
-        throw new \Nette\NotSupportedException();
+        throw new \Graphpinator\Exception\Upload\InvalidMap();
     }
 }
