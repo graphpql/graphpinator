@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c32494110e4e1502b7132b58a3fec681",
+    "content-hash": "30180117f17d115b65a66164c77c55e0",
     "packages": [
         {
             "name": "infinityloop-dev/utils",
@@ -129,16 +129,16 @@
         },
         {
             "name": "psr/http-message",
-            "version": "1.0",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/http-message.git",
-                "reference": "85d63699f0dbedb190bbd4b0d2b9dc707ea4c298"
+                "reference": "f6561bf28d520154e4b0ec72be95418abe6d9363"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/http-message/zipball/85d63699f0dbedb190bbd4b0d2b9dc707ea4c298",
-                "reference": "85d63699f0dbedb190bbd4b0d2b9dc707ea4c298",
+                "url": "https://api.github.com/repos/php-fig/http-message/zipball/f6561bf28d520154e4b0ec72be95418abe6d9363",
+                "reference": "f6561bf28d520154e4b0ec72be95418abe6d9363",
                 "shasum": ""
             },
             "require": {
@@ -166,6 +166,7 @@
                 }
             ],
             "description": "Common interface for HTTP messages",
+            "homepage": "https://github.com/php-fig/http-message",
             "keywords": [
                 "http",
                 "http-message",
@@ -174,7 +175,7 @@
                 "request",
                 "response"
             ],
-            "time": "2015-05-04T20:22:00+00:00"
+            "time": "2016-08-06T14:39:51+00:00"
         }
     ],
     "packages-dev": [
@@ -621,12 +622,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/infinityloop-dev/coding-standard.git",
-                "reference": "de0c1294dee48e5fc6c2e78300c0e31d98762267"
+                "reference": "a91e70faeedea5a0b7a4feecb4c0ad8a886e5f17"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/infinityloop-dev/coding-standard/zipball/de0c1294dee48e5fc6c2e78300c0e31d98762267",
-                "reference": "de0c1294dee48e5fc6c2e78300c0e31d98762267",
+                "url": "https://api.github.com/repos/infinityloop-dev/coding-standard/zipball/a91e70faeedea5a0b7a4feecb4c0ad8a886e5f17",
+                "reference": "a91e70faeedea5a0b7a4feecb4c0ad8a886e5f17",
                 "shasum": ""
             },
             "require": {
@@ -648,7 +649,7 @@
                 "MIT"
             ],
             "description": "Inifnityloop PHPCS coding standard",
-            "time": "2020-07-08T20:53:56+00:00"
+            "time": "2020-10-09T20:45:57+00:00"
         },
         {
             "name": "justinrainbow/json-schema",
