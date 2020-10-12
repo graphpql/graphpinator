@@ -8,7 +8,7 @@ final class InvalidDirectiveResult extends \Graphpinator\Exception\Resolver\Reso
 {
     public const MESSAGE = 'Directive callback must return DirectiveResult string.';
 
-    public function isOutputable() : bool
+    protected function isOutputable() : bool
     {
         return false;
     }
