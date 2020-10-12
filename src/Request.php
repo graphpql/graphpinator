@@ -59,11 +59,17 @@ final class Request
 
     public static function fromHttpRequest(\Psr\Http\Message\ServerRequestInterface $request) : self
     {
+        $method = $request->getMethod();
+
+        if (!\in_array($method, ['GET', 'POST'], true)) {
+            throw new \Graphpinator\Exception\Request\InvalidMethod();
+        }
+
         $contentTypes = $request->getHeader('Content-Type');
         $contentType = \array_pop($contentTypes);
 
         if (\str_starts_with($contentType, 'multipart/form-data')) {
-            if ($request->getMethod() === 'POST' && \array_key_exists('operations', $request->getParsedBody())) {
+            if ($method === 'POST' && \array_key_exists('operations', $request->getParsedBody())) {
                 return self::fromJson(Json::fromString($request->getParsedBody()['operations']));
             }
 

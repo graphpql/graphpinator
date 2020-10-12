@@ -6,5 +6,5 @@ namespace Graphpinator\Exception\Request;
 
 final class InvalidMultipartRequest extends \Graphpinator\Exception\Request\RequestError
 {
-    public const MESSAGE = 'Invalid multipart request - ';
+    public const MESSAGE = 'Invalid multipart request - request must be POST and contain "operations" data.';
 }
