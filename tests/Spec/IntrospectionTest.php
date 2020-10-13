@@ -110,6 +110,8 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                                 ['name' => 'Time'],
                                 ['name' => 'Url'],
                                 ['name' => 'Void'],
+                                ['name' => 'NullFieldResolution'],
+                                ['name' => 'NullListResolution'],
                                 ['name' => 'ListConstraintInput'],
                                 ['name' => 'ID'],
                                 ['name' => 'Int'],

@@ -62,6 +62,8 @@ final class TestSchema
             'Time' => new \Graphpinator\Type\Addon\TimeType(),
             'Url' => new \Graphpinator\Type\Addon\UrlType(),
             'Void' => new \Graphpinator\Type\Addon\VoidType(),
+            'NullFieldResolution' => self::getNullFieldResolution(),
+            'NullListResolution' => self::getNullListResolution(),
         ], [
             'testDirective' => self::getTestDirective(),
             'invalidDirective' => self::getInvalidDirective(),
@@ -933,6 +935,182 @@ final class TestSchema
             }
 
             protected function validateNonNullValue($rawValue) : bool
+            {
+                return true;
+            }
+        };
+    }
+
+    public static function getNullFieldResolution() : \Graphpinator\Type\Type
+    {
+        return new class extends \Graphpinator\Type\Type {
+            protected const NAME = 'NullFieldResolution';
+
+            protected function getFieldDefinition(): \Graphpinator\Field\ResolvableFieldSet
+            {
+                return new \Graphpinator\Field\ResolvableFieldSet([
+                    new \Graphpinator\Field\ResolvableField(
+                        'stringType',
+                        \Graphpinator\Container\Container::String()->notNull(),
+                        static function ($parent, $string) {
+                            return $string;
+                        },
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'nullString',
+                                new \Graphpinator\Type\Scalar\StringType(),
+                                null,
+                            ),
+                        ]),
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'booleanType',
+                        \Graphpinator\Container\Container::Boolean()->notNull(),
+                        static function ($parent, $boolean) {
+                            return $boolean;
+                        },
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'nullBoolean',
+                                new \Graphpinator\Type\Scalar\BooleanType(),
+                                null,
+                            ),
+                        ]),
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'intType',
+                        \Graphpinator\Container\Container::Int()->notNull(),
+                        static function ($parent, $int) {
+                            return $int;
+                        },
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'nullInt',
+                                new \Graphpinator\Type\Scalar\IntType(),
+                                null,
+                            ),
+                        ]),
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'floatType',
+                        \Graphpinator\Container\Container::Float()->notNull(),
+                        static function ($parent, $float) {
+                            return $float;
+                        },
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'nullFloat',
+                                new \Graphpinator\Type\Scalar\FloatType(),
+                                null,
+                            ),
+                        ]),
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'idType',
+                        \Graphpinator\Container\Container::ID()->notNull(),
+                        static function ($parent, $id) {
+                            return $id;
+                        },
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'nullId',
+                                new \Graphpinator\Type\Scalar\IdType(),
+                                null,
+                            ),
+                        ]),
+                    ),
+                ]);
+            }
+
+            protected function validateNonNullValue($rawValue) : bool
+            {
+                return true;
+            }
+        };
+    }
+
+    public static function getNullListResolution() : \Graphpinator\Type\Type
+    {
+        return new class extends \Graphpinator\Type\Type {
+            protected const NAME = 'NullListResolution';
+
+            protected function getFieldDefinition(): \Graphpinator\Field\ResolvableFieldSet
+            {
+                return new \Graphpinator\Field\ResolvableFieldSet([
+                    new \Graphpinator\Field\ResolvableField(
+                        'stringListType',
+                        \Graphpinator\Container\Container::String()->list()->notNull(),
+                        static function ($parent, $string) {
+                            return $string;
+                        },
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'nullString',
+                                new \Graphpinator\Type\Scalar\StringType(),
+                                null,
+                            ),
+                        ]),
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'booleanListType',
+                        \Graphpinator\Container\Container::Boolean()->list()->notNull(),
+                        static function ($parent, $boolean) {
+                            return $boolean;
+                        },
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'nullBoolean',
+                                new \Graphpinator\Type\Scalar\BooleanType(),
+                                null,
+                            ),
+                        ]),
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'intListType',
+                        \Graphpinator\Container\Container::Int()->list()->notNull(),
+                        static function ($parent, $int) {
+                            return $int;
+                        },
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'nullInt',
+                                new \Graphpinator\Type\Scalar\IntType(),
+                                null,
+                            ),
+                        ]),
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'floatListType',
+                        \Graphpinator\Container\Container::Float()->list()->notNull(),
+                        static function ($parent, $float) {
+                            return $float;
+                        },
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'nullFloat',
+                                new \Graphpinator\Type\Scalar\FloatType(),
+                                null,
+                            ),
+                        ]),
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'idLitType',
+                        \Graphpinator\Container\Container::ID()->list()->notNull(),
+                        static function ($parent, $id) {
+                            return $id;
+                        },
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'nullId',
+                                new \Graphpinator\Type\Scalar\IdType(),
+                                null,
+                            ),
+                        ]),
+                    ),
+                ]);
+            }
+
+            protected function validateNonNullValue($rawValue): bool
             {
                 return true;
             }

@@ -466,6 +466,42 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         """
         scalar Mac
         
+        type NullFieldResolution {
+          stringType(
+            nullString: String = null
+          ): String!
+          booleanType(
+            nullBoolean: Boolean = null
+          ): Boolean!
+          intType(
+            nullInt: Int = null
+          ): Int!
+          floatType(
+            nullFloat: Float = null
+          ): Float!
+          idType(
+            nullId: ID = null
+          ): ID!
+        }
+        
+        type NullListResolution {
+          stringListType(
+            nullString: String = null
+          ): [String]!
+          booleanListType(
+            nullBoolean: Boolean = null
+          ): [Boolean]!
+          intListType(
+            nullInt: Int = null
+          ): [Int]!
+          floatListType(
+            nullFloat: Float = null
+          ): [Float]!
+          idLitType(
+            nullId: ID = null
+          ): [ID]!
+        }
+        
         """
         PhoneNumber type - string which contains valid phone number.
         The accepted format is without spaces and other special characters, but the leading plus is required.
@@ -955,6 +991,42 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         """
         scalar Mac
         
+        type NullFieldResolution {
+          stringType(
+            nullString: String = null
+          ): String!
+          booleanType(
+            nullBoolean: Boolean = null
+          ): Boolean!
+          intType(
+            nullInt: Int = null
+          ): Int!
+          floatType(
+            nullFloat: Float = null
+          ): Float!
+          idType(
+            nullId: ID = null
+          ): ID!
+        }
+        
+        type NullListResolution {
+          stringListType(
+            nullString: String = null
+          ): [String]!
+          booleanListType(
+            nullBoolean: Boolean = null
+          ): [Boolean]!
+          intListType(
+            nullInt: Int = null
+          ): [Int]!
+          floatListType(
+            nullFloat: Float = null
+          ): [Float]!
+          idLitType(
+            nullId: ID = null
+          ): [ID]!
+        }
+        
         """
         PhoneNumber type - string which contains valid phone number.
         The accepted format is without spaces and other special characters, but the leading plus is required.
@@ -1196,6 +1268,42 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           saturation: Int!
           lightness: Int!
           alpha: Float!
+        }
+        
+        type NullFieldResolution {
+          stringType(
+            nullString: String = null
+          ): String!
+          booleanType(
+            nullBoolean: Boolean = null
+          ): Boolean!
+          intType(
+            nullInt: Int = null
+          ): Int!
+          floatType(
+            nullFloat: Float = null
+          ): Float!
+          idType(
+            nullId: ID = null
+          ): ID!
+        }
+        
+        type NullListResolution {
+          stringListType(
+            nullString: String = null
+          ): [String]!
+          booleanListType(
+            nullBoolean: Boolean = null
+          ): [Boolean]!
+          intListType(
+            nullInt: Int = null
+          ): [Int]!
+          floatListType(
+            nullFloat: Float = null
+          ): [Float]!
+          idLitType(
+            nullId: ID = null
+          ): [ID]!
         }
         
         type Query {
@@ -1685,6 +1793,42 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           saturation: Int!
           lightness: Int!
           alpha: Float!
+        }
+        
+        type NullFieldResolution {
+          stringType(
+            nullString: String = null
+          ): String!
+          booleanType(
+            nullBoolean: Boolean = null
+          ): Boolean!
+          intType(
+            nullInt: Int = null
+          ): Int!
+          floatType(
+            nullFloat: Float = null
+          ): Float!
+          idType(
+            nullId: ID = null
+          ): ID!
+        }
+        
+        type NullListResolution {
+          stringListType(
+            nullString: String = null
+          ): [String]!
+          booleanListType(
+            nullBoolean: Boolean = null
+          ): [Boolean]!
+          intListType(
+            nullInt: Int = null
+          ): [Int]!
+          floatListType(
+            nullFloat: Float = null
+          ): [Float]!
+          idLitType(
+            nullId: ID = null
+          ): [ID]!
         }
         
         type Query {
