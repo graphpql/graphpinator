@@ -15,6 +15,7 @@ final class IntConstraintDirective extends \Graphpinator\Directive\TypeSystemDir
             [
                 TypeSystemDirectiveLocation::ARGUMENT_DEFINITION,
                 TypeSystemDirectiveLocation::INPUT_FIELD_DEFINITION,
+                TypeSystemDirectiveLocation::FIELD_DEFINITION,
             ],
             false,
             new \Graphpinator\Argument\ArgumentSet([

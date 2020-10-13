@@ -9,6 +9,7 @@ class Field implements \Graphpinator\Printable\Printable
     use \Nette\SmartObject;
     use \Graphpinator\Utils\TOptionalDescription;
     use \Graphpinator\Utils\TDeprecatable;
+    use \Graphpinator\Utils\TFieldConstraint;
     use \Graphpinator\Printable\TRepeatablePrint;
 
     protected string $name;
@@ -38,10 +39,11 @@ class Field implements \Graphpinator\Printable\Printable
         return $this->arguments;
     }
 
-    public function printSchema(int $indentLevel = 1) : string
+    public function printSchema(int $indentLevel) : string
     {
         return $this->printDescription($indentLevel)
-            . $this->getName() . $this->printArguments() . ': ' . $this->getType()->printName() . $this->printDeprecated();
+            . $this->getName() . $this->printArguments() . ': ' . $this->getType()->printName() . $this->printDeprecated()
+            . $this->printConstraints();
     }
 
     private function printArguments() : string

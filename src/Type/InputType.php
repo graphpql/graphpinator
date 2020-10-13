@@ -7,7 +7,7 @@ namespace Graphpinator\Type;
 abstract class InputType extends \Graphpinator\Type\Contract\ConcreteDefinition implements \Graphpinator\Type\Contract\Inputable
 {
     use \Graphpinator\Printable\TRepeatablePrint;
-    use \Graphpinator\Utils\THasConstraints;
+    use \Graphpinator\Utils\TObjectConstraint;
 
     protected ?\Graphpinator\Argument\ArgumentSet $arguments = null;
 
@@ -34,22 +34,11 @@ abstract class InputType extends \Graphpinator\Type\Contract\ConcreteDefinition 
         return \Graphpinator\Type\Introspection\TypeKind::INPUT_OBJECT;
     }
 
-    public function addConstraint(\Graphpinator\Constraint\InputConstraint $constraint) : self
-    {
-        if (!$constraint->validateType($this)) {
-            throw new \Graphpinator\Exception\Constraint\InvalidConstraintType();
-        }
-
-        $this->getConstraints()[] = $constraint;
-
-        return $this;
-    }
-
     final public function printSchema() : string
     {
         return $this->printDescription()
             . 'input ' . $this->getName() . $this->printConstraints() . ' {' . \PHP_EOL
-            . $this->printItems($this->getArguments())
+            . $this->printItems($this->getArguments(), 1)
             . '}';
     }
 

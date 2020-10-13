@@ -8,7 +8,7 @@ final class FieldResultTypeMismatch extends \Graphpinator\Exception\Resolver\Res
 {
     public const MESSAGE = 'FieldResult doesnt match field type.';
 
-    public function isOutputable() : bool
+    protected function isOutputable() : bool
     {
         return false;
     }

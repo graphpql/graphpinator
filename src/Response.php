@@ -41,4 +41,9 @@ final class Response implements \JsonSerializable
 
         return $return;
     }
+
+    public function toString() : string
+    {
+        return \json_encode($this, \JSON_THROW_ON_ERROR);
+    }
 }

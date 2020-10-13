@@ -40,11 +40,14 @@ final class TestSchema
             'DefaultsInput' => self::getDefaultsInput(),
             'ConstraintInput' => self::getConstraintInput(),
             'ExactlyOneInput' => self::getExactlyOneInput(),
+            'ConstraintType' => self::getConstraintType(),
             'SimpleEnum' => self::getSimpleEnum(),
             'ArrayEnum' => self::getArrayEnum(),
             'DescriptionEnum' => self::getDescriptionEnum(),
             'TestScalar' => self::getTestScalar(),
             'AddonType' => self::getAddonType(),
+            'UploadType' => self::getUploadType(),
+            'UploadInput' => self::getUploadInput(),
             'ComplexDefaultsInput' => self::getComplexDefaultsInput(),
             'DateTime' => new \Graphpinator\Type\Addon\DateTimeType(),
             'Date' => new \Graphpinator\Type\Addon\DateType(),
@@ -64,6 +67,7 @@ final class TestSchema
             'Void' => new \Graphpinator\Type\Addon\VoidType(),
             'NullFieldResolution' => self::getNullFieldResolution(),
             'NullListResolution' => self::getNullListResolution(),
+            'Upload' => new \Graphpinator\Module\Upload\UploadType(),
         ], [
             'testDirective' => self::getTestDirective(),
             'invalidDirective' => self::getInvalidDirective(),
@@ -129,9 +133,99 @@ final class TestSchema
                     new \Graphpinator\Field\ResolvableField(
                         'fieldAddonType',
                         TestSchema::getAddonType(),
-                        static function () : \Graphpinator\Type\Type {
-                            return TestSchema::getAddonType();
+                        static function () {
+                            return 1;
                         },
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'fieldUpload',
+                        TestSchema::getUploadType()->notNull(),
+                        static function ($parent, ?\Psr\Http\Message\UploadedFileInterface $file) : \Psr\Http\Message\UploadedFileInterface {
+                            return $file;
+                        },
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'file',
+                                new \Graphpinator\Module\Upload\UploadType(),
+                            ),
+                        ]),
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'fieldMultiUpload',
+                        TestSchema::getUploadType()->notNullList(),
+                        static function ($parent, array $files) : array {
+                            return $files;
+                        },
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'files',
+                                (new \Graphpinator\Module\Upload\UploadType())->list(),
+                            ),
+                        ]),
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'fieldInputUpload',
+                        TestSchema::getUploadType()->notNull(),
+                        static function ($parent, \stdClass $fileInput) : \Psr\Http\Message\UploadedFileInterface {
+                            return $fileInput->file;
+                        },
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'fileInput',
+                                TestSchema::getUploadInput()->notNull(),
+                            ),
+                        ]),
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'fieldInputMultiUpload',
+                        TestSchema::getUploadType()->notNullList(),
+                        static function ($parent, \stdClass $fileInput) : array {
+                            return $fileInput->files;
+                        },
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'fileInput',
+                                TestSchema::getUploadInput()->notNull(),
+                            ),
+                        ]),
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'fieldMultiInputUpload',
+                        TestSchema::getUploadType()->notNullList(),
+                        static function ($parent, array $fileInputs) {
+                            $return = [];
+
+                            foreach ($fileInputs as $fileInput) {
+                                $return[] = $fileInput->file;
+                            }
+
+                            return $return;
+                        },
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'fileInputs',
+                                TestSchema::getUploadInput()->notNullList(),
+                            ),
+                        ]),
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'fieldMultiInputMultiUpload',
+                        TestSchema::getUploadType()->notNullList(),
+                        static function ($parent, array $fileInputs) {
+                            $return = [];
+
+                            foreach ($fileInputs as $fileInput) {
+                                $return += $fileInput->files;
+                            }
+
+                            return $return;
+                        },
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'fileInputs',
+                                TestSchema::getUploadInput()->notNullList(),
+                            ),
+                        ]),
                     ),
                 ]);
             }
@@ -249,7 +343,8 @@ final class TestSchema
                         TestSchema::getSimpleEnum()->list(),
                         static function () {
                             return ['A', 'B'];
-                    }),
+                        },
+                    ),
                 ]);
             }
 
@@ -355,6 +450,115 @@ final class TestSchema
         };
     }
 
+    public static function getConstraintType() : \Graphpinator\Type\Type
+    {
+        return new class extends \Graphpinator\Type\Type
+        {
+            protected const NAME = 'ConstraintType';
+
+            public function __construct()
+            {
+                parent::__construct(
+                    new \Graphpinator\Utils\InterfaceSet([]),
+                );
+
+                $this->addConstraint(new \Graphpinator\Constraint\ObjectConstraint([
+                    'intMinField',
+                    'intMaxField',
+                    'intOneOfField',
+                    'floatMinField',
+                    'floatMaxField',
+                    'floatOneOfField',
+                    'stringMinField',
+                    'stringMaxField',
+                    'listMinField',
+                    'listMaxField',
+                ]));
+            }
+
+            protected function validateNonNullValue($rawValue) : bool
+            {
+                return true;
+            }
+
+            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+            {
+                return new \Graphpinator\Field\ResolvableFieldSet([
+                    (new \Graphpinator\Field\ResolvableField(
+                        'intMinField',
+                        \Graphpinator\Container\Container::Int(),
+                        static function () {
+                            return 1;
+                        },
+                    ))->addConstraint(new \Graphpinator\Constraint\IntConstraint(-20)),
+                    (new \Graphpinator\Field\ResolvableField(
+                        'intMaxField',
+                        \Graphpinator\Container\Container::Int(),
+                        static function () {
+                            return 1;
+                        },
+                    ))->addConstraint(new \Graphpinator\Constraint\IntConstraint(null, 20)),
+                    (new \Graphpinator\Field\ResolvableField(
+                        'intOneOfField',
+                        \Graphpinator\Container\Container::Int(),
+                        static function () {
+                            return 1;
+                        },
+                    ))->addConstraint(new \Graphpinator\Constraint\IntConstraint(null, null, [1, 2, 3])),
+                    (new \Graphpinator\Field\ResolvableField(
+                        'floatMinField',
+                        \Graphpinator\Container\Container::Float(),
+                        static function () {
+                            return 4.02;
+                        },
+                    ))->addConstraint(new \Graphpinator\Constraint\FloatConstraint(4.01)),
+                    (new \Graphpinator\Field\ResolvableField(
+                        'floatMaxField',
+                        \Graphpinator\Container\Container::Float(),
+                        static function () {
+                            return 1.1;
+                        },
+                    ))->addConstraint(new \Graphpinator\Constraint\FloatConstraint(null, 20.101)),
+                    (new \Graphpinator\Field\ResolvableField(
+                        'floatOneOfField',
+                        \Graphpinator\Container\Container::Float(),
+                        static function () {
+                            return 1.01;
+                        },
+                    ))->addConstraint(new \Graphpinator\Constraint\FloatConstraint(null, null, [1.01, 2.02, 3.0])),
+                    (new \Graphpinator\Field\ResolvableField(
+                        'stringMinField',
+                        \Graphpinator\Container\Container::String(),
+                        static function () {
+                            return 1;
+                        },
+                    ))->addConstraint(new \Graphpinator\Constraint\StringConstraint(4)),
+                    (new \Graphpinator\Field\ResolvableField(
+                        'stringMaxField',
+                        \Graphpinator\Container\Container::String(),
+                        static function () {
+                            return 1;
+                        },
+                    ))->addConstraint(new \Graphpinator\Constraint\StringConstraint(null, 10)),
+                    (new \Graphpinator\Field\ResolvableField(
+                        'listMinField',
+                        \Graphpinator\Container\Container::Int()->list(),
+                        static function () {
+                            return [1];
+                        },
+                    ))->addConstraint(new \Graphpinator\Constraint\ListConstraint(1)),
+                    (new \Graphpinator\Field\ResolvableField(
+                        'listMaxField',
+                        \Graphpinator\Container\Container::Int()->list(),
+                        static function () {
+                            return [1, 2];
+                        },
+                    ))->addConstraint(new \Graphpinator\Constraint\ListConstraint(null, 3)),
+                ]);
+            }
+        };
+    }
+
     public static function getConstraintInput() : \Graphpinator\Type\InputType
     {
         return new class extends \Graphpinator\Type\InputType
@@ -363,7 +567,7 @@ final class TestSchema
 
             public function __construct()
             {
-                $this->addConstraint(new \Graphpinator\Constraint\InputConstraint([
+                $this->addConstraint(new \Graphpinator\Constraint\ObjectConstraint([
                     'intMinArg',
                     'intMaxArg',
                     'intOneOfArg',
@@ -467,7 +671,7 @@ final class TestSchema
 
             public function __construct()
             {
-                $this->addConstraint(new \Graphpinator\Constraint\InputConstraint(null, [
+                $this->addConstraint(new \Graphpinator\Constraint\ObjectConstraint(null, [
                     'int1',
                     'int2',
                 ]));
@@ -496,16 +700,16 @@ final class TestSchema
             protected const NAME = 'TestInterface';
             protected const DESCRIPTION = 'TestInterface Description';
 
+            public function createResolvedValue($rawValue) : \Graphpinator\Value\TypeIntermediateValue
+            {
+                return new \Graphpinator\Value\TypeIntermediateValue(TestSchema::getTypeXyz(), $rawValue);
+            }
+
             protected function getFieldDefinition() : \Graphpinator\Field\FieldSet
             {
                 return new \Graphpinator\Field\FieldSet([
                     new \Graphpinator\Field\Field('name', \Graphpinator\Container\Container::String()->notNull()),
                 ]);
-            }
-
-            public function createResolvedValue($rawValue) : \Graphpinator\Value\TypeIntermediateValue
-            {
-                return new \Graphpinator\Value\TypeIntermediateValue(TestSchema::getTypeXyz(), $rawValue);
             }
         };
     }
@@ -940,6 +1144,62 @@ final class TestSchema
             }
         };
     }
+
+	public static function getUploadType() : \Graphpinator\Type\Type
+    {
+        return new class extends \Graphpinator\Type\Type
+        {
+            protected const NAME = 'UploadType';
+
+            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+            {
+                return new \Graphpinator\Field\ResolvableFieldSet([
+                    new \Graphpinator\Field\ResolvableField(
+                        'fileName',
+                        \Graphpinator\Container\Container::String(),
+                        static function (\Psr\Http\Message\UploadedFileInterface $file) : string {
+                            return $file->getClientFilename();
+                        },
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'fileContent',
+                        \Graphpinator\Container\Container::String(),
+                        static function (\Psr\Http\Message\UploadedFileInterface $file) : string {
+                            return $file->getStream()->getContents();
+                        },
+                    ),
+                ]);
+            }
+
+            protected function validateNonNullValue($rawValue) : bool
+            {
+                return true;
+            }
+        };
+    }
+
+    public static function getUploadInput() : \Graphpinator\Type\InputType
+    {
+        return new class extends \Graphpinator\Type\InputType
+        {
+            protected const NAME = 'UploadInput';
+
+            protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
+            {
+                return new \Graphpinator\Argument\ArgumentSet([
+                    new \Graphpinator\Argument\Argument(
+                        'file',
+                        new \Graphpinator\Module\Upload\UploadType(),
+                    ),
+                    new \Graphpinator\Argument\Argument(
+                        'files',
+                        (new \Graphpinator\Module\Upload\UploadType())->list(),
+                    ),
+                ]);
+            }
+        };
+    }
+}
 
     public static function getNullFieldResolution() : \Graphpinator\Type\Type
     {

@@ -53,7 +53,7 @@ abstract class Directive
         $schema = 'directive @' . $this->getName();
 
         if ($this->arguments->count() > 0) {
-            $schema .= '(' . \PHP_EOL . $this->printItems($this->getArguments()) . ')';
+            $schema .= '(' . \PHP_EOL . $this->printItems($this->getArguments(), 1) . ')';
         }
 
         if ($this->repeatable) {

@@ -8,8 +8,8 @@ final class EnumItemTest extends \PHPUnit\Framework\TestCase
 {
     public function testEnumItemPrintSchema() : void
     {
-        $enumItemSchema = (new \Graphpinator\Type\Enum\EnumItem('enumItem'))->printSchema();
+        $enumItemSchema = (new \Graphpinator\Type\Enum\EnumItem('enumItem'))->printSchema(0);
 
-        self::assertSame('  enumItem', $enumItemSchema);
+        self::assertSame('enumItem', $enumItemSchema);
     }
 }

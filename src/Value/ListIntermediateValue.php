@@ -17,7 +17,7 @@ final class ListIntermediateValue implements \Graphpinator\Value\ResolvedValue
         $this->rawValue = $rawValue;
     }
 
-    public function getRawValue()
+    public function getRawValue() : iterable
     {
         return $this->rawValue;
     }

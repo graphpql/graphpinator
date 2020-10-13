@@ -28,7 +28,7 @@ final class InputValue implements \Graphpinator\Value\InputedValue
         $value = new \stdClass();
 
         foreach ($type->getArguments() as $argument) {
-            $value->{$argument->getName()} = new \Graphpinator\Argument\ArgumentValue($argument, $rawValue->{$argument->getName()}
+            $value->{$argument->getName()} = \Graphpinator\Argument\ArgumentValue::fromRaw($argument, $rawValue->{$argument->getName()}
                 ?? null);
         }
 
@@ -56,12 +56,8 @@ final class InputValue implements \Graphpinator\Value\InputedValue
         return $this->type;
     }
 
-    public function printValue(bool $prettyPrint = false, int $indentLevel = 1) : string
+    public function printValue() : string
     {
-        if ($prettyPrint) {
-            return $this->prettyPrint($indentLevel);
-        }
-
         $component = [];
 
         foreach ($this->value as $key => $value) {
@@ -71,6 +67,25 @@ final class InputValue implements \Graphpinator\Value\InputedValue
         }
 
         return '{' . \implode(',', $component) . '}';
+    }
+
+    public function prettyPrint(int $indentLevel) : string
+    {
+        if (\count((array) $this->value) === 0) {
+            return '{}';
+        }
+
+        $component = [];
+        $indent = \str_repeat('  ', $indentLevel);
+        $innerIndent = $indent . '  ';
+
+        foreach ($this->value as $key => $value) {
+            \assert($value instanceof ArgumentValue);
+
+            $component[] = $key . ': ' . $value->getValue()->prettyPrint($indentLevel + 1);
+        }
+
+        return '{' . \PHP_EOL . $innerIndent . \implode(',' . \PHP_EOL . $innerIndent, $component) . \PHP_EOL . $indent . '}';
     }
 
     private static function merge(\stdClass $core, \stdClass $supplement) : \stdClass
@@ -91,32 +106,22 @@ final class InputValue implements \Graphpinator\Value\InputedValue
         return $core;
     }
 
-    private function prettyPrint(int $indentLevel) : string
-    {
-        if (\count((array) $this->value) === 0) {
-            return '{}';
-        }
-
-        $component = [];
-        $indent = \str_repeat('  ', $indentLevel);
-        $innerIndent = $indent . '  ';
-
-        foreach ($this->value as $key => $value) {
-            \assert($value instanceof ArgumentValue);
-
-            $component[] = $key . ': ' . $value->getValue()->printValue(true, $indentLevel + 1);
-        }
-
-        return '{' . \PHP_EOL . $innerIndent . \implode(',' . \PHP_EOL . $innerIndent, $component) . \PHP_EOL . $indent . '}';
-    }
-
-    public function __isset($offset) : bool
+    public function __isset(string $offset) : bool
     {
         return \property_exists($this->value, $offset);
     }
 
-    public function __get($offset) : ArgumentValue
+    public function __get(string $offset) : ArgumentValue
     {
         return $this->value->{$offset};
+    }
+
+    public function __set(string $offset, ArgumentValue $value) : void
+    {
+        if ($value->getArgument() !== $this->type->getArguments()[$offset]) {
+            throw new \Exception();
+        }
+
+        $this->value->{$offset} = $value;
     }
 }

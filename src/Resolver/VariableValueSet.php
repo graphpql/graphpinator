@@ -4,8 +4,12 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Resolver;
 
-final class VariableValueSet extends \Infinityloop\Utils\ObjectSet
+final class VariableValueSet implements \ArrayAccess
 {
+    use \Nette\SmartObject;
+
+    private array $array = [];
+
     public function __construct(
         \Graphpinator\Normalizer\Variable\VariableSet $definedVariables,
         \stdClass $providedValues
@@ -16,13 +20,35 @@ final class VariableValueSet extends \Infinityloop\Utils\ObjectSet
         }
     }
 
-    public function current() : \Graphpinator\Value\InputedValue
+    public function offsetExists($offset) : bool
     {
-        return parent::current();
+        return \array_key_exists($offset, $this->array);
     }
 
     public function offsetGet($offset) : \Graphpinator\Value\InputedValue
     {
-        return parent::offsetGet($offset);
+        if (!$this->offsetExists($offset)) {
+            throw new \Exception('Item doesnt exist.');
+        }
+
+        return $this->array[$offset];
+    }
+
+    public function offsetSet($offset, $object) : void
+    {
+        if (!\is_string($offset) || !$object instanceof \Graphpinator\Value\InputedValue) {
+            throw new \Exception('Invalid input.');
+        }
+
+        $this->array[$offset] = $object;
+    }
+
+    public function offsetUnset($offset) : void
+    {
+        if (!$this->offsetExists($offset)) {
+            throw new \Exception('Item already doesnt exist.');
+        }
+
+        unset($this->array[$offset]);
     }
 }

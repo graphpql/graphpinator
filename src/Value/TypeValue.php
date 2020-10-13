@@ -16,7 +16,7 @@ final class TypeValue implements \Graphpinator\Value\OutputValue
         $this->type = $type;
         $this->value = $rawValue;
 
-        //$type->validateConstraints($this);
+        $type->validateConstraints($this);
     }
 
     public function getRawValue() : \stdClass
@@ -32,5 +32,15 @@ final class TypeValue implements \Graphpinator\Value\OutputValue
     public function jsonSerialize() : \stdClass
     {
         return $this->value;
+    }
+
+    public function __get(string $offset) : \Graphpinator\Field\FieldValue
+    {
+        return $this->value->{$offset};
+    }
+
+    public function __isset(string $offset) : bool
+    {
+        return \property_exists($this->value, $offset);
     }
 }
