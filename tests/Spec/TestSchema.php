@@ -1145,7 +1145,7 @@ final class TestSchema
         };
     }
 
-	public static function getUploadType() : \Graphpinator\Type\Type
+    public static function getUploadType() : \Graphpinator\Type\Type
     {
         return new class extends \Graphpinator\Type\Type
         {
@@ -1199,14 +1199,13 @@ final class TestSchema
             }
         };
     }
-}
 
     public static function getNullFieldResolution() : \Graphpinator\Type\Type
     {
         return new class extends \Graphpinator\Type\Type {
             protected const NAME = 'NullFieldResolution';
 
-            protected function getFieldDefinition(): \Graphpinator\Field\ResolvableFieldSet
+            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
             {
                 return new \Graphpinator\Field\ResolvableFieldSet([
                     new \Graphpinator\Field\ResolvableField(
@@ -1294,7 +1293,7 @@ final class TestSchema
         return new class extends \Graphpinator\Type\Type {
             protected const NAME = 'NullListResolution';
 
-            protected function getFieldDefinition(): \Graphpinator\Field\ResolvableFieldSet
+            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
             {
                 return new \Graphpinator\Field\ResolvableFieldSet([
                     new \Graphpinator\Field\ResolvableField(
@@ -1370,7 +1369,7 @@ final class TestSchema
                 ]);
             }
 
-            protected function validateNonNullValue($rawValue): bool
+            protected function validateNonNullValue($rawValue) : bool
             {
                 return true;
             }
