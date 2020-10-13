@@ -33,4 +33,14 @@ final class TypeValue implements \Graphpinator\Value\OutputValue
     {
         return $this->value;
     }
+
+    public function __get(string $offset) : \Graphpinator\Field\FieldValue
+    {
+        return $this->value->{$offset};
+    }
+
+    public function __isset(string $offset) : bool
+    {
+        return \property_exists($this->value, $offset);
+    }
 }

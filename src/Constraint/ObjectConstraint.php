@@ -58,7 +58,7 @@ final class ObjectConstraint implements \Graphpinator\Constraint\Constraint
 
     public function validate(\Graphpinator\Value\Value $value) : void
     {
-        \assert($value instanceof \Graphpinator\Value\InputValue);
+        \assert($value instanceof \Graphpinator\Value\InputValue || $value instanceof \Graphpinator\Value\TypeValue);
 
         if (\is_array($this->atLeastOne)) {
             $valid = false;
@@ -97,11 +97,13 @@ final class ObjectConstraint implements \Graphpinator\Constraint\Constraint
 
     public function validateType(\Graphpinator\Type\Contract\Definition $definition) : bool
     {
-        if (!$definition instanceof \Graphpinator\Type\InputType) {
+        if ($definition instanceof \Graphpinator\Type\InputType) {
+            $fields = $definition->getArguments();
+        } elseif ($definition instanceof \Graphpinator\Type\Type || $definition instanceof \Graphpinator\Type\InterfaceType) {
+            $fields = $definition->getFields();
+        } else {
             return false;
         }
-
-        $fields = $definition->getArguments();
 
         if (\is_array($this->atLeastOne)) {
             foreach ($this->atLeastOne as $item) {

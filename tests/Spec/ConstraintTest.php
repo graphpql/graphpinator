@@ -667,4 +667,349 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
             }
         };
     }
+
+    public function fieldConstraintsDataProvider() : array
+    {
+        return [
+            [
+                [
+                    'type' => \Graphpinator\Container\Container::Int(),
+                    'value' => -19,
+                    'constraint' => new \Graphpinator\Constraint\IntConstraint(-20),
+                ],
+                \Graphpinator\Json::fromObject((object) ['data' => ['field1' => -19]]),
+            ],
+            [
+                [
+                    'type' => \Graphpinator\Container\Container::Int(),
+                    'value' => 19,
+                    'constraint' => new \Graphpinator\Constraint\IntConstraint(null, 20),
+                ],
+                \Graphpinator\Json::fromObject((object) ['data' => ['field1' => 19]]),
+            ],
+            [
+                [
+                    'type' => \Graphpinator\Container\Container::Int(),
+                    'value' => 2,
+                    'constraint' => new \Graphpinator\Constraint\IntConstraint(null, null, [1, 2, 3]),
+                ],
+                \Graphpinator\Json::fromObject((object) ['data' => ['field1' => 2]]),
+            ],
+            [
+                [
+                    'type' => \Graphpinator\Container\Container::Int()->list(),
+                    'value' => [1, 2],
+                    'constraint' => new \Graphpinator\Constraint\ListConstraint(1),
+                ],
+                \Graphpinator\Json::fromObject((object) ['data' => ['field1' => [1, 2]]]),
+            ],
+            [
+                [
+                    'type' => \Graphpinator\Container\Container::Int()->list(),
+                    'value' => [1, 2],
+                    'constraint' => new \Graphpinator\Constraint\ListConstraint(null, 2),
+                ],
+                \Graphpinator\Json::fromObject((object) ['data' => ['field1' => [1, 2]]]),
+            ],
+            [
+                [
+                    'type' => \Graphpinator\Container\Container::Int()->list(),
+                    'value' => [1, 2],
+                    'constraint' => new \Graphpinator\Constraint\ListConstraint(null, null, true),
+                ],
+                \Graphpinator\Json::fromObject((object) ['data' => ['field1' => [1, 2]]]),
+            ],
+            [
+                [
+                    'type' => \Graphpinator\Container\Container::Int()->list(),
+                    'value' => [1, 2],
+                    'constraint' => new \Graphpinator\Constraint\ListConstraint(2, 3, true),
+                ],
+                \Graphpinator\Json::fromObject((object) ['data' => ['field1' => [1, 2]]]),
+            ],
+            [
+                [
+                    'type' => \Graphpinator\Container\Container::Int()->list()->list(),
+                    'value' => [0 => [1, 2]],
+                    'constraint' => new \Graphpinator\Constraint\ListConstraint(null, null, false, (object) [
+                        'minItems' => 1,
+                        'maxItems' => 3,
+                    ]),
+                ],
+                \Graphpinator\Json::fromObject((object) ['data' => ['field1' => [[1, 2]]]]),
+            ],
+            [
+                [
+                    'type' => \Graphpinator\Container\Container::Float(),
+                    'value' => 1.00,
+                    'constraint' => new \Graphpinator\Constraint\FloatConstraint(0.99),
+                ],
+                \Graphpinator\Json::fromObject((object) ['data' => ['field1' => 1.00]]),
+            ],
+            [
+                [
+                    'type' => \Graphpinator\Container\Container::Float(),
+                    'value' => 2.00,
+                    'constraint' => new \Graphpinator\Constraint\FloatConstraint(null, 2.01),
+                ],
+                \Graphpinator\Json::fromObject((object) ['data' => ['field1' => 2.00]]),
+            ],
+            [
+                [
+                    'type' => \Graphpinator\Container\Container::Float(),
+                    'value' => 2.00,
+                    'constraint' => new \Graphpinator\Constraint\FloatConstraint(null, null, [1.05, 2.00, 2.05]),
+                ],
+                \Graphpinator\Json::fromObject((object) ['data' => ['field1' => 2.00]]),
+            ],
+            [
+                [
+                    'type' => \Graphpinator\Container\Container::String(),
+                    'value' => 'Shrek',
+                    'constraint' => new \Graphpinator\Constraint\StringConstraint(4),
+                ],
+                \Graphpinator\Json::fromObject((object) ['data' => ['field1' => 'Shrek']]),
+            ],
+            [
+                [
+                    'type' => \Graphpinator\Container\Container::String(),
+                    'value' => 'abc',
+                    'constraint' => new \Graphpinator\Constraint\StringConstraint(null, 4),
+                ],
+                \Graphpinator\Json::fromObject((object) ['data' => ['field1' => 'abc']]),
+            ],
+            [
+                [
+                    'type' => \Graphpinator\Container\Container::String(),
+                    'value' => 'beetlejuice',
+                    'constraint' => new \Graphpinator\Constraint\StringConstraint(null, null, '/^(shrek)|(beetlejuice)$/'),
+                ],
+                \Graphpinator\Json::fromObject((object) ['data' => ['field1' => 'beetlejuice']]),
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider fieldConstraintsDataProvider
+     * @param array $values
+     * @param \Graphpinator\Json $expected
+     */
+    public function testFieldConstraints(array $values, \Graphpinator\Json $expected) : void
+    {
+        $request = \Graphpinator\Json::fromObject((object) [
+            'query' => 'query queryName { field1 }',
+        ]);
+
+        self::assertSame($expected->toString(), $this->getGraphpinator($values)->run(\Graphpinator\Request::fromJson($request))->toString());
+    }
+
+    public function fieldInvalidConstraintsDataProvider() : array
+    {
+        return [
+            [
+                [
+                    'type' => \Graphpinator\Container\Container::Int(),
+                    'value' => -25,
+                    'constraint' => new \Graphpinator\Constraint\IntConstraint(-20),
+                ],
+                \Graphpinator\Exception\Constraint\MinConstraintNotSatisfied::class,
+            ],
+            [
+                [
+                    'type' => \Graphpinator\Container\Container::Int(),
+                    'value' => 25,
+                    'constraint' => new \Graphpinator\Constraint\IntConstraint(null, 20),
+                ],
+                \Graphpinator\Exception\Constraint\MaxConstraintNotSatisfied::class,
+            ],
+            [
+                [
+                    'type' => \Graphpinator\Container\Container::Int(),
+                    'value' => 5,
+                    'constraint' => new \Graphpinator\Constraint\IntConstraint(null, null, [1, 2, 3]),
+                ],
+                \Graphpinator\Exception\Constraint\OneOfConstraintNotSatisfied::class,
+            ],
+            [
+                [
+                    'type' => \Graphpinator\Container\Container::Int()->list(),
+                    'value' => [1, 2],
+                    'constraint' => new \Graphpinator\Constraint\ListConstraint(3),
+                ],
+                \Graphpinator\Exception\Constraint\MinItemsConstraintNotSatisfied::class,
+            ],
+            [
+                [
+                    'type' => \Graphpinator\Container\Container::Int()->list(),
+                    'value' => [1, 2, 3],
+                    'constraint' => new \Graphpinator\Constraint\ListConstraint(null, 2),
+                ],
+                \Graphpinator\Exception\Constraint\MaxItemsConstraintNotSatisfied::class,
+            ],
+            [
+                [
+                    'type' => \Graphpinator\Container\Container::Int()->list(),
+                    'value' => [1, 2, 2, 3],
+                    'constraint' => new \Graphpinator\Constraint\ListConstraint(null, null, true),
+                ],
+                \Graphpinator\Exception\Constraint\UniqueConstraintNotSatisfied::class,
+            ],
+            [
+                [
+                    'type' => \Graphpinator\Container\Container::Int()->list(),
+                    'value' => [1],
+                    'constraint' => new \Graphpinator\Constraint\ListConstraint(2, 3, true),
+                ],
+                \Graphpinator\Exception\Constraint\MinItemsConstraintNotSatisfied::class,
+            ],
+            [
+                [
+                    'type' => \Graphpinator\Container\Container::Int()->list(),
+                    'value' => [1, 2, 3, 4],
+                    'constraint' => new \Graphpinator\Constraint\ListConstraint(2, 3, true),
+                ],
+                \Graphpinator\Exception\Constraint\MaxItemsConstraintNotSatisfied::class,
+            ],
+            [
+                [
+                    'type' => \Graphpinator\Container\Container::Int()->list(),
+                    'value' => [1, 2, 2],
+                    'constraint' => new \Graphpinator\Constraint\ListConstraint(2, 3, true),
+                ],
+                \Graphpinator\Exception\Constraint\UniqueConstraintNotSatisfied::class,
+            ],
+            [
+                [
+                    'type' => \Graphpinator\Container\Container::Int()->list()->list(),
+                    'value' => [0 => [1]],
+                    'constraint' => new \Graphpinator\Constraint\ListConstraint(null, null, false, (object) [
+                        'minItems' => 2,
+                        'maxItems' => 3,
+                    ]),
+                ],
+                \Graphpinator\Exception\Constraint\MinItemsConstraintNotSatisfied::class,
+            ],
+            [
+                [
+                    'type' => \Graphpinator\Container\Container::Int()->list()->list(),
+                    'value' => [0 => [1, 2, 3, 4]],
+                    'constraint' => new \Graphpinator\Constraint\ListConstraint(null, null, false, (object) [
+                        'minItems' => 1,
+                        'maxItems' => 3,
+                    ]),
+                ],
+                \Graphpinator\Exception\Constraint\MaxItemsConstraintNotSatisfied::class,
+            ],
+            [
+                [
+                    'type' => \Graphpinator\Container\Container::Float(),
+                    'value' => 0.10,
+                    'constraint' => new \Graphpinator\Constraint\FloatConstraint(0.99),
+                ],
+                \Graphpinator\Exception\Constraint\MinConstraintNotSatisfied::class,
+            ],
+            [
+                [
+                    'type' => \Graphpinator\Container\Container::Float(),
+                    'value' => 2.01,
+                    'constraint' => new \Graphpinator\Constraint\FloatConstraint(null, 2.00),
+                ],
+                \Graphpinator\Exception\Constraint\MaxConstraintNotSatisfied::class,
+            ],
+            [
+                [
+                    'type' => \Graphpinator\Container\Container::Float(),
+                    'value' => 5.35,
+                    'constraint' => new \Graphpinator\Constraint\FloatConstraint(null, null, [1.05, 2.00, 2.05]),
+                ],
+                \Graphpinator\Exception\Constraint\OneOfConstraintNotSatisfied::class,
+            ],
+            [
+                [
+                    'type' => \Graphpinator\Container\Container::String(),
+                    'value' => 'abc',
+                    'constraint' => new \Graphpinator\Constraint\StringConstraint(4),
+                ],
+                \Graphpinator\Exception\Constraint\MinLengthConstraintNotSatisfied::class,
+            ],
+            [
+                [
+                    'type' => \Graphpinator\Container\Container::String(),
+                    'value' => 'Shrek',
+                    'constraint' => new \Graphpinator\Constraint\StringConstraint(null, 4),
+                ],
+                \Graphpinator\Exception\Constraint\MaxLengthConstraintNotSatisfied::class,
+            ],
+            [
+                [
+                    'type' => \Graphpinator\Container\Container::String(),
+                    'value' => 'invalid',
+                    'constraint' => new \Graphpinator\Constraint\StringConstraint(null, null, '/^(shrek)|(beetlejuice)$/'),
+                ],
+                \Graphpinator\Exception\Constraint\RegexConstraintNotSatisfied::class,
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider fieldInvalidConstraintsDataProvider
+     * @param array $values
+     * @param string $exception
+     */
+    public function testFieldInvalidConstraints(array $values, string $exception) : void
+    {
+        $this->expectException($exception);
+        $this->expectExceptionMessage(\constant($exception . '::MESSAGE'));
+
+        $request = \Graphpinator\Json::fromObject((object) [
+            'query' => 'query queryName { field1 }',
+        ]);
+
+        $this->getGraphpinator($values)->run(\Graphpinator\Request::fromJson($request));
+    }
+
+    protected static function getGraphpinator(array $values) : \Graphpinator\Graphpinator
+    {
+        $query = new class ($values) extends \Graphpinator\Type\Type
+        {
+            protected const NAME = 'Query';
+            private array $values;
+
+            public function __construct(
+                array $values
+            )
+            {
+                parent::__construct();
+                $this->values = $values;
+                $this->addConstraint(new \Graphpinator\Constraint\ObjectConstraint([
+                    'field1',
+                ]));
+            }
+
+            protected function validateNonNullValue($rawValue) : bool
+            {
+                return true;
+            }
+
+            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+            {
+                return new \Graphpinator\Field\ResolvableFieldSet([
+                    (new \Graphpinator\Field\ResolvableField(
+                        'field1',
+                        $this->values['type'],
+                        function() {
+                            return $this->values['value'];
+                        },
+                    ))->addConstraint($this->values['constraint']),
+                ]);
+            }
+        };
+
+        return new \Graphpinator\Graphpinator(
+            new \Graphpinator\Type\Schema(
+                new \Graphpinator\Container\SimpleContainer([], []),
+                $query,
+            ),
+        );
+    }
 }

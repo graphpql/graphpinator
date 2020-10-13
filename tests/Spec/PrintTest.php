@@ -353,6 +353,19 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           listMinIntMinArg: [Int] @listConstraint(minItems: 3) @intConstraint(min: 3)
         }
         
+        type ConstraintType @objectConstraint(atLeastOne: ["intMinField", "intMaxField", "intOneOfField", "floatMinField", "floatMaxField", "floatOneOfField", "stringMinField", "stringMaxField", "listMinField", "listMaxField"]) {
+          intMinField: Int @intConstraint(min: -20)
+          intMaxField: Int @intConstraint(max: 20)
+          intOneOfField: Int @intConstraint(oneOf: [1, 2, 3])
+          floatMinField: Float @floatConstraint(min: 4.01)
+          floatMaxField: Float @floatConstraint(max: 20.101)
+          floatOneOfField: Float @floatConstraint(oneOf: [1.01, 2.02, 3])
+          stringMinField: String @stringConstraint(minLength: 4)
+          stringMaxField: String @stringConstraint(maxLength: 10)
+          listMinField: [Int] @listConstraint(minItems: 1)
+          listMaxField: [Int] @listConstraint(maxItems: 3) @intConstraint(min: 3)
+        }
+        
         """
         Date type - string which contains valid date in "<YYYY>-<MM>-<DD>" format.
         """
@@ -876,6 +889,19 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           listMinIntMinArg: [Int] @listConstraint(minItems: 3) @intConstraint(min: 3)
         }
         
+        type ConstraintType @objectConstraint(atLeastOne: ["intMinField", "intMaxField", "intOneOfField", "floatMinField", "floatMaxField", "floatOneOfField", "stringMinField", "stringMaxField", "listMinField", "listMaxField"]) {
+          intMinField: Int @intConstraint(min: -20)
+          intMaxField: Int @intConstraint(max: 20)
+          intOneOfField: Int @intConstraint(oneOf: [1, 2, 3])
+          floatMinField: Float @floatConstraint(min: 4.01)
+          floatMaxField: Float @floatConstraint(max: 20.101)
+          floatOneOfField: Float @floatConstraint(oneOf: [1.01, 2.02, 3])
+          stringMinField: String @stringConstraint(minLength: 4)
+          stringMaxField: String @stringConstraint(maxLength: 10)
+          listMinField: [Int] @listConstraint(minItems: 1)
+          listMaxField: [Int] @listConstraint(maxItems: 3) @intConstraint(min: 3)
+        }
+        
         """
         Date type - string which contains valid date in "<YYYY>-<MM>-<DD>" format.
         """
@@ -1245,6 +1271,19 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           void(
             void: Void = null
           ): Void
+        }
+        
+        type ConstraintType @objectConstraint(atLeastOne: ["intMinField", "intMaxField", "intOneOfField", "floatMinField", "floatMaxField", "floatOneOfField", "stringMinField", "stringMaxField", "listMinField", "listMaxField"]) {
+          intMinField: Int @intConstraint(min: -20)
+          intMaxField: Int @intConstraint(max: 20)
+          intOneOfField: Int @intConstraint(oneOf: [1, 2, 3])
+          floatMinField: Float @floatConstraint(min: 4.01)
+          floatMaxField: Float @floatConstraint(max: 20.101)
+          floatOneOfField: Float @floatConstraint(oneOf: [1.01, 2.02, 3])
+          stringMinField: String @stringConstraint(minLength: 4)
+          stringMaxField: String @stringConstraint(maxLength: 10)
+          listMinField: [Int] @listConstraint(minItems: 1)
+          listMaxField: [Int] @listConstraint(maxItems: 3) @intConstraint(min: 3)
         }
         
         """
@@ -1768,6 +1807,19 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           void(
             void: Void = null
           ): Void
+        }
+        
+        type ConstraintType @objectConstraint(atLeastOne: ["intMinField", "intMaxField", "intOneOfField", "floatMinField", "floatMaxField", "floatOneOfField", "stringMinField", "stringMaxField", "listMinField", "listMaxField"]) {
+          intMinField: Int @intConstraint(min: -20)
+          intMaxField: Int @intConstraint(max: 20)
+          intOneOfField: Int @intConstraint(oneOf: [1, 2, 3])
+          floatMinField: Float @floatConstraint(min: 4.01)
+          floatMaxField: Float @floatConstraint(max: 20.101)
+          floatOneOfField: Float @floatConstraint(oneOf: [1.01, 2.02, 3])
+          stringMinField: String @stringConstraint(minLength: 4)
+          stringMaxField: String @stringConstraint(maxLength: 10)
+          listMinField: [Int] @listConstraint(minItems: 1)
+          listMaxField: [Int] @listConstraint(maxItems: 3) @intConstraint(min: 3)
         }
         
         """

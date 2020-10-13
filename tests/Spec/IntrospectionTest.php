@@ -83,6 +83,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                                 ['name' => 'DefaultsInput'],
                                 ['name' => 'ConstraintInput'],
                                 ['name' => 'ExactlyOneInput'],
+                                ['name' => 'ConstraintType'],
                                 ['name' => 'SimpleEnum'],
                                 ['name' => 'ArrayEnum'],
                                 ['name' => 'DescriptionEnum'],
