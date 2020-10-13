@@ -9,6 +9,7 @@ abstract class InterfaceType extends \Graphpinator\Type\Contract\AbstractDefinit
 {
     use \Graphpinator\Type\Contract\TInterfaceImplementor;
     use \Graphpinator\Printable\TRepeatablePrint;
+    use \Graphpinator\Utils\TObjectConstraint;
 
     public function __construct(?\Graphpinator\Utils\InterfaceSet $implements = null)
     {
@@ -55,7 +56,7 @@ abstract class InterfaceType extends \Graphpinator\Type\Contract\AbstractDefinit
     final public function printSchema() : string
     {
         return $this->printDescription()
-            . 'interface ' . $this->getName() . $this->printImplements() . ' {' . \PHP_EOL
+            . 'interface ' . $this->getName() . $this->printImplements() . $this->printConstraints() . ' {' . \PHP_EOL
             . $this->printItems($this->getFields(), 1)
             . '}';
     }

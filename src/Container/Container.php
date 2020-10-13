@@ -133,9 +133,9 @@ abstract class Container
     /**
      * Graphpinator ObjectConstraint directive.
      */
-    public static function directiveInputConstraint() : \Graphpinator\Directive\InputConstraintDirective
+    public static function directiveObjectConstraint() : \Graphpinator\Directive\ObjectConstraintDirective
     {
-        return new \Graphpinator\Directive\InputConstraintDirective();
+        return new \Graphpinator\Directive\ObjectConstraintDirective();
     }
 
     /**

@@ -40,6 +40,7 @@ final class TestSchema
             'DefaultsInput' => self::getDefaultsInput(),
             'ConstraintInput' => self::getConstraintInput(),
             'ExactlyOneInput' => self::getExactlyOneInput(),
+            'ConstraintType' => self::getConstraintType(),
             'SimpleEnum' => self::getSimpleEnum(),
             'ArrayEnum' => self::getArrayEnum(),
             'DescriptionEnum' => self::getDescriptionEnum(),
@@ -447,6 +448,115 @@ final class TestSchema
         };
     }
 
+    public static function getConstraintType() : \Graphpinator\Type\Type
+    {
+        return new class extends \Graphpinator\Type\Type
+        {
+            protected const NAME = 'ConstraintType';
+
+            public function __construct()
+            {
+                parent::__construct(
+                    new \Graphpinator\Utils\InterfaceSet([]),
+                );
+
+                $this->addConstraint(new \Graphpinator\Constraint\ObjectConstraint([
+                    'intMinField',
+                    'intMaxField',
+                    'intOneOfField',
+                    'floatMinField',
+                    'floatMaxField',
+                    'floatOneOfField',
+                    'stringMinField',
+                    'stringMaxField',
+                    'listMinField',
+                    'listMaxField',
+                ]));
+            }
+
+            protected function validateNonNullValue($rawValue) : bool
+            {
+                return true;
+            }
+
+            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+            {
+                return new \Graphpinator\Field\ResolvableFieldSet([
+                    (new \Graphpinator\Field\ResolvableField(
+                        'intMinField',
+                        \Graphpinator\Container\Container::Int(),
+                        static function () {
+                            return 1;
+                        },
+                    ))->addConstraint(new \Graphpinator\Constraint\IntConstraint(-20)),
+                    (new \Graphpinator\Field\ResolvableField(
+                        'intMaxField',
+                        \Graphpinator\Container\Container::Int(),
+                        static function () {
+                            return 1;
+                        },
+                    ))->addConstraint(new \Graphpinator\Constraint\IntConstraint(null, 20)),
+                    (new \Graphpinator\Field\ResolvableField(
+                        'intOneOfField',
+                        \Graphpinator\Container\Container::Int(),
+                        static function () {
+                            return 1;
+                        },
+                    ))->addConstraint(new \Graphpinator\Constraint\IntConstraint(null, null, [1, 2, 3])),
+                    (new \Graphpinator\Field\ResolvableField(
+                        'floatMinField',
+                        \Graphpinator\Container\Container::Float(),
+                        static function () {
+                            return 4.02;
+                        },
+                    ))->addConstraint(new \Graphpinator\Constraint\FloatConstraint(4.01)),
+                    (new \Graphpinator\Field\ResolvableField(
+                        'floatMaxField',
+                        \Graphpinator\Container\Container::Float(),
+                        static function () {
+                            return 1.1;
+                        },
+                    ))->addConstraint(new \Graphpinator\Constraint\FloatConstraint(null, 20.101)),
+                    (new \Graphpinator\Field\ResolvableField(
+                        'floatOneOfField',
+                        \Graphpinator\Container\Container::Float(),
+                        static function () {
+                            return 1.01;
+                        },
+                    ))->addConstraint(new \Graphpinator\Constraint\FloatConstraint(null, null, [1.01, 2.02, 3.0])),
+                    (new \Graphpinator\Field\ResolvableField(
+                        'stringMinField',
+                        \Graphpinator\Container\Container::String(),
+                        static function () {
+                            return 1;
+                        },
+                    ))->addConstraint(new \Graphpinator\Constraint\StringConstraint(4)),
+                    (new \Graphpinator\Field\ResolvableField(
+                        'stringMaxField',
+                        \Graphpinator\Container\Container::String(),
+                        static function () {
+                            return 1;
+                        },
+                    ))->addConstraint(new \Graphpinator\Constraint\StringConstraint(null, 10)),
+                    (new \Graphpinator\Field\ResolvableField(
+                        'listMinField',
+                        \Graphpinator\Container\Container::Int()->list(),
+                        static function () {
+                            return [1];
+                        },
+                    ))->addConstraint(new \Graphpinator\Constraint\ListConstraint(1)),
+                    (new \Graphpinator\Field\ResolvableField(
+                        'listMaxField',
+                        \Graphpinator\Container\Container::Int()->list(),
+                        static function () {
+                            return [1, 2];
+                        },
+                    ))->addConstraint(new \Graphpinator\Constraint\ListConstraint(null, 3)),
+                ]);
+            }
+        };
+    }
+
     public static function getConstraintInput() : \Graphpinator\Type\InputType
     {
         return new class extends \Graphpinator\Type\InputType
@@ -455,7 +565,7 @@ final class TestSchema
 
             public function __construct()
             {
-                $this->addConstraint(new \Graphpinator\Constraint\InputConstraint([
+                $this->addConstraint(new \Graphpinator\Constraint\ObjectConstraint([
                     'intMinArg',
                     'intMaxArg',
                     'intOneOfArg',
@@ -559,7 +669,7 @@ final class TestSchema
 
             public function __construct()
             {
-                $this->addConstraint(new \Graphpinator\Constraint\InputConstraint(null, [
+                $this->addConstraint(new \Graphpinator\Constraint\ObjectConstraint(null, [
                     'int1',
                     'int2',
                 ]));

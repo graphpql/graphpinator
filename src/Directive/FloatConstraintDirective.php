@@ -15,6 +15,7 @@ final class FloatConstraintDirective extends \Graphpinator\Directive\TypeSystemD
             [
                 TypeSystemDirectiveLocation::ARGUMENT_DEFINITION,
                 TypeSystemDirectiveLocation::INPUT_FIELD_DEFINITION,
+                TypeSystemDirectiveLocation::FIELD_DEFINITION,
             ],
             false,
             new \Graphpinator\Argument\ArgumentSet([

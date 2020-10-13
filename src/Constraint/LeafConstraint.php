@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Constraint;
 
-abstract class LeafConstraint extends \Graphpinator\Constraint\ArgumentConstraint
+abstract class LeafConstraint extends \Graphpinator\Constraint\ArgumentFieldConstraint
 {
     public function validate(\Graphpinator\Value\Value $value) : void
     {

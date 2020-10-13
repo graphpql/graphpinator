@@ -44,7 +44,7 @@ final class FloatConstraint extends \Graphpinator\Constraint\LeafConstraint
         return '@floatConstraint(' . \implode(', ', $components) . ')';
     }
 
-    public function validateType(\Graphpinator\Type\Contract\Inputable $type) : bool
+    public function validateType(\Graphpinator\Type\Contract\Definition $type) : bool
     {
         return $type->getNamedType() instanceof \Graphpinator\Type\Scalar\FloatType;
     }

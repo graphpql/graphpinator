@@ -83,6 +83,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                                 ['name' => 'DefaultsInput'],
                                 ['name' => 'ConstraintInput'],
                                 ['name' => 'ExactlyOneInput'],
+                                ['name' => 'ConstraintType'],
                                 ['name' => 'SimpleEnum'],
                                 ['name' => 'ArrayEnum'],
                                 ['name' => 'DescriptionEnum'],
@@ -157,7 +158,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                                         ['name' => 'max'],
                                         ['name' => 'oneOf'],
                                     ],
-                                    'locations' => ['ARGUMENT_DEFINITION', 'INPUT_FIELD_DEFINITION'],
+                                    'locations' => ['ARGUMENT_DEFINITION', 'INPUT_FIELD_DEFINITION', 'FIELD_DEFINITION'],
                                     'isRepeatable' => false,
                                 ],
                                 [
@@ -168,7 +169,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                                         ['name' => 'max'],
                                         ['name' => 'oneOf'],
                                     ],
-                                    'locations' => ['ARGUMENT_DEFINITION', 'INPUT_FIELD_DEFINITION'],
+                                    'locations' => ['ARGUMENT_DEFINITION', 'INPUT_FIELD_DEFINITION', 'FIELD_DEFINITION'],
                                     'isRepeatable' => false,
                                 ],
                                 [
@@ -180,7 +181,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                                         ['name' => 'regex'],
                                         ['name' => 'oneOf'],
                                     ],
-                                    'locations' => ['ARGUMENT_DEFINITION', 'INPUT_FIELD_DEFINITION'],
+                                    'locations' => ['ARGUMENT_DEFINITION', 'INPUT_FIELD_DEFINITION', 'FIELD_DEFINITION'],
                                     'isRepeatable' => false,
                                 ],
                                 [
@@ -192,17 +193,17 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                                         ['name' => 'unique'],
                                         ['name' => 'innerList'],
                                     ],
-                                    'locations' => ['ARGUMENT_DEFINITION', 'INPUT_FIELD_DEFINITION'],
+                                    'locations' => ['ARGUMENT_DEFINITION', 'INPUT_FIELD_DEFINITION', 'FIELD_DEFINITION'],
                                     'isRepeatable' => false,
                                 ],
                                 [
-                                    'name' => 'inputConstraint',
-                                    'description' => 'Graphpinator inputConstraint directive.',
+                                    'name' => 'objectConstraint',
+                                    'description' => 'Graphpinator objectConstraint directive.',
                                     'args' => [
                                         ['name' => 'atLeastOne'],
                                         ['name' => 'exactlyOne'],
                                     ],
-                                    'locations' => ['INPUT_OBJECT'],
+                                    'locations' => ['INPUT_OBJECT', 'INTERFACE', 'OBJECT'],
                                     'isRepeatable' => false,
                                 ],
                                 [
@@ -897,7 +898,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
             \Graphpinator\Constraint\FloatConstraint::class => \Graphpinator\Container\Container::directiveFloatConstraint(),
             \Graphpinator\Constraint\StringConstraint::class => \Graphpinator\Container\Container::directiveStringConstraint(),
             \Graphpinator\Constraint\ListConstraint::class => \Graphpinator\Container\Container::directiveListConstraint(),
-            \Graphpinator\Constraint\InputConstraint::class => \Graphpinator\Container\Container::directiveInputConstraint(),
+            \Graphpinator\Constraint\ObjectConstraint::class => \Graphpinator\Container\Container::directiveObjectConstraint(),
         ];
 
         foreach ($array as $constraintClass => $directive) {

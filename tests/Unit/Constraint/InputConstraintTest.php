@@ -8,7 +8,7 @@ final class InputConstraintTest extends \PHPUnit\Framework\TestCase
 {
     public function testValidateType() : void
     {
-        $constraint = new \Graphpinator\Constraint\InputConstraint(['field1', 'field2']);
+        $constraint = new \Graphpinator\Constraint\ObjectConstraint(['field1', 'field2']);
 
         self::assertTrue($constraint->validateType(new class extends \Graphpinator\Type\InputType {
             protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
@@ -23,7 +23,7 @@ final class InputConstraintTest extends \PHPUnit\Framework\TestCase
 
     public function testValidateTypeInvalid() : void
     {
-        $constraint = new \Graphpinator\Constraint\InputConstraint(['field1', 'field2']);
+        $constraint = new \Graphpinator\Constraint\ObjectConstraint(['field1', 'field2']);
 
         self::assertFalse($constraint->validateType(new class extends \Graphpinator\Type\InputType {
             protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
@@ -37,7 +37,7 @@ final class InputConstraintTest extends \PHPUnit\Framework\TestCase
 
     public function testValidateTypeInvalid2() : void
     {
-        $constraint = new \Graphpinator\Constraint\InputConstraint(['field1', 'field2']);
+        $constraint = new \Graphpinator\Constraint\ObjectConstraint(['field1', 'field2']);
 
         self::assertFalse($constraint->validateType(\Graphpinator\Container\Container::Int()));
     }

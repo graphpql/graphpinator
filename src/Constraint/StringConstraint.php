@@ -57,7 +57,7 @@ final class StringConstraint extends \Graphpinator\Constraint\LeafConstraint
         return '@stringConstraint(' . \implode(', ', $components) . ')';
     }
 
-    public function validateType(\Graphpinator\Type\Contract\Inputable $type) : bool
+    public function validateType(\Graphpinator\Type\Contract\Definition $type) : bool
     {
         $namedType = $type->getNamedType();
 

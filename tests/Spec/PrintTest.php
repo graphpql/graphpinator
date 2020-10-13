@@ -334,7 +334,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           innerNotNull: SimpleInput!
         }
         
-        input ConstraintInput @inputConstraint(atLeastOne: ["intMinArg", "intMaxArg", "intOneOfArg", "floatMinArg", "floatMaxArg", "floatOneOfArg", "stringMinArg", "stringMaxArg", "stringRegexArg", "stringOneOfArg", "stringOneOfEmptyArg", "listMinArg", "listMaxArg", "listUniqueArg", "listInnerListArg", "listMinIntMinArg"]) {
+        input ConstraintInput @objectConstraint(atLeastOne: ["intMinArg", "intMaxArg", "intOneOfArg", "floatMinArg", "floatMaxArg", "floatOneOfArg", "stringMinArg", "stringMaxArg", "stringRegexArg", "stringOneOfArg", "stringOneOfEmptyArg", "listMinArg", "listMaxArg", "listUniqueArg", "listInnerListArg", "listMinIntMinArg"]) {
           intMinArg: Int @intConstraint(min: -20)
           intMaxArg: Int @intConstraint(max: 20)
           intOneOfArg: Int @intConstraint(oneOf: [1, 2, 3])
@@ -351,6 +351,19 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           listUniqueArg: [Int] @listConstraint(unique: true)
           listInnerListArg: [[Int]] @listConstraint(innerList: {minItems: 1, maxItems: 3})
           listMinIntMinArg: [Int] @listConstraint(minItems: 3) @intConstraint(min: 3)
+        }
+        
+        type ConstraintType @objectConstraint(atLeastOne: ["intMinField", "intMaxField", "intOneOfField", "floatMinField", "floatMaxField", "floatOneOfField", "stringMinField", "stringMaxField", "listMinField", "listMaxField"]) {
+          intMinField: Int @intConstraint(min: -20)
+          intMaxField: Int @intConstraint(max: 20)
+          intOneOfField: Int @intConstraint(oneOf: [1, 2, 3])
+          floatMinField: Float @floatConstraint(min: 4.01)
+          floatMaxField: Float @floatConstraint(max: 20.101)
+          floatOneOfField: Float @floatConstraint(oneOf: [1.01, 2.02, 3])
+          stringMinField: String @stringConstraint(minLength: 4)
+          stringMaxField: String @stringConstraint(maxLength: 10)
+          listMinField: [Int] @listConstraint(minItems: 1)
+          listMaxField: [Int] @listConstraint(maxItems: 3)
         }
         
         """
@@ -415,7 +428,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         """
         scalar EmailAddress
         
-        input ExactlyOneInput @inputConstraint(exactlyOne: ["int1", "int2"]) {
+        input ExactlyOneInput @objectConstraint(exactlyOne: ["int1", "int2"]) {
           int1: Int
           int2: Int
         }
@@ -594,18 +607,13 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           min: Float
           max: Float
           oneOf: [Float!]
-        ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
-
-        directive @inputConstraint(
-          atLeastOne: [String!]
-          exactlyOne: [String!]
-        ) on INPUT_OBJECT
+        ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION | FIELD_DEFINITION
 
         directive @intConstraint(
           min: Int
           max: Int
           oneOf: [Int!]
-        ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+        ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION | FIELD_DEFINITION
         
         directive @invalidDirective repeatable on FIELD
         
@@ -614,14 +622,19 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           maxItems: Int
           unique: Boolean = false
           innerList: ListConstraintInput
-        ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+        ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION | FIELD_DEFINITION
 
+        directive @objectConstraint(
+          atLeastOne: [String!]
+          exactlyOne: [String!]
+        ) on INPUT_OBJECT | INTERFACE | OBJECT
+        
         directive @stringConstraint(
           minLength: Int
           maxLength: Int
           regex: String
           oneOf: [String!]
-        ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+        ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION | FIELD_DEFINITION
 
         directive @testDirective repeatable on FIELD
         EOL;
@@ -857,7 +870,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           innerNotNull: SimpleInput!
         }
         
-        input ConstraintInput @inputConstraint(atLeastOne: ["intMinArg", "intMaxArg", "intOneOfArg", "floatMinArg", "floatMaxArg", "floatOneOfArg", "stringMinArg", "stringMaxArg", "stringRegexArg", "stringOneOfArg", "stringOneOfEmptyArg", "listMinArg", "listMaxArg", "listUniqueArg", "listInnerListArg", "listMinIntMinArg"]) {
+        input ConstraintInput @objectConstraint(atLeastOne: ["intMinArg", "intMaxArg", "intOneOfArg", "floatMinArg", "floatMaxArg", "floatOneOfArg", "stringMinArg", "stringMaxArg", "stringRegexArg", "stringOneOfArg", "stringOneOfEmptyArg", "listMinArg", "listMaxArg", "listUniqueArg", "listInnerListArg", "listMinIntMinArg"]) {
           intMinArg: Int @intConstraint(min: -20)
           intMaxArg: Int @intConstraint(max: 20)
           intOneOfArg: Int @intConstraint(oneOf: [1, 2, 3])
@@ -874,6 +887,19 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           listUniqueArg: [Int] @listConstraint(unique: true)
           listInnerListArg: [[Int]] @listConstraint(innerList: {minItems: 1, maxItems: 3})
           listMinIntMinArg: [Int] @listConstraint(minItems: 3) @intConstraint(min: 3)
+        }
+        
+        type ConstraintType @objectConstraint(atLeastOne: ["intMinField", "intMaxField", "intOneOfField", "floatMinField", "floatMaxField", "floatOneOfField", "stringMinField", "stringMaxField", "listMinField", "listMaxField"]) {
+          intMinField: Int @intConstraint(min: -20)
+          intMaxField: Int @intConstraint(max: 20)
+          intOneOfField: Int @intConstraint(oneOf: [1, 2, 3])
+          floatMinField: Float @floatConstraint(min: 4.01)
+          floatMaxField: Float @floatConstraint(max: 20.101)
+          floatOneOfField: Float @floatConstraint(oneOf: [1.01, 2.02, 3])
+          stringMinField: String @stringConstraint(minLength: 4)
+          stringMaxField: String @stringConstraint(maxLength: 10)
+          listMinField: [Int] @listConstraint(minItems: 1)
+          listMaxField: [Int] @listConstraint(maxItems: 3)
         }
         
         """
@@ -938,7 +964,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         """
         scalar EmailAddress
         
-        input ExactlyOneInput @inputConstraint(exactlyOne: ["int1", "int2"]) {
+        input ExactlyOneInput @objectConstraint(exactlyOne: ["int1", "int2"]) {
           int1: Int
           int2: Int
         }
@@ -1117,18 +1143,13 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           min: Float
           max: Float
           oneOf: [Float!]
-        ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
-
-        directive @inputConstraint(
-          atLeastOne: [String!]
-          exactlyOne: [String!]
-        ) on INPUT_OBJECT
+        ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION | FIELD_DEFINITION
 
         directive @intConstraint(
           min: Int
           max: Int
           oneOf: [Int!]
-        ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+        ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION | FIELD_DEFINITION
         
         directive @invalidDirective repeatable on FIELD
         
@@ -1137,14 +1158,19 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           maxItems: Int
           unique: Boolean = false
           innerList: ListConstraintInput
-        ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+        ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION | FIELD_DEFINITION
+        
+        directive @objectConstraint(
+          atLeastOne: [String!]
+          exactlyOne: [String!]
+        ) on INPUT_OBJECT | INTERFACE | OBJECT
 
         directive @stringConstraint(
           minLength: Int
           maxLength: Int
           regex: String
           oneOf: [String!]
-        ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+        ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION | FIELD_DEFINITION
 
         directive @testDirective repeatable on FIELD
         EOL;
@@ -1247,6 +1273,19 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           ): Void
         }
         
+        type ConstraintType @objectConstraint(atLeastOne: ["intMinField", "intMaxField", "intOneOfField", "floatMinField", "floatMaxField", "floatOneOfField", "stringMinField", "stringMaxField", "listMinField", "listMaxField"]) {
+          intMinField: Int @intConstraint(min: -20)
+          intMaxField: Int @intConstraint(max: 20)
+          intOneOfField: Int @intConstraint(oneOf: [1, 2, 3])
+          floatMinField: Float @floatConstraint(min: 4.01)
+          floatMaxField: Float @floatConstraint(max: 20.101)
+          floatOneOfField: Float @floatConstraint(oneOf: [1.01, 2.02, 3])
+          stringMinField: String @stringConstraint(minLength: 4)
+          stringMaxField: String @stringConstraint(maxLength: 10)
+          listMinField: [Int] @listConstraint(minItems: 1)
+          listMaxField: [Int] @listConstraint(maxItems: 3)
+        }
+        
         """
         Hsl type - type representing the HSL color model.
         """
@@ -1460,7 +1499,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           innerNotNull: SimpleInput!
         }
         
-        input ConstraintInput @inputConstraint(atLeastOne: ["intMinArg", "intMaxArg", "intOneOfArg", "floatMinArg", "floatMaxArg", "floatOneOfArg", "stringMinArg", "stringMaxArg", "stringRegexArg", "stringOneOfArg", "stringOneOfEmptyArg", "listMinArg", "listMaxArg", "listUniqueArg", "listInnerListArg", "listMinIntMinArg"]) {
+        input ConstraintInput @objectConstraint(atLeastOne: ["intMinArg", "intMaxArg", "intOneOfArg", "floatMinArg", "floatMaxArg", "floatOneOfArg", "stringMinArg", "stringMaxArg", "stringRegexArg", "stringOneOfArg", "stringOneOfEmptyArg", "listMinArg", "listMaxArg", "listUniqueArg", "listInnerListArg", "listMinIntMinArg"]) {
           intMinArg: Int @intConstraint(min: -20)
           intMaxArg: Int @intConstraint(max: 20)
           intOneOfArg: Int @intConstraint(oneOf: [1, 2, 3])
@@ -1510,7 +1549,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           ]
         }
         
-        input ExactlyOneInput @inputConstraint(exactlyOne: ["int1", "int2"]) {
+        input ExactlyOneInput @objectConstraint(exactlyOne: ["int1", "int2"]) {
           int1: Int
           int2: Int
         }
@@ -1640,18 +1679,13 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           min: Float
           max: Float
           oneOf: [Float!]
-        ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
-
-        directive @inputConstraint(
-          atLeastOne: [String!]
-          exactlyOne: [String!]
-        ) on INPUT_OBJECT
+        ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION | FIELD_DEFINITION
 
         directive @intConstraint(
           min: Int
           max: Int
           oneOf: [Int!]
-        ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+        ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION | FIELD_DEFINITION
         
         directive @invalidDirective repeatable on FIELD
         
@@ -1660,14 +1694,19 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           maxItems: Int
           unique: Boolean = false
           innerList: ListConstraintInput
-        ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+        ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION | FIELD_DEFINITION
+        
+        directive @objectConstraint(
+          atLeastOne: [String!]
+          exactlyOne: [String!]
+        ) on INPUT_OBJECT | INTERFACE | OBJECT
 
         directive @stringConstraint(
           minLength: Int
           maxLength: Int
           regex: String
           oneOf: [String!]
-        ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+        ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION | FIELD_DEFINITION
 
         directive @testDirective repeatable on FIELD
         EOL;
@@ -1770,6 +1809,19 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           ): Void
         }
         
+        type ConstraintType @objectConstraint(atLeastOne: ["intMinField", "intMaxField", "intOneOfField", "floatMinField", "floatMaxField", "floatOneOfField", "stringMinField", "stringMaxField", "listMinField", "listMaxField"]) {
+          intMinField: Int @intConstraint(min: -20)
+          intMaxField: Int @intConstraint(max: 20)
+          intOneOfField: Int @intConstraint(oneOf: [1, 2, 3])
+          floatMinField: Float @floatConstraint(min: 4.01)
+          floatMaxField: Float @floatConstraint(max: 20.101)
+          floatOneOfField: Float @floatConstraint(oneOf: [1.01, 2.02, 3])
+          stringMinField: String @stringConstraint(minLength: 4)
+          stringMaxField: String @stringConstraint(maxLength: 10)
+          listMinField: [Int] @listConstraint(minItems: 1)
+          listMaxField: [Int] @listConstraint(maxItems: 3)
+        }
+        
         """
         Hsl type - type representing the HSL color model.
         """
@@ -1983,7 +2035,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           innerNotNull: SimpleInput!
         }
         
-        input ConstraintInput @inputConstraint(atLeastOne: ["intMinArg", "intMaxArg", "intOneOfArg", "floatMinArg", "floatMaxArg", "floatOneOfArg", "stringMinArg", "stringMaxArg", "stringRegexArg", "stringOneOfArg", "stringOneOfEmptyArg", "listMinArg", "listMaxArg", "listUniqueArg", "listInnerListArg", "listMinIntMinArg"]) {
+        input ConstraintInput @objectConstraint(atLeastOne: ["intMinArg", "intMaxArg", "intOneOfArg", "floatMinArg", "floatMaxArg", "floatOneOfArg", "stringMinArg", "stringMaxArg", "stringRegexArg", "stringOneOfArg", "stringOneOfEmptyArg", "listMinArg", "listMaxArg", "listUniqueArg", "listInnerListArg", "listMinIntMinArg"]) {
           intMinArg: Int @intConstraint(min: -20)
           intMaxArg: Int @intConstraint(max: 20)
           intOneOfArg: Int @intConstraint(oneOf: [1, 2, 3])
@@ -2033,7 +2085,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           ]
         }
         
-        input ExactlyOneInput @inputConstraint(exactlyOne: ["int1", "int2"]) {
+        input ExactlyOneInput @objectConstraint(exactlyOne: ["int1", "int2"]) {
           int1: Int
           int2: Int
         }
@@ -2158,23 +2210,18 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           C
           D
         }
-        
+
         directive @floatConstraint(
           min: Float
           max: Float
           oneOf: [Float!]
-        ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
-
-        directive @inputConstraint(
-          atLeastOne: [String!]
-          exactlyOne: [String!]
-        ) on INPUT_OBJECT
+        ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION | FIELD_DEFINITION
 
         directive @intConstraint(
           min: Int
           max: Int
           oneOf: [Int!]
-        ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+        ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION | FIELD_DEFINITION
         
         directive @invalidDirective repeatable on FIELD
         
@@ -2183,14 +2230,19 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           maxItems: Int
           unique: Boolean = false
           innerList: ListConstraintInput
-        ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+        ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION | FIELD_DEFINITION
+
+        directive @objectConstraint(
+          atLeastOne: [String!]
+          exactlyOne: [String!]
+        ) on INPUT_OBJECT | INTERFACE | OBJECT
 
         directive @stringConstraint(
           minLength: Int
           maxLength: Int
           regex: String
           oneOf: [String!]
-        ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+        ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION | FIELD_DEFINITION
 
         directive @testDirective repeatable on FIELD
         EOL;
