@@ -551,8 +551,7 @@ final class TestSchema
                         static function () {
                             return [1, 2];
                         },
-                    ))->addConstraint(new \Graphpinator\Constraint\ListConstraint(null, 3))
-                    ->addConstraint(new \Graphpinator\Constraint\IntConstraint(3)),
+                    ))->addConstraint(new \Graphpinator\Constraint\ListConstraint(null, 3)),
                 ]);
             }
         };

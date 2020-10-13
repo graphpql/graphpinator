@@ -363,7 +363,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           stringMinField: String @stringConstraint(minLength: 4)
           stringMaxField: String @stringConstraint(maxLength: 10)
           listMinField: [Int] @listConstraint(minItems: 1)
-          listMaxField: [Int] @listConstraint(maxItems: 3) @intConstraint(min: 3)
+          listMaxField: [Int] @listConstraint(maxItems: 3)
         }
         
         """
@@ -899,7 +899,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           stringMinField: String @stringConstraint(minLength: 4)
           stringMaxField: String @stringConstraint(maxLength: 10)
           listMinField: [Int] @listConstraint(minItems: 1)
-          listMaxField: [Int] @listConstraint(maxItems: 3) @intConstraint(min: 3)
+          listMaxField: [Int] @listConstraint(maxItems: 3)
         }
         
         """
@@ -1283,7 +1283,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           stringMinField: String @stringConstraint(minLength: 4)
           stringMaxField: String @stringConstraint(maxLength: 10)
           listMinField: [Int] @listConstraint(minItems: 1)
-          listMaxField: [Int] @listConstraint(maxItems: 3) @intConstraint(min: 3)
+          listMaxField: [Int] @listConstraint(maxItems: 3)
         }
         
         """
@@ -1819,7 +1819,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           stringMinField: String @stringConstraint(minLength: 4)
           stringMaxField: String @stringConstraint(maxLength: 10)
           listMinField: [Int] @listConstraint(minItems: 1)
-          listMaxField: [Int] @listConstraint(maxItems: 3) @intConstraint(min: 3)
+          listMaxField: [Int] @listConstraint(maxItems: 3)
         }
         
         """

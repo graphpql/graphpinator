@@ -791,16 +791,16 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider fieldConstraintsDataProvider
-     * @param array $values
+     * @param array $settings
      * @param \Graphpinator\Json $expected
      */
-    public function testFieldConstraints(array $values, \Graphpinator\Json $expected) : void
+    public function testFieldConstraints(array $settings, \Graphpinator\Json $expected) : void
     {
         $request = \Graphpinator\Json::fromObject((object) [
             'query' => 'query queryName { field1 }',
         ]);
 
-        self::assertSame($expected->toString(), $this->getGraphpinator($values)->run(\Graphpinator\Request::fromJson($request))->toString());
+        self::assertSame($expected->toString(), self::getGraphpinator($settings)->run(\Graphpinator\Request::fromJson($request))->toString());
     }
 
     public function fieldInvalidConstraintsDataProvider() : array
@@ -953,10 +953,10 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider fieldInvalidConstraintsDataProvider
-     * @param array $values
+     * @param array $settings
      * @param string $exception
      */
-    public function testFieldInvalidConstraints(array $values, string $exception) : void
+    public function testFieldInvalidConstraints(array $settings, string $exception) : void
     {
         $this->expectException($exception);
         $this->expectExceptionMessage(\constant($exception . '::MESSAGE'));
@@ -965,22 +965,22 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
             'query' => 'query queryName { field1 }',
         ]);
 
-        $this->getGraphpinator($values)->run(\Graphpinator\Request::fromJson($request));
+        self::getGraphpinator($settings)->run(\Graphpinator\Request::fromJson($request));
     }
 
-    protected static function getGraphpinator(array $values) : \Graphpinator\Graphpinator
+    protected static function getGraphpinator(array $settings) : \Graphpinator\Graphpinator
     {
-        $query = new class ($values) extends \Graphpinator\Type\Type
+        $query = new class ($settings) extends \Graphpinator\Type\Type
         {
             protected const NAME = 'Query';
-            private array $values;
+            private array $settings;
 
             public function __construct(
-                array $values
+                array $settings
             )
             {
                 parent::__construct();
-                $this->values = $values;
+                $this->settings = $settings;
                 $this->addConstraint(new \Graphpinator\Constraint\ObjectConstraint([
                     'field1',
                 ]));
@@ -996,11 +996,11 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Field\ResolvableFieldSet([
                     (new \Graphpinator\Field\ResolvableField(
                         'field1',
-                        $this->values['type'],
+                        $this->settings['type'],
                         function() {
-                            return $this->values['value'];
+                            return $this->settings['value'];
                         },
-                    ))->addConstraint($this->values['constraint']),
+                    ))->addConstraint($this->settings['constraint']),
                 ]);
             }
         };
