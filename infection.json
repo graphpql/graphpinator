@@ -25,16 +25,19 @@
                 "Graphpinator\\Exception\\*"
             ]
         },
+        "ProtectedVisibility": {
+            "ignore": [
+                "Graphpinator\\Exception\\*"
+            ]
+        },
         "Throw_": {
             "ignore": [
                 "Graphpinator\\*"
             ]
         },
-        "ProtectedVisibility": {
-            "ignore": [
-                "Graphpinator\\Exception\\*"
-            ]
-        }
+        "global-ignoreSourceCodeByRegex": [
+            "\\\\assert\\(.*\\);"
+        ]
     },
     "testFramework":"phpunit",
     "testFrameworkOptions": "-vvv"
