@@ -24,7 +24,7 @@ class Request
         $this->operationName = $operationName;
     }
 
-    final public static function fromJson(\Graphpinator\Json $input) : self
+    final public static function fromJson(\Graphpinator\Json $input, bool $strict = true) : self
     {
         if (!isset($input[self::QUERY])) {
             throw new \Graphpinator\Exception\Request\QueryMissing();
@@ -42,9 +42,11 @@ class Request
             throw new \Graphpinator\Exception\Request\OperationNameNotString();
         }
 
-        foreach ($input as $key => $value) {
-            if (!\in_array($key, [self::QUERY, self::VARIABLES, self::OPERATION_NAME], true)) {
-                throw new \Graphpinator\Exception\Request\UnknownKey();
+        if ($strict) {
+            foreach ($input as $key => $value) {
+                if (!\in_array($key, [self::QUERY, self::VARIABLES, self::OPERATION_NAME], true)) {
+                    throw new \Graphpinator\Exception\Request\UnknownKey();
+                }
             }
         }
 
@@ -57,7 +59,7 @@ class Request
         return new self($query, $variables, $operationName);
     }
 
-    final public static function fromHttpRequest(\Psr\Http\Message\ServerRequestInterface $request) : self
+    final public static function fromHttpRequest(\Psr\Http\Message\ServerRequestInterface $request, bool $strict = true) : self
     {
         $method = $request->getMethod();
 
@@ -70,7 +72,7 @@ class Request
 
         if (\is_string($contentType) && \str_starts_with($contentType, 'multipart/form-data')) {
             if ($method === 'POST' && \array_key_exists('operations', $request->getParsedBody())) {
-                return self::fromJson(Json::fromString($request->getParsedBody()['operations']));
+                return self::fromJson(Json::fromString($request->getParsedBody()['operations']), $strict);
             }
 
             throw new \Graphpinator\Exception\Request\InvalidMultipartRequest();
@@ -80,9 +82,9 @@ class Request
             case 'application/graphql':
                 return new self($request->getBody()->getContents());
             case 'application/json':
-                return self::fromJson(Json::fromString($request->getBody()->getContents()));
+                return self::fromJson(Json::fromString($request->getBody()->getContents()), $strict);
             default:
-                return self::fromJson(Json::fromObject((object) $request->getQueryParams()));
+                return self::fromJson(Json::fromObject((object) $request->getQueryParams()), $strict);
         }
     }
 
