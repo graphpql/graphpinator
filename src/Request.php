@@ -84,7 +84,13 @@ class Request
             case 'application/json':
                 return self::fromJson(Json::fromString($request->getBody()->getContents()), $strict);
             default:
-                return self::fromJson(Json::fromObject((object) $request->getQueryParams()), $strict);
+                $params = $request->getQueryParams();
+
+                if (\array_key_exists('variables', $params)) {
+                    $params['variables'] = \Graphpinator\Json::fromString($params['variables'])->toObject();
+                }
+
+                return self::fromJson(Json::fromObject((object) $params), $strict);
         }
     }
 
