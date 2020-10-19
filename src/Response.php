@@ -27,16 +27,16 @@ final class Response implements \JsonSerializable
         return $this->errors;
     }
 
-    public function jsonSerialize() : array
+    public function jsonSerialize() : \stdClass
     {
-        $return = [];
+        $return = new \stdClass();
 
         if ($this->data instanceof \Graphpinator\Value\TypeValue) {
-            $return['data'] = $this->data;
+            $return->data = $this->data;
         }
 
         if (\is_array($this->errors)) {
-            $return['errors'] = $this->errors;
+            $return->errors = $this->errors;
         }
 
         return $return;
@@ -44,6 +44,6 @@ final class Response implements \JsonSerializable
 
     public function toString() : string
     {
-        return \json_encode($this, \JSON_THROW_ON_ERROR);
+        return \Graphpinator\Json::fromObject($this->jsonSerialize())->toString();
     }
 }
