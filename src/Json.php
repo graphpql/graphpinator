@@ -8,7 +8,7 @@ final class Json implements \Countable, \IteratorAggregate, \ArrayAccess, \Seria
 {
     use \Nette\SmartObject;
 
-    private const FLAGS = \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_UNICODE | \JSON_UNESCAPED_SLASHES;
+    private const FLAGS = \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_UNICODE | \JSON_UNESCAPED_SLASHES | \JSON_PRESERVE_ZERO_FRACTION;
 
     private ?string $string;
     private ?\stdClass $data;
