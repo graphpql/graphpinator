@@ -13,7 +13,7 @@
   "require": {
     "php": ">=7.4",
     "ext-json": "*",
-    "infinityloop-dev/utils": "^1.4",
+    "infinityloop-dev/utils": "^1.5",
     "nette/utils": "^3.0",
     "psr/http-message": "1.0.1"
   },

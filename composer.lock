@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "82048e43334cf78bcad49114e1e11331",
+    "content-hash": "ed29eccf946403f363dfb0364fe8e04f",
     "packages": [
         {
             "name": "infinityloop-dev/utils",
-            "version": "v1.4",
+            "version": "v1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/infinityloop-dev/utils.git",
-                "reference": "914200969f57a81a05ac2ec033802c131845fb15"
+                "reference": "0f37f2a40ef8744066353121168eff5f38c1a3d8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/infinityloop-dev/utils/zipball/914200969f57a81a05ac2ec033802c131845fb15",
-                "reference": "914200969f57a81a05ac2ec033802c131845fb15",
+                "url": "https://api.github.com/repos/infinityloop-dev/utils/zipball/0f37f2a40ef8744066353121168eff5f38c1a3d8",
+                "reference": "0f37f2a40ef8744066353121168eff5f38c1a3d8",
                 "shasum": ""
             },
             "require": {
@@ -47,7 +47,7 @@
             ],
             "description": "Common utils for infinityloop packages.",
             "homepage": "https://www.infinityloop.dev/",
-            "time": "2020-08-13T20:27:55+00:00"
+            "time": "2020-10-19T16:39:50+00:00"
         },
         {
             "name": "nette/utils",
@@ -1622,16 +1622,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "9.4.1",
+            "version": "9.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "1f09a12726593737e8a228ebb1c8647305d07c41"
+                "reference": "3866b2eeeed21b1b099c4bc0b7a1690ac6fd5baa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/1f09a12726593737e8a228ebb1c8647305d07c41",
-                "reference": "1f09a12726593737e8a228ebb1c8647305d07c41",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/3866b2eeeed21b1b099c4bc0b7a1690ac6fd5baa",
+                "reference": "3866b2eeeed21b1b099c4bc0b7a1690ac6fd5baa",
                 "shasum": ""
             },
             "require": {
@@ -1717,7 +1717,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2020-10-11T07:41:19+00:00"
+            "time": "2020-10-19T09:23:29+00:00"
         },
         {
             "name": "psr/container",
