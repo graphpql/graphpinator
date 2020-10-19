@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator;
 
-final class Request
+class Request
 {
     use \Nette\SmartObject;
 
@@ -16,7 +16,7 @@ final class Request
     private ?\stdClass $variables;
     private ?string $operationName;
 
-    public function __construct(string $query, ?\stdClass $variables = null, ?string $operationName = null)
+    final public function __construct(string $query, ?\stdClass $variables = null, ?string $operationName = null)
     {
         $this->query = $query;
         $this->variables = $variables
@@ -24,7 +24,7 @@ final class Request
         $this->operationName = $operationName;
     }
 
-    public static function fromJson(\Graphpinator\Json $input) : self
+    final public static function fromJson(\Graphpinator\Json $input) : self
     {
         if (!isset($input[self::QUERY])) {
             throw new \Graphpinator\Exception\Request\QueryMissing();
@@ -57,7 +57,7 @@ final class Request
         return new self($query, $variables, $operationName);
     }
 
-    public static function fromHttpRequest(\Psr\Http\Message\ServerRequestInterface $request) : self
+    final public static function fromHttpRequest(\Psr\Http\Message\ServerRequestInterface $request) : self
     {
         $method = $request->getMethod();
 
@@ -86,17 +86,17 @@ final class Request
         }
     }
 
-    public function getQuery() : string
+    final public function getQuery() : string
     {
         return $this->query;
     }
 
-    public function getVariables() : ?\stdClass
+    final public function getVariables() : ?\stdClass
     {
         return $this->variables;
     }
 
-    public function getOperationName() : ?string
+    final public function getOperationName() : ?string
     {
         return $this->operationName;
     }
