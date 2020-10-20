@@ -13,13 +13,13 @@
   "require": {
     "php": ">=7.4",
     "ext-json": "*",
-    "infinityloop-dev/utils": "^1.4",
+    "infinityloop-dev/utils": "^1.5",
     "nette/utils": "^3.0",
     "psr/http-message": "1.0.1"
   },
   "require-dev": {
     "phpunit/phpunit": "^9.3",
-    "infection/infection": "^0.17",
+    "infection/infection": "^0.18",
     "infinityloop-dev/coding-standard": "dev-master"
   },
   "scripts": {

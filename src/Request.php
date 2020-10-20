@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator;
 
-final class Request
+class Request
 {
     use \Nette\SmartObject;
 
@@ -16,7 +16,7 @@ final class Request
     private ?\stdClass $variables;
     private ?string $operationName;
 
-    public function __construct(string $query, ?\stdClass $variables = null, ?string $operationName = null)
+    final public function __construct(string $query, ?\stdClass $variables = null, ?string $operationName = null)
     {
         $this->query = $query;
         $this->variables = $variables
@@ -24,7 +24,7 @@ final class Request
         $this->operationName = $operationName;
     }
 
-    public static function fromJson(\Graphpinator\Json $input) : self
+    final public static function fromJson(\Graphpinator\Json $input, bool $strict = true) : self
     {
         if (!isset($input[self::QUERY])) {
             throw new \Graphpinator\Exception\Request\QueryMissing();
@@ -42,9 +42,11 @@ final class Request
             throw new \Graphpinator\Exception\Request\OperationNameNotString();
         }
 
-        foreach ($input as $key => $value) {
-            if (!\in_array($key, [self::QUERY, self::VARIABLES, self::OPERATION_NAME], true)) {
-                throw new \Graphpinator\Exception\Request\UnknownKey();
+        if ($strict) {
+            foreach ($input as $key => $value) {
+                if (!\in_array($key, [self::QUERY, self::VARIABLES, self::OPERATION_NAME], true)) {
+                    throw new \Graphpinator\Exception\Request\UnknownKey();
+                }
             }
         }
 
@@ -57,7 +59,7 @@ final class Request
         return new self($query, $variables, $operationName);
     }
 
-    public static function fromHttpRequest(\Psr\Http\Message\ServerRequestInterface $request) : self
+    final public static function fromHttpRequest(\Psr\Http\Message\ServerRequestInterface $request, bool $strict = true) : self
     {
         $method = $request->getMethod();
 
@@ -70,7 +72,7 @@ final class Request
 
         if (\is_string($contentType) && \str_starts_with($contentType, 'multipart/form-data')) {
             if ($method === 'POST' && \array_key_exists('operations', $request->getParsedBody())) {
-                return self::fromJson(Json::fromString($request->getParsedBody()['operations']));
+                return self::fromJson(Json::fromString($request->getParsedBody()['operations']), $strict);
             }
 
             throw new \Graphpinator\Exception\Request\InvalidMultipartRequest();
@@ -80,23 +82,29 @@ final class Request
             case 'application/graphql':
                 return new self($request->getBody()->getContents());
             case 'application/json':
-                return self::fromJson(Json::fromString($request->getBody()->getContents()));
+                return self::fromJson(Json::fromString($request->getBody()->getContents()), $strict);
             default:
-                return self::fromJson(Json::fromObject((object) $request->getQueryParams()));
+                $params = $request->getQueryParams();
+
+                if (\array_key_exists('variables', $params)) {
+                    $params['variables'] = \Graphpinator\Json::fromString($params['variables'])->toObject();
+                }
+
+                return self::fromJson(Json::fromObject((object) $params), $strict);
         }
     }
 
-    public function getQuery() : string
+    final public function getQuery() : string
     {
         return $this->query;
     }
 
-    public function getVariables() : ?\stdClass
+    final public function getVariables() : ?\stdClass
     {
         return $this->variables;
     }
 
-    public function getOperationName() : ?string
+    final public function getOperationName() : ?string
     {
         return $this->operationName;
     }

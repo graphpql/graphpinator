@@ -124,6 +124,12 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
      */
     public function testHttpParamsBody(\Graphpinator\Json $request, \Graphpinator\Json $expected) : void
     {
+        $params = (array) $request->toObject();
+
+        if (\array_key_exists('variables', $params)) {
+            $params['variables'] = \Graphpinator\Json::fromObject($params['variables'])->toString();
+        }
+
         $httpRequest = $this->createStub(\Psr\Http\Message\ServerRequestInterface::class);
         $httpRequest->method('getHeader')->willReturn([]);
         $httpRequest->method('getQueryParams')->willReturn((array) $request->toObject());
