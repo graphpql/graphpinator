@@ -1152,7 +1152,7 @@ final class TestSchema
                     new \Graphpinator\Field\ResolvableField(
                         'point',
                         new \Graphpinator\Type\Addon\PointType(),
-                        static function ($parent,\stdClass $point) : \stdClass {
+                        static function ($parent, \stdClass $point) : \stdClass {
                             return $point;
                         },
                         new \Graphpinator\Argument\ArgumentSet([
