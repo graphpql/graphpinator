@@ -192,6 +192,18 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           void(
             void: Void = null
           ): Void
+          gps(
+            gps: GpsInput = {
+              lat: 45,
+              lng: 90
+            }
+          ): Gps
+          point(
+            point: PointInput = {
+              x: 420.42,
+              y: 420.42
+            }
+          ): Point
         }
         
         enum ArrayEnum {
@@ -434,6 +446,14 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         }
         
         """
+        Gps type - float longitude and latitude.
+        """
+        type Gps {
+          lat: Float! @floatConstraint(min: -90, max: 90)
+          lng: Float! @floatConstraint(min: -180, max: 180)
+        }
+        
+        """
         Hsl type - type representing the HSL color model.
         """
         type Hsl {
@@ -484,6 +504,11 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         The accepted format is without spaces and other special characters, but the leading plus is required.
         """
         scalar PhoneNumber
+        
+        """
+        Point type - float which contains points x and y.
+        """
+        scalar Point
         
         """
         PostalCode type - string which contains valid postal code (ZIP code) in "NNN NN" format.
@@ -728,6 +753,18 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           void(
             void: Void = null
           ): Void
+          gps(
+            gps: GpsInput = {
+              lat: 45,
+              lng: 90
+            }
+          ): Gps
+          point(
+            point: PointInput = {
+              x: 420.42,
+              y: 420.42
+            }
+          ): Point
         }
         
         enum ArrayEnum {
@@ -970,6 +1007,14 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         }
         
         """
+        Gps type - float longitude and latitude.
+        """
+        type Gps {
+          lat: Float! @floatConstraint(min: -90, max: 90)
+          lng: Float! @floatConstraint(min: -180, max: 180)
+        }
+        
+        """
         Hsl type - type representing the HSL color model.
         """
         type Hsl {
@@ -1020,6 +1065,11 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         The accepted format is without spaces and other special characters, but the leading plus is required.
         """
         scalar PhoneNumber
+        
+        """
+        Point type - float which contains points x and y.
+        """
+        scalar Point
         
         """
         PostalCode type - string which contains valid postal code (ZIP code) in "NNN NN" format.
@@ -1271,6 +1321,18 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           void(
             void: Void = null
           ): Void
+          gps(
+            gps: GpsInput = {
+              lat: 45,
+              lng: 90
+            }
+          ): Gps
+          point(
+            point: PointInput = {
+              x: 420.42,
+              y: 420.42
+            }
+          ): Point
         }
         
         type ConstraintType @objectConstraint(atLeastOne: ["intMinField", "intMaxField", "intOneOfField", "floatMinField", "floatMaxField", "floatOneOfField", "stringMinField", "stringMaxField", "listMinField", "listMaxField"]) {
@@ -1284,6 +1346,14 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           stringMaxField: String @stringConstraint(maxLength: 10)
           listMinField: [Int] @listConstraint(minItems: 1)
           listMaxField: [Int] @listConstraint(maxItems: 3)
+        }
+        
+        """
+        Gps type - float longitude and latitude.
+        """
+        type Gps {
+          lat: Float! @floatConstraint(min: -90, max: 90)
+          lng: Float! @floatConstraint(min: -180, max: 180)
         }
         
         """
@@ -1612,6 +1682,11 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         The accepted format is without spaces and other special characters, but the leading plus is required.
         """
         scalar PhoneNumber
+        
+        """
+        Point type - float which contains points x and y.
+        """
+        scalar Point
         
         """
         PostalCode type - string which contains valid postal code (ZIP code) in "NNN NN" format.
@@ -1807,6 +1882,18 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           void(
             void: Void = null
           ): Void
+          gps(
+            gps: GpsInput = {
+              lat: 45,
+              lng: 90
+            }
+          ): Gps
+          point(
+            point: PointInput = {
+              x: 420.42,
+              y: 420.42
+            }
+          ): Point
         }
         
         type ConstraintType @objectConstraint(atLeastOne: ["intMinField", "intMaxField", "intOneOfField", "floatMinField", "floatMaxField", "floatOneOfField", "stringMinField", "stringMaxField", "listMinField", "listMaxField"]) {
@@ -1820,6 +1907,14 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           stringMaxField: String @stringConstraint(maxLength: 10)
           listMinField: [Int] @listConstraint(minItems: 1)
           listMaxField: [Int] @listConstraint(maxItems: 3)
+        }
+        
+        """
+        Gps type - float longitude and latitude.
+        """
+        type Gps {
+          lat: Float! @floatConstraint(min: -90, max: 90)
+          lng: Float! @floatConstraint(min: -180, max: 180)
         }
         
         """
@@ -2148,6 +2243,11 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         The accepted format is without spaces and other special characters, but the leading plus is required.
         """
         scalar PhoneNumber
+        
+        """
+        Point type - float which contains points x and y.
+        """
+        scalar Point
         
         """
         PostalCode type - string which contains valid postal code (ZIP code) in "NNN NN" format.

@@ -66,6 +66,8 @@ final class TestSchema
             'Url' => new \Graphpinator\Type\Addon\UrlType(),
             'Void' => new \Graphpinator\Type\Addon\VoidType(),
             'Upload' => new \Graphpinator\Module\Upload\UploadType(),
+            'Gps' => new \Graphpinator\Type\Addon\GpsType(),
+            'Point' => new \Graphpinator\Type\Addon\PointType(),
         ], [
             'testDirective' => self::getTestDirective(),
             'invalidDirective' => self::getInvalidDirective(),
@@ -1130,6 +1132,34 @@ final class TestSchema
                                 'void',
                                 new \Graphpinator\Type\Addon\VoidType(),
                                 null,
+                            ),
+                        ]),
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'gps',
+                        new \Graphpinator\Type\Addon\GpsType(),
+                        static function ($parent, \stdClass $gps) : \stdClass {
+                            return $gps;
+                        },
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'gps',
+                                new \Graphpinator\Type\Addon\GpsInput(),
+                                (object) ['lat' => 45.0, 'lng' => 90.0],
+                            ),
+                        ]),
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'point',
+                        new \Graphpinator\Type\Addon\PointType(),
+                        static function ($parent,\stdClass $point) : \stdClass {
+                            return $point;
+                        },
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'point',
+                                new \Graphpinator\Type\Addon\PointInput(),
+                                (object) ['x' => 420.42, 'y' => 420.42],
                             ),
                         ]),
                     ),
