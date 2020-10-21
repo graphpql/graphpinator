@@ -4,6 +4,10 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Spec;
 
+use Graphpinator\Type\Contract\AbstractDefinition;
+use Graphpinator\Type\ListType;
+use Graphpinator\Type\UnionType;
+
 final class TestSchema
 {
     use \Nette\StaticClass;
@@ -226,6 +230,13 @@ final class TestSchema
                                 TestSchema::getUploadInput()->notNullList(),
                             ),
                         ]),
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'fieldAbstractList',
+                        TestSchema::getUnion()->notNullList() ,
+                        static function ($parent, array $abstractList) {
+                            return $abstractList;
+                        },
                     ),
                 ]);
             }
@@ -1217,63 +1228,35 @@ final class TestSchema
                         new \Graphpinator\Argument\ArgumentSet([
                             new \Graphpinator\Argument\Argument(
                                 'nullString',
-                                new \Graphpinator\Type\Scalar\StringType(),
+                                \Graphpinator\Container\Container::String(),
                                 null,
                             ),
                         ]),
                     ),
                     new \Graphpinator\Field\ResolvableField(
-                        'booleanType',
-                        \Graphpinator\Container\Container::Boolean()->notNull(),
-                        static function ($parent, $boolean) {
-                            return $boolean;
+                        'interfaceType',
+                        TestSchema::getInterface()->notNull(),
+                        static function ($parent, $interface) {
+                            return $interface;
                         },
                         new \Graphpinator\Argument\ArgumentSet([
                             new \Graphpinator\Argument\Argument(
-                                'nullBoolean',
-                                new \Graphpinator\Type\Scalar\BooleanType(),
+                                'nullInterface',
+                                \Graphpinator\Container\Container::String(),
                                 null,
                             ),
                         ]),
                     ),
                     new \Graphpinator\Field\ResolvableField(
-                        'intType',
-                        \Graphpinator\Container\Container::Int()->notNull(),
-                        static function ($parent, $int) {
-                            return $int;
+                        'unionType',
+                        TestSchema::getUnion()->notNull(),
+                        static function ($parent, $union) {
+                            return $union;
                         },
                         new \Graphpinator\Argument\ArgumentSet([
                             new \Graphpinator\Argument\Argument(
-                                'nullInt',
-                                new \Graphpinator\Type\Scalar\IntType(),
-                                null,
-                            ),
-                        ]),
-                    ),
-                    new \Graphpinator\Field\ResolvableField(
-                        'floatType',
-                        \Graphpinator\Container\Container::Float()->notNull(),
-                        static function ($parent, $float) {
-                            return $float;
-                        },
-                        new \Graphpinator\Argument\ArgumentSet([
-                            new \Graphpinator\Argument\Argument(
-                                'nullFloat',
-                                new \Graphpinator\Type\Scalar\FloatType(),
-                                null,
-                            ),
-                        ]),
-                    ),
-                    new \Graphpinator\Field\ResolvableField(
-                        'idType',
-                        \Graphpinator\Container\Container::ID()->notNull(),
-                        static function ($parent, $id) {
-                            return $id;
-                        },
-                        new \Graphpinator\Argument\ArgumentSet([
-                            new \Graphpinator\Argument\Argument(
-                                'nullId',
-                                new \Graphpinator\Type\Scalar\IdType(),
+                                'nullUnion',
+                                \Graphpinator\Container\Container::String(),
                                 null,
                             ),
                         ]),
@@ -1305,63 +1288,35 @@ final class TestSchema
                         new \Graphpinator\Argument\ArgumentSet([
                             new \Graphpinator\Argument\Argument(
                                 'nullString',
-                                new \Graphpinator\Type\Scalar\StringType(),
+                                \Graphpinator\Container\Container::String()->list(),
                                 null,
                             ),
                         ]),
                     ),
                     new \Graphpinator\Field\ResolvableField(
-                        'booleanListType',
-                        \Graphpinator\Container\Container::Boolean()->list()->notNull(),
-                        static function ($parent, $boolean) {
-                            return $boolean;
+                        'interfaceListType',
+                        TestSchema::getInterface()->list()->notNull(),
+                        static function ($parent, $interface) {
+                            return $interface;
                         },
                         new \Graphpinator\Argument\ArgumentSet([
                             new \Graphpinator\Argument\Argument(
-                                'nullBoolean',
-                                new \Graphpinator\Type\Scalar\BooleanType(),
+                                'nullInterface',
+                                TestSchema::getInterface()->list(),
                                 null,
                             ),
                         ]),
                     ),
                     new \Graphpinator\Field\ResolvableField(
-                        'intListType',
-                        \Graphpinator\Container\Container::Int()->list()->notNull(),
-                        static function ($parent, $int) {
-                            return $int;
+                        'unionListType',
+                        TestSchema::getUnion()->list()->notNull(),
+                        static function ($parent, $union) {
+                            return $union;
                         },
                         new \Graphpinator\Argument\ArgumentSet([
                             new \Graphpinator\Argument\Argument(
-                                'nullInt',
-                                new \Graphpinator\Type\Scalar\IntType(),
-                                null,
-                            ),
-                        ]),
-                    ),
-                    new \Graphpinator\Field\ResolvableField(
-                        'floatListType',
-                        \Graphpinator\Container\Container::Float()->list()->notNull(),
-                        static function ($parent, $float) {
-                            return $float;
-                        },
-                        new \Graphpinator\Argument\ArgumentSet([
-                            new \Graphpinator\Argument\Argument(
-                                'nullFloat',
-                                new \Graphpinator\Type\Scalar\FloatType(),
-                                null,
-                            ),
-                        ]),
-                    ),
-                    new \Graphpinator\Field\ResolvableField(
-                        'idLitType',
-                        \Graphpinator\Container\Container::ID()->list()->notNull(),
-                        static function ($parent, $id) {
-                            return $id;
-                        },
-                        new \Graphpinator\Argument\ArgumentSet([
-                            new \Graphpinator\Argument\Argument(
-                                'nullId',
-                                new \Graphpinator\Type\Scalar\IdType(),
+                                'nullUnion',
+                                TestSchema::getUnion()->list(),
                                 null,
                             ),
                         ]),
