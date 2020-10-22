@@ -26,14 +26,14 @@ final class JsonTest extends \PHPUnit\Framework\TestCase
     {
         $this->expectException(\JsonException::class);
 
-        $instance = \Graphpinator\Json::fromString('{name: Rosta}');
+        \Graphpinator\Json::fromString('{name: Rosta}')->toObject();
     }
 
     public function testLoadStringInvalidInput() : void
     {
         $this->expectException(\JsonException::class);
 
-        $instance = \Graphpinator\Json::fromObject((object) ['name' => " \xB1\x31"]);
+        \Graphpinator\Json::fromObject((object) ['name' => " \xB1\x31"])->toString();
     }
 
     /**
