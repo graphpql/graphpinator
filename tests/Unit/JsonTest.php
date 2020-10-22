@@ -24,22 +24,25 @@ final class JsonTest extends \PHPUnit\Framework\TestCase
 
     public function testLoadArrayInvalidInput() : void
     {
-        $instance = \Graphpinator\Json::fromString('{name: Rosta}');
+        $this->expectException(\JsonException::class);
 
-        self::assertFalse($instance->isValid());
+        $instance = \Graphpinator\Json::fromString('{name: Rosta}');
     }
 
     public function testLoadStringInvalidInput() : void
     {
-        $instance = \Graphpinator\Json::fromObject((object) ['name' => " \xB1\x31"]);
+        $this->expectException(\JsonException::class);
 
-        self::assertFalse($instance->isValid());
+        $instance = \Graphpinator\Json::fromObject((object) ['name' => " \xB1\x31"]);
     }
 
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testIsValid() : void
     {
-        self::assertTrue(\Graphpinator\Json::fromString('{"name":"Rosta"}')->isValid());
-        self::assertTrue(\Graphpinator\Json::fromObject((object) ['name' => 'Rosta'])->isValid());
+        \Graphpinator\Json::fromString('{"name":"Rosta"}');
+        \Graphpinator\Json::fromObject((object) ['name' => 'Rosta']);
     }
 
     public function testCount() : void
