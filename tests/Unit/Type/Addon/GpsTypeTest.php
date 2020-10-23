@@ -20,16 +20,6 @@ final class GpsTypeTest extends \PHPUnit\Framework\TestCase
     public function invalidDataProvider() : array
     {
         return [
-            [(object) ['lat' => 0, 'lng' => 0.0]],
-            [(object) ['lat' => 0.0, 'lng' => 0]],
-            [(object) ['lat' => -120.0, 'lng' => -360.0]],
-            [(object) ['lat' => 120.0, 'lng' => 360.0]],
-            [(object) ['lat' => 90.1, 'lng' => 180.1]],
-            [(object) ['lat' => -90.1, 'lng' => -180.1]],
-            [(object) ['lat' => null, 'lng' => 0.0]],
-            [(object) ['lat' => 0.0, 'lng' => null]],
-            [(object) ['lat' => 'string', 'lng' => 0.0]],
-            [(object) ['lat' => 0.0, 'lng' => 'string']],
             [(object) ['lng' => 90.0]],
             [(object) ['lat' => 45.0]],
             [true],
@@ -62,15 +52,6 @@ final class GpsTypeTest extends \PHPUnit\Framework\TestCase
 
         $gps = new \Graphpinator\Type\Addon\GpsType();
         $gps->validateResolvedValue($rawValue);
-    }
-
-    public function testInputDefaultValue() : void
-    {
-        $gps = new \Graphpinator\Type\Addon\GpsInput();
-        $args = $gps->getArguments()->toArray();
-
-        self::assertSame(0.0, $args['lat']->getDefaultValue()->getRawValue());
-        self::assertSame(0.0, $args['lng']->getDefaultValue()->getRawValue());
     }
 
     public function testInputConstraintDefaultValue() : void

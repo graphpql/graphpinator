@@ -15,12 +15,10 @@ final class GpsInput extends \Graphpinator\Type\InputType
             (new \Graphpinator\Argument\Argument(
                 'lat',
                 \Graphpinator\Container\Container::Float()->notNull(),
-                0.0,
             ))->addConstraint(new \Graphpinator\Constraint\FloatConstraint(-90.0, 90.0)),
             (new \Graphpinator\Argument\Argument(
                 'lng',
                 \Graphpinator\Container\Container::Float()->notNull(),
-                0.0,
             ))->addConstraint(new \Graphpinator\Constraint\FloatConstraint(-180.0, 180.0)),
         ]);
     }

@@ -59,13 +59,4 @@ final class PointTypeTest extends \PHPUnit\Framework\TestCase
         $point = new \Graphpinator\Type\Addon\PointType();
         $point->validateResolvedValue($rawValue);
     }
-
-    public function testInputDefaultValue() : void
-    {
-        $point = new \Graphpinator\Type\Addon\PointInput();
-        $args = $point->getArguments()->toArray();
-
-        self::assertSame(0.0, $args['x']->getDefaultValue()->getRawValue());
-        self::assertSame(0.0, $args['y']->getDefaultValue()->getRawValue());
-    }
 }

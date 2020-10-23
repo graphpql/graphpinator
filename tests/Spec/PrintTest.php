@@ -508,7 +508,10 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         """
         Point type - float which contains points x and y.
         """
-        scalar Point
+        type Point {
+          x: Float!
+          y: Float!
+        }
         
         """
         PostalCode type - string which contains valid postal code (ZIP code) in "NNN NN" format.
@@ -1069,7 +1072,10 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         """
         Point type - float which contains points x and y.
         """
-        scalar Point
+        type Point {
+          x: Float!
+          y: Float!
+        }
         
         """
         PostalCode type - string which contains valid postal code (ZIP code) in "NNN NN" format.
@@ -1375,6 +1381,14 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           alpha: Float!
         }
         
+        """
+        Point type - float which contains points x and y.
+        """
+        type Point {
+          x: Float!
+          y: Float!
+        }
+        
         type Query {
           fieldUnion: TestUnion
           fieldConstraint(
@@ -1682,11 +1696,6 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         The accepted format is without spaces and other special characters, but the leading plus is required.
         """
         scalar PhoneNumber
-        
-        """
-        Point type - float which contains points x and y.
-        """
-        scalar Point
         
         """
         PostalCode type - string which contains valid postal code (ZIP code) in "NNN NN" format.
@@ -1936,6 +1945,14 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           alpha: Float!
         }
         
+        """
+        Point type - float which contains points x and y.
+        """
+        type Point {
+          x: Float!
+          y: Float!
+        }
+        
         type Query {
           fieldUnion: TestUnion
           fieldConstraint(
@@ -2243,11 +2260,6 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         The accepted format is without spaces and other special characters, but the leading plus is required.
         """
         scalar PhoneNumber
-        
-        """
-        Point type - float which contains points x and y.
-        """
-        scalar Point
         
         """
         PostalCode type - string which contains valid postal code (ZIP code) in "NNN NN" format.

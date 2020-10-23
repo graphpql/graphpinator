@@ -215,7 +215,7 @@ final class AddonTypeTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldAddonType { point } }',
+                    'query' => 'query queryName { fieldAddonType { point { x y } } }',
                 ]),
                 \Graphpinator\Json::fromObject((object) [
                     'data' => [

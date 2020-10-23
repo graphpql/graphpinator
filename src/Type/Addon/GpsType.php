@@ -33,12 +33,6 @@ final class GpsType extends \Graphpinator\Type\Type
     {
         return $rawValue instanceof \stdClass
             && \property_exists($rawValue, 'lng')
-            && \property_exists($rawValue, 'lat')
-            && \is_float($rawValue->lng)
-            && \is_float($rawValue->lat)
-            && $rawValue->lng >= -180.0
-            && $rawValue->lng <= 180.0
-            && $rawValue->lat >= -90.0
-            && $rawValue->lat <= 90.0;
+            && \property_exists($rawValue, 'lat');
     }
 }

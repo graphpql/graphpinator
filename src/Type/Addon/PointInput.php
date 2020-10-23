@@ -15,12 +15,10 @@ final class PointInput extends \Graphpinator\Type\InputType
             new \Graphpinator\Argument\Argument(
                 'x',
                 \Graphpinator\Container\Container::Float()->notNull(),
-                0.0,
             ),
             new \Graphpinator\Argument\Argument(
                 'y',
                 \Graphpinator\Container\Container::Float()->notNull(),
-                0.0,
             ),
         ]);
     }

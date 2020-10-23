@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Type\Addon;
 
-final class PointType extends \Graphpinator\Type\Scalar\ScalarType
+final class PointType extends \Graphpinator\Type\Type
 {
     protected const NAME = 'Point';
     protected const DESCRIPTION = 'Point type - float which contains points x and y.';
