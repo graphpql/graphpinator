@@ -7,7 +7,7 @@ namespace Graphpinator\Type\Addon;
 final class GpsType extends \Graphpinator\Type\Type
 {
     protected const NAME = 'Gps';
-    protected const DESCRIPTION = 'Gps type - float longitude and latitude.';
+    protected const DESCRIPTION = 'Gps type - longitude and latitude.';
 
     protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
     {
