@@ -457,19 +457,19 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         Hsl type - type representing the HSL color model.
         """
         type Hsl {
-          hue: Int!
-          saturation: Int!
-          lightness: Int!
+          hue: Int! @intConstraint(min: 0, max: 360)
+          saturation: Int! @intConstraint(min: 0, max: 100)
+          lightness: Int! @intConstraint(min: 0, max: 100)
         }
         
         """
         Hsla type - type representing the HSL color model with added alpha (transparency).
         """
         type Hsla {
-          hue: Int!
-          saturation: Int!
-          lightness: Int!
-          alpha: Float!
+          hue: Int! @intConstraint(min: 0, max: 360)
+          saturation: Int! @intConstraint(min: 0, max: 100)
+          lightness: Int! @intConstraint(min: 0, max: 100)
+          alpha: Float! @floatConstraint(min: 0, max: 1)
         }
         
         """
@@ -506,7 +506,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         scalar PhoneNumber
         
         """
-        Point type - float which contains points x and y.
+        Point type - float which contains x and y coordinates.
         """
         type Point {
           x: Float!
@@ -553,19 +553,19 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         Rgb type - type representing the RGB color model.
         """
         type Rgb {
-          red: Int!
-          green: Int!
-          blue: Int!
+          red: Int! @intConstraint(min: 0, max: 255)
+          green: Int! @intConstraint(min: 0, max: 255)
+          blue: Int! @intConstraint(min: 0, max: 255)
         }
         
         """
         Rgba type - type representing the RGB color model with added alpha (transparency).
         """
         type Rgba {
-          red: Int!
-          green: Int!
-          blue: Int!
-          alpha: Float!
+          red: Int! @intConstraint(min: 0, max: 255)
+          green: Int! @intConstraint(min: 0, max: 255)
+          blue: Int! @intConstraint(min: 0, max: 255)
+          alpha: Float! @floatConstraint(min: 0, max: 1)
         }
         
         enum SimpleEnum {
@@ -1021,19 +1021,19 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         Hsl type - type representing the HSL color model.
         """
         type Hsl {
-          hue: Int!
-          saturation: Int!
-          lightness: Int!
+          hue: Int! @intConstraint(min: 0, max: 360)
+          saturation: Int! @intConstraint(min: 0, max: 100)
+          lightness: Int! @intConstraint(min: 0, max: 100)
         }
         
         """
         Hsla type - type representing the HSL color model with added alpha (transparency).
         """
         type Hsla {
-          hue: Int!
-          saturation: Int!
-          lightness: Int!
-          alpha: Float!
+          hue: Int! @intConstraint(min: 0, max: 360)
+          saturation: Int! @intConstraint(min: 0, max: 100)
+          lightness: Int! @intConstraint(min: 0, max: 100)
+          alpha: Float! @floatConstraint(min: 0, max: 1)
         }
         
         """
@@ -1070,7 +1070,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         scalar PhoneNumber
         
         """
-        Point type - float which contains points x and y.
+        Point type - float which contains x and y coordinates.
         """
         type Point {
           x: Float!
@@ -1117,19 +1117,19 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         Rgb type - type representing the RGB color model.
         """
         type Rgb {
-          red: Int!
-          green: Int!
-          blue: Int!
+          red: Int! @intConstraint(min: 0, max: 255)
+          green: Int! @intConstraint(min: 0, max: 255)
+          blue: Int! @intConstraint(min: 0, max: 255)
         }
         
         """
         Rgba type - type representing the RGB color model with added alpha (transparency).
         """
         type Rgba {
-          red: Int!
-          green: Int!
-          blue: Int!
-          alpha: Float!
+          red: Int! @intConstraint(min: 0, max: 255)
+          green: Int! @intConstraint(min: 0, max: 255)
+          blue: Int! @intConstraint(min: 0, max: 255)
+          alpha: Float! @floatConstraint(min: 0, max: 1)
         }
         
         enum SimpleEnum {
@@ -1366,23 +1366,23 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         Hsl type - type representing the HSL color model.
         """
         type Hsl {
-          hue: Int!
-          saturation: Int!
-          lightness: Int!
+          hue: Int! @intConstraint(min: 0, max: 360)
+          saturation: Int! @intConstraint(min: 0, max: 100)
+          lightness: Int! @intConstraint(min: 0, max: 100)
         }
         
         """
         Hsla type - type representing the HSL color model with added alpha (transparency).
         """
         type Hsla {
-          hue: Int!
-          saturation: Int!
-          lightness: Int!
-          alpha: Float!
+          hue: Int! @intConstraint(min: 0, max: 360)
+          saturation: Int! @intConstraint(min: 0, max: 100)
+          lightness: Int! @intConstraint(min: 0, max: 100)
+          alpha: Float! @floatConstraint(min: 0, max: 1)
         }
         
         """
-        Point type - float which contains points x and y.
+        Point type - float which contains x and y coordinates.
         """
         type Point {
           x: Float!
@@ -1424,19 +1424,19 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         Rgb type - type representing the RGB color model.
         """
         type Rgb {
-          red: Int!
-          green: Int!
-          blue: Int!
+          red: Int! @intConstraint(min: 0, max: 255)
+          green: Int! @intConstraint(min: 0, max: 255)
+          blue: Int! @intConstraint(min: 0, max: 255)
         }
         
         """
         Rgba type - type representing the RGB color model with added alpha (transparency).
         """
         type Rgba {
-          red: Int!
-          green: Int!
-          blue: Int!
-          alpha: Float!
+          red: Int! @intConstraint(min: 0, max: 255)
+          green: Int! @intConstraint(min: 0, max: 255)
+          blue: Int! @intConstraint(min: 0, max: 255)
+          alpha: Float! @floatConstraint(min: 0, max: 1)
         }
         
         type UploadType {
@@ -1930,23 +1930,23 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         Hsl type - type representing the HSL color model.
         """
         type Hsl {
-          hue: Int!
-          saturation: Int!
-          lightness: Int!
+          hue: Int! @intConstraint(min: 0, max: 360)
+          saturation: Int! @intConstraint(min: 0, max: 100)
+          lightness: Int! @intConstraint(min: 0, max: 100)
         }
         
         """
         Hsla type - type representing the HSL color model with added alpha (transparency).
         """
         type Hsla {
-          hue: Int!
-          saturation: Int!
-          lightness: Int!
-          alpha: Float!
+          hue: Int! @intConstraint(min: 0, max: 360)
+          saturation: Int! @intConstraint(min: 0, max: 100)
+          lightness: Int! @intConstraint(min: 0, max: 100)
+          alpha: Float! @floatConstraint(min: 0, max: 1)
         }
         
         """
-        Point type - float which contains points x and y.
+        Point type - float which contains x and y coordinates.
         """
         type Point {
           x: Float!
@@ -1988,19 +1988,19 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         Rgb type - type representing the RGB color model.
         """
         type Rgb {
-          red: Int!
-          green: Int!
-          blue: Int!
+          red: Int! @intConstraint(min: 0, max: 255)
+          green: Int! @intConstraint(min: 0, max: 255)
+          blue: Int! @intConstraint(min: 0, max: 255)
         }
         
         """
         Rgba type - type representing the RGB color model with added alpha (transparency).
         """
         type Rgba {
-          red: Int!
-          green: Int!
-          blue: Int!
-          alpha: Float!
+          red: Int! @intConstraint(min: 0, max: 255)
+          green: Int! @intConstraint(min: 0, max: 255)
+          blue: Int! @intConstraint(min: 0, max: 255)
+          alpha: Float! @floatConstraint(min: 0, max: 1)
         }
         
         type UploadType {

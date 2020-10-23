@@ -15,14 +15,14 @@ final class GpsType extends \Graphpinator\Type\Type
             (new \Graphpinator\Field\ResolvableField(
                 'lat',
                 \Graphpinator\Container\Container::Float()->notNull(),
-                static function(\stdClass $gps) {
+                static function(\stdClass $gps) : float {
                     return $gps->lat;
                 },
             ))->addConstraint(new \Graphpinator\Constraint\FloatConstraint(-90.0, 90.0)),
             (new \Graphpinator\Field\ResolvableField(
                 'lng',
                 \Graphpinator\Container\Container::Float()->notNull(),
-                static function(\stdClass $gps) {
+                static function(\stdClass $gps) : float {
                     return $gps->lng;
                 },
             ))->addConstraint(new \Graphpinator\Constraint\FloatConstraint(-180.0, 180.0)),
@@ -33,6 +33,8 @@ final class GpsType extends \Graphpinator\Type\Type
     {
         return $rawValue instanceof \stdClass
             && \property_exists($rawValue, 'lng')
-            && \property_exists($rawValue, 'lat');
+            && \property_exists($rawValue, 'lat')
+            && \is_float($rawValue->lng)
+            && \is_float($rawValue->lat);
     }
 }
