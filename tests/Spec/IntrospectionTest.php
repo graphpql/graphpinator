@@ -109,6 +109,8 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                                 ['name' => 'Url'],
                                 ['name' => 'Void'],
                                 ['name' => 'Upload'],
+                                ['name' => 'Gps'],
+                                ['name' => 'Point'],
                                 ['name' => 'ListConstraintInput'],
                                 ['name' => 'ID'],
                                 ['name' => 'Int'],

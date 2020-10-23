@@ -12,27 +12,27 @@ class HslType extends \Graphpinator\Type\Type
     protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
     {
         return new \Graphpinator\Field\ResolvableFieldSet([
-            new \Graphpinator\Field\ResolvableField(
+            (new \Graphpinator\Field\ResolvableField(
                 'hue',
                 \Graphpinator\Container\Container::Int()->notNull(),
-                static function (\stdClass $hsl) {
+                static function (\stdClass $hsl) : int {
                     return $hsl->hue;
                 },
-            ),
-            new \Graphpinator\Field\ResolvableField(
+            ))->addConstraint(new \Graphpinator\Constraint\IntConstraint(0, 360)),
+            (new \Graphpinator\Field\ResolvableField(
                 'saturation',
                 \Graphpinator\Container\Container::Int()->notNull(),
-                static function (\stdClass $hsl) {
+                static function (\stdClass $hsl) : int {
                     return $hsl->saturation;
                 },
-            ),
-            new \Graphpinator\Field\ResolvableField(
+            ))->addConstraint(new \Graphpinator\Constraint\IntConstraint(0, 100)),
+            (new \Graphpinator\Field\ResolvableField(
                 'lightness',
                 \Graphpinator\Container\Container::Int()->notNull(),
-                static function (\stdClass $hsl) {
+                static function (\stdClass $hsl) : int {
                     return $hsl->lightness;
                 },
-            ),
+            ))->addConstraint(new \Graphpinator\Constraint\IntConstraint(0, 100)),
         ]);
     }
 
@@ -44,12 +44,6 @@ class HslType extends \Graphpinator\Type\Type
             && \property_exists($rawValue, 'lightness')
             && \is_int($rawValue->hue)
             && \is_int($rawValue->saturation)
-            && \is_int($rawValue->lightness)
-            && $rawValue->hue <= 360
-            && $rawValue->hue >= 0
-            && $rawValue->saturation <= 100
-            && $rawValue->saturation >= 0
-            && $rawValue->lightness <= 100
-            && $rawValue->lightness >= 0;
+            && \is_int($rawValue->lightness);
     }
 }

@@ -201,6 +201,30 @@ final class AddonTypeTest extends \PHPUnit\Framework\TestCase
                     ],
                 ]),
             ],
+            [
+                \Graphpinator\Json::fromObject((object) [
+                    'query' => 'query queryName { fieldAddonType { gps { lat lng } } }',
+                ]),
+                \Graphpinator\Json::fromObject((object) [
+                    'data' => [
+                        'fieldAddonType' => [
+                            'gps' => ['lat' => 45.0, 'lng' => 90.0],
+                        ],
+                    ],
+                ]),
+            ],
+            [
+                \Graphpinator\Json::fromObject((object) [
+                    'query' => 'query queryName { fieldAddonType { point { x y } } }',
+                ]),
+                \Graphpinator\Json::fromObject((object) [
+                    'data' => [
+                        'fieldAddonType' => [
+                            'point' => ['x' => 420.42, 'y' => 420.42],
+                        ],
+                    ],
+                ]),
+            ],
         ];
     }
 

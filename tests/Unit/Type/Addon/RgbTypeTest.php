@@ -19,9 +19,6 @@ final class RgbTypeTest extends \PHPUnit\Framework\TestCase
     public function invalidDataProvider() : array
     {
         return [
-            [(object) ['red' => 420, 'green' => 20, 'blue' => 80]],
-            [(object) ['red' => 150, 'green' => 420, 'blue' => 80]],
-            [(object) ['red' => 150, 'green' => 20, 'blue' => 420]],
             [(object) ['green' => 20, 'blue' => 80]],
             [(object) ['red' => 150, 'blue' => 80]],
             [(object) ['red' => 150, 'green' => 20]],
@@ -67,16 +64,6 @@ final class RgbTypeTest extends \PHPUnit\Framework\TestCase
 
         $rgb = new \Graphpinator\Type\Addon\RgbType();
         $rgb->validateResolvedValue($rawValue);
-    }
-
-    public function testInputDefaultValue() : void
-    {
-        $rgb = new \Graphpinator\Type\Addon\RgbInput();
-        $args = $rgb->getArguments()->toArray();
-
-        self::assertSame(0, $args['red']->getDefaultValue()->getRawValue());
-        self::assertSame(0, $args['green']->getDefaultValue()->getRawValue());
-        self::assertSame(0, $args['blue']->getDefaultValue()->getRawValue());
     }
 
     public function testInputConstraintDefaultValue() : void

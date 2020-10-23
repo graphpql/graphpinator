@@ -13,13 +13,13 @@ final class RgbaType extends \Graphpinator\Type\Addon\RgbType
     {
         return parent::getFieldDefinition()->merge(
             new \Graphpinator\Field\ResolvableFieldSet([
-                new \Graphpinator\Field\ResolvableField(
+                (new \Graphpinator\Field\ResolvableField(
                     'alpha',
                     \Graphpinator\Container\Container::Float()->notNull(),
-                    static function (\stdClass $rgba) {
+                    static function (\stdClass $rgba) : float {
                         return $rgba->alpha;
                     },
-                ),
+                ))->addConstraint(new \Graphpinator\Constraint\FloatConstraint(0.0, 1.0)),
             ]),
         );
     }
@@ -28,8 +28,6 @@ final class RgbaType extends \Graphpinator\Type\Addon\RgbType
     {
         return parent::validateNonNullValue($rawValue)
             && \property_exists($rawValue, 'alpha')
-            && \is_float($rawValue->alpha)
-            && $rawValue->alpha <= 1
-            && $rawValue->alpha >= 0;
+            && \is_float($rawValue->alpha);
     }
 }
