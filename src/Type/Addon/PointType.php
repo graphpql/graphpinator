@@ -7,7 +7,7 @@ namespace Graphpinator\Type\Addon;
 final class PointType extends \Graphpinator\Type\Type
 {
     protected const NAME = 'Point';
-    protected const DESCRIPTION = 'Point type - float which contains x and y coordinates.';
+    protected const DESCRIPTION = 'Point type - x and y coordinates.';
 
     protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
     {
