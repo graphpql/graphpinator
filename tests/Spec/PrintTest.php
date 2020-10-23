@@ -446,7 +446,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         }
         
         """
-        Gps type - float longitude and latitude.
+        Gps type - latitude and longitude.
         """
         type Gps {
           lat: Float! @floatConstraint(min: -90, max: 90)
@@ -506,7 +506,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         scalar PhoneNumber
         
         """
-        Point type - float which contains x and y coordinates.
+        Point type - x and y coordinates.
         """
         type Point {
           x: Float!
@@ -1010,7 +1010,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         }
         
         """
-        Gps type - float longitude and latitude.
+        Gps type - latitude and longitude.
         """
         type Gps {
           lat: Float! @floatConstraint(min: -90, max: 90)
@@ -1070,7 +1070,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         scalar PhoneNumber
         
         """
-        Point type - float which contains x and y coordinates.
+        Point type - x and y coordinates.
         """
         type Point {
           x: Float!
@@ -1355,7 +1355,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         }
         
         """
-        Gps type - float longitude and latitude.
+        Gps type - latitude and longitude.
         """
         type Gps {
           lat: Float! @floatConstraint(min: -90, max: 90)
@@ -1382,7 +1382,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         }
         
         """
-        Point type - float which contains x and y coordinates.
+        Point type - x and y coordinates.
         """
         type Point {
           x: Float!
@@ -1919,7 +1919,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         }
         
         """
-        Gps type - float longitude and latitude.
+        Gps type - latitude and longitude.
         """
         type Gps {
           lat: Float! @floatConstraint(min: -90, max: 90)
@@ -1946,7 +1946,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         }
         
         """
-        Point type - float which contains x and y coordinates.
+        Point type - x and y coordinates.
         """
         type Point {
           x: Float!

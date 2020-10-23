@@ -7,7 +7,7 @@ namespace Graphpinator\Type\Addon;
 final class GpsType extends \Graphpinator\Type\Type
 {
     protected const NAME = 'Gps';
-    protected const DESCRIPTION = 'Gps type - longitude and latitude.';
+    protected const DESCRIPTION = 'Gps type - latitude and longitude.';
 
     protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
     {
@@ -32,9 +32,9 @@ final class GpsType extends \Graphpinator\Type\Type
     protected function validateNonNullValue($rawValue) : bool
     {
         return $rawValue instanceof \stdClass
-            && \property_exists($rawValue, 'lng')
             && \property_exists($rawValue, 'lat')
-            && \is_float($rawValue->lng)
-            && \is_float($rawValue->lat);
+            && \property_exists($rawValue, 'lng')
+            && \is_float($rawValue->lat)
+            && \is_float($rawValue->lng);
     }
 }
