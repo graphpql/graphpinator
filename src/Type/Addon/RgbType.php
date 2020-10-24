@@ -12,27 +12,27 @@ class RgbType extends \Graphpinator\Type\Type
     protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
     {
         return new \Graphpinator\Field\ResolvableFieldSet([
-            new \Graphpinator\Field\ResolvableField(
+            (new \Graphpinator\Field\ResolvableField(
                 'red',
                 \Graphpinator\Container\Container::Int()->notNull(),
-                static function (\stdClass $rgb) {
+                static function (\stdClass $rgb) : int {
                     return $rgb->red;
                 },
-            ),
-            new \Graphpinator\Field\ResolvableField(
+            ))->addConstraint(new \Graphpinator\Constraint\IntConstraint(0, 255)),
+            (new \Graphpinator\Field\ResolvableField(
                 'green',
                 \Graphpinator\Container\Container::Int()->notNull(),
-                static function (\stdClass $rgb) {
+                static function (\stdClass $rgb) : int {
                     return $rgb->green;
                 },
-            ),
-            new \Graphpinator\Field\ResolvableField(
+            ))->addConstraint(new \Graphpinator\Constraint\IntConstraint(0, 255)),
+            (new \Graphpinator\Field\ResolvableField(
                 'blue',
                 \Graphpinator\Container\Container::Int()->notNull(),
-                static function (\stdClass $rgb) {
+                static function (\stdClass $rgb) : int {
                     return $rgb->blue;
                 },
-            ),
+            ))->addConstraint(new \Graphpinator\Constraint\IntConstraint(0, 255)),
         ]);
     }
 
@@ -44,12 +44,6 @@ class RgbType extends \Graphpinator\Type\Type
             && \property_exists($rawValue, 'blue')
             && \is_int($rawValue->red)
             && \is_int($rawValue->green)
-            && \is_int($rawValue->blue)
-            && $rawValue->red <= 255
-            && $rawValue->red >= 0
-            && $rawValue->green <= 255
-            && $rawValue->green >= 0
-            && $rawValue->blue <= 255
-            && $rawValue->blue >= 0;
+            && \is_int($rawValue->blue);
     }
 }

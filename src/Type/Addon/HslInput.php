@@ -15,17 +15,14 @@ class HslInput extends \Graphpinator\Type\InputType
             (new \Graphpinator\Argument\Argument(
                 'hue',
                 \Graphpinator\Container\Container::Int()->notNull(),
-                0,
             ))->addConstraint(new \Graphpinator\Constraint\IntConstraint(0, 360)),
             (new \Graphpinator\Argument\Argument(
                 'saturation',
                 \Graphpinator\Container\Container::Int()->notNull(),
-                0,
             ))->addConstraint(new \Graphpinator\Constraint\IntConstraint(0, 100)),
             (new \Graphpinator\Argument\Argument(
                 'lightness',
                 \Graphpinator\Container\Container::Int()->notNull(),
-                0,
             ))->addConstraint(new \Graphpinator\Constraint\IntConstraint(0, 100)),
         ]);
     }

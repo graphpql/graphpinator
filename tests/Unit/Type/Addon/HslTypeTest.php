@@ -19,10 +19,6 @@ final class HslTypeTest extends \PHPUnit\Framework\TestCase
     public function invalidDataProvider() : array
     {
         return [
-            [(object) ['hue' => 420, 'saturation' => 20, 'lightness' => 80]],
-            [(object) ['hue' => 150, 'saturation' => 420, 'lightness' => 80]],
-            [(object) ['hue' => 150, 'saturation' => 20, 'lightness' => 420]],
-            [(object) ['saturation' => 20, 'lightness' => 80]],
             [(object) ['hue' => 150, 'lightness' => 80]],
             [(object) ['hue' => 150, 'saturation' => 20]],
             [(object) ['hue' => null, 'saturation' => 20, 'lightness' => 80]],
@@ -67,16 +63,6 @@ final class HslTypeTest extends \PHPUnit\Framework\TestCase
 
         $hsl = new \Graphpinator\Type\Addon\HslType();
         $hsl->validateResolvedValue($rawValue);
-    }
-
-    public function testInputDefaultValue() : void
-    {
-        $hsl = new \Graphpinator\Type\Addon\HslInput();
-        $args = $hsl->getArguments()->toArray();
-
-        self::assertSame(0, $args['hue']->getDefaultValue()->getRawValue());
-        self::assertSame(0, $args['saturation']->getDefaultValue()->getRawValue());
-        self::assertSame(0, $args['lightness']->getDefaultValue()->getRawValue());
     }
 
     public function testInputConstraintDefaultValue() : void

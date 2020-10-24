@@ -12,7 +12,6 @@ final class Json implements \Countable, \IteratorAggregate, \ArrayAccess, \Seria
 
     private ?string $string;
     private ?\stdClass $data;
-    private bool $valid;
 
     private function __construct(?string $json, ?\stdClass $data)
     {
@@ -42,14 +41,6 @@ final class Json implements \Countable, \IteratorAggregate, \ArrayAccess, \Seria
         $this->loadObject();
 
         return $this->data;
-    }
-
-    public function isValid() : bool
-    {
-        $this->loadString();
-        $this->loadObject();
-
-        return $this->valid;
     }
 
     public function count() : int
@@ -111,12 +102,7 @@ final class Json implements \Countable, \IteratorAggregate, \ArrayAccess, \Seria
             return;
         }
 
-        try {
-            $this->string = \json_encode($this->data, self::FLAGS);
-            $this->valid = true;
-        } catch (\JsonException $exception) {
-            $this->valid = false;
-        }
+        $this->string = \json_encode($this->data, self::FLAGS);
     }
 
     private function loadObject() : void
@@ -125,12 +111,7 @@ final class Json implements \Countable, \IteratorAggregate, \ArrayAccess, \Seria
             return;
         }
 
-        try {
-            $this->data = \json_decode($this->string, false, 512, self::FLAGS);
-            $this->valid = true;
-        } catch (\JsonException $exception) {
-            $this->valid = false;
-        }
+        $this->data = \json_decode($this->string, false, 512, self::FLAGS);
     }
 
     public function __toString() : string

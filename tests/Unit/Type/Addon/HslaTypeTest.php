@@ -19,10 +19,6 @@ final class HslaTypeTest extends \PHPUnit\Framework\TestCase
     public function invalidDataProvider() : array
     {
         return [
-            [(object) ['hue' => 420, 'saturation' => 50, 'lightness' => 50, 'alpha' => 0.5]],
-            [(object) ['hue' => 180, 'saturation' => 420, 'lightness' => 50, 'alpha' => 0.5]],
-            [(object) ['hue' => 180, 'saturation' => 50, 'lightness' => 420, 'alpha' => 0.5]],
-            [(object) ['hue' => 180, 'saturation' => 50, 'lightness' => 50, 'alpha' => 42]],
             [(object) ['saturation' => 50, 'lightness' => 50, 'alpha' => 0.5]],
             [(object) ['hue' => 180, 'lightness' => 50, 'alpha' => 0.5]],
             [(object) ['hue' => 180, 'saturation' => 50, 'alpha' => 0.5]],
@@ -72,17 +68,6 @@ final class HslaTypeTest extends \PHPUnit\Framework\TestCase
 
         $hsla = new \Graphpinator\Type\Addon\HslaType();
         $hsla->validateResolvedValue($rawValue);
-    }
-
-    public function testInputDefaultValue() : void
-    {
-        $hsla = new \Graphpinator\Type\Addon\HslaInput();
-        $args = $hsla->getArguments()->toArray();
-
-        self::assertSame(0, $args['hue']->getDefaultValue()->getRawValue());
-        self::assertSame(0, $args['saturation']->getDefaultValue()->getRawValue());
-        self::assertSame(0, $args['lightness']->getDefaultValue()->getRawValue());
-        self::assertSame(0.0, $args['alpha']->getDefaultValue()->getRawValue());
     }
 
     public function testInputConstraintDefaultValue() : void

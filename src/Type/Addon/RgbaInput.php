@@ -16,8 +16,7 @@ final class RgbaInput extends \Graphpinator\Type\Addon\RgbInput
                 (new \Graphpinator\Argument\Argument(
                     'alpha',
                     \Graphpinator\Container\Container::Float()->notNull(),
-                    0.0,
-                ))->addConstraint(new \Graphpinator\Constraint\FloatConstraint(0, 1)),
+                ))->addConstraint(new \Graphpinator\Constraint\FloatConstraint(0.0, 1.0)),
             ]),
         );
     }

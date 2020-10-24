@@ -192,6 +192,18 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           void(
             void: Void = null
           ): Void
+          gps(
+            gps: GpsInput = {
+              lat: 45,
+              lng: 90
+            }
+          ): Gps
+          point(
+            point: PointInput = {
+              x: 420.42,
+              y: 420.42
+            }
+          ): Point
         }
         
         enum ArrayEnum {
@@ -434,22 +446,30 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         }
         
         """
+        Gps type - latitude and longitude.
+        """
+        type Gps {
+          lat: Float! @floatConstraint(min: -90, max: 90)
+          lng: Float! @floatConstraint(min: -180, max: 180)
+        }
+        
+        """
         Hsl type - type representing the HSL color model.
         """
         type Hsl {
-          hue: Int!
-          saturation: Int!
-          lightness: Int!
+          hue: Int! @intConstraint(min: 0, max: 360)
+          saturation: Int! @intConstraint(min: 0, max: 100)
+          lightness: Int! @intConstraint(min: 0, max: 100)
         }
         
         """
         Hsla type - type representing the HSL color model with added alpha (transparency).
         """
         type Hsla {
-          hue: Int!
-          saturation: Int!
-          lightness: Int!
-          alpha: Float!
+          hue: Int! @intConstraint(min: 0, max: 360)
+          saturation: Int! @intConstraint(min: 0, max: 100)
+          lightness: Int! @intConstraint(min: 0, max: 100)
+          alpha: Float! @floatConstraint(min: 0, max: 1)
         }
         
         """
@@ -510,6 +530,14 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         scalar PhoneNumber
         
         """
+        Point type - x and y coordinates.
+        """
+        type Point {
+          x: Float!
+          y: Float!
+        }
+        
+        """
         PostalCode type - string which contains valid postal code (ZIP code) in "NNN NN" format.
         """
         scalar PostalCode
@@ -550,19 +578,19 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         Rgb type - type representing the RGB color model.
         """
         type Rgb {
-          red: Int!
-          green: Int!
-          blue: Int!
+          red: Int! @intConstraint(min: 0, max: 255)
+          green: Int! @intConstraint(min: 0, max: 255)
+          blue: Int! @intConstraint(min: 0, max: 255)
         }
         
         """
         Rgba type - type representing the RGB color model with added alpha (transparency).
         """
         type Rgba {
-          red: Int!
-          green: Int!
-          blue: Int!
-          alpha: Float!
+          red: Int! @intConstraint(min: 0, max: 255)
+          green: Int! @intConstraint(min: 0, max: 255)
+          blue: Int! @intConstraint(min: 0, max: 255)
+          alpha: Float! @floatConstraint(min: 0, max: 1)
         }
         
         enum SimpleEnum {
@@ -753,6 +781,18 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           void(
             void: Void = null
           ): Void
+          gps(
+            gps: GpsInput = {
+              lat: 45,
+              lng: 90
+            }
+          ): Gps
+          point(
+            point: PointInput = {
+              x: 420.42,
+              y: 420.42
+            }
+          ): Point
         }
         
         enum ArrayEnum {
@@ -995,22 +1035,30 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         }
         
         """
+        Gps type - latitude and longitude.
+        """
+        type Gps {
+          lat: Float! @floatConstraint(min: -90, max: 90)
+          lng: Float! @floatConstraint(min: -180, max: 180)
+        }
+        
+        """
         Hsl type - type representing the HSL color model.
         """
         type Hsl {
-          hue: Int!
-          saturation: Int!
-          lightness: Int!
+          hue: Int! @intConstraint(min: 0, max: 360)
+          saturation: Int! @intConstraint(min: 0, max: 100)
+          lightness: Int! @intConstraint(min: 0, max: 100)
         }
         
         """
         Hsla type - type representing the HSL color model with added alpha (transparency).
         """
         type Hsla {
-          hue: Int!
-          saturation: Int!
-          lightness: Int!
-          alpha: Float!
+          hue: Int! @intConstraint(min: 0, max: 360)
+          saturation: Int! @intConstraint(min: 0, max: 100)
+          lightness: Int! @intConstraint(min: 0, max: 100)
+          alpha: Float! @floatConstraint(min: 0, max: 1)
         }
         
         """
@@ -1071,6 +1119,14 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         scalar PhoneNumber
         
         """
+        Point type - x and y coordinates.
+        """
+        type Point {
+          x: Float!
+          y: Float!
+        }
+        
+        """
         PostalCode type - string which contains valid postal code (ZIP code) in "NNN NN" format.
         """
         scalar PostalCode
@@ -1111,19 +1167,19 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         Rgb type - type representing the RGB color model.
         """
         type Rgb {
-          red: Int!
-          green: Int!
-          blue: Int!
+          red: Int! @intConstraint(min: 0, max: 255)
+          green: Int! @intConstraint(min: 0, max: 255)
+          blue: Int! @intConstraint(min: 0, max: 255)
         }
         
         """
         Rgba type - type representing the RGB color model with added alpha (transparency).
         """
         type Rgba {
-          red: Int!
-          green: Int!
-          blue: Int!
-          alpha: Float!
+          red: Int! @intConstraint(min: 0, max: 255)
+          green: Int! @intConstraint(min: 0, max: 255)
+          blue: Int! @intConstraint(min: 0, max: 255)
+          alpha: Float! @floatConstraint(min: 0, max: 1)
         }
         
         enum SimpleEnum {
@@ -1321,6 +1377,18 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           void(
             void: Void = null
           ): Void
+          gps(
+            gps: GpsInput = {
+              lat: 45,
+              lng: 90
+            }
+          ): Gps
+          point(
+            point: PointInput = {
+              x: 420.42,
+              y: 420.42
+            }
+          ): Point
         }
         
         type ConstraintType @objectConstraint(atLeastOne: ["intMinField", "intMaxField", "intOneOfField", "floatMinField", "floatMaxField", "floatOneOfField", "stringMinField", "stringMaxField", "listMinField", "listMaxField"]) {
@@ -1337,22 +1405,38 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         }
         
         """
+        Gps type - latitude and longitude.
+        """
+        type Gps {
+          lat: Float! @floatConstraint(min: -90, max: 90)
+          lng: Float! @floatConstraint(min: -180, max: 180)
+        }
+        
+        """
         Hsl type - type representing the HSL color model.
         """
         type Hsl {
-          hue: Int!
-          saturation: Int!
-          lightness: Int!
+          hue: Int! @intConstraint(min: 0, max: 360)
+          saturation: Int! @intConstraint(min: 0, max: 100)
+          lightness: Int! @intConstraint(min: 0, max: 100)
         }
         
         """
         Hsla type - type representing the HSL color model with added alpha (transparency).
         """
         type Hsla {
-          hue: Int!
-          saturation: Int!
-          lightness: Int!
-          alpha: Float!
+          hue: Int! @intConstraint(min: 0, max: 360)
+          saturation: Int! @intConstraint(min: 0, max: 100)
+          lightness: Int! @intConstraint(min: 0, max: 100)
+          alpha: Float! @floatConstraint(min: 0, max: 1)
+        }
+        
+        """
+        Point type - x and y coordinates.
+        """
+        type Point {
+          x: Float!
+          y: Float!
         }
         
         type NullFieldResolution {
@@ -1415,19 +1499,19 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         Rgb type - type representing the RGB color model.
         """
         type Rgb {
-          red: Int!
-          green: Int!
-          blue: Int!
+          red: Int! @intConstraint(min: 0, max: 255)
+          green: Int! @intConstraint(min: 0, max: 255)
+          blue: Int! @intConstraint(min: 0, max: 255)
         }
         
         """
         Rgba type - type representing the RGB color model with added alpha (transparency).
         """
         type Rgba {
-          red: Int!
-          green: Int!
-          blue: Int!
-          alpha: Float!
+          red: Int! @intConstraint(min: 0, max: 255)
+          green: Int! @intConstraint(min: 0, max: 255)
+          blue: Int! @intConstraint(min: 0, max: 255)
+          alpha: Float! @floatConstraint(min: 0, max: 1)
         }
         
         type UploadType {
@@ -1882,6 +1966,18 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           void(
             void: Void = null
           ): Void
+          gps(
+            gps: GpsInput = {
+              lat: 45,
+              lng: 90
+            }
+          ): Gps
+          point(
+            point: PointInput = {
+              x: 420.42,
+              y: 420.42
+            }
+          ): Point
         }
         
         type ConstraintType @objectConstraint(atLeastOne: ["intMinField", "intMaxField", "intOneOfField", "floatMinField", "floatMaxField", "floatOneOfField", "stringMinField", "stringMaxField", "listMinField", "listMaxField"]) {
@@ -1898,22 +1994,38 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         }
         
         """
+        Gps type - latitude and longitude.
+        """
+        type Gps {
+          lat: Float! @floatConstraint(min: -90, max: 90)
+          lng: Float! @floatConstraint(min: -180, max: 180)
+        }
+        
+        """
         Hsl type - type representing the HSL color model.
         """
         type Hsl {
-          hue: Int!
-          saturation: Int!
-          lightness: Int!
+          hue: Int! @intConstraint(min: 0, max: 360)
+          saturation: Int! @intConstraint(min: 0, max: 100)
+          lightness: Int! @intConstraint(min: 0, max: 100)
         }
         
         """
         Hsla type - type representing the HSL color model with added alpha (transparency).
         """
         type Hsla {
-          hue: Int!
-          saturation: Int!
-          lightness: Int!
-          alpha: Float!
+          hue: Int! @intConstraint(min: 0, max: 360)
+          saturation: Int! @intConstraint(min: 0, max: 100)
+          lightness: Int! @intConstraint(min: 0, max: 100)
+          alpha: Float! @floatConstraint(min: 0, max: 1)
+        }
+        
+        """
+        Point type - x and y coordinates.
+        """
+        type Point {
+          x: Float!
+          y: Float!
         }
         
         type NullFieldResolution {
@@ -1976,19 +2088,19 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         Rgb type - type representing the RGB color model.
         """
         type Rgb {
-          red: Int!
-          green: Int!
-          blue: Int!
+          red: Int! @intConstraint(min: 0, max: 255)
+          green: Int! @intConstraint(min: 0, max: 255)
+          blue: Int! @intConstraint(min: 0, max: 255)
         }
         
         """
         Rgba type - type representing the RGB color model with added alpha (transparency).
         """
         type Rgba {
-          red: Int!
-          green: Int!
-          blue: Int!
-          alpha: Float!
+          red: Int! @intConstraint(min: 0, max: 255)
+          green: Int! @intConstraint(min: 0, max: 255)
+          blue: Int! @intConstraint(min: 0, max: 255)
+          alpha: Float! @floatConstraint(min: 0, max: 1)
         }
         
         type UploadType {

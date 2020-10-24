@@ -19,10 +19,6 @@ final class RgbaTypeTest extends \PHPUnit\Framework\TestCase
     public function invalidDataProvider() : array
     {
         return [
-            [(object) ['red' => 420, 'green' => 50, 'blue' => 50, 'alpha' => 0.5]],
-            [(object) ['red' => 180, 'green' => 420, 'blue' => 50, 'alpha' => 0.5]],
-            [(object) ['red' => 180, 'green' => 50, 'blue' => 420, 'alpha' => 0.5]],
-            [(object) ['red' => 180, 'green' => 50, 'blue' => 50, 'alpha' => 42]],
             [(object) ['green' => 50, 'blue' => 50, 'alpha' => 0.5]],
             [(object) ['red' => 180, 'blue' => 50, 'alpha' => 0.5]],
             [(object) ['red' => 180, 'green' => 50, 'alpha' => 0.5]],
@@ -72,17 +68,6 @@ final class RgbaTypeTest extends \PHPUnit\Framework\TestCase
 
         $rgba = new \Graphpinator\Type\Addon\RgbaType();
         $rgba->validateResolvedValue($rawValue);
-    }
-
-    public function testInputDefaultValue() : void
-    {
-        $rgba = new \Graphpinator\Type\Addon\RgbaInput();
-        $args = $rgba->getArguments()->toArray();
-
-        self::assertSame(0, $args['red']->getDefaultValue()->getRawValue());
-        self::assertSame(0, $args['green']->getDefaultValue()->getRawValue());
-        self::assertSame(0, $args['blue']->getDefaultValue()->getRawValue());
-        self::assertSame(0.0, $args['alpha']->getDefaultValue()->getRawValue());
     }
 
     public function testInputConstraintDefaultValue() : void
