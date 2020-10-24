@@ -4,10 +4,6 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Spec;
 
-use Graphpinator\Type\Contract\AbstractDefinition;
-use Graphpinator\Type\ListType;
-use Graphpinator\Type\UnionType;
-
 final class TestSchema
 {
     use \Nette\StaticClass;
@@ -234,8 +230,16 @@ final class TestSchema
                     new \Graphpinator\Field\ResolvableField(
                         'fieldAbstractList',
                         TestSchema::getUnion()->notNullList() ,
-                        static function ($parent, array $abstractList) {
-                            return $abstractList;
+                        static function () {
+                            return
+                                [
+                                    [25],
+                                    [43],
+                                    ['test'],
+                                    [12],
+                                    ['test'],
+                                    ['test'],
+                                ];
                         },
                     ),
                 ]);
@@ -743,6 +747,10 @@ final class TestSchema
             {
                 if ($rawValue === 'invalidType') {
                     return new \Graphpinator\Value\TypeIntermediateValue(TestSchema::getTypeZzz(), $rawValue);
+                }
+
+                if ($rawValue === 'test') {
+                    return new \Graphpinator\Value\TypeIntermediateValue(TestSchema::getTypeXyz(), $rawValue);
                 }
 
                 return new \Graphpinator\Value\TypeIntermediateValue(TestSchema::getTypeAbc(), $rawValue);

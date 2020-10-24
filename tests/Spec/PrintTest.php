@@ -543,6 +543,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldMultiInputMultiUpload(
             fileInputs: [UploadInput!]!
           ): [UploadType!]!
+          fieldAbstractList: [TestUnion!]!
         }
         
         """
@@ -1103,6 +1104,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldMultiInputMultiUpload(
             fileInputs: [UploadInput!]!
           ): [UploadType!]!
+          fieldAbstractList: [TestUnion!]!
         }
         
         """
@@ -1406,6 +1408,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldMultiInputMultiUpload(
             fileInputs: [UploadInput!]!
           ): [UploadType!]!
+          fieldAbstractList: [TestUnion!]!
         }
         
         """
@@ -1966,6 +1969,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldMultiInputMultiUpload(
             fileInputs: [UploadInput!]!
           ): [UploadType!]!
+          fieldAbstractList: [TestUnion!]!
         }
         
         """
