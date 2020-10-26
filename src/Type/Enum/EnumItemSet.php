@@ -17,7 +17,7 @@ final class EnumItemSet extends \Infinityloop\Utils\ObjectSet implements \Graphp
     {
         return parent::offsetGet($offset);
     }
-    
+
     public function getArray() : array
     {
         $return = [];
