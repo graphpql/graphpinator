@@ -572,6 +572,8 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             fileInputs: [UploadInput!]!
           ): [UploadType!]!
           fieldAbstractList: [TestUnion!]!
+          fieldList: [CompositeInput!]!
+          fieldArgumentDefaults: DefaultsInput!
         }
         
         """
@@ -1161,6 +1163,8 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             fileInputs: [UploadInput!]!
           ): [UploadType!]!
           fieldAbstractList: [TestUnion!]!
+          fieldList: [CompositeInput!]!
+          fieldArgumentDefaults: DefaultsInput!
         }
         
         """
@@ -1431,14 +1435,6 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           alpha: Float! @floatConstraint(min: 0, max: 1)
         }
         
-        """
-        Point type - x and y coordinates.
-        """
-        type Point {
-          x: Float!
-          y: Float!
-        }
-        
         type NullFieldResolution {
           stringType(
             nullString: String = null
@@ -1461,6 +1457,14 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           unionListType(
             nullUnion: [TestUnion] = null
           ): [TestUnion]!
+        }
+        
+        """
+        Point type - x and y coordinates.
+        """
+        type Point {
+          x: Float!
+          y: Float!
         }
         
         type Query {
@@ -1493,6 +1497,8 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             fileInputs: [UploadInput!]!
           ): [UploadType!]!
           fieldAbstractList: [TestUnion!]!
+          fieldList: [CompositeInput!]!
+          fieldArgumentDefaults: DefaultsInput!
         }
         
         """
@@ -2020,14 +2026,6 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           alpha: Float! @floatConstraint(min: 0, max: 1)
         }
         
-        """
-        Point type - x and y coordinates.
-        """
-        type Point {
-          x: Float!
-          y: Float!
-        }
-        
         type NullFieldResolution {
           stringType(
             nullString: String = null
@@ -2050,6 +2048,14 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           unionListType(
             nullUnion: [TestUnion] = null
           ): [TestUnion]!
+        }
+        
+        """
+        Point type - x and y coordinates.
+        """
+        type Point {
+          x: Float!
+          y: Float!
         }
         
         type Query {
@@ -2082,6 +2088,8 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             fileInputs: [UploadInput!]!
           ): [UploadType!]!
           fieldAbstractList: [TestUnion!]!
+          fieldList: [CompositeInput!]!
+          fieldArgumentDefaults: DefaultsInput!
         }
         
         """

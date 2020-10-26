@@ -65,11 +65,11 @@ final class TestSchema
             'Time' => new \Graphpinator\Type\Addon\TimeType(),
             'Url' => new \Graphpinator\Type\Addon\UrlType(),
             'Void' => new \Graphpinator\Type\Addon\VoidType(),
-            'NullFieldResolution' => self::getNullFieldResolution(),
-            'NullListResolution' => self::getNullListResolution(),
             'Upload' => new \Graphpinator\Module\Upload\UploadType(),
             'Gps' => new \Graphpinator\Type\Addon\GpsType(),
             'Point' => new \Graphpinator\Type\Addon\PointType(),
+            'NullFieldResolution' => self::getNullFieldResolution(),
+            'NullListResolution' => self::getNullListResolution(),
         ], [
             'testDirective' => self::getTestDirective(),
             'invalidDirective' => self::getInvalidDirective(),
@@ -242,6 +242,40 @@ final class TestSchema
                                     ['test'],
                                     ['test'],
                                 ];
+                        },
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'fieldList',
+                        TestSchema::getCompositeInput()->notNullList(),
+                        static function () {
+                            return
+                                [
+                                    (object) [
+                                        'name' => 'testName1',
+                                        'inner' => (object) ['name' => 'innerName1', 'number' => [1, 2, 3]],
+                                        'innerList' => [
+                                            (object) ['name' => 'innerListName1', 'number' => [1]],
+                                            (object) ['name' => 'innerListName2', 'number' => [1, 2, 3, 4]],
+                                        ],
+                                        'innerNotNull' => (object) ['name' => 'innerNotNullListName1', 'number' => [1, 2]],
+                                    ],
+                                    (object) [
+                                        'name' => 'testName2',
+                                        'inner' => (object) ['name' => 'innerName2', 'number' => [11, 22, 33]],
+                                        'innerList' => [
+                                            (object) ['name' => 'innerListName3', 'number' => [11]],
+                                            (object) ['name' => 'innerListName4', 'number' => [11, 22, 33, 44]],
+                                        ],
+                                        'innerNotNull' => (object) ['name' => 'innerNotNullListName2', 'number' => [11, 22]],
+                                    ],
+                                ];
+                        },
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'fieldArgumentDefaults',
+                        TestSchema::getDefaultsInput()->notNull(),
+                        static function ($parent, $value) {
+                            return $value;
                         },
                     ),
                 ]);
@@ -719,6 +753,10 @@ final class TestSchema
 
             public function createResolvedValue($rawValue) : \Graphpinator\Value\TypeIntermediateValue
             {
+                if ($rawValue === 1) {
+                    return new \Graphpinator\Value\TypeIntermediateValue(TestSchema::getTypeAbc(), $rawValue);
+                }
+
                 return new \Graphpinator\Value\TypeIntermediateValue(TestSchema::getTypeXyz(), $rawValue);
             }
 
@@ -1368,4 +1406,56 @@ final class TestSchema
             }
         };
     }
+
+    /*public static function getAbstractNullListResolution() : \Graphpinator\Type\Type
+    {
+        return new class extends \Graphpinator\Type\Type {
+            protected const NAME = 'AbstractNullListResolution';
+
+            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+            {
+                return new \Graphpinator\Field\ResolvableFieldSet([
+                    new \Graphpinator\Field\ResolvableField(
+                        'interfaceListType',
+                        TestSchema::getInterface()->list(),
+                        static function ($parent, $interface) {
+                            return $interface;
+                        },
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'nullInterface',
+                                TestSchema::getInterface()->list(),
+                                [
+                                    [],
+                                    [],
+                                ],
+                            ),
+                        ]),
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'unionListType',
+                        TestSchema::getUnion()->list(),
+                        static function ($parent, $union) {
+                            return $union;
+                        },
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'nullUnion',
+                                TestSchema::getUnion()->list(),
+                                [
+                                    [],
+                                    [],
+                                ],
+                            ),
+                        ]),
+                    ),
+                ]);
+            }
+
+            protected function validateNonNullValue($rawValue) : bool
+            {
+                return true;
+            }
+        };
+    }*/
 }
