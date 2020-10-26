@@ -15,7 +15,8 @@
     "ext-json": "*",
     "infinityloop-dev/utils": "^1.5",
     "nette/utils": "^3.0",
-    "psr/http-message": "1.0.1"
+    "psr/http-message": "^1.0.1",
+    "psr/log": "^1.1.3"
   },
   "require-dev": {
     "phpunit/phpunit": "^9.3",
