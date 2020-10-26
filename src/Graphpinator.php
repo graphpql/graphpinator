@@ -8,10 +8,6 @@ final class Graphpinator implements \Psr\Log\LoggerAwareInterface
 {
     use \Nette\SmartObject;
 
-    public const QUERY = 'query';
-    public const VARIABLES = 'variables';
-    public const OPERATION_NAME = 'operationName';
-
     private \Graphpinator\Type\Schema $schema;
     private bool $catchExceptions;
     private \Graphpinator\Module\ModuleSet $modules;
