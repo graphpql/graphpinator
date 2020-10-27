@@ -40,7 +40,13 @@ abstract class InterfaceType extends \Graphpinator\Type\Contract\AbstractDefinit
     final public function getFields() : \Graphpinator\Field\FieldSet
     {
         if (!$this->fields instanceof \Graphpinator\Field\FieldSet) {
-            $this->fields = $this->getFieldDefinition();
+            $this->fields = new \Graphpinator\Field\FieldSet([]);
+
+            foreach ($this->implements as $interfaceType) {
+                $this->fields->merge($interfaceType->getFields(), true);
+            }
+
+            $this->fields->merge($this->getFieldDefinition(), true);
 
             $this->validateInterfaces();
         }
