@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Request;
 
-final class PsrRequestFactory implements RequestFactory
+final class PsrRequestFactory implements \Graphpinator\Request\RequestFactory
 {
     use \Nette\SmartObject;
 
@@ -38,7 +38,7 @@ final class PsrRequestFactory implements RequestFactory
 
         switch ($contentType) {
             case 'application/graphql':
-                return new Request($this->request->getBody()->getContents());
+                return new \Graphpinator\Request\Request($this->request->getBody()->getContents());
             case 'application/json':
                 return $this->applyJsonFactory(\Graphpinator\Json::fromString($this->request->getBody()->getContents()));
             default:
@@ -54,7 +54,7 @@ final class PsrRequestFactory implements RequestFactory
 
     private function applyJsonFactory(\Graphpinator\Json $json) : Request
     {
-        $jsonFactory = new JsonRequestFactory($json, $this->strict);
+        $jsonFactory = new \Graphpinator\Request\JsonRequestFactory($json, $this->strict);
 
         return $jsonFactory->create();
     }

@@ -802,7 +802,7 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
 
         self::assertSame(
             $expected->toString(),
-            self::getGraphpinator($settings)->run(new \Graphpinator\Request\JsonRequestFactory($request))->toString()
+            self::getGraphpinator($settings)->run(new \Graphpinator\Request\JsonRequestFactory($request))->toString(),
         );
     }
 

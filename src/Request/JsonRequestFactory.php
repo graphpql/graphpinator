@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Request;
 
-final class JsonRequestFactory implements RequestFactory
+final class JsonRequestFactory implements \Graphpinator\Request\RequestFactory
 {
     use \Nette\SmartObject;
 
@@ -53,6 +53,6 @@ final class JsonRequestFactory implements RequestFactory
         $operationName = $this->json[self::OPERATION_NAME]
             ?? null;
 
-        return new Request($query, $variables, $operationName);
+        return new \Graphpinator\Request\Request($query, $variables, $operationName);
     }
 }
