@@ -78,6 +78,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                                 ['name' => 'Zzz'],
                                 ['name' => 'TestInterface'],
                                 ['name' => 'TestUnion'],
+                                ['name' => 'TestUnionInvalidResolvedType'],
                                 ['name' => 'CompositeInput'],
                                 ['name' => 'SimpleInput'],
                                 ['name' => 'DefaultsInput'],
@@ -295,7 +296,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                             'kind' => 'OBJECT',
                             'name' => 'Abc',
                             'description' => 'Test Abc description',
-                            'fields' => [['name' => 'field1']],
+                            'fields' => [['name' => 'fieldXyz']],
                             'interfaces' => [],
                             'possibleTypes' => null,
                             'inputFields' => null,
@@ -619,11 +620,11 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                         '__type' => [
                             'fields' => [
                                 [
-                                    'name' => 'field1',
+                                    'name' => 'fieldXyz',
                                     'description' => null,
                                     'isDeprecated' => true,
                                     'deprecationReason' => null,
-                                    'type' => ['name' => 'TestInterface'],
+                                    'type' => ['name' => 'Xyz'],
                                     'args' => [
                                         [
                                             'name' => 'arg1',

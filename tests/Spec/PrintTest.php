@@ -119,10 +119,10 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         Test Abc description
         """
         type Abc {
-          field1(
+          fieldXyz(
             arg1: Int = 123
             arg2: CompositeInput
-          ): TestInterface @deprecated
+          ): Xyz @deprecated
         }
         
         type AddonType {
@@ -513,14 +513,14 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         
         type NullListResolution {
           stringListType(
-            nullString: [String] = null
-          ): [String]!
+            nullString: String = null
+          ): [String!]!
           interfaceListType(
             nullInterface: [TestInterface] = null
-          ): [TestInterface]!
+          ): [TestInterface!]!
           unionListType(
             nullUnion: [TestUnion] = null
-          ): [TestUnion]!
+          ): [TestUnion!]!
         }
         
         """
@@ -543,15 +543,16 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         scalar PostalCode
         
         type Query {
+          fieldAbc: Abc
           fieldUnion: TestUnion
+          fieldInvalidType: TestUnionInvalidResolvedType
           fieldConstraint(
             arg: ConstraintInput
           ): Int
           fieldExactlyOne(
             arg: ExactlyOneInput
           ): Int
-          fieldInvalidType: TestUnion
-          fieldThrow: TestUnion
+          fieldThrow: TestUnionInvalidResolvedType
           fieldAddonType: AddonType
           fieldUpload(
             file: Upload
@@ -571,9 +572,14 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldMultiInputMultiUpload(
             fileInputs: [UploadInput!]!
           ): [UploadType!]!
+          fieldList: DefaultsInput!
           fieldAbstractList: [TestUnion!]!
-          fieldList: [CompositeInput!]!
+          fieldNull: NullFieldResolution
+          fieldNullList: NullListResolution
+          fieldAbstractNullList: [TestUnion!]!
           fieldArgumentDefaults: DefaultsInput!
+          fieldMerge: ComplexDefaultsInput!
+          : SimpleInput!
         }
         
         """
@@ -618,6 +624,8 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         scalar TestScalar
         
         union TestUnion = Abc | Xyz
+        
+        union TestUnionInvalidResolvedType = Abc
         
         """
         Time type - string which contains time in "<HH>:<MM>:<SS>" format.
@@ -710,10 +718,10 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         Test Abc description
         """
         type Abc {
-          field1(
+          fieldXyz(
             arg1: Int = 123
             arg2: CompositeInput
-          ): TestInterface @deprecated
+          ): Xyz @deprecated
         }
         
         type AddonType {
@@ -1104,14 +1112,14 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         
         type NullListResolution {
           stringListType(
-            nullString: [String] = null
-          ): [String]!
+            nullString: String = null
+          ): [String!]!
           interfaceListType(
             nullInterface: [TestInterface] = null
-          ): [TestInterface]!
+          ): [TestInterface!]!
           unionListType(
             nullUnion: [TestUnion] = null
-          ): [TestUnion]!
+          ): [TestUnion!]!
         }
         
         """
@@ -1134,15 +1142,16 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         scalar PostalCode
         
         type Query {
+          fieldAbc: Abc
           fieldUnion: TestUnion
+          fieldInvalidType: TestUnionInvalidResolvedType
           fieldConstraint(
             arg: ConstraintInput
           ): Int
           fieldExactlyOne(
             arg: ExactlyOneInput
           ): Int
-          fieldInvalidType: TestUnion
-          fieldThrow: TestUnion
+          fieldThrow: TestUnionInvalidResolvedType
           fieldAddonType: AddonType
           fieldUpload(
             file: Upload
@@ -1162,9 +1171,14 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldMultiInputMultiUpload(
             fileInputs: [UploadInput!]!
           ): [UploadType!]!
+          fieldList: DefaultsInput!
           fieldAbstractList: [TestUnion!]!
-          fieldList: [CompositeInput!]!
+          fieldNull: NullFieldResolution
+          fieldNullList: NullListResolution
+          fieldAbstractNullList: [TestUnion!]!
           fieldArgumentDefaults: DefaultsInput!
+          fieldMerge: ComplexDefaultsInput!
+          : SimpleInput!
         }
         
         """
@@ -1209,6 +1223,8 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         scalar TestScalar
         
         union TestUnion = Abc | Xyz
+        
+        union TestUnionInvalidResolvedType = Abc
         
         """
         Time type - string which contains time in "<HH>:<MM>:<SS>" format.
@@ -1308,10 +1324,10 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         Test Abc description
         """
         type Abc {
-          field1(
+          fieldXyz(
             arg1: Int = 123
             arg2: CompositeInput
-          ): TestInterface @deprecated
+          ): Xyz @deprecated
         }
         
         type AddonType {
@@ -1449,14 +1465,14 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         
         type NullListResolution {
           stringListType(
-            nullString: [String] = null
-          ): [String]!
+            nullString: String = null
+          ): [String!]!
           interfaceListType(
             nullInterface: [TestInterface] = null
-          ): [TestInterface]!
+          ): [TestInterface!]!
           unionListType(
             nullUnion: [TestUnion] = null
-          ): [TestUnion]!
+          ): [TestUnion!]!
         }
         
         """
@@ -1468,15 +1484,16 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         }
         
         type Query {
+          fieldAbc: Abc
           fieldUnion: TestUnion
+          fieldInvalidType: TestUnionInvalidResolvedType
           fieldConstraint(
             arg: ConstraintInput
           ): Int
           fieldExactlyOne(
             arg: ExactlyOneInput
           ): Int
-          fieldInvalidType: TestUnion
-          fieldThrow: TestUnion
+          fieldThrow: TestUnionInvalidResolvedType
           fieldAddonType: AddonType
           fieldUpload(
             file: Upload
@@ -1496,9 +1513,14 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldMultiInputMultiUpload(
             fileInputs: [UploadInput!]!
           ): [UploadType!]!
+          fieldList: DefaultsInput!
           fieldAbstractList: [TestUnion!]!
-          fieldList: [CompositeInput!]!
+          fieldNull: NullFieldResolution
+          fieldNullList: NullListResolution
+          fieldAbstractNullList: [TestUnion!]!
           fieldArgumentDefaults: DefaultsInput!
+          fieldMerge: ComplexDefaultsInput!
+          : SimpleInput!
         }
         
         """
@@ -1534,6 +1556,8 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         }
         
         union TestUnion = Abc | Xyz
+        
+        union TestUnionInvalidResolvedType = Abc
         
         input ComplexDefaultsInput {
           innerObject: CompositeInput = {
@@ -1899,10 +1923,10 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         Test Abc description
         """
         type Abc {
-          field1(
+          fieldXyz(
             arg1: Int = 123
             arg2: CompositeInput
-          ): TestInterface @deprecated
+          ): Xyz @deprecated
         }
         
         type AddonType {
@@ -2040,14 +2064,14 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         
         type NullListResolution {
           stringListType(
-            nullString: [String] = null
-          ): [String]!
+            nullString: String = null
+          ): [String!]!
           interfaceListType(
             nullInterface: [TestInterface] = null
-          ): [TestInterface]!
+          ): [TestInterface!]!
           unionListType(
             nullUnion: [TestUnion] = null
-          ): [TestUnion]!
+          ): [TestUnion!]!
         }
         
         """
@@ -2059,15 +2083,16 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         }
         
         type Query {
+          fieldAbc: Abc
           fieldUnion: TestUnion
+          fieldInvalidType: TestUnionInvalidResolvedType
           fieldConstraint(
             arg: ConstraintInput
           ): Int
           fieldExactlyOne(
             arg: ExactlyOneInput
           ): Int
-          fieldInvalidType: TestUnion
-          fieldThrow: TestUnion
+          fieldThrow: TestUnionInvalidResolvedType
           fieldAddonType: AddonType
           fieldUpload(
             file: Upload
@@ -2087,9 +2112,14 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldMultiInputMultiUpload(
             fileInputs: [UploadInput!]!
           ): [UploadType!]!
+          fieldList: DefaultsInput!
           fieldAbstractList: [TestUnion!]!
-          fieldList: [CompositeInput!]!
+          fieldNull: NullFieldResolution
+          fieldNullList: NullListResolution
+          fieldAbstractNullList: [TestUnion!]!
           fieldArgumentDefaults: DefaultsInput!
+          fieldMerge: ComplexDefaultsInput!
+          : SimpleInput!
         }
         
         """
@@ -2125,6 +2155,8 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         }
         
         union TestUnion = Abc | Xyz
+        
+        union TestUnionInvalidResolvedType = Abc
 
         input ComplexDefaultsInput {
           innerObject: CompositeInput = {

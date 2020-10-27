@@ -11,31 +11,31 @@ final class VariableTest extends \PHPUnit\Framework\TestCase
         return [
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName ($var1: Int) { fieldUnion { field1(arg1: $var1) { name } } }',
+                    'query' => 'query queryName ($var1: Int) { fieldUnion { fieldXyz(arg1: $var1) { name } } }',
                     'variables' => (object) ['var1' => 456],
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['fieldUnion' => ['field1' => ['name' => 'Test 456']]]]),
+                \Graphpinator\Json::fromObject((object) ['data' => ['fieldUnion' => ['fieldXyz' => ['name' => 'Test 456']]]]),
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName ($var1: Int) { fieldUnion { field1(arg1: $var1) { name } } }',
+                    'query' => 'query queryName ($var1: Int) { fieldUnion { fieldXyz(arg1: $var1) { name } } }',
                     'variables' => (object) ['var1' => 123],
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['fieldUnion' => ['field1' => ['name' => 'Test 123']]]]),
+                \Graphpinator\Json::fromObject((object) ['data' => ['fieldUnion' => ['fieldXyz' => ['name' => 'Test 123']]]]),
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName ($var1: Int = 456) { fieldUnion { field1(arg1: $var1) { name } } }',
+                    'query' => 'query queryName ($var1: Int = 456) { fieldUnion { fieldXyz(arg1: $var1) { name } } }',
                     'variables' => (object) [],
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['fieldUnion' => ['field1' => ['name' => 'Test 456']]]]),
+                \Graphpinator\Json::fromObject((object) ['data' => ['fieldUnion' => ['fieldXyz' => ['name' => 'Test 456']]]]),
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName ($var1: Int = 123) { fieldUnion { field1(arg1: $var1) { name } } }',
+                    'query' => 'query queryName ($var1: Int = 123) { fieldUnion { fieldXyz(arg1: $var1) { name } } }',
                     'variables' => (object) [],
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['fieldUnion' => ['field1' => ['name' => 'Test 123']]]]),
+                \Graphpinator\Json::fromObject((object) ['data' => ['fieldUnion' => ['fieldXyz' => ['name' => 'Test 123']]]]),
             ],
         ];
     }
@@ -58,25 +58,25 @@ final class VariableTest extends \PHPUnit\Framework\TestCase
         return [
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName ($var1: Int = "123") { fieldUnion { field1 { name } } }',
+                    'query' => 'query queryName ($var1: Int = "123") { fieldUnion { fieldXyz { name } } }',
                     'variables' => (object) [],
                 ]),
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName ($var1: Int = "123") { fieldUnion { field1 { name } } }',
+                    'query' => 'query queryName ($var1: Int = "123") { fieldUnion { fieldXyz { name } } }',
                     'variables' => ['var1' => '123'],
                 ]),
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName ($var1: Int!) { fieldUnion { field1 { name } } }',
+                    'query' => 'query queryName ($var1: Int!) { fieldUnion { fieldXyz { name } } }',
                     'variables' => (object) [],
                 ]),
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldUnion { field1(arg1: $varNonExistent) { name } } }',
+                    'query' => 'query queryName { fieldUnion { fieldXyz(arg1: $varNonExistent) { name } } }',
                     'variables' => (object) [],
                 ]),
             ],
