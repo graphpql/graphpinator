@@ -580,6 +580,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldArgumentDefaults: DefaultsInput!
           fieldMerge: ComplexDefaultsInput!
           fieldInvalidInput: SimpleInput!
+          fieldEmptyObjectInput: TestUnion
         }
         
         """
@@ -1179,6 +1180,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldArgumentDefaults: DefaultsInput!
           fieldMerge: ComplexDefaultsInput!
           fieldInvalidInput: SimpleInput!
+          fieldEmptyObjectInput: TestUnion
         }
         
         """
@@ -1521,6 +1523,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldArgumentDefaults: DefaultsInput!
           fieldMerge: ComplexDefaultsInput!
           fieldInvalidInput: SimpleInput!
+          fieldEmptyObjectInput: TestUnion
         }
         
         """
@@ -2120,6 +2123,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldArgumentDefaults: DefaultsInput!
           fieldMerge: ComplexDefaultsInput!
           fieldInvalidInput: SimpleInput!
+          fieldEmptyObjectInput: TestUnion
         }
         
         """

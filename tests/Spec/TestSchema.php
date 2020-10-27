@@ -291,7 +291,7 @@ final class TestSchema
                         'fieldMerge',
                         TestSchema::getComplexDefaultsInput()->notNull(),
                         static function ($parent, $values) {
-                            $parent->getFieldDefinition()->merge(
+                            $values->getFieldDefinition()->merge(
                                 new \Graphpinator\Argument\ArgumentSet([
                                     new \Graphpinator\Argument\Argument(
                                         'testMerge',
@@ -314,6 +314,13 @@ final class TestSchema
                                 'bool' => true,
                                 'notDefinedField' => 'testValue',
                             ];
+                        },
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'fieldEmptyObjectInput',
+                        TestSchema::getUnion(),
+                        static function () {
+                            return (object) [];
                         },
                     ),
                 ]);
