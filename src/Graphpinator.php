@@ -30,9 +30,11 @@ final class Graphpinator implements \Psr\Log\LoggerAwareInterface
             : new \Psr\Log\NullLogger();
     }
 
-    public function run(\Graphpinator\Request $request) : \Graphpinator\Response
+    public function run(\Graphpinator\Request\RequestFactory $requestFactory) : \Graphpinator\Response
     {
         try {
+            $request = $requestFactory->create();
+
             $this->logger->debug($request->getQuery());
 
             $parsedRequest = \Graphpinator\Parser\Parser::parseString($request->getQuery())

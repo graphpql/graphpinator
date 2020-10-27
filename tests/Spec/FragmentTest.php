@@ -70,7 +70,7 @@ final class FragmentTest extends \PHPUnit\Framework\TestCase
     public function testSimple(\Graphpinator\Json $request, \Graphpinator\Json $expected) : void
     {
         $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
-        $result = $graphpinator->run(\Graphpinator\Request::fromJson($request));
+        $result = $graphpinator->run(new \Graphpinator\Request\JsonRequestFactory($request));
 
         self::assertSame($expected->toString(), $result->toString());
     }
@@ -168,7 +168,7 @@ final class FragmentTest extends \PHPUnit\Framework\TestCase
     public function testFieldSelectionMerging(\Graphpinator\Json $request, \Graphpinator\Json $expected) : void
     {
         $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
-        $result = $graphpinator->run(\Graphpinator\Request::fromJson($request));
+        $result = $graphpinator->run(new \Graphpinator\Request\JsonRequestFactory($request));
 
         self::assertSame($expected->toString(), $result->toString());
     }
@@ -234,6 +234,6 @@ final class FragmentTest extends \PHPUnit\Framework\TestCase
         $this->expectExceptionMessage(\constant($exception . '::MESSAGE'));
 
         $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
-        $graphpinator->run(\Graphpinator\Request::fromJson($request));
+        $graphpinator->run(new \Graphpinator\Request\JsonRequestFactory($request));
     }
 }

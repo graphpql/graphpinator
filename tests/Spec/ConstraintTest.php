@@ -92,7 +92,7 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
     public function testSimple(\Graphpinator\Json $request, \Graphpinator\Json $expected) : void
     {
         $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
-        $result = $graphpinator->run(\Graphpinator\Request::fromJson($request));
+        $result = $graphpinator->run(new \Graphpinator\Request\JsonRequestFactory($request));
 
         self::assertSame($expected->toString(), $result->toString());
         self::assertNull($result->getErrors());
@@ -241,7 +241,7 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
         $this->expectExceptionMessage(\constant($exception . '::MESSAGE'));
 
         $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
-        $graphpinator->run(\Graphpinator\Request::fromJson($request));
+        $graphpinator->run(new \Graphpinator\Request\JsonRequestFactory($request));
     }
 
     public function testInvalidConstraintTypeString() : void
@@ -800,7 +800,10 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
             'query' => 'query queryName { field1 }',
         ]);
 
-        self::assertSame($expected->toString(), self::getGraphpinator($settings)->run(\Graphpinator\Request::fromJson($request))->toString());
+        self::assertSame(
+            $expected->toString(),
+            self::getGraphpinator($settings)->run(new \Graphpinator\Request\JsonRequestFactory($request))->toString()
+        );
     }
 
     public function fieldInvalidConstraintsDataProvider() : array
@@ -965,7 +968,7 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
             'query' => 'query queryName { field1 }',
         ]);
 
-        self::getGraphpinator($settings)->run(\Graphpinator\Request::fromJson($request));
+        self::getGraphpinator($settings)->run(new \Graphpinator\Request\JsonRequestFactory($request));
     }
 
     protected static function getGraphpinator(array $settings) : \Graphpinator\Graphpinator
