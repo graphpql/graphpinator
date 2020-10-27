@@ -305,7 +305,7 @@ final class TestSchema
                         },
                     ),
                     new \Graphpinator\Field\ResolvableField(
-                        '',
+                        'fieldInvalidInput',
                         TestSchema::getSimpleInput()->notNull(),
                         static function () {
                             return [
