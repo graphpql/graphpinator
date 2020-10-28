@@ -20,7 +20,7 @@
   },
   "require-dev": {
     "phpunit/phpunit": "^9.3",
-    "infection/infection": "^0.18",
+    "infection/infection": "^0.18 || ^0.19",
     "infinityloop-dev/coding-standard": "dev-master"
   },
   "scripts": {
