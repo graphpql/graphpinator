@@ -292,14 +292,6 @@ final class TestSchema
                             return [];
                         },
                     ),
-                    //TODO:
-                    /*new \Graphpinator\Field\ResolvableField(
-                        'fieldMerge',
-                        TestSchema::getComplexDefaultsInput(),
-                        static function () {
-                            return;
-                        },
-                    ),*/
                     new \Graphpinator\Field\ResolvableField(
                         'fieldInvalidInput',
                         TestSchema::getSimpleType(),
@@ -312,14 +304,6 @@ final class TestSchema
                             ];
                         },
                     ),
-                    //TODO:
-                    /*new \Graphpinator\Field\ResolvableField(
-                        'fieldEmptyObjectInput',
-                        ,
-                        static function () {
-                            return ;
-                        },
-                    ),*/
                 ]);
             }
 
