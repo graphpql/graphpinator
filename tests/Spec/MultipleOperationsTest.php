@@ -11,24 +11,24 @@ final class MultipleOperationsTest extends \PHPUnit\Framework\TestCase
         return [
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldUnion { fieldXyz(arg2: null) { name } } }',
+                    'query' => 'query queryName { fieldAbc { fieldXyz(arg2: null) { name } } }',
                     'operationName' => 'queryName',
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['fieldUnion' => ['fieldXyz' => ['name' => 'Test 123']]]]),
+                \Graphpinator\Json::fromObject((object) ['data' => ['fieldAbc' => ['fieldXyz' => ['name' => 'Test 123']]]]),
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldUnion { 
-                    fieldXyz { name } } } query secondQueryName { aliasName: fieldUnion { fieldXyz { name } 
+                    'query' => 'query queryName { fieldAbc { 
+                    fieldXyz { name } } } query secondQueryName { aliasName: fieldAbc { fieldXyz { name } 
                     } }',
                     'operationName' => 'queryName',
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['fieldUnion' => ['fieldXyz' => ['name' => 'Test 123']]]]),
+                \Graphpinator\Json::fromObject((object) ['data' => ['fieldAbc' => ['fieldXyz' => ['name' => 'Test 123']]]]),
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldUnion { 
-                    fieldXyz { name } } } query secondQueryName { aliasName: fieldUnion { fieldXyz { name } 
+                    'query' => 'query queryName { fieldAbc { 
+                    fieldXyz { name } } } query secondQueryName { aliasName: fieldAbc { fieldXyz { name } 
                     } }',
                     'operationName' => 'secondQueryName',
                 ]),

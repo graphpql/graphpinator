@@ -11,85 +11,85 @@ final class DirectiveTest extends \PHPUnit\Framework\TestCase
         return [
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldUnion { fieldXyz @skip(if: true) { name } } }',
+                    'query' => 'query queryName { fieldAbc { fieldXyz @skip(if: true) { name } } }',
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['fieldUnion' => new \stdClass()]]),
+                \Graphpinator\Json::fromObject((object) ['data' => ['fieldAbc' => new \stdClass()]]),
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldUnion { fieldXyz @skip(if: false) { name } } }',
+                    'query' => 'query queryName { fieldAbc { fieldXyz @skip(if: false) { name } } }',
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['fieldUnion' => ['fieldXyz' => ['name' => 'Test 123']]]]),
+                \Graphpinator\Json::fromObject((object) ['data' => ['fieldAbc' => ['fieldXyz' => ['name' => 'Test 123']]]]),
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldUnion { fieldXyz @include(if: true) { name } } }',
+                    'query' => 'query queryName { fieldAbc { fieldXyz @include(if: true) { name } } }',
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['fieldUnion' => ['fieldXyz' => ['name' => 'Test 123']]]]),
+                \Graphpinator\Json::fromObject((object) ['data' => ['fieldAbc' => ['fieldXyz' => ['name' => 'Test 123']]]]),
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldUnion { fieldXyz @include(if: false) { name } } }',
+                    'query' => 'query queryName { fieldAbc { fieldXyz @include(if: false) { name } } }',
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['fieldUnion' => new \stdClass()]]),
+                \Graphpinator\Json::fromObject((object) ['data' => ['fieldAbc' => new \stdClass()]]),
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldUnion { fieldXyz @include(if: false) @skip(if: false) { name } } }',
+                    'query' => 'query queryName { fieldAbc { fieldXyz @include(if: false) @skip(if: false) { name } } }',
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['fieldUnion' => new \stdClass()]]),
+                \Graphpinator\Json::fromObject((object) ['data' => ['fieldAbc' => new \stdClass()]]),
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldUnion { fieldXyz @include(if: true) @skip(if: true) { name } } }',
+                    'query' => 'query queryName { fieldAbc { fieldXyz @include(if: true) @skip(if: true) { name } } }',
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['fieldUnion' => new \stdClass()]]),
+                \Graphpinator\Json::fromObject((object) ['data' => ['fieldAbc' => new \stdClass()]]),
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldUnion { fieldXyz @include(if: false) @skip(if: true) { name } } }',
+                    'query' => 'query queryName { fieldAbc { fieldXyz @include(if: false) @skip(if: true) { name } } }',
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['fieldUnion' => new \stdClass()]]),
+                \Graphpinator\Json::fromObject((object) ['data' => ['fieldAbc' => new \stdClass()]]),
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldUnion { fieldXyz @include(if: true) @skip(if: false) { name } } }',
+                    'query' => 'query queryName { fieldAbc { fieldXyz @include(if: true) @skip(if: false) { name } } }',
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['fieldUnion' => ['fieldXyz' => ['name' => 'Test 123']]]]),
+                \Graphpinator\Json::fromObject((object) ['data' => ['fieldAbc' => ['fieldXyz' => ['name' => 'Test 123']]]]),
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldUnion { ... @include(if: true) { fieldXyz { name } } } }',
+                    'query' => 'query queryName { fieldAbc { ... @include(if: true) { fieldXyz { name } } } }',
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['fieldUnion' => ['fieldXyz' => ['name' => 'Test 123']]]]),
+                \Graphpinator\Json::fromObject((object) ['data' => ['fieldAbc' => ['fieldXyz' => ['name' => 'Test 123']]]]),
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldUnion { ... @include(if: false) { fieldXyz { name } } } }',
+                    'query' => 'query queryName { fieldAbc { ... @include(if: false) { fieldXyz { name } } } }',
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['fieldUnion' => new \stdClass()]]),
-            ],
-            [
-                \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { 
-                        fieldUnion { ... namedFragment @include(if: true) } } fragment namedFragment on Abc { fieldXyz { name } 
-                    }',
-                ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['fieldUnion' => ['fieldXyz' => ['name' => 'Test 123']]]]),
+                \Graphpinator\Json::fromObject((object) ['data' => ['fieldAbc' => new \stdClass()]]),
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
                     'query' => 'query queryName { 
-                        fieldUnion { ... namedFragment @include(if: false) } } fragment namedFragment on Abc { fieldXyz { name } 
+                        fieldAbc { ... namedFragment @include(if: true) } } fragment namedFragment on Abc { fieldXyz { name } 
                     }',
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['fieldUnion' => new \stdClass()]]),
+                \Graphpinator\Json::fromObject((object) ['data' => ['fieldAbc' => ['fieldXyz' => ['name' => 'Test 123']]]]),
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldUnion { fieldXyz @testDirective() { name } } }',
+                    'query' => 'query queryName { 
+                        fieldAbc { ... namedFragment @include(if: false) } } fragment namedFragment on Abc { fieldXyz { name } 
+                    }',
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['fieldUnion' => ['fieldXyz' => ['name' => 'Test 123']]]]),
+                \Graphpinator\Json::fromObject((object) ['data' => ['fieldAbc' => new \stdClass()]]),
+            ],
+            [
+                \Graphpinator\Json::fromObject((object) [
+                    'query' => 'query queryName { fieldAbc { fieldXyz @testDirective() { name } } }',
+                ]),
+                \Graphpinator\Json::fromObject((object) ['data' => ['fieldAbc' => ['fieldXyz' => ['name' => 'Test 123']]]]),
             ],
         ];
     }
@@ -114,11 +114,11 @@ final class DirectiveTest extends \PHPUnit\Framework\TestCase
         TestSchema::getSchema()->getContainer()->getDirective('testDirective')::$count = 0;
 
         self::assertSame(
-            \Graphpinator\Json::fromObject((object) ['data' => ['fieldUnion' => ['fieldXyz' => ['name' => 'Test 123']]]])->toString(),
+            \Graphpinator\Json::fromObject((object) ['data' => ['fieldAbc' => ['fieldXyz' => ['name' => 'Test 123']]]])->toString(),
             $graphpinator->run(
                 \Graphpinator\Request::fromJson(
                     \Graphpinator\Json::fromObject((object) [
-                        'query' => 'query queryName { fieldUnion { fieldXyz @testDirective @testDirective @testDirective { name } } }',
+                        'query' => 'query queryName { fieldAbc { fieldXyz @testDirective @testDirective @testDirective { name } } }',
                     ]),
                 ),
             )->toString(),
@@ -131,37 +131,37 @@ final class DirectiveTest extends \PHPUnit\Framework\TestCase
         return [
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldUnion { fieldXyz @skip(if: false) @skip(if: false) { name } } }',
+                    'query' => 'query queryName { fieldAbc { fieldXyz @skip(if: false) @skip(if: false) { name } } }',
                 ]),
                 \Graphpinator\Exception\Normalizer\DuplicatedDirective::class,
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldUnion { fieldXyz @include(if: false) @include(if: false) { name } } }',
+                    'query' => 'query queryName { fieldAbc { fieldXyz @include(if: false) @include(if: false) { name } } }',
                 ]),
                 \Graphpinator\Exception\Normalizer\DuplicatedDirective::class,
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldUnion { fieldXyz @include(if: false) @testDirective @include(if: false) { name } } }',
+                    'query' => 'query queryName { fieldAbc { fieldXyz @include(if: false) @testDirective @include(if: false) { name } } }',
                 ]),
                 \Graphpinator\Exception\Normalizer\DuplicatedDirective::class,
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldUnion { ... on Abc @testDirective { fieldXyz { name } } } }',
+                    'query' => 'query queryName { fieldAbc { ... on Abc @testDirective { fieldXyz { name } } } }',
                 ]),
                 \Graphpinator\Exception\Normalizer\MisplacedDirective::class,
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldUnion @invalidDirective() { fieldXyz { name } } }',
+                    'query' => 'query queryName { fieldAbc @invalidDirective() { fieldXyz { name } } }',
                 ]),
                 \Graphpinator\Exception\Resolver\InvalidDirectiveResult::class,
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldUnion { fieldXyz @testDirective(if: true) { name } } }',
+                    'query' => 'query queryName { fieldAbc { fieldXyz @testDirective(if: true) { name } } }',
                 ]),
                 \Graphpinator\Exception\Resolver\UnknownArgument::class,
             ],

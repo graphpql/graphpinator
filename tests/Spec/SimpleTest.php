@@ -11,13 +11,13 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
         return [
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldUnion { fieldXyz { name } } }',
+                    'query' => 'query queryName { fieldAbc { fieldXyz { name } } }',
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['fieldUnion' => ['fieldXyz' => ['name' => 'Test 123']]]]),
+                \Graphpinator\Json::fromObject((object) ['data' => ['fieldAbc' => ['fieldXyz' => ['name' => 'Test 123']]]]),
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { aliasName: fieldUnion { fieldXyz { name } } }',
+                    'query' => 'query queryName { aliasName: fieldAbc { fieldXyz { name } } }',
                 ]),
                 \Graphpinator\Json::fromObject((object) ['data' => ['aliasName' => ['fieldXyz' => ['name' => 'Test 123']]]]),
             ],
@@ -146,20 +146,20 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
         return [
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldUnion { fieldXyz } }',
+                    'query' => 'query queryName { fieldAbc { fieldXyz } }',
                 ]),
                 \Graphpinator\Exception\Resolver\SelectionOnComposite::class,
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldUnion { fieldXyz { nonExisting } } }',
+                    'query' => 'query queryName { fieldAbc { fieldXyz { nonExisting } } }',
                 ]),
                 //phpcs:ignore SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly.ReferencedGeneralException
                 \Exception::class,
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldUnion { fieldXyz { name { nonExisting } } } }',
+                    'query' => 'query queryName { fieldAbc { fieldXyz { name { nonExisting } } } }',
                 ]),
                 //phpcs:ignore SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly.ReferencedGeneralException
                 \Exception::class,

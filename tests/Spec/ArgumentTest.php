@@ -11,9 +11,9 @@ final class ArgumentTest extends \PHPUnit\Framework\TestCase
         return [
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldUnion { fieldXyz(arg1: 456) { name } } }',
+                    'query' => 'query queryName { fieldAbc { fieldXyz(arg1: 456) { name } } }',
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['fieldUnion' => ['fieldXyz' => ['name' => 'Test 456']]]]),
+                \Graphpinator\Json::fromObject((object) ['data' => ['fieldAbc' => ['fieldXyz' => ['name' => 'Test 456']]]]),
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
@@ -51,12 +51,12 @@ final class ArgumentTest extends \PHPUnit\Framework\TestCase
         return [
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldUnion { fieldXyz(argNonExistent: 123) { name } } }',
+                    'query' => 'query queryName { fieldAbc { fieldXyz(argNonExistent: 123) { name } } }',
                 ]),
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldUnion { fieldXyz(arg1: "123") { name } } }',
+                    'query' => 'query queryName { fieldAbc { fieldXyz(arg1: "123") { name } } }',
                 ]),
             ],
         ];
