@@ -573,7 +573,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             fileInputs: [UploadInput!]!
           ): [UploadType!]!
           fieldList: [Xyz!]!
-          fieldAbstractList: TestUnion
+          fieldAbstractList: [TestUnion]
           fieldNull: NullFieldResolution
           fieldNullList: NullListResolution
           fieldAbstractNullList: [TestUnion!]!
@@ -1189,7 +1189,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             fileInputs: [UploadInput!]!
           ): [UploadType!]!
           fieldList: [Xyz!]!
-          fieldAbstractList: TestUnion
+          fieldAbstractList: [TestUnion]
           fieldNull: NullFieldResolution
           fieldNullList: NullListResolution
           fieldAbstractNullList: [TestUnion!]!
@@ -1548,7 +1548,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             fileInputs: [UploadInput!]!
           ): [UploadType!]!
           fieldList: [Xyz!]!
-          fieldAbstractList: TestUnion
+          fieldAbstractList: [TestUnion]
           fieldNull: NullFieldResolution
           fieldNullList: NullListResolution
           fieldAbstractNullList: [TestUnion!]!
@@ -2164,7 +2164,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             fileInputs: [UploadInput!]!
           ): [UploadType!]!
           fieldList: [Xyz!]!
-          fieldAbstractList: TestUnion
+          fieldAbstractList: [TestUnion]
           fieldNull: NullFieldResolution
           fieldNullList: NullListResolution
           fieldAbstractNullList: [TestUnion!]!
