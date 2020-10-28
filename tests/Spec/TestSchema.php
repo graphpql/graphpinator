@@ -4,8 +4,6 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Spec;
 
-use function PHPUnit\Framework\isInstanceOf;
-
 final class TestSchema
 {
     use \Nette\StaticClass;
@@ -247,7 +245,7 @@ final class TestSchema
                             return [
                                 (object) ['name' => 'testValue1'],
                                 (object) ['name' => 'testValue2'],
-                                (object) ['name' => 'testValue3']
+                                (object) ['name' => 'testValue3'],
                             ];
                         },
                     ),
@@ -258,7 +256,7 @@ final class TestSchema
                             return [
                                 1,
                                 1,
-                                (object) ['name' => 'testName']
+                                (object) ['name' => 'testName'],
                             ];
                         },
                     ),
@@ -283,7 +281,7 @@ final class TestSchema
                                 (object) ['name' => 'test'],
                                 (object) ['name' => 'test'],
                                 null,
-                                (object) ['name' => 'test']
+                                (object) ['name' => 'test'],
                             ];
                         },
                     ),
@@ -317,9 +315,9 @@ final class TestSchema
                     //TODO:
                     /*new \Graphpinator\Field\ResolvableField(
                         'fieldEmptyObjectInput',
-                        TestSchema::getSimpleType(),
+                        ,
                         static function () {
-                            return (object) [];
+                            return ;
                         },
                     ),*/
                 ]);
@@ -847,12 +845,9 @@ final class TestSchema
             {
                 if (\is_array($rawValue)) {
                     foreach ($rawValue as $value) {
-                        if ($value === 1) {
-                            return new \Graphpinator\Value\TypeIntermediateValue(TestSchema::getTypeAbc(), $value);
-                        }
-                        else {
-                            return new \Graphpinator\Value\TypeIntermediateValue(TestSchema::getTypeXyz(), $value);
-                        }
+                        return $value === 1
+                            ? new \Graphpinator\Value\TypeIntermediateValue(TestSchema::getTypeAbc(), $value)
+                            : new \Graphpinator\Value\TypeIntermediateValue(TestSchema::getTypeXyz(), $value);
                     }
                 }
 
@@ -1370,13 +1365,13 @@ final class TestSchema
                         static function ($parent, $name) {
                             return $name;
                         },
-                    new \Graphpinator\Argument\ArgumentSet([
-                        new \Graphpinator\Argument\Argument(
-                            'name',
-                            \Graphpinator\Container\Container::String()->notNull(),
-                            'testValue'
-                        ),
-                    ]),
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'name',
+                                \Graphpinator\Container\Container::String()->notNull(),
+                                'testValue',
+                            ),
+                        ]),
                     ),
                     new \Graphpinator\Field\ResolvableField(
                         'fieldNumber',
@@ -1384,13 +1379,13 @@ final class TestSchema
                         static function ($parent, $number) {
                             return $number;
                         },
-                    new \Graphpinator\Argument\ArgumentSet([
-                        new \Graphpinator\Argument\Argument(
-                            'number',
-                            \Graphpinator\Container\Container::Int()->notNullList(),
-                            [1, 2]
-                        ),
-                    ]),
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'number',
+                                \Graphpinator\Container\Container::Int()->notNullList(),
+                                [1, 2],
+                            ),
+                        ]),
                     ),
                     new \Graphpinator\Field\ResolvableField(
                         'fieldBool',
@@ -1398,13 +1393,13 @@ final class TestSchema
                         static function ($parent, $bool) {
                             return $bool;
                         },
-                    new \Graphpinator\Argument\ArgumentSet([
-                        new \Graphpinator\Argument\Argument(
-                            'bool',
-                            \Graphpinator\Container\Container::Boolean(),
-                            true
-                        ),
-                    ]),
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'bool',
+                                \Graphpinator\Container\Container::Boolean(),
+                                true,
+                            ),
+                        ]),
                     ),
                 ]);
             }

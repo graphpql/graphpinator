@@ -255,7 +255,7 @@ final class InputTest extends \PHPUnit\Framework\TestCase
                 \Graphpinator\Json::fromObject((object) [
                     'data' => [
                         'fieldList' => [['name' => 'testValue1'], ['name' => 'testValue2'], ['name' => 'testValue3']],
-                    ]
+                    ],
                 ]),
             ],
             [

@@ -25,8 +25,8 @@ final class ArgumentTest extends \PHPUnit\Framework\TestCase
                             'fieldName' => 'testValue',
                             'fieldNumber' => [1, 2],
                             'fieldBool' => true,
-                        ]
-                    ]
+                        ],
+                    ],
                 ]),
             ],
         ];
