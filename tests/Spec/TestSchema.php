@@ -827,14 +827,6 @@ final class TestSchema
 
             public function createResolvedValue($rawValue) : \Graphpinator\Value\TypeIntermediateValue
             {
-                if (\is_array($rawValue)) {
-                    foreach ($rawValue as $value) {
-                        return $value === 1
-                            ? new \Graphpinator\Value\TypeIntermediateValue(TestSchema::getTypeAbc(), $value)
-                            : new \Graphpinator\Value\TypeIntermediateValue(TestSchema::getTypeXyz(), $value);
-                    }
-                }
-
                 if ($rawValue === 1) {
                     return new \Graphpinator\Value\TypeIntermediateValue(TestSchema::getTypeAbc(), $rawValue);
                 }
