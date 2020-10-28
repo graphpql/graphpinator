@@ -116,7 +116,7 @@ final class UploadModuleTest extends \PHPUnit\Framework\TestCase
         $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema(), false, new \Graphpinator\Module\ModuleSet([
             new \Graphpinator\Module\Upload\UploadModule($fileProvider),
         ]));
-        $result = $graphpinator->run(\Graphpinator\Request::fromJson($request));
+        $result = $graphpinator->run(new \Graphpinator\Request\JsonRequestFactory($request));
 
         self::assertSame($expected->toString(), $result->toString());
     }
@@ -191,6 +191,6 @@ final class UploadModuleTest extends \PHPUnit\Framework\TestCase
         $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema(), false, new \Graphpinator\Module\ModuleSet([
             new \Graphpinator\Module\Upload\UploadModule($fileProvider),
         ]));
-        $graphpinator->run(\Graphpinator\Request::fromJson($request));
+        $graphpinator->run(new \Graphpinator\Request\JsonRequestFactory($request));
     }
 }

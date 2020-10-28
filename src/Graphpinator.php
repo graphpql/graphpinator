@@ -4,22 +4,20 @@ declare(strict_types = 1);
 
 namespace Graphpinator;
 
-final class Graphpinator
+final class Graphpinator implements \Psr\Log\LoggerAwareInterface
 {
     use \Nette\SmartObject;
 
-    public const QUERY = 'query';
-    public const VARIABLES = 'variables';
-    public const OPERATION_NAME = 'operationName';
-
     private \Graphpinator\Type\Schema $schema;
-    private \Graphpinator\Module\ModuleSet $modules;
     private bool $catchExceptions;
+    private \Graphpinator\Module\ModuleSet $modules;
+    private \Psr\Log\LoggerInterface $logger;
 
     public function __construct(
         \Graphpinator\Type\Schema $schema,
         bool $catchExceptions = false,
-        ?\Graphpinator\Module\ModuleSet $modules = null
+        ?\Graphpinator\Module\ModuleSet $modules = null,
+        ?\Psr\Log\LoggerInterface $logger = null
     )
     {
         $this->schema = $schema;
@@ -27,11 +25,18 @@ final class Graphpinator
         $this->modules = $modules instanceof \Graphpinator\Module\ModuleSet
             ? $modules
             : new \Graphpinator\Module\ModuleSet([]);
+        $this->logger = $logger instanceof \Psr\Log\LoggerInterface
+            ? $logger
+            : new \Psr\Log\NullLogger();
     }
 
-    public function run(\Graphpinator\Request $request) : \Graphpinator\Response
+    public function run(\Graphpinator\Request\RequestFactory $requestFactory) : \Graphpinator\Response
     {
         try {
+            $request = $requestFactory->create();
+
+            $this->logger->debug($request->getQuery());
+
             $parsedRequest = \Graphpinator\Parser\Parser::parseString($request->getQuery())
                 ->normalize($this->schema)
                 ->createRequest($request->getOperationName(), $request->getVariables());
@@ -46,11 +51,20 @@ final class Graphpinator
                 throw $exception;
             }
 
-            return new \Graphpinator\Response(null, [
-                $exception instanceof \Graphpinator\Exception\GraphpinatorBase
-                    ? $exception
-                    : \Graphpinator\Exception\GraphpinatorBase::notOutputableResponse(),
-            ]);
+            if ($exception instanceof \Graphpinator\Exception\GraphpinatorBase) {
+                $this->logger->info($exception->getMessage());
+
+                return new \Graphpinator\Response(null, [$exception]);
+            }
+
+            $this->logger->emergency($exception->getMessage());
+
+            return new \Graphpinator\Response(null, [\Graphpinator\Exception\GraphpinatorBase::notOutputableResponse()]);
         }
+    }
+
+    public function setLogger(\Psr\Log\LoggerInterface $logger) : void
+    {
+        $this->logger = $logger;
     }
 }

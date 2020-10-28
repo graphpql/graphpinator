@@ -24,7 +24,7 @@ final class FragmentSpread
 
         foreach ($this->children as $field) {
             $field->getDirectives()->merge($directives);
-            $field->setTypeCondition($typeCond);
+            $field->applyFragmentTypeCondition($typeCond);
         }
     }
 

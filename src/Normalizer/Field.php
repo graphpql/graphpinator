@@ -65,9 +65,23 @@ final class Field
         return $this->typeCond;
     }
 
-    public function setTypeCondition(?\Graphpinator\Type\Contract\NamedDefinition $typeCond) : void
+    public function applyFragmentTypeCondition(?\Graphpinator\Type\Contract\NamedDefinition $typeCond) : void
     {
-        $this->typeCond = $typeCond;
+        if (!$typeCond instanceof \Graphpinator\Type\Contract\NamedDefinition) {
+            return;
+        }
+
+        if (!$this->typeCond instanceof \Graphpinator\Type\Contract\NamedDefinition) {
+            $this->typeCond = $typeCond;
+
+            return;
+        }
+
+        if ($this->typeCond->isInstanceOf($typeCond)) {
+            return;
+        }
+
+        throw new \Exception('Invalid fragment type condition');
     }
 
     public function applyVariables(\Graphpinator\Resolver\VariableValueSet $variables) : self

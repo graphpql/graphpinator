@@ -8,6 +8,6 @@ namespace Graphpinator\Type\Contract;
 abstract class AbstractDefinition extends \Graphpinator\Type\Contract\NamedDefinition implements \Graphpinator\Type\Contract\Outputable
 {
     abstract public function isImplementedBy(\Graphpinator\Type\Contract\Definition $definition) : bool;
-    
+
     abstract public function createResolvedValue($rawValue) : \Graphpinator\Value\TypeIntermediateValue;
 }

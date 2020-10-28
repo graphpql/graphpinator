@@ -21,20 +21,6 @@ trait TInterfaceImplementor
     }
 
     /**
-     * Returns fields defined for this type.
-     */
-    public function getFields() : \Graphpinator\Field\FieldSet
-    {
-        if (!$this->fields instanceof \Graphpinator\Field\FieldSet) {
-            $this->fields = $this->getFieldDefinition();
-
-            $this->validateInterfaces();
-        }
-
-        return $this->fields;
-    }
-
-    /**
      * Checks whether this type implements given interface.
      * @param \Graphpinator\Type\InterfaceType $interface
      */

@@ -32,7 +32,7 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
     public function testSimple(\Graphpinator\Json $request, \Graphpinator\Json $expected) : void
     {
         $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
-        $result = $graphpinator->run(\Graphpinator\Request::fromJson($request));
+        $result = $graphpinator->run(new \Graphpinator\Request\JsonRequestFactory($request));
 
         self::assertSame($expected->toString(), $result->toString());
     }
@@ -72,7 +72,7 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
         $httpRequest->method('getMethod')->willReturn('GET');
 
         $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
-        $result = $graphpinator->run(\Graphpinator\Request::fromHttpRequest($httpRequest));
+        $result = $graphpinator->run(new \Graphpinator\Request\PsrRequestFactory($httpRequest));
 
         self::assertSame($expected->toString(), $result->toString());
     }
@@ -92,7 +92,7 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
         $httpRequest->method('getMethod')->willReturn('POST');
 
         $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
-        $result = $graphpinator->run(\Graphpinator\Request::fromHttpRequest($httpRequest));
+        $result = $graphpinator->run(new \Graphpinator\Request\PsrRequestFactory($httpRequest));
 
         self::assertSame($expected->toString(), $result->toString());
     }
@@ -112,7 +112,7 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
         $httpRequest->method('getMethod')->willReturn('GET');
 
         $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
-        $result = $graphpinator->run(\Graphpinator\Request::fromHttpRequest($httpRequest));
+        $result = $graphpinator->run(new \Graphpinator\Request\PsrRequestFactory($httpRequest));
 
         self::assertSame($expected->toString(), $result->toString());
     }
@@ -136,7 +136,7 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
         $httpRequest->method('getMethod')->willReturn('GET');
 
         $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
-        $result = $graphpinator->run(\Graphpinator\Request::fromHttpRequest($httpRequest));
+        $result = $graphpinator->run(new \Graphpinator\Request\PsrRequestFactory($httpRequest));
 
         self::assertSame($expected->toString(), $result->toString());
     }
@@ -215,6 +215,6 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
         $this->expectException($exception);
 
         $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
-        $graphpinator->run(\Graphpinator\Request::fromJson($request));
+        $graphpinator->run(new \Graphpinator\Request\JsonRequestFactory($request));
     }
 }
