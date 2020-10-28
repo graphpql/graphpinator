@@ -157,6 +157,12 @@ final class FragmentTest extends \PHPUnit\Framework\TestCase
                 ]),
                 \Graphpinator\Json::fromObject((object) ['data' => ['fieldUnion' => ['fieldXyz' => ['name' => 'Test 456']]]]),
             ],
+            [
+                \Graphpinator\Json::fromObject((object) [
+                    'query' => 'query queryName { fieldAbstractList { fieldXyz { __typename ... on Abc { name } } } }',
+                ]),
+                \Graphpinator\Json::fromObject((object) ['data' => ['fieldAbstractList' => ['fieldXyz' => ['__typename' => 'Xyz']]]]),
+            ],
         ];
     }
 

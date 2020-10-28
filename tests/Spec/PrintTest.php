@@ -572,15 +572,13 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldMultiInputMultiUpload(
             fileInputs: [UploadInput!]!
           ): [UploadType!]!
-          fieldList: DefaultsInput!
-          fieldAbstractList: [TestUnion!]!
+          fieldList: [Xyz!]!
+          fieldAbstractList: TestUnion
           fieldNull: NullFieldResolution
           fieldNullList: NullListResolution
           fieldAbstractNullList: [TestUnion!]!
-          fieldArgumentDefaults: DefaultsInput!
-          fieldMerge: ComplexDefaultsInput!
-          fieldInvalidInput: SimpleInput!
-          fieldEmptyObjectInput: TestUnion
+          fieldArgumentDefaults: SimpleType!
+          fieldInvalidInput: SimpleType
         }
         
         """
@@ -613,6 +611,24 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           name: String!
           number: [Int!]!
           bool: Boolean
+        }
+        
+        """
+        Simple desc
+        """
+        type SimpleType {
+          fieldName(
+            name: String! = "testValue"
+          ): String!
+          fieldNumber(
+            number: [Int!]! = [
+              1,
+              2
+            ]
+          ): [Int!]!
+          fieldBool(
+            bool: Boolean = true
+          ): Boolean
         }
         
         """
@@ -1172,15 +1188,13 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldMultiInputMultiUpload(
             fileInputs: [UploadInput!]!
           ): [UploadType!]!
-          fieldList: DefaultsInput!
-          fieldAbstractList: [TestUnion!]!
+          fieldList: [Xyz!]!
+          fieldAbstractList: TestUnion
           fieldNull: NullFieldResolution
           fieldNullList: NullListResolution
           fieldAbstractNullList: [TestUnion!]!
-          fieldArgumentDefaults: DefaultsInput!
-          fieldMerge: ComplexDefaultsInput!
-          fieldInvalidInput: SimpleInput!
-          fieldEmptyObjectInput: TestUnion
+          fieldArgumentDefaults: SimpleType!
+          fieldInvalidInput: SimpleType
         }
         
         """
@@ -1213,6 +1227,24 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           name: String!
           number: [Int!]!
           bool: Boolean
+        }
+        
+        """
+        Simple desc
+        """
+        type SimpleType {
+          fieldName(
+            name: String! = "testValue"
+          ): String!
+          fieldNumber(
+            number: [Int!]! = [
+              1,
+              2
+            ]
+          ): [Int!]!
+          fieldBool(
+            bool: Boolean = true
+          ): Boolean
         }
         
         """
@@ -1515,15 +1547,13 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldMultiInputMultiUpload(
             fileInputs: [UploadInput!]!
           ): [UploadType!]!
-          fieldList: DefaultsInput!
-          fieldAbstractList: [TestUnion!]!
+          fieldList: [Xyz!]!
+          fieldAbstractList: TestUnion
           fieldNull: NullFieldResolution
           fieldNullList: NullListResolution
           fieldAbstractNullList: [TestUnion!]!
-          fieldArgumentDefaults: DefaultsInput!
-          fieldMerge: ComplexDefaultsInput!
-          fieldInvalidInput: SimpleInput!
-          fieldEmptyObjectInput: TestUnion
+          fieldArgumentDefaults: SimpleType!
+          fieldInvalidInput: SimpleType
         }
         
         """
@@ -1543,6 +1573,24 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           green: Int! @intConstraint(min: 0, max: 255)
           blue: Int! @intConstraint(min: 0, max: 255)
           alpha: Float! @floatConstraint(min: 0, max: 1)
+        }
+        
+        """
+        Simple desc
+        """
+        type SimpleType {
+          fieldName(
+            name: String! = "testValue"
+          ): String!
+          fieldNumber(
+            number: [Int!]! = [
+              1,
+              2
+            ]
+          ): [Int!]!
+          fieldBool(
+            bool: Boolean = true
+          ): Boolean
         }
         
         type UploadType {
@@ -2115,15 +2163,13 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldMultiInputMultiUpload(
             fileInputs: [UploadInput!]!
           ): [UploadType!]!
-          fieldList: DefaultsInput!
-          fieldAbstractList: [TestUnion!]!
+          fieldList: [Xyz!]!
+          fieldAbstractList: TestUnion
           fieldNull: NullFieldResolution
           fieldNullList: NullListResolution
           fieldAbstractNullList: [TestUnion!]!
-          fieldArgumentDefaults: DefaultsInput!
-          fieldMerge: ComplexDefaultsInput!
-          fieldInvalidInput: SimpleInput!
-          fieldEmptyObjectInput: TestUnion
+          fieldArgumentDefaults: SimpleType!
+          fieldInvalidInput: SimpleType
         }
         
         """
@@ -2143,6 +2189,24 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           green: Int! @intConstraint(min: 0, max: 255)
           blue: Int! @intConstraint(min: 0, max: 255)
           alpha: Float! @floatConstraint(min: 0, max: 1)
+        }
+        
+        """
+        Simple desc
+        """
+        type SimpleType {
+          fieldName(
+            name: String! = "testValue"
+          ): String!
+          fieldNumber(
+            number: [Int!]! = [
+              1,
+              2
+            ]
+          ): [Int!]!
+          fieldBool(
+            bool: Boolean = true
+          ): Boolean
         }
         
         type UploadType {
