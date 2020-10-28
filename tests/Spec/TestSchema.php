@@ -251,8 +251,8 @@ final class TestSchema
                     ),
                     new \Graphpinator\Field\ResolvableField(
                         'fieldAbstractList',
-                        TestSchema::getUnion(),
-                        static function () {
+                        TestSchema::getUnion()->list(),
+                        static function () : array {
                             return [
                                 1,
                                 1,
