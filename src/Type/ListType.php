@@ -36,7 +36,7 @@ final class ListType extends \Graphpinator\Type\Contract\ModifierDefinition
 
         foreach ($parentResult->getRawValue() as $rawValue) {
             $value = $this->innerType->createResolvedValue($rawValue);
-            
+
             $return[] = $this->innerType->resolve($requestedFields, $value);
         }
 
