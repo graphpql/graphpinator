@@ -30,7 +30,6 @@ final class ListType extends \Graphpinator\Type\Contract\ModifierDefinition
     ) : \Graphpinator\Value\ListResolvedValue
     {
         \assert($parentResult instanceof \Graphpinator\Value\ListIntermediateValue);
-        \assert($this->innerType instanceof \Graphpinator\Type\Contract\Resolvable);
 
         $return = [];
 

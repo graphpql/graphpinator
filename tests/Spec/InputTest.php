@@ -260,9 +260,22 @@ final class InputTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldAbstractList { fieldXyz { name } } }',
+                    'query' => 'query queryName { 
+                        fieldAbstractList { 
+                            ... on Abc { __typename fieldXyz { name } } 
+                            ... on Xyz { __typename name }
+                            } 
+                        }',
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['fieldAbstractList' => ['fieldXyz' => ['name' => 'Test 123']]]]),
+                \Graphpinator\Json::fromObject((object) [
+                    'data' => [
+                        'fieldAbstractList' => [
+                            ['__typename' => 'Abc', 'fieldXyz' => ['name' => 'Test 123']],
+                            ['__typename' => 'Abc', 'fieldXyz' => ['name' => 'Test 123']],
+                            ['__typename' => 'Xyz', 'name' => 'testName'],
+                        ],
+                    ],
+                ]),
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
