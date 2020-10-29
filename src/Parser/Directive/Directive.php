@@ -34,8 +34,14 @@ final class Directive
         \Graphpinator\Container\Container $typeContainer
     ) : \Graphpinator\Normalizer\Directive\Directive
     {
+        $directive = $typeContainer->getDirective($this->name);
+
+        if (!$directive instanceof \Graphpinator\Directive\ExecutableDirective) {
+            throw new \Graphpinator\Exception\Normalizer\DirectiveNotExecutable();
+        }
+
         return new \Graphpinator\Normalizer\Directive\Directive(
-            $typeContainer->getDirective($this->name),
+            $directive,
             $this->arguments,
         );
     }

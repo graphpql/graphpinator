@@ -8,11 +8,11 @@ final class Directive
 {
     use \Nette\SmartObject;
 
-    private \Graphpinator\Directive\Directive $directive;
+    private \Graphpinator\Directive\ExecutableDirective $directive;
     private \Graphpinator\Parser\Value\NamedValueSet $arguments;
 
     public function __construct(
-        \Graphpinator\Directive\Directive $directive,
+        \Graphpinator\Directive\ExecutableDirective $directive,
         ?\Graphpinator\Parser\Value\NamedValueSet $arguments = null
     )
     {
@@ -21,7 +21,7 @@ final class Directive
             ?? new \Graphpinator\Parser\Value\NamedValueSet([]);
     }
 
-    public function getDirective() : \Graphpinator\Directive\Directive
+    public function getDirective() : \Graphpinator\Directive\ExecutableDirective
     {
         return $this->directive;
     }
