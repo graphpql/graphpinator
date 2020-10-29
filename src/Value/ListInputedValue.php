@@ -4,13 +4,8 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Value;
 
-final class ListInputedValue implements \Graphpinator\Value\InputedValue, \Graphpinator\Value\ListValue, \Iterator, \ArrayAccess
+final class ListInputedValue extends \Graphpinator\Value\ListValue implements \Graphpinator\Value\InputedValue
 {
-    use \Nette\SmartObject;
-
-    private \Graphpinator\Type\ListType $type;
-    private array $value;
-
     public function __construct(\Graphpinator\Type\ListType $type, array $rawValue)
     {
         $innerType = $type->getInnerType();
@@ -76,48 +71,5 @@ final class ListInputedValue implements \Graphpinator\Value\InputedValue, \Graph
         return '[' . \PHP_EOL . $innerIndent . \implode(',' . \PHP_EOL . $innerIndent, $component) . \PHP_EOL . $indent . ']';
     }
 
-    public function current() : InputedValue
-    {
-        return \current($this->value);
-    }
 
-    public function next() : void
-    {
-        \next($this->value);
-    }
-
-    public function key() : int
-    {
-        return \key($this->value);
-    }
-
-    public function valid() : bool
-    {
-        return \key($this->value) !== null;
-    }
-
-    public function rewind() : void
-    {
-        \reset($this->value);
-    }
-
-    public function offsetExists($offset) : bool
-    {
-        return \array_key_exists($offset, $this->value);
-    }
-
-    public function offsetGet($offset) : InputedValue
-    {
-        return $this->value[$offset];
-    }
-
-    public function offsetSet($offset, $value) : void
-    {
-        $this->value[$offset] = $value;
-    }
-
-    public function offsetUnset($offset) : void
-    {
-        unset($this->value[$offset]);
-    }
 }

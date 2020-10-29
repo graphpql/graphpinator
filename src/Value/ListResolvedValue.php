@@ -4,13 +4,8 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Value;
 
-final class ListResolvedValue implements \Graphpinator\Value\OutputValue, \Graphpinator\Value\ListValue
+final class ListResolvedValue extends ListValue implements \Graphpinator\Value\OutputValue
 {
-    use \Nette\SmartObject;
-
-    private \Graphpinator\Type\ListType $type;
-    private array $value;
-
     public function __construct(\Graphpinator\Type\ListType $type, array $rawValue)
     {
         $this->type = $type;
