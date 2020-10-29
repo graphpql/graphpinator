@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Value;
 
-final class ListResolvedValue extends ListValue implements \Graphpinator\Value\OutputValue
+final class ListResolvedValue extends \Graphpinator\Value\ListValue implements \Graphpinator\Value\OutputValue
 {
     public function __construct(\Graphpinator\Type\ListType $type, array $rawValue)
     {
