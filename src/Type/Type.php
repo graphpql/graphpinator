@@ -79,9 +79,9 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
         return parent::isInstanceOf($type);
     }
 
-    final public function getFields() : \Graphpinator\Field\FieldSet
+    final public function getFields() : \Graphpinator\Field\ResolvableFieldSet
     {
-        if (!$this->fields instanceof \Graphpinator\Field\FieldSet) {
+        if (!$this->fields instanceof \Graphpinator\Field\ResolvableFieldSet) {
             $this->fields = $this->getFieldDefinition();
 
             $this->validateInterfaces();
