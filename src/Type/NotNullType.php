@@ -35,6 +35,8 @@ final class NotNullType extends \Graphpinator\Type\Contract\ModifierDefinition
         \Graphpinator\Value\ResolvedValue $parentResult
     ) : \Graphpinator\Value\ResolvedValue
     {
+        \assert($this->innerType instanceof \Graphpinator\Type\Contract\Resolvable);
+
         return $this->innerType->resolve($requestedFields, $parentResult);
     }
 

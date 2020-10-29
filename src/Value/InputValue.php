@@ -17,8 +17,8 @@ final class InputValue implements \Graphpinator\Value\InputedValue
     {
         $rawValue = self::merge($rawValue, (object) $type->getArguments()->getRawDefaults());
 
-        foreach ($rawValue as $name => $temp) {
-            if (isset($type->getArguments()[$name])) {
+        foreach ((array) $rawValue as $name => $temp) {
+            if ($type->getArguments()->offsetExists($name)) {
                 continue;
             }
 
@@ -42,7 +42,7 @@ final class InputValue implements \Graphpinator\Value\InputedValue
     {
         $return = new \stdClass();
 
-        foreach ($this->value as $fieldName => $fieldValue) {
+        foreach ((array) $this->value as $fieldName => $fieldValue) {
             \assert($fieldValue instanceof ArgumentValue);
 
             $return->{$fieldName} = $fieldValue->getValue()->getRawValue();
@@ -60,7 +60,7 @@ final class InputValue implements \Graphpinator\Value\InputedValue
     {
         $component = [];
 
-        foreach ($this->value as $key => $value) {
+        foreach ((array) $this->value as $key => $value) {
             \assert($value instanceof ArgumentValue);
 
             $component[] = $key . ':' . $value->getValue()->printValue();
@@ -79,7 +79,7 @@ final class InputValue implements \Graphpinator\Value\InputedValue
         $indent = \str_repeat('  ', $indentLevel);
         $innerIndent = $indent . '  ';
 
-        foreach ($this->value as $key => $value) {
+        foreach ((array) $this->value as $key => $value) {
             \assert($value instanceof ArgumentValue);
 
             $component[] = $key . ': ' . $value->getValue()->prettyPrint($indentLevel + 1);
@@ -90,7 +90,7 @@ final class InputValue implements \Graphpinator\Value\InputedValue
 
     private static function merge(\stdClass $core, \stdClass $supplement) : \stdClass
     {
-        foreach ($supplement as $key => $value) {
+        foreach ((array) $supplement as $key => $value) {
             if (\property_exists($core, $key)) {
                 if ($core->{$key} instanceof \stdClass &&
                     $supplement->{$key} instanceof \stdClass) {

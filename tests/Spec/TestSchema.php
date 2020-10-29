@@ -273,6 +273,8 @@ final class TestSchema
                                             $print = $item;
                                         } elseif ($item === null) {
                                             $print = 'null';
+                                        } else {
+                                            throw new \RuntimeException();
                                         }
 
                                         $str .= $key . ': ' . $print . '; ';
