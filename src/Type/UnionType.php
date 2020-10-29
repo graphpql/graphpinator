@@ -51,6 +51,7 @@ abstract class UnionType extends \Graphpinator\Type\Contract\AbstractDefinition
             $typeNames[] = $type->printName();
         }
 
-        return 'union ' . $this->getName() . ' = ' . \implode(' | ', $typeNames);
+        return $this->printDescription()
+            . 'union ' . $this->getName() . ' = ' . \implode(' | ', $typeNames);
     }
 }
