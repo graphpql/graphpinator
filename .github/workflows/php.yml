@@ -33,6 +33,28 @@ jobs:
 
     - name: Mutation tests
       run: composer run-script infection
+  phpstan:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '7.4'
+        ini-values: zend.assertions=1, assert.exception=1
+      env:
+        update: true
+
+    - name: Validate composer.json and composer.lock
+      run: composer validate
+
+    - name: Install dependencies
+      run: composer install --prefer-dist --no-progress --no-suggest
+
+    - name: Phpstan
+      run: composer run-script phpstan
 
   codestyle:
     runs-on: ubuntu-latest
@@ -55,4 +77,3 @@ jobs:
 
       - name: Codestyle
         run: composer run-script codestyle
-

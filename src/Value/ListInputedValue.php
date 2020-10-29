@@ -70,6 +70,4 @@ final class ListInputedValue extends \Graphpinator\Value\ListValue implements \G
 
         return '[' . \PHP_EOL . $innerIndent . \implode(',' . \PHP_EOL . $innerIndent, $component) . \PHP_EOL . $indent . ']';
     }
-
-
 }
