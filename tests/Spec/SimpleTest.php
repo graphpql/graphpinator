@@ -21,6 +21,25 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
                 ]),
                 \Graphpinator\Json::fromObject((object) ['data' => ['aliasName' => ['fieldXyz' => ['name' => 'Test 123']]]]),
             ],
+            [
+                \Graphpinator\Json::fromObject((object) [
+                    'query' => 'query queryName { 
+                        fieldAbstractList { 
+                            ... on Abc { __typename fieldXyz { name } } 
+                            ... on Xyz { __typename name }
+                            } 
+                        }',
+                ]),
+                \Graphpinator\Json::fromObject((object) [
+                    'data' => [
+                        'fieldAbstractList' => [
+                            ['__typename' => 'Abc', 'fieldXyz' => ['name' => 'Test 123']],
+                            ['__typename' => 'Abc', 'fieldXyz' => ['name' => 'Test 123']],
+                            ['__typename' => 'Xyz', 'name' => 'testName'],
+                        ],
+                    ],
+                ]),
+            ],
         ];
     }
 
