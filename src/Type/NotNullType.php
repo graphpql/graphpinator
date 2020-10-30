@@ -20,7 +20,7 @@ final class NotNullType extends \Graphpinator\Type\Contract\ModifierDefinition
 
     public function createResolvedValue($rawValue) : \Graphpinator\Value\ResolvedValue
     {
-        \assert($this->innerType instanceof \Graphpinator\Type\Contract\Resolvable);
+        \assert($this->innerType instanceof \Graphpinator\Type\Contract\Outputable);
         $value = $this->innerType->createResolvedValue($rawValue);
 
         if ($value instanceof \Graphpinator\Value\NullValue) {
