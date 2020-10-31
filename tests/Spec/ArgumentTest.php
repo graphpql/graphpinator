@@ -29,6 +29,20 @@ final class ArgumentTest extends \PHPUnit\Framework\TestCase
                     ],
                 ]),
             ],
+            [
+                \Graphpinator\Json::fromObject((object) [
+                    'query' => 'query queryName { fieldArgumentSet { fieldName fieldNumber fieldBool } }',
+                ]),
+                \Graphpinator\Json::fromObject((object) [
+                    'data' => [
+                        'fieldArgumentSet' => [
+                            'fieldName' => 'setTestValue',
+                            'fieldNumber' => [1, 2, 3, 4, 5],
+                            'fieldBool' => false,
+                        ],
+                    ],
+                ]),
+            ],
         ];
     }
 

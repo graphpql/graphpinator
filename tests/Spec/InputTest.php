@@ -248,28 +248,6 @@ final class InputTest extends \PHPUnit\Framework\TestCase
                     ],
                 ]),
             ],
-            [
-                \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldList { name } }',
-                ]),
-                \Graphpinator\Json::fromObject((object) [
-                    'data' => [
-                        'fieldList' => [['name' => 'testValue1'], ['name' => 'testValue2'], ['name' => 'testValue3']],
-                    ],
-                ]),
-            ],
-            [
-                \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldNull { stringType interfaceType unionType } }',
-                ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['fieldNull' => null]]),
-            ],
-            [
-                \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldNullList { stringListType interfaceListType unionListType } }',
-                ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['fieldNullList' => null]]),
-            ],
         ];
     }
 

@@ -578,6 +578,17 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldNullList: NullListResolution
           fieldAbstractNullList: [TestUnion!]!
           fieldArgumentDefaults: SimpleType!
+          fieldArgumentSet(
+            name: String = "setTestValue"
+            number: [Int] = [
+              1,
+              2,
+              3,
+              4,
+              5
+            ]
+            bool: Boolean = false
+          ): SimpleTypeNotDefaults
           fieldInvalidInput: SimpleType
         }
         
@@ -629,6 +640,15 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldBool(
             bool: Boolean = true
           ): Boolean
+        }
+        
+        """
+        Simple type not defaults desc
+        """
+        type SimpleTypeNotDefaults {
+          fieldName: String!
+          fieldNumber: [Int!]!
+          fieldBool: Boolean
         }
         
         """
@@ -1194,6 +1214,17 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldNullList: NullListResolution
           fieldAbstractNullList: [TestUnion!]!
           fieldArgumentDefaults: SimpleType!
+          fieldArgumentSet(
+            name: String = "setTestValue"
+            number: [Int] = [
+              1,
+              2,
+              3,
+              4,
+              5
+            ]
+            bool: Boolean = false
+          ): SimpleTypeNotDefaults
           fieldInvalidInput: SimpleType
         }
         
@@ -1245,6 +1276,15 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldBool(
             bool: Boolean = true
           ): Boolean
+        }
+        
+        """
+        Simple type not defaults desc
+        """
+        type SimpleTypeNotDefaults {
+          fieldName: String!
+          fieldNumber: [Int!]!
+          fieldBool: Boolean
         }
         
         """
@@ -1553,6 +1593,17 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldNullList: NullListResolution
           fieldAbstractNullList: [TestUnion!]!
           fieldArgumentDefaults: SimpleType!
+          fieldArgumentSet(
+            name: String = "setTestValue"
+            number: [Int] = [
+              1,
+              2,
+              3,
+              4,
+              5
+            ]
+            bool: Boolean = false
+          ): SimpleTypeNotDefaults
           fieldInvalidInput: SimpleType
         }
         
@@ -1591,6 +1642,15 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldBool(
             bool: Boolean = true
           ): Boolean
+        }
+        
+        """
+        Simple type not defaults desc
+        """
+        type SimpleTypeNotDefaults {
+          fieldName: String!
+          fieldNumber: [Int!]!
+          fieldBool: Boolean
         }
         
         type UploadType {
@@ -2169,6 +2229,17 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldNullList: NullListResolution
           fieldAbstractNullList: [TestUnion!]!
           fieldArgumentDefaults: SimpleType!
+          fieldArgumentSet(
+            name: String = "setTestValue"
+            number: [Int] = [
+              1,
+              2,
+              3,
+              4,
+              5
+            ]
+            bool: Boolean = false
+          ): SimpleTypeNotDefaults
           fieldInvalidInput: SimpleType
         }
         
@@ -2207,6 +2278,15 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldBool(
             bool: Boolean = true
           ): Boolean
+        }
+        
+        """
+        Simple type not defaults desc
+        """
+        type SimpleTypeNotDefaults {
+          fieldName: String!
+          fieldNumber: [Int!]!
+          fieldBool: Boolean
         }
         
         type UploadType {

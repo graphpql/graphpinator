@@ -115,6 +115,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                                 ['name' => 'NullFieldResolution'],
                                 ['name' => 'NullListResolution'],
                                 ['name' => 'SimpleType'],
+                                ['name' => 'SimpleTypeNotDefaults'],
                                 ['name' => 'ListConstraintInput'],
                                 ['name' => 'ID'],
                                 ['name' => 'Int'],

@@ -72,6 +72,7 @@ final class TestSchema
             'NullFieldResolution' => self::getNullFieldResolution(),
             'NullListResolution' => self::getNullListResolution(),
             'SimpleType' => self::getSimpleType(),
+            'SimpleTypeNoDefaults' => self::getSimpleTypeNoDefaults(),
         ], [
             'testDirective' => self::getTestDirective(),
             'invalidDirective' => self::getInvalidDirective(),
@@ -291,6 +292,30 @@ final class TestSchema
                         static function () {
                             return [];
                         },
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'fieldArgumentSet',
+                        TestSchema::getSimpleTypeNoDefaults(),
+                        static function ($parent, $name, $number, $bool) {
+                            return (object) ['fieldName' => $name, 'fieldNumber' => $number, 'fieldBool' => $bool];
+                        },
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'name',
+                                \Graphpinator\Container\Container::String(),
+                                'setTestValue',
+                            ),
+                            new \Graphpinator\Argument\Argument(
+                                'number',
+                                \Graphpinator\Container\Container::Int()->list(),
+                                [1, 2, 3, 4, 5],
+                            ),
+                            new \Graphpinator\Argument\Argument(
+                                'bool',
+                                \Graphpinator\Container\Container::Boolean(),
+                                false,
+                            ),
+                        ]),
                     ),
                     new \Graphpinator\Field\ResolvableField(
                         'fieldInvalidInput',
@@ -1376,6 +1401,47 @@ final class TestSchema
                                 true,
                             ),
                         ]),
+                    ),
+                ]);
+            }
+
+            protected function validateNonNullValue($rawValue) : bool
+            {
+                return true;
+            }
+        };
+    }
+
+    public static function getSimpleTypeNoDefaults() : \Graphpinator\Type\Type
+    {
+        return new class extends \Graphpinator\Type\Type
+        {
+            protected const NAME = 'SimpleTypeNotDefaults';
+            protected const DESCRIPTION = 'Simple type not defaults desc';
+
+            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+            {
+                return new \Graphpinator\Field\ResolvableFieldSet([
+                    new \Graphpinator\Field\ResolvableField(
+                        'fieldName',
+                        \Graphpinator\Container\Container::String()->notNull(),
+                        static function ($values) {
+                            return $values->fieldName;
+                        },
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'fieldNumber',
+                        \Graphpinator\Container\Container::Int()->notNullList(),
+                        static function ($values) {
+                            return $values->fieldNumber;
+                        },
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'fieldBool',
+                        \Graphpinator\Container\Container::Boolean(),
+                        static function ($values) {
+                            return $values->fieldBool;
+                        },
                     ),
                 ]);
             }
