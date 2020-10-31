@@ -72,7 +72,6 @@ final class TestSchema
             'NullFieldResolution' => self::getNullFieldResolution(),
             'NullListResolution' => self::getNullListResolution(),
             'SimpleType' => self::getSimpleType(),
-            'SimpleTypeNoDefaults' => self::getSimpleTypeNoDefaults(),
         ], [
             'testDirective' => self::getTestDirective(),
             'invalidDirective' => self::getInvalidDirective(),
@@ -295,9 +294,9 @@ final class TestSchema
                     ),
                     new \Graphpinator\Field\ResolvableField(
                         'fieldArgumentSet',
-                        TestSchema::getSimpleTypeNoDefaults(),
+                        TestSchema::getSimpleType()->notNull(),
                         static function ($parent, $name, $number, $bool) {
-                            return (object) ['fieldName' => $name, 'fieldNumber' => $number, 'fieldBool' => $bool];
+                            return (object) ['name' => $name, 'number' => $number, 'bool' => $bool];
                         },
                         new \Graphpinator\Argument\ArgumentSet([
                             new \Graphpinator\Argument\Argument(
@@ -1364,7 +1363,8 @@ final class TestSchema
                         'fieldName',
                         \Graphpinator\Container\Container::String()->notNull(),
                         static function ($parent, $name) {
-                            return $name;
+                            return $parent->name
+                                ?? $name;
                         },
                         new \Graphpinator\Argument\ArgumentSet([
                             new \Graphpinator\Argument\Argument(
@@ -1378,7 +1378,8 @@ final class TestSchema
                         'fieldNumber',
                         \Graphpinator\Container\Container::Int()->notNullList(),
                         static function ($parent, $number) {
-                            return $number;
+                            return $parent->number
+                                ?? $number;
                         },
                         new \Graphpinator\Argument\ArgumentSet([
                             new \Graphpinator\Argument\Argument(
@@ -1392,7 +1393,8 @@ final class TestSchema
                         'fieldBool',
                         \Graphpinator\Container\Container::Boolean(),
                         static function ($parent, $bool) {
-                            return $bool;
+                            return $parent->bool
+                                ?? $bool;
                         },
                         new \Graphpinator\Argument\ArgumentSet([
                             new \Graphpinator\Argument\Argument(
@@ -1401,47 +1403,6 @@ final class TestSchema
                                 true,
                             ),
                         ]),
-                    ),
-                ]);
-            }
-
-            protected function validateNonNullValue($rawValue) : bool
-            {
-                return true;
-            }
-        };
-    }
-
-    public static function getSimpleTypeNoDefaults() : \Graphpinator\Type\Type
-    {
-        return new class extends \Graphpinator\Type\Type
-        {
-            protected const NAME = 'SimpleTypeNotDefaults';
-            protected const DESCRIPTION = 'Simple type not defaults desc';
-
-            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
-            {
-                return new \Graphpinator\Field\ResolvableFieldSet([
-                    new \Graphpinator\Field\ResolvableField(
-                        'fieldName',
-                        \Graphpinator\Container\Container::String()->notNull(),
-                        static function ($values) {
-                            return $values->fieldName;
-                        },
-                    ),
-                    new \Graphpinator\Field\ResolvableField(
-                        'fieldNumber',
-                        \Graphpinator\Container\Container::Int()->notNullList(),
-                        static function ($values) {
-                            return $values->fieldNumber;
-                        },
-                    ),
-                    new \Graphpinator\Field\ResolvableField(
-                        'fieldBool',
-                        \Graphpinator\Container\Container::Boolean(),
-                        static function ($values) {
-                            return $values->fieldBool;
-                        },
                     ),
                 ]);
             }

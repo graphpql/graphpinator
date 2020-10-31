@@ -588,7 +588,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
               5
             ]
             bool: Boolean = false
-          ): SimpleTypeNotDefaults
+          ): SimpleType!
           fieldInvalidInput: SimpleType
         }
         
@@ -640,15 +640,6 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldBool(
             bool: Boolean = true
           ): Boolean
-        }
-        
-        """
-        Simple type not defaults desc
-        """
-        type SimpleTypeNotDefaults {
-          fieldName: String!
-          fieldNumber: [Int!]!
-          fieldBool: Boolean
         }
         
         """
@@ -1224,7 +1215,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
               5
             ]
             bool: Boolean = false
-          ): SimpleTypeNotDefaults
+          ): SimpleType!
           fieldInvalidInput: SimpleType
         }
         
@@ -1276,15 +1267,6 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldBool(
             bool: Boolean = true
           ): Boolean
-        }
-        
-        """
-        Simple type not defaults desc
-        """
-        type SimpleTypeNotDefaults {
-          fieldName: String!
-          fieldNumber: [Int!]!
-          fieldBool: Boolean
         }
         
         """
@@ -1603,7 +1585,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
               5
             ]
             bool: Boolean = false
-          ): SimpleTypeNotDefaults
+          ): SimpleType!
           fieldInvalidInput: SimpleType
         }
         
@@ -1642,15 +1624,6 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldBool(
             bool: Boolean = true
           ): Boolean
-        }
-        
-        """
-        Simple type not defaults desc
-        """
-        type SimpleTypeNotDefaults {
-          fieldName: String!
-          fieldNumber: [Int!]!
-          fieldBool: Boolean
         }
         
         type UploadType {
@@ -2239,7 +2212,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
               5
             ]
             bool: Boolean = false
-          ): SimpleTypeNotDefaults
+          ): SimpleType!
           fieldInvalidInput: SimpleType
         }
         
@@ -2278,15 +2251,6 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldBool(
             bool: Boolean = true
           ): Boolean
-        }
-        
-        """
-        Simple type not defaults desc
-        """
-        type SimpleTypeNotDefaults {
-          fieldName: String!
-          fieldNumber: [Int!]!
-          fieldBool: Boolean
         }
         
         type UploadType {
