@@ -577,17 +577,9 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldNull: NullFieldResolution
           fieldNullList: NullListResolution
           fieldAbstractNullList: [TestUnion!]!
-          fieldArgumentDefaults: SimpleType!
-          fieldArgumentSet(
-            name: String = "setTestValue"
-            number: [Int] = [
-              1,
-              2,
-              3,
-              4,
-              5
-            ]
-            bool: Boolean = false
+          fieldArgumentDefaults(
+            inputNumberList: [Int]
+            inputBool: Boolean
           ): SimpleType!
           fieldInvalidInput: SimpleType
         }
@@ -1204,17 +1196,9 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldNull: NullFieldResolution
           fieldNullList: NullListResolution
           fieldAbstractNullList: [TestUnion!]!
-          fieldArgumentDefaults: SimpleType!
-          fieldArgumentSet(
-            name: String = "setTestValue"
-            number: [Int] = [
-              1,
-              2,
-              3,
-              4,
-              5
-            ]
-            bool: Boolean = false
+          fieldArgumentDefaults(
+            inputNumberList: [Int]
+            inputBool: Boolean
           ): SimpleType!
           fieldInvalidInput: SimpleType
         }
@@ -1574,17 +1558,9 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldNull: NullFieldResolution
           fieldNullList: NullListResolution
           fieldAbstractNullList: [TestUnion!]!
-          fieldArgumentDefaults: SimpleType!
-          fieldArgumentSet(
-            name: String = "setTestValue"
-            number: [Int] = [
-              1,
-              2,
-              3,
-              4,
-              5
-            ]
-            bool: Boolean = false
+          fieldArgumentDefaults(
+            inputNumberList: [Int]
+            inputBool: Boolean
           ): SimpleType!
           fieldInvalidInput: SimpleType
         }
@@ -2201,17 +2177,9 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldNull: NullFieldResolution
           fieldNullList: NullListResolution
           fieldAbstractNullList: [TestUnion!]!
-          fieldArgumentDefaults: SimpleType!
-          fieldArgumentSet(
-            name: String = "setTestValue"
-            number: [Int] = [
-              1,
-              2,
-              3,
-              4,
-              5
-            ]
-            bool: Boolean = false
+          fieldArgumentDefaults(
+            inputNumberList: [Int]
+            inputBool: Boolean
           ): SimpleType!
           fieldInvalidInput: SimpleType
         }

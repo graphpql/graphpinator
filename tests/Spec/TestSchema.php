@@ -288,31 +288,17 @@ final class TestSchema
                     new \Graphpinator\Field\ResolvableField(
                         'fieldArgumentDefaults',
                         TestSchema::getSimpleType()->notNull(),
-                        static function () {
-                            return [];
-                        },
-                    ),
-                    new \Graphpinator\Field\ResolvableField(
-                        'fieldArgumentSet',
-                        TestSchema::getSimpleType()->notNull(),
-                        static function ($parent, $name, $number, $bool) {
-                            return (object) ['name' => $name, 'number' => $number, 'bool' => $bool];
+                        static function ($parent, ?array $inputNumberList, ?bool $inputBool) {
+                            return (object) ['number' => $inputNumberList, 'bool' => $inputBool];
                         },
                         new \Graphpinator\Argument\ArgumentSet([
                             new \Graphpinator\Argument\Argument(
-                                'name',
-                                \Graphpinator\Container\Container::String(),
-                                'setTestValue',
-                            ),
-                            new \Graphpinator\Argument\Argument(
-                                'number',
+                                'inputNumberList',
                                 \Graphpinator\Container\Container::Int()->list(),
-                                [1, 2, 3, 4, 5],
                             ),
                             new \Graphpinator\Argument\Argument(
-                                'bool',
+                                'inputBool',
                                 \Graphpinator\Container\Container::Boolean(),
-                                false,
                             ),
                         ]),
                     ),

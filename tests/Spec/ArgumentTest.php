@@ -31,14 +31,28 @@ final class ArgumentTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldArgumentSet { fieldName fieldNumber fieldBool } }',
+                    'query' => 'query queryName { fieldArgumentDefaults(inputBool: false) { fieldName fieldNumber fieldBool } }',
                 ]),
                 \Graphpinator\Json::fromObject((object) [
                     'data' => [
-                        'fieldArgumentSet' => [
-                            'fieldName' => 'setTestValue',
-                            'fieldNumber' => [1, 2, 3, 4, 5],
+                        'fieldArgumentDefaults' => [
+                            'fieldName' => 'testValue',
+                            'fieldNumber' => [1, 2],
                             'fieldBool' => false,
+                        ],
+                    ],
+                ]),
+            ],
+            [
+                \Graphpinator\Json::fromObject((object) [
+                    'query' => 'query queryName { fieldArgumentDefaults(inputNumberList: [3, 4]) { fieldName fieldNumber fieldBool } }',
+                ]),
+                \Graphpinator\Json::fromObject((object) [
+                    'data' => [
+                        'fieldArgumentDefaults' => [
+                            'fieldName' => 'testValue',
+                            'fieldNumber' => [3, 4],
+                            'fieldBool' => true,
                         ],
                     ],
                 ]),
