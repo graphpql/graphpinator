@@ -11,28 +11,28 @@ final class MultipleOperationsTest extends \PHPUnit\Framework\TestCase
         return [
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldUnion { field1(arg2: null) { name } } }',
+                    'query' => 'query queryName { fieldAbc { fieldXyz(arg2: null) { name } } }',
                     'operationName' => 'queryName',
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['fieldUnion' => ['field1' => ['name' => 'Test 123']]]]),
+                \Graphpinator\Json::fromObject((object) ['data' => ['fieldAbc' => ['fieldXyz' => ['name' => 'Test 123']]]]),
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldUnion { 
-                    field1 { name } } } query secondQueryName { aliasName: fieldUnion { field1 { name } 
+                    'query' => 'query queryName { fieldAbc { 
+                    fieldXyz { name } } } query secondQueryName { aliasName: fieldAbc { fieldXyz { name } 
                     } }',
                     'operationName' => 'queryName',
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['fieldUnion' => ['field1' => ['name' => 'Test 123']]]]),
+                \Graphpinator\Json::fromObject((object) ['data' => ['fieldAbc' => ['fieldXyz' => ['name' => 'Test 123']]]]),
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldUnion { 
-                    field1 { name } } } query secondQueryName { aliasName: fieldUnion { field1 { name } 
+                    'query' => 'query queryName { fieldAbc { 
+                    fieldXyz { name } } } query secondQueryName { aliasName: fieldAbc { fieldXyz { name } 
                     } }',
                     'operationName' => 'secondQueryName',
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['aliasName' => ['field1' => ['name' => 'Test 123']]]]),
+                \Graphpinator\Json::fromObject((object) ['data' => ['aliasName' => ['fieldXyz' => ['name' => 'Test 123']]]]),
             ],
         ];
     }

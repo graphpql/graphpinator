@@ -11,12 +11,12 @@ final class InputTest extends \PHPUnit\Framework\TestCase
         return [
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldUnion { field1(arg2: null) { name } } }',
+                    'query' => 'query queryName { fieldAbc { fieldXyz(arg2: null) { name } } }',
                 ]),
                 \Graphpinator\Json::fromObject((object) [
                     'data' => [
-                        'fieldUnion' => [
-                            'field1' => [
+                        'fieldAbc' => [
+                            'fieldXyz' => [
                                 'name' => 'Test 123',
                             ],
                         ],
@@ -26,13 +26,13 @@ final class InputTest extends \PHPUnit\Framework\TestCase
             [
                 \Graphpinator\Json::fromObject((object) [
                     'query' => 'query queryName { 
-                        fieldUnion { field1(arg2: {name: "foo", innerList: [], innerNotNull: {name: "bar", number: []} }) { name } } 
+                        fieldAbc { fieldXyz(arg2: {name: "foo", innerList: [], innerNotNull: {name: "bar", number: []} }) { name } } 
                     }',
                 ]),
                 \Graphpinator\Json::fromObject((object) [
                     'data' => [
-                        'fieldUnion' => [
-                            'field1' => [
+                        'fieldAbc' => [
+                            'fieldXyz' => [
                                 'name' => 'name: foo; inner: null; innerList: []; innerNotNull: {name: bar; number: []; bool: null; }; ',
                             ],
                         ],
@@ -42,8 +42,8 @@ final class InputTest extends \PHPUnit\Framework\TestCase
             [
                 \Graphpinator\Json::fromObject((object) [
                     'query' => 'query queryName { 
-                        fieldUnion { 
-                            field1(arg2: {
+                        fieldAbc { 
+                            fieldXyz(arg2: {
                                 name: "foo", innerList: [], innerNotNull: {
                                     name: "bar", number: [123, 456]
                                 } 
@@ -56,8 +56,8 @@ final class InputTest extends \PHPUnit\Framework\TestCase
                 ]),
                 \Graphpinator\Json::fromObject((object) [
                     'data' => [
-                        'fieldUnion' => [
-                            'field1' => [
+                        'fieldAbc' => [
+                            'fieldXyz' => [
                                 'name' => 'name: foo; inner: null; innerList: []; innerNotNull: {name: bar; number: []; bool: null; }; ',
                             ],
                         ],
@@ -67,8 +67,8 @@ final class InputTest extends \PHPUnit\Framework\TestCase
             [
                 \Graphpinator\Json::fromObject((object) [
                     'query' => 'query queryName { 
-                        fieldUnion { 
-                            field1(arg2: {
+                        fieldAbc { 
+                            fieldXyz(arg2: {
                                 name: "foo", inner: null, innerList: [], innerNotNull: {
                                     name: "bar", number: []
                                 } 
@@ -81,8 +81,8 @@ final class InputTest extends \PHPUnit\Framework\TestCase
                 ]),
                 \Graphpinator\Json::fromObject((object) [
                     'data' => [
-                        'fieldUnion' => [
-                            'field1' => [
+                        'fieldAbc' => [
+                            'fieldXyz' => [
                                 'name' => 'name: foo; inner: null; innerList: []; innerNotNull: {name: bar; number: []; bool: null; }; ',
                             ],
                         ],
@@ -92,8 +92,8 @@ final class InputTest extends \PHPUnit\Framework\TestCase
             [
                 \Graphpinator\Json::fromObject((object) [
                     'query' => 'query queryName { 
-                        fieldUnion { 
-                            field1(arg2: {
+                        fieldAbc { 
+                            fieldXyz(arg2: {
                                 name: "foo", innerList: [], innerNotNull: {
                                     name: "bar", number: [], bool: null
                                 } 
@@ -106,8 +106,8 @@ final class InputTest extends \PHPUnit\Framework\TestCase
                 ]),
                 \Graphpinator\Json::fromObject((object) [
                     'data' => [
-                        'fieldUnion' => [
-                            'field1' => [
+                        'fieldAbc' => [
+                            'fieldXyz' => [
                                 'name' => 'name: foo; inner: null; innerList: []; innerNotNull: {name: bar; number: []; bool: null; }; ',
                             ],
                         ],
@@ -117,8 +117,8 @@ final class InputTest extends \PHPUnit\Framework\TestCase
             [
                 \Graphpinator\Json::fromObject((object) [
                     'query' => 'query queryName { 
-                        fieldUnion { 
-                            field1(arg2: {
+                        fieldAbc { 
+                            fieldXyz(arg2: {
                                 name: "foo", innerList: [], innerNotNull: {
                                     name: "bar", number: [], bool: true
                                 } 
@@ -131,8 +131,8 @@ final class InputTest extends \PHPUnit\Framework\TestCase
                 ]),
                 \Graphpinator\Json::fromObject((object) [
                     'data' => [
-                        'fieldUnion' => [
-                            'field1' => [
+                        'fieldAbc' => [
+                            'fieldXyz' => [
                                 'name' => 'name: foo; inner: null; innerList: []; innerNotNull: {name: bar; number: []; bool: 1; }; ',
                             ],
                         ],
@@ -142,8 +142,8 @@ final class InputTest extends \PHPUnit\Framework\TestCase
             [
                 \Graphpinator\Json::fromObject((object) [
                     'query' => 'query queryName { 
-                        fieldUnion { 
-                            field1(arg2: {
+                        fieldAbc { 
+                            fieldXyz(arg2: {
                                 name: "foo", innerList: [{
                                     name: "bar", number: []
                                 }, 
@@ -162,8 +162,8 @@ final class InputTest extends \PHPUnit\Framework\TestCase
                 ]),
                 \Graphpinator\Json::fromObject((object) [
                     'data' => [
-                        'fieldUnion' => [
-                            'field1' => [
+                        'fieldAbc' => [
+                            'fieldXyz' => [
                                 'name' => 'name: foo; inner: null; innerList: []; innerNotNull: {name: bar; number: []; bool: null; }; ',
                             ],
                         ],
@@ -176,8 +176,8 @@ final class InputTest extends \PHPUnit\Framework\TestCase
                         name: "bar", number: []
                     })
                     {
-                        fieldUnion { 
-                            field1(arg2: {
+                        fieldAbc { 
+                            fieldXyz(arg2: {
                                 name: "foo", innerList: [$var1, $var1], innerNotNull: $var1 
                             }) 
                             { 
@@ -188,8 +188,8 @@ final class InputTest extends \PHPUnit\Framework\TestCase
                 ]),
                 \Graphpinator\Json::fromObject((object) [
                     'data' => [
-                        'fieldUnion' => [
-                            'field1' => [
+                        'fieldAbc' => [
+                            'fieldXyz' => [
                                 'name' => 'name: foo; inner: null; innerList: []; innerNotNull: {name: bar; number: []; bool: null; }; ',
                             ],
                         ],
@@ -199,8 +199,8 @@ final class InputTest extends \PHPUnit\Framework\TestCase
             [
                 \Graphpinator\Json::fromObject((object) [
                     'query' => 'query queryName ($var1: SimpleInput) { 
-                        fieldUnion { 
-                            field1(arg2: {
+                        fieldAbc { 
+                            fieldXyz(arg2: {
                                 name: "foo", innerList: [$var1, $var1], innerNotNull: $var1 
                             }) 
                             { 
@@ -212,8 +212,8 @@ final class InputTest extends \PHPUnit\Framework\TestCase
                 ]),
                 \Graphpinator\Json::fromObject((object) [
                     'data' => [
-                        'fieldUnion' => [
-                            'field1' => [
+                        'fieldAbc' => [
+                            'fieldXyz' => [
                                 'name' => 'name: foo; inner: null; innerList: []; innerNotNull: {name: bar; number: []; bool: null; }; ',
                             ],
                         ],
@@ -226,8 +226,8 @@ final class InputTest extends \PHPUnit\Framework\TestCase
                         {name: "bar", number: []}
                     ])
                     { 
-                        fieldUnion { 
-                            field1(arg2: {
+                        fieldAbc { 
+                            fieldXyz(arg2: {
                                 name: "foo", innerList: $var1, innerNotNull: {
                                     name: "bar", number: []
                                 } 
@@ -240,8 +240,8 @@ final class InputTest extends \PHPUnit\Framework\TestCase
                 ]),
                 \Graphpinator\Json::fromObject((object) [
                     'data' => [
-                        'fieldUnion' => [
-                            'field1' => [
+                        'fieldAbc' => [
+                            'fieldXyz' => [
                                 'name' => 'name: foo; inner: null; innerList: []; innerNotNull: {name: bar; number: []; bool: null; }; ',
                             ],
                         ],
@@ -269,25 +269,26 @@ final class InputTest extends \PHPUnit\Framework\TestCase
         return [
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName ($var1: Int = "123") { fieldUnion { field1 { name } } }',
+                    'query' => 'query queryName ($var1: Int = "123") { fieldAbc { fieldXyz { name } } }',
                 ]),
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName ($var1: Int = 123) { fieldUnion { field1 { name } } }',
+                    'query' => 'query queryName ($var1: Int = 123) { fieldAbc { fieldXyz { name } } }',
                     'variables' => ['var1' => '123'],
                 ]),
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName ($var1: Int!) { fieldUnion { field1 { name } } }',
+                    'query' => 'query queryName ($var1: Int!) { fieldAbc { fieldXyz { name } } }',
                 ]),
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldUnion { field1(arg1: $varNonExistent) { name } } }',
+                    'query' => 'query queryName { fieldAbc { fieldXyz(arg1: $varNonExistent) { name } } }',
                 ]),
             ],
+
         ];
     }
 

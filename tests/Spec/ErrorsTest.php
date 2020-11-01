@@ -30,13 +30,30 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldUnion @invalidDirective() { field1 { name } } }',
+                    'query' => 'query queryName { fieldUnion @invalidDirective() { fieldXyz { name } } }',
                 ]),
                 \Graphpinator\Json::fromObject((object) ['errors' => [['message' => 'Server responded with unknown error.']]]),
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldThrow { field1 { name } } }',
+                    'query' => 'query queryName { fieldThrow { fieldXyz { name } } }',
+                ]),
+                \Graphpinator\Json::fromObject((object) ['errors' => [['message' => 'Server responded with unknown error.']]]),
+            ],
+            [
+                \Graphpinator\Json::fromObject((object) [
+                    'query' => 'query queryName { fieldInvalidInput { fieldName fieldNumber fieldBool notDefinedField } }',
+                ]),
+                \Graphpinator\Json::fromObject((object) ['errors' => [['message' => 'Server responded with unknown error.']]]),
+            ],
+            [
+                \Graphpinator\Json::fromObject((object) [
+                    'query' => 'query queryName { 
+                        fieldAbstractNullList { 
+                            ... on Abc { fieldXyz { name } } 
+                            ... on Xyz { name }
+                            } 
+                        }',
                 ]),
                 \Graphpinator\Json::fromObject((object) ['errors' => [['message' => 'Server responded with unknown error.']]]),
             ],

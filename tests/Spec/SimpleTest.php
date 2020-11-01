@@ -11,15 +11,56 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
         return [
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldUnion { field1 { name } } }',
+                    'query' => 'query queryName { fieldAbc { fieldXyz { name } } }',
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['fieldUnion' => ['field1' => ['name' => 'Test 123']]]]),
+                \Graphpinator\Json::fromObject((object) ['data' => ['fieldAbc' => ['fieldXyz' => ['name' => 'Test 123']]]]),
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { aliasName: fieldUnion { field1 { name } } }',
+                    'query' => 'query queryName { aliasName: fieldAbc { fieldXyz { name } } }',
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['aliasName' => ['field1' => ['name' => 'Test 123']]]]),
+                \Graphpinator\Json::fromObject((object) ['data' => ['aliasName' => ['fieldXyz' => ['name' => 'Test 123']]]]),
+            ],
+            [
+                \Graphpinator\Json::fromObject((object) [
+                    'query' => 'query queryName { fieldList { name } }',
+                ]),
+                \Graphpinator\Json::fromObject((object) [
+                    'data' => [
+                        'fieldList' => [['name' => 'testValue1'], ['name' => 'testValue2'], ['name' => 'testValue3']],
+                    ],
+                ]),
+            ],
+            [
+                \Graphpinator\Json::fromObject((object) [
+                    'query' => 'query queryName { 
+                        fieldAbstractList { 
+                            ... on Abc { __typename fieldXyz { name } } 
+                            ... on Xyz { __typename name }
+                            } 
+                        }',
+                ]),
+                \Graphpinator\Json::fromObject((object) [
+                    'data' => [
+                        'fieldAbstractList' => [
+                            ['__typename' => 'Abc', 'fieldXyz' => ['name' => 'Test 123']],
+                            ['__typename' => 'Abc', 'fieldXyz' => ['name' => 'Test 123']],
+                            ['__typename' => 'Xyz', 'name' => 'testName'],
+                        ],
+                    ],
+                ]),
+            ],
+            [
+                \Graphpinator\Json::fromObject((object) [
+                    'query' => 'query queryName { fieldNull { stringType interfaceType unionType } }',
+                ]),
+                \Graphpinator\Json::fromObject((object) ['data' => ['fieldNull' => null]]),
+            ],
+            [
+                \Graphpinator\Json::fromObject((object) [
+                    'query' => 'query queryName { fieldNullList { stringListType interfaceListType unionListType } }',
+                ]),
+                \Graphpinator\Json::fromObject((object) ['data' => ['fieldNullList' => null]]),
             ],
         ];
     }
@@ -146,20 +187,20 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
         return [
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldUnion { field1 } }',
+                    'query' => 'query queryName { fieldAbc { fieldXyz } }',
                 ]),
                 \Graphpinator\Exception\Resolver\SelectionOnComposite::class,
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldUnion { field1 { nonExisting } } }',
+                    'query' => 'query queryName { fieldAbc { fieldXyz { nonExisting } } }',
                 ]),
                 //phpcs:ignore SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly.ReferencedGeneralException
                 \Exception::class,
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldUnion { field1 { name { nonExisting } } } }',
+                    'query' => 'query queryName { fieldAbc { fieldXyz { name { nonExisting } } } }',
                 ]),
                 //phpcs:ignore SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly.ReferencedGeneralException
                 \Exception::class,
