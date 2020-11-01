@@ -48,7 +48,7 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldAbstractNullList { fieldXyz name } }',
+                    'query' => 'query queryName { fieldAbstractNullList { fieldXyz { name } } }',
                 ]),
                 \Graphpinator\Json::fromObject((object) ['errors' => [['message' => 'Server responded with unknown error.']]]),
             ],
