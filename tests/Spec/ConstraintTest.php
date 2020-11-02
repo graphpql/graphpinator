@@ -398,7 +398,7 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
         $type->getArguments();
     }
 
-    public function testInnerNegativeMaxItems() : void
+    public function testInnerNegativeMinItems() : void
     {
         $this->expectException(\Graphpinator\Exception\Constraint\NegativeCountParameter::class);
         $this->expectExceptionMessage(\Graphpinator\Exception\Constraint\NegativeCountParameter::MESSAGE);
@@ -413,6 +413,28 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
                         'arg',
                         \Graphpinator\Container\Container::String()->list()->notNull(),
                     ))->addConstraint(new \Graphpinator\Constraint\ListConstraint(null, null, false, (object) ['minItems' => -20])),
+                ]);
+            }
+        };
+
+        $type->getArguments();
+    }
+
+    public function testInnerNegativeMaxItems() : void
+    {
+        $this->expectException(\Graphpinator\Exception\Constraint\NegativeCountParameter::class);
+        $this->expectExceptionMessage(\Graphpinator\Exception\Constraint\NegativeCountParameter::MESSAGE);
+
+        $type = new class extends \Graphpinator\Type\InputType {
+            protected const NAME = 'ConstraintInput';
+
+            protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
+            {
+                return new \Graphpinator\Argument\ArgumentSet([
+                    (new \Graphpinator\Argument\Argument(
+                        'arg',
+                        \Graphpinator\Container\Container::String()->list()->notNull(),
+                    ))->addConstraint(new \Graphpinator\Constraint\ListConstraint(null, null, false, (object) ['maxItems' => -20])),
                 ]);
             }
         };
