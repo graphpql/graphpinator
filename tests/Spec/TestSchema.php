@@ -341,6 +341,12 @@ final class TestSchema
                             ),
                         ]),
                     ))->addConstraint(new \Graphpinator\Constraint\ListConstraint(3, 5)),
+                    new \Graphpinator\Field\ResolvableField(
+                        'fieldTypeSystemDirective',
+                        TestSchema::getSimpleType(),
+                        static function () : void {
+                        },
+                    ),
                 ]);
             }
 

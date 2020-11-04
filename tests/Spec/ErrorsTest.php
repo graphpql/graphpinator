@@ -86,6 +86,12 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
                 ]),
                 \Graphpinator\Json::fromObject((object) ['errors' => [['message' => 'Min items constraint was not satisfied.']]]),
             ],
+            [
+                \Graphpinator\Json::fromObject((object) [
+                    'query' => 'query queryName { fieldTypeSystemDirective @listConstraint(minItems: 3, maxItems: 5) { fieldNumber } }',
+                ]),
+                \Graphpinator\Json::fromObject((object) ['errors' => [['message' => 'Directive is not executable directive.']]]),
+            ],
         ];
     }
 
