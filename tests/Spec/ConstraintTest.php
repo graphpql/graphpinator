@@ -250,6 +250,35 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
                 ]),
                 \Graphpinator\Exception\Constraint\ExactlyOneConstraintNotSatisfied::class,
             ],
+            [
+                \Graphpinator\Json::fromObject((object) [
+                    'query' => 'query queryName {
+                        fieldListConstraint(arg: [
+                            { name: "name1", number: [1,2] },
+                            { name: "name2", number: [2,2] },
+                            { name: "name3", number: [3,3] },
+                            { name: "name4", number: [4,5] }
+                            { name: "name5", number: [5,5] }
+                            { name: "name6", number: [4,4] }
+                        ])
+                        {
+                            fieldName
+                        }
+                    }',
+                ]),
+                \Graphpinator\Exception\Constraint\MaxItemsConstraintNotSatisfied::class,
+            ],
+            [
+                \Graphpinator\Json::fromObject((object) [
+                    'query' => 'query queryName {
+                        fieldListConstraint(arg: [])
+                        {
+                            fieldName
+                        }
+                    }',
+                ]),
+                \Graphpinator\Exception\Constraint\MinItemsConstraintNotSatisfied::class,
+            ],
         ];
     }
 

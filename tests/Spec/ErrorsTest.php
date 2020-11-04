@@ -57,41 +57,6 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
                 ]),
                 \Graphpinator\Json::fromObject((object) ['errors' => [['message' => 'Server responded with unknown error.']]]),
             ],
-            [
-                \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName {
-                        fieldListConstraint(arg: [
-                            { name: "name1", number: [1,2] },
-                            { name: "name2", number: [2,2] },
-                            { name: "name3", number: [3,3] },
-                            { name: "name4", number: [4,5] }
-                            { name: "name5", number: [5,5] }
-                            { name: "name6", number: [4,4] }
-                        ])
-                        {
-                            fieldName
-                        }
-                    }',
-                ]),
-                \Graphpinator\Json::fromObject((object) ['errors' => [['message' => 'Max items constraint was not satisfied.']]]),
-            ],
-            [
-                \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName {
-                        fieldListConstraint(arg: [])
-                        {
-                            fieldName
-                        }
-                    }',
-                ]),
-                \Graphpinator\Json::fromObject((object) ['errors' => [['message' => 'Min items constraint was not satisfied.']]]),
-            ],
-            [
-                \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldTypeSystemDirective @listConstraint(minItems: 3, maxItems: 5) { fieldNumber } }',
-                ]),
-                \Graphpinator\Json::fromObject((object) ['errors' => [['message' => 'Directive is not executable directive.']]]),
-            ],
         ];
     }
 
