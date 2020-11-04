@@ -10,11 +10,13 @@ final class Token
 
     private string $type;
     private ?string $value;
+    private \Graphpinator\Source\Location $location;
 
-    public function __construct(string $type, ?string $value = null)
+    public function __construct(string $type, \Graphpinator\Source\Location $location, ?string $value = null)
     {
         $this->type = $type;
         $this->value = $value;
+        $this->location = $location;
     }
 
     public function getType() : string
@@ -25,5 +27,10 @@ final class Token
     public function getValue() : ?string
     {
         return $this->value;
+    }
+
+    public function getLocation() : \Graphpinator\Source\Location
+    {
+        return $this->location;
     }
 }
