@@ -148,13 +148,21 @@ final class TokenizerTest extends \PHPUnit\Framework\TestCase
             [
                 '"""' . \PHP_EOL . ' foo' . \PHP_EOL . '       foo' . \PHP_EOL . '"""',
                 [
-                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, new \Graphpinator\Source\Location(1, 1), 'foo' . \PHP_EOL . '      foo'),
+                    new \Graphpinator\Tokenizer\Token(
+                        TokenType::STRING,
+                        new \Graphpinator\Source\Location(1, 1),
+                        'foo' . \PHP_EOL . '      foo',
+                    ),
                 ],
             ],
             [
                 '"""   foo' . \PHP_EOL . \PHP_EOL . '  foo' . \PHP_EOL . \PHP_EOL . ' foo"""',
                 [
-                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, new \Graphpinator\Source\Location(1, 1), '  foo' . \PHP_EOL . \PHP_EOL . ' foo' . \PHP_EOL . \PHP_EOL . 'foo'),
+                    new \Graphpinator\Tokenizer\Token(
+                        TokenType::STRING,
+                        new \Graphpinator\Source\Location(1, 1),
+                        '  foo' . \PHP_EOL . \PHP_EOL . ' foo' . \PHP_EOL . \PHP_EOL . 'foo',
+                    ),
                 ],
             ],
             [
