@@ -340,7 +340,7 @@ final class TestSchema
                                 TestSchema::getSimpleInput()->list(),
                             ),
                         ]),
-                    ))->addConstraint(new \Graphpinator\Constraint\ListConstraint(1, 3)),
+                    ))->addConstraint(new \Graphpinator\Constraint\ListConstraint(3, 5)),
                 ]);
             }
 

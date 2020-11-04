@@ -707,7 +707,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           ): SimpleType
           fieldListConstraint(
             arg: [SimpleInput]
-          ): [SimpleType] @listConstraint(minItems: 1, maxItems: 3)
+          ): [SimpleType] @listConstraint(minItems: 3, maxItems: 5)
         }
         
         """
@@ -1452,7 +1452,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           ): SimpleType
           fieldListConstraint(
             arg: [SimpleInput]
-          ): [SimpleType] @listConstraint(minItems: 1, maxItems: 3)
+          ): [SimpleType] @listConstraint(minItems: 3, maxItems: 5)
         }
         
         """
@@ -1940,7 +1940,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           ): SimpleType
           fieldListConstraint(
             arg: [SimpleInput]
-          ): [SimpleType] @listConstraint(minItems: 1, maxItems: 3)
+          ): [SimpleType] @listConstraint(minItems: 3, maxItems: 5)
         }
         
         """
@@ -2685,7 +2685,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           ): SimpleType
           fieldListConstraint(
             arg: [SimpleInput]
-          ): [SimpleType] @listConstraint(minItems: 1, maxItems: 3)
+          ): [SimpleType] @listConstraint(minItems: 3, maxItems: 5)
         }
         
         """

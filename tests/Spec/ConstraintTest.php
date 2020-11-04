@@ -86,7 +86,8 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
                     'query' => 'query queryName {
                         fieldListConstraint(arg: [
                             { name: "name1", number: [1,2] },
-                            { name: "name2", number: [1,2] }
+                            { name: "name2", number: [1,3] },
+                            { name: "name3", number: [1,5] }
                         ])
                         {
                             fieldName
@@ -98,6 +99,7 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
                         'fieldListConstraint' => [
                             ['fieldName' => 'name1'],
                             ['fieldName' => 'name2'],
+                            ['fieldName' => 'name3'],
                         ],
                     ],
                 ]),

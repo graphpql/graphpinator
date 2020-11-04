@@ -65,6 +65,8 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
                             { name: "name2", number: [2,2] },
                             { name: "name3", number: [3,3] },
                             { name: "name4", number: [4,5] }
+                            { name: "name5", number: [5,5] }
+                            { name: "name6", number: [4,4] }
                         ])
                         {
                             fieldName
