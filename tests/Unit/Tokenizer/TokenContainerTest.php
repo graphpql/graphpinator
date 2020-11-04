@@ -22,7 +22,7 @@ final class TokenContainerTest extends \PHPUnit\Framework\TestCase
         self::assertSame($tokenizer->peekNext()->getType(), TokenType::SQU_C);
         self::assertSame($tokenizer->getNext()->getType(), TokenType::SQU_C);
         self::assertSame($tokenizer->getPrev()->getType(), TokenType::SQU_O);
-        self::assertSame($tokenizer->assertNext(TokenType::SQU_C, \Exception::class)->getType(), TokenType::SQU_C);
+        self::assertSame($tokenizer->assertNext(TokenType::SQU_C, \RuntimeException::class)->getType(), TokenType::SQU_C);
     }
 
     public function testIterator() : void
