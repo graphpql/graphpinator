@@ -6,7 +6,12 @@ namespace Graphpinator\Exception\Tokenizer;
 
 abstract class TokenizerError extends \Graphpinator\Exception\GraphpinatorBase
 {
-    protected function isOutputable() : bool
+    final public function __construct(\Graphpinator\Source\Location $location)
+    {
+        parent::__construct($location);
+    }
+
+    final protected function isOutputable() : bool
     {
         return true;
     }
