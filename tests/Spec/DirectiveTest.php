@@ -167,7 +167,7 @@ final class DirectiveTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldTypeSystemDirective @listConstraint(minItems: 3, maxItems: 5) { fieldNumber } }',
+                    'query' => 'query queryName { fieldList @listConstraint(minItems: 3, maxItems: 5) { name } }',
                 ]),
                 \Graphpinator\Exception\Normalizer\DirectiveNotExecutable::class,
             ],
