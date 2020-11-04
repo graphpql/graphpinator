@@ -64,10 +64,10 @@ final class SourceTest extends \PHPUnit\Framework\TestCase
     public function testLocation() : void
     {
         $source = new \Graphpinator\Source\StringSource('abcd' . \PHP_EOL . 'abcde' . \PHP_EOL . \PHP_EOL . \PHP_EOL . 'abc');
-        $lines = [5, 6, 1, 1, 3];
+        $lines = [1 => 5, 6, 1, 1, 3];
 
-        for ($line = 0; $line < \count($lines); ++$line) {
-            for ($column = 0; $column < $lines[$line]; ++$column) {
+        for ($line = 1; $line <= 5; ++$line) {
+            for ($column = 1; $column <= $lines[$line]; ++$column) {
                 $location = $source->getLocation();
 
                 self::assertSame($line, $location->getLine());
