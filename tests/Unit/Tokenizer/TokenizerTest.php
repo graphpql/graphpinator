@@ -15,366 +15,366 @@ final class TokenizerTest extends \PHPUnit\Framework\TestCase
             [
                 '""',
                 [
-                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, ''),
+                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, new \Graphpinator\Source\Location(1, 1), ''),
                 ],
             ],
             [
                 '"ěščřžýá"',
                 [
-                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, 'ěščřžýá'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, new \Graphpinator\Source\Location(1, 1), 'ěščřžýá'),
                 ],
             ],
             [
                 '"\\""',
                 [
-                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, '"'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, new \Graphpinator\Source\Location(1, 1), '"'),
                 ],
             ],
             [
                 '"\\\\"',
                 [
-                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, '\\'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, new \Graphpinator\Source\Location(1, 1), '\\'),
                 ],
             ],
             [
                 '"\\/"',
                 [
-                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, '/'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, new \Graphpinator\Source\Location(1, 1), '/'),
                 ],
             ],
             [
                 '"\\b"',
                 [
-                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, "\u{0008}"),
+                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, new \Graphpinator\Source\Location(1, 1), "\u{0008}"),
                 ],
             ],
             [
                 '"\\f"',
                 [
-                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, "\u{000C}"),
+                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, new \Graphpinator\Source\Location(1, 1), "\u{000C}"),
                 ],
             ],
             [
                 '"\\n"',
                 [
-                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, "\u{000A}"),
+                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, new \Graphpinator\Source\Location(1, 1), "\u{000A}"),
                 ],
             ],
             [
                 '"\\r"',
                 [
-                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, "\u{000D}"),
+                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, new \Graphpinator\Source\Location(1, 1), "\u{000D}"),
                 ],
             ],
             [
                 '"\\t"',
                 [
-                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, "\u{0009}"),
+                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, new \Graphpinator\Source\Location(1, 1), "\u{0009}"),
                 ],
             ],
             [
                 '"\\u1234"',
                 [
-                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, "\u{1234}"),
+                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, new \Graphpinator\Source\Location(1, 1), "\u{1234}"),
                 ],
             ],
             [
                 '"u1234"',
                 [
-                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, 'u1234'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, new \Graphpinator\Source\Location(1, 1), 'u1234'),
                 ],
             ],
             [
                 '"abc\\u1234abc"',
                 [
-                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, "abc\u{1234}abc"),
+                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, new \Graphpinator\Source\Location(1, 1), "abc\u{1234}abc"),
                 ],
             ],
             [
                 '"blabla\\t\\"\\nfoobar"',
                 [
-                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, "blabla\u{0009}\"\u{000A}foobar"),
+                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, new \Graphpinator\Source\Location(1, 1), "blabla\u{0009}\"\u{000A}foobar"),
                 ],
             ],
             [
                 '""""""',
                 [
-                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, ''),
+                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, new \Graphpinator\Source\Location(1, 1), ''),
                 ],
             ],
             [
                 '""""""""',
                 [
-                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, ''),
-                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, ''),
+                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, new \Graphpinator\Source\Location(1, 1), ''),
+                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, new \Graphpinator\Source\Location(1, 7), ''),
                 ],
             ],
             [
                 '"""' . \PHP_EOL . '"""',
                 [
-                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, ''),
+                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, new \Graphpinator\Source\Location(1, 1), ''),
                 ],
             ],
             [
                 '"""   """',
                 [
-                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, ''),
+                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, new \Graphpinator\Source\Location(1, 1), ''),
                 ],
             ],
             [
                 '"""  abc  """',
                 [
-                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, 'abc  '),
+                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, new \Graphpinator\Source\Location(1, 1), 'abc  '),
                 ],
             ],
             [
                 '"""' . \PHP_EOL . \PHP_EOL . \PHP_EOL . '"""',
                 [
-                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, ''),
+                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, new \Graphpinator\Source\Location(1, 1), ''),
                 ],
             ],
             [
                 '"""' . \PHP_EOL . \PHP_EOL . 'foo' . \PHP_EOL . \PHP_EOL . '"""',
                 [
-                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, 'foo'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, new \Graphpinator\Source\Location(1, 1), 'foo'),
                 ],
             ],
             [
                 '"""' . \PHP_EOL . \PHP_EOL . '       foo' . \PHP_EOL . \PHP_EOL . '"""',
                 [
-                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, 'foo'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, new \Graphpinator\Source\Location(1, 1), 'foo'),
                 ],
             ],
             [
                 '"""' . \PHP_EOL . ' foo' . \PHP_EOL . '       foo' . \PHP_EOL . '"""',
                 [
-                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, 'foo' . \PHP_EOL . '      foo'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, new \Graphpinator\Source\Location(1, 1), 'foo' . \PHP_EOL . '      foo'),
                 ],
             ],
             [
                 '"""   foo' . \PHP_EOL . \PHP_EOL . '  foo' . \PHP_EOL . \PHP_EOL . ' foo"""',
                 [
-                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, '  foo' . \PHP_EOL . \PHP_EOL . ' foo' . \PHP_EOL . \PHP_EOL . 'foo'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, new \Graphpinator\Source\Location(1, 1), '  foo' . \PHP_EOL . \PHP_EOL . ' foo' . \PHP_EOL . \PHP_EOL . 'foo'),
                 ],
             ],
             [
                 '"""\\n"""',
                 [
-                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, "\\n"),
+                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, new \Graphpinator\Source\Location(1, 1), "\\n"),
                 ],
             ],
             [
                 '"""\\""""""',
                 [
-                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, '"""'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, new \Graphpinator\Source\Location(1, 1), '"""'),
                 ],
             ],
             [
                 '"""\\\\""""""',
                 [
-                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, '\\"""'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, new \Graphpinator\Source\Location(1, 1), '\\"""'),
                 ],
             ],
             [
                 '"""abc\\"""abc"""',
                 [
-                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, 'abc"""abc'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, new \Graphpinator\Source\Location(1, 1), 'abc"""abc'),
                 ],
             ],
             [
                 '0',
                 [
-                    new \Graphpinator\Tokenizer\Token(TokenType::INT, '0'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::INT, new \Graphpinator\Source\Location(1, 1), '0'),
                 ],
             ],
             [
                 '-0',
                 [
-                    new \Graphpinator\Tokenizer\Token(TokenType::INT, '-0'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::INT, new \Graphpinator\Source\Location(1, 1), '-0'),
                 ],
             ],
             [
                 '4',
                 [
-                    new \Graphpinator\Tokenizer\Token(TokenType::INT, '4'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::INT, new \Graphpinator\Source\Location(1, 1), '4'),
                 ],
             ],
             [
                 '-4',
                 [
-                    new \Graphpinator\Tokenizer\Token(TokenType::INT, '-4'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::INT, new \Graphpinator\Source\Location(1, 1), '-4'),
                 ],
             ],
             [
                 '4.0',
                 [
-                    new \Graphpinator\Tokenizer\Token(TokenType::FLOAT, '4.0'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::FLOAT, new \Graphpinator\Source\Location(1, 1), '4.0'),
                 ],
             ],
             [
                 '-4.0',
                 [
-                    new \Graphpinator\Tokenizer\Token(TokenType::FLOAT, '-4.0'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::FLOAT, new \Graphpinator\Source\Location(1, 1), '-4.0'),
                 ],
             ],
             [
                 '4e10',
                 [
-                    new \Graphpinator\Tokenizer\Token(TokenType::FLOAT, '4e10'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::FLOAT, new \Graphpinator\Source\Location(1, 1), '4e10'),
                 ],
             ],
             [
                 '4e0010',
                 [
-                    new \Graphpinator\Tokenizer\Token(TokenType::FLOAT, '4e0010'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::FLOAT, new \Graphpinator\Source\Location(1, 1), '4e0010'),
                 ],
             ],
             [
                 '-4e10',
                 [
-                    new \Graphpinator\Tokenizer\Token(TokenType::FLOAT, '-4e10'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::FLOAT, new \Graphpinator\Source\Location(1, 1), '-4e10'),
                 ],
             ],
             [
                 '4E10',
                 [
-                    new \Graphpinator\Tokenizer\Token(TokenType::FLOAT, '4e10'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::FLOAT, new \Graphpinator\Source\Location(1, 1), '4e10'),
                 ],
             ],
             [
                 '-4e-10',
                 [
-                    new \Graphpinator\Tokenizer\Token(TokenType::FLOAT, '-4e-10'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::FLOAT, new \Graphpinator\Source\Location(1, 1), '-4e-10'),
                 ],
             ],
             [
                 '4e+10',
                 [
-                    new \Graphpinator\Tokenizer\Token(TokenType::FLOAT, '4e10'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::FLOAT, new \Graphpinator\Source\Location(1, 1), '4e10'),
                 ],
             ],
             [
                 '-4e+10',
                 [
-                    new \Graphpinator\Tokenizer\Token(TokenType::FLOAT, '-4e10'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::FLOAT, new \Graphpinator\Source\Location(1, 1), '-4e10'),
                 ],
             ],
             [
                 'null',
                 [
-                    new \Graphpinator\Tokenizer\Token(TokenType::NULL),
+                    new \Graphpinator\Tokenizer\Token(TokenType::NULL, new \Graphpinator\Source\Location(1, 1)),
                 ],
             ],
             [
                 'NULL',
                 [
-                    new \Graphpinator\Tokenizer\Token(TokenType::NULL),
+                    new \Graphpinator\Tokenizer\Token(TokenType::NULL, new \Graphpinator\Source\Location(1, 1)),
                 ],
             ],
             [
                 'Name',
                 [
-                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, 'Name'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, new \Graphpinator\Source\Location(1, 1), 'Name'),
                 ],
             ],
             [
                 'NAME',
                 [
-                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, 'NAME'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, new \Graphpinator\Source\Location(1, 1), 'NAME'),
                 ],
             ],
             [
                 '__Name',
                 [
-                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, '__Name'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, new \Graphpinator\Source\Location(1, 1), '__Name'),
                 ],
             ],
             [
                 'Name_with_underscore',
                 [
-                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, 'Name_with_underscore'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, new \Graphpinator\Source\Location(1, 1), 'Name_with_underscore'),
                 ],
             ],
             [
                 'FALSE true',
                 [
-                    new \Graphpinator\Tokenizer\Token(TokenType::FALSE),
-                    new \Graphpinator\Tokenizer\Token(TokenType::TRUE),
+                    new \Graphpinator\Tokenizer\Token(TokenType::FALSE, new \Graphpinator\Source\Location(1, 1)),
+                    new \Graphpinator\Tokenizer\Token(TokenType::TRUE, new \Graphpinator\Source\Location(1, 7)),
                 ],
             ],
             [
                 '... type fragment',
                 [
-                    new \Graphpinator\Tokenizer\Token(TokenType::ELLIP),
-                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, 'type'),
-                    new \Graphpinator\Tokenizer\Token(TokenType::FRAGMENT),
+                    new \Graphpinator\Tokenizer\Token(TokenType::ELLIP, new \Graphpinator\Source\Location(1, 1)),
+                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, new \Graphpinator\Source\Location(1, 5), 'type'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::FRAGMENT, new \Graphpinator\Source\Location(1, 10)),
                 ],
             ],
             [
                 '-4.024E-10',
                 [
-                    new \Graphpinator\Tokenizer\Token(TokenType::FLOAT, '-4.024e-10'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::FLOAT, new \Graphpinator\Source\Location(1, 1), '-4.024e-10'),
                 ],
             ],
             [
                 'query { field1 { innerField } }',
                 [
-                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, 'query'),
-                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_O),
-                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, 'field1'),
-                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_O),
-                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, 'innerField'),
-                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_C),
-                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_C),
+                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, new \Graphpinator\Source\Location(1, 1), 'query'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_O, new \Graphpinator\Source\Location(1, 7)),
+                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, new \Graphpinator\Source\Location(1, 9), 'field1'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_O, new \Graphpinator\Source\Location(1, 16)),
+                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, new \Graphpinator\Source\Location(1, 18), 'innerField'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_C, new \Graphpinator\Source\Location(1, 29)),
+                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_C, new \Graphpinator\Source\Location(1, 31)),
                 ],
             ],
             [
                 'mutation { field(argName: 4) }',
                 [
-                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, 'mutation'),
-                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_O),
-                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, 'field'),
-                    new \Graphpinator\Tokenizer\Token(TokenType::PAR_O),
-                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, 'argName'),
-                    new \Graphpinator\Tokenizer\Token(TokenType::COLON),
-                    new \Graphpinator\Tokenizer\Token(TokenType::INT, '4'),
-                    new \Graphpinator\Tokenizer\Token(TokenType::PAR_C),
-                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_C),
+                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, new \Graphpinator\Source\Location(1, 1), 'mutation'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_O, new \Graphpinator\Source\Location(1, 10)),
+                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, new \Graphpinator\Source\Location(1, 12), 'field'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::PAR_O, new \Graphpinator\Source\Location(1, 17)),
+                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, new \Graphpinator\Source\Location(1, 18), 'argName'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::COLON, new \Graphpinator\Source\Location(1, 25)),
+                    new \Graphpinator\Tokenizer\Token(TokenType::INT, new \Graphpinator\Source\Location(1, 27), '4'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::PAR_C, new \Graphpinator\Source\Location(1, 28)),
+                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_C, new \Graphpinator\Source\Location(1, 30)),
                 ],
             ],
             [
                 'subscription { field(argName: "str") }',
                 [
-                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, 'subscription'),
-                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_O),
-                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, 'field'),
-                    new \Graphpinator\Tokenizer\Token(TokenType::PAR_O),
-                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, 'argName'),
-                    new \Graphpinator\Tokenizer\Token(TokenType::COLON),
-                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, 'str'),
-                    new \Graphpinator\Tokenizer\Token(TokenType::PAR_C),
-                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_C),
+                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, new \Graphpinator\Source\Location(1, 1), 'subscription'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_O, new \Graphpinator\Source\Location(1, 14)),
+                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, new \Graphpinator\Source\Location(1, 16), 'field'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::PAR_O, new \Graphpinator\Source\Location(1, 21)),
+                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, new \Graphpinator\Source\Location(1, 22), 'argName'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::COLON, new \Graphpinator\Source\Location(1, 29)),
+                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, new \Graphpinator\Source\Location(1, 31), 'str'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::PAR_C, new \Graphpinator\Source\Location(1, 36)),
+                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_C, new \Graphpinator\Source\Location(1, 38)),
                 ],
             ],
             [
                 'query { field(argName: ["str", "str", $varName]) @directiveName }',
                 [
-                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, 'query'),
-                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_O),
-                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, 'field'),
-                    new \Graphpinator\Tokenizer\Token(TokenType::PAR_O),
-                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, 'argName'),
-                    new \Graphpinator\Tokenizer\Token(TokenType::COLON),
-                    new \Graphpinator\Tokenizer\Token(TokenType::SQU_O),
-                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, 'str'),
-                    new \Graphpinator\Tokenizer\Token(TokenType::COMMA),
-                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, 'str'),
-                    new \Graphpinator\Tokenizer\Token(TokenType::COMMA),
-                    new \Graphpinator\Tokenizer\Token(TokenType::VARIABLE, 'varName'),
-                    new \Graphpinator\Tokenizer\Token(TokenType::SQU_C),
-                    new \Graphpinator\Tokenizer\Token(TokenType::PAR_C),
-                    new \Graphpinator\Tokenizer\Token(TokenType::DIRECTIVE, 'directiveName'),
-                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_C),
+                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, new \Graphpinator\Source\Location(1, 1), 'query'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_O, new \Graphpinator\Source\Location(1, 7)),
+                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, new \Graphpinator\Source\Location(1, 9), 'field'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::PAR_O, new \Graphpinator\Source\Location(1, 14)),
+                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, new \Graphpinator\Source\Location(1, 15), 'argName'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::COLON, new \Graphpinator\Source\Location(1, 22)),
+                    new \Graphpinator\Tokenizer\Token(TokenType::SQU_O, new \Graphpinator\Source\Location(1, 24)),
+                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, new \Graphpinator\Source\Location(1, 25), 'str'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::COMMA, new \Graphpinator\Source\Location(1, 30)),
+                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, new \Graphpinator\Source\Location(1, 32), 'str'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::COMMA, new \Graphpinator\Source\Location(1, 37)),
+                    new \Graphpinator\Tokenizer\Token(TokenType::VARIABLE, new \Graphpinator\Source\Location(1, 39), 'varName'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::SQU_C, new \Graphpinator\Source\Location(1, 47)),
+                    new \Graphpinator\Tokenizer\Token(TokenType::PAR_C, new \Graphpinator\Source\Location(1, 48)),
+                    new \Graphpinator\Tokenizer\Token(TokenType::DIRECTIVE, new \Graphpinator\Source\Location(1, 50), 'directiveName'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_C, new \Graphpinator\Source\Location(1, 65)),
                 ],
             ],
             [
@@ -384,17 +384,17 @@ final class TokenizerTest extends \PHPUnit\Framework\TestCase
                     '}' . \PHP_EOL .
                 '}',
                 [
-                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, 'query'),
-                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_O),
-                    new \Graphpinator\Tokenizer\Token(TokenType::NEWLINE),
-                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, 'field1'),
-                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_O),
-                    new \Graphpinator\Tokenizer\Token(TokenType::NEWLINE),
-                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, 'innerField'),
-                    new \Graphpinator\Tokenizer\Token(TokenType::NEWLINE),
-                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_C),
-                    new \Graphpinator\Tokenizer\Token(TokenType::NEWLINE),
-                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_C),
+                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, new \Graphpinator\Source\Location(1, 1), 'query'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_O, new \Graphpinator\Source\Location(1, 7)),
+                    new \Graphpinator\Tokenizer\Token(TokenType::NEWLINE, new \Graphpinator\Source\Location(1, 8)),
+                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, new \Graphpinator\Source\Location(2, 1), 'field1'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_O, new \Graphpinator\Source\Location(2, 8)),
+                    new \Graphpinator\Tokenizer\Token(TokenType::NEWLINE, new \Graphpinator\Source\Location(2, 9)),
+                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, new \Graphpinator\Source\Location(3, 1), 'innerField'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::NEWLINE, new \Graphpinator\Source\Location(3, 11)),
+                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_C, new \Graphpinator\Source\Location(4, 1)),
+                    new \Graphpinator\Tokenizer\Token(TokenType::NEWLINE, new \Graphpinator\Source\Location(4, 2)),
+                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_C, new \Graphpinator\Source\Location(5, 1)),
                 ],
             ],
             [
@@ -405,19 +405,19 @@ final class TokenizerTest extends \PHPUnit\Framework\TestCase
                     '}' . \PHP_EOL .
                 '}',
                 [
-                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, 'query'),
-                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_O),
-                    new \Graphpinator\Tokenizer\Token(TokenType::NEWLINE),
-                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, 'field1'),
-                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_O),
-                    new \Graphpinator\Tokenizer\Token(TokenType::NEWLINE),
-                    new \Graphpinator\Tokenizer\Token(TokenType::COMMENT, ' this is comment'),
-                    new \Graphpinator\Tokenizer\Token(TokenType::NEWLINE),
-                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, 'innerField'),
-                    new \Graphpinator\Tokenizer\Token(TokenType::NEWLINE),
-                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_C),
-                    new \Graphpinator\Tokenizer\Token(TokenType::NEWLINE),
-                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_C),
+                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, new \Graphpinator\Source\Location(1, 1), 'query'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_O, new \Graphpinator\Source\Location(1, 7)),
+                    new \Graphpinator\Tokenizer\Token(TokenType::NEWLINE, new \Graphpinator\Source\Location(1, 8)),
+                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, new \Graphpinator\Source\Location(2, 1), 'field1'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_O, new \Graphpinator\Source\Location(2, 8)),
+                    new \Graphpinator\Tokenizer\Token(TokenType::NEWLINE, new \Graphpinator\Source\Location(2, 9)),
+                    new \Graphpinator\Tokenizer\Token(TokenType::COMMENT, new \Graphpinator\Source\Location(3, 1), ' this is comment'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::NEWLINE, new \Graphpinator\Source\Location(3, 18)),
+                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, new \Graphpinator\Source\Location(4, 1), 'innerField'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::NEWLINE, new \Graphpinator\Source\Location(4, 11)),
+                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_C, new \Graphpinator\Source\Location(5, 1)),
+                    new \Graphpinator\Tokenizer\Token(TokenType::NEWLINE, new \Graphpinator\Source\Location(5, 2)),
+                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_C, new \Graphpinator\Source\Location(6, 1)),
                 ],
             ],
         ];
@@ -437,6 +437,8 @@ final class TokenizerTest extends \PHPUnit\Framework\TestCase
         foreach ($tokenizer as $token) {
             self::assertSame($tokens[$index]->getType(), $token->getType());
             self::assertSame($tokens[$index]->getValue(), $token->getValue());
+            self::assertSame($tokens[$index]->getLocation()->getLine(), $token->getLocation()->getLine());
+            self::assertSame($tokens[$index]->getLocation()->getColumn(), $token->getLocation()->getColumn());
             ++$index;
         }
     }
@@ -447,21 +449,21 @@ final class TokenizerTest extends \PHPUnit\Framework\TestCase
             [
                 'query { field(argName: ["str", "str", true, false, null]) }',
                 [
-                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, 'query'),
-                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_O),
-                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, 'field'),
-                    new \Graphpinator\Tokenizer\Token(TokenType::PAR_O),
-                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, 'argName'),
-                    new \Graphpinator\Tokenizer\Token(TokenType::COLON),
-                    new \Graphpinator\Tokenizer\Token(TokenType::SQU_O),
-                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, 'str'),
-                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, 'str'),
-                    new \Graphpinator\Tokenizer\Token(TokenType::TRUE),
-                    new \Graphpinator\Tokenizer\Token(TokenType::FALSE),
-                    new \Graphpinator\Tokenizer\Token(TokenType::NULL),
-                    new \Graphpinator\Tokenizer\Token(TokenType::SQU_C),
-                    new \Graphpinator\Tokenizer\Token(TokenType::PAR_C),
-                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_C),
+                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, new \Graphpinator\Source\Location(1, 1), 'query'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_O, new \Graphpinator\Source\Location(1, 7)),
+                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, new \Graphpinator\Source\Location(1, 9), 'field'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::PAR_O, new \Graphpinator\Source\Location(1, 14)),
+                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, new \Graphpinator\Source\Location(1, 15), 'argName'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::COLON, new \Graphpinator\Source\Location(1, 22)),
+                    new \Graphpinator\Tokenizer\Token(TokenType::SQU_O, new \Graphpinator\Source\Location(1, 24)),
+                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, new \Graphpinator\Source\Location(1, 25), 'str'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::STRING, new \Graphpinator\Source\Location(1, 32), 'str'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::TRUE, new \Graphpinator\Source\Location(1, 39)),
+                    new \Graphpinator\Tokenizer\Token(TokenType::FALSE, new \Graphpinator\Source\Location(1, 45)),
+                    new \Graphpinator\Tokenizer\Token(TokenType::NULL, new \Graphpinator\Source\Location(1, 52)),
+                    new \Graphpinator\Tokenizer\Token(TokenType::SQU_C, new \Graphpinator\Source\Location(1, 56)),
+                    new \Graphpinator\Tokenizer\Token(TokenType::PAR_C, new \Graphpinator\Source\Location(1, 57)),
+                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_C, new \Graphpinator\Source\Location(1, 59)),
                 ],
             ],
             [
@@ -471,13 +473,13 @@ final class TokenizerTest extends \PHPUnit\Framework\TestCase
                     '}' . \PHP_EOL .
                 '}',
                 [
-                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, 'query'),
-                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_O),
-                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, 'field1'),
-                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_O),
-                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, 'innerField'),
-                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_C),
-                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_C),
+                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, new \Graphpinator\Source\Location(1, 1), 'query'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_O, new \Graphpinator\Source\Location(1, 7)),
+                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, new \Graphpinator\Source\Location(2, 1), 'field1'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_O, new \Graphpinator\Source\Location(2, 8)),
+                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, new \Graphpinator\Source\Location(3, 1), 'innerField'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_C, new \Graphpinator\Source\Location(4, 1)),
+                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_C, new \Graphpinator\Source\Location(5, 1)),
                 ],
             ],
             [
@@ -488,13 +490,13 @@ final class TokenizerTest extends \PHPUnit\Framework\TestCase
                     '}' . \PHP_EOL .
                 '}',
                 [
-                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, 'query'),
-                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_O),
-                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, 'field1'),
-                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_O),
-                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, 'innerField'),
-                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_C),
-                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_C),
+                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, new \Graphpinator\Source\Location(1, 1), 'query'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_O, new \Graphpinator\Source\Location(1, 7)),
+                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, new \Graphpinator\Source\Location(2, 1), 'field1'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_O, new \Graphpinator\Source\Location(2, 8)),
+                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, new \Graphpinator\Source\Location(4, 1), 'innerField'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_C, new \Graphpinator\Source\Location(5, 1)),
+                    new \Graphpinator\Tokenizer\Token(TokenType::CUR_C, new \Graphpinator\Source\Location(6, 1)),
                 ],
             ],
         ];
@@ -514,6 +516,8 @@ final class TokenizerTest extends \PHPUnit\Framework\TestCase
         foreach ($tokenizer as $token) {
             self::assertSame($tokens[$index]->getType(), $token->getType());
             self::assertSame($tokens[$index]->getValue(), $token->getValue());
+            self::assertSame($tokens[$index]->getLocation()->getLine(), $token->getLocation()->getLine());
+            self::assertSame($tokens[$index]->getLocation()->getColumn(), $token->getLocation()->getColumn());
             ++$index;
         }
     }

@@ -77,16 +77,17 @@ final class Tokenizer implements \Iterator
             return;
         }
 
+        $location = $this->source->getLocation();
         $this->tokenStartIndex = $this->source->key();
 
         if ($this->source->getChar() === '_' || \ctype_alpha($this->source->getChar())) {
-            $this->createWordToken();
+            $this->createWordToken($location);
 
             return;
         }
 
         if ($this->source->getChar() === '-' || \ctype_digit($this->source->getChar())) {
-            $this->createNumericToken();
+            $this->createNumericToken($location);
 
             return;
         }
@@ -99,22 +100,22 @@ final class Tokenizer implements \Iterator
 
                 switch (\strlen($quotes)) {
                     case 1:
-                        $this->token = new \Graphpinator\Tokenizer\Token(TokenType::STRING, $this->source->getLocation(), $this->eatString());
+                        $this->token = new \Graphpinator\Tokenizer\Token(TokenType::STRING, $location, $this->eatString($location));
 
                         return;
                     case 2:
-                        $this->token = new \Graphpinator\Tokenizer\Token(TokenType::STRING, $this->source->getLocation(), '');
+                        $this->token = new \Graphpinator\Tokenizer\Token(TokenType::STRING, $location, '');
 
                         return;
                     default:
-                        $this->token = new \Graphpinator\Tokenizer\Token(TokenType::STRING, $this->source->getLocation(), $this->eatBlockString());
+                        $this->token = new \Graphpinator\Tokenizer\Token(TokenType::STRING, $location, $this->eatBlockString($location));
 
                         return;
                 }
 
                 // fallthrough
             case \PHP_EOL:
-                $this->token = new \Graphpinator\Tokenizer\Token(TokenType::NEWLINE, $this->source->getLocation());
+                $this->token = new \Graphpinator\Tokenizer\Token(TokenType::NEWLINE, $location);
                 $this->source->next();
 
                 return;
@@ -122,25 +123,25 @@ final class Tokenizer implements \Iterator
                 $this->source->next();
 
                 if (\ctype_alpha($this->source->getChar())) {
-                    $this->token = new \Graphpinator\Tokenizer\Token(TokenType::VARIABLE, $this->source->getLocation(), $this->eatName());
+                    $this->token = new \Graphpinator\Tokenizer\Token(TokenType::VARIABLE, $location, $this->eatName());
 
                     return;
                 }
 
-                throw new \Graphpinator\Exception\Tokenizer\MissingVariableName($this->source->getLocation());
+                throw new \Graphpinator\Exception\Tokenizer\MissingVariableName($location);
             case TokenType::DIRECTIVE:
                 $this->source->next();
 
                 if (\ctype_alpha($this->source->getChar())) {
-                    $this->token = new \Graphpinator\Tokenizer\Token(TokenType::DIRECTIVE, $this->source->getLocation(), $this->eatName());
+                    $this->token = new \Graphpinator\Tokenizer\Token(TokenType::DIRECTIVE, $location, $this->eatName());
 
                     return;
                 }
 
-                throw new \Graphpinator\Exception\Tokenizer\MissingDirectiveName($this->source->getLocation());
+                throw new \Graphpinator\Exception\Tokenizer\MissingDirectiveName($location);
             case TokenType::COMMENT:
                 $this->source->next();
-                $this->token = new \Graphpinator\Tokenizer\Token(TokenType::COMMENT, $this->source->getLocation(), $this->eatComment());
+                $this->token = new \Graphpinator\Tokenizer\Token(TokenType::COMMENT, $location, $this->eatComment());
 
                 return;
             case TokenType::COMMA:
@@ -155,7 +156,7 @@ final class Tokenizer implements \Iterator
             case TokenType::SQU_C:
             case TokenType::COLON:
             case TokenType::EQUAL:
-                $this->token = new \Graphpinator\Tokenizer\Token($this->source->getChar(), $this->source->getLocation());
+                $this->token = new \Graphpinator\Tokenizer\Token($this->source->getChar(), $location);
                 $this->source->next();
 
                 return;
@@ -165,49 +166,49 @@ final class Tokenizer implements \Iterator
                 });
 
                 if (\strlen($dots) !== 3) {
-                    throw new \Graphpinator\Exception\Tokenizer\InvalidEllipsis($this->source->getLocation());
+                    throw new \Graphpinator\Exception\Tokenizer\InvalidEllipsis($location);
                 }
 
-                $this->token = new \Graphpinator\Tokenizer\Token(TokenType::ELLIP, $this->source->getLocation());
+                $this->token = new \Graphpinator\Tokenizer\Token(TokenType::ELLIP, $location);
 
                 return;
         }
 
-        throw new \Graphpinator\Exception\Tokenizer\UnknownSymbol($this->source->getLocation());
+        throw new \Graphpinator\Exception\Tokenizer\UnknownSymbol($location);
     }
 
-    private function createWordToken() : void
+    private function createWordToken(\Graphpinator\Source\Location $location) : void
     {
         $value = $this->eatName();
         $lower = \strtolower($value);
 
         switch ($lower) {
             case 'null':
-                $this->token = new \Graphpinator\Tokenizer\Token(TokenType::NULL, $this->source->getLocation());
+                $this->token = new \Graphpinator\Tokenizer\Token(TokenType::NULL, $location);
 
                 return;
             case 'true':
-                $this->token = new \Graphpinator\Tokenizer\Token(TokenType::TRUE, $this->source->getLocation());
+                $this->token = new \Graphpinator\Tokenizer\Token(TokenType::TRUE, $location);
 
                 return;
             case 'false':
-                $this->token = new \Graphpinator\Tokenizer\Token(TokenType::FALSE, $this->source->getLocation());
+                $this->token = new \Graphpinator\Tokenizer\Token(TokenType::FALSE, $location);
 
                 return;
             case 'fragment':
-                $this->token = new \Graphpinator\Tokenizer\Token(TokenType::FRAGMENT, $this->source->getLocation());
+                $this->token = new \Graphpinator\Tokenizer\Token(TokenType::FRAGMENT, $location);
 
                 return;
             case 'on':
-                $this->token = new \Graphpinator\Tokenizer\Token(TokenType::ON, $this->source->getLocation());
+                $this->token = new \Graphpinator\Tokenizer\Token(TokenType::ON, $location);
 
                 return;
             default:
-                $this->token = new \Graphpinator\Tokenizer\Token(TokenType::NAME, $this->source->getLocation(), $value);
+                $this->token = new \Graphpinator\Tokenizer\Token(TokenType::NAME, $location, $value);
         }
     }
 
-    private function createNumericToken() : void
+    private function createNumericToken(\Graphpinator\Source\Location $location) : void
     {
         $numberVal = $this->eatInt(true, false);
 
@@ -227,9 +228,9 @@ final class Tokenizer implements \Iterator
                 $numberVal .= 'e' . $this->eatInt(true, true);
             }
 
-            $this->token = new \Graphpinator\Tokenizer\Token(TokenType::FLOAT, $this->source->getLocation(), $numberVal);
+            $this->token = new \Graphpinator\Tokenizer\Token(TokenType::FLOAT, $location, $numberVal);
         } else {
-            $this->token = new \Graphpinator\Tokenizer\Token(TokenType::INT, $this->source->getLocation(), $numberVal);
+            $this->token = new \Graphpinator\Tokenizer\Token(TokenType::INT, $location, $numberVal);
         }
 
         if ($this->source->hasChar() && \ctype_alpha($this->source->getChar())) {
@@ -251,7 +252,7 @@ final class Tokenizer implements \Iterator
         });
     }
 
-    private function eatString() : string
+    private function eatString(\Graphpinator\Source\Location $location) : string
     {
         $value = '';
 
@@ -261,7 +262,7 @@ final class Tokenizer implements \Iterator
 
             switch ($char) {
                 case \PHP_EOL:
-                    throw new \Graphpinator\Exception\Tokenizer\StringLiteralNewLine($this->source->getLocation());
+                    throw new \Graphpinator\Exception\Tokenizer\StringLiteralNewLine($location);
                 case '"':
                     return $value;
                 case '\\':
@@ -273,10 +274,10 @@ final class Tokenizer implements \Iterator
             }
         }
 
-        throw new \Graphpinator\Exception\Tokenizer\StringLiteralWithoutEnd($this->source->getLocation());
+        throw new \Graphpinator\Exception\Tokenizer\StringLiteralWithoutEnd($location);
     }
 
-    private function eatBlockString() : string
+    private function eatBlockString(\Graphpinator\Source\Location $location) : string
     {
         $value = '';
 
@@ -313,7 +314,7 @@ final class Tokenizer implements \Iterator
             }
         }
 
-        throw new \Graphpinator\Exception\Tokenizer\StringLiteralWithoutEnd($this->source->getLocation());
+        throw new \Graphpinator\Exception\Tokenizer\StringLiteralWithoutEnd($location);
     }
 
     private function formatBlockString(string $value) : string

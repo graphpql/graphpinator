@@ -17,7 +17,7 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
                     'errors' => [
                         [
                             'message' => \Graphpinator\Exception\Tokenizer\MissingVariableName::MESSAGE,
-                            'locations' => [['line' => 1, 'column' => 19]],
+                            'locations' => [['line' => 1, 'column' => 18]],
                         ],
                     ],
                 ]),
