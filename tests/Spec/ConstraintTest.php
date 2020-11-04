@@ -81,6 +81,27 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
                 ]),
                 \Graphpinator\Json::fromObject((object) ['data' => ['fieldExactlyOne' => 1]]),
             ],
+            [
+                \Graphpinator\Json::fromObject((object) [
+                    'query' => 'query queryName {
+                        fieldListConstraint(arg: [
+                            { name: "name1", number: [1,2] },
+                            { name: "name2", number: [1,2] }
+                        ])
+                        {
+                            fieldName
+                        }
+                    }',
+                ]),
+                \Graphpinator\Json::fromObject((object) [
+                    'data' => [
+                        'fieldListConstraint' => [
+                            ['fieldName' => 'name1'],
+                            ['fieldName' => 'name2'],
+                        ],
+                    ],
+                ]),
+            ],
         ];
     }
 

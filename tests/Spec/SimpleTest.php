@@ -62,6 +62,20 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
                 ]),
                 \Graphpinator\Json::fromObject((object) ['data' => ['fieldNullList' => null]]),
             ],
+            [
+                \Graphpinator\Json::fromObject((object) [
+                    'query' => 'query queryName { fieldEmptyObject { fieldName fieldNumber fieldBool } }',
+                ]),
+                \Graphpinator\Json::fromObject((object) [
+                    'data' => [
+                        'fieldEmptyObject' => [
+                            'fieldName' => 'testValue',
+                            'fieldNumber' => [1,2],
+                            'fieldBool' => true,
+                        ],
+                    ],
+                ]),
+            ],
         ];
     }
 

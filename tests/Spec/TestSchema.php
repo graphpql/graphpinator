@@ -314,6 +314,33 @@ final class TestSchema
                             ];
                         },
                     ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'fieldEmptyObject',
+                        TestSchema::getSimpleType(),
+                        static function ($parent, \stdClass $emptyObject) : \stdClass {
+                            return $emptyObject;
+                        },
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'emptyObject',
+                                TestSchema::getComplexDefaultsInput(),
+                                new \stdClass(),
+                            ),
+                        ]),
+                    ),
+                    (new \Graphpinator\Field\ResolvableField(
+                        'fieldListConstraint',
+                        TestSchema::getSimpleType()->list(),
+                        static function ($parent, array $arg) : array {
+                            return $arg;
+                        },
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'arg',
+                                TestSchema::getSimpleInput()->list(),
+                            ),
+                        ]),
+                    ))->addConstraint(new \Graphpinator\Constraint\ListConstraint(1, 3)),
                 ]);
             }
 

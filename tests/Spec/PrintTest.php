@@ -582,6 +582,132 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             inputBool: Boolean
           ): SimpleType!
           fieldInvalidInput: SimpleType
+          fieldEmptyObject(
+            emptyObject: ComplexDefaultsInput = {
+              innerObject: {
+                name: "testName",
+                inner: {
+                  name: "string",
+                  number: [
+                    1,
+                    2,
+                    3
+                  ],
+                  bool: null
+                },
+                innerList: [
+                  {
+                    name: "string",
+                    number: [
+                      1
+                    ],
+                    bool: null
+                  },
+                  {
+                    name: "string",
+                    number: [
+                      1,
+                      2,
+                      3,
+                      4
+                    ],
+                    bool: null
+                  }
+                ],
+                innerNotNull: {
+                  name: "string",
+                  number: [
+                    1,
+                    2
+                  ],
+                  bool: null
+                }
+              },
+              innerListObjects: [
+                {
+                  name: "testName",
+                  inner: {
+                    name: "string",
+                    number: [
+                      1,
+                      2,
+                      3
+                    ],
+                    bool: null
+                  },
+                  innerList: [
+                    {
+                      name: "string",
+                      number: [
+                        1
+                      ],
+                      bool: null
+                    },
+                    {
+                      name: "string",
+                      number: [
+                        1,
+                        2,
+                        3,
+                        4
+                      ],
+                      bool: null
+                    }
+                  ],
+                  innerNotNull: {
+                    name: "string",
+                    number: [
+                      1,
+                      2
+                    ],
+                    bool: null
+                  }
+                },
+                {
+                  name: "testName2",
+                  inner: {
+                    name: "string2",
+                    number: [
+                      11,
+                      22,
+                      33
+                    ],
+                    bool: null
+                  },
+                  innerList: [
+                    {
+                      name: "string2",
+                      number: [
+                        11
+                      ],
+                      bool: null
+                    },
+                    {
+                      name: "string2",
+                      number: [
+                        11,
+                        22,
+                        33,
+                        44
+                      ],
+                      bool: null
+                    }
+                  ],
+                  innerNotNull: {
+                    name: "string2",
+                    number: [
+                      11,
+                      22
+                    ],
+                    bool: null
+                  }
+                }
+              ]
+            }
+          ): SimpleType
+          fieldListConstraint(
+            arg: [SimpleInput]
+          ): [SimpleType] @listConstraint(minItems: 1, maxItems: 3)
         }
         
         """
@@ -1201,6 +1327,132 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             inputBool: Boolean
           ): SimpleType!
           fieldInvalidInput: SimpleType
+          fieldEmptyObject(
+            emptyObject: ComplexDefaultsInput = {
+              innerObject: {
+                name: "testName",
+                inner: {
+                  name: "string",
+                  number: [
+                    1,
+                    2,
+                    3
+                  ],
+                  bool: null
+                },
+                innerList: [
+                  {
+                    name: "string",
+                    number: [
+                      1
+                    ],
+                    bool: null
+                  },
+                  {
+                    name: "string",
+                    number: [
+                      1,
+                      2,
+                      3,
+                      4
+                    ],
+                    bool: null
+                  }
+                ],
+                innerNotNull: {
+                  name: "string",
+                  number: [
+                    1,
+                    2
+                  ],
+                  bool: null
+                }
+              },
+              innerListObjects: [
+                {
+                  name: "testName",
+                  inner: {
+                    name: "string",
+                    number: [
+                      1,
+                      2,
+                      3
+                    ],
+                    bool: null
+                  },
+                  innerList: [
+                    {
+                      name: "string",
+                      number: [
+                        1
+                      ],
+                      bool: null
+                    },
+                    {
+                      name: "string",
+                      number: [
+                        1,
+                        2,
+                        3,
+                        4
+                      ],
+                      bool: null
+                    }
+                  ],
+                  innerNotNull: {
+                    name: "string",
+                    number: [
+                      1,
+                      2
+                    ],
+                    bool: null
+                  }
+                },
+                {
+                  name: "testName2",
+                  inner: {
+                    name: "string2",
+                    number: [
+                      11,
+                      22,
+                      33
+                    ],
+                    bool: null
+                  },
+                  innerList: [
+                    {
+                      name: "string2",
+                      number: [
+                        11
+                      ],
+                      bool: null
+                    },
+                    {
+                      name: "string2",
+                      number: [
+                        11,
+                        22,
+                        33,
+                        44
+                      ],
+                      bool: null
+                    }
+                  ],
+                  innerNotNull: {
+                    name: "string2",
+                    number: [
+                      11,
+                      22
+                    ],
+                    bool: null
+                  }
+                }
+              ]
+            }
+          ): SimpleType
+          fieldListConstraint(
+            arg: [SimpleInput]
+          ): [SimpleType] @listConstraint(minItems: 1, maxItems: 3)
         }
         
         """
@@ -1563,6 +1815,132 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             inputBool: Boolean
           ): SimpleType!
           fieldInvalidInput: SimpleType
+          fieldEmptyObject(
+            emptyObject: ComplexDefaultsInput = {
+              innerObject: {
+                name: "testName",
+                inner: {
+                  name: "string",
+                  number: [
+                    1,
+                    2,
+                    3
+                  ],
+                  bool: null
+                },
+                innerList: [
+                  {
+                    name: "string",
+                    number: [
+                      1
+                    ],
+                    bool: null
+                  },
+                  {
+                    name: "string",
+                    number: [
+                      1,
+                      2,
+                      3,
+                      4
+                    ],
+                    bool: null
+                  }
+                ],
+                innerNotNull: {
+                  name: "string",
+                  number: [
+                    1,
+                    2
+                  ],
+                  bool: null
+                }
+              },
+              innerListObjects: [
+                {
+                  name: "testName",
+                  inner: {
+                    name: "string",
+                    number: [
+                      1,
+                      2,
+                      3
+                    ],
+                    bool: null
+                  },
+                  innerList: [
+                    {
+                      name: "string",
+                      number: [
+                        1
+                      ],
+                      bool: null
+                    },
+                    {
+                      name: "string",
+                      number: [
+                        1,
+                        2,
+                        3,
+                        4
+                      ],
+                      bool: null
+                    }
+                  ],
+                  innerNotNull: {
+                    name: "string",
+                    number: [
+                      1,
+                      2
+                    ],
+                    bool: null
+                  }
+                },
+                {
+                  name: "testName2",
+                  inner: {
+                    name: "string2",
+                    number: [
+                      11,
+                      22,
+                      33
+                    ],
+                    bool: null
+                  },
+                  innerList: [
+                    {
+                      name: "string2",
+                      number: [
+                        11
+                      ],
+                      bool: null
+                    },
+                    {
+                      name: "string2",
+                      number: [
+                        11,
+                        22,
+                        33,
+                        44
+                      ],
+                      bool: null
+                    }
+                  ],
+                  innerNotNull: {
+                    name: "string2",
+                    number: [
+                      11,
+                      22
+                    ],
+                    bool: null
+                  }
+                }
+              ]
+            }
+          ): SimpleType
+          fieldListConstraint(
+            arg: [SimpleInput]
+          ): [SimpleType] @listConstraint(minItems: 1, maxItems: 3)
         }
         
         """
@@ -2182,6 +2560,132 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             inputBool: Boolean
           ): SimpleType!
           fieldInvalidInput: SimpleType
+          fieldEmptyObject(
+            emptyObject: ComplexDefaultsInput = {
+              innerObject: {
+                name: "testName",
+                inner: {
+                  name: "string",
+                  number: [
+                    1,
+                    2,
+                    3
+                  ],
+                  bool: null
+                },
+                innerList: [
+                  {
+                    name: "string",
+                    number: [
+                      1
+                    ],
+                    bool: null
+                  },
+                  {
+                    name: "string",
+                    number: [
+                      1,
+                      2,
+                      3,
+                      4
+                    ],
+                    bool: null
+                  }
+                ],
+                innerNotNull: {
+                  name: "string",
+                  number: [
+                    1,
+                    2
+                  ],
+                  bool: null
+                }
+              },
+              innerListObjects: [
+                {
+                  name: "testName",
+                  inner: {
+                    name: "string",
+                    number: [
+                      1,
+                      2,
+                      3
+                    ],
+                    bool: null
+                  },
+                  innerList: [
+                    {
+                      name: "string",
+                      number: [
+                        1
+                      ],
+                      bool: null
+                    },
+                    {
+                      name: "string",
+                      number: [
+                        1,
+                        2,
+                        3,
+                        4
+                      ],
+                      bool: null
+                    }
+                  ],
+                  innerNotNull: {
+                    name: "string",
+                    number: [
+                      1,
+                      2
+                    ],
+                    bool: null
+                  }
+                },
+                {
+                  name: "testName2",
+                  inner: {
+                    name: "string2",
+                    number: [
+                      11,
+                      22,
+                      33
+                    ],
+                    bool: null
+                  },
+                  innerList: [
+                    {
+                      name: "string2",
+                      number: [
+                        11
+                      ],
+                      bool: null
+                    },
+                    {
+                      name: "string2",
+                      number: [
+                        11,
+                        22,
+                        33,
+                        44
+                      ],
+                      bool: null
+                    }
+                  ],
+                  innerNotNull: {
+                    name: "string2",
+                    number: [
+                      11,
+                      22
+                    ],
+                    bool: null
+                  }
+                }
+              ]
+            }
+          ): SimpleType
+          fieldListConstraint(
+            arg: [SimpleInput]
+          ): [SimpleType] @listConstraint(minItems: 1, maxItems: 3)
         }
         
         """
