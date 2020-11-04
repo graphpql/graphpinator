@@ -351,6 +351,25 @@ final class TestSchema
                         static function () : void {
                         },
                     ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'fieldMerge',
+                        TestSchema::getSimpleType()->notNull(),
+                        static function ($parent, ?\stdClass $inputComplex) : \stdClass {
+                            $return = new \stdClass();
+
+                            $return->name = $inputComplex->innerObject->name;
+                            $return->number = $inputComplex->innerObject->innerNotNull->number;
+                            $return->bool = $inputComplex->innerObject->inner->bool;
+
+                            return $return;
+                        },
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'inputComplex',
+                                TestSchema::getComplexDefaultsInput(),
+                            ),
+                        ]),
+                    ),
                 ]);
             }
 

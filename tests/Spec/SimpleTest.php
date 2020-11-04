@@ -76,6 +76,40 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
                     ],
                 ]),
             ],
+            [
+                \Graphpinator\Json::fromObject((object) [
+                    'query' => 'query queryName { 
+                        fieldMerge(inputComplex: {
+                            innerObject: {
+                                name: "mergeVal",
+                                inner: {
+                                    name: "mergeVal2",
+                                    number: [8,9]
+                                },
+                                innerList: [],
+                                innerNotNull: {
+                                    name: "mergeVal3",
+                                    number: [5,5],
+                                    bool: true
+                                }
+                            },
+                            innerListObjects: []
+                        })
+                        {
+                            fieldName fieldNumber fieldBool
+                        } 
+                    }',
+                ]),
+                \Graphpinator\Json::fromObject((object) [
+                    'data' => [
+                        'fieldMerge' => [
+                            'fieldName' => 'mergeVal',
+                            'fieldNumber' => [5,5],
+                            'fieldBool' => true,
+                        ],
+                    ],
+                ]),
+            ],
         ];
     }
 

@@ -739,6 +739,9 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             arg: [SimpleInput]
           ): [SimpleType] @listConstraint(minItems: 3, maxItems: 5)
           fieldFragment: InterfaceAbc
+          fieldMerge(
+            inputComplex: ComplexDefaultsInput
+          ): SimpleType!
         }
         
         """
@@ -1515,6 +1518,9 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             arg: [SimpleInput]
           ): [SimpleType] @listConstraint(minItems: 3, maxItems: 5)
           fieldFragment: InterfaceAbc
+          fieldMerge(
+            inputComplex: ComplexDefaultsInput
+          ): SimpleType!
         }
         
         """
@@ -2034,6 +2040,9 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             arg: [SimpleInput]
           ): [SimpleType] @listConstraint(minItems: 3, maxItems: 5)
           fieldFragment: InterfaceAbc
+          fieldMerge(
+            inputComplex: ComplexDefaultsInput
+          ): SimpleType!
         }
         
         """
@@ -2810,6 +2819,9 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             arg: [SimpleInput]
           ): [SimpleType] @listConstraint(minItems: 3, maxItems: 5)
           fieldFragment: InterfaceAbc
+          fieldMerge(
+            inputComplex: ComplexDefaultsInput
+          ): SimpleType!
         }
         
         """
