@@ -71,8 +71,7 @@ final class TokenContainer implements \IteratorAggregate
         return $this->tokens[$this->currentIndex + 1];
     }
 
-    //phpcs:ignore SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly.ReferencedGeneralException
-    public function assertNext(string $tokenType, string $exceptionClass = \Exception::class) : Token
+    public function assertNext(string $tokenType, string $exceptionClass) : Token
     {
         $token = $this->getNext();
 
