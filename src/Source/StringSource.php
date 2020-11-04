@@ -59,7 +59,7 @@ final class StringSource implements \Graphpinator\Source\Source
     {
         if ($this->getChar() === \PHP_EOL) {
             ++$this->currentLine;
-            $this->currentColumn = 0;
+            $this->currentColumn = 1;
         } else {
             ++$this->currentColumn;
         }
@@ -75,7 +75,7 @@ final class StringSource implements \Graphpinator\Source\Source
     public function rewind() : void
     {
         $this->currentIndex = 0;
-        $this->currentLine = 0;
-        $this->currentColumn = 0;
+        $this->currentLine = 1;
+        $this->currentColumn = 1;
     }
 }
