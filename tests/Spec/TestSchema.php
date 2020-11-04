@@ -348,7 +348,7 @@ final class TestSchema
                     new \Graphpinator\Field\ResolvableField(
                         'fieldFragment',
                         TestSchema::getInterfaceAbc(),
-                        static function () {
+                        static function () : void {
                         },
                     ),
                 ]);
@@ -934,7 +934,7 @@ final class TestSchema
                             new \Graphpinator\Argument\Argument(
                                 'name',
                                 \Graphpinator\Container\Container::String()->notNull(),
-                                'defaultA'
+                                'defaultA',
                             ),
                         ]),
                     ),
@@ -975,7 +975,7 @@ final class TestSchema
                             new \Graphpinator\Argument\Argument(
                                 'name',
                                 \Graphpinator\Container\Container::String()->notNull(),
-                                'defaultB'
+                                'defaultB',
                             ),
                         ]),
                     ),
