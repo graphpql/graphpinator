@@ -445,6 +445,18 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           int2: Int
         }
         
+        type FragmentTypeA implements InterfaceAbc {
+          name(
+            name: String! = "defaultA"
+          ): String!
+        }
+        
+        type FragmentTypeB implements InterfaceEfg {
+          name(
+            name: String! = "defaultB"
+          ): String!
+        }
+        
         """
         Gps type - latitude and longitude.
         """
@@ -470,6 +482,24 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           saturation: Int! @intConstraint(min: 0, max: 100)
           lightness: Int! @intConstraint(min: 0, max: 100)
           alpha: Float! @floatConstraint(min: 0, max: 1)
+        }
+        
+        """
+        Interface Abc Description
+        """
+        interface InterfaceAbc {
+          name(
+            name: String!
+          ): String!
+        }
+        
+        """
+        Interface Efg Description
+        """
+        interface InterfaceEfg implements InterfaceAbc {
+          name(
+            name: String!
+          ): String!
         }
         
         """
@@ -709,6 +739,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             arg: [SimpleInput]
           ): [SimpleType] @listConstraint(minItems: 3, maxItems: 5)
           fieldTypeSystemDirective: SimpleType
+          fieldFragment: InterfaceAbc
         }
         
         """
@@ -1191,6 +1222,18 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           int2: Int
         }
         
+        type FragmentTypeA implements InterfaceAbc {
+          name(
+            name: String! = "defaultA"
+          ): String!
+        }
+        
+        type FragmentTypeB implements InterfaceEfg {
+          name(
+            name: String! = "defaultB"
+          ): String!
+        }
+        
         """
         Gps type - latitude and longitude.
         """
@@ -1216,6 +1259,24 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           saturation: Int! @intConstraint(min: 0, max: 100)
           lightness: Int! @intConstraint(min: 0, max: 100)
           alpha: Float! @floatConstraint(min: 0, max: 1)
+        }
+        
+        """
+        Interface Abc Description
+        """
+        interface InterfaceAbc {
+          name(
+            name: String!
+          ): String!
+        }
+        
+        """
+        Interface Efg Description
+        """
+        interface InterfaceEfg implements InterfaceAbc {
+          name(
+            name: String!
+          ): String!
         }
         
         """
@@ -1455,6 +1516,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             arg: [SimpleInput]
           ): [SimpleType] @listConstraint(minItems: 3, maxItems: 5)
           fieldTypeSystemDirective: SimpleType
+          fieldFragment: InterfaceAbc
         }
         
         """
@@ -1608,6 +1670,24 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         }
         
         """
+        Interface Abc Description
+        """
+        interface InterfaceAbc {
+          name(
+            name: String!
+          ): String!
+        }
+        
+        """
+        Interface Efg Description
+        """
+        interface InterfaceEfg implements InterfaceAbc {
+          name(
+            name: String!
+          ): String!
+        }
+        
+        """
         TestInterface Description
         """
         interface TestInterface {
@@ -1716,6 +1796,18 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           stringMaxField: String @stringConstraint(maxLength: 10)
           listMinField: [Int] @listConstraint(minItems: 1)
           listMaxField: [Int] @listConstraint(maxItems: 3)
+        }
+        
+        type FragmentTypeA implements InterfaceAbc {
+          name(
+            name: String! = "defaultA"
+          ): String!
+        }
+        
+        type FragmentTypeB implements InterfaceEfg {
+          name(
+            name: String! = "defaultB"
+          ): String!
         }
         
         """
@@ -1944,6 +2036,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             arg: [SimpleInput]
           ): [SimpleType] @listConstraint(minItems: 3, maxItems: 5)
           fieldTypeSystemDirective: SimpleType
+          fieldFragment: InterfaceAbc
         }
         
         """
@@ -2354,6 +2447,24 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         }
         
         """
+        Interface Abc Description
+        """
+        interface InterfaceAbc {
+          name(
+            name: String!
+          ): String!
+        }
+        
+        """
+        Interface Efg Description
+        """
+        interface InterfaceEfg implements InterfaceAbc {
+          name(
+            name: String!
+          ): String!
+        }
+        
+        """
         TestInterface Description
         """
         interface TestInterface {
@@ -2462,6 +2573,18 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           stringMaxField: String @stringConstraint(maxLength: 10)
           listMinField: [Int] @listConstraint(minItems: 1)
           listMaxField: [Int] @listConstraint(maxItems: 3)
+        }
+        
+        type FragmentTypeA implements InterfaceAbc {
+          name(
+            name: String! = "defaultA"
+          ): String!
+        }
+        
+        type FragmentTypeB implements InterfaceEfg {
+          name(
+            name: String! = "defaultB"
+          ): String!
         }
         
         """
@@ -2690,6 +2813,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             arg: [SimpleInput]
           ): [SimpleType] @listConstraint(minItems: 3, maxItems: 5)
           fieldTypeSystemDirective: SimpleType
+          fieldFragment: InterfaceAbc
         }
         
         """
