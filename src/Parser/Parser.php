@@ -144,9 +144,13 @@ final class Parser
                             default:
                                 throw new \Graphpinator\Exception\Parser\ExpectedAfterOperationName($this->tokenizer->getCurrent()->getLocation());
                         }
+
+                        break;
                     default:
                         throw new \Graphpinator\Exception\Parser\ExpectedAfterOperationType($this->tokenizer->getCurrent()->getLocation());
                 }
+
+                break;
             default:
                 throw new \Graphpinator\Exception\Parser\ExpectedRoot($this->tokenizer->getCurrent()->getLocation());
         }
