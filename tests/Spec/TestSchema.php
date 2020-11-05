@@ -348,7 +348,8 @@ final class TestSchema
                     new \Graphpinator\Field\ResolvableField(
                         'fieldFragment',
                         TestSchema::getInterfaceAbc(),
-                        static function () : void {
+                        static function () : \stdClass {
+                            return new \stdClass();
                         },
                     ),
                     new \Graphpinator\Field\ResolvableField(
@@ -881,6 +882,7 @@ final class TestSchema
                             new \Graphpinator\Argument\Argument(
                                 'name',
                                 \Graphpinator\Container\Container::String()->notNull(),
+                                'valueAbc',
                             ),
                         ]),
                     ),
@@ -918,6 +920,7 @@ final class TestSchema
                             new \Graphpinator\Argument\Argument(
                                 'name',
                                 \Graphpinator\Container\Container::String()->notNull(),
+                                'valueEfg',
                             ),
                         ]),
                     ),
@@ -946,8 +949,9 @@ final class TestSchema
                     new \Graphpinator\Field\ResolvableField(
                         'name',
                         \Graphpinator\Container\Container::String()->notNull(),
-                        static function (\stdClass $parent) {
-                            return $parent->name;
+                        static function (\stdClass $parent, $name) {
+                            return $parent->name
+                                ?? $name;
                         },
                         new \Graphpinator\Argument\ArgumentSet([
                             new \Graphpinator\Argument\Argument(
@@ -987,8 +991,9 @@ final class TestSchema
                     new \Graphpinator\Field\ResolvableField(
                         'name',
                         \Graphpinator\Container\Container::String()->notNull(),
-                        static function (\stdClass $parent) {
-                            return $parent->name;
+                        static function (\stdClass $parent, $name) {
+                            return $parent->name
+                                ?? $name;
                         },
                         new \Graphpinator\Argument\ArgumentSet([
                             new \Graphpinator\Argument\Argument(

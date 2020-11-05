@@ -63,33 +63,35 @@ final class FragmentTest extends \PHPUnit\Framework\TestCase
                 \Graphpinator\Json::fromObject((object) [
                     'query' => 'query queryName { 
                         fieldFragment {
-                            fragment InterfaceAbcFragment on InterfaceAbc {
-                                { name }  
-                                ... on InterfaceEfg { name }
-                                ... on FragmentTypeB { name }
-                                ... on Xyz { name }
-                            }
-                        } 
+                            ... interfaceAbcFragment
+                        }
+                    }
+                    fragment interfaceAbcFragment on InterfaceAbc { 
+                        name 
+                        ... on InterfaceEfg { name }
+                        ... on FragmentTypeB { name }
+                        ... on Xyz { name }
                     }',
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['fieldFragment' => null]]),
+                \Graphpinator\Json::fromObject((object) ['data' => ['fieldFragment' => ['name' => 'defaultA']]]),
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
                     'query' => 'query queryName { 
                         fieldFragment {
-                            fragment InterfaceAbcFragment on InterfaceAbc {
-                                { name }
-                                ... @include(if: true) {
-                                    ... on InterfaceEfg { name }
-                                    ... on FragmentTypeB { name }
-                                    ... on Xyz { name }
-                                }
-                            }
-                        } 
+                            ... interfaceAbcFragment
+                        }
+                    }
+                    fragment interfaceAbcFragment on InterfaceAbc { 
+                        name 
+                        ... @include(if: true) {
+                            ... on InterfaceEfg { name }
+                            ... on FragmentTypeB { name }
+                            ... on Xyz { name }
+                        }
                     }',
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['fieldFragment' => null]]),
+                \Graphpinator\Json::fromObject((object) ['data' => ['fieldFragment' => ['name' => 'defaultA']]]),
             ],
         ];
     }

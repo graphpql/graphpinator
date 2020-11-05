@@ -489,7 +489,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         """
         interface InterfaceAbc {
           name(
-            name: String!
+            name: String! = "valueAbc"
           ): String!
         }
         
@@ -498,7 +498,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         """
         interface InterfaceEfg implements InterfaceAbc {
           name(
-            name: String!
+            name: String! = "valueEfg"
           ): String!
         }
         
@@ -1268,7 +1268,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         """
         interface InterfaceAbc {
           name(
-            name: String!
+            name: String! = "valueAbc"
           ): String!
         }
         
@@ -1277,7 +1277,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         """
         interface InterfaceEfg implements InterfaceAbc {
           name(
-            name: String!
+            name: String! = "valueEfg"
           ): String!
         }
         
@@ -1678,7 +1678,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         """
         interface InterfaceAbc {
           name(
-            name: String!
+            name: String! = "valueAbc"
           ): String!
         }
         
@@ -1687,7 +1687,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         """
         interface InterfaceEfg implements InterfaceAbc {
           name(
-            name: String!
+            name: String! = "valueEfg"
           ): String!
         }
         
@@ -2457,7 +2457,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         """
         interface InterfaceAbc {
           name(
-            name: String!
+            name: String! = "valueAbc"
           ): String!
         }
         
@@ -2466,7 +2466,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         """
         interface InterfaceEfg implements InterfaceAbc {
           name(
-            name: String!
+            name: String! = "valueEfg"
           ): String!
         }
         
