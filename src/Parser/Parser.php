@@ -116,7 +116,7 @@ final class Parser
                 $operationType = $this->tokenizer->getCurrent()->getValue();
 
                 if (!\Graphpinator\Tokenizer\OperationType::isOperationKeyword($operationType)) {
-                    throw new \Graphpinator\Exception\Parser\UnknownOperationType();
+                    throw new \Graphpinator\Exception\Parser\UnknownOperationType($this->tokenizer->getCurrent()->getLocation());
                 }
 
                 switch ($this->tokenizer->getNext()->getType()) {
@@ -142,17 +142,13 @@ final class Parser
                                     $variables,
                                 );
                             default:
-                                throw new \Graphpinator\Exception\Parser\ExpectedAfterOperationName();
+                                throw new \Graphpinator\Exception\Parser\ExpectedAfterOperationName($this->tokenizer->getCurrent()->getLocation());
                         }
-
-                        break;
                     default:
-                        throw new \Graphpinator\Exception\Parser\ExpectedAfterOperationType();
+                        throw new \Graphpinator\Exception\Parser\ExpectedAfterOperationType($this->tokenizer->getCurrent()->getLocation());
                 }
-
-                break;
             default:
-                throw new \Graphpinator\Exception\Parser\ExpectedRoot();
+                throw new \Graphpinator\Exception\Parser\ExpectedRoot($this->tokenizer->getCurrent()->getLocation());
         }
     }
 
@@ -180,7 +176,7 @@ final class Parser
 
                     break;
                 default:
-                    throw new \Graphpinator\Exception\Parser\ExpectedSelectionSetBody();
+                    throw new \Graphpinator\Exception\Parser\ExpectedSelectionSetBody($this->tokenizer->getNext()->getLocation());
             }
         }
 

@@ -10,10 +10,10 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
     {
         return [
             [
-                \Graphpinator\Json::fromObject((object)[
+                \Graphpinator\Json::fromObject((object) [
                     'query' => 'query queryName ($ var1: Int) { }',
                 ]),
-                \Graphpinator\Json::fromObject((object)[
+                \Graphpinator\Json::fromObject((object) [
                     'errors' => [
                         [
                             'message' => \Graphpinator\Exception\Tokenizer\MissingVariableName::MESSAGE,
@@ -23,10 +23,10 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
                 ]),
             ],
             [
-                \Graphpinator\Json::fromObject((object)[
+                \Graphpinator\Json::fromObject((object) [
                     'query' => 'query queryName { .. fragment }',
                 ]),
-                \Graphpinator\Json::fromObject((object)[
+                \Graphpinator\Json::fromObject((object) [
                     'errors' => [
                         [
                             'message' => \Graphpinator\Exception\Tokenizer\InvalidEllipsis::MESSAGE,
@@ -50,8 +50,8 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
                         [
                             'message' => \Graphpinator\Exception\Parser\EmptyRequest::MESSAGE,
                             'locations' => [['line' => 1, 'column' => 1]],
-                        ]
-                    ]
+                        ],
+                    ],
                 ]),
             ],
             [
@@ -63,8 +63,8 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
                         [
                             'message' => \Graphpinator\Exception\Parser\MissingOperation::MESSAGE,
                             'locations' => [['line' => 1, 'column' => 29]],
-                        ]
-                    ]
+                        ],
+                    ],
                 ]),
             ],
             [
@@ -76,8 +76,8 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
                         [
                             'message' => \Graphpinator\Exception\Parser\UnexpectedEnd::MESSAGE,
                             'locations' => [['line' => 1, 'column' => 30]],
-                        ]
-                    ]
+                        ],
+                    ],
                 ]),
             ],
             [
@@ -89,8 +89,8 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
                         [
                             'message' => \Graphpinator\Exception\Parser\DuplicateOperation::MESSAGE,
                             'locations' => [['line' => 1, 'column' => 27]],
-                        ]
-                    ]
+                        ],
+                    ],
                 ]),
             ],
             [
@@ -102,8 +102,8 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
                         [
                             'message' => \Graphpinator\Exception\Parser\DuplicateOperation::MESSAGE,
                             'locations' => [['line' => 1, 'column' => 27]],
-                        ]
-                    ]
+                        ],
+                    ],
                 ]),
             ],
         ];
