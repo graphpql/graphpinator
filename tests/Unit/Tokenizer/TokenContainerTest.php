@@ -13,12 +13,9 @@ final class TokenContainerTest extends \PHPUnit\Framework\TestCase
         $source = new \Graphpinator\Source\StringSource('{}[]()');
         $tokenizer = new \Graphpinator\Tokenizer\TokenContainer($source);
 
-        self::assertFalse($tokenizer->hasPrev());
         self::assertSame($tokenizer->getCurrent()->getType(), TokenType::CUR_O);
         self::assertSame($tokenizer->getNext()->getType(), TokenType::CUR_C);
-        self::assertTrue($tokenizer->hasPrev());
         self::assertSame($tokenizer->getNext()->getType(), TokenType::SQU_O);
-        self::assertTrue($tokenizer->hasPrev());
         self::assertSame($tokenizer->peekNext()->getType(), TokenType::SQU_C);
         self::assertSame($tokenizer->getNext()->getType(), TokenType::SQU_C);
         self::assertSame($tokenizer->getPrev()->getType(), TokenType::SQU_O);
@@ -36,8 +33,7 @@ final class TokenContainerTest extends \PHPUnit\Framework\TestCase
 
     public function testInvalidPrev() : void
     {
-        $this->expectException(\Graphpinator\Exception\Parser\UnexpectedEnd::class);
-        $this->expectExceptionMessage(\Graphpinator\Exception\Parser\UnexpectedEnd::MESSAGE);
+        $this->expectException(\AssertionError::class);
 
         $source = new \Graphpinator\Source\StringSource('{}[]()');
         $tokenizer = new \Graphpinator\Tokenizer\TokenContainer($source);

@@ -53,6 +53,7 @@ final class Operation
     ) : \Graphpinator\Normalizer\Operation\Operation
     {
         switch ($this->type) {
+            default:
             case \Graphpinator\Tokenizer\OperationType::QUERY:
                 $operation = $schema->getQuery();
 
@@ -65,8 +66,6 @@ final class Operation
                 $operation = $schema->getSubscription();
 
                 break;
-            default:
-                throw new \Graphpinator\Exception\Parser\UnknownOperationType();
         }
 
         if (!$operation instanceof \Graphpinator\Type\Type) {

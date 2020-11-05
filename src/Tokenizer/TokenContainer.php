@@ -20,11 +20,6 @@ final class TokenContainer implements \IteratorAggregate
         }
     }
 
-    public function hasPrev() : bool
-    {
-        return \array_key_exists($this->currentIndex - 1, $this->tokens);
-    }
-
     public function hasNext() : bool
     {
         return \array_key_exists($this->currentIndex + 1, $this->tokens);
@@ -42,9 +37,7 @@ final class TokenContainer implements \IteratorAggregate
 
     public function getPrev() : Token
     {
-        if (!$this->hasPrev()) {
-            throw new \Graphpinator\Exception\Parser\UnexpectedEnd();
-        }
+        \assert(\array_key_exists($this->currentIndex - 1, $this->tokens));
 
         --$this->currentIndex;
 

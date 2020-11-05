@@ -592,6 +592,7 @@ final class ParserTest extends \PHPUnit\Framework\TestCase
             ['query queryName { fieldName(: 123) }', \Graphpinator\Exception\Parser\ExpectedArgumentName::class],
             ['query queryName { fieldName } { fieldName }', \Graphpinator\Exception\Parser\OperationWithoutName::class],
             ['query queryName { fieldName } query { fieldName }', \Graphpinator\Exception\Parser\OperationWithoutName::class],
+            ['querry queryName { fieldName }', \Graphpinator\Exception\Parser\UnknownOperationType::class],
         ];
     }
 

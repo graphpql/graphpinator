@@ -259,7 +259,7 @@ final class Parser
                     null,
                 );
             default:
-                throw new \Graphpinator\Exception\Parser\ExpectedFragmentSpreadInfo();
+                throw new \Graphpinator\Exception\Parser\ExpectedFragmentSpreadInfo($this->tokenizer->getCurrent()->getLocation());
         }
     }
 
@@ -275,7 +275,7 @@ final class Parser
 
         while ($this->tokenizer->peekNext()->getType() !== TokenType::PAR_C) {
             if ($this->tokenizer->getNext()->getType() !== TokenType::VARIABLE) {
-                throw new \Graphpinator\Exception\Parser\ExpectedVariableName();
+                throw new \Graphpinator\Exception\Parser\ExpectedVariableName($this->tokenizer->getCurrent()->getLocation());
             }
 
             $name = $this->tokenizer->getCurrent()->getValue();
@@ -337,7 +337,7 @@ final class Parser
 
         while ($this->tokenizer->peekNext()->getType() !== TokenType::PAR_C) {
             if ($this->tokenizer->getNext()->getType() !== TokenType::NAME) {
-                throw new \Graphpinator\Exception\Parser\ExpectedArgumentName();
+                throw new \Graphpinator\Exception\Parser\ExpectedArgumentName($this->tokenizer->getCurrent()->getLocation());
             }
 
             $name = $this->tokenizer->getCurrent()->getValue();
@@ -365,7 +365,7 @@ final class Parser
         switch ($this->tokenizer->getNext()->getType()) {
             case TokenType::VARIABLE:
                 if ($literalOnly) {
-                    throw new \Graphpinator\Exception\Parser\ExpectedLiteralValue();
+                    throw new \Graphpinator\Exception\Parser\ExpectedLiteralValue($this->tokenizer->getCurrent()->getLocation());
                 }
 
                 return new \Graphpinator\Parser\Value\VariableRef($this->tokenizer->getCurrent()->getValue());
@@ -404,7 +404,7 @@ final class Parser
 
                 return new \Graphpinator\Parser\Value\ObjectVal($values);
             default:
-                throw new \Graphpinator\Exception\Parser\ExpectedValue();
+                throw new \Graphpinator\Exception\Parser\ExpectedValue($this->tokenizer->getNext()->getLocation());
         }
     }
 
@@ -431,7 +431,7 @@ final class Parser
 
                 break;
             default:
-                throw new \Graphpinator\Exception\Parser\ExpectedType();
+                throw new \Graphpinator\Exception\Parser\ExpectedType($this->tokenizer->getNext()->getLocation());
         }
 
         if ($this->tokenizer->peekNext()->getType() === TokenType::EXCL) {
@@ -441,7 +441,7 @@ final class Parser
         }
 
         if ($namedOnly && !$type instanceof \Graphpinator\Parser\TypeRef\NamedTypeRef) {
-            throw new \Graphpinator\Exception\Parser\ExpectedNamedType();
+            throw new \Graphpinator\Exception\Parser\ExpectedNamedType($this->tokenizer->getNext()->getLocation());
         }
 
         return $type;

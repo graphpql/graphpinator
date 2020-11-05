@@ -161,18 +161,6 @@ final class NormalizerTest extends \PHPUnit\Framework\TestCase
                 new \Graphpinator\Parser\ParseResult(
                     new \Graphpinator\Parser\Operation\OperationSet([
                         new \Graphpinator\Parser\Operation\Operation(
-                            new \Graphpinator\Parser\FieldSet([], new \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet([])),
-                            'random',
-                        ),
-                    ]),
-                    new \Graphpinator\Parser\Fragment\FragmentSet([]),
-                ),
-                \Graphpinator\Exception\Parser\UnknownOperationType::class,
-            ],
-            [
-                new \Graphpinator\Parser\ParseResult(
-                    new \Graphpinator\Parser\Operation\OperationSet([
-                        new \Graphpinator\Parser\Operation\Operation(
                             new \Graphpinator\Parser\FieldSet([], new \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet([
                                 new \Graphpinator\Parser\FragmentSpread\NamedFragmentSpread('fragmentName'),
                             ])),
