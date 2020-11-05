@@ -82,7 +82,7 @@ final class ParserTest extends \PHPUnit\Framework\TestCase
 
     public function testQueryMultiple() : void
     {
-        $result = \Graphpinator\Parser\Parser::parseString('query {} mutation {}');
+        $result = \Graphpinator\Parser\Parser::parseString('query qName {} mutation mName {}');
 
         self::assertCount(0, $result->getFragments());
     }
@@ -560,7 +560,7 @@ final class ParserTest extends \PHPUnit\Framework\TestCase
         return [
             ['', \Graphpinator\Exception\Parser\EmptyRequest::class],
             ['$var', \Graphpinator\Exception\Parser\ExpectedRoot::class],
-            ['fragment fragmentName on TypeName {}', \Graphpinator\Exception\Parser\EmptyOperation::class],
+            ['fragment fragmentName on TypeName {}', \Graphpinator\Exception\Parser\MissingOperation::class],
             ['fragment fragmentName on TypeName! {}', \Graphpinator\Exception\Parser\ExpectedNamedType::class],
             ['fragment fragmentName on [TypeName] {}', \Graphpinator\Exception\Parser\ExpectedNamedType::class],
             ['fragment fragmentName {}', \Graphpinator\Exception\Parser\ExpectedTypeCondition::class],

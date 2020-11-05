@@ -32,10 +32,11 @@ final class Parser
     public function parse() : ParseResult
     {
         if ($this->tokenizer->isEmpty()) {
-            throw new \Graphpinator\Exception\Parser\EmptyRequest();
+            throw new \Graphpinator\Exception\Parser\EmptyRequest(new \Graphpinator\Source\Location(1, 1));
         }
 
         $fragments = [];
+        $locations = [];
         $operations = [];
 
         while (true) {
@@ -43,7 +44,14 @@ final class Parser
                 $fragment = $this->parseFragmentDefinition();
                 $fragments[$fragment->getName()] = $fragment;
             } else {
+                $location = $this->tokenizer->getCurrent()->getLocation();
                 $operation = $this->parseOperation();
+
+                if (\array_key_exists($operation->getName(), $operations)) {
+                    throw new \Graphpinator\Exception\Parser\DuplicateOperation($location);
+                }
+
+                $locations[$operation->getName()] = $location;
                 $operations[$operation->getName()] = $operation;
             }
 
@@ -56,13 +64,13 @@ final class Parser
 
         switch (\count($operations)) {
             case 0:
-                throw new \Graphpinator\Exception\Parser\EmptyOperation();
+                throw new \Graphpinator\Exception\Parser\MissingOperation($this->tokenizer->getCurrent()->getLocation());
             case 1:
                 break;
             default:
                 foreach ($operations as $operation) {
                     if ($operation->getName() === null) {
-                        throw new \Graphpinator\Exception\Parser\OperationWithoutName();
+                        throw new \Graphpinator\Exception\Parser\OperationWithoutName($locations[$operation->getName()]);
                     }
                 }
         }
