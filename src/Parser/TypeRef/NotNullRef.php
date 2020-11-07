@@ -24,4 +24,9 @@ final class NotNullRef implements \Graphpinator\Parser\TypeRef\TypeRef
     {
         return new \Graphpinator\Type\NotNullType($this->innerRef->normalize($typeContainer));
     }
+
+    public function print() : string
+    {
+        return $this->innerRef->print() . '!';
+    }
 }
