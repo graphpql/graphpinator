@@ -5,8 +5,8 @@ declare(strict_types = 1);
 namespace Graphpinator\Parser;
 
 /**
- * @method Field current() : object
- * @method Field offsetGet($offset) : object
+ * @method \Graphpinator\Parser\Field current() : object
+ * @method \Graphpinator\Parser\Field offsetGet($offset) : object
  */
 final class FieldSet extends \Infinityloop\Utils\ObjectSet
 {

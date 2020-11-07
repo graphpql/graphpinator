@@ -5,8 +5,8 @@ declare(strict_types = 1);
 namespace Graphpinator\Normalizer\Directive;
 
 /**
- * @method Directive current() : object
- * @method Directive offsetGet($offset) : object
+ * @method \Graphpinator\Normalizer\Directive\Directive current() : object
+ * @method \Graphpinator\Normalizer\Directive\Directive offsetGet($offset) : object
  */
 final class DirectiveSet extends \Infinityloop\Utils\ObjectSet
 {

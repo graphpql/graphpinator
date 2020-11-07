@@ -5,8 +5,8 @@ declare(strict_types = 1);
 namespace Graphpinator\Field;
 
 /**
- * @method ResolvableField current() : object
- * @method ResolvableField offsetGet($offset) : object
+ * @method \Graphpinator\Field\ResolvableField current() : object
+ * @method \Graphpinator\Field\ResolvableField offsetGet($offset) : object
  */
 final class ResolvableFieldSet extends \Graphpinator\Field\FieldSet
 {

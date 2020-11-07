@@ -5,8 +5,8 @@ declare(strict_types = 1);
 namespace Graphpinator\Parser\FragmentSpread;
 
 /**
- * @method FragmentSpread current() : object
- * @method FragmentSpread offsetGet($offset) : object
+ * @method \Graphpinator\Parser\FragmentSpread\FragmentSpread current() : object
+ * @method \Graphpinator\Parser\FragmentSpread\FragmentSpread offsetGet($offset) : object
  */
 final class FragmentSpreadSet extends \Infinityloop\Utils\ObjectSet
 {

@@ -5,8 +5,8 @@ declare(strict_types = 1);
 namespace Graphpinator\Argument;
 
 /**
- * @method Argument current() : object
- * @method Argument offsetGet($offset) : object
+ * @method \Graphpinator\Argument\Argument current() : object
+ * @method \Graphpinator\Argument\Argument offsetGet($offset) : object
  */
 final class ArgumentSet extends \Infinityloop\Utils\ImplicitObjectMap implements \Graphpinator\Printable\PrintableSet
 {
@@ -19,7 +19,7 @@ final class ArgumentSet extends \Infinityloop\Utils\ImplicitObjectMap implements
         return $this->defaults;
     }
 
-    public function offsetSet($offset, $object): void
+    public function offsetSet($offset, $object) : void
     {
         \assert($object instanceof Argument);
 

@@ -5,8 +5,8 @@ declare(strict_types = 1);
 namespace Graphpinator\Normalizer;
 
 /**
- * @method Field current() : object
- * @method Field offsetGet($offset) : object
+ * @method \Graphpinator\Normalizer\Field current() : object
+ * @method \Graphpinator\Normalizer\Field offsetGet($offset) : object
  */
 final class FieldSet extends \Infinityloop\Utils\ObjectSet
 {

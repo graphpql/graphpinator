@@ -5,8 +5,8 @@ declare(strict_types = 1);
 namespace Graphpinator\Parser\Value;
 
 /**
- * @method NamedValue current() : object
- * @method NamedValue offsetGet($offset) : object
+ * @method \Graphpinator\Parser\Value\NamedValue current() : object
+ * @method \Graphpinator\Parser\Value\NamedValue offsetGet($offset) : object
  */
 final class NamedValueSet extends \Infinityloop\Utils\ImplicitObjectMap
 {

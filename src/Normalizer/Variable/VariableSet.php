@@ -5,8 +5,8 @@ declare(strict_types = 1);
 namespace Graphpinator\Normalizer\Variable;
 
 /**
- * @method Variable current() : object
- * @method Variable offsetGet($offset) : object
+ * @method \Graphpinator\Normalizer\Variable\Variable current() : object
+ * @method \Graphpinator\Normalizer\Variable\Variable offsetGet($offset) : object
  */
 final class VariableSet extends \Infinityloop\Utils\ImplicitObjectMap
 {

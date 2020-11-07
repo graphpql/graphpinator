@@ -5,8 +5,8 @@ declare(strict_types = 1);
 namespace Graphpinator\Constraint;
 
 /**
- * @method Constraint current() : object
- * @method Constraint offsetGet($offset) : object
+ * @method \Graphpinator\Constraint\Constraint current() : object
+ * @method \Graphpinator\Constraint\Constraint offsetGet($offset) : object
  */
 final class ConstraintSet extends \Infinityloop\Utils\ObjectSet
 {

@@ -5,8 +5,8 @@ declare(strict_types = 1);
 namespace Graphpinator\Normalizer\Operation;
 
 /**
- * @method Operation current() : object
- * @method Operation offsetGet($offset) : object
+ * @method \Graphpinator\Normalizer\Operation\Operation current() : object
+ * @method \Graphpinator\Normalizer\Operation\Operation offsetGet($offset) : object
  */
 final class OperationSet extends \Infinityloop\Utils\ImplicitObjectMap
 {
@@ -25,6 +25,7 @@ final class OperationSet extends \Infinityloop\Utils\ImplicitObjectMap
     {
         \assert($object instanceof Operation);
 
-        return $object->getName() ?? '';
+        return $object->getName()
+            ?? '';
     }
 }

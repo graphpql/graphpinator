@@ -5,8 +5,8 @@ declare(strict_types = 1);
 namespace Graphpinator\Parser\Operation;
 
 /**
- * @method Operation current() : object
- * @method Operation offsetGet($offset) : object
+ * @method \Graphpinator\Parser\Operation\Operation current() : object
+ * @method \Graphpinator\Parser\Operation\Operation offsetGet($offset) : object
  */
 final class OperationSet extends \Infinityloop\Utils\ImplicitObjectMap
 {
@@ -28,6 +28,7 @@ final class OperationSet extends \Infinityloop\Utils\ImplicitObjectMap
 
     protected function getKey(object $object) : string
     {
-        return $object->getName() ?? '';
+        return $object->getName()
+            ?? '';
     }
 }
