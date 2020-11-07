@@ -191,7 +191,7 @@ final class Parser
                 default:
                     throw new \Graphpinator\Exception\Parser\ExpectedSelectionSetBody(
                         $this->tokenizer->getNext()->getLocation(),
-                        $this->tokenizer->getNext()->getType(),
+                        $this->tokenizer->getCurrent()->getType(),
                     );
             }
         }
@@ -430,7 +430,7 @@ final class Parser
             default:
                 throw new \Graphpinator\Exception\Parser\ExpectedValue(
                     $this->tokenizer->getNext()->getLocation(),
-                    $this->tokenizer->getNext()->getType(),
+                    $this->tokenizer->getCurrent()->getType(),
                 );
         }
     }
@@ -460,7 +460,7 @@ final class Parser
             default:
                 throw new \Graphpinator\Exception\Parser\ExpectedType(
                     $this->tokenizer->getNext()->getLocation(),
-                    $this->tokenizer->getNext()->getType(),
+                    $this->tokenizer->getCurrent()->getType(),
                 );
         }
 
@@ -473,7 +473,7 @@ final class Parser
         if ($namedOnly && !$type instanceof \Graphpinator\Parser\TypeRef\NamedTypeRef) {
             throw new \Graphpinator\Exception\Parser\ExpectedNamedType(
                 $this->tokenizer->getNext()->getLocation(),
-                $this->tokenizer->getNext()->getType(),
+                $this->tokenizer->getCurrent()->getType(),
             );
         }
 
