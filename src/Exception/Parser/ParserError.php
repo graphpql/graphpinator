@@ -6,7 +6,7 @@ namespace Graphpinator\Exception\Parser;
 
 abstract class ParserError extends \Graphpinator\Exception\GraphpinatorBase
 {
-    final public function __construct(\Graphpinator\Source\Location $location)
+    public function __construct(\Graphpinator\Source\Location $location)
     {
         parent::__construct($location);
     }

@@ -69,7 +69,7 @@ final class TokenContainer implements \IteratorAggregate
         $token = $this->getNext();
 
         if ($token->getType() !== $tokenType) {
-            throw new $exceptionClass($token->getLocation());
+            throw new $exceptionClass($token->getLocation(), $token->getType());
         }
 
         return $token;
