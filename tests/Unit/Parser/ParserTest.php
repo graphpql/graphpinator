@@ -665,7 +665,7 @@ final class ParserTest extends \PHPUnit\Framework\TestCase
             [
                 'query queryName { fieldName(arg: {123}}) }',
                 \Graphpinator\Exception\Parser\ExpectedFieldName::class,
-                'Expected field name, got "int".',
+                'Expected field name, got "int literal".',
             ],
             [
                 'query queryName { fieldName : { field } }',
@@ -695,7 +695,7 @@ final class ParserTest extends \PHPUnit\Framework\TestCase
             [
                 'query queryName { fieldName(123) }',
                 \Graphpinator\Exception\Parser\ExpectedArgumentName::class,
-                'Expected argument or closing parenthesis, got "int".',
+                'Expected argument or closing parenthesis, got "int literal".',
             ],
             [
                 'query queryName { fieldName(: 123) }',
