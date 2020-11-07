@@ -4,19 +4,13 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Parser\Variable;
 
-final class VariableSet extends \Infinityloop\Utils\ObjectSet
+/**
+ * @method Variable current() : object
+ * @method Variable offsetGet($offset) : object
+ */
+final class VariableSet extends \Infinityloop\Utils\ImplicitObjectMap
 {
     protected const INNER_CLASS = Variable::class;
-
-    public function current() : Variable
-    {
-        return parent::current();
-    }
-
-    public function offsetGet($offset) : Variable
-    {
-        return parent::offsetGet($offset);
-    }
 
     public function normalize(\Graphpinator\Container\Container $typeContainer) : \Graphpinator\Normalizer\Variable\VariableSet
     {

@@ -4,21 +4,15 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Normalizer;
 
+/**
+ * @method Field current() : object
+ * @method Field offsetGet($offset) : object
+ */
 final class FieldSet extends \Infinityloop\Utils\ObjectSet
 {
     protected const INNER_CLASS = Field::class;
 
     protected array $fieldNames = [];
-
-    public function current() : Field
-    {
-        return parent::current();
-    }
-
-    public function offsetGet($offset) : Field
-    {
-        return parent::offsetGet($offset);
-    }
 
     public function applyVariables(\Graphpinator\Resolver\VariableValueSet $variables) : self
     {
@@ -59,7 +53,7 @@ final class FieldSet extends \Infinityloop\Utils\ObjectSet
         }
     }
 
-    protected function getKey(object $object) : ?string
+    public function offsetSet($offset, $object) : void
     {
         \assert($object instanceof Field);
 
@@ -69,6 +63,6 @@ final class FieldSet extends \Infinityloop\Utils\ObjectSet
 
         $this->fieldNames[$object->getAlias()][] = $object;
 
-        return parent::getKey($object);
+        parent::offsetSet($offset, $object);
     }
 }

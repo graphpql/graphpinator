@@ -4,7 +4,11 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Argument;
 
-final class ArgumentSet extends \Infinityloop\Utils\ObjectSet implements \Graphpinator\Printable\PrintableSet
+/**
+ * @method Argument current() : object
+ * @method Argument offsetGet($offset) : object
+ */
+final class ArgumentSet extends \Infinityloop\Utils\ImplicitObjectMap implements \Graphpinator\Printable\PrintableSet
 {
     protected const INNER_CLASS = Argument::class;
 
@@ -15,23 +19,22 @@ final class ArgumentSet extends \Infinityloop\Utils\ObjectSet implements \Graphp
         return $this->defaults;
     }
 
-    public function current() : Argument
+    public function offsetSet($offset, $object): void
     {
-        return parent::current();
-    }
+        \assert($object instanceof Argument);
 
-    public function offsetGet($offset) : Argument
-    {
-        return parent::offsetGet($offset);
-    }
+        parent::offsetSet($offset, $object);
 
-    protected function getKey(object $object) : string
-    {
         $defaultValue = $object->getDefaultValue();
 
         if ($defaultValue instanceof \Graphpinator\Value\InputedValue) {
             $this->defaults[$object->getName()] = $defaultValue->getRawValue();
         }
+    }
+
+    protected function getKey(object $object) : string
+    {
+        \assert($object instanceof Argument);
 
         return $object->getName();
     }

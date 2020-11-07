@@ -4,19 +4,13 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Parser\Operation;
 
-final class OperationSet extends \Infinityloop\Utils\ObjectSet
+/**
+ * @method Operation current() : object
+ * @method Operation offsetGet($offset) : object
+ */
+final class OperationSet extends \Infinityloop\Utils\ImplicitObjectMap
 {
     protected const INNER_CLASS = Operation::class;
-
-    public function current() : \Graphpinator\Parser\Operation\Operation
-    {
-        return parent::current();
-    }
-
-    public function offsetGet($offset) : \Graphpinator\Parser\Operation\Operation
-    {
-        return parent::offsetGet($offset);
-    }
 
     public function normalize(
         \Graphpinator\Type\Schema $schema,
@@ -32,8 +26,8 @@ final class OperationSet extends \Infinityloop\Utils\ObjectSet
         return new \Graphpinator\Normalizer\Operation\OperationSet($normalized);
     }
 
-    protected function getKey(object $object) : ?string
+    protected function getKey(object $object) : string
     {
-        return $object->getName();
+        return $object->getName() ?? '';
     }
 }

@@ -4,19 +4,13 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Type\Enum;
 
-final class EnumItemSet extends \Infinityloop\Utils\ObjectSet implements \Graphpinator\Printable\PrintableSet
+/**
+ * @method EnumItem current() : object
+ * @method EnumItem offsetGet($offset) : object
+ */
+final class EnumItemSet extends \Infinityloop\Utils\ImplicitObjectMap implements \Graphpinator\Printable\PrintableSet
 {
     protected const INNER_CLASS = EnumItem::class;
-
-    public function current() : EnumItem
-    {
-        return parent::current();
-    }
-
-    public function offsetGet($offset) : EnumItem
-    {
-        return parent::offsetGet($offset);
-    }
 
     public function getArray() : array
     {

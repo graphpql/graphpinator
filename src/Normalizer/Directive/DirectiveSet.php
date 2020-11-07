@@ -4,6 +4,10 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Normalizer\Directive;
 
+/**
+ * @method Directive current() : object
+ * @method Directive offsetGet($offset) : object
+ */
 final class DirectiveSet extends \Infinityloop\Utils\ObjectSet
 {
     protected const INNER_CLASS = Directive::class;
@@ -16,16 +20,6 @@ final class DirectiveSet extends \Infinityloop\Utils\ObjectSet
         $this->location = $location;
 
         parent::__construct($data);
-    }
-
-    public function current() : Directive
-    {
-        return parent::current();
-    }
-
-    public function offsetGet($offset) : Directive
-    {
-        return parent::offsetGet($offset);
     }
 
     public function getLocation() : string
@@ -44,7 +38,7 @@ final class DirectiveSet extends \Infinityloop\Utils\ObjectSet
         return new self($fields, $this->location);
     }
 
-    protected function getKey(object $object) : ?string
+    public function offsetSet($offset, $object) : void
     {
         \assert($object instanceof Directive);
 
@@ -62,6 +56,6 @@ final class DirectiveSet extends \Infinityloop\Utils\ObjectSet
             $this->directiveTypes[$directive->getName()] = true;
         }
 
-        return parent::getKey($object);
+        parent::offsetSet($offset, $object);
     }
 }

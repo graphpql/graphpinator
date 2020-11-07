@@ -6,7 +6,7 @@ namespace Graphpinator\Printable;
 
 interface PrintableSet extends \Iterator
 {
-    public function current() : Printable;
+    public function current() : object;
 
     //@phpcs:ignore SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
     public function key();

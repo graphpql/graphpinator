@@ -4,19 +4,13 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Parser\FragmentSpread;
 
+/**
+ * @method FragmentSpread current() : object
+ * @method FragmentSpread offsetGet($offset) : object
+ */
 final class FragmentSpreadSet extends \Infinityloop\Utils\ObjectSet
 {
     protected const INNER_CLASS = FragmentSpread::class;
-
-    public function current() : FragmentSpread
-    {
-        return parent::current();
-    }
-
-    public function offsetGet($offset) : FragmentSpread
-    {
-        return parent::offsetGet($offset);
-    }
 
     public function normalize(
         \Graphpinator\Container\Container $typeContainer,
