@@ -15,9 +15,9 @@ final class TokenType
     public const NAME = 'name';
     public const VARIABLE = '$';
     public const DIRECTIVE = '@';
-    public const INT = 'int';
-    public const FLOAT = 'float';
-    public const STRING = 'string';
+    public const INT = 'int literal';
+    public const FLOAT = 'float literal';
+    public const STRING = 'string literal';
     // keywords
     public const NULL = 'null';
     public const TRUE = 'true';
@@ -35,8 +35,8 @@ final class TokenType
     public const SQU_O = '['; // list
     public const SQU_C = ']';
     public const ELLIP = '...'; // fragment spread
-    public const COLON = ':'; // argument, variable, directive, alias
-    public const EQUAL = '='; // default
+    public const COLON = ':'; // argument, variable, directive, field alias
+    public const EQUAL = '='; // default value
 
     public const IGNORABLE = [
         self::COMMA => true,
