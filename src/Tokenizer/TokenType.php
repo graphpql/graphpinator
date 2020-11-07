@@ -22,6 +22,9 @@ final class TokenType
     public const NULL = 'null';
     public const TRUE = 'true';
     public const FALSE = 'false';
+    public const QUERY = OperationType::QUERY;
+    public const MUTATION = OperationType::MUTATION;
+    public const SUBSCRIPTION = OperationType::SUBSCRIPTION;
     public const FRAGMENT = 'fragment';
     public const ON = 'on'; // type condition
     // punctators

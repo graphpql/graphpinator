@@ -180,9 +180,23 @@ final class Tokenizer implements \Iterator
     private function createWordToken(\Graphpinator\Source\Location $location) : void
     {
         $value = $this->eatName();
-        $lower = \strtolower($value);
 
-        switch ($lower) {
+        switch ($value) {
+            case OperationType::QUERY:
+                $this->token = new \Graphpinator\Tokenizer\Token(TokenType::QUERY, $location);
+
+                return;
+            case OperationType::MUTATION:
+                $this->token = new \Graphpinator\Tokenizer\Token(TokenType::MUTATION, $location);
+
+                return;
+            case OperationType::SUBSCRIPTION:
+                $this->token = new \Graphpinator\Tokenizer\Token(TokenType::SUBSCRIPTION, $location);
+
+                return;
+        }
+
+        switch (\strtolower($value)) {
             case 'null':
                 $this->token = new \Graphpinator\Tokenizer\Token(TokenType::NULL, $location);
 

@@ -113,11 +113,11 @@ final class Parser
             case TokenType::CUR_O:
                 return new \Graphpinator\Parser\Operation\Operation($this->parseSelectionSet());
             case TokenType::NAME:
-                $operationType = $this->tokenizer->getCurrent()->getValue();
-
-                if (!\Graphpinator\Tokenizer\OperationType::isOperationKeyword($operationType)) {
-                    throw new \Graphpinator\Exception\Parser\UnknownOperationType($this->tokenizer->getCurrent()->getLocation());
-                }
+                throw new \Graphpinator\Exception\Parser\UnknownOperationType($this->tokenizer->getCurrent()->getLocation());
+            case TokenType::QUERY:
+            case TokenType::MUTATION:
+            case TokenType::SUBSCRIPTION:
+                $operationType = $this->tokenizer->getCurrent()->getType();
 
                 switch ($this->tokenizer->getNext()->getType()) {
                     case TokenType::CUR_O:
