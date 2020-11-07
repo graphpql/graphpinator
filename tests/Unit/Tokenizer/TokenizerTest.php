@@ -327,7 +327,7 @@ final class TokenizerTest extends \PHPUnit\Framework\TestCase
             [
                 'query { field1 { innerField } }',
                 [
-                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, new \Graphpinator\Source\Location(1, 1), 'query'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::QUERY, new \Graphpinator\Source\Location(1, 1)),
                     new \Graphpinator\Tokenizer\Token(TokenType::CUR_O, new \Graphpinator\Source\Location(1, 7)),
                     new \Graphpinator\Tokenizer\Token(TokenType::NAME, new \Graphpinator\Source\Location(1, 9), 'field1'),
                     new \Graphpinator\Tokenizer\Token(TokenType::CUR_O, new \Graphpinator\Source\Location(1, 16)),
@@ -339,7 +339,7 @@ final class TokenizerTest extends \PHPUnit\Framework\TestCase
             [
                 'mutation { field(argName: 4) }',
                 [
-                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, new \Graphpinator\Source\Location(1, 1), 'mutation'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::MUTATION, new \Graphpinator\Source\Location(1, 1)),
                     new \Graphpinator\Tokenizer\Token(TokenType::CUR_O, new \Graphpinator\Source\Location(1, 10)),
                     new \Graphpinator\Tokenizer\Token(TokenType::NAME, new \Graphpinator\Source\Location(1, 12), 'field'),
                     new \Graphpinator\Tokenizer\Token(TokenType::PAR_O, new \Graphpinator\Source\Location(1, 17)),
@@ -353,7 +353,7 @@ final class TokenizerTest extends \PHPUnit\Framework\TestCase
             [
                 'subscription { field(argName: "str") }',
                 [
-                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, new \Graphpinator\Source\Location(1, 1), 'subscription'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::SUBSCRIPTION, new \Graphpinator\Source\Location(1, 1)),
                     new \Graphpinator\Tokenizer\Token(TokenType::CUR_O, new \Graphpinator\Source\Location(1, 14)),
                     new \Graphpinator\Tokenizer\Token(TokenType::NAME, new \Graphpinator\Source\Location(1, 16), 'field'),
                     new \Graphpinator\Tokenizer\Token(TokenType::PAR_O, new \Graphpinator\Source\Location(1, 21)),
@@ -367,7 +367,7 @@ final class TokenizerTest extends \PHPUnit\Framework\TestCase
             [
                 'query { field(argName: ["str", "str", $varName]) @directiveName }',
                 [
-                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, new \Graphpinator\Source\Location(1, 1), 'query'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::QUERY, new \Graphpinator\Source\Location(1, 1)),
                     new \Graphpinator\Tokenizer\Token(TokenType::CUR_O, new \Graphpinator\Source\Location(1, 7)),
                     new \Graphpinator\Tokenizer\Token(TokenType::NAME, new \Graphpinator\Source\Location(1, 9), 'field'),
                     new \Graphpinator\Tokenizer\Token(TokenType::PAR_O, new \Graphpinator\Source\Location(1, 14)),
@@ -392,7 +392,7 @@ final class TokenizerTest extends \PHPUnit\Framework\TestCase
                     '}' . \PHP_EOL .
                 '}',
                 [
-                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, new \Graphpinator\Source\Location(1, 1), 'query'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::QUERY, new \Graphpinator\Source\Location(1, 1)),
                     new \Graphpinator\Tokenizer\Token(TokenType::CUR_O, new \Graphpinator\Source\Location(1, 7)),
                     new \Graphpinator\Tokenizer\Token(TokenType::NEWLINE, new \Graphpinator\Source\Location(1, 8)),
                     new \Graphpinator\Tokenizer\Token(TokenType::NAME, new \Graphpinator\Source\Location(2, 1), 'field1'),
@@ -413,7 +413,7 @@ final class TokenizerTest extends \PHPUnit\Framework\TestCase
                     '}' . \PHP_EOL .
                 '}',
                 [
-                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, new \Graphpinator\Source\Location(1, 1), 'query'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::QUERY, new \Graphpinator\Source\Location(1, 1)),
                     new \Graphpinator\Tokenizer\Token(TokenType::CUR_O, new \Graphpinator\Source\Location(1, 7)),
                     new \Graphpinator\Tokenizer\Token(TokenType::NEWLINE, new \Graphpinator\Source\Location(1, 8)),
                     new \Graphpinator\Tokenizer\Token(TokenType::NAME, new \Graphpinator\Source\Location(2, 1), 'field1'),
@@ -457,7 +457,7 @@ final class TokenizerTest extends \PHPUnit\Framework\TestCase
             [
                 'query { field(argName: ["str", "str", true, false, null]) }',
                 [
-                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, new \Graphpinator\Source\Location(1, 1), 'query'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::QUERY, new \Graphpinator\Source\Location(1, 1)),
                     new \Graphpinator\Tokenizer\Token(TokenType::CUR_O, new \Graphpinator\Source\Location(1, 7)),
                     new \Graphpinator\Tokenizer\Token(TokenType::NAME, new \Graphpinator\Source\Location(1, 9), 'field'),
                     new \Graphpinator\Tokenizer\Token(TokenType::PAR_O, new \Graphpinator\Source\Location(1, 14)),
@@ -481,7 +481,7 @@ final class TokenizerTest extends \PHPUnit\Framework\TestCase
                     '}' . \PHP_EOL .
                 '}',
                 [
-                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, new \Graphpinator\Source\Location(1, 1), 'query'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::QUERY, new \Graphpinator\Source\Location(1, 1)),
                     new \Graphpinator\Tokenizer\Token(TokenType::CUR_O, new \Graphpinator\Source\Location(1, 7)),
                     new \Graphpinator\Tokenizer\Token(TokenType::NAME, new \Graphpinator\Source\Location(2, 1), 'field1'),
                     new \Graphpinator\Tokenizer\Token(TokenType::CUR_O, new \Graphpinator\Source\Location(2, 8)),
@@ -498,7 +498,7 @@ final class TokenizerTest extends \PHPUnit\Framework\TestCase
                     '}' . \PHP_EOL .
                 '}',
                 [
-                    new \Graphpinator\Tokenizer\Token(TokenType::NAME, new \Graphpinator\Source\Location(1, 1), 'query'),
+                    new \Graphpinator\Tokenizer\Token(TokenType::QUERY, new \Graphpinator\Source\Location(1, 1)),
                     new \Graphpinator\Tokenizer\Token(TokenType::CUR_O, new \Graphpinator\Source\Location(1, 7)),
                     new \Graphpinator\Tokenizer\Token(TokenType::NAME, new \Graphpinator\Source\Location(2, 1), 'field1'),
                     new \Graphpinator\Tokenizer\Token(TokenType::CUR_O, new \Graphpinator\Source\Location(2, 8)),

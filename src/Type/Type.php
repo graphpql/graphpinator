@@ -49,7 +49,7 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
 
             foreach ($field->getDirectives() as $directive) {
                 $directiveDef = $directive->getDirective();
-                $arguments = new \Graphpinator\Resolver\ArgumentValueSet($directive->getArguments(), $directiveDef->getArguments());
+                $arguments = new \Graphpinator\Argument\ArgumentValueSet($directive->getArguments(), $directiveDef->getArguments());
                 $directiveResult = $directiveDef->resolve($arguments);
 
                 if ($directiveResult === \Graphpinator\Directive\DirectiveResult::SKIP) {

@@ -4,19 +4,13 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Parser\Value;
 
-final class NamedValueSet extends \Infinityloop\Utils\ObjectSet
+/**
+ * @method \Graphpinator\Parser\Value\NamedValue current() : object
+ * @method \Graphpinator\Parser\Value\NamedValue offsetGet($offset) : object
+ */
+final class NamedValueSet extends \Infinityloop\Utils\ImplicitObjectMap
 {
     protected const INNER_CLASS = NamedValue::class;
-
-    public function current() : NamedValue
-    {
-        return parent::current();
-    }
-
-    public function offsetGet($offset) : NamedValue
-    {
-        return parent::offsetGet($offset);
-    }
 
     public function applyVariables(\Graphpinator\Resolver\VariableValueSet $variables) : self
     {

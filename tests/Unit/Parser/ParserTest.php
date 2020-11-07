@@ -422,7 +422,7 @@ final class ParserTest extends \PHPUnit\Framework\TestCase
 
     public function testFieldArguments() : void
     {
-        $result = \Graphpinator\Parser\Parser::parseString('QUERY queryName { fieldName(argName: "argVal") }');
+        $result = \Graphpinator\Parser\Parser::parseString('query queryName { fieldName(argName: "argVal") }');
 
         self::assertCount(0, $result->getFragments());
         self::assertCount(1, $result->getOperations());

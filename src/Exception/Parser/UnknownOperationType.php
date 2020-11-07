@@ -6,5 +6,5 @@ namespace Graphpinator\Exception\Parser;
 
 final class UnknownOperationType extends \Graphpinator\Exception\Parser\ParserError
 {
-    public const MESSAGE = 'Unknown operation type - one of: query, mutation, subscription.';
+    public const MESSAGE = 'Unknown operation type - one of: query, mutation, subscription (case-sensitive).';
 }

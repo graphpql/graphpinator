@@ -4,19 +4,13 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Normalizer\Operation;
 
-final class OperationSet extends \Infinityloop\Utils\ObjectSet
+/**
+ * @method \Graphpinator\Normalizer\Operation\Operation current() : object
+ * @method \Graphpinator\Normalizer\Operation\Operation offsetGet($offset) : object
+ */
+final class OperationSet extends \Infinityloop\Utils\ImplicitObjectMap
 {
     protected const INNER_CLASS = Operation::class;
-
-    public function current() : Operation
-    {
-        return parent::current();
-    }
-
-    public function offsetGet($offset) : Operation
-    {
-        return parent::offsetGet($offset);
-    }
 
     public function createRequest(?string $operationName, \stdClass $variables) : \Graphpinator\ParsedRequest
     {
@@ -27,8 +21,11 @@ final class OperationSet extends \Infinityloop\Utils\ObjectSet
         return new \Graphpinator\ParsedRequest($operation, $variables);
     }
 
-    protected function getKey(object $object) : ?string
+    protected function getKey(object $object) : string
     {
-        return $object->getName();
+        \assert($object instanceof Operation);
+
+        return $object->getName()
+            ?? '';
     }
 }
