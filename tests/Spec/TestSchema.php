@@ -76,6 +76,7 @@ final class TestSchema
             'InterfaceEfg' => self::getInterfaceEfg(),
             'FragmentTypeA' => self::getFragmentTypeA(),
             'FragmentTypeB' => self::getFragmentTypeB(),
+            'SimpleEmptyTestInput' => self::getSimpleEmptyTestInput(),
         ], [
             'testDirective' => self::getTestDirective(),
             'invalidDirective' => self::getInvalidDirective(),
@@ -327,7 +328,7 @@ final class TestSchema
                         new \Graphpinator\Argument\ArgumentSet([
                             new \Graphpinator\Argument\Argument(
                                 'emptyObject',
-                                TestSchema::getComplexDefaultsInput(),
+                                TestSchema::getSimpleEmptyTestInput(),
                                 new \stdClass(),
                             ),
                         ]),
@@ -358,8 +359,19 @@ final class TestSchema
                         static function ($parent, ?\stdClass $inputComplex) : \stdClass {
                             $return = new \stdClass();
 
-                            $return->name = $inputComplex->innerObject->name;
-                            $return->number = $inputComplex->innerObject->innerNotNull->number;
+                            $return->name = $inputComplex->innerObject->name
+                                . ' ' . $inputComplex->innerObject->inner->name
+                                . ' ' . $inputComplex->innerObject->innerNotNull->name
+                                . ' ' . $inputComplex->innerListObjects[0]->name
+                                . ' ' . $inputComplex->innerListObjects[0]->inner->name
+                                . ' ' . $inputComplex->innerListObjects[1]->name;
+                            $return->number = \array_merge(
+                                $inputComplex->innerObject->innerNotNull->number,
+                                $inputComplex->innerObject->inner->number,
+                                $inputComplex->innerListObjects[0]->inner->number,
+                                $inputComplex->innerListObjects[0]->innerNotNull->number,
+                                $inputComplex->innerListObjects[1]->innerList[1]->number,
+                            );
                             $return->bool = $inputComplex->innerObject->inner->bool;
 
                             return $return;
@@ -878,13 +890,6 @@ final class TestSchema
                     new \Graphpinator\Field\Field(
                         'name',
                         \Graphpinator\Container\Container::String()->notNull(),
-                        new \Graphpinator\Argument\ArgumentSet([
-                            new \Graphpinator\Argument\Argument(
-                                'name',
-                                \Graphpinator\Container\Container::String()->notNull(),
-                                'valueAbc',
-                            ),
-                        ]),
                     ),
                 ]);
             }
@@ -916,13 +921,10 @@ final class TestSchema
                     new \Graphpinator\Field\Field(
                         'name',
                         \Graphpinator\Container\Container::String()->notNull(),
-                        new \Graphpinator\Argument\ArgumentSet([
-                            new \Graphpinator\Argument\Argument(
-                                'name',
-                                \Graphpinator\Container\Container::String()->notNull(),
-                                'valueEfg',
-                            ),
-                        ]),
+                    ),
+                    new \Graphpinator\Field\Field(
+                        'number',
+                        \Graphpinator\Container\Container::Int(),
                     ),
                 ]);
             }
@@ -1000,6 +1002,36 @@ final class TestSchema
                                 'name',
                                 \Graphpinator\Container\Container::String()->notNull(),
                                 'defaultB',
+                            ),
+                        ]),
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'number',
+                        \Graphpinator\Container\Container::Int(),
+                        static function (\stdClass $parent, $number) {
+                            return $parent->number
+                                ?? $number;
+                        },
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'number',
+                                \Graphpinator\Container\Container::Int(),
+                                5,
+                            ),
+                        ]),
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'bool',
+                        \Graphpinator\Container\Container::Boolean(),
+                        static function (\stdClass $parent, $bool) {
+                            return $parent->bool
+                                ?? $bool;
+                        },
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'bool',
+                                \Graphpinator\Container\Container::Boolean(),
+                                false,
                             ),
                         ]),
                     ),
@@ -1601,6 +1633,29 @@ final class TestSchema
                                 true,
                             ),
                         ]),
+                    ),
+                ]);
+            }
+
+            protected function validateNonNullValue($rawValue) : bool
+            {
+                return true;
+            }
+        };
+    }
+
+    public static function getSimpleEmptyTestInput() : \Graphpinator\Type\InputType
+    {
+        return new class extends \Graphpinator\Type\InputType
+        {
+            protected const NAME = 'SimpleEmptyTestInput';
+
+            protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
+            {
+                return new \Graphpinator\Argument\ArgumentSet([
+                    new \Graphpinator\Argument\Argument(
+                        'emptyObject',
+                        TestSchema::getSimpleInput(),
                     ),
                 ]);
             }

@@ -68,8 +68,8 @@ final class FragmentTest extends \PHPUnit\Framework\TestCase
                     }
                     fragment interfaceAbcFragment on InterfaceAbc { 
                         name 
-                        ... on InterfaceEfg { name }
-                        ... on FragmentTypeB { name }
+                        ... on InterfaceEfg { name number }
+                        ... on FragmentTypeB { name number bool }
                         ... on Xyz { name }
                     }',
                 ]),
@@ -85,8 +85,8 @@ final class FragmentTest extends \PHPUnit\Framework\TestCase
                     fragment interfaceAbcFragment on InterfaceAbc { 
                         name 
                         ... @include(if: true) {
-                            ... on InterfaceEfg { name }
-                            ... on FragmentTypeB { name }
+                            ... on InterfaceEfg { name number }
+                            ... on FragmentTypeB { name number bool }
                             ... on Xyz { name }
                         }
                     }',

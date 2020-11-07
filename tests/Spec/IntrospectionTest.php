@@ -119,6 +119,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                                 ['name' => 'InterfaceEfg'],
                                 ['name' => 'FragmentTypeA'],
                                 ['name' => 'FragmentTypeB'],
+                                ['name' => 'SimpleEmptyTestInput'],
                                 ['name' => 'ListConstraintInput'],
                                 ['name' => 'ID'],
                                 ['name' => 'Int'],

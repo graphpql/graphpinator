@@ -455,6 +455,12 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           name(
             name: String! = "defaultB"
           ): String!
+          number(
+            number: Int = 5
+          ): Int
+          bool(
+            bool: Boolean = false
+          ): Boolean
         }
         
         """
@@ -488,18 +494,15 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         Interface Abc Description
         """
         interface InterfaceAbc {
-          name(
-            name: String! = "valueAbc"
-          ): String!
+          name: String!
         }
         
         """
         Interface Efg Description
         """
         interface InterfaceEfg implements InterfaceAbc {
-          name(
-            name: String! = "valueEfg"
-          ): String!
+          name: String!
+          number: Int
         }
         
         """
@@ -613,126 +616,8 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           ): SimpleType!
           fieldInvalidInput: SimpleType
           fieldEmptyObject(
-            emptyObject: ComplexDefaultsInput = {
-              innerObject: {
-                name: "testName",
-                inner: {
-                  name: "string",
-                  number: [
-                    1,
-                    2,
-                    3
-                  ],
-                  bool: null
-                },
-                innerList: [
-                  {
-                    name: "string",
-                    number: [
-                      1
-                    ],
-                    bool: null
-                  },
-                  {
-                    name: "string",
-                    number: [
-                      1,
-                      2,
-                      3,
-                      4
-                    ],
-                    bool: null
-                  }
-                ],
-                innerNotNull: {
-                  name: "string",
-                  number: [
-                    1,
-                    2
-                  ],
-                  bool: null
-                }
-              },
-              innerListObjects: [
-                {
-                  name: "testName",
-                  inner: {
-                    name: "string",
-                    number: [
-                      1,
-                      2,
-                      3
-                    ],
-                    bool: null
-                  },
-                  innerList: [
-                    {
-                      name: "string",
-                      number: [
-                        1
-                      ],
-                      bool: null
-                    },
-                    {
-                      name: "string",
-                      number: [
-                        1,
-                        2,
-                        3,
-                        4
-                      ],
-                      bool: null
-                    }
-                  ],
-                  innerNotNull: {
-                    name: "string",
-                    number: [
-                      1,
-                      2
-                    ],
-                    bool: null
-                  }
-                },
-                {
-                  name: "testName2",
-                  inner: {
-                    name: "string2",
-                    number: [
-                      11,
-                      22,
-                      33
-                    ],
-                    bool: null
-                  },
-                  innerList: [
-                    {
-                      name: "string2",
-                      number: [
-                        11
-                      ],
-                      bool: null
-                    },
-                    {
-                      name: "string2",
-                      number: [
-                        11,
-                        22,
-                        33,
-                        44
-                      ],
-                      bool: null
-                    }
-                  ],
-                  innerNotNull: {
-                    name: "string2",
-                    number: [
-                      11,
-                      22
-                    ],
-                    bool: null
-                  }
-                }
-              ]
+            emptyObject: SimpleEmptyTestInput = {
+              emptyObject: null
             }
           ): SimpleType
           fieldListConstraint(
@@ -761,6 +646,10 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           green: Int! @intConstraint(min: 0, max: 255)
           blue: Int! @intConstraint(min: 0, max: 255)
           alpha: Float! @floatConstraint(min: 0, max: 1)
+        }
+        
+        input SimpleEmptyTestInput {
+          emptyObject: SimpleInput
         }
         
         enum SimpleEnum {
@@ -1234,6 +1123,12 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           name(
             name: String! = "defaultB"
           ): String!
+          number(
+            number: Int = 5
+          ): Int
+          bool(
+            bool: Boolean = false
+          ): Boolean
         }
         
         """
@@ -1267,18 +1162,15 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         Interface Abc Description
         """
         interface InterfaceAbc {
-          name(
-            name: String! = "valueAbc"
-          ): String!
+          name: String!
         }
         
         """
         Interface Efg Description
         """
         interface InterfaceEfg implements InterfaceAbc {
-          name(
-            name: String! = "valueEfg"
-          ): String!
+          name: String!
+          number: Int
         }
         
         """
@@ -1392,126 +1284,8 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           ): SimpleType!
           fieldInvalidInput: SimpleType
           fieldEmptyObject(
-            emptyObject: ComplexDefaultsInput = {
-              innerObject: {
-                name: "testName",
-                inner: {
-                  name: "string",
-                  number: [
-                    1,
-                    2,
-                    3
-                  ],
-                  bool: null
-                },
-                innerList: [
-                  {
-                    name: "string",
-                    number: [
-                      1
-                    ],
-                    bool: null
-                  },
-                  {
-                    name: "string",
-                    number: [
-                      1,
-                      2,
-                      3,
-                      4
-                    ],
-                    bool: null
-                  }
-                ],
-                innerNotNull: {
-                  name: "string",
-                  number: [
-                    1,
-                    2
-                  ],
-                  bool: null
-                }
-              },
-              innerListObjects: [
-                {
-                  name: "testName",
-                  inner: {
-                    name: "string",
-                    number: [
-                      1,
-                      2,
-                      3
-                    ],
-                    bool: null
-                  },
-                  innerList: [
-                    {
-                      name: "string",
-                      number: [
-                        1
-                      ],
-                      bool: null
-                    },
-                    {
-                      name: "string",
-                      number: [
-                        1,
-                        2,
-                        3,
-                        4
-                      ],
-                      bool: null
-                    }
-                  ],
-                  innerNotNull: {
-                    name: "string",
-                    number: [
-                      1,
-                      2
-                    ],
-                    bool: null
-                  }
-                },
-                {
-                  name: "testName2",
-                  inner: {
-                    name: "string2",
-                    number: [
-                      11,
-                      22,
-                      33
-                    ],
-                    bool: null
-                  },
-                  innerList: [
-                    {
-                      name: "string2",
-                      number: [
-                        11
-                      ],
-                      bool: null
-                    },
-                    {
-                      name: "string2",
-                      number: [
-                        11,
-                        22,
-                        33,
-                        44
-                      ],
-                      bool: null
-                    }
-                  ],
-                  innerNotNull: {
-                    name: "string2",
-                    number: [
-                      11,
-                      22
-                    ],
-                    bool: null
-                  }
-                }
-              ]
+            emptyObject: SimpleEmptyTestInput = {
+              emptyObject: null
             }
           ): SimpleType
           fieldListConstraint(
@@ -1540,6 +1314,10 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           green: Int! @intConstraint(min: 0, max: 255)
           blue: Int! @intConstraint(min: 0, max: 255)
           alpha: Float! @floatConstraint(min: 0, max: 1)
+        }
+        
+        input SimpleEmptyTestInput {
+          emptyObject: SimpleInput
         }
         
         enum SimpleEnum {
@@ -1677,18 +1455,15 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         Interface Abc Description
         """
         interface InterfaceAbc {
-          name(
-            name: String! = "valueAbc"
-          ): String!
+          name: String!
         }
         
         """
         Interface Efg Description
         """
         interface InterfaceEfg implements InterfaceAbc {
-          name(
-            name: String! = "valueEfg"
-          ): String!
+          name: String!
+          number: Int
         }
         
         """
@@ -1812,6 +1587,12 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           name(
             name: String! = "defaultB"
           ): String!
+          number(
+            number: Int = 5
+          ): Int
+          bool(
+            bool: Boolean = false
+          ): Boolean
         }
         
         """
@@ -1914,126 +1695,8 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           ): SimpleType!
           fieldInvalidInput: SimpleType
           fieldEmptyObject(
-            emptyObject: ComplexDefaultsInput = {
-              innerObject: {
-                name: "testName",
-                inner: {
-                  name: "string",
-                  number: [
-                    1,
-                    2,
-                    3
-                  ],
-                  bool: null
-                },
-                innerList: [
-                  {
-                    name: "string",
-                    number: [
-                      1
-                    ],
-                    bool: null
-                  },
-                  {
-                    name: "string",
-                    number: [
-                      1,
-                      2,
-                      3,
-                      4
-                    ],
-                    bool: null
-                  }
-                ],
-                innerNotNull: {
-                  name: "string",
-                  number: [
-                    1,
-                    2
-                  ],
-                  bool: null
-                }
-              },
-              innerListObjects: [
-                {
-                  name: "testName",
-                  inner: {
-                    name: "string",
-                    number: [
-                      1,
-                      2,
-                      3
-                    ],
-                    bool: null
-                  },
-                  innerList: [
-                    {
-                      name: "string",
-                      number: [
-                        1
-                      ],
-                      bool: null
-                    },
-                    {
-                      name: "string",
-                      number: [
-                        1,
-                        2,
-                        3,
-                        4
-                      ],
-                      bool: null
-                    }
-                  ],
-                  innerNotNull: {
-                    name: "string",
-                    number: [
-                      1,
-                      2
-                    ],
-                    bool: null
-                  }
-                },
-                {
-                  name: "testName2",
-                  inner: {
-                    name: "string2",
-                    number: [
-                      11,
-                      22,
-                      33
-                    ],
-                    bool: null
-                  },
-                  innerList: [
-                    {
-                      name: "string2",
-                      number: [
-                        11
-                      ],
-                      bool: null
-                    },
-                    {
-                      name: "string2",
-                      number: [
-                        11,
-                        22,
-                        33,
-                        44
-                      ],
-                      bool: null
-                    }
-                  ],
-                  innerNotNull: {
-                    name: "string2",
-                    number: [
-                      11,
-                      22
-                    ],
-                    bool: null
-                  }
-                }
-              ]
+            emptyObject: SimpleEmptyTestInput = {
+              emptyObject: null
             }
           ): SimpleType
           fieldListConstraint(
@@ -2288,6 +1951,10 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           maxItems: Int
           unique: Boolean = false
           innerList: ListConstraintInput
+        }
+        
+        input SimpleEmptyTestInput {
+          emptyObject: SimpleInput
         }
         
         input SimpleInput {
@@ -2456,18 +2123,15 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         Interface Abc Description
         """
         interface InterfaceAbc {
-          name(
-            name: String! = "valueAbc"
-          ): String!
+          name: String!
         }
         
         """
         Interface Efg Description
         """
         interface InterfaceEfg implements InterfaceAbc {
-          name(
-            name: String! = "valueEfg"
-          ): String!
+          name: String!
+          number: Int
         }
         
         """
@@ -2591,6 +2255,12 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           name(
             name: String! = "defaultB"
           ): String!
+          number(
+            number: Int = 5
+          ): Int
+          bool(
+            bool: Boolean = false
+          ): Boolean
         }
         
         """
@@ -2693,126 +2363,8 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           ): SimpleType!
           fieldInvalidInput: SimpleType
           fieldEmptyObject(
-            emptyObject: ComplexDefaultsInput = {
-              innerObject: {
-                name: "testName",
-                inner: {
-                  name: "string",
-                  number: [
-                    1,
-                    2,
-                    3
-                  ],
-                  bool: null
-                },
-                innerList: [
-                  {
-                    name: "string",
-                    number: [
-                      1
-                    ],
-                    bool: null
-                  },
-                  {
-                    name: "string",
-                    number: [
-                      1,
-                      2,
-                      3,
-                      4
-                    ],
-                    bool: null
-                  }
-                ],
-                innerNotNull: {
-                  name: "string",
-                  number: [
-                    1,
-                    2
-                  ],
-                  bool: null
-                }
-              },
-              innerListObjects: [
-                {
-                  name: "testName",
-                  inner: {
-                    name: "string",
-                    number: [
-                      1,
-                      2,
-                      3
-                    ],
-                    bool: null
-                  },
-                  innerList: [
-                    {
-                      name: "string",
-                      number: [
-                        1
-                      ],
-                      bool: null
-                    },
-                    {
-                      name: "string",
-                      number: [
-                        1,
-                        2,
-                        3,
-                        4
-                      ],
-                      bool: null
-                    }
-                  ],
-                  innerNotNull: {
-                    name: "string",
-                    number: [
-                      1,
-                      2
-                    ],
-                    bool: null
-                  }
-                },
-                {
-                  name: "testName2",
-                  inner: {
-                    name: "string2",
-                    number: [
-                      11,
-                      22,
-                      33
-                    ],
-                    bool: null
-                  },
-                  innerList: [
-                    {
-                      name: "string2",
-                      number: [
-                        11
-                      ],
-                      bool: null
-                    },
-                    {
-                      name: "string2",
-                      number: [
-                        11,
-                        22,
-                        33,
-                        44
-                      ],
-                      bool: null
-                    }
-                  ],
-                  innerNotNull: {
-                    name: "string2",
-                    number: [
-                      11,
-                      22
-                    ],
-                    bool: null
-                  }
-                }
-              ]
+            emptyObject: SimpleEmptyTestInput = {
+              emptyObject: null
             }
           ): SimpleType
           fieldListConstraint(
@@ -3067,6 +2619,10 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           maxItems: Int
           unique: Boolean = false
           innerList: ListConstraintInput
+        }
+        
+        input SimpleEmptyTestInput {
+          emptyObject: SimpleInput
         }
         
         input SimpleInput {
