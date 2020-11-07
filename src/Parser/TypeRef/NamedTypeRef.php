@@ -24,4 +24,9 @@ final class NamedTypeRef implements \Graphpinator\Parser\TypeRef\TypeRef
     {
         return $this->name;
     }
+
+    public function print() : string
+    {
+        return $this->name;
+    }
 }

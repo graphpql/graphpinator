@@ -24,4 +24,9 @@ final class ListTypeRef implements \Graphpinator\Parser\TypeRef\TypeRef
     {
         return new \Graphpinator\Type\ListType($this->innerRef->normalize($typeContainer));
     }
+
+    public function print() : string
+    {
+        return '[' . $this->innerRef->print() . ']';
+    }
 }

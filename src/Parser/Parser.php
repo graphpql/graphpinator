@@ -459,7 +459,7 @@ final class Parser
                 break;
             default:
                 throw new \Graphpinator\Exception\Parser\ExpectedType(
-                    $this->tokenizer->getNext()->getLocation(),
+                    $this->tokenizer->getCurrent()->getLocation(),
                     $this->tokenizer->getCurrent()->getType(),
                 );
         }
@@ -472,8 +472,8 @@ final class Parser
 
         if ($namedOnly && !$type instanceof \Graphpinator\Parser\TypeRef\NamedTypeRef) {
             throw new \Graphpinator\Exception\Parser\ExpectedNamedType(
-                $this->tokenizer->getNext()->getLocation(),
-                $this->tokenizer->getCurrent()->getType(),
+                $this->tokenizer->getCurrent()->getLocation(),
+                $type->print(),
             );
         }
 

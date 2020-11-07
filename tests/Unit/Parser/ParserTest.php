@@ -568,12 +568,12 @@ final class ParserTest extends \PHPUnit\Framework\TestCase
             [
                 'fragment fragmentName on TypeName! {}',
                 \Graphpinator\Exception\Parser\ExpectedNamedType::class,
-                'Expected named type without type modifiers, got "{".',
+                'Expected named type without type modifiers, got "TypeName!".',
             ],
             [
                 'fragment fragmentName on [TypeName] {}',
                 \Graphpinator\Exception\Parser\ExpectedNamedType::class,
-                'Expected named type without type modifiers, got "{".',
+                'Expected named type without type modifiers, got "[TypeName]".',
             ],
             [
                 'fragment fragmentName {}',
@@ -583,7 +583,7 @@ final class ParserTest extends \PHPUnit\Framework\TestCase
             [
                 'fragment fragmentName on {}',
                 \Graphpinator\Exception\Parser\ExpectedType::class,
-                'Expected type reference, got "}".',
+                'Expected type reference, got "{".',
             ],
             ['queryName {}', \Graphpinator\Exception\Parser\UnknownOperationType::class],
             ['queary queryName {}', \Graphpinator\Exception\Parser\UnknownOperationType::class],
@@ -615,17 +615,17 @@ final class ParserTest extends \PHPUnit\Framework\TestCase
             [
                 'query queryName { ... on {} }',
                 \Graphpinator\Exception\Parser\ExpectedType::class,
-                'Expected type reference, got "}".',
+                'Expected type reference, got "{".',
             ],
             [
                 'query queryName { ... on Int! {} }',
                 \Graphpinator\Exception\Parser\ExpectedNamedType::class,
-                'Expected named type without type modifiers, got "{".',
+                'Expected named type without type modifiers, got "Int!".',
             ],
             [
                 'query queryName { ... on [Int] {} }',
                 \Graphpinator\Exception\Parser\ExpectedNamedType::class,
-                'Expected named type without type modifiers, got "{".',
+                'Expected named type without type modifiers, got "[Int]".',
             ],
             [
                 'query queryName { ... on [Int {} }',
@@ -675,7 +675,7 @@ final class ParserTest extends \PHPUnit\Framework\TestCase
             [
                 'query queryName ($var: = 123) {}',
                 \Graphpinator\Exception\Parser\ExpectedType::class,
-                'Expected type reference, got "int".',
+                'Expected type reference, got "=".',
             ],
             [
                 'query queryName (Int = 5) {}',
