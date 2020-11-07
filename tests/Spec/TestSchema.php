@@ -386,7 +386,7 @@ final class TestSchema
                                 'name',
                                 \Graphpinator\Container\Container::String()->notNull(),
                             ),
-                        ])
+                        ]),
                     ),
                 ]);
             }
