@@ -321,17 +321,10 @@ final class TestSchema
                     ),
                     new \Graphpinator\Field\ResolvableField(
                         'fieldEmptyObject',
-                        TestSchema::getSimpleType(),
-                        static function ($parent, \stdClass $emptyObject) : \stdClass {
-                            return $emptyObject;
+                        TestSchema::getSimpleEmptyTestInput(),
+                        static function () : \stdClass {
+                            return new \stdClass();
                         },
-                        new \Graphpinator\Argument\ArgumentSet([
-                            new \Graphpinator\Argument\Argument(
-                                'emptyObject',
-                                TestSchema::getSimpleEmptyTestInput(),
-                                new \stdClass(),
-                            ),
-                        ]),
                     ),
                     (new \Graphpinator\Field\ResolvableField(
                         'fieldListConstraint',
@@ -382,6 +375,18 @@ final class TestSchema
                                 TestSchema::getComplexDefaultsInput(),
                             ),
                         ]),
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'fieldRequiredArgumentInvalid',
+                        TestSchema::getSimpleType(),
+                        static function ($parent, $name) : void {
+                        },
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'name',
+                                \Graphpinator\Container\Container::String()->notNull(),
+                            ),
+                        ])
                     ),
                 ]);
             }
@@ -1644,18 +1649,23 @@ final class TestSchema
         };
     }
 
-    public static function getSimpleEmptyTestInput() : \Graphpinator\Type\InputType
+    public static function getSimpleEmptyTestInput() : \Graphpinator\Type\Type
     {
-        return new class extends \Graphpinator\Type\InputType
+        return new class extends \Graphpinator\Type\Type
         {
             protected const NAME = 'SimpleEmptyTestInput';
+            protected const DESCRIPTION = null;
 
-            protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
+            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
             {
-                return new \Graphpinator\Argument\ArgumentSet([
-                    new \Graphpinator\Argument\Argument(
-                        'emptyObject',
-                        TestSchema::getSimpleInput(),
+                return new \Graphpinator\Field\ResolvableFieldSet([
+                    new \Graphpinator\Field\ResolvableField(
+                        'fieldNumber',
+                        \Graphpinator\Container\Container::Int(),
+                        static function (\stdClass $parent) {
+                            return $parent->number
+                                ?? null;
+                        },
                     ),
                 ]);
             }

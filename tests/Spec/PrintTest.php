@@ -615,11 +615,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             inputBool: Boolean
           ): SimpleType!
           fieldInvalidInput: SimpleType
-          fieldEmptyObject(
-            emptyObject: SimpleEmptyTestInput = {
-              emptyObject: null
-            }
-          ): SimpleType
+          fieldEmptyObject: SimpleEmptyTestInput
           fieldListConstraint(
             arg: [SimpleInput]
           ): [SimpleType] @listConstraint(minItems: 3, maxItems: 5)
@@ -627,6 +623,9 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldMerge(
             inputComplex: ComplexDefaultsInput
           ): SimpleType!
+          fieldRequiredArgumentInvalid(
+            name: String!
+          ): SimpleType
         }
         
         """
@@ -648,8 +647,8 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           alpha: Float! @floatConstraint(min: 0, max: 1)
         }
         
-        input SimpleEmptyTestInput {
-          emptyObject: SimpleInput
+        type SimpleEmptyTestInput {
+          fieldNumber: Int
         }
         
         enum SimpleEnum {
@@ -1283,11 +1282,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             inputBool: Boolean
           ): SimpleType!
           fieldInvalidInput: SimpleType
-          fieldEmptyObject(
-            emptyObject: SimpleEmptyTestInput = {
-              emptyObject: null
-            }
-          ): SimpleType
+          fieldEmptyObject: SimpleEmptyTestInput
           fieldListConstraint(
             arg: [SimpleInput]
           ): [SimpleType] @listConstraint(minItems: 3, maxItems: 5)
@@ -1295,6 +1290,9 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldMerge(
             inputComplex: ComplexDefaultsInput
           ): SimpleType!
+          fieldRequiredArgumentInvalid(
+            name: String!
+          ): SimpleType
         }
         
         """
@@ -1316,8 +1314,8 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           alpha: Float! @floatConstraint(min: 0, max: 1)
         }
         
-        input SimpleEmptyTestInput {
-          emptyObject: SimpleInput
+        type SimpleEmptyTestInput {
+          fieldNumber: Int
         }
         
         enum SimpleEnum {
@@ -1694,11 +1692,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             inputBool: Boolean
           ): SimpleType!
           fieldInvalidInput: SimpleType
-          fieldEmptyObject(
-            emptyObject: SimpleEmptyTestInput = {
-              emptyObject: null
-            }
-          ): SimpleType
+          fieldEmptyObject: SimpleEmptyTestInput
           fieldListConstraint(
             arg: [SimpleInput]
           ): [SimpleType] @listConstraint(minItems: 3, maxItems: 5)
@@ -1706,6 +1700,9 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldMerge(
             inputComplex: ComplexDefaultsInput
           ): SimpleType!
+          fieldRequiredArgumentInvalid(
+            name: String!
+          ): SimpleType
         }
         
         """
@@ -1725,6 +1722,10 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           green: Int! @intConstraint(min: 0, max: 255)
           blue: Int! @intConstraint(min: 0, max: 255)
           alpha: Float! @floatConstraint(min: 0, max: 1)
+        }
+        
+        type SimpleEmptyTestInput {
+          fieldNumber: Int
         }
         
         """
@@ -1951,10 +1952,6 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           maxItems: Int
           unique: Boolean = false
           innerList: ListConstraintInput
-        }
-        
-        input SimpleEmptyTestInput {
-          emptyObject: SimpleInput
         }
         
         input SimpleInput {
@@ -2362,11 +2359,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             inputBool: Boolean
           ): SimpleType!
           fieldInvalidInput: SimpleType
-          fieldEmptyObject(
-            emptyObject: SimpleEmptyTestInput = {
-              emptyObject: null
-            }
-          ): SimpleType
+          fieldEmptyObject: SimpleEmptyTestInput
           fieldListConstraint(
             arg: [SimpleInput]
           ): [SimpleType] @listConstraint(minItems: 3, maxItems: 5)
@@ -2374,6 +2367,9 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldMerge(
             inputComplex: ComplexDefaultsInput
           ): SimpleType!
+          fieldRequiredArgumentInvalid(
+            name: String!
+          ): SimpleType
         }
         
         """
@@ -2393,6 +2389,10 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           green: Int! @intConstraint(min: 0, max: 255)
           blue: Int! @intConstraint(min: 0, max: 255)
           alpha: Float! @floatConstraint(min: 0, max: 1)
+        }
+        
+        type SimpleEmptyTestInput {
+          fieldNumber: Int
         }
         
         """
@@ -2619,10 +2619,6 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           maxItems: Int
           unique: Boolean = false
           innerList: ListConstraintInput
-        }
-        
-        input SimpleEmptyTestInput {
-          emptyObject: SimpleInput
         }
         
         input SimpleInput {

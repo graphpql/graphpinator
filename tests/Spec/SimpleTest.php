@@ -64,14 +64,12 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldEmptyObject { fieldName fieldNumber fieldBool } }',
+                    'query' => 'query queryName { fieldEmptyObject { fieldNumber } }',
                 ]),
                 \Graphpinator\Json::fromObject((object) [
                     'data' => [
                         'fieldEmptyObject' => [
-                            'fieldName' => 'testValue',
-                            'fieldNumber' => [1,2],
-                            'fieldBool' => true,
+                            'fieldNumber' => null,
                         ],
                     ],
                 ]),
@@ -328,6 +326,18 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
                     'randomKey' => 'randomVal',
                 ]),
                 \Graphpinator\Exception\Request\UnknownKey::class,
+            ],
+            [
+                \Graphpinator\Json::fromObject((object) [
+                    'query' => 'query queryName { fieldArgumentDefaults(arg: [1,2], arg: false) { fieldName fieldNumber fieldBool } }',
+                ]),
+                'Exception',
+            ],
+            [
+                \Graphpinator\Json::fromObject((object) [
+                    'query' => 'query queryName { fieldRequiredArgumentInvalid { fieldName fieldNumber fieldBool } }',
+                ]),
+                \Graphpinator\Exception\Value\ValueCannotBeNull::class,
             ],
         ];
     }

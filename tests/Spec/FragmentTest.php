@@ -84,9 +84,43 @@ final class FragmentTest extends \PHPUnit\Framework\TestCase
                     }
                     fragment interfaceAbcFragment on InterfaceAbc { 
                         name 
+                        ... on InterfaceEfg { number }
+                        ... on FragmentTypeB { bool }
+                        ... on Xyz { name }
+                    }',
+                ]),
+                \Graphpinator\Json::fromObject((object) ['data' => ['fieldFragment' => ['name' => 'defaultA']]]),
+            ],
+            [
+                \Graphpinator\Json::fromObject((object) [
+                    'query' => 'query queryName { 
+                        fieldFragment {
+                            ... interfaceAbcFragment
+                        }
+                    }
+                    fragment interfaceAbcFragment on InterfaceAbc { 
+                        name 
                         ... @include(if: true) {
                             ... on InterfaceEfg { name number }
                             ... on FragmentTypeB { name number bool }
+                            ... on Xyz { name }
+                        }
+                    }',
+                ]),
+                \Graphpinator\Json::fromObject((object) ['data' => ['fieldFragment' => ['name' => 'defaultA']]]),
+            ],
+            [
+                \Graphpinator\Json::fromObject((object) [
+                    'query' => 'query queryName { 
+                        fieldFragment {
+                            ... interfaceAbcFragment
+                        }
+                    }
+                    fragment interfaceAbcFragment on InterfaceAbc { 
+                        name 
+                        ... @include(if: true) {
+                            ... on InterfaceEfg { number }
+                            ... on FragmentTypeB { bool }
                             ... on Xyz { name }
                         }
                     }',
@@ -253,6 +287,20 @@ final class FragmentTest extends \PHPUnit\Framework\TestCase
                     'query' => 'query queryName { fieldUnion { fieldXyz(arg1: 456) { name } ... on Abc { fieldXyz(arg1: [456]) { name } } } }',
                 ]),
                 \Graphpinator\Exception\Normalizer\ConflictingFieldArguments::class,
+            ],
+            [
+                \Graphpinator\Json::fromObject((object) [
+                    'query' => 'query queryName { 
+                        fieldFragment {
+                            ... interfaceAbcFragment
+                        }
+                    }
+                    fragment interfaceAbcFragment on InterfaceEfg { 
+                        name 
+                        ... on InterfaceAbc { number }
+                    }',
+                ]),
+                \Graphpinator\Exception\Normalizer\InvalidFragmentType::class,
             ],
         ];
     }
