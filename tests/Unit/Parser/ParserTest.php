@@ -580,108 +580,108 @@ final class ParserTest extends \PHPUnit\Framework\TestCase
                 \Graphpinator\Exception\Parser\ExpectedTypeCondition::class,
                 'Expected type condition for fragment, got "{".',
             ],
-            ['fragment fragmentName on {}', \Graphpinator\Exception\Parser\ExpectedType::class,],
+            ['fragment fragmentName on {}', \Graphpinator\Exception\Parser\ExpectedType::class],
             ['queryName {}', \Graphpinator\Exception\Parser\UnknownOperationType::class],
             ['queary queryName {}', \Graphpinator\Exception\Parser\UnknownOperationType::class],
             [
                 'query ($var: Int) {}',
                 \Graphpinator\Exception\Parser\ExpectedAfterOperationType::class,
-                'Expected operation name or selection set, got "(".'
+                'Expected operation name or selection set, got "(".',
             ],
             [
                 'query queryName field',
                 \Graphpinator\Exception\Parser\ExpectedAfterOperationName::class,
-                'Expected variable definition or selection set, got "name".'
+                'Expected variable definition or selection set, got "name".',
             ],
             [
                 'query queryName [$var: Int] {}',
                 \Graphpinator\Exception\Parser\ExpectedAfterOperationName::class,
-                'Expected variable definition or selection set, got "[".'
+                'Expected variable definition or selection set, got "[".',
             ],
             [
                 'query queryName ($var: Int) field',
                 \Graphpinator\Exception\Parser\ExpectedSelectionSet::class,
-                'Expected selection set, got "name".'
+                'Expected selection set, got "name".',
             ],
             [
                 'query queryName { ... {} }',
                 \Graphpinator\Exception\Parser\ExpectedFragmentSpreadInfo::class,
-                'Expected fragment name or inline fragment, got "{".'
+                'Expected fragment name or inline fragment, got "{".',
             ],
             [
                 'query queryName { ... on {} }',
                 \Graphpinator\Exception\Parser\ExpectedType::class,
-                'Expected type reference, got "}".'
+                'Expected type reference, got "}".',
             ],
             [
                 'query queryName { ... on Int! {} }',
                 \Graphpinator\Exception\Parser\ExpectedNamedType::class,
-                'Expected named type without type modifiers, got "}".'
+                'Expected named type without type modifiers, got "}".',
             ],
             [
                 'query queryName { ... on [Int] {} }',
                 \Graphpinator\Exception\Parser\ExpectedNamedType::class,
-                'Expected named type without type modifiers, got "}".'
+                'Expected named type without type modifiers, got "}".',
             ],
             [
                 'query queryName { ... on [Int {} }',
                 \Graphpinator\Exception\Parser\ExpectedClosingBracket::class,
-                'Expected closing ] for list type modifier, got "{".'
+                'Expected closing ] for list type modifier, got "{".',
             ],
             [
                 'query queryName { ... on Int }',
                 \Graphpinator\Exception\Parser\ExpectedSelectionSet::class,
-                'Expected selection set, got "}".'
+                'Expected selection set, got "}".',
             ],
             [
                 'query queryName { ... @directive() }',
                 \Graphpinator\Exception\Parser\ExpectedSelectionSet::class,
-                'Expected selection set, got "}".'
+                'Expected selection set, got "}".',
             ],
             [
                 'query queryName ($var: Int = @dir) {}',
                 \Graphpinator\Exception\Parser\ExpectedValue::class,
-                'Expected value - either literal or variable reference, got "{".'
+                'Expected value - either literal or variable reference, got "{".',
             ],
             [
                 'query queryName ($var: Int = $var2) {}',
                 \Graphpinator\Exception\Parser\ExpectedLiteralValue::class,
-                'Expected literal value as variable default value, got "$".'
+                'Expected literal value as variable default value, got "$".',
             ],
             [
                 'query queryName ($var = 123) {}',
                 \Graphpinator\Exception\Parser\ExpectedColon::class,
-                'Expected colon, got "=".'
+                'Expected colon, got "=".',
             ],
             [
                 'query queryName { fieldName(arg = 123) }',
                 \Graphpinator\Exception\Parser\ExpectedColon::class,
-                'Expected colon, got "=".'
+                'Expected colon, got "=".',
             ],
             [
                 'query queryName { fieldName(arg: {123}}) }',
                 \Graphpinator\Exception\Parser\ExpectedFieldName::class,
-                'Expected field name, got "int".'
+                'Expected field name, got "int".',
             ],
             [
                 'query queryName { fieldName : { field } }',
                 \Graphpinator\Exception\Parser\ExpectedFieldName::class,
-                'Expected field name, got "{".'
+                'Expected field name, got "{".',
             ],
             [
                 'query queryName ($var: = 123) {}',
                 \Graphpinator\Exception\Parser\ExpectedType::class,
-                'Expected type reference, got ")".'
+                'Expected type reference, got ")".',
             ],
             [
                 'query queryName (Int = 5) {}',
                 \Graphpinator\Exception\Parser\ExpectedVariableName::class,
-                'Expected variable or closing parenthesis, got "name".'
+                'Expected variable or closing parenthesis, got "name".',
             ],
             [
                 'query queryName (:Int = 5) {}',
                 \Graphpinator\Exception\Parser\ExpectedVariableName::class,
-                'Expected variable or closing parenthesis, got ":".'
+                'Expected variable or closing parenthesis, got ":".',
             ],
             [
                 'query queryName { $var }',
