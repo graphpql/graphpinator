@@ -81,7 +81,7 @@ final class Field
             return;
         }
 
-        throw new \Exception('Invalid fragment type condition');
+        throw new \Graphpinator\Exception\Normalizer\InvalidFragmentType();
     }
 
     public function applyVariables(\Graphpinator\Resolver\VariableValueSet $variables) : self

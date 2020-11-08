@@ -81,6 +81,29 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
                 ]),
                 \Graphpinator\Json::fromObject((object) ['data' => ['fieldExactlyOne' => 1]]),
             ],
+            [
+                \Graphpinator\Json::fromObject((object) [
+                    'query' => 'query queryName {
+                        fieldListConstraint(arg: [
+                            { name: "name1", number: [1,2] },
+                            { name: "name2", number: [1,3] },
+                            { name: "name3", number: [1,5] }
+                        ])
+                        {
+                            fieldName
+                        }
+                    }',
+                ]),
+                \Graphpinator\Json::fromObject((object) [
+                    'data' => [
+                        'fieldListConstraint' => [
+                            ['fieldName' => 'name1'],
+                            ['fieldName' => 'name2'],
+                            ['fieldName' => 'name3'],
+                        ],
+                    ],
+                ]),
+            ],
         ];
     }
 
@@ -226,6 +249,35 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
                     'query' => 'query queryName { fieldExactlyOne(arg: {int1: null, int2: null}) }',
                 ]),
                 \Graphpinator\Exception\Constraint\ExactlyOneConstraintNotSatisfied::class,
+            ],
+            [
+                \Graphpinator\Json::fromObject((object) [
+                    'query' => 'query queryName {
+                        fieldListConstraint(arg: [
+                            { name: "name1", number: [1,2] },
+                            { name: "name2", number: [2,2] },
+                            { name: "name3", number: [3,3] },
+                            { name: "name4", number: [4,5] }
+                            { name: "name5", number: [5,5] }
+                            { name: "name6", number: [4,4] }
+                        ])
+                        {
+                            fieldName
+                        }
+                    }',
+                ]),
+                \Graphpinator\Exception\Constraint\MaxItemsConstraintNotSatisfied::class,
+            ],
+            [
+                \Graphpinator\Json::fromObject((object) [
+                    'query' => 'query queryName {
+                        fieldListConstraint(arg: [])
+                        {
+                            fieldName
+                        }
+                    }',
+                ]),
+                \Graphpinator\Exception\Constraint\MinItemsConstraintNotSatisfied::class,
             ],
         ];
     }

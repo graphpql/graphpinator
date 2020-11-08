@@ -445,6 +445,24 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           int2: Int
         }
         
+        type FragmentTypeA implements InterfaceAbc {
+          name(
+            name: String! = "defaultA"
+          ): String!
+        }
+        
+        type FragmentTypeB implements InterfaceEfg {
+          name(
+            name: String! = "defaultB"
+          ): String!
+          number(
+            number: Int = 5
+          ): Int
+          bool(
+            bool: Boolean = false
+          ): Boolean
+        }
+        
         """
         Gps type - latitude and longitude.
         """
@@ -470,6 +488,21 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           saturation: Int! @intConstraint(min: 0, max: 100)
           lightness: Int! @intConstraint(min: 0, max: 100)
           alpha: Float! @floatConstraint(min: 0, max: 1)
+        }
+        
+        """
+        Interface Abc Description
+        """
+        interface InterfaceAbc {
+          name: String!
+        }
+        
+        """
+        Interface Efg Description
+        """
+        interface InterfaceEfg implements InterfaceAbc {
+          name: String!
+          number: Int
         }
         
         """
@@ -582,6 +615,17 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             inputBool: Boolean
           ): SimpleType!
           fieldInvalidInput: SimpleType
+          fieldEmptyObject: SimpleEmptyTestInput
+          fieldListConstraint(
+            arg: [SimpleInput]
+          ): [SimpleType] @listConstraint(minItems: 3, maxItems: 5)
+          fieldFragment: InterfaceAbc
+          fieldMerge(
+            inputComplex: ComplexDefaultsInput
+          ): SimpleType!
+          fieldRequiredArgumentInvalid(
+            name: String!
+          ): SimpleType
         }
         
         """
@@ -601,6 +645,10 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           green: Int! @intConstraint(min: 0, max: 255)
           blue: Int! @intConstraint(min: 0, max: 255)
           alpha: Float! @floatConstraint(min: 0, max: 1)
+        }
+        
+        type SimpleEmptyTestInput {
+          fieldNumber: Int
         }
         
         enum SimpleEnum {
@@ -1064,6 +1112,24 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           int2: Int
         }
         
+        type FragmentTypeA implements InterfaceAbc {
+          name(
+            name: String! = "defaultA"
+          ): String!
+        }
+        
+        type FragmentTypeB implements InterfaceEfg {
+          name(
+            name: String! = "defaultB"
+          ): String!
+          number(
+            number: Int = 5
+          ): Int
+          bool(
+            bool: Boolean = false
+          ): Boolean
+        }
+        
         """
         Gps type - latitude and longitude.
         """
@@ -1089,6 +1155,21 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           saturation: Int! @intConstraint(min: 0, max: 100)
           lightness: Int! @intConstraint(min: 0, max: 100)
           alpha: Float! @floatConstraint(min: 0, max: 1)
+        }
+        
+        """
+        Interface Abc Description
+        """
+        interface InterfaceAbc {
+          name: String!
+        }
+        
+        """
+        Interface Efg Description
+        """
+        interface InterfaceEfg implements InterfaceAbc {
+          name: String!
+          number: Int
         }
         
         """
@@ -1201,6 +1282,17 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             inputBool: Boolean
           ): SimpleType!
           fieldInvalidInput: SimpleType
+          fieldEmptyObject: SimpleEmptyTestInput
+          fieldListConstraint(
+            arg: [SimpleInput]
+          ): [SimpleType] @listConstraint(minItems: 3, maxItems: 5)
+          fieldFragment: InterfaceAbc
+          fieldMerge(
+            inputComplex: ComplexDefaultsInput
+          ): SimpleType!
+          fieldRequiredArgumentInvalid(
+            name: String!
+          ): SimpleType
         }
         
         """
@@ -1220,6 +1312,10 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           green: Int! @intConstraint(min: 0, max: 255)
           blue: Int! @intConstraint(min: 0, max: 255)
           alpha: Float! @floatConstraint(min: 0, max: 1)
+        }
+        
+        type SimpleEmptyTestInput {
+          fieldNumber: Int
         }
         
         enum SimpleEnum {
@@ -1354,6 +1450,21 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         }
         
         """
+        Interface Abc Description
+        """
+        interface InterfaceAbc {
+          name: String!
+        }
+        
+        """
+        Interface Efg Description
+        """
+        interface InterfaceEfg implements InterfaceAbc {
+          name: String!
+          number: Int
+        }
+        
+        """
         TestInterface Description
         """
         interface TestInterface {
@@ -1464,6 +1575,24 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           listMaxField: [Int] @listConstraint(maxItems: 3)
         }
         
+        type FragmentTypeA implements InterfaceAbc {
+          name(
+            name: String! = "defaultA"
+          ): String!
+        }
+        
+        type FragmentTypeB implements InterfaceEfg {
+          name(
+            name: String! = "defaultB"
+          ): String!
+          number(
+            number: Int = 5
+          ): Int
+          bool(
+            bool: Boolean = false
+          ): Boolean
+        }
+        
         """
         Gps type - latitude and longitude.
         """
@@ -1563,6 +1692,17 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             inputBool: Boolean
           ): SimpleType!
           fieldInvalidInput: SimpleType
+          fieldEmptyObject: SimpleEmptyTestInput
+          fieldListConstraint(
+            arg: [SimpleInput]
+          ): [SimpleType] @listConstraint(minItems: 3, maxItems: 5)
+          fieldFragment: InterfaceAbc
+          fieldMerge(
+            inputComplex: ComplexDefaultsInput
+          ): SimpleType!
+          fieldRequiredArgumentInvalid(
+            name: String!
+          ): SimpleType
         }
         
         """
@@ -1582,6 +1722,10 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           green: Int! @intConstraint(min: 0, max: 255)
           blue: Int! @intConstraint(min: 0, max: 255)
           alpha: Float! @floatConstraint(min: 0, max: 1)
+        }
+        
+        type SimpleEmptyTestInput {
+          fieldNumber: Int
         }
         
         """
@@ -1973,6 +2117,21 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         }
         
         """
+        Interface Abc Description
+        """
+        interface InterfaceAbc {
+          name: String!
+        }
+        
+        """
+        Interface Efg Description
+        """
+        interface InterfaceEfg implements InterfaceAbc {
+          name: String!
+          number: Int
+        }
+        
+        """
         TestInterface Description
         """
         interface TestInterface {
@@ -2083,6 +2242,24 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           listMaxField: [Int] @listConstraint(maxItems: 3)
         }
         
+        type FragmentTypeA implements InterfaceAbc {
+          name(
+            name: String! = "defaultA"
+          ): String!
+        }
+        
+        type FragmentTypeB implements InterfaceEfg {
+          name(
+            name: String! = "defaultB"
+          ): String!
+          number(
+            number: Int = 5
+          ): Int
+          bool(
+            bool: Boolean = false
+          ): Boolean
+        }
+        
         """
         Gps type - latitude and longitude.
         """
@@ -2182,6 +2359,17 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             inputBool: Boolean
           ): SimpleType!
           fieldInvalidInput: SimpleType
+          fieldEmptyObject: SimpleEmptyTestInput
+          fieldListConstraint(
+            arg: [SimpleInput]
+          ): [SimpleType] @listConstraint(minItems: 3, maxItems: 5)
+          fieldFragment: InterfaceAbc
+          fieldMerge(
+            inputComplex: ComplexDefaultsInput
+          ): SimpleType!
+          fieldRequiredArgumentInvalid(
+            name: String!
+          ): SimpleType
         }
         
         """
@@ -2201,6 +2389,10 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           green: Int! @intConstraint(min: 0, max: 255)
           blue: Int! @intConstraint(min: 0, max: 255)
           alpha: Float! @floatConstraint(min: 0, max: 1)
+        }
+        
+        type SimpleEmptyTestInput {
+          fieldNumber: Int
         }
         
         """

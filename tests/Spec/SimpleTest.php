@@ -62,6 +62,90 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
                 ]),
                 \Graphpinator\Json::fromObject((object) ['data' => ['fieldNullList' => null]]),
             ],
+            [
+                \Graphpinator\Json::fromObject((object) [
+                    'query' => 'query queryName { fieldEmptyObject { fieldNumber } }',
+                ]),
+                \Graphpinator\Json::fromObject((object) [
+                    'data' => [
+                        'fieldEmptyObject' => [
+                            'fieldNumber' => null,
+                        ],
+                    ],
+                ]),
+            ],
+            [
+                \Graphpinator\Json::fromObject((object) [
+                    'query' => 'query queryName { 
+                        fieldMerge(inputComplex: {
+                            innerObject: {
+                                name: "mergeVal",
+                                inner: {
+                                    name: "mergeVal2",
+                                    number: [8,9]
+                                },
+                                innerList: [],
+                                innerNotNull: {
+                                    name: "mergeVal3",
+                                    number: [5,5],
+                                    bool: true
+                                }
+                            },
+                            innerListObjects: [
+                                {
+                                    name: "mergeValList1",
+                                    inner: {
+                                        name: "mergeValList2",
+                                        number: [7,9]
+                                    },
+                                    innerList: [],
+                                    innerNotNull: {
+                                        name: "mergeValList3",
+                                        number: [6,5],
+                                        bool: false
+                                    }
+                                },
+                                {
+                                    name: "mergeValList4",
+                                    inner: {
+                                        name: "mergeValList5",
+                                        number: [6,9]
+                                    },
+                                    innerList: [
+                                        {
+                                            name: "mergeValInnerList1",
+                                            number: [1,2]
+                                            bool: false
+                                        },
+                                        {
+                                            name: "mergeValInnerList2",
+                                            number: [3,2]
+                                            bool: true
+                                        }
+                                    ],
+                                    innerNotNull: {
+                                        name: "mergeValList6",
+                                        number: [7,5],
+                                        bool: true
+                                    }
+                                }
+                            ]
+                        })
+                        {
+                            fieldName fieldNumber fieldBool
+                        } 
+                    }',
+                ]),
+                \Graphpinator\Json::fromObject((object) [
+                    'data' => [
+                        'fieldMerge' => [
+                            'fieldName' => 'mergeVal mergeVal2 mergeVal3 mergeValList1 mergeValList2 mergeValList4',
+                            'fieldNumber' => [5,5,8,9,7,9,6,5,3,2],
+                            'fieldBool' => true,
+                        ],
+                    ],
+                ]),
+            ],
         ];
     }
 
@@ -242,6 +326,18 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
                     'randomKey' => 'randomVal',
                 ]),
                 \Graphpinator\Exception\Request\UnknownKey::class,
+            ],
+            [
+                \Graphpinator\Json::fromObject((object) [
+                    'query' => 'query queryName { fieldArgumentDefaults(arg: [1,2], arg: false) { fieldName fieldNumber fieldBool } }',
+                ]),
+                'Exception',
+            ],
+            [
+                \Graphpinator\Json::fromObject((object) [
+                    'query' => 'query queryName { fieldRequiredArgumentInvalid { fieldName fieldNumber fieldBool } }',
+                ]),
+                \Graphpinator\Exception\Value\ValueCannotBeNull::class,
             ],
         ];
     }
