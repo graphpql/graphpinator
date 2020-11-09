@@ -65,9 +65,10 @@ class SimpleContainer extends \Graphpinator\Container\Container
         $this->combinedDirectives = \array_merge($this->directives, $this->builtInDirectives);
     }
 
-    public function getType(string $name) : \Graphpinator\Type\Contract\NamedDefinition
+    public function getType(string $name) : ?\Graphpinator\Type\Contract\NamedDefinition
     {
-        return $this->combinedTypes[$name];
+        return $this->combinedTypes[$name]
+            ?? null;
     }
 
     public function getTypes(bool $includeBuiltIn = false) : array
@@ -77,9 +78,10 @@ class SimpleContainer extends \Graphpinator\Container\Container
             : $this->types;
     }
 
-    public function getDirective(string $name) : \Graphpinator\Directive\Directive
+    public function getDirective(string $name) : ?\Graphpinator\Directive\Directive
     {
-        return $this->combinedDirectives[$name];
+        return $this->combinedDirectives[$name]
+            ?? null;
     }
 
     public function getDirectives(bool $includeBuiltIn = false) : array

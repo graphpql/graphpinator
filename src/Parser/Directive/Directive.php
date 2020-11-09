@@ -36,6 +36,10 @@ final class Directive
     {
         $directive = $typeContainer->getDirective($this->name);
 
+        if (!$directive instanceof \Graphpinator\Directive\Directive) {
+            throw new \Graphpinator\Exception\Normalizer\UnknownDirective();
+        }
+
         if (!$directive instanceof \Graphpinator\Directive\ExecutableDirective) {
             throw new \Graphpinator\Exception\Normalizer\DirectiveNotExecutable();
         }
