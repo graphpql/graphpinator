@@ -69,6 +69,7 @@ final class TestSchema
             'Upload' => new \Graphpinator\Module\Upload\UploadType(),
             'Gps' => new \Graphpinator\Type\Addon\GpsType(),
             'Point' => new \Graphpinator\Type\Addon\PointType(),
+            'BigInt' => new \Graphpinator\Type\Addon\BigIntType(),
             'NullFieldResolution' => self::getNullFieldResolution(),
             'NullListResolution' => self::getNullListResolution(),
             'SimpleType' => self::getSimpleType(),
@@ -349,7 +350,7 @@ final class TestSchema
                     new \Graphpinator\Field\ResolvableField(
                         'fieldMerge',
                         TestSchema::getSimpleType()->notNull(),
-                        static function ($parent, ?\stdClass $inputComplex) : \stdClass {
+                        static function ($parent, \stdClass $inputComplex) : \stdClass {
                             $return = new \stdClass();
 
                             $return->name = $inputComplex->innerObject->name
@@ -372,7 +373,7 @@ final class TestSchema
                         new \Graphpinator\Argument\ArgumentSet([
                             new \Graphpinator\Argument\Argument(
                                 'inputComplex',
-                                TestSchema::getComplexDefaultsInput(),
+                                TestSchema::getComplexDefaultsInput()->notNull(),
                             ),
                         ]),
                     ),
@@ -1516,6 +1517,20 @@ final class TestSchema
                                 'point',
                                 new \Graphpinator\Type\Addon\PointInput(),
                                 (object) ['x' => 420.42, 'y' => 420.42],
+                            ),
+                        ]),
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'bigInt',
+                        new \Graphpinator\Type\Addon\BigIntType(),
+                        static function ($parent, int $bigInt) : int {
+                            return $bigInt;
+                        },
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'bigInt',
+                                new \Graphpinator\Type\Addon\BigIntType(),
+                                \PHP_INT_MAX,
                             ),
                         ]),
                     ),

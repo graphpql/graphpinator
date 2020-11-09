@@ -112,6 +112,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                                 ['name' => 'Upload'],
                                 ['name' => 'Gps'],
                                 ['name' => 'Point'],
+                                ['name' => 'BigInt'],
                                 ['name' => 'NullFieldResolution'],
                                 ['name' => 'NullListResolution'],
                                 ['name' => 'SimpleType'],

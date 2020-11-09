@@ -16,7 +16,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
                 \Graphpinator\Container\Container::Int(),
                 <<<'EOL'
                 """
-                Int built-in type
+                Int built-in type (32 bit)
                 """
                 scalar Int
                 EOL,
@@ -204,6 +204,9 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
               y: 420.42
             }
           ): Point
+          bigInt(
+            bigInt: BigInt = 9223372036854775807
+          ): BigInt
         }
         
         enum ArrayEnum {
@@ -216,6 +219,11 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           "Third description"
           C
         }
+        
+        """
+        BigInt addon type (64 bit)
+        """
+        scalar BigInt
         
         input ComplexDefaultsInput {
           innerObject: CompositeInput = {
@@ -621,7 +629,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           ): [SimpleType] @listConstraint(minItems: 3, maxItems: 5)
           fieldFragment: InterfaceAbc
           fieldMerge(
-            inputComplex: ComplexDefaultsInput
+            inputComplex: ComplexDefaultsInput!
           ): SimpleType!
           fieldRequiredArgumentInvalid(
             name: String!
@@ -871,6 +879,9 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
               y: 420.42
             }
           ): Point
+          bigInt(
+            bigInt: BigInt = 9223372036854775807
+          ): BigInt
         }
         
         enum ArrayEnum {
@@ -883,6 +894,11 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           "Third description"
           C
         }
+        
+        """
+        BigInt addon type (64 bit)
+        """
+        scalar BigInt
         
         input ComplexDefaultsInput {
           innerObject: CompositeInput = {
@@ -1288,7 +1304,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           ): [SimpleType] @listConstraint(minItems: 3, maxItems: 5)
           fieldFragment: InterfaceAbc
           fieldMerge(
-            inputComplex: ComplexDefaultsInput
+            inputComplex: ComplexDefaultsInput!
           ): SimpleType!
           fieldRequiredArgumentInvalid(
             name: String!
@@ -1560,6 +1576,9 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
               y: 420.42
             }
           ): Point
+          bigInt(
+            bigInt: BigInt = 9223372036854775807
+          ): BigInt
         }
         
         type ConstraintType @objectConstraint(atLeastOne: ["intMinField", "intMaxField", "intOneOfField", "floatMinField", "floatMaxField", "floatOneOfField", "stringMinField", "stringMaxField", "listMinField", "listMaxField"]) {
@@ -1698,7 +1717,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           ): [SimpleType] @listConstraint(minItems: 3, maxItems: 5)
           fieldFragment: InterfaceAbc
           fieldMerge(
-            inputComplex: ComplexDefaultsInput
+            inputComplex: ComplexDefaultsInput!
           ): SimpleType!
           fieldRequiredArgumentInvalid(
             name: String!
@@ -1964,6 +1983,11 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           file: Upload
           files: [Upload]
         }
+        
+        """
+        BigInt addon type (64 bit)
+        """
+        scalar BigInt
         
         """
         Date type - string which contains valid date in "<YYYY>-<MM>-<DD>" format.
@@ -2227,6 +2251,9 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
               y: 420.42
             }
           ): Point
+          bigInt(
+            bigInt: BigInt = 9223372036854775807
+          ): BigInt
         }
         
         type ConstraintType @objectConstraint(atLeastOne: ["intMinField", "intMaxField", "intOneOfField", "floatMinField", "floatMaxField", "floatOneOfField", "stringMinField", "stringMaxField", "listMinField", "listMaxField"]) {
@@ -2365,7 +2392,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           ): [SimpleType] @listConstraint(minItems: 3, maxItems: 5)
           fieldFragment: InterfaceAbc
           fieldMerge(
-            inputComplex: ComplexDefaultsInput
+            inputComplex: ComplexDefaultsInput!
           ): SimpleType!
           fieldRequiredArgumentInvalid(
             name: String!
@@ -2631,6 +2658,11 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           file: Upload
           files: [Upload]
         }
+        
+        """
+        BigInt addon type (64 bit)
+        """
+        scalar BigInt
         
         """
         Date type - string which contains valid date in "<YYYY>-<MM>-<DD>" format.
