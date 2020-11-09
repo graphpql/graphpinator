@@ -30,8 +30,8 @@ final class DirectiveSet extends \Infinityloop\Utils\ObjectSet
     {
         $normalized = [];
 
-        foreach ($this as $variable) {
-            $normalized[] = $variable->normalize($typeContainer);
+        foreach ($this as $directive) {
+            $normalized[] = $directive->normalize($typeContainer);
         }
 
         return new \Graphpinator\Normalizer\Directive\DirectiveSet($normalized, $this->location);
