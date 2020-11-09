@@ -142,7 +142,7 @@ final class TestSchema
                     ),
                     new \Graphpinator\Field\ResolvableField(
                         'fieldThrow',
-                        TestSchema::getUnionInvalidResolvedType(),
+                        TestSchema::getTypeAbc(),
                         static function () : void {
                             throw new \Exception('Random exception');
                         },
@@ -623,7 +623,7 @@ final class TestSchema
             public function __construct()
             {
                 parent::__construct(
-                    new \Graphpinator\Utils\InterfaceSet([]),
+                    new \Graphpinator\Utils\InterfaceSet(),
                 );
 
                 $this->addConstraint(new \Graphpinator\Constraint\ObjectConstraint([
@@ -925,10 +925,6 @@ final class TestSchema
             {
                 return new \Graphpinator\Field\FieldSet([
                     new \Graphpinator\Field\Field(
-                        'name',
-                        \Graphpinator\Container\Container::String()->notNull(),
-                    ),
-                    new \Graphpinator\Field\Field(
                         'number',
                         \Graphpinator\Container\Container::Int(),
                     ),
@@ -1177,7 +1173,7 @@ final class TestSchema
                 parent::__construct(
                     [\Graphpinator\Directive\ExecutableDirectiveLocation::FIELD],
                     true,
-                    new \Graphpinator\Argument\ArgumentSet([]),
+                    new \Graphpinator\Argument\ArgumentSet(),
                     static function() {
                         ++self::$count;
 
@@ -1199,7 +1195,7 @@ final class TestSchema
                 parent::__construct(
                     [\Graphpinator\Directive\ExecutableDirectiveLocation::FIELD],
                     true,
-                    new \Graphpinator\Argument\ArgumentSet([]),
+                    new \Graphpinator\Argument\ArgumentSet(),
                     static function() {
                         return 'blahblah';
                     },

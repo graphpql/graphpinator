@@ -593,7 +593,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldExactlyOne(
             arg: ExactlyOneInput
           ): Int
-          fieldThrow: TestUnionInvalidResolvedType
+          fieldThrow: Abc
           fieldAddonType: AddonType
           fieldUpload(
             file: Upload
@@ -1268,7 +1268,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldExactlyOne(
             arg: ExactlyOneInput
           ): Int
-          fieldThrow: TestUnionInvalidResolvedType
+          fieldThrow: Abc
           fieldAddonType: AddonType
           fieldUpload(
             file: Upload
@@ -1681,7 +1681,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldExactlyOne(
             arg: ExactlyOneInput
           ): Int
-          fieldThrow: TestUnionInvalidResolvedType
+          fieldThrow: Abc
           fieldAddonType: AddonType
           fieldUpload(
             file: Upload
@@ -2356,7 +2356,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldExactlyOne(
             arg: ExactlyOneInput
           ): Int
-          fieldThrow: TestUnionInvalidResolvedType
+          fieldThrow: Abc
           fieldAddonType: AddonType
           fieldUpload(
             file: Upload

@@ -619,7 +619,7 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
 
             protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
             {
-                return new \Graphpinator\Argument\ArgumentSet([]);
+                return new \Graphpinator\Argument\ArgumentSet();
             }
         };
     }
@@ -639,7 +639,7 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
 
             protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
             {
-                return new \Graphpinator\Argument\ArgumentSet([]);
+                return new \Graphpinator\Argument\ArgumentSet();
             }
         };
     }
@@ -659,7 +659,7 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
 
             protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
             {
-                return new \Graphpinator\Argument\ArgumentSet([]);
+                return new \Graphpinator\Argument\ArgumentSet();
             }
         };
     }
@@ -679,7 +679,7 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
 
             protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
             {
-                return new \Graphpinator\Argument\ArgumentSet([]);
+                return new \Graphpinator\Argument\ArgumentSet();
             }
         };
     }

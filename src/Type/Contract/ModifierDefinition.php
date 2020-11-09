@@ -25,6 +25,11 @@ abstract class ModifierDefinition implements
         return $this->innerType->getNamedType();
     }
 
+    public function getField(string $name) : \Graphpinator\Field\Field
+    {
+        return $this->innerType->getField($name);
+    }
+
     public function isInputable() : bool
     {
         return $this->innerType->isInputable();

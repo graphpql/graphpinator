@@ -11,33 +11,33 @@ final class FragmentTest extends \PHPUnit\Framework\TestCase
         return [
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldUnion { fieldXyz { ... on Abc { name } } } }',
+                    'query' => 'query queryName { fieldUnion { ... on Xyz { name } } }',
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['fieldUnion' => ['fieldXyz' => new \stdClass()]]]),
+                \Graphpinator\Json::fromObject((object) ['data' => ['fieldUnion' => new \stdClass()]]),
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldUnion { fieldXyz { ... on Xyz { name } } } }',
-                ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['fieldUnion' => ['fieldXyz' => ['name' => 'Test 123']]]]),
-            ],
-            [
-                \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { ... on Query { fieldUnion { fieldXyz { ... on Xyz { name } } } } }',
+                    'query' => 'query queryName { fieldUnion { ... on Abc { fieldXyz { ... on Xyz { name } } } } }',
                 ]),
                 \Graphpinator\Json::fromObject((object) ['data' => ['fieldUnion' => ['fieldXyz' => ['name' => 'Test 123']]]]),
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { ... namedFragment } 
-                    fragment namedFragment on Query { fieldUnion { fieldXyz { name } } }',
+                    'query' => 'query queryName { ... on Query { fieldUnion { ... on Abc { fieldXyz { ... on Xyz { name } } } } } }',
                 ]),
                 \Graphpinator\Json::fromObject((object) ['data' => ['fieldUnion' => ['fieldXyz' => ['name' => 'Test 123']]]]),
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
                     'query' => 'query queryName { ... namedFragment } 
-                    fragment namedFragment on Query { fieldUnion { fieldXyz { ... on Xyz { name } } } }',
+                    fragment namedFragment on Query { fieldUnion { ... on Abc { fieldXyz { name } } } }',
+                ]),
+                \Graphpinator\Json::fromObject((object) ['data' => ['fieldUnion' => ['fieldXyz' => ['name' => 'Test 123']]]]),
+            ],
+            [
+                \Graphpinator\Json::fromObject((object) [
+                    'query' => 'query queryName { ... namedFragment } 
+                    fragment namedFragment on Query { fieldUnion { ... on Abc { fieldXyz { ... on Xyz { name } } } } }',
                 ]),
                 \Graphpinator\Json::fromObject((object) ['data' => ['fieldUnion' => ['fieldXyz' => ['name' => 'Test 123']]]]),
             ],
@@ -51,8 +51,10 @@ final class FragmentTest extends \PHPUnit\Framework\TestCase
                     } 
                     fragment namedFragment on Query { 
                         fieldUnion { 
-                            fieldXyz { 
-                                ... innerFragment 
+                            ... on Abc { 
+                                fieldXyz { 
+                                    ... innerFragment 
+                                }
                             } 
                         } 
                     }',
@@ -103,7 +105,6 @@ final class FragmentTest extends \PHPUnit\Framework\TestCase
                         ... @include(if: true) {
                             ... on InterfaceEfg { name number }
                             ... on FragmentTypeB { name number bool }
-                            ... on Xyz { name }
                         }
                     }',
                 ]),
@@ -121,7 +122,6 @@ final class FragmentTest extends \PHPUnit\Framework\TestCase
                         ... @include(if: true) {
                             ... on InterfaceEfg { number }
                             ... on FragmentTypeB { bool }
-                            ... on Xyz { name }
                         }
                     }',
                 ]),
@@ -148,80 +148,81 @@ final class FragmentTest extends \PHPUnit\Framework\TestCase
         return [
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldUnion { fieldXyz { __typename ... on Abc { __typename name } } } }',
+                    'query' => 'query queryName { fieldUnion { ... on Abc { fieldXyz { __typename ... on Abc { __typename } } } } }',
                 ]),
                 \Graphpinator\Json::fromObject((object) ['data' => ['fieldUnion' => ['fieldXyz' => ['__typename' => 'Xyz']]]]),
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldUnion { fieldXyz { __typename ... on Xyz { __typename name } } } }',
+                    'query' => 'query queryName { fieldUnion { ... on Abc { fieldXyz { __typename ... on Xyz { __typename name } } } } }',
                 ]),
                 \Graphpinator\Json::fromObject((object) ['data' => ['fieldUnion' => ['fieldXyz' => ['__typename' => 'Xyz', 'name' => 'Test 123']]]]),
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldUnion { fieldXyz { ... on Xyz { __typename name } __typename } } }',
+                    'query' => 'query queryName { fieldUnion { ... on Abc { fieldXyz { ... on Xyz { __typename name } __typename } } } }',
                 ]),
                 \Graphpinator\Json::fromObject((object) ['data' => ['fieldUnion' => ['fieldXyz' => ['__typename' => 'Xyz', 'name' => 'Test 123']]]]),
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldUnion { fieldXyz { ... on TestInterface { __typename name } } } }',
+                    'query' => 'query queryName { fieldUnion { ... on Abc { fieldXyz { ... on TestInterface { __typename name } } } } }',
                 ]),
                 \Graphpinator\Json::fromObject((object) ['data' => ['fieldUnion' => ['fieldXyz' => ['__typename' => 'Xyz', 'name' => 'Test 123']]]]),
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldUnion { 
+                    'query' => 'query queryName { fieldUnion { ... on Abc { 
                     fieldXyz { ... on Xyz { __typename name } ... on TestInterface { __typename name } } 
-                    } }',
+                    } } }',
                 ]),
                 \Graphpinator\Json::fromObject((object) ['data' => ['fieldUnion' => ['fieldXyz' => ['__typename' => 'Xyz', 'name' => 'Test 123']]]]),
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldUnion { 
+                    'query' => 'query queryName { fieldUnion { ... on Abc { 
                     fieldXyz { ... on TestInterface { __typename name } ... on Xyz { __typename name } } 
-                    } }',
+                    } } }',
                 ]),
                 \Graphpinator\Json::fromObject((object) ['data' => ['fieldUnion' => ['fieldXyz' => ['__typename' => 'Xyz', 'name' => 'Test 123']]]]),
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldUnion {
-                     fieldXyz { __typename } ... on Abc { fieldXyz { ... on Xyz { __typename name } } } } }',
+                    'query' => 'query queryName { fieldUnion { ... on Abc { 
+                     fieldXyz { __typename } ... on Abc { fieldXyz { ... on Xyz { __typename name } } } 
+                     } } }',
                 ]),
                 \Graphpinator\Json::fromObject((object) ['data' => ['fieldUnion' => ['fieldXyz' => ['__typename' => 'Xyz', 'name' => 'Test 123']]]]),
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldUnion { 
-                    fieldXyz { __typename ... on Xyz { __typename name } ... on Abc { __typename name } } 
-                    } }',
+                    'query' => 'query queryName { fieldUnion { ... on Abc { 
+                    fieldXyz { __typename ... on Xyz { __typename name } ... on Abc { __typename } } 
+                    } } }',
                 ]),
                 \Graphpinator\Json::fromObject((object) ['data' => ['fieldUnion' => ['fieldXyz' => ['__typename' => 'Xyz', 'name' => 'Test 123']]]]),
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldUnion { 
+                    'query' => 'query queryName { fieldUnion { ... on Abc { 
                     fieldXyz { name: __typename ... on Xyz { __typename } } 
-                    } }',
+                    } } }',
                 ]),
                 \Graphpinator\Json::fromObject((object) ['data' => ['fieldUnion' => ['fieldXyz' => ['name' => 'Xyz', '__typename' => 'Xyz']]]]),
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldUnion { 
+                    'query' => 'query queryName { fieldUnion { ... on Abc { 
                     fieldXyz(arg1: 456) { name } ... on Abc { fieldXyz(arg1: 456) { __typename } } 
-                    } }',
+                    } } }',
                 ]),
                 \Graphpinator\Json::fromObject((object) ['data' => ['fieldUnion' => ['fieldXyz' => ['name' => 'Test 456', '__typename' => 'Xyz']]]]),
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldUnion { 
+                    'query' => 'query queryName { fieldUnion { ... on Abc { 
                     fieldXyz(arg1: 456) { name } ... on Abc { fieldXyz(arg1: 456) { name } } 
-                    } }',
+                    } } }',
                 ]),
                 \Graphpinator\Json::fromObject((object) ['data' => ['fieldUnion' => ['fieldXyz' => ['name' => 'Test 456']]]]),
             ],
@@ -235,7 +236,7 @@ final class FragmentTest extends \PHPUnit\Framework\TestCase
      */
     public function testFieldSelectionMerging(\Graphpinator\Json $request, \Graphpinator\Json $expected) : void
     {
-        $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
+        $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema(), true);
         $result = $graphpinator->run(new \Graphpinator\Request\JsonRequestFactory($request));
 
         self::assertSame($expected->toString(), $result->toString());
@@ -256,7 +257,8 @@ final class FragmentTest extends \PHPUnit\Framework\TestCase
                         ...namedFragment 
                     } 
                     fragment namedFragment on Query { 
-                        ...cycleFragment fieldUnion 
+                        ...cycleFragment 
+                        fieldUnion
                     } 
                     fragment cycleFragment on Query { 
                         ...namedFragment 
@@ -266,41 +268,27 @@ final class FragmentTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldUnion { fieldXyz { name: __typename ... on Xyz { name } } } }',
+                    'query' => 'query queryName { fieldUnion { ... on Abc { fieldXyz { name: __typename ... on Xyz { name } } } } }',
                 ]),
                 \Graphpinator\Exception\Normalizer\ConflictingFieldAlias::class,
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldUnion { fieldXyz { typename: __typename ... on Xyz { typename: name } } } }',
+                    'query' => 'query queryName { fieldUnion { ... on Abc { fieldXyz { typename: __typename ... on Xyz { typename: name } } } } }',
                 ]),
                 \Graphpinator\Exception\Normalizer\ConflictingFieldAlias::class,
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldUnion { fieldXyz(arg1: 456) { name } ... on Abc { fieldXyz(arg1: 123) { name } } } }',
+                    'query' => 'query queryName { fieldUnion { ... on Abc { fieldXyz(arg1: 456) { name } ... on Abc { fieldXyz(arg1: 123) { name } } } } }',
                 ]),
                 \Graphpinator\Exception\Normalizer\ConflictingFieldArguments::class,
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldUnion { fieldXyz(arg1: 456) { name } ... on Abc { fieldXyz(arg1: [456]) { name } } } }',
+                    'query' => 'query queryName { fieldUnion { ... on Abc { fieldXyz(arg1: 456) { name } ... on Abc { fieldXyz(arg1: [456]) { name } } } } }',
                 ]),
                 \Graphpinator\Exception\Normalizer\ConflictingFieldArguments::class,
-            ],
-            [
-                \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { 
-                        fieldFragment {
-                            ... interfaceAbcFragment
-                        }
-                    }
-                    fragment interfaceAbcFragment on InterfaceEfg { 
-                        name 
-                        ... on InterfaceAbc { number }
-                    }',
-                ]),
-                \Graphpinator\Exception\Normalizer\InvalidFragmentType::class,
             ],
         ];
     }

@@ -161,12 +161,6 @@ final class DirectiveTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldAbc { fieldXyz @testDirective(if: true) { name } } }',
-                ]),
-                \Graphpinator\Exception\Resolver\UnknownArgument::class,
-            ],
-            [
-                \Graphpinator\Json::fromObject((object) [
                     'query' => 'query queryName { fieldList @listConstraint(minItems: 3, maxItems: 5) { name } }',
                 ]),
                 \Graphpinator\Exception\Normalizer\DirectiveNotExecutable::class,

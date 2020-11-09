@@ -37,8 +37,7 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
                         fieldAbstractList { 
                             ... on Abc { __typename fieldXyz { name } } 
                             ... on Xyz { __typename name }
-                            } 
-                        }',
+                        } }',
                 ]),
                 \Graphpinator\Json::fromObject((object) [
                     'data' => [
@@ -52,13 +51,13 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldNull { stringType interfaceType unionType } }',
+                    'query' => 'query queryName { fieldNull { stringType interfaceType { name } unionType { __typename } } }',
                 ]),
                 \Graphpinator\Json::fromObject((object) ['data' => ['fieldNull' => null]]),
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldNullList { stringListType interfaceListType unionListType } }',
+                    'query' => 'query queryName { fieldNullList { stringListType interfaceListType { name } unionListType { __typename } } }',
                 ]),
                 \Graphpinator\Json::fromObject((object) ['data' => ['fieldNullList' => null]]),
             ],

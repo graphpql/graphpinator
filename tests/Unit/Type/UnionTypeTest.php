@@ -35,7 +35,7 @@ final class UnionTypeTest extends \PHPUnit\Framework\TestCase
 
             protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
             {
-                return new \Graphpinator\Field\ResolvableFieldSet([]);
+                return new \Graphpinator\Field\ResolvableFieldSet();
             }
 
             protected function validateNonNullValue($rawValue) : bool
@@ -52,7 +52,7 @@ final class UnionTypeTest extends \PHPUnit\Framework\TestCase
 
             protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
             {
-                return new \Graphpinator\Field\ResolvableFieldSet([]);
+                return new \Graphpinator\Field\ResolvableFieldSet();
             }
 
             protected function validateNonNullValue($rawValue) : bool
@@ -69,7 +69,7 @@ final class UnionTypeTest extends \PHPUnit\Framework\TestCase
 
             protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
             {
-                return new \Graphpinator\Field\ResolvableFieldSet([]);
+                return new \Graphpinator\Field\ResolvableFieldSet();
             }
 
             protected function validateNonNullValue($rawValue) : bool

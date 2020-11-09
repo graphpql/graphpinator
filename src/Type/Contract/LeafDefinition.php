@@ -15,10 +15,6 @@ abstract class LeafDefinition extends \Graphpinator\Type\Contract\ConcreteDefini
         \Graphpinator\Value\ResolvedValue $parentResult
     ) : \Graphpinator\Value\LeafValue
     {
-        if ($requestedFields instanceof \Graphpinator\Normalizer\FieldSet) {
-            throw new \Graphpinator\Exception\Resolver\SelectionOnLeaf();
-        }
-
         return $parentResult;
     }
 
@@ -38,5 +34,10 @@ abstract class LeafDefinition extends \Graphpinator\Type\Contract\ConcreteDefini
         }
 
         return new \Graphpinator\Value\LeafValue($this, $rawValue);
+    }
+
+    final public function getField(string $name) : \Graphpinator\Field\Field
+    {
+        throw new \Graphpinator\Exception\Normalizer\SelectionOnLeaf();
     }
 }

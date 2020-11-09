@@ -114,7 +114,19 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
         return [
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldUnion @invalidDirective() { fieldXyz { name } } }',
+                    'query' => 'query queryName { fieldAbc @blaDirective() { fieldXyz { name } } }',
+                ]),
+                \Graphpinator\Json::fromObject((object) ['errors' => [['message' => 'Unknown directive "blaDirective".']]]),
+            ],
+            [
+                \Graphpinator\Json::fromObject((object) [
+                    'query' => 'query queryName { fieldAbc { fieldXyz @testDirective(if: true) { name } } }',
+                ]),
+                \Graphpinator\Json::fromObject((object) ['errors' => [['message' => 'Unknown argument "if" provided for "@testDirective".']]]),
+            ],
+            [
+                \Graphpinator\Json::fromObject((object) [
+                    'query' => 'query queryName { fieldUnion @invalidDirective() { ... on Abc { fieldXyz { name } } } }',
                 ]),
                 \Graphpinator\Json::fromObject((object) ['errors' => [['message' => 'Server responded with unknown error.']]]),
             ],
@@ -128,7 +140,7 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
                 \Graphpinator\Json::fromObject((object) [
                     'query' => 'query queryName { fieldInvalidInput { fieldName fieldNumber fieldBool notDefinedField } }',
                 ]),
-                \Graphpinator\Json::fromObject((object) ['errors' => [['message' => 'Server responded with unknown error.']]]),
+                \Graphpinator\Json::fromObject((object) ['errors' => [['message' => 'Unknown field "notDefinedField" requested for type "SimpleType".']]]),
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
@@ -140,6 +152,19 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
                     }',
                 ]),
                 \Graphpinator\Json::fromObject((object) ['errors' => [['message' => 'Server responded with unknown error.']]]),
+            ],
+            [
+                \Graphpinator\Json::fromObject((object) [
+                    'query' => 'query queryName { 
+                        fieldFragment {
+                            ... interfaceEfgFragment
+                        }
+                    }
+                    fragment interfaceEfgFragment on InterfaceEfg {  
+                        ... on InterfaceAbc { name }
+                    }',
+                ]),
+                \Graphpinator\Json::fromObject((object) ['errors' => [['message' => 'Invalid fragment type condition. ("InterfaceAbc" is not instance of "InterfaceEfg").']]]),
             ],
         ];
     }

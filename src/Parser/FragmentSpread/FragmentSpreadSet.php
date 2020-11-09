@@ -13,6 +13,7 @@ final class FragmentSpreadSet extends \Infinityloop\Utils\ObjectSet
     protected const INNER_CLASS = FragmentSpread::class;
 
     public function normalize(
+        \Graphpinator\Type\Contract\NamedDefinition $parentType,
         \Graphpinator\Container\Container $typeContainer,
         \Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions
     ) : \Graphpinator\Normalizer\FragmentSpread\FragmentSpreadSet
@@ -20,7 +21,7 @@ final class FragmentSpreadSet extends \Infinityloop\Utils\ObjectSet
         $normalized = [];
 
         foreach ($this as $spread) {
-            $normalized[] = $spread->normalize($typeContainer, $fragmentDefinitions);
+            $normalized[] = $spread->normalize($parentType, $typeContainer, $fragmentDefinitions);
         }
 
         return new \Graphpinator\Normalizer\FragmentSpread\FragmentSpreadSet($normalized);
