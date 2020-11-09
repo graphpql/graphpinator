@@ -42,7 +42,9 @@ final class FieldSet extends \Infinityloop\Utils\ObjectSet
 
                 $conflictTypeCond = $conflict->getTypeCondition();
 
-                if ($conflictTypeCond === null || $fieldTypeCond === null || $conflictTypeCond === $fieldTypeCond) {
+                if ($conflictTypeCond === null ||
+                    $fieldTypeCond === null ||
+                    $conflictTypeCond === $fieldTypeCond) {
                     $conflict->mergeField($field);
 
                     continue 2;
