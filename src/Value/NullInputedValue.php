@@ -12,10 +12,6 @@ final class NullInputedValue implements \Graphpinator\Value\InputedValue, \Graph
 
     public function __construct(\Graphpinator\Type\Contract\Inputable $type)
     {
-        if ($type instanceof \Graphpinator\Type\NotNullType) {
-            throw new \Graphpinator\Exception\Value\ValueCannotBeNull();
-        }
-
         $this->type = $type;
     }
 

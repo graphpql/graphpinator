@@ -61,24 +61,49 @@ final class VariableTest extends \PHPUnit\Framework\TestCase
                     'query' => 'query queryName ($var1: Int = "123") { fieldAbc { fieldXyz { name } } }',
                     'variables' => (object) [],
                 ]),
+                \Graphpinator\Exception\Value\InvalidValue::class,
+            ],
+            [
+                \Graphpinator\Json::fromObject((object) [
+                    'query' => 'query queryName ($var1: Int = "123") { fieldAbc { fieldXyz { name } } }',
+                    'variables' => (object) [],
+                ]),
+                \Graphpinator\Exception\Value\InvalidValue::class,
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
                     'query' => 'query queryName ($var1: Int = "123") { fieldAbc { fieldXyz { name } } }',
                     'variables' => ['var1' => '123'],
                 ]),
+                \Graphpinator\Exception\Request\VariablesNotObject::class,
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
                     'query' => 'query queryName ($var1: Int!) { fieldAbc { fieldXyz { name } } }',
                     'variables' => (object) [],
                 ]),
+                \Graphpinator\Exception\Value\ValueCannotBeNull::class,
+            ],
+            [
+                \Graphpinator\Json::fromObject((object) [
+                    'query' => 'query queryName ($var1: Abc) { fieldAbc { fieldXyz { name } } }',
+                    'variables' => (object) [],
+                ]),
+                \Graphpinator\Exception\Normalizer\VariableTypeInputable::class,
+            ],
+            [
+                \Graphpinator\Json::fromObject((object) [
+                    'query' => 'query queryName ($var1: Abc!) { fieldAbc { fieldXyz { name } } }',
+                    'variables' => (object) [],
+                ]),
+                \Graphpinator\Exception\Normalizer\VariableTypeInputable::class,
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
                     'query' => 'query queryName { fieldAbc { fieldXyz(arg1: $varNonExistent) { name } } }',
                     'variables' => (object) [],
                 ]),
+                \Graphpinator\Exception\Resolver\MissingVariable::class,
             ],
         ];
     }
@@ -87,10 +112,9 @@ final class VariableTest extends \PHPUnit\Framework\TestCase
      * @dataProvider invalidDataProvider
      * @param \Graphpinator\Json $request
      */
-    public function testInvalid(\Graphpinator\Json $request) : void
+    public function testInvalid(\Graphpinator\Json $request, string $exception) : void
     {
-        //phpcs:ignore SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly.ReferencedGeneralException
-        $this->expectException(\Exception::class);
+        $this->expectException($exception);
 
         $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
         $graphpinator->run(new \Graphpinator\Request\JsonRequestFactory($request));

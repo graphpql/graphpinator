@@ -31,9 +31,4 @@ final class NullResolvedValue implements \Graphpinator\Value\OutputValue, \Graph
     {
         return null;
     }
-
-    public function printValue() : string
-    {
-        return 'null';
-    }
 }
