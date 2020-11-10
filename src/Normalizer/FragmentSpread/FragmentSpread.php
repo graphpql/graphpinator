@@ -18,7 +18,8 @@ final class FragmentSpread
         ?\Graphpinator\Type\Contract\NamedDefinition $typeCond
     )
     {
-        if (!$typeCond instanceof \Graphpinator\Type\Contract\TypeConditionable) {
+        if ($typeCond instanceof \Graphpinator\Type\Contract\NamedDefinition &&
+            !$typeCond instanceof \Graphpinator\Type\Contract\TypeConditionable) {
             throw new \Graphpinator\Exception\Normalizer\TypeConditionOutputable();
         }
 

@@ -22,6 +22,8 @@ final class Field
         \Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions
     )
     {
+        \assert($parentType instanceof \Graphpinator\Type\Contract\Outputable);
+
         $this->name = $parserField->getName();
         $this->alias = $parserField->getAlias()
             ?? $this->name;

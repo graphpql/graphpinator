@@ -17,11 +17,11 @@ final class NormalizerTest extends \PHPUnit\Framework\TestCase
                     new \Graphpinator\Parser\Variable\VariableSet([
                         new \Graphpinator\Parser\Variable\Variable(
                             'varName',
-                            new \Graphpinator\Parser\TypeRef\NotNullRef(new \Graphpinator\Parser\TypeRef\NamedTypeRef('Abc')),
+                            new \Graphpinator\Parser\TypeRef\NotNullRef(new \Graphpinator\Parser\TypeRef\NamedTypeRef('String')),
                         ),
                         new \Graphpinator\Parser\Variable\Variable(
                             'varNameList',
-                            new \Graphpinator\Parser\TypeRef\ListTypeRef(new \Graphpinator\Parser\TypeRef\NamedTypeRef('Abc')),
+                            new \Graphpinator\Parser\TypeRef\ListTypeRef(new \Graphpinator\Parser\TypeRef\NamedTypeRef('String')),
                         ),
                     ]),
                 ),
@@ -37,12 +37,12 @@ final class NormalizerTest extends \PHPUnit\Framework\TestCase
         self::assertSame('varName', $operation->getVariables()->offsetGet('varName')->getName());
         self::assertNull($operation->getVariables()->offsetGet('varName')->getDefaultValue());
         self::assertInstanceOf(\Graphpinator\Type\NotNullType::class, $operation->getVariables()->offsetGet('varName')->getType());
-        self::assertSame('Abc', $operation->getVariables()->offsetGet('varName')->getType()->getNamedType()->getName());
+        self::assertSame('String', $operation->getVariables()->offsetGet('varName')->getType()->getNamedType()->getName());
         self::assertArrayHasKey('varNameList', $operation->getVariables());
         self::assertSame('varNameList', $operation->getVariables()->offsetGet('varNameList')->getName());
         self::assertNull($operation->getVariables()->offsetGet('varNameList')->getDefaultValue());
         self::assertInstanceOf(\Graphpinator\Type\ListType::class, $operation->getVariables()->offsetGet('varNameList')->getType());
-        self::assertSame('Abc', $operation->getVariables()->offsetGet('varNameList')->getType()->getNamedType()->getName());
+        self::assertSame('String', $operation->getVariables()->offsetGet('varNameList')->getType()->getNamedType()->getName());
     }
 
     public function testDirectiveReferences() : void
