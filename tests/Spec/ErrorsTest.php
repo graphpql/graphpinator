@@ -144,6 +144,16 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
+                    'query' => '{ fieldAbc { ... fragmentName } } fragment fragmentName on String { fieldXyz { name } }',
+                ]),
+                \Graphpinator\Json::fromObject((object) [
+                    'errors' => [
+                        ['message' => 'Fragment type condition must be outputable composite type.'],
+                    ],
+                ]),
+            ],
+            [
+                \Graphpinator\Json::fromObject((object) [
                     'query' => '{ fieldAbc { ... on SimpleInput { fieldXyz { name } } } }',
                 ]),
                 \Graphpinator\Json::fromObject((object) [
