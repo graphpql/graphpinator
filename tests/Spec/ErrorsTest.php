@@ -197,6 +197,28 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
+                    'query' => 'query queryName ($var1: Int = "123") { fieldAbc { fieldXyz { name } } }',
+                    'variables' => (object) [],
+                ]),
+                \Graphpinator\Json::fromObject((object) [
+                    'errors' => [
+                        ['message' => 'Invalid value resolved for type "Int" - got "123".'],
+                    ],
+                ]),
+            ],
+            [
+                \Graphpinator\Json::fromObject((object) [
+                    'query' => 'query queryName ($var1: Int!) { fieldAbc { fieldXyz { name } } }',
+                    'variables' => (object) [],
+                ]),
+                \Graphpinator\Json::fromObject((object) [
+                    'errors' => [
+                        ['message' => 'Not-null type with null value.'],
+                    ],
+                ]),
+            ],
+            [
+                \Graphpinator\Json::fromObject((object) [
                     'query' => 'query queryName { 
                         fieldAbstractNullList { 
                             ... on Abc { fieldXyz { name } } 

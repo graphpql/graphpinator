@@ -6,7 +6,7 @@ namespace Graphpinator\Exception\Value;
 
 final class ValueCannotBeNull extends \Graphpinator\Exception\Value\ValueError
 {
-    public const MESSAGE = 'Not not type with null value.';
+    public const MESSAGE = 'Not-null type with null value.';
 
     private bool $outputable;
 
