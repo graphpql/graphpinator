@@ -72,7 +72,6 @@ final class FragmentTest extends \PHPUnit\Framework\TestCase
                         name 
                         ... on InterfaceEfg { name number }
                         ... on FragmentTypeB { name number bool }
-                        ... on Xyz { name }
                     }',
                 ]),
                 \Graphpinator\Json::fromObject((object) ['data' => ['fieldFragment' => ['name' => 'defaultA']]]),
@@ -88,7 +87,6 @@ final class FragmentTest extends \PHPUnit\Framework\TestCase
                         name 
                         ... on InterfaceEfg { number }
                         ... on FragmentTypeB { bool }
-                        ... on Xyz { name }
                     }',
                 ]),
                 \Graphpinator\Json::fromObject((object) ['data' => ['fieldFragment' => ['name' => 'defaultA']]]),

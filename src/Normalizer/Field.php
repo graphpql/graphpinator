@@ -108,28 +108,4 @@ final class Field
 
         return $clone;
     }
-
-    public function mergeField(Field $field) : self
-    {
-        if ($this->getName() !== $field->getName()) {
-            throw new \Graphpinator\Exception\Normalizer\ConflictingFieldAlias();
-        }
-
-        $fieldArguments = $field->getArguments();
-
-        foreach ($this->getArguments() as $lhs) {
-            if (isset($fieldArguments[$lhs->getName()]) &&
-                $lhs->getValue()->isSame($fieldArguments[$lhs->getName()]->getValue())) {
-                continue;
-            }
-
-            throw new \Graphpinator\Exception\Normalizer\ConflictingFieldArguments();
-        }
-
-        if ($this->children instanceof FieldSet) {
-            $this->children->mergeFieldSet($field->getFields());
-        }
-
-        return $this;
-    }
 }
