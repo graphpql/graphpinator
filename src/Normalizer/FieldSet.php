@@ -72,38 +72,46 @@ final class FieldSet extends \Infinityloop\Utils\ObjectSet
                 ?? $parentType;
             $conflictReturnType = $conflictParentType->getField($conflict->getName())->getType();
 
+            /** Fields must have same response shape (type) */
             if (!$fieldReturnType->isInstanceOf($conflictReturnType) ||
                 !$conflictReturnType->isInstanceOf($fieldReturnType)) {
                 throw new \Graphpinator\Exception\Normalizer\ConflictingFieldType();
             }
 
-            if ($conflictParentType->isInstanceOf($fieldParentType) &&
-                $fieldParentType->isInstanceOf($conflictParentType)) {
-                if ($field->getName() !== $conflict->getName()) {
-                    throw new \Graphpinator\Exception\Normalizer\ConflictingFieldAlias();
-                }
-
-                if ($fieldArguments->count() !== $conflictArguments->count()) {
-                    throw new \Graphpinator\Exception\Normalizer\ConflictingFieldArguments();
-                }
-
-                foreach ($conflictArguments as $lhs) {
-                    if ($fieldArguments->offsetExists($lhs->getName()) &&
-                        $lhs->getValue()->isSame($fieldArguments[$lhs->getName()]->getValue())) {
-                        continue;
-                    }
-
-                    throw new \Graphpinator\Exception\Normalizer\ConflictingFieldArguments();
-                }
-
-                if ($conflict->getFields() instanceof self) {
-                    $conflict->getFields()->mergeFieldSet($conflictReturnType, $field->getFields());
-                }
-
-                return;
+            /** Fields have type conditions which can never occur together */
+            if (!$conflictParentType->isInstanceOf($fieldParentType) &&
+                !$fieldParentType->isInstanceOf($conflictParentType)) {
+                continue;
             }
+
+            /** Fields have same alias, but refer to different field */
+            if ($field->getName() !== $conflict->getName()) {
+                throw new \Graphpinator\Exception\Normalizer\ConflictingFieldAlias();
+            }
+
+            /** Fields have different arguments */
+            if ($fieldArguments->count() !== $conflictArguments->count()) {
+                throw new \Graphpinator\Exception\Normalizer\ConflictingFieldArguments();
+            }
+
+            foreach ($conflictArguments as $lhs) {
+                if ($fieldArguments->offsetExists($lhs->getName()) &&
+                    $lhs->getValue()->isSame($fieldArguments[$lhs->getName()]->getValue())) {
+                    continue;
+                }
+
+                throw new \Graphpinator\Exception\Normalizer\ConflictingFieldArguments();
+            }
+
+            /** Fields are composite -> continue to children */
+            if ($conflict->getFields() instanceof self) {
+                $conflict->getFields()->mergeFieldSet($conflictReturnType, $field->getFields());
+            }
+
+            return;
         }
 
+        /** Response shape is satisfied and no conflicting field can occur at the same time */
         $this->offsetSet(null, $field);
     }
 }

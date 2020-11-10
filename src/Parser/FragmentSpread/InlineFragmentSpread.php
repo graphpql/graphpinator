@@ -50,7 +50,8 @@ final class InlineFragmentSpread implements \Graphpinator\Parser\FragmentSpread\
             : null;
 
         return new \Graphpinator\Normalizer\FragmentSpread\FragmentSpread(
-            $this->fields->normalize($type ?? $parentType, $typeContainer, $fragmentDefinitions),
+            $this->fields->normalize($type
+                ?? $parentType, $typeContainer, $fragmentDefinitions),
             $this->directives->normalize($typeContainer),
             $type,
         );
