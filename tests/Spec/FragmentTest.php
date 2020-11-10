@@ -251,9 +251,7 @@ final class FragmentTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { 
-                        ...namedFragment 
-                    } 
+                    'query' => 'query queryName { ...namedFragment } 
                     fragment namedFragment on Query { 
                         ...cycleFragment 
                         fieldUnion
@@ -266,25 +264,33 @@ final class FragmentTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldUnion { ... on Abc { fieldXyz { name: __typename ... on Xyz { name } } } } }',
+                    'query' => 'query queryName { fieldUnion { ... on Abc { 
+                    fieldXyz { name: __typename ... on Xyz { name } } 
+                    } } }',
                 ]),
                 \Graphpinator\Exception\Normalizer\ConflictingFieldAlias::class,
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldUnion { ... on Abc { fieldXyz { typename: __typename ... on Xyz { typename: name } } } } }',
+                    'query' => 'query queryName { fieldUnion { ... on Abc { 
+                    fieldXyz { typename: __typename ... on Xyz { typename: name } } 
+                    } } }',
                 ]),
                 \Graphpinator\Exception\Normalizer\ConflictingFieldAlias::class,
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldUnion { ... on Abc { fieldXyz(arg1: 456) { name } ... on Abc { fieldXyz(arg1: 123) { name } } } } }',
+                    'query' => 'query queryName { fieldUnion { ... on Abc { 
+                    fieldXyz(arg1: 456) { name } ... on Abc { fieldXyz(arg1: 123) { name } } 
+                    } } }',
                 ]),
                 \Graphpinator\Exception\Normalizer\ConflictingFieldArguments::class,
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
-                    'query' => 'query queryName { fieldUnion { ... on Abc { fieldXyz(arg1: 456) { name } ... on Abc { fieldXyz(arg1: [456]) { name } } } } }',
+                    'query' => 'query queryName { fieldUnion { ... on Abc { 
+                    fieldXyz(arg1: 456) { name } ... on Abc { fieldXyz(arg1: [456]) { name } } 
+                    } } }',
                 ]),
                 \Graphpinator\Exception\Normalizer\ConflictingFieldArguments::class,
             ],
