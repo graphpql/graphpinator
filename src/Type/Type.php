@@ -6,6 +6,7 @@ namespace Graphpinator\Type;
 
 abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition implements
     \Graphpinator\Type\Contract\Resolvable,
+    \Graphpinator\Type\Contract\TypeConditionable,
     \Graphpinator\Type\Contract\InterfaceImplementor
 {
     use \Graphpinator\Type\Contract\TResolvable;
@@ -53,7 +54,8 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
                 }
             }
 
-            $fieldDef = $this->getField($field->getName());
+            $fieldDef = $this->getMetaFields()[$field->getName()]
+                ?? $this->getFields()[$field->getName()];
             $resolved->{$field->getAlias()} = $fieldDef->resolve($parentResult, $field);
         }
 

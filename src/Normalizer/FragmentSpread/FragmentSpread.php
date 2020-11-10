@@ -10,7 +10,7 @@ final class FragmentSpread
 
     private \Graphpinator\Normalizer\FieldSet $children;
     private \Graphpinator\Normalizer\Directive\DirectiveSet $directives;
-    private ?\Graphpinator\Type\Contract\NamedDefinition $typeCond;
+    private ?\Graphpinator\Type\Contract\TypeConditionable $typeCond;
 
     public function __construct(
         \Graphpinator\Normalizer\FieldSet $fields,
@@ -18,7 +18,7 @@ final class FragmentSpread
         ?\Graphpinator\Type\Contract\NamedDefinition $typeCond
     )
     {
-        if (!$typeCond instanceof \Graphpinator\Type\Contract\Outputable) {
+        if (!$typeCond instanceof \Graphpinator\Type\Contract\TypeConditionable) {
             throw new \Graphpinator\Exception\Normalizer\TypeConditionOutputable();
         }
 
@@ -42,7 +42,7 @@ final class FragmentSpread
         return $this->directives;
     }
 
-    public function getTypeCondition() : ?\Graphpinator\Type\Contract\NamedDefinition
+    public function getTypeCondition() : ?\Graphpinator\Type\Contract\TypeConditionable
     {
         return $this->typeCond;
     }

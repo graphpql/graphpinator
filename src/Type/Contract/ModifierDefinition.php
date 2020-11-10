@@ -27,6 +27,8 @@ abstract class ModifierDefinition implements
 
     public function getField(string $name) : \Graphpinator\Field\Field
     {
+        \assert($this->innerType instanceof Outputable);
+
         return $this->innerType->getField($name);
     }
 

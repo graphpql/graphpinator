@@ -13,7 +13,7 @@ final class Field
     private \Graphpinator\Parser\Value\NamedValueSet $arguments;
     private \Graphpinator\Normalizer\Directive\DirectiveSet $directives;
     private ?\Graphpinator\Normalizer\FieldSet $children = null;
-    private ?\Graphpinator\Type\Contract\NamedDefinition $typeCond = null;
+    private ?\Graphpinator\Type\Contract\TypeConditionable $typeCond = null;
 
     public function __construct(
         \Graphpinator\Parser\Field $parserField,
@@ -73,18 +73,18 @@ final class Field
         return $this->children;
     }
 
-    public function getTypeCondition() : ?\Graphpinator\Type\Contract\NamedDefinition
+    public function getTypeCondition() : ?\Graphpinator\Type\Contract\TypeConditionable
     {
         return $this->typeCond;
     }
 
-    public function applyFragmentTypeCondition(?\Graphpinator\Type\Contract\NamedDefinition $typeCond) : void
+    public function applyFragmentTypeCondition(?\Graphpinator\Type\Contract\TypeConditionable $typeCond) : void
     {
-        if (!$typeCond instanceof \Graphpinator\Type\Contract\NamedDefinition) {
+        if (!$typeCond instanceof \Graphpinator\Type\Contract\TypeConditionable) {
             return;
         }
 
-        if (!$this->typeCond instanceof \Graphpinator\Type\Contract\NamedDefinition) {
+        if (!$this->typeCond instanceof \Graphpinator\Type\Contract\TypeConditionable) {
             $this->typeCond = $typeCond;
 
             return;
