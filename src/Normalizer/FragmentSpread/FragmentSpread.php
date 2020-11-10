@@ -18,6 +18,10 @@ final class FragmentSpread
         ?\Graphpinator\Type\Contract\NamedDefinition $typeCond
     )
     {
+        if (!$typeCond instanceof \Graphpinator\Type\Contract\Outputable) {
+            throw new \Graphpinator\Exception\Normalizer\TypeConditionOutputable();
+        }
+
         $this->children = $fields;
         $this->directives = $directives;
         $this->typeCond = $typeCond;
