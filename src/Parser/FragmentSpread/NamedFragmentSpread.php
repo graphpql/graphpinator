@@ -41,6 +41,10 @@ final class NamedFragmentSpread implements \Graphpinator\Parser\FragmentSpread\F
         $fragment = $fragmentDefinitions->offsetGet($this->name);
         $typeCond = $fragment->getTypeCond()->normalize($typeContainer);
 
+        if (!$typeCond instanceof \Graphpinator\Type\Contract\TypeConditionable) {
+            throw new \Graphpinator\Exception\Normalizer\TypeConditionOutputable();
+        }
+
         return new \Graphpinator\Normalizer\FragmentSpread\FragmentSpread(
             $fragment->getFields()->normalize($typeCond, $typeContainer, $fragmentDefinitions),
             $this->directives->normalize($typeContainer),

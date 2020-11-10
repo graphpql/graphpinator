@@ -45,15 +45,20 @@ final class InlineFragmentSpread implements \Graphpinator\Parser\FragmentSpread\
         \Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions
     ) : \Graphpinator\Normalizer\FragmentSpread\FragmentSpread
     {
-        $type = $this->typeCond instanceof \Graphpinator\Parser\TypeRef\NamedTypeRef
+        $typeCond = $this->typeCond instanceof \Graphpinator\Parser\TypeRef\NamedTypeRef
             ? $this->typeCond->normalize($typeContainer)
             : null;
 
+        if ($typeCond instanceof \Graphpinator\Type\Contract\NamedDefinition &&
+            !$typeCond instanceof \Graphpinator\Type\Contract\TypeConditionable) {
+            throw new \Graphpinator\Exception\Normalizer\TypeConditionOutputable();
+        }
+
         return new \Graphpinator\Normalizer\FragmentSpread\FragmentSpread(
-            $this->fields->normalize($type
+            $this->fields->normalize($typeCond
                 ?? $parentType, $typeContainer, $fragmentDefinitions),
             $this->directives->normalize($typeContainer),
-            $type,
+            $typeCond,
         );
     }
 }

@@ -15,14 +15,9 @@ final class FragmentSpread
     public function __construct(
         \Graphpinator\Normalizer\FieldSet $fields,
         \Graphpinator\Normalizer\Directive\DirectiveSet $directives,
-        ?\Graphpinator\Type\Contract\NamedDefinition $typeCond
+        ?\Graphpinator\Type\Contract\TypeConditionable $typeCond
     )
     {
-        if ($typeCond instanceof \Graphpinator\Type\Contract\NamedDefinition &&
-            !$typeCond instanceof \Graphpinator\Type\Contract\TypeConditionable) {
-            throw new \Graphpinator\Exception\Normalizer\TypeConditionOutputable();
-        }
-
         $this->children = $fields;
         $this->directives = $directives;
         $this->typeCond = $typeCond;

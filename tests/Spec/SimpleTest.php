@@ -246,7 +246,7 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
      * @param \Graphpinator\Json $request
      * @param \Graphpinator\Json $expected
      */
-    public function testHttpParamsBody(\Graphpinator\Json $request, \Graphpinator\Json $expected) : void
+    public function testHttpQueryParams(\Graphpinator\Json $request, \Graphpinator\Json $expected) : void
     {
         $params = (array) $request->toObject();
 
@@ -258,6 +258,24 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
         $httpRequest->method('getHeader')->willReturn([]);
         $httpRequest->method('getQueryParams')->willReturn((array) $request->toObject());
         $httpRequest->method('getMethod')->willReturn('GET');
+
+        $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
+        $result = $graphpinator->run(new \Graphpinator\Request\PsrRequestFactory($httpRequest));
+
+        self::assertSame($expected->toString(), $result->toString());
+    }
+
+    /**
+     * @dataProvider simpleDataProvider
+     * @param \Graphpinator\Json $request
+     * @param \Graphpinator\Json $expected
+     */
+    public function testHttpMultipartBody(\Graphpinator\Json $request, \Graphpinator\Json $expected) : void
+    {
+        $httpRequest = $this->createStub(\Psr\Http\Message\ServerRequestInterface::class);
+        $httpRequest->method('getHeader')->willReturn(['multipart/form-data; boundary=-------9051914041544843365972754266']);
+        $httpRequest->method('getMethod')->willReturn('POST');
+        $httpRequest->method('getParsedBody')->willReturn(['operations' => $request->toString()]);
 
         $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
         $result = $graphpinator->run(new \Graphpinator\Request\PsrRequestFactory($httpRequest));

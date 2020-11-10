@@ -6,7 +6,7 @@ namespace Graphpinator\Exception\Value;
 
 abstract class ValueError extends \Graphpinator\Exception\GraphpinatorBase
 {
-    public function isOutputable() : bool
+    protected function isOutputable() : bool
     {
         return true;
     }
