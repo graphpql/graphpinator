@@ -40,16 +40,25 @@ final class InlineFragmentSpread implements \Graphpinator\Parser\FragmentSpread\
     }
 
     public function normalize(
+        \Graphpinator\Type\Contract\NamedDefinition $parentType,
         \Graphpinator\Container\Container $typeContainer,
         \Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions
     ) : \Graphpinator\Normalizer\FragmentSpread\FragmentSpread
     {
+        $typeCond = $this->typeCond instanceof \Graphpinator\Parser\TypeRef\NamedTypeRef
+            ? $this->typeCond->normalize($typeContainer)
+            : null;
+
+        if ($typeCond instanceof \Graphpinator\Type\Contract\NamedDefinition &&
+            !$typeCond instanceof \Graphpinator\Type\Contract\TypeConditionable) {
+            throw new \Graphpinator\Exception\Normalizer\TypeConditionOutputable();
+        }
+
         return new \Graphpinator\Normalizer\FragmentSpread\FragmentSpread(
-            $this->fields->normalize($typeContainer, $fragmentDefinitions),
+            $this->fields->normalize($typeCond
+                ?? $parentType, $typeContainer, $fragmentDefinitions),
             $this->directives->normalize($typeContainer),
-            $this->typeCond instanceof \Graphpinator\Parser\TypeRef\NamedTypeRef
-                ? $this->typeCond->normalize($typeContainer)
-                : null,
+            $typeCond,
         );
     }
 }

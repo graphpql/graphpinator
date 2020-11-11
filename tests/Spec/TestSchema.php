@@ -69,9 +69,15 @@ final class TestSchema
             'Upload' => new \Graphpinator\Module\Upload\UploadType(),
             'Gps' => new \Graphpinator\Type\Addon\GpsType(),
             'Point' => new \Graphpinator\Type\Addon\PointType(),
+            'BigInt' => new \Graphpinator\Type\Addon\BigIntType(),
             'NullFieldResolution' => self::getNullFieldResolution(),
             'NullListResolution' => self::getNullListResolution(),
             'SimpleType' => self::getSimpleType(),
+            'InterfaceAbc' => self::getInterfaceAbc(),
+            'InterfaceEfg' => self::getInterfaceEfg(),
+            'FragmentTypeA' => self::getFragmentTypeA(),
+            'FragmentTypeB' => self::getFragmentTypeB(),
+            'SimpleEmptyTestInput' => self::getSimpleEmptyTestInput(),
         ], [
             'testDirective' => self::getTestDirective(),
             'invalidDirective' => self::getInvalidDirective(),
@@ -136,7 +142,7 @@ final class TestSchema
                     ),
                     new \Graphpinator\Field\ResolvableField(
                         'fieldThrow',
-                        TestSchema::getUnionInvalidResolvedType(),
+                        TestSchema::getTypeAbc(),
                         static function () : void {
                             throw new \Exception('Random exception');
                         },
@@ -313,6 +319,75 @@ final class TestSchema
                                 'notDefinedField' => 'testValue',
                             ];
                         },
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'fieldEmptyObject',
+                        TestSchema::getSimpleEmptyTestInput(),
+                        static function () : \stdClass {
+                            return new \stdClass();
+                        },
+                    ),
+                    (new \Graphpinator\Field\ResolvableField(
+                        'fieldListConstraint',
+                        TestSchema::getSimpleType()->list(),
+                        static function ($parent, array $arg) : array {
+                            return $arg;
+                        },
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'arg',
+                                TestSchema::getSimpleInput()->list(),
+                            ),
+                        ]),
+                    ))->addConstraint(new \Graphpinator\Constraint\ListConstraint(3, 5)),
+                    new \Graphpinator\Field\ResolvableField(
+                        'fieldFragment',
+                        TestSchema::getInterfaceAbc(),
+                        static function () : \stdClass {
+                            return new \stdClass();
+                        },
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'fieldMerge',
+                        TestSchema::getSimpleType()->notNull(),
+                        static function ($parent, \stdClass $inputComplex) : \stdClass {
+                            $return = new \stdClass();
+
+                            $return->name = $inputComplex->innerObject->name
+                                . ' ' . $inputComplex->innerObject->inner->name
+                                . ' ' . $inputComplex->innerObject->innerNotNull->name
+                                . ' ' . $inputComplex->innerListObjects[0]->name
+                                . ' ' . $inputComplex->innerListObjects[0]->inner->name
+                                . ' ' . $inputComplex->innerListObjects[1]->name;
+                            $return->number = \array_merge(
+                                $inputComplex->innerObject->innerNotNull->number,
+                                $inputComplex->innerObject->inner->number,
+                                $inputComplex->innerListObjects[0]->inner->number,
+                                $inputComplex->innerListObjects[0]->innerNotNull->number,
+                                $inputComplex->innerListObjects[1]->innerList[1]->number,
+                            );
+                            $return->bool = $inputComplex->innerObject->inner->bool;
+
+                            return $return;
+                        },
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'inputComplex',
+                                TestSchema::getComplexDefaultsInput()->notNull(),
+                            ),
+                        ]),
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'fieldRequiredArgumentInvalid',
+                        TestSchema::getSimpleType(),
+                        static function ($parent, $name) : void {
+                        },
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'name',
+                                \Graphpinator\Container\Container::String()->notNull(),
+                            ),
+                        ]),
                     ),
                 ]);
             }
@@ -548,7 +623,7 @@ final class TestSchema
             public function __construct()
             {
                 parent::__construct(
-                    new \Graphpinator\Utils\InterfaceSet([]),
+                    new \Graphpinator\Utils\InterfaceSet(),
                 );
 
                 $this->addConstraint(new \Graphpinator\Constraint\ObjectConstraint([
@@ -803,6 +878,175 @@ final class TestSchema
         };
     }
 
+    public static function getInterfaceAbc() : \Graphpinator\Type\InterfaceType
+    {
+        return new class extends \Graphpinator\Type\InterfaceType
+        {
+            protected const NAME = 'InterfaceAbc';
+            protected const DESCRIPTION = 'Interface Abc Description';
+
+            public function createResolvedValue($rawValue) : \Graphpinator\Value\TypeIntermediateValue
+            {
+                return new \Graphpinator\Value\TypeIntermediateValue(TestSchema::getFragmentTypeA(), $rawValue);
+            }
+
+            protected function getFieldDefinition() : \Graphpinator\Field\FieldSet
+            {
+                return new \Graphpinator\Field\FieldSet([
+                    new \Graphpinator\Field\Field(
+                        'name',
+                        \Graphpinator\Container\Container::String()->notNull(),
+                    ),
+                ]);
+            }
+        };
+    }
+
+    public static function getInterfaceEfg() : \Graphpinator\Type\InterfaceType
+    {
+        return new class extends \Graphpinator\Type\InterfaceType
+        {
+            protected const NAME = 'InterfaceEfg';
+            protected const DESCRIPTION = 'Interface Efg Description';
+
+            public function __construct()
+            {
+                parent::__construct(new \Graphpinator\Utils\InterfaceSet([
+                    TestSchema::getInterfaceAbc(),
+                ]));
+            }
+
+            public function createResolvedValue($rawValue) : \Graphpinator\Value\TypeIntermediateValue
+            {
+                return new \Graphpinator\Value\TypeIntermediateValue(TestSchema::getFragmentTypeB(), $rawValue);
+            }
+
+            protected function getFieldDefinition() : \Graphpinator\Field\FieldSet
+            {
+                return new \Graphpinator\Field\FieldSet([
+                    new \Graphpinator\Field\Field(
+                        'number',
+                        \Graphpinator\Container\Container::Int(),
+                    ),
+                ]);
+            }
+        };
+    }
+
+    public static function getFragmentTypeA() : \Graphpinator\Type\Type
+    {
+        return new class extends \Graphpinator\Type\Type
+        {
+            protected const NAME = 'FragmentTypeA';
+            protected const DESCRIPTION = null;
+
+            public function __construct()
+            {
+                parent::__construct(new \Graphpinator\Utils\InterfaceSet([
+                    TestSchema::getInterfaceAbc(),
+                ]));
+            }
+
+            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+            {
+                return new \Graphpinator\Field\ResolvableFieldSet([
+                    new \Graphpinator\Field\ResolvableField(
+                        'name',
+                        \Graphpinator\Container\Container::String()->notNull(),
+                        static function (\stdClass $parent, $name) {
+                            return $parent->name
+                                ?? $name;
+                        },
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'name',
+                                \Graphpinator\Container\Container::String()->notNull(),
+                                'defaultA',
+                            ),
+                        ]),
+                    ),
+                ]);
+            }
+
+            protected function validateNonNullValue($rawValue) : bool
+            {
+                return true;
+            }
+        };
+    }
+
+    public static function getFragmentTypeB() : \Graphpinator\Type\Type
+    {
+        return new class extends \Graphpinator\Type\Type
+        {
+            protected const NAME = 'FragmentTypeB';
+            protected const DESCRIPTION = null;
+
+            public function __construct()
+            {
+                parent::__construct(new \Graphpinator\Utils\InterfaceSet([
+                    TestSchema::getInterfaceEfg(),
+                ]));
+            }
+
+            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+            {
+                return new \Graphpinator\Field\ResolvableFieldSet([
+                    new \Graphpinator\Field\ResolvableField(
+                        'name',
+                        \Graphpinator\Container\Container::String()->notNull(),
+                        static function (\stdClass $parent, $name) {
+                            return $parent->name
+                                ?? $name;
+                        },
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'name',
+                                \Graphpinator\Container\Container::String()->notNull(),
+                                'defaultB',
+                            ),
+                        ]),
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'number',
+                        \Graphpinator\Container\Container::Int(),
+                        static function (\stdClass $parent, $number) {
+                            return $parent->number
+                                ?? $number;
+                        },
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'number',
+                                \Graphpinator\Container\Container::Int(),
+                                5,
+                            ),
+                        ]),
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'bool',
+                        \Graphpinator\Container\Container::Boolean(),
+                        static function (\stdClass $parent, $bool) {
+                            return $parent->bool
+                                ?? $bool;
+                        },
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'bool',
+                                \Graphpinator\Container\Container::Boolean(),
+                                false,
+                            ),
+                        ]),
+                    ),
+                ]);
+            }
+
+            protected function validateNonNullValue($rawValue) : bool
+            {
+                return true;
+            }
+        };
+    }
+
     public static function getUnionInvalidResolvedType() : \Graphpinator\Type\UnionType
     {
         return new class extends \Graphpinator\Type\UnionType
@@ -929,7 +1173,7 @@ final class TestSchema
                 parent::__construct(
                     [\Graphpinator\Directive\ExecutableDirectiveLocation::FIELD],
                     true,
-                    new \Graphpinator\Argument\ArgumentSet([]),
+                    new \Graphpinator\Argument\ArgumentSet(),
                     static function() {
                         ++self::$count;
 
@@ -951,7 +1195,7 @@ final class TestSchema
                 parent::__construct(
                     [\Graphpinator\Directive\ExecutableDirectiveLocation::FIELD],
                     true,
-                    new \Graphpinator\Argument\ArgumentSet([]),
+                    new \Graphpinator\Argument\ArgumentSet(),
                     static function() {
                         return 'blahblah';
                     },
@@ -1272,6 +1516,20 @@ final class TestSchema
                             ),
                         ]),
                     ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'bigInt',
+                        new \Graphpinator\Type\Addon\BigIntType(),
+                        static function ($parent, int $bigInt) : int {
+                            return $bigInt;
+                        },
+                        new \Graphpinator\Argument\ArgumentSet([
+                            new \Graphpinator\Argument\Argument(
+                                'bigInt',
+                                new \Graphpinator\Type\Addon\BigIntType(),
+                                \PHP_INT_MAX,
+                            ),
+                        ]),
+                    ),
                 ]);
             }
 
@@ -1391,6 +1649,34 @@ final class TestSchema
                                 true,
                             ),
                         ]),
+                    ),
+                ]);
+            }
+
+            protected function validateNonNullValue($rawValue) : bool
+            {
+                return true;
+            }
+        };
+    }
+
+    public static function getSimpleEmptyTestInput() : \Graphpinator\Type\Type
+    {
+        return new class extends \Graphpinator\Type\Type
+        {
+            protected const NAME = 'SimpleEmptyTestInput';
+            protected const DESCRIPTION = null;
+
+            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+            {
+                return new \Graphpinator\Field\ResolvableFieldSet([
+                    new \Graphpinator\Field\ResolvableField(
+                        'fieldNumber',
+                        \Graphpinator\Container\Container::Int(),
+                        static function (\stdClass $parent) {
+                            return $parent->number
+                                ?? null;
+                        },
                     ),
                 ]);
             }

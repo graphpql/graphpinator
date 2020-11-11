@@ -14,12 +14,11 @@ final class FieldSet extends \Infinityloop\Utils\ObjectSet
 
     private \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet $fragments;
 
-    public function __construct(array $fields, ?\Graphpinator\Parser\FragmentSpread\FragmentSpreadSet $fragments = null)
+    public function __construct(array $fields, \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet $fragments)
     {
         parent::__construct($fields);
 
-        $this->fragments = $fragments
-            ?? new \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet([]);
+        $this->fragments = $fragments;
     }
 
     public function getFragmentSpreads() : \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet
@@ -45,6 +44,7 @@ final class FieldSet extends \Infinityloop\Utils\ObjectSet
     }
 
     public function normalize(
+        \Graphpinator\Type\Contract\NamedDefinition $parentType,
         \Graphpinator\Container\Container $typeContainer,
         \Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions
     ) : \Graphpinator\Normalizer\FieldSet
@@ -52,13 +52,13 @@ final class FieldSet extends \Infinityloop\Utils\ObjectSet
         $normalized = [];
 
         foreach ($this as $field) {
-            $normalized[] = $field->normalize($typeContainer, $fragmentDefinitions);
+            $normalized[] = $field->normalize($parentType, $typeContainer, $fragmentDefinitions);
         }
 
         $return = new \Graphpinator\Normalizer\FieldSet($normalized);
 
-        foreach ($this->fragments->normalize($typeContainer, $fragmentDefinitions) as $fragmentSpread) {
-            $return->mergeFieldSet($fragmentSpread->getFields());
+        foreach ($this->fragments->normalize($parentType, $typeContainer, $fragmentDefinitions) as $fragmentSpread) {
+            $return->mergeFieldSet($parentType, $fragmentSpread->getFields());
         }
 
         return $return;

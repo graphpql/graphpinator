@@ -16,7 +16,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
                 \Graphpinator\Container\Container::Int(),
                 <<<'EOL'
                 """
-                Int built-in type
+                Int built-in type (32 bit)
                 """
                 scalar Int
                 EOL,
@@ -204,6 +204,9 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
               y: 420.42
             }
           ): Point
+          bigInt(
+            bigInt: BigInt = 9223372036854775807
+          ): BigInt
         }
         
         enum ArrayEnum {
@@ -216,6 +219,11 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           "Third description"
           C
         }
+        
+        """
+        BigInt addon type (64 bit)
+        """
+        scalar BigInt
         
         input ComplexDefaultsInput {
           innerObject: CompositeInput = {
@@ -445,6 +453,24 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           int2: Int
         }
         
+        type FragmentTypeA implements InterfaceAbc {
+          name(
+            name: String! = "defaultA"
+          ): String!
+        }
+        
+        type FragmentTypeB implements InterfaceEfg {
+          name(
+            name: String! = "defaultB"
+          ): String!
+          number(
+            number: Int = 5
+          ): Int
+          bool(
+            bool: Boolean = false
+          ): Boolean
+        }
+        
         """
         Gps type - latitude and longitude.
         """
@@ -470,6 +496,21 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           saturation: Int! @intConstraint(min: 0, max: 100)
           lightness: Int! @intConstraint(min: 0, max: 100)
           alpha: Float! @floatConstraint(min: 0, max: 1)
+        }
+        
+        """
+        Interface Abc Description
+        """
+        interface InterfaceAbc {
+          name: String!
+        }
+        
+        """
+        Interface Efg Description
+        """
+        interface InterfaceEfg implements InterfaceAbc {
+          name: String!
+          number: Int
         }
         
         """
@@ -552,7 +593,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldExactlyOne(
             arg: ExactlyOneInput
           ): Int
-          fieldThrow: TestUnionInvalidResolvedType
+          fieldThrow: Abc
           fieldAddonType: AddonType
           fieldUpload(
             file: Upload
@@ -582,6 +623,17 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             inputBool: Boolean
           ): SimpleType!
           fieldInvalidInput: SimpleType
+          fieldEmptyObject: SimpleEmptyTestInput
+          fieldListConstraint(
+            arg: [SimpleInput]
+          ): [SimpleType] @listConstraint(minItems: 3, maxItems: 5)
+          fieldFragment: InterfaceAbc
+          fieldMerge(
+            inputComplex: ComplexDefaultsInput!
+          ): SimpleType!
+          fieldRequiredArgumentInvalid(
+            name: String!
+          ): SimpleType
         }
         
         """
@@ -601,6 +653,10 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           green: Int! @intConstraint(min: 0, max: 255)
           blue: Int! @intConstraint(min: 0, max: 255)
           alpha: Float! @floatConstraint(min: 0, max: 1)
+        }
+        
+        type SimpleEmptyTestInput {
+          fieldNumber: Int
         }
         
         enum SimpleEnum {
@@ -823,6 +879,9 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
               y: 420.42
             }
           ): Point
+          bigInt(
+            bigInt: BigInt = 9223372036854775807
+          ): BigInt
         }
         
         enum ArrayEnum {
@@ -835,6 +894,11 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           "Third description"
           C
         }
+        
+        """
+        BigInt addon type (64 bit)
+        """
+        scalar BigInt
         
         input ComplexDefaultsInput {
           innerObject: CompositeInput = {
@@ -1064,6 +1128,24 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           int2: Int
         }
         
+        type FragmentTypeA implements InterfaceAbc {
+          name(
+            name: String! = "defaultA"
+          ): String!
+        }
+        
+        type FragmentTypeB implements InterfaceEfg {
+          name(
+            name: String! = "defaultB"
+          ): String!
+          number(
+            number: Int = 5
+          ): Int
+          bool(
+            bool: Boolean = false
+          ): Boolean
+        }
+        
         """
         Gps type - latitude and longitude.
         """
@@ -1089,6 +1171,21 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           saturation: Int! @intConstraint(min: 0, max: 100)
           lightness: Int! @intConstraint(min: 0, max: 100)
           alpha: Float! @floatConstraint(min: 0, max: 1)
+        }
+        
+        """
+        Interface Abc Description
+        """
+        interface InterfaceAbc {
+          name: String!
+        }
+        
+        """
+        Interface Efg Description
+        """
+        interface InterfaceEfg implements InterfaceAbc {
+          name: String!
+          number: Int
         }
         
         """
@@ -1171,7 +1268,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldExactlyOne(
             arg: ExactlyOneInput
           ): Int
-          fieldThrow: TestUnionInvalidResolvedType
+          fieldThrow: Abc
           fieldAddonType: AddonType
           fieldUpload(
             file: Upload
@@ -1201,6 +1298,17 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             inputBool: Boolean
           ): SimpleType!
           fieldInvalidInput: SimpleType
+          fieldEmptyObject: SimpleEmptyTestInput
+          fieldListConstraint(
+            arg: [SimpleInput]
+          ): [SimpleType] @listConstraint(minItems: 3, maxItems: 5)
+          fieldFragment: InterfaceAbc
+          fieldMerge(
+            inputComplex: ComplexDefaultsInput!
+          ): SimpleType!
+          fieldRequiredArgumentInvalid(
+            name: String!
+          ): SimpleType
         }
         
         """
@@ -1220,6 +1328,10 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           green: Int! @intConstraint(min: 0, max: 255)
           blue: Int! @intConstraint(min: 0, max: 255)
           alpha: Float! @floatConstraint(min: 0, max: 1)
+        }
+        
+        type SimpleEmptyTestInput {
+          fieldNumber: Int
         }
         
         enum SimpleEnum {
@@ -1354,6 +1466,21 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         }
         
         """
+        Interface Abc Description
+        """
+        interface InterfaceAbc {
+          name: String!
+        }
+        
+        """
+        Interface Efg Description
+        """
+        interface InterfaceEfg implements InterfaceAbc {
+          name: String!
+          number: Int
+        }
+        
+        """
         TestInterface Description
         """
         interface TestInterface {
@@ -1449,6 +1576,9 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
               y: 420.42
             }
           ): Point
+          bigInt(
+            bigInt: BigInt = 9223372036854775807
+          ): BigInt
         }
         
         type ConstraintType @objectConstraint(atLeastOne: ["intMinField", "intMaxField", "intOneOfField", "floatMinField", "floatMaxField", "floatOneOfField", "stringMinField", "stringMaxField", "listMinField", "listMaxField"]) {
@@ -1462,6 +1592,24 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           stringMaxField: String @stringConstraint(maxLength: 10)
           listMinField: [Int] @listConstraint(minItems: 1)
           listMaxField: [Int] @listConstraint(maxItems: 3)
+        }
+        
+        type FragmentTypeA implements InterfaceAbc {
+          name(
+            name: String! = "defaultA"
+          ): String!
+        }
+        
+        type FragmentTypeB implements InterfaceEfg {
+          name(
+            name: String! = "defaultB"
+          ): String!
+          number(
+            number: Int = 5
+          ): Int
+          bool(
+            bool: Boolean = false
+          ): Boolean
         }
         
         """
@@ -1533,7 +1681,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldExactlyOne(
             arg: ExactlyOneInput
           ): Int
-          fieldThrow: TestUnionInvalidResolvedType
+          fieldThrow: Abc
           fieldAddonType: AddonType
           fieldUpload(
             file: Upload
@@ -1563,6 +1711,17 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             inputBool: Boolean
           ): SimpleType!
           fieldInvalidInput: SimpleType
+          fieldEmptyObject: SimpleEmptyTestInput
+          fieldListConstraint(
+            arg: [SimpleInput]
+          ): [SimpleType] @listConstraint(minItems: 3, maxItems: 5)
+          fieldFragment: InterfaceAbc
+          fieldMerge(
+            inputComplex: ComplexDefaultsInput!
+          ): SimpleType!
+          fieldRequiredArgumentInvalid(
+            name: String!
+          ): SimpleType
         }
         
         """
@@ -1582,6 +1741,10 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           green: Int! @intConstraint(min: 0, max: 255)
           blue: Int! @intConstraint(min: 0, max: 255)
           alpha: Float! @floatConstraint(min: 0, max: 1)
+        }
+        
+        type SimpleEmptyTestInput {
+          fieldNumber: Int
         }
         
         """
@@ -1820,6 +1983,11 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           file: Upload
           files: [Upload]
         }
+        
+        """
+        BigInt addon type (64 bit)
+        """
+        scalar BigInt
         
         """
         Date type - string which contains valid date in "<YYYY>-<MM>-<DD>" format.
@@ -1973,6 +2141,21 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         }
         
         """
+        Interface Abc Description
+        """
+        interface InterfaceAbc {
+          name: String!
+        }
+        
+        """
+        Interface Efg Description
+        """
+        interface InterfaceEfg implements InterfaceAbc {
+          name: String!
+          number: Int
+        }
+        
+        """
         TestInterface Description
         """
         interface TestInterface {
@@ -2068,6 +2251,9 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
               y: 420.42
             }
           ): Point
+          bigInt(
+            bigInt: BigInt = 9223372036854775807
+          ): BigInt
         }
         
         type ConstraintType @objectConstraint(atLeastOne: ["intMinField", "intMaxField", "intOneOfField", "floatMinField", "floatMaxField", "floatOneOfField", "stringMinField", "stringMaxField", "listMinField", "listMaxField"]) {
@@ -2081,6 +2267,24 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           stringMaxField: String @stringConstraint(maxLength: 10)
           listMinField: [Int] @listConstraint(minItems: 1)
           listMaxField: [Int] @listConstraint(maxItems: 3)
+        }
+        
+        type FragmentTypeA implements InterfaceAbc {
+          name(
+            name: String! = "defaultA"
+          ): String!
+        }
+        
+        type FragmentTypeB implements InterfaceEfg {
+          name(
+            name: String! = "defaultB"
+          ): String!
+          number(
+            number: Int = 5
+          ): Int
+          bool(
+            bool: Boolean = false
+          ): Boolean
         }
         
         """
@@ -2152,7 +2356,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldExactlyOne(
             arg: ExactlyOneInput
           ): Int
-          fieldThrow: TestUnionInvalidResolvedType
+          fieldThrow: Abc
           fieldAddonType: AddonType
           fieldUpload(
             file: Upload
@@ -2182,6 +2386,17 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             inputBool: Boolean
           ): SimpleType!
           fieldInvalidInput: SimpleType
+          fieldEmptyObject: SimpleEmptyTestInput
+          fieldListConstraint(
+            arg: [SimpleInput]
+          ): [SimpleType] @listConstraint(minItems: 3, maxItems: 5)
+          fieldFragment: InterfaceAbc
+          fieldMerge(
+            inputComplex: ComplexDefaultsInput!
+          ): SimpleType!
+          fieldRequiredArgumentInvalid(
+            name: String!
+          ): SimpleType
         }
         
         """
@@ -2201,6 +2416,10 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           green: Int! @intConstraint(min: 0, max: 255)
           blue: Int! @intConstraint(min: 0, max: 255)
           alpha: Float! @floatConstraint(min: 0, max: 1)
+        }
+        
+        type SimpleEmptyTestInput {
+          fieldNumber: Int
         }
         
         """
@@ -2439,6 +2658,11 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           file: Upload
           files: [Upload]
         }
+        
+        """
+        BigInt addon type (64 bit)
+        """
+        scalar BigInt
         
         """
         Date type - string which contains valid date in "<YYYY>-<MM>-<DD>" format.

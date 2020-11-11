@@ -8,6 +8,7 @@ abstract class InterfaceType extends \Graphpinator\Type\Contract\AbstractDefinit
     \Graphpinator\Type\Contract\InterfaceImplementor
 {
     use \Graphpinator\Type\Contract\TInterfaceImplementor;
+    use \Graphpinator\Type\Contract\TMetaFields;
     use \Graphpinator\Printable\TRepeatablePrint;
     use \Graphpinator\Utils\TObjectConstraint;
 
@@ -52,6 +53,19 @@ abstract class InterfaceType extends \Graphpinator\Type\Contract\AbstractDefinit
         }
 
         return $this->fields;
+    }
+
+    final public function getField(string $name) : \Graphpinator\Field\Field
+    {
+        $field = $this->getMetaFields()[$name]
+            ?? $this->getFields()[$name]
+            ?? null;
+
+        if ($field instanceof \Graphpinator\Field\Field) {
+            return $field;
+        }
+
+        throw new \Graphpinator\Exception\Normalizer\UnknownField($name, $this->getName());
     }
 
     final public function getTypeKind() : string

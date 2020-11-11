@@ -92,6 +92,11 @@ final class ArgumentTest extends \PHPUnit\Framework\TestCase
                     'query' => 'query queryName { fieldAbc { fieldXyz(arg1: 123, arg1: 456) { name } } }',
                 ]),
             ],
+            [
+                \Graphpinator\Json::fromObject((object) [
+                    'query' => 'query queryName { fieldAbc { fieldXyz(arg1: 2147483649) { name } } }',
+                ]),
+            ],
         ];
     }
 

@@ -6,6 +6,8 @@ namespace Graphpinator\Type;
 
 abstract class UnionType extends \Graphpinator\Type\Contract\AbstractDefinition
 {
+    use \Graphpinator\Type\Contract\TMetaFields;
+
     protected \Graphpinator\Utils\ConcreteSet $types;
 
     public function __construct(\Graphpinator\Utils\ConcreteSet $types)
@@ -36,6 +38,18 @@ abstract class UnionType extends \Graphpinator\Type\Contract\AbstractDefinition
         }
 
         return false;
+    }
+
+    final public function getField(string $name) : \Graphpinator\Field\Field
+    {
+        $field = $this->getMetaFields()[$name]
+            ?? null;
+
+        if ($field instanceof \Graphpinator\Field\ResolvableField) {
+            return $field;
+        }
+
+        throw new \Graphpinator\Exception\Normalizer\SelectionOnUnion();
     }
 
     final public function getTypeKind() : string

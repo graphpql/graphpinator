@@ -15,12 +15,6 @@ final class ArgumentValueSet extends \Infinityloop\Utils\ObjectMap
     {
         parent::__construct();
 
-        foreach ($namedValueSet as $namedValue) {
-            if (!$argumentSet->offsetExists($namedValue->getName())) {
-                throw new \Graphpinator\Exception\Resolver\UnknownArgument();
-            }
-        }
-
         foreach ($argumentSet as $argument) {
             if ($namedValueSet->offsetExists($argument->getName())) {
                 $value = $argument->getType()->createInputedValue($namedValueSet[$argument->getName()]->getRawValue());

@@ -4,7 +4,7 @@
             "src"
         ]
     },
-    "timeout": 10,
+    "timeout": 30,
     "logs": {
         "text": "build/infection.log",
         "summary": "build/summary.log",
@@ -15,26 +15,6 @@
     "minCoveredMsi": 91,
     "mutators": {
         "@default": true,
-        "TrueValue": {
-            "ignore": [
-                "Graphpinator\\Exception\\*"
-            ]
-        },
-        "FalseValue": {
-            "ignore": [
-                "Graphpinator\\Exception\\*"
-            ]
-        },
-        "ProtectedVisibility": {
-            "ignore": [
-                "Graphpinator\\Exception\\*"
-            ]
-        },
-        "Throw_": {
-            "ignore": [
-                "Graphpinator\\*"
-            ]
-        },
         "global-ignoreSourceCodeByRegex": [
             "\\\\assert\\(.*\\);"
         ]

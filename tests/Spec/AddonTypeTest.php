@@ -225,6 +225,18 @@ final class AddonTypeTest extends \PHPUnit\Framework\TestCase
                     ],
                 ]),
             ],
+            [
+                \Graphpinator\Json::fromObject((object) [
+                    'query' => 'query queryName { fieldAddonType { bigInt } }',
+                ]),
+                \Graphpinator\Json::fromObject((object) [
+                    'data' => [
+                        'fieldAddonType' => [
+                            'bigInt' => \PHP_INT_MAX,
+                        ],
+                    ],
+                ]),
+            ],
         ];
     }
 

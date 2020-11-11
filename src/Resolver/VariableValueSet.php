@@ -45,10 +45,6 @@ final class VariableValueSet implements \ArrayAccess
 
     public function offsetUnset($offset) : void
     {
-        if (!$this->offsetExists($offset)) {
-            throw new \Exception('Item already doesnt exist.');
-        }
-
-        unset($this->array[$offset]);
+        throw new \Graphpinator\Exception\OperationNotSupported();
     }
 }

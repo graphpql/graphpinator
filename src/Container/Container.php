@@ -14,7 +14,7 @@ abstract class Container
      * Core function to find type by its name.
      * @param string $name
      */
-    abstract public function getType(string $name) : \Graphpinator\Type\Contract\NamedDefinition;
+    abstract public function getType(string $name) : ?\Graphpinator\Type\Contract\NamedDefinition;
 
     /**
      * Function to return all user-defined types.
@@ -26,7 +26,7 @@ abstract class Container
      * Core function to find directive by its name.
      * @param string $name
      */
-    abstract public function getDirective(string $name) : \Graphpinator\Directive\Directive;
+    abstract public function getDirective(string $name) : ?\Graphpinator\Directive\Directive;
 
     /**
      * Function to return all user-defined directives.

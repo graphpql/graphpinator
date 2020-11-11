@@ -14,10 +14,14 @@ final class Variable
 
     public function __construct(
         string $name,
-        \Graphpinator\Type\Contract\Inputable $type,
+        \Graphpinator\Type\Contract\Definition $type,
         ?\Graphpinator\Parser\Value\Value $default = null
     )
     {
+        if (!$type instanceof \Graphpinator\Type\Contract\Inputable || !$type->isInputable()) {
+            throw new \Graphpinator\Exception\Normalizer\VariableTypeInputable();
+        }
+
         $this->name = $name;
         $this->type = $type;
         $this->defaultValue = $default instanceof \Graphpinator\Parser\Value\Value

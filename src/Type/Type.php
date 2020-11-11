@@ -6,14 +6,14 @@ namespace Graphpinator\Type;
 
 abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition implements
     \Graphpinator\Type\Contract\Resolvable,
+    \Graphpinator\Type\Contract\TypeConditionable,
     \Graphpinator\Type\Contract\InterfaceImplementor
 {
     use \Graphpinator\Type\Contract\TResolvable;
     use \Graphpinator\Type\Contract\TInterfaceImplementor;
+    use \Graphpinator\Type\Contract\TMetaFields;
     use \Graphpinator\Utils\TObjectConstraint;
     use \Graphpinator\Printable\TRepeatablePrint;
-
-    protected ?\Graphpinator\Field\ResolvableFieldSet $metaFields = null;
 
     public function __construct(?\Graphpinator\Utils\InterfaceSet $implements = null)
     {
@@ -35,10 +35,7 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
         \Graphpinator\Value\ResolvedValue $parentResult
     ) : \Graphpinator\Value\TypeValue
     {
-        if ($requestedFields === null) {
-            throw new \Graphpinator\Exception\Resolver\SelectionOnComposite();
-        }
-
+        \assert($requestedFields instanceof \Graphpinator\Normalizer\FieldSet);
         $resolved = new \stdClass();
 
         foreach ($requestedFields as $field) {
@@ -90,6 +87,19 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
         return $this->fields;
     }
 
+    final public function getField(string $name) : \Graphpinator\Field\Field
+    {
+        $field = $this->getMetaFields()[$name]
+            ?? $this->getFields()[$name]
+            ?? null;
+
+        if ($field instanceof \Graphpinator\Field\ResolvableField) {
+            return $field;
+        }
+
+        throw new \Graphpinator\Exception\Normalizer\UnknownField($name, $this->getName());
+    }
+
     final public function getTypeKind() : string
     {
         return \Graphpinator\Type\Introspection\TypeKind::OBJECT;
@@ -104,26 +114,4 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
     }
 
     abstract protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet;
-
-    private function getMetaFields() : \Graphpinator\Field\ResolvableFieldSet
-    {
-        if (!$this->metaFields instanceof \Graphpinator\Field\ResolvableFieldSet) {
-            $this->metaFields = $this->getMetaFieldDefinition();
-        }
-
-        return $this->metaFields;
-    }
-
-    private function getMetaFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
-    {
-        return new \Graphpinator\Field\ResolvableFieldSet([
-            new \Graphpinator\Field\ResolvableField(
-                '__typename',
-                \Graphpinator\Container\Container::String()->notNull(),
-                function() {
-                    return $this->getName();
-                },
-            ),
-        ]);
-    }
 }

@@ -55,20 +55,16 @@ final class Field
     }
 
     public function normalize(
+        \Graphpinator\Type\Contract\NamedDefinition $parentType,
         \Graphpinator\Container\Container $typeContainer,
         \Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions
     ) : \Graphpinator\Normalizer\Field
     {
         return new \Graphpinator\Normalizer\Field(
-            $this->name,
-            $this->alias,
-            $this->arguments,
-            $this->directives instanceof \Graphpinator\Parser\Directive\DirectiveSet
-                ? $this->directives->normalize($typeContainer)
-                : null,
-            $this->children instanceof \Graphpinator\Parser\FieldSet
-                ? $this->children->normalize($typeContainer, $fragmentDefinitions)
-                : null,
+            $this,
+            $parentType,
+            $typeContainer,
+            $fragmentDefinitions,
         );
     }
 }

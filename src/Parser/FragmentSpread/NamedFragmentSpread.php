@@ -29,6 +29,7 @@ final class NamedFragmentSpread implements \Graphpinator\Parser\FragmentSpread\F
     }
 
     public function normalize(
+        \Graphpinator\Type\Contract\NamedDefinition $parentType,
         \Graphpinator\Container\Container $typeContainer,
         \Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions
     ) : \Graphpinator\Normalizer\FragmentSpread\FragmentSpread
@@ -38,11 +39,16 @@ final class NamedFragmentSpread implements \Graphpinator\Parser\FragmentSpread\F
         }
 
         $fragment = $fragmentDefinitions->offsetGet($this->name);
+        $typeCond = $fragment->getTypeCond()->normalize($typeContainer);
+
+        if (!$typeCond instanceof \Graphpinator\Type\Contract\TypeConditionable) {
+            throw new \Graphpinator\Exception\Normalizer\TypeConditionOutputable();
+        }
 
         return new \Graphpinator\Normalizer\FragmentSpread\FragmentSpread(
-            $fragment->getFields()->normalize($typeContainer, $fragmentDefinitions),
+            $fragment->getFields()->normalize($typeCond, $typeContainer, $fragmentDefinitions),
             $this->directives->normalize($typeContainer),
-            $fragment->getTypeCond()->normalize($typeContainer),
+            $typeCond,
         );
     }
 }

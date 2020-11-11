@@ -74,7 +74,7 @@ final class Operation
 
         return new \Graphpinator\Normalizer\Operation\Operation(
             $operation,
-            $this->children->normalize($schema->getContainer(), $fragmentDefinitions),
+            $this->children->normalize($operation, $schema->getContainer(), $fragmentDefinitions),
             $this->variables->normalize($schema->getContainer()),
             $this->getName(),
         );

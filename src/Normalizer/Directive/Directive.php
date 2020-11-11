@@ -12,13 +12,29 @@ final class Directive
     private \Graphpinator\Parser\Value\NamedValueSet $arguments;
 
     public function __construct(
-        \Graphpinator\Directive\ExecutableDirective $directive,
-        ?\Graphpinator\Parser\Value\NamedValueSet $arguments = null
+        \Graphpinator\Parser\Directive\Directive $parserDirective,
+        \Graphpinator\Container\Container $typeContainer
     )
     {
+        $directive = $typeContainer->getDirective($parserDirective->getName());
+
+        if (!$directive instanceof \Graphpinator\Directive\Directive) {
+            throw new \Graphpinator\Exception\Normalizer\UnknownDirective($parserDirective->getName());
+        }
+
+        if (!$directive instanceof \Graphpinator\Directive\ExecutableDirective) {
+            throw new \Graphpinator\Exception\Normalizer\DirectiveNotExecutable();
+        }
+
         $this->directive = $directive;
-        $this->arguments = $arguments
-            ?? new \Graphpinator\Parser\Value\NamedValueSet([]);
+        $this->arguments = $parserDirective->getArguments()
+            ?? new \Graphpinator\Parser\Value\NamedValueSet();
+
+        foreach ($this->arguments as $argument) {
+            if (!$directive->getArguments()->offsetExists($argument->getName())) {
+                throw new \Graphpinator\Exception\Normalizer\UnknownDirectiveArgument($argument->getName(), $directive->getName());
+            }
+        }
     }
 
     public function getDirective() : \Graphpinator\Directive\ExecutableDirective
@@ -35,9 +51,9 @@ final class Directive
         \Graphpinator\Resolver\VariableValueSet $variables
     ) : self
     {
-        return new self(
-            $this->directive,
-            $this->arguments->applyVariables($variables),
-        );
+        $clone = clone $this;
+        $clone->arguments = $this->arguments->applyVariables($variables);
+
+        return $clone;
     }
 }
