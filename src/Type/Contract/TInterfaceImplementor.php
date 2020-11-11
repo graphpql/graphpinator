@@ -48,6 +48,10 @@ trait TInterfaceImplementor
     protected function validateInterfaces() : void
     {
         foreach ($this->implements as $interface) {
+            if (!$interface->getConstraints()->validateObjectConstraint($this->getConstraints())) {
+                throw new \Graphpinator\Exception\Type\ObjectConstraintsNotEqual();
+            }
+
             foreach ($interface->getFields() as $fieldContract) {
                 if (!$this->getFields()->offsetExists($fieldContract->getName())) {
                     throw new \Graphpinator\Exception\Type\InterfaceContractMissingField();
@@ -59,6 +63,10 @@ trait TInterfaceImplementor
                     throw new \Graphpinator\Exception\Type\InterfaceContractFieldTypeMismatch();
                 }
 
+                if (!$field->getConstraints()->isContravariant($fieldContract->getConstraints())) {
+                    throw new \Graphpinator\Exception\Type\FieldConstraintNotContravariant();
+                }
+
                 foreach ($fieldContract->getArguments() as $argumentContract) {
                     if (!$field->getArguments()->offsetExists($argumentContract->getName())) {
                         throw new \Graphpinator\Exception\Type\InterfaceContractMissingArgument();
@@ -68,6 +76,10 @@ trait TInterfaceImplementor
 
                     if (!$argument->getType()->isInstanceOf($argumentContract->getType())) {
                         throw new \Graphpinator\Exception\Type\InterfaceContractArgumentTypeMismatch();
+                    }
+
+                    if (!$argumentContract->getConstraints()->isConvariant($argument->getConstraints())) {
+                        throw new \Graphpinator\Exception\Type\ArgumentConstraintNotCovariant();
                     }
                 }
             }

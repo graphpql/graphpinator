@@ -65,6 +65,56 @@ final class StringConstraint extends \Graphpinator\Constraint\LeafConstraint
             || $namedType instanceof \Graphpinator\Type\Scalar\IdType;
     }
 
+    public function isCovariant(\Graphpinator\Constraint\Constraint $childConstraint) : bool
+    {
+        if (\is_int($this->minLength) && \is_int($childConstraint->minLength) && $this->minLength < $childConstraint->minLength) {
+            return false;
+        }
+
+        if (\is_int($this->maxLength) && \is_int($childConstraint->maxLength) && $this->maxLength > $childConstraint->maxLength) {
+            return false;
+        }
+
+        if ($this->regex !== $childConstraint->regex && \is_string($childConstraint->regex)) {
+            return false;
+        }
+
+        if (\is_array($this->oneOf) && \is_array($childConstraint->oneOf)) {
+            foreach ($this->oneOf as $value) {
+                if (!\in_array($value, $childConstraint->oneOf, true)) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    public function isContravariant(\Graphpinator\Constraint\Constraint $childConstraint) : bool
+    {
+        if (\is_int($this->minLength) && \is_int($childConstraint->minLength) && $this->minLength > $childConstraint->minLength) {
+            return false;
+        }
+
+        if (\is_int($this->maxLength) && \is_int($childConstraint->maxLength) && $this->maxLength < $childConstraint->maxLength) {
+            return false;
+        }
+
+        if ($this->regex !== $childConstraint->regex && \is_string($this->regex)) {
+            return false;
+        }
+
+        if (\is_array($this->oneOf) && \is_array($childConstraint->oneOf)) {
+            foreach ($childConstraint->oneOf as $value) {
+                if (!\in_array($value, $this->oneOf)) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
     protected function validateFactoryMethod($inputValue) : void
     {
         \assert(\is_string($inputValue));

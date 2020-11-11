@@ -49,6 +49,48 @@ final class FloatConstraint extends \Graphpinator\Constraint\LeafConstraint
         return $type->getNamedType() instanceof \Graphpinator\Type\Scalar\FloatType;
     }
 
+    public function isCovariant(\Graphpinator\Constraint\Constraint $childConstraint) : bool
+    {
+        if (\is_float($this->min) && \is_float($childConstraint->min) && $this->min < $childConstraint->min) {
+            return false;
+        }
+
+        if (\is_float($this->max) && \is_float($childConstraint->max) && $this->max > $childConstraint->max) {
+            return false;
+        }
+
+        if (\is_array($this->oneOf) && \is_array($childConstraint->oneOf)) {
+            foreach ($this->oneOf as $value) {
+                if (!\in_array($value, $childConstraint->oneOf, true)) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    public function isContravariant(\Graphpinator\Constraint\Constraint $childConstraint) : bool
+    {
+        if (\is_float($this->min) && \is_float($childConstraint->min) && $this->min > $childConstraint->min) {
+            return false;
+        }
+
+        if (\is_float($this->max) && \is_float($childConstraint->max) && $this->max < $childConstraint->max) {
+            return false;
+        }
+
+        if (\is_array($this->oneOf) && \is_array($childConstraint->oneOf)) {
+            foreach ($childConstraint->oneOf as $value) {
+                if (!\in_array($value, $this->oneOf)) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
     protected function validateFactoryMethod($inputValue) : void
     {
         \assert(\is_float($inputValue));

@@ -28,6 +28,16 @@ final class ListConstraint extends \Graphpinator\Constraint\ArgumentFieldConstra
         return self::recursiveValidateType($this->options, $type);
     }
 
+    public function isCovariant(\Graphpinator\Constraint\Constraint $childConstraint) : bool
+    {
+        return self::recursiveValidateConstraints($this->options, $childConstraint->options);
+    }
+
+    public function isContravariant(\Graphpinator\Constraint\Constraint $parentConstraint) : bool
+    {
+        return self::recursiveValidateConstraints($parentConstraint->options, $this->options);
+    }
+
     protected function validateFactoryMethod($inputValue) : void
     {
         \assert(\is_array($inputValue));
@@ -148,5 +158,26 @@ final class ListConstraint extends \Graphpinator\Constraint\ArgumentFieldConstra
             : null;
 
         return $class;
+    }
+
+    private static function recursiveValidateConstraints(\stdClass $options, \stdClass $compareOptions) : bool
+    {
+        if (\is_int($options->minItems) && \is_int($compareOptions->minItems) && $options->minItems < $compareOptions->minItems) {
+            return false;
+        }
+
+        if (\is_int($options->maxItems) && \is_int($compareOptions->maxItems) && $options->maxItems > $compareOptions->maxItems) {
+            return false;
+        }
+
+        if ($options->unique !== $compareOptions->unique) {
+            return false;
+        }
+
+        if ($options->innerList instanceof \stdClass && $compareOptions->innerList instanceof \stdClass) {
+            return self::recursiveValidateConstraints($options->innerList, $compareOptions->innerList);
+        }
+
+        return true;
     }
 }
