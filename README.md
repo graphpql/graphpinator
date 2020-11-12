@@ -24,16 +24,8 @@ Install package using composer
 
 ## How to use
 
-- Define Schema for your GraphQL service. [Detailed description of this step](https://github.com/infinityloop-dev/graphpinator/blob/master/docs/DefiningSchema.md)
-- Execute request.
-```
-$request = 'query queryName ($var1: String!) { field1 { innerField1 innerField2(arg1: $var1) } }';
-$variables = \Infinityloop\Utils\Json::fromArray(['var1' => 'value']);
-
-$graphpinator = new \Graphpinator\Graphpinator($schema);
-$result = $graphpinator->runQuery($request, $variables);
-```
-- For more information [visit the Docs](https://github.com/infinityloop-dev/graphpinator/blob/master/docs/README.md)
+- Visit our simple [Hello World example](https://github.com/infinityloop-dev/graphpinator/blob/master/docs/HelloWorld.md).
+- Or visit [the complete Docs](https://github.com/infinityloop-dev/graphpinator/blob/master/docs/README.md).
 
 ## Contributing
 
