@@ -24,7 +24,7 @@ Install package using composer
 
 ## How to use
 
-- Visit our simple [Hello World example](https://github.com/infinityloop-dev/graphpinator/blob/master/docs/HelloWorld.md).
+- Visit our simple [Hello world example](https://github.com/infinityloop-dev/graphpinator/blob/master/docs/HelloWorld.md).
 - Or visit [the complete Docs](https://github.com/infinityloop-dev/graphpinator/blob/master/docs/README.md).
 
 ## Contributing
