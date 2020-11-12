@@ -1,10 +1,10 @@
 # Hello World
 
-In this section we define our simple schema and execute simple request on it - all in five simple steps.
+In this section, we define our simple schema and execute one simple request on it - all in five simple steps.
 
 ## First step - define our types
 
-Schema is mainly defined by types. Each type is separate class extending one of the abstract classes.
+Schema is mainly defined by types. Each type is a separate class extending one of the abstract classes.
 
 - `\Graphpinator\Type\Type`
 - `\Graphpinator\Type\UnionType`
@@ -13,7 +13,7 @@ Schema is mainly defined by types. Each type is separate class extending one of 
 - `\Graphpinator\Type\EnumType`
 - `\Graphpinator\Type\InputType`
 
-In this example we only define one type - the Query type.
+In this example, we only define one type - the Query type.
 
 ```
 <?php
@@ -64,10 +64,10 @@ $container = new \Graphpinator\Container\SimpleContainer([$query]);
 
 ## Step three - create Schema
 
-`\Graphpinator\Type\Schema` is a class which contains every information about your service.
-`Schema` needs `Container` of its types, and also an information which types manage different operation types (`query`, `mutation`, `subscription`).
-In following code snippet we assign our `$container` to it and also declare that the type to manage `query` operation is our `Query` type.
-In more complex services, where we would use `mutation` or `subscription` operation types, we would also pass third and fourth parameter.
+`\Graphpinator\Type\Schema` is a class that contains all information about your service.
+`Schema` needs `Container` of its types, and also information which types manage different operation types (`query`, `mutation`, `subscription`).
+In the following code snippet, we assign our `$container` to it and also declare that the type to manage `query` operation is our `Query` type.
+In more complex services, where we would use `mutation` or `subscription` operation types, we would also pass the third and fourth parameter.
 
 > This step is also skipped when using some dependency injection solution.
 
@@ -77,7 +77,7 @@ $schema = new \Graphpinator\Type\Schema($container, $query);
 
 ## Optional step - print schema definition
 
-We can use our `Schema` class to print its definition in the type language syntax, which describes capabilities of our GraphQL service.
+We can use our `Schema` class to print its definition in the type language syntax, which describes the capabilities of our GraphQL service.
 
 ```
 echo $schema->printSchema();
@@ -102,8 +102,8 @@ type Query {
 
 ## Step four - create Graphpinator
 
-`\Graphpinator\Graphpinator` is a class which brings everything together and is the main class you would be using.
-It contains your `Schema`, logger and other information needed to execute request against your service.
+`\Graphpinator\Graphpinator` is a class that brings everything together and is the main class you would be using.
+It contains your `Schema`, logger, and other information needed to execute a request against your service.
 
 ```
 $graphpinator = new \Graphpinator\Graphpinator(
@@ -116,16 +116,19 @@ $graphpinator = new \Graphpinator\Graphpinator(
 
 ## Step five - execute Request
 
-Final step! The last thing we need to do is to create appropriate `\Graphpinator\Request\RequestFactory`.
-There are multiple implementations depending on how your low level request look like and what middleware you are using.
+Final step! The last thing we need to do is to create an appropriate `\Graphpinator\Request\RequestFactory`.
+Classes implementing `RequestFactory` are responsible for creation of an `Request` object, 
+which is basicaly an extraction of `query`, `variables` and `operationName` from various sources.
+GraPHPinator has multiple `RequestFactory` implementations ready, from which you may choose. 
+All depends on how your low-level request looks like and what middleware you use.
 
 - `\Graphpinator\Request\JsonRequestFactory` 
-  - Simplest form of request - json with keys `query`, `variables` and `operationName`
-  - Its constructor argument is `\Graphpinator\Json`
+  - Simplest form of request - json with keys `query`, `variables` and `operationName`.
+  - Its constructor argument is `\Graphpinator\Json`.
 - `\Graphpinator\Request\PsrRequestFactory` 
-  - When using Psr compatible middleware
-  - The factory extracts all the information from http request itself
-  - Its constructor argument is `\Psr\Http\Message\ServerRequestInterface`
+  - When using Psr compatible middleware.
+  - The factory extracts all the information from http request itself.
+  - Its constructor argument is `\Psr\Http\Message\ServerRequestInterface`.
 
 In this simple example, we choose the `JsonRequestFactory`.
 
