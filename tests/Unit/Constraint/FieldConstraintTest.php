@@ -630,6 +630,15 @@ final class FieldConstraintTest extends \PHPUnit\Framework\TestCase
                     'fieldType' => \Graphpinator\Container\Container::Int(),
                     'interfaceFieldConstraints' => [],
                     'fieldConstraints' => [],
+                    'interfaceObjectConstraint' => new \Graphpinator\Constraint\ObjectConstraint(['field1', 'field2'], ['field1', 'field2']),
+                    'fieldObjectConstraint' => new \Graphpinator\Constraint\ObjectConstraint(['field1', 'field2'], ['field1', 'field2']),
+                ],
+            ],
+            [
+                [
+                    'fieldType' => \Graphpinator\Container\Container::Int(),
+                    'interfaceFieldConstraints' => [],
+                    'fieldConstraints' => [],
                     'interfaceObjectConstraint' => new \Graphpinator\Constraint\ObjectConstraint(null, ['field2']),
                     'fieldObjectConstraint' => new \Graphpinator\Constraint\ObjectConstraint(null, ['field2']),
                 ],
@@ -754,11 +763,11 @@ final class FieldConstraintTest extends \PHPUnit\Framework\TestCase
                 [
                     'fieldType' => \Graphpinator\Container\Container::String()->list(),
                     'interfaceFieldConstraints' => [
+                        new \Graphpinator\Constraint\ListConstraint(0, 5),
                         new \Graphpinator\Constraint\StringConstraint(1, 5),
                     ],
                     'fieldConstraints' => [
                         new \Graphpinator\Constraint\StringConstraint(1, 6),
-                        new \Graphpinator\Constraint\ListConstraint(0, 5),
                     ],
                 ],
             ],

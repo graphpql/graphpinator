@@ -28,29 +28,22 @@ final class ListConstraint extends \Graphpinator\Constraint\ArgumentFieldConstra
         return self::recursiveValidateType($this->options, $type);
     }
 
-    public function isContravariant(\Graphpinator\Constraint\ArgumentFieldConstraint $childConstraint) : bool
-    {
-        if (!$childConstraint instanceof self) {
-            throw new \RuntimeException();
-        }
-
-        return self::recursiveValidateConstraints($childConstraint->options, $this->options);
-    }
-
-    public function isCovariant(\Graphpinator\Constraint\ArgumentFieldConstraint $childConstraint) : bool
-    {
-        if (!$childConstraint instanceof self) {
-            throw new \RuntimeException();
-        }
-
-        return self::recursiveValidateConstraints($this->options, $childConstraint->options);
-    }
-
     protected function validateFactoryMethod($inputValue) : void
     {
         \assert(\is_array($inputValue));
 
         self::recursiveValidateFactoryMethod($this->options, $inputValue);
+    }
+
+    protected function isGreaterSet(
+        \Graphpinator\Constraint\ArgumentFieldConstraint $greater,
+        \Graphpinator\Constraint\ArgumentFieldConstraint $smaller
+    ) : bool
+    {
+        \assert($greater instanceof self);
+        \assert($smaller instanceof self);
+
+        return $this->recursiveValidateConstraints($greater->options, $smaller->options);
     }
 
     private static function recursivePrintConstraint(\stdClass $options) : string

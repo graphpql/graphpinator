@@ -49,24 +49,6 @@ final class FloatConstraint extends \Graphpinator\Constraint\LeafConstraint
         return $type->getNamedType() instanceof \Graphpinator\Type\Scalar\FloatType;
     }
 
-    public function isContravariant(\Graphpinator\Constraint\ArgumentFieldConstraint $childConstraint) : bool
-    {
-        if (!$childConstraint instanceof self) {
-            throw new \RuntimeException();
-        }
-
-        return self::isGreaterSet($childConstraint, $this);
-    }
-
-    public function isCovariant(\Graphpinator\Constraint\ArgumentFieldConstraint $childConstraint) : bool
-    {
-        if (!$childConstraint instanceof self) {
-            throw new \RuntimeException();
-        }
-
-        return self::isGreaterSet($this, $childConstraint);
-    }
-
     protected function validateFactoryMethod($inputValue) : void
     {
         \assert(\is_float($inputValue));
@@ -84,8 +66,14 @@ final class FloatConstraint extends \Graphpinator\Constraint\LeafConstraint
         }
     }
 
-    private function isGreaterSet(self $greater, self $smaller) : bool
+    protected function isGreaterSet(
+        \Graphpinator\Constraint\ArgumentFieldConstraint $greater,
+        \Graphpinator\Constraint\ArgumentFieldConstraint $smaller
+    ) : bool
     {
+        \assert($greater instanceof self);
+        \assert($smaller instanceof self);
+
         if (\is_float($greater->min) && ($smaller->min === null || $smaller->min < $greater->min)) {
             return false;
         }

@@ -65,24 +65,6 @@ final class StringConstraint extends \Graphpinator\Constraint\LeafConstraint
             || $namedType instanceof \Graphpinator\Type\Scalar\IdType;
     }
 
-    public function isContravariant(\Graphpinator\Constraint\ArgumentFieldConstraint $childConstraint) : bool
-    {
-        if (!$childConstraint instanceof self) {
-            throw new \RuntimeException();
-        }
-
-        return self::isGreaterSet($childConstraint, $this);
-    }
-
-    public function isCovariant(\Graphpinator\Constraint\ArgumentFieldConstraint $childConstraint) : bool
-    {
-        if (!$childConstraint instanceof self) {
-            throw new \RuntimeException();
-        }
-
-        return self::isGreaterSet($this, $childConstraint);
-    }
-
     protected function validateFactoryMethod($inputValue) : void
     {
         \assert(\is_string($inputValue));
@@ -104,8 +86,14 @@ final class StringConstraint extends \Graphpinator\Constraint\LeafConstraint
         }
     }
 
-    private function isGreaterSet(self $greater, self $smaller) : bool
+    protected function isGreaterSet(
+        \Graphpinator\Constraint\ArgumentFieldConstraint $greater,
+        \Graphpinator\Constraint\ArgumentFieldConstraint $smaller
+    ) : bool
     {
+        \assert($greater instanceof self);
+        \assert($smaller instanceof self);
+
         if (\is_int($greater->minLength) && ($smaller->minLength === null || $smaller->minLength < $greater->minLength)) {
             return false;
         }
