@@ -53,6 +53,7 @@ final class Query extends \Graphpinator\Type\Type
 ## Step two - create Container
 
 All available types for our GraphQL service are stored in a `\Graphpinator\Container\Container` class. 
+
 > In this example we are going to assign the type to the `Container` manually, 
 but this step can (and is recommended to) be achieved automatically when using some dependency injection.
 
@@ -67,13 +68,39 @@ $container = new \Graphpinator\Container\SimpleContainer([$query]);
 `Schema` needs `Container` of its types, and also an information which types manage different operation types (`query`, `mutation`, `subscription`).
 In following code snippet we assign our `$container` to it and also declare that the type to manage `query` operation is our `Query` type.
 In more complex services, where we would use `mutation` or `subscription` operation types, we would also pass third and fourth parameter.
+
 > This step is also skipped when using some dependency injection solution.
 
 ```
 $schema = new \Graphpinator\Type\Schema($container, $query);
 ```
 
-## Appendix 1 - Container using Nette Dependency Injection
+## Optional step - print schema definition
+
+We can use our `Schema` class to print its definition in the type language syntax, which describes capabilities of our GraphQL service.
+
+```
+echo $schema->printSchema();
+```
+
+produces the following
+
+```
+schema {
+  query: Query
+  mutation: null
+  subscription: null
+}
+
+"""
+Graphpinator Hello world example type
+"""
+type Query {
+  helloWorld: String!
+}
+```
+
+## Appendix 1 - Container and Schema using Nette Dependency Injection
 
 Example configuration for Nette framework, which automatically
 - finds all types and registers them as services.
