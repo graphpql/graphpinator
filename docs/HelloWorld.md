@@ -52,7 +52,7 @@ final class Query extends \Graphpinator\Type\Type
 
 ## Step two - create Container
 
-All types are stored in a `\Graphpinator\Container\Container` class. 
+All available types for our GraphQL service are stored in a `\Graphpinator\Container\Container` class. 
 > In this example we are going to assign the type to the `Container` manually, 
 but this step can (and is recommended to) be achieved automatically when using some dependency injection.
 
@@ -65,6 +65,8 @@ $container = new \Graphpinator\Container\SimpleContainer([$query]);
 
 `\Graphpinator\Type\Schema` is a class which brings everything together and is the main class you would be using.
 `Schema` needs `Container` of its types, and also an information which types manage different operation types (`query`, `mutation`, `subscription`).
+In following code snippet we assign our `$container` to it and also declare that the type to manage `query` operation is our `Query` type.
+In more complex services, where we would use `mutation` or `subscription` operation types, we would also pass third and fourth parameter.
 > This step is also skipped when using some dependency injection solution.
 
 ```
