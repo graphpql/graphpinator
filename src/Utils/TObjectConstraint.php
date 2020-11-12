@@ -18,4 +18,13 @@ trait TObjectConstraint
 
         return $this;
     }
+
+    public function getConstraints() : \Graphpinator\Constraint\ConstraintSet
+    {
+        if (!$this->constraints instanceof \Graphpinator\Constraint\ConstraintSet) {
+            $this->constraints = new \Graphpinator\Constraint\ConstraintSet([]);
+        }
+
+        return $this->constraints;
+    }
 }

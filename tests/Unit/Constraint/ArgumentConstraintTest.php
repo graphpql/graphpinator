@@ -62,6 +62,30 @@ final class ArgumentConstraintTest extends \PHPUnit\Framework\TestCase
                     'fieldType' => \Graphpinator\Container\Container::String(),
                     'inputType' => \Graphpinator\Container\Container::String(),
                     'interfaceInputConstraints' => [
+                        new \Graphpinator\Constraint\StringConstraint(1, 5),
+                    ],
+                    'inputConstraints' => [
+                        new \Graphpinator\Constraint\StringConstraint(null, 6),
+                    ],
+                ],
+            ],
+            [
+                [
+                    'fieldType' => \Graphpinator\Container\Container::String(),
+                    'inputType' => \Graphpinator\Container\Container::String(),
+                    'interfaceInputConstraints' => [
+                        new \Graphpinator\Constraint\StringConstraint(1, 5),
+                    ],
+                    'inputConstraints' => [
+                        new \Graphpinator\Constraint\StringConstraint(0, null),
+                    ],
+                ],
+            ],
+            [
+                [
+                    'fieldType' => \Graphpinator\Container\Container::String(),
+                    'inputType' => \Graphpinator\Container\Container::String(),
+                    'interfaceInputConstraints' => [
                         new \Graphpinator\Constraint\StringConstraint(1, 5, 'regex40'),
                     ],
                     'inputConstraints' => [
@@ -204,10 +228,46 @@ final class ArgumentConstraintTest extends \PHPUnit\Framework\TestCase
                     'fieldType' => \Graphpinator\Container\Container::Int(),
                     'inputType' => \Graphpinator\Container\Container::Int(),
                     'interfaceInputConstraints' => [
+                        new \Graphpinator\Constraint\IntConstraint(1, 5),
+                    ],
+                    'inputConstraints' => [
+                        new \Graphpinator\Constraint\IntConstraint(null, 6),
+                    ],
+                ],
+            ],
+            [
+                [
+                    'fieldType' => \Graphpinator\Container\Container::Int(),
+                    'inputType' => \Graphpinator\Container\Container::Int(),
+                    'interfaceInputConstraints' => [
+                        new \Graphpinator\Constraint\IntConstraint(1, 5),
+                    ],
+                    'inputConstraints' => [
+                        new \Graphpinator\Constraint\IntConstraint(0, null),
+                    ],
+                ],
+            ],
+            [
+                [
+                    'fieldType' => \Graphpinator\Container\Container::Int(),
+                    'inputType' => \Graphpinator\Container\Container::Int(),
+                    'interfaceInputConstraints' => [
                         new \Graphpinator\Constraint\IntConstraint(1, 5, [1, 2, 3]),
                     ],
                     'inputConstraints' => [
                         new \Graphpinator\Constraint\IntConstraint(1, 5, [1, 2, 3]),
+                    ],
+                ],
+            ],
+            [
+                [
+                    'fieldType' => \Graphpinator\Container\Container::Int(),
+                    'inputType' => \Graphpinator\Container\Container::Int(),
+                    'interfaceInputConstraints' => [
+                        new \Graphpinator\Constraint\IntConstraint(1, 5, [1, 2, 3]),
+                    ],
+                    'inputConstraints' => [
+                        new \Graphpinator\Constraint\IntConstraint(1, 5, null),
                     ],
                 ],
             ],
@@ -334,6 +394,30 @@ final class ArgumentConstraintTest extends \PHPUnit\Framework\TestCase
                     'fieldType' => \Graphpinator\Container\Container::Float(),
                     'inputType' => \Graphpinator\Container\Container::Float(),
                     'interfaceInputConstraints' => [
+                        new \Graphpinator\Constraint\FloatConstraint(1.00, 5.01),
+                    ],
+                    'inputConstraints' => [
+                        new \Graphpinator\Constraint\FloatConstraint(null, 5.02),
+                    ],
+                ],
+            ],
+            [
+                [
+                    'fieldType' => \Graphpinator\Container\Container::Float(),
+                    'inputType' => \Graphpinator\Container\Container::Float(),
+                    'interfaceInputConstraints' => [
+                        new \Graphpinator\Constraint\FloatConstraint(1.00, 5.01),
+                    ],
+                    'inputConstraints' => [
+                        new \Graphpinator\Constraint\FloatConstraint(1.00, null),
+                    ],
+                ],
+            ],
+            [
+                [
+                    'fieldType' => \Graphpinator\Container\Container::Float(),
+                    'inputType' => \Graphpinator\Container\Container::Float(),
+                    'interfaceInputConstraints' => [
                         new \Graphpinator\Constraint\FloatConstraint(1.01, 5.01, [1.01, 2.01, 3.01]),
                     ],
                     'inputConstraints' => [
@@ -452,6 +536,30 @@ final class ArgumentConstraintTest extends \PHPUnit\Framework\TestCase
                     'fieldType' => \Graphpinator\Container\Container::Int()->list(),
                     'inputType' => \Graphpinator\Container\Container::Int()->list(),
                     'interfaceInputConstraints' => [
+                        new \Graphpinator\Constraint\ListConstraint(0, 5),
+                    ],
+                    'inputConstraints' => [
+                        new \Graphpinator\Constraint\ListConstraint(null, 6),
+                    ],
+                ],
+            ],
+            [
+                [
+                    'fieldType' => \Graphpinator\Container\Container::Int()->list(),
+                    'inputType' => \Graphpinator\Container\Container::Int()->list(),
+                    'interfaceInputConstraints' => [
+                        new \Graphpinator\Constraint\ListConstraint(0, 5),
+                    ],
+                    'inputConstraints' => [
+                        new \Graphpinator\Constraint\ListConstraint(0, null),
+                    ],
+                ],
+            ],
+            [
+                [
+                    'fieldType' => \Graphpinator\Container\Container::Int()->list(),
+                    'inputType' => \Graphpinator\Container\Container::Int()->list(),
+                    'interfaceInputConstraints' => [
                         new \Graphpinator\Constraint\ListConstraint(0, 5, true),
                     ],
                     'inputConstraints' => [
@@ -555,6 +663,42 @@ final class ArgumentConstraintTest extends \PHPUnit\Framework\TestCase
                     ],
                 ],
             ],
+            [
+                [
+                    'fieldType' => \Graphpinator\Container\Container::Int()->list()->list(),
+                    'inputType' => \Graphpinator\Container\Container::Int()->list()->list(),
+                    'interfaceInputConstraints' => [
+                        new \Graphpinator\Constraint\ListConstraint(0, 5, false, (object) [
+                            'minItems' => 1,
+                            'maxItems' => 5,
+                        ]),
+                    ],
+                    'inputConstraints' => [
+                        new \Graphpinator\Constraint\ListConstraint(0, 5, false, (object) [
+                            'minItems' => 1,
+                            'maxItems' => null,
+                        ]),
+                    ],
+                ],
+            ],
+            [
+                [
+                    'fieldType' => \Graphpinator\Container\Container::Int()->list()->list(),
+                    'inputType' => \Graphpinator\Container\Container::Int()->list()->list(),
+                    'interfaceInputConstraints' => [
+                        new \Graphpinator\Constraint\ListConstraint(0, 5, false, (object) [
+                            'minItems' => 1,
+                            'maxItems' => 5,
+                        ]),
+                    ],
+                    'inputConstraints' => [
+                        new \Graphpinator\Constraint\ListConstraint(0, 5, false, (object) [
+                            'minItems' => null,
+                            'maxItems' => 5,
+                        ]),
+                    ],
+                ],
+            ],
         ];
     }
 
@@ -579,6 +723,30 @@ final class ArgumentConstraintTest extends \PHPUnit\Framework\TestCase
                     'inputType' => \Graphpinator\Container\Container::String(),
                     'interfaceInputConstraints' => [
                         new \Graphpinator\Constraint\StringConstraint(1, 5),
+                    ],
+                    'inputConstraints' => [
+                        new \Graphpinator\Constraint\StringConstraint(1, 4),
+                    ],
+                ],
+            ],
+            [
+                [
+                    'fieldType' => \Graphpinator\Container\Container::String(),
+                    'inputType' => \Graphpinator\Container\Container::String(),
+                    'interfaceInputConstraints' => [
+                        new \Graphpinator\Constraint\StringConstraint(null, 5),
+                    ],
+                    'inputConstraints' => [
+                        new \Graphpinator\Constraint\StringConstraint(1, 4),
+                    ],
+                ],
+            ],
+            [
+                [
+                    'fieldType' => \Graphpinator\Container\Container::String(),
+                    'inputType' => \Graphpinator\Container\Container::String(),
+                    'interfaceInputConstraints' => [
+                        new \Graphpinator\Constraint\StringConstraint(1, null),
                     ],
                     'inputConstraints' => [
                         new \Graphpinator\Constraint\StringConstraint(1, 4),
@@ -615,6 +783,18 @@ final class ArgumentConstraintTest extends \PHPUnit\Framework\TestCase
                     'inputType' => \Graphpinator\Container\Container::String(),
                     'interfaceInputConstraints' => [
                         new \Graphpinator\Constraint\StringConstraint(1, 5, null, ['shrek', 'fiona', 'donkey', 'puss in boots']),
+                    ],
+                    'inputConstraints' => [
+                        new \Graphpinator\Constraint\StringConstraint(1, 5, null, ['shrek', 'fiona', 'donkey']),
+                    ],
+                ],
+            ],
+            [
+                [
+                    'fieldType' => \Graphpinator\Container\Container::String(),
+                    'inputType' => \Graphpinator\Container\Container::String(),
+                    'interfaceInputConstraints' => [
+                        new \Graphpinator\Constraint\StringConstraint(1, 5, null, null),
                     ],
                     'inputConstraints' => [
                         new \Graphpinator\Constraint\StringConstraint(1, 5, null, ['shrek', 'fiona', 'donkey']),
@@ -689,10 +869,58 @@ final class ArgumentConstraintTest extends \PHPUnit\Framework\TestCase
                     'fieldType' => \Graphpinator\Container\Container::Int(),
                     'inputType' => \Graphpinator\Container\Container::Int(),
                     'interfaceInputConstraints' => [
+                        new \Graphpinator\Constraint\IntConstraint(null, 5),
+                    ],
+                    'inputConstraints' => [
+                        new \Graphpinator\Constraint\IntConstraint(1, 4),
+                    ],
+                ],
+            ],
+            [
+                [
+                    'fieldType' => \Graphpinator\Container\Container::Int(),
+                    'inputType' => \Graphpinator\Container\Container::Int(),
+                    'interfaceInputConstraints' => [
+                        new \Graphpinator\Constraint\IntConstraint(1, null),
+                    ],
+                    'inputConstraints' => [
+                        new \Graphpinator\Constraint\IntConstraint(1, 4),
+                    ],
+                ],
+            ],
+            [
+                [
+                    'fieldType' => \Graphpinator\Container\Container::Int(),
+                    'inputType' => \Graphpinator\Container\Container::Int(),
+                    'interfaceInputConstraints' => [
                         new \Graphpinator\Constraint\IntConstraint(1, 5, [1, 2, 3]),
                     ],
                     'inputConstraints' => [
                         new \Graphpinator\Constraint\IntConstraint(1, 5, [1, 2]),
+                    ],
+                ],
+            ],
+            [
+                [
+                    'fieldType' => \Graphpinator\Container\Container::Int(),
+                    'inputType' => \Graphpinator\Container\Container::Int(),
+                    'interfaceInputConstraints' => [
+                        new \Graphpinator\Constraint\IntConstraint(1, 5, null),
+                    ],
+                    'inputConstraints' => [
+                        new \Graphpinator\Constraint\IntConstraint(1, 5, [1, 2]),
+                    ],
+                ],
+            ],
+            [
+                [
+                    'fieldType' => \Graphpinator\Container\Container::Int(),
+                    'inputType' => \Graphpinator\Container\Container::Int(),
+                    'interfaceInputConstraints' => [
+                        new \Graphpinator\Constraint\IntConstraint(1, 5, null),
+                    ],
+                    'inputConstraints' => [
+                        new \Graphpinator\Constraint\IntConstraint(1, 5, []),
                     ],
                 ],
             ],
@@ -725,10 +953,70 @@ final class ArgumentConstraintTest extends \PHPUnit\Framework\TestCase
                     'fieldType' => \Graphpinator\Container\Container::Float(),
                     'inputType' => \Graphpinator\Container\Container::Float(),
                     'interfaceInputConstraints' => [
+                        new \Graphpinator\Constraint\FloatConstraint(1.01, 5.01),
+                    ],
+                    'inputConstraints' => [
+                        new \Graphpinator\Constraint\FloatConstraint(null, 5.00),
+                    ],
+                ],
+            ],
+            [
+                [
+                    'fieldType' => \Graphpinator\Container\Container::Float(),
+                    'inputType' => \Graphpinator\Container\Container::Float(),
+                    'interfaceInputConstraints' => [
                         new \Graphpinator\Constraint\FloatConstraint(1.01, 5.01, [1.01, 2.01, 3.01]),
                     ],
                     'inputConstraints' => [
                         new \Graphpinator\Constraint\FloatConstraint(1.01, 5.01, [1.01, 2.01]),
+                    ],
+                ],
+            ],
+            [
+                [
+                    'fieldType' => \Graphpinator\Container\Container::Float(),
+                    'inputType' => \Graphpinator\Container\Container::Float(),
+                    'interfaceInputConstraints' => [
+                        new \Graphpinator\Constraint\FloatConstraint(1.01, 5.01, null),
+                    ],
+                    'inputConstraints' => [
+                        new \Graphpinator\Constraint\FloatConstraint(1.01, 5.01, [1.01, 2.01]),
+                    ],
+                ],
+            ],
+            [
+                [
+                    'fieldType' => \Graphpinator\Container\Container::Float(),
+                    'inputType' => \Graphpinator\Container\Container::Float(),
+                    'interfaceInputConstraints' => [
+                        new \Graphpinator\Constraint\FloatConstraint(1.01, 5.01, null),
+                    ],
+                    'inputConstraints' => [
+                        new \Graphpinator\Constraint\FloatConstraint(1.01, 5.01, []),
+                    ],
+                ],
+            ],
+            [
+                [
+                    'fieldType' => \Graphpinator\Container\Container::Float(),
+                    'inputType' => \Graphpinator\Container\Container::Float(),
+                    'interfaceInputConstraints' => [
+                        new \Graphpinator\Constraint\FloatConstraint(null),
+                    ],
+                    'inputConstraints' => [
+                        new \Graphpinator\Constraint\FloatConstraint(1.00),
+                    ],
+                ],
+            ],
+            [
+                [
+                    'fieldType' => \Graphpinator\Container\Container::Float(),
+                    'inputType' => \Graphpinator\Container\Container::Float(),
+                    'interfaceInputConstraints' => [
+                        new \Graphpinator\Constraint\FloatConstraint(1.00, null),
+                    ],
+                    'inputConstraints' => [
+                        new \Graphpinator\Constraint\FloatConstraint(1.00, 5.00),
                     ],
                 ],
             ],
@@ -796,6 +1084,42 @@ final class ArgumentConstraintTest extends \PHPUnit\Framework\TestCase
                             'minItems' => 2,
                             'maxItems' => 5,
                             'unique' => true,
+                        ]),
+                    ],
+                ],
+            ],
+            [
+                [
+                    'fieldType' => \Graphpinator\Container\Container::Int()->list()->list(),
+                    'inputType' => \Graphpinator\Container\Container::Int()->list()->list(),
+                    'interfaceInputConstraints' => [
+                        new \Graphpinator\Constraint\ListConstraint(0, 5, false, (object) [
+                            'minItems' => null,
+                            'maxItems' => 5,
+                        ]),
+                    ],
+                    'inputConstraints' => [
+                        new \Graphpinator\Constraint\ListConstraint(0, 5, false, (object) [
+                            'minItems' => 2,
+                            'maxItems' => 5,
+                        ]),
+                    ],
+                ],
+            ],
+            [
+                [
+                    'fieldType' => \Graphpinator\Container\Container::Int()->list()->list(),
+                    'inputType' => \Graphpinator\Container\Container::Int()->list()->list(),
+                    'interfaceInputConstraints' => [
+                        new \Graphpinator\Constraint\ListConstraint(0, 5, false, (object) [
+                            'minItems' => 2,
+                            'maxItems' => null,
+                        ]),
+                    ],
+                    'inputConstraints' => [
+                        new \Graphpinator\Constraint\ListConstraint(0, 5, false, (object) [
+                            'minItems' => 2,
+                            'maxItems' => 5,
                         ]),
                     ],
                 ],

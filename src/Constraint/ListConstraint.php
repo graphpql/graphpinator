@@ -28,14 +28,22 @@ final class ListConstraint extends \Graphpinator\Constraint\ArgumentFieldConstra
         return self::recursiveValidateType($this->options, $type);
     }
 
-    public function isCovariant(\Graphpinator\Constraint\Constraint $childConstraint) : bool
+    public function isCovariant(\Graphpinator\Constraint\ArgumentFieldConstraint $childConstraint) : bool
     {
+        if (!$childConstraint instanceof self) {
+            throw new \Exception('asdf');
+        }
+
         return self::recursiveValidateConstraints($this->options, $childConstraint->options);
     }
 
-    public function isContravariant(\Graphpinator\Constraint\Constraint $parentConstraint) : bool
+    public function isContravariant(\Graphpinator\Constraint\ArgumentFieldConstraint $childConstraint) : bool
     {
-        return self::recursiveValidateConstraints($parentConstraint->options, $this->options);
+        if (!$childConstraint instanceof self) {
+            throw new \Exception('asdf');
+        }
+
+        return self::recursiveValidateConstraints($childConstraint->options, $this->options);
     }
 
     protected function validateFactoryMethod($inputValue) : void
@@ -162,11 +170,13 @@ final class ListConstraint extends \Graphpinator\Constraint\ArgumentFieldConstra
 
     private static function recursiveValidateConstraints(\stdClass $options, \stdClass $compareOptions) : bool
     {
-        if (\is_int($options->minItems) && \is_int($compareOptions->minItems) && $options->minItems < $compareOptions->minItems) {
+        if (\is_int($compareOptions->minItems) && $options->minItems < $compareOptions->minItems
+            || $options->minItems === null && \is_int($compareOptions->minItems)) {
             return false;
         }
 
-        if (\is_int($options->maxItems) && \is_int($compareOptions->maxItems) && $options->maxItems > $compareOptions->maxItems) {
+        if (\is_int($compareOptions->maxItems) && $options->maxItems > $compareOptions->maxItems
+            || $options->maxItems === null && \is_int($compareOptions->maxItems)) {
             return false;
         }
 

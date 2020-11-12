@@ -78,7 +78,7 @@ trait TInterfaceImplementor
                         throw new \Graphpinator\Exception\Type\InterfaceContractArgumentTypeMismatch();
                     }
 
-                    if (!$argumentContract->getConstraints()->isConvariant($argument->getConstraints())) {
+                    if (!$argumentContract->getConstraints()->isCovariant($argument->getConstraints())) {
                         throw new \Graphpinator\Exception\Type\ArgumentConstraintNotCovariant();
                     }
                 }

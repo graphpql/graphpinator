@@ -67,11 +67,17 @@ final class StringConstraint extends \Graphpinator\Constraint\LeafConstraint
 
     public function isCovariant(\Graphpinator\Constraint\Constraint $childConstraint) : bool
     {
-        if (\is_int($this->minLength) && \is_int($childConstraint->minLength) && $this->minLength < $childConstraint->minLength) {
+        if (!$childConstraint instanceof self) {
+            throw new \Exception('asdf');
+        }
+
+        if (\is_int($childConstraint->minLength) && $this->minLength < $childConstraint->minLength
+            || $this->minLength === null && \is_int($childConstraint->minLength)) {
             return false;
         }
 
-        if (\is_int($this->maxLength) && \is_int($childConstraint->maxLength) && $this->maxLength > $childConstraint->maxLength) {
+        if (\is_int($childConstraint->maxLength) && $this->maxLength > $childConstraint->maxLength
+            || $this->maxLength === null && \is_int($childConstraint->maxLength)) {
             return false;
         }
 
@@ -85,6 +91,8 @@ final class StringConstraint extends \Graphpinator\Constraint\LeafConstraint
                     return false;
                 }
             }
+        } elseif ($this->oneOf === null && $childConstraint->oneOf !== null) {
+            return false;
         }
 
         return true;
@@ -92,11 +100,17 @@ final class StringConstraint extends \Graphpinator\Constraint\LeafConstraint
 
     public function isContravariant(\Graphpinator\Constraint\Constraint $childConstraint) : bool
     {
-        if (\is_int($this->minLength) && \is_int($childConstraint->minLength) && $this->minLength > $childConstraint->minLength) {
+        if (!$childConstraint instanceof self) {
+            throw new \Exception('asdf');
+        }
+
+        if (\is_int($this->minLength) && $this->minLength > $childConstraint->minLength
+            || $childConstraint->minLength === null && \is_int($this->minLength)) {
             return false;
         }
 
-        if (\is_int($this->maxLength) && \is_int($childConstraint->maxLength) && $this->maxLength < $childConstraint->maxLength) {
+        if (\is_int($this->maxLength) && $this->maxLength < $childConstraint->maxLength
+            || $childConstraint->maxLength === null && \is_int($this->maxLength)) {
             return false;
         }
 
@@ -110,6 +124,8 @@ final class StringConstraint extends \Graphpinator\Constraint\LeafConstraint
                     return false;
                 }
             }
+        } elseif (\is_array($this->oneOf) && $childConstraint->oneOf === null) {
+            return false;
         }
 
         return true;

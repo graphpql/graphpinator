@@ -57,6 +57,28 @@ final class FieldConstraintTest extends \PHPUnit\Framework\TestCase
                 [
                     'fieldType' => \Graphpinator\Container\Container::String(),
                     'interfaceFieldConstraints' => [
+                        new \Graphpinator\Constraint\StringConstraint(1, null),
+                    ],
+                    'fieldConstraints' => [
+                        new \Graphpinator\Constraint\StringConstraint(2, 4),
+                    ],
+                ],
+            ],
+            [
+                [
+                    'fieldType' => \Graphpinator\Container\Container::String(),
+                    'interfaceFieldConstraints' => [
+                        new \Graphpinator\Constraint\StringConstraint(null, 5),
+                    ],
+                    'fieldConstraints' => [
+                        new \Graphpinator\Constraint\StringConstraint(2, 4),
+                    ],
+                ],
+            ],
+            [
+                [
+                    'fieldType' => \Graphpinator\Container\Container::String(),
+                    'interfaceFieldConstraints' => [
                         new \Graphpinator\Constraint\StringConstraint(1, 5, 'regex40'),
                     ],
                     'fieldConstraints' => [
@@ -80,6 +102,17 @@ final class FieldConstraintTest extends \PHPUnit\Framework\TestCase
                     'fieldType' => \Graphpinator\Container\Container::String(),
                     'interfaceFieldConstraints' => [
                         new \Graphpinator\Constraint\StringConstraint(1, 5, null, ['shrek', 'fiona', 'donkey']),
+                    ],
+                    'fieldConstraints' => [
+                        new \Graphpinator\Constraint\StringConstraint(1, 5, null, ['shrek', 'fiona', 'donkey']),
+                    ],
+                ],
+            ],
+            [
+                [
+                    'fieldType' => \Graphpinator\Container\Container::String(),
+                    'interfaceFieldConstraints' => [
+                        new \Graphpinator\Constraint\StringConstraint(1, 5, null, null),
                     ],
                     'fieldConstraints' => [
                         new \Graphpinator\Constraint\StringConstraint(1, 5, null, ['shrek', 'fiona', 'donkey']),
@@ -176,6 +209,28 @@ final class FieldConstraintTest extends \PHPUnit\Framework\TestCase
                 [
                     'fieldType' => \Graphpinator\Container\Container::Int(),
                     'interfaceFieldConstraints' => [
+                        new \Graphpinator\Constraint\IntConstraint(null, 5),
+                    ],
+                    'fieldConstraints' => [
+                        new \Graphpinator\Constraint\IntConstraint(2, 4),
+                    ],
+                ],
+            ],
+            [
+                [
+                    'fieldType' => \Graphpinator\Container\Container::Int(),
+                    'interfaceFieldConstraints' => [
+                        new \Graphpinator\Constraint\IntConstraint(1, null),
+                    ],
+                    'fieldConstraints' => [
+                        new \Graphpinator\Constraint\IntConstraint(2, 4),
+                    ],
+                ],
+            ],
+            [
+                [
+                    'fieldType' => \Graphpinator\Container\Container::Int(),
+                    'interfaceFieldConstraints' => [
                         new \Graphpinator\Constraint\IntConstraint(1, 5, [1, 2, 3]),
                     ],
                     'fieldConstraints' => [
@@ -199,6 +254,17 @@ final class FieldConstraintTest extends \PHPUnit\Framework\TestCase
                     'fieldType' => \Graphpinator\Container\Container::Int(),
                     'interfaceFieldConstraints' => [
                         new \Graphpinator\Constraint\IntConstraint(1, 5, [4, 3, 2, 1]),
+                    ],
+                    'fieldConstraints' => [
+                        new \Graphpinator\Constraint\IntConstraint(1, 5, [1, 2, 3]),
+                    ],
+                ],
+            ],
+            [
+                [
+                    'fieldType' => \Graphpinator\Container\Container::Int(),
+                    'interfaceFieldConstraints' => [
+                        new \Graphpinator\Constraint\IntConstraint(1, 5, null),
                     ],
                     'fieldConstraints' => [
                         new \Graphpinator\Constraint\IntConstraint(1, 5, [1, 2, 3]),
@@ -296,6 +362,28 @@ final class FieldConstraintTest extends \PHPUnit\Framework\TestCase
                 [
                     'fieldType' => \Graphpinator\Container\Container::Float(),
                     'interfaceFieldConstraints' => [
+                        new \Graphpinator\Constraint\FloatConstraint(null, 5.00),
+                    ],
+                    'fieldConstraints' => [
+                        new \Graphpinator\Constraint\FloatConstraint(1.00, 5.00),
+                    ],
+                ],
+            ],
+            [
+                [
+                    'fieldType' => \Graphpinator\Container\Container::Float(),
+                    'interfaceFieldConstraints' => [
+                        new \Graphpinator\Constraint\FloatConstraint(1.00, null),
+                    ],
+                    'fieldConstraints' => [
+                        new \Graphpinator\Constraint\FloatConstraint(1.00, 5.00),
+                    ],
+                ],
+            ],
+            [
+                [
+                    'fieldType' => \Graphpinator\Container\Container::Float(),
+                    'interfaceFieldConstraints' => [
                         new \Graphpinator\Constraint\FloatConstraint(1.15, 5.10, [1.01, 2.01, 3.01]),
                     ],
                     'fieldConstraints' => [
@@ -319,6 +407,17 @@ final class FieldConstraintTest extends \PHPUnit\Framework\TestCase
                     'fieldType' => \Graphpinator\Container\Container::Float(),
                     'interfaceFieldConstraints' => [
                         new \Graphpinator\Constraint\FloatConstraint(1.01, 5.01, [4.15, 3.20, 2.30, 1.40]),
+                    ],
+                    'fieldConstraints' => [
+                        new \Graphpinator\Constraint\FloatConstraint(1.01, 5.01, [2.30, 1.40]),
+                    ],
+                ],
+            ],
+            [
+                [
+                    'fieldType' => \Graphpinator\Container\Container::Float(),
+                    'interfaceFieldConstraints' => [
+                        new \Graphpinator\Constraint\FloatConstraint(1.01, 5.01, null),
                     ],
                     'fieldConstraints' => [
                         new \Graphpinator\Constraint\FloatConstraint(1.01, 5.01, [2.30, 1.40]),
@@ -600,6 +699,28 @@ final class FieldConstraintTest extends \PHPUnit\Framework\TestCase
                 [
                     'fieldType' => \Graphpinator\Container\Container::String(),
                     'interfaceFieldConstraints' => [
+                        new \Graphpinator\Constraint\StringConstraint(1, 5),
+                    ],
+                    'fieldConstraints' => [
+                        new \Graphpinator\Constraint\StringConstraint(null, 5),
+                    ],
+                ],
+            ],
+            [
+                [
+                    'fieldType' => \Graphpinator\Container\Container::String(),
+                    'interfaceFieldConstraints' => [
+                        new \Graphpinator\Constraint\StringConstraint(1, 5),
+                    ],
+                    'fieldConstraints' => [
+                        new \Graphpinator\Constraint\StringConstraint(1, null),
+                    ],
+                ],
+            ],
+            [
+                [
+                    'fieldType' => \Graphpinator\Container\Container::String(),
+                    'interfaceFieldConstraints' => [
                         new \Graphpinator\Constraint\StringConstraint(1, 5, 'regex40'),
                     ],
                     'fieldConstraints' => [
@@ -615,6 +736,17 @@ final class FieldConstraintTest extends \PHPUnit\Framework\TestCase
                     ],
                     'fieldConstraints' => [
                         new \Graphpinator\Constraint\StringConstraint(1, 5, null, ['dog']),
+                    ],
+                ],
+            ],
+            [
+                [
+                    'fieldType' => \Graphpinator\Container\Container::String(),
+                    'interfaceFieldConstraints' => [
+                        new \Graphpinator\Constraint\StringConstraint(1, 5, null, ['shrek', 'fiona', 'donkey']),
+                    ],
+                    'fieldConstraints' => [
+                        new \Graphpinator\Constraint\StringConstraint(1, 5, null, null),
                     ],
                 ],
             ],
@@ -647,6 +779,28 @@ final class FieldConstraintTest extends \PHPUnit\Framework\TestCase
                         new \Graphpinator\Constraint\IntConstraint(1, 5),
                     ],
                     'fieldConstraints' => [
+                        new \Graphpinator\Constraint\IntConstraint(null, 5),
+                    ],
+                ],
+            ],
+            [
+                [
+                    'fieldType' => \Graphpinator\Container\Container::Int(),
+                    'interfaceFieldConstraints' => [
+                        new \Graphpinator\Constraint\IntConstraint(1, 5),
+                    ],
+                    'fieldConstraints' => [
+                        new \Graphpinator\Constraint\IntConstraint(1, null),
+                    ],
+                ],
+            ],
+            [
+                [
+                    'fieldType' => \Graphpinator\Container\Container::Int(),
+                    'interfaceFieldConstraints' => [
+                        new \Graphpinator\Constraint\IntConstraint(1, 5),
+                    ],
+                    'fieldConstraints' => [
                         new \Graphpinator\Constraint\IntConstraint(0, 6),
                     ],
                 ],
@@ -659,6 +813,17 @@ final class FieldConstraintTest extends \PHPUnit\Framework\TestCase
                     ],
                     'fieldConstraints' => [
                         new \Graphpinator\Constraint\IntConstraint(1, 5, [4]),
+                    ],
+                ],
+            ],
+            [
+                [
+                    'fieldType' => \Graphpinator\Container\Container::Int(),
+                    'interfaceFieldConstraints' => [
+                        new \Graphpinator\Constraint\IntConstraint(1, 5, [1, 2, 3]),
+                    ],
+                    'fieldConstraints' => [
+                        new \Graphpinator\Constraint\IntConstraint(1, 5, null),
                     ],
                 ],
             ],
@@ -691,6 +856,28 @@ final class FieldConstraintTest extends \PHPUnit\Framework\TestCase
                         new \Graphpinator\Constraint\FloatConstraint(1.00, 5.00),
                     ],
                     'fieldConstraints' => [
+                        new \Graphpinator\Constraint\FloatConstraint(null, 5.00),
+                    ],
+                ],
+            ],
+            [
+                [
+                    'fieldType' => \Graphpinator\Container\Container::Float(),
+                    'interfaceFieldConstraints' => [
+                        new \Graphpinator\Constraint\FloatConstraint(1.00, 5.00),
+                    ],
+                    'fieldConstraints' => [
+                        new \Graphpinator\Constraint\FloatConstraint(1.00, null),
+                    ],
+                ],
+            ],
+            [
+                [
+                    'fieldType' => \Graphpinator\Container\Container::Float(),
+                    'interfaceFieldConstraints' => [
+                        new \Graphpinator\Constraint\FloatConstraint(1.00, 5.00),
+                    ],
+                    'fieldConstraints' => [
                         new \Graphpinator\Constraint\FloatConstraint(0.99, 5.50),
                     ],
                 ],
@@ -703,6 +890,17 @@ final class FieldConstraintTest extends \PHPUnit\Framework\TestCase
                     ],
                     'fieldConstraints' => [
                         new \Graphpinator\Constraint\FloatConstraint(1.00, 5.00, [1.20, 2.20]),
+                    ],
+                ],
+            ],
+            [
+                [
+                    'fieldType' => \Graphpinator\Container\Container::Float(),
+                    'interfaceFieldConstraints' => [
+                        new \Graphpinator\Constraint\FloatConstraint(1.00, 5.00, [1.50, 2.50, 3.50]),
+                    ],
+                    'fieldConstraints' => [
+                        new \Graphpinator\Constraint\FloatConstraint(1.00, 5.00, null),
                     ],
                 ],
             ],
@@ -781,6 +979,36 @@ final class FieldConstraintTest extends \PHPUnit\Framework\TestCase
                         new \Graphpinator\Constraint\ListConstraint(0, 5, false, (object) [
                             'minItems' => 1,
                             'unique' => false,
+                        ]),
+                    ],
+                ],
+            ],
+            [
+                [
+                    'fieldType' => \Graphpinator\Container\Container::Int()->list()->list(),
+                    'interfaceFieldConstraints' => [
+                        new \Graphpinator\Constraint\ListConstraint(0, 5, false, (object) [
+                            'minItems' => 1,
+                        ]),
+                    ],
+                    'fieldConstraints' => [
+                        new \Graphpinator\Constraint\ListConstraint(0, 5, false, (object) [
+                            'minItems' => null,
+                        ]),
+                    ],
+                ],
+            ],
+            [
+                [
+                    'fieldType' => \Graphpinator\Container\Container::Int()->list()->list(),
+                    'interfaceFieldConstraints' => [
+                        new \Graphpinator\Constraint\ListConstraint(0, 5, false, (object) [
+                            'maxItems' => 1,
+                        ]),
+                    ],
+                    'fieldConstraints' => [
+                        new \Graphpinator\Constraint\ListConstraint(0, 5, false, (object) [
+                            'maxItems' => null,
                         ]),
                     ],
                 ],

@@ -12,9 +12,9 @@ abstract class ArgumentFieldConstraint implements \Graphpinator\Constraint\Const
 
     abstract public function validateType(\Graphpinator\Type\Contract\Definition $type) : bool;
 
-    abstract public function isCovariant(\Graphpinator\Constraint\Constraint $childConstraint) : bool;
+    abstract public function isCovariant(\Graphpinator\Constraint\ArgumentFieldConstraint $childConstraint) : bool;
 
-    abstract public function isContravariant(\Graphpinator\Constraint\Constraint $parentConstraint) : bool;
+    abstract public function isContravariant(\Graphpinator\Constraint\ArgumentFieldConstraint $parentConstraint) : bool;
 
     public function validate(\Graphpinator\Value\Value $value) : void
     {

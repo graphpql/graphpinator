@@ -11,15 +11,6 @@ trait THasConstraints
 {
     private ?\Graphpinator\Constraint\ConstraintSet $constraints = null;
 
-    public function getConstraints() : \Graphpinator\Constraint\ConstraintSet
-    {
-        if (!$this->constraints instanceof \Graphpinator\Constraint\ConstraintSet) {
-            $this->constraints = new \Graphpinator\Constraint\ConstraintSet([]);
-        }
-
-        return $this->constraints;
-    }
-
     public function validateConstraints(\Graphpinator\Value\Value $value) : void
     {
         $this->getConstraints()->validate($value);

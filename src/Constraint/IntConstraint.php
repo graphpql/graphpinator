@@ -49,13 +49,19 @@ final class IntConstraint extends \Graphpinator\Constraint\LeafConstraint
         return $type->getNamedType() instanceof \Graphpinator\Type\Scalar\IntType;
     }
 
-    public function isCovariant(\Graphpinator\Constraint\Constraint $childConstraint) : bool
+    public function isCovariant(\Graphpinator\Constraint\ArgumentFieldConstraint $childConstraint) : bool
     {
-        if (\is_int($this->min) && \is_int($childConstraint->min) && $this->min < $childConstraint->min) {
+        if (!$childConstraint instanceof self) {
+            throw new \Exception('asdf');
+        }
+
+        if (\is_int($childConstraint->min) && $this->min < $childConstraint->min
+            || $this->min === null && \is_int($childConstraint->min)) {
             return false;
         }
 
-        if (\is_int($this->max) && \is_int($childConstraint->max) && $this->max > $childConstraint->max) {
+        if (\is_int($childConstraint->max) && $this->max > $childConstraint->max
+            || $this->max === null && \is_int($childConstraint->max)) {
             return false;
         }
 
@@ -65,18 +71,26 @@ final class IntConstraint extends \Graphpinator\Constraint\LeafConstraint
                     return false;
                 }
             }
+        } elseif ($this->oneOf === null && $childConstraint->oneOf !== null) {
+            return false;
         }
 
         return true;
     }
 
-    public function isContravariant(\Graphpinator\Constraint\Constraint $childConstraint) : bool
+    public function isContravariant(\Graphpinator\Constraint\ArgumentFieldConstraint $childConstraint) : bool
     {
-        if (\is_int($this->min) && \is_int($childConstraint->min) && $this->min > $childConstraint->min) {
+        if (!$childConstraint instanceof self) {
+            throw new \Exception('asdf');
+        }
+
+        if (\is_int($this->min) && $this->min > $childConstraint->min
+            || $childConstraint->min === null && \is_int($this->min)) {
             return false;
         }
 
-        if (\is_int($this->max) && \is_int($childConstraint->max) && $this->max < $childConstraint->max) {
+        if (\is_int($this->max) && $this->max < $childConstraint->max
+            || $childConstraint->max === null && \is_int($this->max)) {
             return false;
         }
 
@@ -86,6 +100,8 @@ final class IntConstraint extends \Graphpinator\Constraint\LeafConstraint
                     return false;
                 }
             }
+        } elseif ($this->oneOf !== null && $childConstraint->oneOf === null) {
+            return false;
         }
 
         return true;

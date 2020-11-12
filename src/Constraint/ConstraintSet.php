@@ -8,7 +8,7 @@ namespace Graphpinator\Constraint;
  * @method \Graphpinator\Constraint\Constraint current() : object
  * @method \Graphpinator\Constraint\Constraint offsetGet($offset) : object
  */
-final class ConstraintSet extends \Infinityloop\Utils\ObjectSet
+class ConstraintSet extends \Infinityloop\Utils\ObjectSet
 {
     protected const INNER_CLASS = Constraint::class;
 
@@ -17,68 +17,6 @@ final class ConstraintSet extends \Infinityloop\Utils\ObjectSet
         foreach ($this as $constraint) {
             $constraint->validate($value);
         }
-    }
-
-    public function isConvariant(self $compare) : bool
-    {
-        if (\count($compare) === 0) {
-            return true;
-        }
-
-        $index = 0;
-
-        foreach ($this as $parentConstraint) {
-            if ($index >= \count($compare)) {
-                return true;
-            }
-
-            $childConstraint = $compare[$index];
-
-            if (\get_class($parentConstraint) !== \get_class($childConstraint)) {
-                $index++;
-
-                continue;
-            }
-
-            if (!$parentConstraint->isCovariant($childConstraint)) {
-                return false;
-            }
-
-            $index++;
-        }
-
-        return \count($compare) <= $index;
-    }
-
-    public function isContravariant(self $compare) : bool
-    {
-        if (\count($compare) === 0) {
-            return true;
-        }
-
-        $index = 0;
-
-        foreach ($this as $childConstraint) {
-            if ($index >= \count($compare)) {
-                return true;
-            }
-
-            $parentConstraint = $compare[$index];
-
-            if (\get_class($childConstraint) !== \get_class($parentConstraint)) {
-                $index++;
-
-                continue;
-            }
-
-            if (!$parentConstraint->isContravariant($childConstraint)) {
-                return false;
-            }
-
-            $index++;
-        }
-
-        return \count($compare) <= $index;
     }
 
     public function validateObjectConstraint(self $compare) : bool

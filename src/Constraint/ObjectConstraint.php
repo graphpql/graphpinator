@@ -124,7 +124,7 @@ final class ObjectConstraint implements \Graphpinator\Constraint\Constraint
         return true;
     }
 
-    public function validateConstraint(\Graphpinator\Constraint\Constraint $childConstraint) : bool
+    public function validateConstraint(\Graphpinator\Constraint\ObjectConstraint $childConstraint) : bool
     {
         if ($this->atLeastOne !== $childConstraint->atLeastOne) {
             return false;
