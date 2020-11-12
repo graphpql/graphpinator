@@ -1,4 +1,4 @@
-# GraPHPinator [![PHP](https://github.com/infinityloop-dev/graphpinator/workflows/PHP/badge.svg?branch=master)](https://github.com/infinityloop-dev/graphpinator/actions?query=workflow%3APHP)
+# GraPHPinator [![PHP](https://github.com/infinityloop-dev/graphpinator/workflows/PHP/badge.svg?branch=master)](https://github.com/infinityloop-dev/graphpinator/actions?query=workflow%3APHP) [![codecov](https://codecov.io/gh/infinityloop-dev/graphpinator/branch/master/graph/badge.svg)](https://codecov.io/gh/infinityloop-dev/graphpinator)
 
 :zap::globe_with_meridians::zap: Easy-to-use & Fast GraphQL server implementation for PHP.
 
