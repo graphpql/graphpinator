@@ -1,6 +1,6 @@
 # Hello World
 
-In this section we define our simple schema and execute simple request on it.
+In this section we define our simple schema and execute simple request on it - all in five simple steps.
 
 ## First step - define our types
 
@@ -64,7 +64,7 @@ $container = new \Graphpinator\Container\SimpleContainer([$query]);
 
 ## Step three - create Schema
 
-`\Graphpinator\Type\Schema` is a class which brings everything together and is the main class you would be using.
+`\Graphpinator\Type\Schema` is a class which contains every information about your service.
 `Schema` needs `Container` of its types, and also an information which types manage different operation types (`query`, `mutation`, `subscription`).
 In following code snippet we assign our `$container` to it and also declare that the type to manage `query` operation is our `Query` type.
 In more complex services, where we would use `mutation` or `subscription` operation types, we would also pass third and fourth parameter.
@@ -100,6 +100,63 @@ type Query {
 }
 ```
 
+## Step four - create Graphpinator
+
+`\Graphpinator\Graphpinator` is a class which brings everything together and is the main class you would be using.
+It contains your `Schema`, logger and other information needed to execute request against your service.
+
+```
+$graphpinator = new \Graphpinator\Graphpinator(
+    $schema, 
+    true,            // optional bool - whether to catch exceptions (Dont worry! Only graphpinator errors are printed in response, eg. syntax errors)
+    null,            // optional \Graphpinator\Module\ModuleSet - extending functionality using modules
+    $loggerInterface // optional \Psr\Log\LoggerInterface - logging queries and errors
+);
+```
+
+## Step five - execute Request
+
+Final step! The last thing we need to do is to create appropriate `\Graphpinator\Request\RequestFactory`.
+There are multiple implementations depending on how your low level request look like and what middleware you are using.
+
+- `\Graphpinator\Request\JsonRequestFactory` 
+  - Simplest form of request - json with keys `query`, `variables` and `operationName`
+  - Its constructor argument is `\Graphpinator\Json`
+- `\Graphpinator\Request\PsRequestFactory` 
+  - When using Psr compatible middleware
+  - The factory extracts all the information from http request itself
+  - Its constructor argument is `\Psr\Http\Message\ServerRequestInterface`
+
+In this simple example, we choose the `JsonRequestFactory`.
+
+```
+$json = \Graphpinator\Json::fromString(
+    '{"query":"query { helloWorld }"}
+);
+$requestFactory = new \Graphpinator\Request\JsonRequestFactory($json);
+$response = $graphpinator->run($requestFactory);
+```
+
+This is it, we have our response in `$response` variable. 
+It is a  `\JsonSerializable` object of class `\Graphpinator\Response` containing resolved data and errors.
+
+```
+echo $response->toString();
+```
+
+produces the following
+
+```
+{"data":{"helloWorld": "Hello world!"}}
+```
+
+### Congratulations
+
+This is the end of the Hello world example, thank you for reading this far.
+
+This example serves as a simple tutorial on how to create a simple type and what must be done for request execution. 
+For more information visit [the complete Docs](https://github.com/infinityloop-dev/graphpinator/blob/master/docs/README.md).
+
 ## Appendix 1 - Container and Schema using Nette Dependency Injection
 
 Example configuration for Nette framework, which automatically
@@ -123,5 +180,6 @@ search:
             - Graphpinator\Type\Contract\NamedDefinition
 ```
 
-Similiar approach is surely available for other frameworks like Symfony or Laravel. 
-If you are using other framework and wish to expand this example, please send a PR.
+Similiar approach is surely available for other frameworks aswell. 
+
+If you are using some other framework and wish to expand this example, please send a PR.
