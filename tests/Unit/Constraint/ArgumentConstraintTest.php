@@ -605,7 +605,7 @@ final class ArgumentConstraintTest extends \PHPUnit\Framework\TestCase
                         ]),
                     ],
                     'inputConstraints' => [
-                        new \Graphpinator\Constraint\ListConstraint(0, 5, false)
+                        new \Graphpinator\Constraint\ListConstraint(0, 5, false),
                     ],
                 ],
             ],
