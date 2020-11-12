@@ -63,7 +63,7 @@ trait TInterfaceImplementor
                     throw new \Graphpinator\Exception\Type\InterfaceContractFieldTypeMismatch();
                 }
 
-                if (!$field->getConstraints()->isCovariant($fieldContract->getConstraints())) {
+                if (!$fieldContract->getConstraints()->isCovariant($field->getConstraints())) {
                     throw new \Graphpinator\Exception\Type\FieldConstraintNotCovariant();
                 }
 

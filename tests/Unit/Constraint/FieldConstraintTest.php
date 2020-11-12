@@ -524,6 +524,32 @@ final class FieldConstraintTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 [
+                    'fieldType' => \Graphpinator\Container\Container::Int()->list(),
+                    'interfaceFieldConstraints' => [
+                        new \Graphpinator\Constraint\ListConstraint(0, 5, false),
+                    ],
+                    'fieldConstraints' => [
+                        new \Graphpinator\Constraint\ListConstraint(0, 5, true),
+                    ],
+                ],
+            ],
+            [
+                [
+                    'fieldType' => \Graphpinator\Container\Container::Int()->list()->list(),
+                    'interfaceFieldConstraints' => [
+                        new \Graphpinator\Constraint\ListConstraint(0, 5, false, (object) [
+                            'unique' => false,
+                        ]),
+                    ],
+                    'fieldConstraints' => [
+                        new \Graphpinator\Constraint\ListConstraint(0, 5, false, (object) [
+                            'unique' => true,
+                        ]),
+                    ],
+                ],
+            ],
+            [
+                [
                     'fieldType' => \Graphpinator\Container\Container::Int()->list()->list(),
                     'interfaceFieldConstraints' => [
                         new \Graphpinator\Constraint\ListConstraint(0, 5, false, (object) [
@@ -601,79 +627,42 @@ final class FieldConstraintTest extends \PHPUnit\Framework\TestCase
                     ],
                 ],
             ],
-        ];
-    }
-
-    public function simpleObjectConstraintDataProvider() : array
-    {
-        return [
             [
                 [
-                    'fieldType' => \Graphpinator\Container\Container::Int(),
-                    'interfaceFieldConstraints' => [],
-                    'fieldConstraints' => [],
-                    'interfaceObjectConstraint' => new \Graphpinator\Constraint\ObjectConstraint(['field1'], ['field2']),
-                    'fieldObjectConstraint' => new \Graphpinator\Constraint\ObjectConstraint(['field1'], ['field2']),
+                    'fieldType' => \Graphpinator\Container\Container::Int()->list()->list(),
+                    'interfaceFieldConstraints' => [
+                        new \Graphpinator\Constraint\ListConstraint(0, 5, false, (object) [
+                            'minItems' => 1,
+                            'maxItems' => 5,
+                            'unique' => null,
+                        ]),
+                    ],
+                    'fieldConstraints' => [
+                        new \Graphpinator\Constraint\ListConstraint(0, 5, false, (object) [
+                            'minItems' => 1,
+                            'maxItems' => 5,
+                            'unique' => true,
+                        ]),
+                    ],
                 ],
             ],
             [
                 [
-                    'fieldType' => \Graphpinator\Container\Container::Int(),
-                    'interfaceFieldConstraints' => [],
-                    'fieldConstraints' => [],
-                    'interfaceObjectConstraint' => new \Graphpinator\Constraint\ObjectConstraint(['field1']),
-                    'fieldObjectConstraint' => new \Graphpinator\Constraint\ObjectConstraint(['field1']),
-                ],
-            ],
-            [
-                [
-                    'fieldType' => \Graphpinator\Container\Container::Int(),
-                    'interfaceFieldConstraints' => [],
-                    'fieldConstraints' => [],
-                    'interfaceObjectConstraint' => new \Graphpinator\Constraint\ObjectConstraint(['field1', 'field2'], ['field1', 'field2']),
-                    'fieldObjectConstraint' => new \Graphpinator\Constraint\ObjectConstraint(['field1', 'field2'], ['field1', 'field2']),
-                ],
-            ],
-            [
-                [
-                    'fieldType' => \Graphpinator\Container\Container::Int(),
-                    'interfaceFieldConstraints' => [],
-                    'fieldConstraints' => [],
-                    'interfaceObjectConstraint' => new \Graphpinator\Constraint\ObjectConstraint(null, ['field2']),
-                    'fieldObjectConstraint' => new \Graphpinator\Constraint\ObjectConstraint(null, ['field2']),
-                ],
-            ],
-        ];
-    }
-
-    public function simpleObjectConstraintDataProviderInvalid() : array
-    {
-        return [
-            [
-                [
-                    'fieldType' => \Graphpinator\Container\Container::Int(),
-                    'interfaceFieldConstraints' => [],
-                    'fieldConstraints' => [],
-                    'interfaceObjectConstraint' => new \Graphpinator\Constraint\ObjectConstraint(['field1'], ['field2']),
-                    'fieldObjectConstraint' => new \Graphpinator\Constraint\ObjectConstraint(['field1'], ['field3']),
-                ],
-            ],
-            [
-                [
-                    'fieldType' => \Graphpinator\Container\Container::Int(),
-                    'interfaceFieldConstraints' => [],
-                    'fieldConstraints' => [],
-                    'interfaceObjectConstraint' => new \Graphpinator\Constraint\ObjectConstraint(['field1']),
-                    'fieldObjectConstraint' => new \Graphpinator\Constraint\ObjectConstraint(['field2']),
-                ],
-            ],
-            [
-                [
-                    'fieldType' => \Graphpinator\Container\Container::Int(),
-                    'interfaceFieldConstraints' => [],
-                    'fieldConstraints' => [],
-                    'interfaceObjectConstraint' => new \Graphpinator\Constraint\ObjectConstraint(null, ['field2']),
-                    'fieldObjectConstraint' => new \Graphpinator\Constraint\ObjectConstraint(null, ['field1']),
+                    'fieldType' => \Graphpinator\Container\Container::Int()->list()->list(),
+                    'interfaceFieldConstraints' => [
+                        new \Graphpinator\Constraint\ListConstraint(0, 5, false, (object) [
+                            'minItems' => 1,
+                            'maxItems' => 5,
+                            'unique' => null,
+                        ]),
+                    ],
+                    'fieldConstraints' => [
+                        new \Graphpinator\Constraint\ListConstraint(0, 5, false, (object) [
+                            'minItems' => 1,
+                            'maxItems' => 5,
+                            'unique' => null,
+                        ]),
+                    ],
                 ],
             ],
         ];
@@ -927,6 +916,17 @@ final class FieldConstraintTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 [
+                    'fieldType' => \Graphpinator\Container\Container::Int()->list(),
+                    'interfaceFieldConstraints' => [
+                        new \Graphpinator\Constraint\ListConstraint(1, 5, true),
+                    ],
+                    'fieldConstraints' => [
+                        new \Graphpinator\Constraint\ListConstraint(0, 5, false),
+                    ],
+                ],
+            ],
+            [
+                [
                     'fieldType' => \Graphpinator\Container\Container::Int()->list()->list(),
                     'interfaceFieldConstraints' => [
                         new \Graphpinator\Constraint\ListConstraint(1, 5, false, (object) [
@@ -1010,6 +1010,23 @@ final class FieldConstraintTest extends \PHPUnit\Framework\TestCase
                     'interfaceFieldConstraints' => [
                         new \Graphpinator\Constraint\ListConstraint(0, 5, false, (object) [
                             'minItems' => 1,
+                            'unique' => true,
+                        ]),
+                    ],
+                    'fieldConstraints' => [
+                        new \Graphpinator\Constraint\ListConstraint(0, 5, false, (object) [
+                            'minItems' => 1,
+                            'unique' => null,
+                        ]),
+                    ],
+                ],
+            ],
+            [
+                [
+                    'fieldType' => \Graphpinator\Container\Container::Int()->list()->list(),
+                    'interfaceFieldConstraints' => [
+                        new \Graphpinator\Constraint\ListConstraint(0, 5, false, (object) [
+                            'minItems' => 1,
                         ]),
                     ],
                     'fieldConstraints' => [
@@ -1078,27 +1095,6 @@ final class FieldConstraintTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @dataProvider simpleObjectConstraintDataProvider
-     * @param array $settings
-     */
-    public function testSimpleObjectConstraint(array $settings) : void
-    {
-        self::expectNotToPerformAssertions();
-        self::getSchema($settings)->printSchema();
-    }
-
-    /**
-     * @dataProvider simpleObjectConstraintDataProviderInvalid
-     * @param array $settings
-     */
-    public function testSimpleObjectConstraintInvalid(array $settings) : void
-    {
-        $this->expectException(\Graphpinator\Exception\Type\ObjectConstraintsNotPreserved::class);
-
-        self::getSchema($settings)->printSchema();
-    }
-
-    /**
      * @dataProvider simpleInvalidDataProvider
      * @param array $settings
      */
@@ -1121,10 +1117,6 @@ final class FieldConstraintTest extends \PHPUnit\Framework\TestCase
             {
                 parent::__construct();
                 $this->settings = $settings;
-
-                if (isset($this->settings['interfaceObjectConstraint'])) {
-                    $this->addConstraint($this->settings['interfaceObjectConstraint']);
-                }
             }
 
             public function createResolvedValue($rawValue) : \Graphpinator\Value\TypeIntermediateValue
@@ -1169,10 +1161,6 @@ final class FieldConstraintTest extends \PHPUnit\Framework\TestCase
             {
                 parent::__construct(new \Graphpinator\Utils\InterfaceSet([$interface]));
                 $this->settings = $settings;
-
-                if (isset($this->settings['fieldObjectConstraint'])) {
-                    $this->addConstraint($this->settings['fieldObjectConstraint']);
-                }
             }
 
             protected function validateNonNullValue($rawValue) : bool

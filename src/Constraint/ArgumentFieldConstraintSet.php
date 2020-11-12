@@ -12,20 +12,17 @@ final class ArgumentFieldConstraintSet extends \Graphpinator\Constraint\Constrai
 {
     protected const INNER_CLASS = ArgumentFieldConstraint::class;
 
-    public function isContravariant(self $compare) : bool
+    public function isContravariant(self $childSet) : bool
     {
-        if (\count($compare) === 0) {
-            return true;
-        }
-
         $index = 0;
+        $constraintCount = \count($childSet);
 
         foreach ($this as $parentConstraint) {
-            if ($index >= \count($compare)) {
+            if ($index >= $constraintCount) {
                 return true;
             }
 
-            $childConstraint = $compare[$index];
+            $childConstraint = $childSet[$index];
 
             if (\get_class($parentConstraint) === \get_class($childConstraint) && !$parentConstraint->isContravariant($childConstraint)) {
                 return false;
@@ -34,23 +31,20 @@ final class ArgumentFieldConstraintSet extends \Graphpinator\Constraint\Constrai
             $index++;
         }
 
-        return \count($compare) <= $index;
+        return $constraintCount <= $index;
     }
 
-    public function isCovariant(self $compare) : bool
+    public function isCovariant(self $childSet) : bool
     {
-        if (\count($compare) === 0) {
-            return true;
-        }
-
         $index = 0;
+        $constraintCount = \count($this);
 
-        foreach ($this as $childConstraint) {
-            if ($index >= \count($compare)) {
+        foreach ($childSet as $childConstraint) {
+            if ($index >= $constraintCount) {
                 return true;
             }
 
-            $parentConstraint = $compare[$index];
+            $parentConstraint = $this[$index];
 
             if (\get_class($parentConstraint) === \get_class($childConstraint) && !$parentConstraint->isCovariant($childConstraint)) {
                 return false;
@@ -59,6 +53,6 @@ final class ArgumentFieldConstraintSet extends \Graphpinator\Constraint\Constrai
             $index++;
         }
 
-        return \count($compare) <= $index;
+        return $constraintCount <= $index;
     }
 }

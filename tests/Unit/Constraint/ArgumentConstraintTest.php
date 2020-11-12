@@ -699,6 +699,96 @@ final class ArgumentConstraintTest extends \PHPUnit\Framework\TestCase
                     ],
                 ],
             ],
+            [
+                [
+                    'fieldType' => \Graphpinator\Container\Container::Int()->list(),
+                    'inputType' => \Graphpinator\Container\Container::Int()->list(),
+                    'interfaceInputConstraints' => [
+                        new \Graphpinator\Constraint\ListConstraint(0, 5, true),
+                    ],
+                    'inputConstraints' => [
+                        new \Graphpinator\Constraint\ListConstraint(0, 5, false),
+                    ],
+                ],
+            ],
+            [
+                [
+                    'fieldType' => \Graphpinator\Container\Container::Int()->list()->list(),
+                    'inputType' => \Graphpinator\Container\Container::Int()->list()->list(),
+                    'interfaceInputConstraints' => [
+                        new \Graphpinator\Constraint\ListConstraint(0, 5, false, (object) [
+                            'minItems' => 1,
+                            'maxItems' => 5,
+                            'unique' => true,
+                        ]),
+                    ],
+                    'inputConstraints' => [
+                        new \Graphpinator\Constraint\ListConstraint(0, 5, false, (object) [
+                            'minItems' => 1,
+                            'maxItems' => 5,
+                            'unique' => false,
+                        ]),
+                    ],
+                ],
+            ],
+            [
+                [
+                    'fieldType' => \Graphpinator\Container\Container::Int()->list()->list(),
+                    'inputType' => \Graphpinator\Container\Container::Int()->list()->list(),
+                    'interfaceInputConstraints' => [
+                        new \Graphpinator\Constraint\ListConstraint(0, 5, false, (object) [
+                            'minItems' => 1,
+                            'maxItems' => 5,
+                        ]),
+                    ],
+                    'inputConstraints' => [
+                        new \Graphpinator\Constraint\ListConstraint(0, 5, false, (object) [
+                            'minItems' => 1,
+                            'maxItems' => 5,
+                            'unique' => false,
+                        ]),
+                    ],
+                ],
+            ],
+            [
+                [
+                    'fieldType' => \Graphpinator\Container\Container::Int()->list()->list(),
+                    'inputType' => \Graphpinator\Container\Container::Int()->list()->list(),
+                    'interfaceInputConstraints' => [
+                        new \Graphpinator\Constraint\ListConstraint(0, 5, false, (object) [
+                            'minItems' => 1,
+                            'maxItems' => 5,
+                        ]),
+                    ],
+                    'inputConstraints' => [
+                        new \Graphpinator\Constraint\ListConstraint(0, 5, false, (object) [
+                            'minItems' => 1,
+                            'maxItems' => 5,
+                            'unique' => null,
+                        ]),
+                    ],
+                ],
+            ],
+            [
+                [
+                    'fieldType' => \Graphpinator\Container\Container::Int()->list()->list(),
+                    'inputType' => \Graphpinator\Container\Container::Int()->list()->list(),
+                    'interfaceInputConstraints' => [
+                        new \Graphpinator\Constraint\ListConstraint(0, 5, false, (object) [
+                            'minItems' => 1,
+                            'maxItems' => 5,
+                            'unique' => null,
+                        ]),
+                    ],
+                    'inputConstraints' => [
+                        new \Graphpinator\Constraint\ListConstraint(0, 5, false, (object) [
+                            'minItems' => 1,
+                            'maxItems' => 5,
+                            'unique' => null,
+                        ]),
+                    ],
+                ],
+            ],
         ];
     }
 
@@ -1049,18 +1139,6 @@ final class ArgumentConstraintTest extends \PHPUnit\Framework\TestCase
                     'fieldType' => \Graphpinator\Container\Container::Int()->list(),
                     'inputType' => \Graphpinator\Container\Container::Int()->list(),
                     'interfaceInputConstraints' => [
-                        new \Graphpinator\Constraint\ListConstraint(0, 5, true),
-                    ],
-                    'inputConstraints' => [
-                        new \Graphpinator\Constraint\ListConstraint(0, 5, false),
-                    ],
-                ],
-            ],
-            [
-                [
-                    'fieldType' => \Graphpinator\Container\Container::Int()->list(),
-                    'inputType' => \Graphpinator\Container\Container::Int()->list(),
-                    'interfaceInputConstraints' => [
                         new \Graphpinator\Constraint\ListConstraint(0, 5, false),
                     ],
                     'inputConstraints' => [
@@ -1152,14 +1230,34 @@ final class ArgumentConstraintTest extends \PHPUnit\Framework\TestCase
                         new \Graphpinator\Constraint\ListConstraint(0, 5, false, (object) [
                             'minItems' => 1,
                             'maxItems' => 5,
-                            'unique' => true,
+                            'unique' => false,
                         ]),
                     ],
                     'inputConstraints' => [
                         new \Graphpinator\Constraint\ListConstraint(0, 5, false, (object) [
                             'minItems' => 1,
                             'maxItems' => 5,
-                            'unique' => false,
+                            'unique' => true,
+                        ]),
+                    ],
+                ],
+            ],
+            [
+                [
+                    'fieldType' => \Graphpinator\Container\Container::Int()->list()->list(),
+                    'inputType' => \Graphpinator\Container\Container::Int()->list()->list(),
+                    'interfaceInputConstraints' => [
+                        new \Graphpinator\Constraint\ListConstraint(0, 5, false, (object) [
+                            'minItems' => 1,
+                            'maxItems' => 5,
+                            'unique' => null,
+                        ]),
+                    ],
+                    'inputConstraints' => [
+                        new \Graphpinator\Constraint\ListConstraint(0, 5, false, (object) [
+                            'minItems' => 1,
+                            'maxItems' => 5,
+                            'unique' => true,
                         ]),
                     ],
                 ],

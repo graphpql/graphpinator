@@ -171,7 +171,7 @@ final class ListConstraint extends \Graphpinator\Constraint\ArgumentFieldConstra
             return false;
         }
 
-        if ($greater->unique !== $smaller->unique) {
+        if ($greater->unique === true && ($smaller->unique === null || $smaller->unique === false)) {
             return false;
         }
 
