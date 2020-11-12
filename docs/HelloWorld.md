@@ -1,6 +1,6 @@
 # Hello World
 
-In this section we define our simple schema and execute it.
+In this section we define our simple schema and execute simple request on it.
 
 ## First step - define our types
 
