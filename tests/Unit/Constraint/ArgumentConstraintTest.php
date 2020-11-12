@@ -98,10 +98,10 @@ final class ArgumentConstraintTest extends \PHPUnit\Framework\TestCase
                     'fieldType' => \Graphpinator\Container\Container::String(),
                     'inputType' => \Graphpinator\Container\Container::String(),
                     'interfaceInputConstraints' => [
-                        new \Graphpinator\Constraint\StringConstraint(1, 5, 'regex40'),
+                        new \Graphpinator\Constraint\StringConstraint(null, null, 'regex40'),
                     ],
                     'inputConstraints' => [
-                        new \Graphpinator\Constraint\StringConstraint(1, 5, null),
+                        new \Graphpinator\Constraint\StringConstraint(),
                     ],
                 ],
             ],
@@ -633,12 +633,12 @@ final class ArgumentConstraintTest extends \PHPUnit\Framework\TestCase
                     'inputType' => \Graphpinator\Container\Container::Int()->list()->list(),
                     'interfaceInputConstraints' => [
                         new \Graphpinator\Constraint\ListConstraint(0, 5, false, (object) [
-                            'maxItems' => 1,
+                            'maxItems' => 4,
                         ]),
                     ],
                     'inputConstraints' => [
                         new \Graphpinator\Constraint\ListConstraint(0, 5, false, (object) [
-                            'maxItems' => 2,
+                            'maxItems' => 5,
                         ]),
                     ],
                 ],
@@ -1213,7 +1213,7 @@ final class ArgumentConstraintTest extends \PHPUnit\Framework\TestCase
      */
     public function testSimpleInvalid(array $settings) : void
     {
-        $this->expectException(\Graphpinator\Exception\Type\ArgumentConstraintNotCovariant::class);
+        $this->expectException(\Graphpinator\Exception\Type\ArgumentConstraintNotContravariant::class);
 
         self::getSchema($settings)->printSchema();
     }

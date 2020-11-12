@@ -49,7 +49,7 @@ trait TInterfaceImplementor
     {
         foreach ($this->implements as $interface) {
             if (!$interface->getConstraints()->validateObjectConstraint($this->getConstraints())) {
-                throw new \Graphpinator\Exception\Type\ObjectConstraintsNotEqual();
+                throw new \Graphpinator\Exception\Type\ObjectConstraintsNotPreserved();
             }
 
             foreach ($interface->getFields() as $fieldContract) {
@@ -63,8 +63,8 @@ trait TInterfaceImplementor
                     throw new \Graphpinator\Exception\Type\InterfaceContractFieldTypeMismatch();
                 }
 
-                if (!$field->getConstraints()->isContravariant($fieldContract->getConstraints())) {
-                    throw new \Graphpinator\Exception\Type\FieldConstraintNotContravariant();
+                if (!$field->getConstraints()->isCovariant($fieldContract->getConstraints())) {
+                    throw new \Graphpinator\Exception\Type\FieldConstraintNotCovariant();
                 }
 
                 foreach ($fieldContract->getArguments() as $argumentContract) {
@@ -78,8 +78,8 @@ trait TInterfaceImplementor
                         throw new \Graphpinator\Exception\Type\InterfaceContractArgumentTypeMismatch();
                     }
 
-                    if (!$argumentContract->getConstraints()->isCovariant($argument->getConstraints())) {
-                        throw new \Graphpinator\Exception\Type\ArgumentConstraintNotCovariant();
+                    if (!$argumentContract->getConstraints()->isContravariant($argument->getConstraints())) {
+                        throw new \Graphpinator\Exception\Type\ArgumentConstraintNotContravariant();
                     }
                 }
             }

@@ -65,70 +65,22 @@ final class StringConstraint extends \Graphpinator\Constraint\LeafConstraint
             || $namedType instanceof \Graphpinator\Type\Scalar\IdType;
     }
 
-    public function isCovariant(\Graphpinator\Constraint\Constraint $childConstraint) : bool
+    public function isContravariant(\Graphpinator\Constraint\ArgumentFieldConstraint $childConstraint) : bool
     {
         if (!$childConstraint instanceof self) {
-            throw new \Exception('asdf');
+            throw new \RuntimeException();
         }
 
-        if (\is_int($childConstraint->minLength) && $this->minLength < $childConstraint->minLength
-            || $this->minLength === null && \is_int($childConstraint->minLength)) {
-            return false;
-        }
-
-        if (\is_int($childConstraint->maxLength) && $this->maxLength > $childConstraint->maxLength
-            || $this->maxLength === null && \is_int($childConstraint->maxLength)) {
-            return false;
-        }
-
-        if ($this->regex !== $childConstraint->regex && \is_string($childConstraint->regex)) {
-            return false;
-        }
-
-        if (\is_array($this->oneOf) && \is_array($childConstraint->oneOf)) {
-            foreach ($this->oneOf as $value) {
-                if (!\in_array($value, $childConstraint->oneOf, true)) {
-                    return false;
-                }
-            }
-        } elseif ($this->oneOf === null && $childConstraint->oneOf !== null) {
-            return false;
-        }
-
-        return true;
+        return self::isGreaterSet($childConstraint, $this);
     }
 
-    public function isContravariant(\Graphpinator\Constraint\Constraint $childConstraint) : bool
+    public function isCovariant(\Graphpinator\Constraint\ArgumentFieldConstraint $childConstraint) : bool
     {
         if (!$childConstraint instanceof self) {
-            throw new \Exception('asdf');
+            throw new \RuntimeException();
         }
 
-        if (\is_int($this->minLength) && $this->minLength > $childConstraint->minLength
-            || $childConstraint->minLength === null && \is_int($this->minLength)) {
-            return false;
-        }
-
-        if (\is_int($this->maxLength) && $this->maxLength < $childConstraint->maxLength
-            || $childConstraint->maxLength === null && \is_int($this->maxLength)) {
-            return false;
-        }
-
-        if ($this->regex !== $childConstraint->regex && \is_string($this->regex)) {
-            return false;
-        }
-
-        if (\is_array($this->oneOf) && \is_array($childConstraint->oneOf)) {
-            foreach ($childConstraint->oneOf as $value) {
-                if (!\in_array($value, $this->oneOf)) {
-                    return false;
-                }
-            }
-        } elseif (\is_array($this->oneOf) && $childConstraint->oneOf === null) {
-            return false;
-        }
-
-        return true;
+        return self::isGreaterSet($this, $childConstraint);
     }
 
     protected function validateFactoryMethod($inputValue) : void
@@ -150,5 +102,22 @@ final class StringConstraint extends \Graphpinator\Constraint\LeafConstraint
         if (\is_array($this->oneOf) && !\in_array($inputValue, $this->oneOf, true)) {
             throw new \Graphpinator\Exception\Constraint\OneOfConstraintNotSatisfied();
         }
+    }
+
+    private function isGreaterSet(self $greater, self $smaller) : bool
+    {
+        if (\is_int($greater->minLength) && ($smaller->minLength === null || $smaller->minLength < $greater->minLength)) {
+            return false;
+        }
+
+        if (\is_int($greater->maxLength) && ($smaller->maxLength === null || $smaller->maxLength > $greater->maxLength)) {
+            return false;
+        }
+
+        if (\is_string($greater->regex) && ($smaller->regex === null || $smaller->regex !== $greater->regex)) {
+            return false;
+        }
+
+        return !\is_array($greater->oneOf) || ($smaller->oneOf !== null && self::validateOneOf($smaller->oneOf, $greater->oneOf));
     }
 }

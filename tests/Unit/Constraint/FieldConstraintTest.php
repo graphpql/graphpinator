@@ -752,6 +752,18 @@ final class FieldConstraintTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 [
+                    'fieldType' => \Graphpinator\Container\Container::String()->list(),
+                    'interfaceFieldConstraints' => [
+                        new \Graphpinator\Constraint\StringConstraint(1, 5),
+                    ],
+                    'fieldConstraints' => [
+                        new \Graphpinator\Constraint\StringConstraint(1, 6),
+                        new \Graphpinator\Constraint\ListConstraint(0, 5),
+                    ],
+                ],
+            ],
+            [
+                [
                     'fieldType' => \Graphpinator\Container\Container::Int(),
                     'interfaceFieldConstraints' => [
                         new \Graphpinator\Constraint\IntConstraint(1, 5),
@@ -1072,7 +1084,7 @@ final class FieldConstraintTest extends \PHPUnit\Framework\TestCase
      */
     public function testSimpleObjectConstraintInvalid(array $settings) : void
     {
-        $this->expectException(\Graphpinator\Exception\Type\ObjectConstraintsNotEqual::class);
+        $this->expectException(\Graphpinator\Exception\Type\ObjectConstraintsNotPreserved::class);
 
         self::getSchema($settings)->printSchema();
     }
@@ -1083,7 +1095,7 @@ final class FieldConstraintTest extends \PHPUnit\Framework\TestCase
      */
     public function testSimpleInvalid(array $settings) : void
     {
-        $this->expectException(\Graphpinator\Exception\Type\FieldConstraintNotContravariant::class);
+        $this->expectException(\Graphpinator\Exception\Type\FieldConstraintNotCovariant::class);
 
         self::getSchema($settings)->printSchema();
     }

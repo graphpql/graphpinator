@@ -28,22 +28,22 @@ final class ListConstraint extends \Graphpinator\Constraint\ArgumentFieldConstra
         return self::recursiveValidateType($this->options, $type);
     }
 
-    public function isCovariant(\Graphpinator\Constraint\ArgumentFieldConstraint $childConstraint) : bool
-    {
-        if (!$childConstraint instanceof self) {
-            throw new \Exception('asdf');
-        }
-
-        return self::recursiveValidateConstraints($this->options, $childConstraint->options);
-    }
-
     public function isContravariant(\Graphpinator\Constraint\ArgumentFieldConstraint $childConstraint) : bool
     {
         if (!$childConstraint instanceof self) {
-            throw new \Exception('asdf');
+            throw new \RuntimeException();
         }
 
         return self::recursiveValidateConstraints($childConstraint->options, $this->options);
+    }
+
+    public function isCovariant(\Graphpinator\Constraint\ArgumentFieldConstraint $childConstraint) : bool
+    {
+        if (!$childConstraint instanceof self) {
+            throw new \RuntimeException();
+        }
+
+        return self::recursiveValidateConstraints($this->options, $childConstraint->options);
     }
 
     protected function validateFactoryMethod($inputValue) : void
@@ -168,26 +168,21 @@ final class ListConstraint extends \Graphpinator\Constraint\ArgumentFieldConstra
         return $class;
     }
 
-    private static function recursiveValidateConstraints(\stdClass $options, \stdClass $compareOptions) : bool
+    private function recursiveValidateConstraints(\stdClass $greater, \stdClass $smaller) : bool
     {
-        if (\is_int($compareOptions->minItems) && $options->minItems < $compareOptions->minItems
-            || $options->minItems === null && \is_int($compareOptions->minItems)) {
+        if (\is_int($greater->minItems) && ($smaller->minItems === null || $smaller->minItems < $greater->minItems)) {
             return false;
         }
 
-        if (\is_int($compareOptions->maxItems) && $options->maxItems > $compareOptions->maxItems
-            || $options->maxItems === null && \is_int($compareOptions->maxItems)) {
+        if (\is_int($greater->maxItems) && ($smaller->maxItems === null || $smaller->maxItems > $greater->maxItems)) {
             return false;
         }
 
-        if ($options->unique !== $compareOptions->unique) {
+        if ($greater->unique !== $smaller->unique) {
             return false;
         }
 
-        if ($options->innerList instanceof \stdClass && $compareOptions->innerList instanceof \stdClass) {
-            return self::recursiveValidateConstraints($options->innerList, $compareOptions->innerList);
-        }
-
-        return true;
+        return !($smaller->innerList instanceof \stdClass)
+            || ($greater->innerList !== null && self::recursiveValidateConstraints($greater->innerList, $smaller->innerList));
     }
 }

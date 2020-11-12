@@ -14,7 +14,7 @@ abstract class ArgumentFieldConstraint implements \Graphpinator\Constraint\Const
 
     abstract public function isCovariant(\Graphpinator\Constraint\ArgumentFieldConstraint $childConstraint) : bool;
 
-    abstract public function isContravariant(\Graphpinator\Constraint\ArgumentFieldConstraint $parentConstraint) : bool;
+    abstract public function isContravariant(\Graphpinator\Constraint\ArgumentFieldConstraint $childConstraint) : bool;
 
     public function validate(\Graphpinator\Value\Value $value) : void
     {
@@ -26,4 +26,15 @@ abstract class ArgumentFieldConstraint implements \Graphpinator\Constraint\Const
     }
 
     abstract protected function validateFactoryMethod($rawValue) : void;
+
+    protected static function validateOneOf(array $greater, array $smaller) : bool
+    {
+        foreach ($greater as $value) {
+            if (!\in_array($value, $smaller, true)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }

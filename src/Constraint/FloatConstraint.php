@@ -49,62 +49,22 @@ final class FloatConstraint extends \Graphpinator\Constraint\LeafConstraint
         return $type->getNamedType() instanceof \Graphpinator\Type\Scalar\FloatType;
     }
 
-    public function isCovariant(\Graphpinator\Constraint\ArgumentFieldConstraint $childConstraint) : bool
-    {
-        if (!$childConstraint instanceof self) {
-            throw new \Exception('asdf');
-        }
-
-        if (\is_float($childConstraint->min) && $this->min < $childConstraint->min
-            || $this->min === null && \is_float($childConstraint->min)) {
-            return false;
-        }
-
-        if (\is_float($childConstraint->max) && $this->max > $childConstraint->max
-            || $this->max === null && \is_float($childConstraint->max)) {
-            return false;
-        }
-
-        if (\is_array($this->oneOf) && \is_array($childConstraint->oneOf)) {
-            foreach ($this->oneOf as $value) {
-                if (!\in_array($value, $childConstraint->oneOf, true)) {
-                    return false;
-                }
-            }
-        } elseif ($this->oneOf === null && $childConstraint->oneOf !== null) {
-            return false;
-        }
-
-        return true;
-    }
-
     public function isContravariant(\Graphpinator\Constraint\ArgumentFieldConstraint $childConstraint) : bool
     {
         if (!$childConstraint instanceof self) {
-            throw new \Exception('asdf');
+            throw new \RuntimeException();
         }
 
-        if (\is_float($this->min) && $this->min > $childConstraint->min
-            || $childConstraint->min === null && \is_float($this->min)) {
-            return false;
+        return self::isGreaterSet($childConstraint, $this);
+    }
+
+    public function isCovariant(\Graphpinator\Constraint\ArgumentFieldConstraint $childConstraint) : bool
+    {
+        if (!$childConstraint instanceof self) {
+            throw new \RuntimeException();
         }
 
-        if (\is_float($this->max) && $this->max < $childConstraint->max
-            || $childConstraint->max === null && \is_float($this->max)) {
-            return false;
-        }
-
-        if (\is_array($this->oneOf) && \is_array($childConstraint->oneOf)) {
-            foreach ($childConstraint->oneOf as $value) {
-                if (!\in_array($value, $this->oneOf)) {
-                    return false;
-                }
-            }
-        } elseif ($this->oneOf !== null && $childConstraint->oneOf === null) {
-            return false;
-        }
-
-        return true;
+        return self::isGreaterSet($this, $childConstraint);
     }
 
     protected function validateFactoryMethod($inputValue) : void
@@ -122,5 +82,18 @@ final class FloatConstraint extends \Graphpinator\Constraint\LeafConstraint
         if (\is_array($this->oneOf) && !\in_array($inputValue, $this->oneOf, true)) {
             throw new \Graphpinator\Exception\Constraint\OneOfConstraintNotSatisfied();
         }
+    }
+
+    private function isGreaterSet(self $greater, self $smaller) : bool
+    {
+        if (\is_float($greater->min) && ($smaller->min === null || $smaller->min < $greater->min)) {
+            return false;
+        }
+
+        if (\is_float($greater->max) && ($smaller->max === null || $smaller->max > $greater->max)) {
+            return false;
+        }
+
+        return !\is_array($greater->oneOf) || ($smaller->oneOf !== null && self::validateOneOf($smaller->oneOf, $greater->oneOf));
     }
 }

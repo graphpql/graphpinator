@@ -12,7 +12,7 @@ final class ArgumentFieldConstraintSet extends \Graphpinator\Constraint\Constrai
 {
     protected const INNER_CLASS = ArgumentFieldConstraint::class;
 
-    public function isCovariant(self $compare) : bool
+    public function isContravariant(self $compare) : bool
     {
         if (\count($compare) === 0) {
             return true;
@@ -27,13 +27,7 @@ final class ArgumentFieldConstraintSet extends \Graphpinator\Constraint\Constrai
 
             $childConstraint = $compare[$index];
 
-            if (\get_class($parentConstraint) !== \get_class($childConstraint)) {
-                $index++;
-
-                continue;
-            }
-
-            if (!$parentConstraint->isCovariant($childConstraint)) {
+            if (\get_class($parentConstraint) === \get_class($childConstraint) && !$parentConstraint->isContravariant($childConstraint)) {
                 return false;
             }
 
@@ -43,7 +37,7 @@ final class ArgumentFieldConstraintSet extends \Graphpinator\Constraint\Constrai
         return \count($compare) <= $index;
     }
 
-    public function isContravariant(self $compare) : bool
+    public function isCovariant(self $compare) : bool
     {
         if (\count($compare) === 0) {
             return true;
@@ -58,13 +52,7 @@ final class ArgumentFieldConstraintSet extends \Graphpinator\Constraint\Constrai
 
             $parentConstraint = $compare[$index];
 
-            if (\get_class($childConstraint) !== \get_class($parentConstraint)) {
-                $index++;
-
-                continue;
-            }
-
-            if (!$parentConstraint->isContravariant($childConstraint)) {
+            if (\get_class($parentConstraint) === \get_class($childConstraint) && !$parentConstraint->isCovariant($childConstraint)) {
                 return false;
             }
 
