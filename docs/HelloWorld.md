@@ -29,7 +29,7 @@ final class Query extends \Graphpinator\Type\Type
 
     protected function validateNonNullValue($rawValue) : bool
     {
-        // validation of resolved value from parent, Query is the initial type in the schema = has no parent ($rawValue is null)
+        // validation of resolved value from parent, Query is the initial type in the schema = has no parent ($rawValue is null so this function is never called)
         return true;
     }
 
