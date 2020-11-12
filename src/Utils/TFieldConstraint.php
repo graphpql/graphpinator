@@ -18,4 +18,13 @@ trait TFieldConstraint
 
         return $this;
     }
+
+    public function getConstraints() : \Graphpinator\Constraint\ArgumentFieldConstraintSet
+    {
+        if (!$this->constraints instanceof \Graphpinator\Constraint\ArgumentFieldConstraintSet) {
+            $this->constraints = new \Graphpinator\Constraint\ArgumentFieldConstraintSet([]);
+        }
+
+        return $this->constraints;
+    }
 }

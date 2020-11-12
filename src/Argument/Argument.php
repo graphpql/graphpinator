@@ -18,7 +18,7 @@ final class Argument implements \Graphpinator\Printable\Printable
     {
         $this->name = $name;
         $this->type = $type;
-        $this->constraints = new \Graphpinator\Constraint\ConstraintSet([]);
+        $this->constraints = new \Graphpinator\Constraint\ArgumentFieldConstraintSet([]);
 
         if (\func_num_args() === 3) {
             $defaultValue = $type->createInputedValue($defaultValue);
