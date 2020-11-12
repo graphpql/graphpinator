@@ -1,4 +1,4 @@
-# GraPHPinator [![PHP](https://github.com/infinityloop-dev/graphpinator/workflows/PHP/badge.svg?branch=master)](https://github.com/infinityloop-dev/graphpinator/actions?query=workflow%3APHP)
+# GraPHPinator [![PHP](https://github.com/infinityloop-dev/graphpinator/workflows/PHP/badge.svg?branch=master)](https://github.com/infinityloop-dev/graphpinator/actions?query=workflow%3APHP) [![codecov](https://codecov.io/gh/infinityloop-dev/graphpinator/branch/master/graph/badge.svg)](https://codecov.io/gh/infinityloop-dev/graphpinator)
 
 :zap::globe_with_meridians::zap: Easy-to-use & Fast GraphQL server implementation for PHP.
 
@@ -24,16 +24,8 @@ Install package using composer
 
 ## How to use
 
-- Define Schema for your GraphQL service. [Detailed description of this step](https://github.com/infinityloop-dev/graphpinator/blob/master/docs/DefiningSchema.md)
-- Execute request.
-```
-$request = 'query queryName ($var1: String!) { field1 { innerField1 innerField2(arg1: $var1) } }';
-$variables = \Infinityloop\Utils\Json::fromArray(['var1' => 'value']);
-
-$graphpinator = new \Graphpinator\Graphpinator($schema);
-$result = $graphpinator->runQuery($request, $variables);
-```
-- For more information [visit the Docs](https://github.com/infinityloop-dev/graphpinator/blob/master/docs/README.md)
+- Visit our simple [Hello world example](https://github.com/infinityloop-dev/graphpinator/blob/master/docs/HelloWorld.md).
+- Or visit [the complete Docs](https://github.com/infinityloop-dev/graphpinator/blob/master/docs/README.md).
 
 ## Contributing
 
