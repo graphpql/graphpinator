@@ -537,6 +537,19 @@ final class FieldConstraintTest extends \PHPUnit\Framework\TestCase
                 [
                     'fieldType' => \Graphpinator\Container\Container::Int()->list()->list(),
                     'interfaceFieldConstraints' => [
+                        new \Graphpinator\Constraint\ListConstraint(0, 5, false, null),
+                    ],
+                    'fieldConstraints' => [
+                        new \Graphpinator\Constraint\ListConstraint(0, 5, false, (object) [
+                            'minItems' => 1,
+                        ]),
+                    ],
+                ],
+            ],
+            [
+                [
+                    'fieldType' => \Graphpinator\Container\Container::Int()->list()->list(),
+                    'interfaceFieldConstraints' => [
                         new \Graphpinator\Constraint\ListConstraint(0, 5, false, (object) [
                             'unique' => false,
                         ]),
@@ -1051,44 +1064,31 @@ final class FieldConstraintTest extends \PHPUnit\Framework\TestCase
                     ],
                 ],
             ],
+            [
+                [
+                    'fieldType' => \Graphpinator\Container\Container::Int()->list()->list(),
+                    'interfaceFieldConstraints' => [
+                        new \Graphpinator\Constraint\ListConstraint(0, 5, false, (object) [
+                            'minItems' => 1,
+                        ]),
+                    ],
+                    'fieldConstraints' => [
+                        new \Graphpinator\Constraint\ListConstraint(0, 5, false, null),
+                    ],
+                ],
+            ],
         ];
     }
 
     /**
+     * @doesNotPerformAssertions
      * @dataProvider simpleStringDataProvider
-     * @param array $settings
-     */
-    public function testSimpleString(array $settings) : void
-    {
-        self::expectNotToPerformAssertions();
-        self::getSchema($settings)->printSchema();
-    }
-
-    /**
      * @dataProvider simpleIntDataProvider
-     * @param array $settings
-     */
-    public function testSimpleInt(array $settings) : void
-    {
-        self::expectNotToPerformAssertions();
-        self::getSchema($settings)->printSchema();
-    }
-
-    /**
      * @dataProvider simpleFloatDataProvider
-     * @param array $settings
-     */
-    public function testSimpleFloat(array $settings) : void
-    {
-        self::expectNotToPerformAssertions();
-        self::getSchema($settings)->printSchema();
-    }
-
-    /**
      * @dataProvider simpleListDataProvider
      * @param array $settings
      */
-    public function testSimpleList(array $settings) : void
+    public function testSimpleString(array $settings) : void
     {
         self::expectNotToPerformAssertions();
         self::getSchema($settings)->printSchema();

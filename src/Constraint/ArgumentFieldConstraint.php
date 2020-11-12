@@ -37,8 +37,8 @@ abstract class ArgumentFieldConstraint implements \Graphpinator\Constraint\Const
 
     protected static function validateOneOf(array $greater, array $smaller) : bool
     {
-        foreach ($greater as $value) {
-            if (!\in_array($value, $smaller, true)) {
+        foreach ($smaller as $value) {
+            if (!\in_array($value, $greater, true)) {
                 return false;
             }
         }

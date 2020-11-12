@@ -175,7 +175,7 @@ final class ListConstraint extends \Graphpinator\Constraint\ArgumentFieldConstra
             return false;
         }
 
-        return !($smaller->innerList instanceof \stdClass)
-            || ($greater->innerList !== null && self::recursiveValidateConstraints($greater->innerList, $smaller->innerList));
+        return !($greater->innerList instanceof \stdClass)
+            || ($smaller->innerList !== null && self::recursiveValidateConstraints($greater->innerList, $smaller->innerList));
     }
 }

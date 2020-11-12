@@ -82,6 +82,6 @@ final class FloatConstraint extends \Graphpinator\Constraint\LeafConstraint
             return false;
         }
 
-        return !\is_array($greater->oneOf) || ($smaller->oneOf !== null && self::validateOneOf($smaller->oneOf, $greater->oneOf));
+        return !\is_array($greater->oneOf) || ($smaller->oneOf !== null && self::validateOneOf($greater->oneOf, $smaller->oneOf));
     }
 }
