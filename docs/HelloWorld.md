@@ -122,7 +122,7 @@ GraPHPinator may have multiple RequestFactory implementations that depend on how
 - `\Graphpinator\Request\JsonRequestFactory` 
   - Simplest form of request - json with keys `query`, `variables` and `operationName`
   - Its constructor argument is `\Graphpinator\Json`
-- `\Graphpinator\Request\PsRequestFactory` 
+- `\Graphpinator\Request\PsrRequestFactory` 
   - When using Psr compatible middleware
   - The factory extracts all the information from http request itself
   - Its constructor argument is `\Psr\Http\Message\ServerRequestInterface`
