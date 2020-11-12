@@ -1,6 +1,6 @@
 # Hello World
 
-In this section, we define our simple schema and execute the simple request on it - all in five simple steps.
+In this section, we define our simple schema and execute one simple request on it - all in five simple steps.
 
 ## First step - define our types
 
@@ -117,15 +117,18 @@ $graphpinator = new \Graphpinator\Graphpinator(
 ## Step five - execute Request
 
 Final step! The last thing we need to do is to create an appropriate `\Graphpinator\Request\RequestFactory`.
-GraPHPinator may have multiple RequestFactory implementations that depend on how your low-level request looks like and what middleware you use.
+Classes implementing `RequestFactory` are responsible for creation of an `Request` object, 
+which is basicaly an extraction of `query`, `variables` and `operationName` from various sources.
+GraPHPinator has multiple `RequestFactory` implementations ready, from which you may choose. 
+All depends on how your low-level request looks like and what middleware you use.
 
 - `\Graphpinator\Request\JsonRequestFactory` 
-  - Simplest form of request - json with keys `query`, `variables` and `operationName`
-  - Its constructor argument is `\Graphpinator\Json`
+  - Simplest form of request - json with keys `query`, `variables` and `operationName`.
+  - Its constructor argument is `\Graphpinator\Json`.
 - `\Graphpinator\Request\PsrRequestFactory` 
-  - When using Psr compatible middleware
-  - The factory extracts all the information from http request itself
-  - Its constructor argument is `\Psr\Http\Message\ServerRequestInterface`
+  - When using Psr compatible middleware.
+  - The factory extracts all the information from http request itself.
+  - Its constructor argument is `\Psr\Http\Message\ServerRequestInterface`.
 
 In this simple example, we choose the `JsonRequestFactory`.
 
