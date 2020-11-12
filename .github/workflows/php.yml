@@ -31,8 +31,36 @@ jobs:
     - name: Tests
       run: composer run-script phpunit
 
+    - name: Coveralls GitHub Action
+      uses: coverallsapp/github-action@v1.1.2
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        path-to-lcov: './build/phpunit.clover.xml'
+
+  mutation:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '7.4'
+        ini-values: zend.assertions=1, assert.exception=1
+        coverage: xdebug
+      env:
+        update: true
+
+    - name: Validate composer.json and composer.lock
+      run: composer validate
+
+    - name: Install dependencies
+      run: composer install --prefer-dist --no-progress --no-suggest
+
     - name: Mutation tests
       run: composer run-script infection
+
   phpstan:
     runs-on: ubuntu-latest
 
