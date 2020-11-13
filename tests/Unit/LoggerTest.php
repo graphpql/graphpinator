@@ -104,7 +104,7 @@ final class LoggerTest extends \PHPUnit\Framework\TestCase
         self::assertCount(2, $this->logs);
     }
 
-    public function testSetLoggerSimple() : void
+    public function testSetLogger() : void
     {
         $this->logs = [];
 
@@ -119,14 +119,20 @@ final class LoggerTest extends \PHPUnit\Framework\TestCase
             null,
             $loggerMock,
         );
-        $graphpinator->setLogger(new \Psr\Log\NullLogger());
-
         $request = \Graphpinator\Json::fromObject((object) [
             'query' => 'query queryName { fieldArgumentDefaults(inputNumberList: [3, 4]) { fieldName fieldNumber fieldBool } }',
         ]);
 
+        $graphpinator->setLogger(new \Psr\Log\NullLogger());
         $graphpinator->run(new \Graphpinator\Request\JsonRequestFactory($request));
 
         self::assertCount(0, $this->logs);
+
+        $graphpinator->setLogger($loggerMock);
+        $graphpinator->run(new \Graphpinator\Request\JsonRequestFactory($request));
+
+        self::assertSame(\Psr\Log\LogLevel::DEBUG, $this->logs[0]['level']);
+        self::assertSame($request['query'], $this->logs[0]['message']);
+        self::assertCount(1, $this->logs);
     }
 }
