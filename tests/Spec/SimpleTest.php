@@ -296,15 +296,13 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
                 \Graphpinator\Json::fromObject((object) [
                     'query' => 'query queryName { fieldAbc { fieldXyz { nonExisting } } }',
                 ]),
-                //phpcs:ignore SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly.ReferencedGeneralException
-                \Exception::class,
+                \Graphpinator\Exception\Normalizer\UnknownField::class,
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
                     'query' => 'query queryName { fieldAbc { fieldXyz { name { nonExisting } } } }',
                 ]),
-                //phpcs:ignore SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly.ReferencedGeneralException
-                \Exception::class,
+                \Graphpinator\Exception\Normalizer\SelectionOnLeaf::class,
             ],
             [
                 \Graphpinator\Json::fromObject((object) [

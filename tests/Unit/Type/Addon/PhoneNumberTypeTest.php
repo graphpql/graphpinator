@@ -65,8 +65,7 @@ final class PhoneNumberTypeTest extends \PHPUnit\Framework\TestCase
      */
     public function testValidateValueInvalid($rawValue) : void
     {
-        //phpcs:ignore SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly.ReferencedGeneralException
-        $this->expectException(\Exception::class);
+        $this->expectException(\Graphpinator\Exception\Value\InvalidValue::class);
 
         $phoneNumber = new \Graphpinator\Type\Addon\PhoneNumberType();
         $phoneNumber->validateResolvedValue($rawValue);

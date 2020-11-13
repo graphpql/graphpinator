@@ -58,8 +58,7 @@ final class HslTypeTest extends \PHPUnit\Framework\TestCase
      */
     public function testValidateValueInvalid($rawValue) : void
     {
-        //phpcs:ignore SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly.ReferencedGeneralException
-        $this->expectException(\Exception::class);
+        $this->expectException(\Graphpinator\Exception\Value\InvalidValue::class);
 
         $hsl = new \Graphpinator\Type\Addon\HslType();
         $hsl->validateResolvedValue($rawValue);

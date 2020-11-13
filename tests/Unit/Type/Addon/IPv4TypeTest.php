@@ -48,8 +48,7 @@ final class IPv4TypeTest extends \PHPUnit\Framework\TestCase
      */
     public function testValidateValueInvalid($rawValue) : void
     {
-        //phpcs:ignore SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly.ReferencedGeneralException
-        $this->expectException(\Exception::class);
+        $this->expectException(\Graphpinator\Exception\Value\InvalidValue::class);
 
         $ipv4 = new \Graphpinator\Type\Addon\IPv4Type();
         $ipv4->validateResolvedValue($rawValue);
