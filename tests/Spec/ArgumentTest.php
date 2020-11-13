@@ -81,21 +81,26 @@ final class ArgumentTest extends \PHPUnit\Framework\TestCase
                 \Graphpinator\Json::fromObject((object) [
                     'query' => 'query queryName { fieldAbc { fieldXyz(argNonExistent: 123) { name } } }',
                 ]),
+                \Graphpinator\Exception\Normalizer\UnknownFieldArgument::class,
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
                     'query' => 'query queryName { fieldAbc { fieldXyz(arg1: "123") { name } } }',
                 ]),
+                \Graphpinator\Exception\Value\InvalidValue::class,
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
                     'query' => 'query queryName { fieldAbc { fieldXyz(arg1: 123, arg1: 456) { name } } }',
                 ]),
+                //phpcs:ignore SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly.ReferencedGeneralException
+                \Exception::class,
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
                     'query' => 'query queryName { fieldAbc { fieldXyz(arg1: 2147483649) { name } } }',
                 ]),
+                \Graphpinator\Exception\Value\InvalidValue::class,
             ],
         ];
     }
@@ -103,11 +108,11 @@ final class ArgumentTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider invalidDataProvider
      * @param \Graphpinator\Json $request
+     * @param string $exception
      */
-    public function testInvalid(\Graphpinator\Json $request) : void
+    public function testInvalid(\Graphpinator\Json $request, string $exception) : void
     {
-        //phpcs:ignore SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly.ReferencedGeneralException
-        $this->expectException(\Exception::class);
+        $this->expectException($exception);
 
         $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
         $graphpinator->run(new \Graphpinator\Request\JsonRequestFactory($request));

@@ -57,8 +57,7 @@ final class TimeTypeTest extends \PHPUnit\Framework\TestCase
      */
     public function testValidateValueInvalid($rawValue) : void
     {
-        //phpcs:ignore SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly.ReferencedGeneralException
-        $this->expectException(\Exception::class);
+        $this->expectException(\Graphpinator\Exception\Value\InvalidValue::class);
 
         $dateTime = new \Graphpinator\Type\Addon\TimeType();
         $dateTime->validateResolvedValue($rawValue);

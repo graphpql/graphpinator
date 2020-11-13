@@ -76,8 +76,7 @@ final class IPv6TypeTest extends \PHPUnit\Framework\TestCase
      */
     public function testValidateValueInvalid($rawValue) : void
     {
-        //phpcs:ignore SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly.ReferencedGeneralException
-        $this->expectException(\Exception::class);
+        $this->expectException(\Graphpinator\Exception\Value\InvalidValue::class);
 
         $ipv6 = new \Graphpinator\Type\Addon\IPv6Type();
         $ipv6->validateResolvedValue($rawValue);

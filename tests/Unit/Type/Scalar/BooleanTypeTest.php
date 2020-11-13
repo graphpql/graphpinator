@@ -43,8 +43,7 @@ final class BooleanTypeTest extends \PHPUnit\Framework\TestCase
      */
     public function testValidateValueInvalid($rawValue) : void
     {
-        //phpcs:ignore SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly.ReferencedGeneralException
-        $this->expectException(\Exception::class);
+        $this->expectException(\Graphpinator\Exception\Value\InvalidValue::class);
 
         $bool = new \Graphpinator\Type\Scalar\BooleanType();
         $bool->validateResolvedValue($rawValue);

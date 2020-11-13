@@ -59,8 +59,7 @@ final class RgbTypeTest extends \PHPUnit\Framework\TestCase
      */
     public function testValidateValueInvalid($rawValue) : void
     {
-        //phpcs:ignore SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly.ReferencedGeneralException
-        $this->expectException(\Exception::class);
+        $this->expectException(\Graphpinator\Exception\Value\InvalidValue::class);
 
         $rgb = new \Graphpinator\Type\Addon\RgbType();
         $rgb->validateResolvedValue($rawValue);
