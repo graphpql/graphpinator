@@ -204,4 +204,4 @@ This is the end of the Simple Union example, thank you for reading this far.
 
 This example serves as a simple tutorial on how to create a simple union and how to resolve correct concrete type. 
 - For more information visit [the complete Docs](https://github.com/infinityloop-dev/graphpinator/blob/master/docs/README.md).
-- For more example visit [the examples folder](https://github.com/infinityloop-dev/graphpinator/blob/master/docs/examples).
+- For more examples visit [the examples folder](https://github.com/infinityloop-dev/graphpinator/blob/master/docs/examples).
