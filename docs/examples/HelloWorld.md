@@ -1,6 +1,6 @@
 # Hello World
 
-In this example, we define our simple schema and execute one simple request on it - all in five simple steps.
+In this example, we define our simple schema and execute one request on it - all in five simple steps.
 
 ## First step - define our types
 
