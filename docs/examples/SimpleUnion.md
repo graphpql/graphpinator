@@ -7,7 +7,7 @@ You should be familiar with our previous HelloWorld example to understand the ba
 
 Here we define one union type - the `ABUnion` union - and three object types - `Query`, `TypeA` and `TypeB`.
 
-```
+```php
 <?php
 
 declare(strict_types = 1);
@@ -138,13 +138,13 @@ Visualise our GraphQL schema in type language.
 
 > Declaration of `Container`, `Schema` and `Graphpinator` classes is skipped in this example. Visit our HelloWorld example for more information.
 
-```
+```php
 echo $schema->printSchema();
 ```
 
 produces the following
 
-```
+```graphql
 schema {
   query: Query
   mutation: null
@@ -180,7 +180,7 @@ type TypeB {
 
 ## Execute Request
 
-```
+```php
 $json = \Graphpinator\Json::fromString(
     '{"query":"query { simpleUnion { __typename ... on TypeA { fieldInt } ... on TypeB { fieldString } } }"}
 );
@@ -190,13 +190,13 @@ $response = $graphpinator->run($requestFactory);
 
 This is it, we have our response in `$response` variable. Depending on results of our random resolve functions the result of the query could be something like like
 
-```
+```json
 {"data":{"simpleUnion": {"__typename": "TypeA", "fieldInt": 55}}}
 ```
 
 or
 
-```
+```json
 {"data":{"simpleUnion": {"__typename": "TypeB", "fieldString": "b53b3a3d6ab90ce0268229151c9bde11"}}}
 ```
 
