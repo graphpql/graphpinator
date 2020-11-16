@@ -17,7 +17,7 @@ namespace Example;
 final class Query extends \Graphpinator\Type\Type
 {
     protected const NAME = 'Query';
-    protected const DESCRIPTION = 'Graphpinator SimpleUnion: Query type'.
+    protected const DESCRIPTION = 'Graphpinator SimpleUnion: Query type';
 
     private \Example\ABUnion $abUnion;
     
@@ -50,7 +50,7 @@ final class Query extends \Graphpinator\Type\Type
 final class TypeA extends \Graphpinator\Type\Type
 {
     protected const NAME = 'TypeA';
-    protected const DESCRIPTION = 'Graphpinator SimpleUnion: TypeA type'.
+    protected const DESCRIPTION = 'Graphpinator SimpleUnion: TypeA type';
 
     protected function validateNonNullValue($rawValue) : bool
     {
@@ -74,7 +74,7 @@ final class TypeA extends \Graphpinator\Type\Type
 final class TypeB extends \Graphpinator\Type\Type
 {
     protected const NAME = 'TypeB';
-    protected const DESCRIPTION = 'Graphpinator SimpleUnion: TypeB type'.
+    protected const DESCRIPTION = 'Graphpinator SimpleUnion: TypeB type';
 
     protected function validateNonNullValue($rawValue) : bool
     {
@@ -98,7 +98,7 @@ final class TypeB extends \Graphpinator\Type\Type
 final class ABUnion extends \Graphpinator\Type\UnionType
 {
     protected const NAME = 'ABUnion';
-    protected const DESCRIPTION = 'Graphpinator SimpleUnion: ABUnion union'.
+    protected const DESCRIPTION = 'Graphpinator SimpleUnion: ABUnion union';
 
     private \Example\TypeA $typeA;
     private \Example\TypeB $typeB;
@@ -182,7 +182,7 @@ type TypeB {
 
 ```php
 $json = \Graphpinator\Json::fromString(
-    '{"query":"query { simpleUnion { __typename ... on TypeA { fieldInt } ... on TypeB { fieldString } } }"}
+    '{"query":"query { simpleUnion { __typename ... on TypeA { fieldInt } ... on TypeB { fieldString } } }"}'
 );
 $requestFactory = new \Graphpinator\Request\JsonRequestFactory($json);
 $response = $graphpinator->run($requestFactory);
