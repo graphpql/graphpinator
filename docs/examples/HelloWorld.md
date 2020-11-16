@@ -1,6 +1,6 @@
 # Hello World
 
-In this section, we define our simple schema and execute one simple request on it - all in five simple steps.
+In this example, we define our simple schema and execute one simple request on it - all in five simple steps.
 
 ## First step - define our types
 
@@ -13,7 +13,7 @@ Schema is mainly defined by types. Each type is a separate class extending one o
 - `\Graphpinator\Type\EnumType`
 - `\Graphpinator\Type\InputType`
 
-In this example, we only define one type - the Query type.
+In this example, we only define one type - the `Query` type.
 
 ```
 <?php
@@ -141,7 +141,7 @@ $response = $graphpinator->run($requestFactory);
 ```
 
 This is it, we have our response in `$response` variable. 
-It is a  `\JsonSerializable` object of class `\Graphpinator\Response` containing resolved data and errors.
+It is an object of class `\Graphpinator\Response` (which is `\JsonSerializable`) containing resolved data and errors.
 
 ```
 echo $response->toString();
@@ -158,7 +158,8 @@ produces the following
 This is the end of the Hello world example, thank you for reading this far.
 
 This example serves as a simple tutorial on how to create a simple type and what must be done for request execution. 
-For more information visit [the complete Docs](https://github.com/infinityloop-dev/graphpinator/blob/master/docs/README.md).
+- For more information visit [the complete Docs](https://github.com/infinityloop-dev/graphpinator/blob/master/docs/README.md).
+- For more example visit [the examples folder](https://github.com/infinityloop-dev/graphpinator/blob/master/docs/examples).
 
 ## Appendix 1 - Container and Schema using Nette Dependency Injection
 
