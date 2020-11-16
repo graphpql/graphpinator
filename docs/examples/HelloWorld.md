@@ -25,7 +25,7 @@ namespace Example;
 final class Query extends \Graphpinator\Type\Type
 {
     protected const NAME = 'Query';
-    protected const DESCRIPTION = 'Graphpinator HelloWorld: Query type'.
+    protected const DESCRIPTION = 'Graphpinator HelloWorld: Query type';
 
     protected function validateNonNullValue($rawValue) : bool
     {
@@ -134,7 +134,7 @@ In this simple example, we choose the `JsonRequestFactory`.
 
 ```php
 $json = \Graphpinator\Json::fromString(
-    '{"query":"query { helloWorld }"}
+    '{"query":"query { helloWorld }"}'
 );
 $requestFactory = new \Graphpinator\Request\JsonRequestFactory($json);
 $response = $graphpinator->run($requestFactory);
