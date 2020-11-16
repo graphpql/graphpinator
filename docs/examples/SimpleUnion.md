@@ -5,7 +5,7 @@ You should be familiar with our previous HelloWorld example to understand the ba
 
 ## Define our types
 
-Here we define one union type - the `ABUnion` type - and three object types - `Query`, `TypeA` and `TypeB`.
+Here we define one union type - the `ABUnion` union - and three object types - `Query`, `TypeA` and `TypeB`.
 
 ```
 <?php
