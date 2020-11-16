@@ -96,7 +96,7 @@ schema {
 }
 
 """
-Graphpinator SimpleEnum: Episode enum
+Graphpinator Deprecated: Episode enum
 """
 enum Episode {
   "A New Hope"
@@ -110,7 +110,7 @@ enum Episode {
 }
 
 """
-Graphpinator Arguments: Query type
+Graphpinator Deprecated: Query type
 """
 type Query {
   helloWorld: String!
