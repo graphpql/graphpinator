@@ -130,6 +130,8 @@ final class ABUnion extends \Graphpinator\Type\UnionType
 }
 ```
 
+As you can see, declaring union is really simple - just create a set of types which are part of the union.
+
 ## Optional step - print schema definition
 
 Visualise our GraphQL schema in type language.
