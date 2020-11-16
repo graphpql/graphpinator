@@ -25,7 +25,7 @@ namespace Example;
 final class Query extends \Graphpinator\Type\Type
 {
     protected const NAME = 'Query';
-    protected const DESCRIPTION = 'Graphpinator Hello world example type'.
+    protected const DESCRIPTION = 'Graphpinator HelloWorld: Query type'.
 
     protected function validateNonNullValue($rawValue) : bool
     {
@@ -93,7 +93,7 @@ schema {
 }
 
 """
-Graphpinator Hello world example type
+Graphpinator HelloWorld: Query type
 """
 type Query {
   helloWorld: String!
