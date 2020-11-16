@@ -40,7 +40,7 @@ final class Query extends \Graphpinator\Type\Type
                 'simpleUnion',
                 $this->abUnion->notNull,
                 function ($parent) : bool {
-                  return (bool) \random_int(0, 1);
+                    return (bool) \random_int(0, 1);
                 },
             ),
         ]);
