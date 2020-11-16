@@ -33,7 +33,7 @@ final class Query extends \Graphpinator\Type\Type
         return true;
     }
 
-    protected function getFieldDefinition(): \Graphpinator\Field\ResolvableFieldSet
+    protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
     {
         // types return ResolvableFieldSet, which is a map of ResolvableField (Fields with resolve function)
         // interface only define FieldSet, which is a map of Field, which does not have resolve function but only define the signature
@@ -42,7 +42,7 @@ final class Query extends \Graphpinator\Type\Type
                 'helloWorld',
                 \Graphpinator\Container\Container::String()->notNull,
                 function ($parent) : string {
-                  return 'Hello world!';
+                    return 'Hello world!';
                 },
             ),
         ]);
