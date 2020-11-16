@@ -1,5 +1,9 @@
 # Hello World
 
+This example serves as a simple tutorial on how to create a simple type and what must be done for request execution.
+
+## Introduction
+
 In this example, we define our simple schema and execute one request on it - all in five simple steps.
 
 ## First step - define our types
@@ -40,7 +44,7 @@ final class Query extends \Graphpinator\Type\Type
         return new \Graphpinator\Field\ResolvableFieldSet([
             new \Graphpinator\Field\ResolvableField(
                 'helloWorld',
-                \Graphpinator\Container\Container::String()->notNull,
+                \Graphpinator\Container\Container::String()->notNull(),
                 function ($parent) : string {
                     return 'Hello world!';
                 },
@@ -156,8 +160,7 @@ produces the following
 ### Congratulations
 
 This is the end of the Hello world example, thank you for reading this far.
-
-This example serves as a simple tutorial on how to create a simple type and what must be done for request execution. 
+ 
 - For more information visit [the complete Docs](https://github.com/infinityloop-dev/graphpinator/blob/master/docs/README.md).
 - For more examples visit [the examples folder](https://github.com/infinityloop-dev/graphpinator/blob/master/docs/examples).
 
@@ -184,6 +187,6 @@ search:
             - Graphpinator\Type\Contract\NamedDefinition
 ```
 
-Similiar approach is surely available for other frameworks aswell. 
+Similar approach is surely available for other frameworks as well. 
 
 If you are using some other framework and wish to expand this example, please send a PR.

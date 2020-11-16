@@ -1,5 +1,9 @@
 # Simple Enum
 
+This example serves as a simple tutorial on how to create a simple enum and its items.
+
+## Introduction
+
 In this example, we define a simple schema with enum and execute one request on it.
 You should be familiar with our previous HelloWorld example to understand the basics.
 
@@ -138,7 +142,6 @@ or
 ### Congratulations
 
 This is the end of the Simple Enum example, thank you for reading this far.
-
-This example serves as a simple tutorial on how to create a simple enum and its items. 
+ 
 - For more information visit [the complete Docs](https://github.com/infinityloop-dev/graphpinator/blob/master/docs/README.md).
 - For more examples visit [the examples folder](https://github.com/infinityloop-dev/graphpinator/blob/master/docs/examples).

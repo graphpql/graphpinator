@@ -71,7 +71,7 @@ Information about internal components, which may be used as standalone tools.
 2. [Union](https://github.com/infinityloop-dev/graphpinator/blob/master/docs/examples/SimpleUnion.md)
 3. [Interface](https://github.com/infinityloop-dev/graphpinator/blob/master/docs/examples/SimpleInterface.md)
 4. [Enum](https://github.com/infinityloop-dev/graphpinator/blob/master/docs/examples/SimpleEnum.md)
-5. Argument
+5. [Arguments](https://github.com/infinityloop-dev/graphpinator/blob/master/docs/examples/Arguments.md)
 6. Input
 7. Deprecated
 8. Constraint

@@ -1,5 +1,9 @@
 # Simple Union
 
+This example serves as a simple tutorial on how to create a simple union and how to resolve correct concrete type.
+
+## Introduction
+
 In this example, we define a simple schema with union and execute one request on it.
 You should be familiar with our previous HelloWorld example to understand the basics.
 
@@ -38,7 +42,7 @@ final class Query extends \Graphpinator\Type\Type
         return new \Graphpinator\Field\ResolvableFieldSet([
             new \Graphpinator\Field\ResolvableField(
                 'simpleUnion',
-                $this->abUnion->notNull,
+                $this->abUnion->notNull(),
                 function ($parent) : bool {
                     return (bool) \random_int(0, 1);
                 },
@@ -62,7 +66,7 @@ final class TypeA extends \Graphpinator\Type\Type
         return new \Graphpinator\Field\ResolvableFieldSet([
             new \Graphpinator\Field\ResolvableField(
                 'fieldInt',
-                \Graphpinator\Container\Container::Int()->notNull,
+                \Graphpinator\Container\Container::Int()->notNull(),
                 function (int $parent) : int {
                     return $parent;
                 },
@@ -86,7 +90,7 @@ final class TypeB extends \Graphpinator\Type\Type
         return new \Graphpinator\Field\ResolvableFieldSet([
             new \Graphpinator\Field\ResolvableField(
                 'fieldString',
-                \Graphpinator\Container\Container::String()->notNull,
+                \Graphpinator\Container\Container::String()->notNull(),
                 function (string $parent) : string {
                     return $parent;
                 },
@@ -203,7 +207,6 @@ or
 ### Congratulations
 
 This is the end of the Simple Union example, thank you for reading this far.
-
-This example serves as a simple tutorial on how to create a simple union and how to resolve correct concrete type. 
+ 
 - For more information visit [the complete Docs](https://github.com/infinityloop-dev/graphpinator/blob/master/docs/README.md).
 - For more examples visit [the examples folder](https://github.com/infinityloop-dev/graphpinator/blob/master/docs/examples).
