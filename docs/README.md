@@ -20,4 +20,5 @@ Known incompatibilities can be found in [issues with "Spec incompatibility" labe
 
 ## Examples:
 
-- 01 - [Hello world](https://github.com/infinityloop-dev/graphpinator/blob/master/docs/examples/HelloWorld.md)
+- 01 - [Hello World](https://github.com/infinityloop-dev/graphpinator/blob/master/docs/examples/HelloWorld.md)
+- 02 - [Simple Union](https://github.com/infinityloop-dev/graphpinator/blob/master/docs/examples/SimpleUnion.md)
