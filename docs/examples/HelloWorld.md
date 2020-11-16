@@ -159,7 +159,7 @@ This is the end of the Hello world example, thank you for reading this far.
 
 This example serves as a simple tutorial on how to create a simple type and what must be done for request execution. 
 - For more information visit [the complete Docs](https://github.com/infinityloop-dev/graphpinator/blob/master/docs/README.md).
-- For more example visit [the examples folder](https://github.com/infinityloop-dev/graphpinator/blob/master/docs/examples).
+- For more examples visit [the examples folder](https://github.com/infinityloop-dev/graphpinator/blob/master/docs/examples).
 
 ## Appendix 1 - Container and Schema using Nette Dependency Injection
 
