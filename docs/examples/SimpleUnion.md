@@ -1,6 +1,6 @@
 # Simple Union
 
-In this example, we define a simple schema with union and execute one simple request on it.
+In this example, we define a simple schema with union and execute one request on it.
 You should be familiar with our previous HelloWorld example to understand the basics.
 
 ## Define our types
