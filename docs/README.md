@@ -73,7 +73,7 @@ Information about internal components, which may be used as standalone tools.
 4. [Enum](https://github.com/infinityloop-dev/graphpinator/blob/master/docs/examples/SimpleEnum.md)
 5. [Arguments](https://github.com/infinityloop-dev/graphpinator/blob/master/docs/examples/Arguments.md)
 6. Input
-7. Deprecated
+7. [Deprecated](https://github.com/infinityloop-dev/graphpinator/blob/master/docs/examples/Deprecated.md)
 8. Constraint
 9. Addon types
 10. Upload

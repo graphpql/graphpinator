@@ -72,6 +72,11 @@ final class Episode extends \Graphpinator\Type\EnumType
     
     // enum item without description
     public const JEDI = 'JEDI';
+
+    public function __construct() 
+    {
+        parent::__construct(self::fromConstants());
+    }
 }
 ```
 
