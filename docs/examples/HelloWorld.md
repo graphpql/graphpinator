@@ -15,7 +15,7 @@ Schema is mainly defined by types. Each type is a separate class extending one o
 
 In this example, we only define one type - the `Query` type.
 
-```
+```php
 <?php
 
 declare(strict_types = 1);
@@ -57,7 +57,7 @@ All available types for our GraphQL service are stored in a `\Graphpinator\Conta
 > In this example we are going to assign the type to the `Container` manually, 
 but this step can (and is recommended to) be achieved automatically when using some dependency injection.
 
-```
+```php
 $query = new \Example\Query(); // our Query class which we defined above
 $container = new \Graphpinator\Container\SimpleContainer([$query]);
 ```
@@ -71,7 +71,7 @@ In more complex services, where we would use `mutation` or `subscription` operat
 
 > This step is also skipped when using some dependency injection solution.
 
-```
+```php
 $schema = new \Graphpinator\Type\Schema($container, $query);
 ```
 
@@ -79,13 +79,13 @@ $schema = new \Graphpinator\Type\Schema($container, $query);
 
 We can use our `Schema` class to print its definition in the type language syntax, which describes the capabilities of our GraphQL service.
 
-```
+```php
 echo $schema->printSchema();
 ```
 
 produces the following
 
-```
+```graphql
 schema {
   query: Query
   mutation: null
@@ -105,7 +105,7 @@ type Query {
 `\Graphpinator\Graphpinator` is a class that brings everything together and is the main class you would be using.
 It contains your `Schema`, logger, and other information needed to execute a request against your service.
 
-```
+```php
 $graphpinator = new \Graphpinator\Graphpinator(
     $schema, 
     true,            // optional bool - whether to catch exceptions (Dont worry! Only graphpinator errors are printed in response, eg. syntax errors)
@@ -132,7 +132,7 @@ All depends on how your low-level request looks like and what middleware you use
 
 In this simple example, we choose the `JsonRequestFactory`.
 
-```
+```php
 $json = \Graphpinator\Json::fromString(
     '{"query":"query { helloWorld }"}
 );
@@ -143,13 +143,13 @@ $response = $graphpinator->run($requestFactory);
 This is it, we have our response in `$response` variable. 
 It is an object of class `\Graphpinator\Response` (which is `\JsonSerializable`) containing resolved data and errors.
 
-```
+```php
 echo $response->toString();
 ```
 
 produces the following
 
-```
+```json
 {"data":{"helloWorld": "Hello world!"}}
 ```
 
@@ -168,7 +168,7 @@ Example configuration for Nette framework, which automatically
 - registers `SimpleContainer` and assigns all found types
 - registers `Schema`
 
-```
+```neon
 services:
     - Graphpinator\Container\SimpleContainer
     - Graphpinator\Type\Schema(
