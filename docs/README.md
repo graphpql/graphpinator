@@ -70,7 +70,7 @@ Information about internal components, which may be used as standalone tools.
 1. [Hello World](https://github.com/infinityloop-dev/graphpinator/blob/master/docs/examples/HelloWorld.md)
 2. [Union](https://github.com/infinityloop-dev/graphpinator/blob/master/docs/examples/SimpleUnion.md)
 3. [Interface](https://github.com/infinityloop-dev/graphpinator/blob/master/docs/examples/SimpleInterface.md)
-4. Enum
+4. [Enum](https://github.com/infinityloop-dev/graphpinator/blob/master/docs/examples/SimpleEnum.md)
 5. Argument
 6. Input
 7. Deprecated
