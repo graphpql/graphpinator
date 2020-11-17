@@ -4,7 +4,7 @@ This example serves as a simple tutorial on how to create a simple union and how
 
 ## Introduction
 
-In this example, we define a simple schema with the union and execute one request on it.
+In this example, we define a simple schema with one union and execute one request on it.
 You should be familiar with our previous HelloWorld example to understand the basics.
 
 ## Define our types
