@@ -1,10 +1,10 @@
 # Simple Interface
 
-This example serves as a simple tutorial on how to create a simple interface and how to resolve correct concrete type.
+This example serves as a simple tutorial on how to create a simple interface and how to resolve the correct concrete type.
 
 ## Introduction
 
-In this example, we define a simple schema with interface and execute one request on it.
+In this example, we define a simple schema with an interface and execute one request on it.
 You should be familiar with our previous HelloWorld example to understand the basics.
 
 ## Define our types
@@ -159,7 +159,7 @@ interface TypeAccessor
 
 Declaring interface is a little bit more complicated.
 You need an accessor to avoid cyclic constructor dependency.
-Fortunatelly, every dependency injection solution (and you should use one) can be easily configured to create this accessor for you.
+Fortunately, every dependency injection solution (and you should use one) can be easily configured to create this accessor for you.
 
 > Note that types can implement more interfaces and interfaces can also implement other interfaces.
 
@@ -222,7 +222,7 @@ $requestFactory = new \Graphpinator\Request\JsonRequestFactory($json);
 $response = $graphpinator->run($requestFactory);
 ```
 
-This is it, we have our response in `$response` variable. Depending on results of our random resolve functions the result of the query could be something like like
+This is it, we have our response in `$response` variable. Depending on the results of our random resolve functions the result of the query could be something like:
 
 ```json
 {"data":{"simpleInterface": {"__typename": "TypeA", "fieldString": "b53b3a3d6ab90ce0268229151c9bde11", "fieldInt": 55}}}
@@ -253,6 +253,6 @@ services:
     )
 ```
 
-Similiar approach is surely available for other frameworks aswell.
+A similar approach is surely available for other frameworks as well.
 
 If you are using some other framework and wish to expand this example, please send a PR.
