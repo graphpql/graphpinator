@@ -80,11 +80,11 @@ final class Episode extends \Graphpinator\Type\EnumType
 }
 ```
 
-As you can see, declaring enum is really simple - enum items are automaticaly generated from PUBLIC constants.
+As you can see, declaring enum is really simple - enum items are automatically generated from PUBLIC constants.
 
 ## Optional step - print schema definition
 
-Visualise our GraphQL schema in type language.
+Visualize our GraphQL schema in type language.
 
 > Declaration of `Container`, `Schema` and `Graphpinator` classes is skipped in this example. Visit our HelloWorld example for more information.
 
@@ -132,7 +132,7 @@ $requestFactory = new \Graphpinator\Request\JsonRequestFactory($json);
 $response = $graphpinator->run($requestFactory);
 ```
 
-This is it, we have our response in `$response` variable. Depending on results of our random resolve functions the result of the query could be something like like
+This is it, we have our response in `$response` variable. Depending on the results of our random resolve functions the result of the query could be something like:
 
 ```json
 {"data":{"randomEpisode": "EMPIRE"}}
