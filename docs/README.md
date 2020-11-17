@@ -6,7 +6,7 @@ We are happy you consider using this library.
 
 This documentation relates to the GraPHPinator project - the PHP implementation of GraphQL server. 
 Before you continue, make sure to understand the concepts of GraphQL and its purpose.
-All the neccasarry information are clearly presented on [the official website](http://graphql.org/learn/).
+All the necessary information is presented on [the official website](http://graphql.org/learn/).
 
 ## Compliance status
 
@@ -20,7 +20,7 @@ Known incompatibilities can be found in [issues with "Spec incompatibility" labe
 
 ### Starting out
 
-This section includes some general information about the library and how to use it, but does not go deep into unnecessary detail.
+This section includes some general information about the library and how to use it but does not go deep into unnecessary detail.
 
 > If you prefer to read less text and more code - check out the Examples
 
@@ -30,7 +30,7 @@ This section includes some general information about the library and how to use 
 
 ### Type system
 
-This section includes detailed information about how this library represents GraphQL typesystem.
+This section includes detailed information about how this library represents the GraphQL typesystem.
 
 #### GraphQL type abstractions:
 
