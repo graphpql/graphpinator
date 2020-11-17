@@ -192,7 +192,7 @@ $requestFactory = new \Graphpinator\Request\JsonRequestFactory($json);
 $response = $graphpinator->run($requestFactory);
 ```
 
-This is it, we have our response in `$response` variable. Depending on the results of our random resolve functions the result of the query could be something like
+This is it, we have our response in `$response` variable. Depending on the results of our random resolve functions the result of the query could be something like:
 
 ```json
 {"data":{"simpleUnion": {"__typename": "TypeA", "fieldInt": 55}}}
