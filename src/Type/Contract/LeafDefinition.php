@@ -18,7 +18,7 @@ abstract class LeafDefinition extends \Graphpinator\Type\Contract\ConcreteDefini
         return $parentResult;
     }
 
-    final public function createInputedValue($rawValue) : \Graphpinator\Value\InputedValue
+    public function createInputedValue($rawValue) : \Graphpinator\Value\InputedValue
     {
         if ($rawValue === null) {
             return new \Graphpinator\Value\NullInputedValue($this);

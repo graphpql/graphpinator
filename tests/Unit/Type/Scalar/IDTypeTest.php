@@ -9,9 +9,9 @@ final class IDTypeTest extends \PHPUnit\Framework\TestCase
     public function simpleDataProvider() : array
     {
         return [
-            [123],
-            ['123'],
-            [null],
+            [123, '123'],
+            ['123', '123'],
+            [null, null],
         ];
     }
 
@@ -27,13 +27,14 @@ final class IDTypeTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider simpleDataProvider
      * @param int|string|null $rawValue
+     * @param ?string $resultValue
      */
-    public function testValidateValue($rawValue) : void
+    public function testValidateValue($rawValue, ?string $resultValue) : void
     {
         $id = new \Graphpinator\Type\Scalar\IdType();
-        $id->validateResolvedValue($rawValue);
+        $val = $id->createInputedValue($rawValue);
 
-        self::assertSame($id->getName(), 'ID');
+        self::assertSame($resultValue, $val->getRawValue());
     }
 
     /**
