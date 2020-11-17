@@ -1,10 +1,10 @@
 # Simple Union
 
-This example serves as a simple tutorial on how to create a simple union and how to resolve correct concrete type.
+This example serves as a simple tutorial on how to create a simple union and how to resolve the correct concrete type.
 
 ## Introduction
 
-In this example, we define a simple schema with union and execute one request on it.
+In this example, we define a simple schema with the union and execute one request on it.
 You should be familiar with our previous HelloWorld example to understand the basics.
 
 ## Define our types
@@ -134,7 +134,7 @@ final class ABUnion extends \Graphpinator\Type\UnionType
 }
 ```
 
-As you can see, declaring union is really simple - just create a set of types which are part of the union.
+As you can see, declaring a union is really simple - just create a set of types that are part of the union.
 
 ## Optional step - print schema definition
 
@@ -192,7 +192,7 @@ $requestFactory = new \Graphpinator\Request\JsonRequestFactory($json);
 $response = $graphpinator->run($requestFactory);
 ```
 
-This is it, we have our response in `$response` variable. Depending on results of our random resolve functions the result of the query could be something like like
+This is it, we have our response in `$response` variable. Depending on the results of our random resolve functions the result of the query could be something like
 
 ```json
 {"data":{"simpleUnion": {"__typename": "TypeA", "fieldInt": 55}}}
