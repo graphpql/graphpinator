@@ -25,9 +25,7 @@ final class Query extends \Graphpinator\Type\Type
 
     private \Example\Person $person;
 
-    public function __construct(
-        \Example\Person $person
-    ) 
+    public function __construct(\Example\Person $person) 
     {
         parent::__construct();
     
