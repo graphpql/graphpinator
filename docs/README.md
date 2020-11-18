@@ -74,6 +74,6 @@ Information about internal components, which may be used as standalone tools.
 5. [Arguments](https://github.com/infinityloop-dev/graphpinator/blob/master/docs/examples/Arguments.md)
 6. Input
 7. [Deprecated](https://github.com/infinityloop-dev/graphpinator/blob/master/docs/examples/Deprecated.md)
-8. Constraint
+8. [Constraints](https://github.com/infinityloop-dev/graphpinator/blob/master/docs/examples/Constraints.md)
 9. Addon types
 10. Upload
