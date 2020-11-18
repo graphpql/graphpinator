@@ -1287,15 +1287,19 @@ final class TestSchema
                     new \Graphpinator\Field\ResolvableField(
                         'fieldA',
                         \Graphpinator\Container\Container::Int(),
-                        function (?int $parent) : ?int {
-                            return $parent === 1 ? 1 : null;
+                        static function (?int $parent) : ?int {
+                            return $parent === 1
+                                ? 1
+                                : null;
                         },
                     ),
                     new \Graphpinator\Field\ResolvableField(
                         'fieldB',
                         \Graphpinator\Container\Container::Int(),
-                        function (int $parent) : ?int {
-                            return $parent === 0 ? 1 : null;
+                        static function (int $parent) : ?int {
+                            return $parent === 0
+                                ? 1
+                                : null;
                         },
                     ),
                 ]);
