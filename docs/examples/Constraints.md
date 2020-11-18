@@ -4,7 +4,7 @@ This example serves as a simple tutorial on how to declare and use constraints o
 
 ## Introduction
 
-In this example, we define a simple schema with a few constraints - custom directives which apply value constraints to fields, arguments and types.
+In this example, we define a simple schema with a few constraints - custom directives that apply value constraints to fields, arguments, and types.
 You should be familiar with our previous HelloWorld example to understand the basics.
 
 ## Define our types
@@ -93,13 +93,13 @@ final class AOrB extends \Graphpinator\Type\Type
 ```
 
 As you can see, declaring constraints is really simple - call `addConstraint` method on `Argument`, `Field`, `Type`, `InterfaceType` or `InputType` to add constraint.
-Make sure to select Constraint corresponding to its usage eg. 
+Make sure to select Constraint corresponding to its usage e.g. 
 - StringConstraint for String fields/arguments
 - ObjectConstraint for types/interfaces/inputs
 
 ## Check schema definition
 
-Visualise our GraphQL schema in type language.
+Visualize our GraphQL schema in type language.
 
 > Declaration of `Container`, `Schema` and `Graphpinator` classes is skipped in this example. Visit our HelloWorld example for more information.
 
