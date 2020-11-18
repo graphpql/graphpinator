@@ -1,4 +1,4 @@
-# Simple Union
+# Union
 
 This example serves as a simple tutorial on how to create a simple union and how to resolve the correct concrete type.
 
@@ -21,7 +21,7 @@ namespace Example;
 final class Query extends \Graphpinator\Type\Type
 {
     protected const NAME = 'Query';
-    protected const DESCRIPTION = 'Graphpinator SimpleUnion: Query type';
+    protected const DESCRIPTION = 'Graphpinator Union: Query type';
 
     private \Example\ABUnion $abUnion;
     
@@ -54,7 +54,7 @@ final class Query extends \Graphpinator\Type\Type
 final class TypeA extends \Graphpinator\Type\Type
 {
     protected const NAME = 'TypeA';
-    protected const DESCRIPTION = 'Graphpinator SimpleUnion: TypeA type';
+    protected const DESCRIPTION = 'Graphpinator Union: TypeA type';
 
     protected function validateNonNullValue($rawValue) : bool
     {
@@ -78,7 +78,7 @@ final class TypeA extends \Graphpinator\Type\Type
 final class TypeB extends \Graphpinator\Type\Type
 {
     protected const NAME = 'TypeB';
-    protected const DESCRIPTION = 'Graphpinator SimpleUnion: TypeB type';
+    protected const DESCRIPTION = 'Graphpinator Union: TypeB type';
 
     protected function validateNonNullValue($rawValue) : bool
     {
@@ -102,7 +102,7 @@ final class TypeB extends \Graphpinator\Type\Type
 final class ABUnion extends \Graphpinator\Type\UnionType
 {
     protected const NAME = 'ABUnion';
-    protected const DESCRIPTION = 'Graphpinator SimpleUnion: ABUnion union';
+    protected const DESCRIPTION = 'Graphpinator Union: ABUnion union';
 
     private \Example\TypeA $typeA;
     private \Example\TypeB $typeB;
@@ -156,26 +156,26 @@ schema {
 }
 
 """
-Graphpinator SimpleUnion: ABUnion union
+Graphpinator Union: ABUnion union
 """
 union ABUnion = TypeA | TypeB
 
 """
-Graphpinator SimpleUnion: Query type
+Graphpinator Union: Query type
 """
 type Query {
   simpleUnion: ABUnion!
 }
 
 """
-Graphpinator SimpleUnion: TypeA type
+Graphpinator Union: TypeA type
 """
 type TypeA {
   fieldInt: Int!
 }
 
 """
-Graphpinator SimpleUnion: TypeB type
+Graphpinator Union: TypeB type
 """
 type TypeB {
   fieldString: String!
@@ -206,7 +206,7 @@ or
 
 ### Congratulations
 
-This is the end of the Simple Union example, thank you for reading this far.
+This is the end of the Union example, thank you for reading this far.
  
 - For more information visit [the complete Docs](https://github.com/infinityloop-dev/graphpinator/blob/master/docs/README.md).
 - For more examples visit [the examples folder](https://github.com/infinityloop-dev/graphpinator/blob/master/docs/examples).

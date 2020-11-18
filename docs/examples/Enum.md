@@ -1,10 +1,10 @@
-# Simple Enum
+# Enum
 
 This example serves as a simple tutorial on how to create a simple enum and its items.
 
 ## Introduction
 
-In this example, we define a simple schema with enum and execute one request on it.
+In this example, we define a simple schema with one enum and execute one request on it.
 You should be familiar with our previous HelloWorld example to understand the basics.
 
 ## Define our types
@@ -21,7 +21,7 @@ namespace Example;
 final class Query extends \Graphpinator\Type\Type
 {
     protected const NAME = 'Query';
-    protected const DESCRIPTION = 'Graphpinator SimpleUnion: Query type';
+    protected const DESCRIPTION = 'Graphpinator Union: Query type';
 
     private \Example\Episode $episode;
     
@@ -64,7 +64,7 @@ final class Query extends \Graphpinator\Type\Type
 final class Episode extends \Graphpinator\Type\EnumType
 {
     protected const NAME = 'Episode';
-    protected const DESCRIPTION = 'Graphpinator SimpleEnum: Episode enum';
+    protected const DESCRIPTION = 'Graphpinator Enum: Episode enum';
     
     // enum item with description
     public const NEWHOPE = ['NEWHOPE', 'A New Hope']; 
@@ -102,7 +102,7 @@ schema {
 }
 
 """
-Graphpinator SimpleEnum: Episode enum
+Graphpinator Enum: Episode enum
 """
 enum Episode {
   "A New Hope"
@@ -115,7 +115,7 @@ enum Episode {
 }
 
 """
-Graphpinator SimpleEnum: Query type
+Graphpinator Enum: Query type
 """
 type Query {
   randomEpisode: Episode!
@@ -146,7 +146,7 @@ or
 
 ### Congratulations
 
-This is the end of the Simple Enum example, thank you for reading this far.
+This is the end of the Enum example, thank you for reading this far.
  
 - For more information visit [the complete Docs](https://github.com/infinityloop-dev/graphpinator/blob/master/docs/README.md).
 - For more examples visit [the examples folder](https://github.com/infinityloop-dev/graphpinator/blob/master/docs/examples).

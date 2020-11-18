@@ -1,10 +1,10 @@
-# Simple Interface
+# Interface
 
 This example serves as a simple tutorial on how to create a simple interface and how to resolve the correct concrete type.
 
 ## Introduction
 
-In this example, we define a simple schema with an interface and execute one request on it.
+In this example, we define a simple schema with one interface and execute one request on it.
 You should be familiar with our previous HelloWorld example to understand the basics.
 
 ## Define our types
@@ -21,7 +21,7 @@ namespace Example;
 final class Query extends \Graphpinator\Type\Type
 {
     protected const NAME = 'Query';
-    protected const DESCRIPTION = 'Graphpinator SimpleInterface: Query type';
+    protected const DESCRIPTION = 'Graphpinator Interface: Query type';
 
     private \Example\HasString $hasString;
     
@@ -54,7 +54,7 @@ final class Query extends \Graphpinator\Type\Type
 final class TypeA extends \Graphpinator\Type\Type
 {
     protected const NAME = 'TypeA';
-    protected const DESCRIPTION = 'Graphpinator SimpleInterface: TypeA type';
+    protected const DESCRIPTION = 'Graphpinator Interface: TypeA type';
 
     public function __construct(\Example\HasString $hasString)
     {
@@ -90,7 +90,7 @@ final class TypeA extends \Graphpinator\Type\Type
 final class TypeB extends \Graphpinator\Type\Type
 {
     protected const NAME = 'TypeB';
-    protected const DESCRIPTION = 'Graphpinator SimpleInterface: TypeB type';
+    protected const DESCRIPTION = 'Graphpinator Interface: TypeB type';
 
     public function __construct(\Example\HasString $hasString)
     {
@@ -119,7 +119,7 @@ final class TypeB extends \Graphpinator\Type\Type
 final class HasString extends \Graphpinator\Type\InterfaceType
 {
     protected const NAME = 'HasString';
-    protected const DESCRIPTION = 'Graphpinator SimpleInterface: HasString interface';
+    protected const DESCRIPTION = 'Graphpinator Interface: HasString interface';
 
     private \Example\TypeAccessor $typeAccessor;
 
@@ -157,7 +157,7 @@ interface TypeAccessor
 }
 ```
 
-Declaring interface is a little bit more complicated.
+Declaring interface is a little more complicated.
 You need an accessor to avoid cyclic constructor dependency.
 Fortunately, every dependency injection solution (and you should use one) can be easily configured to create this accessor for you.
 
@@ -183,21 +183,21 @@ schema {
 }
 
 """
-Graphpinator SimpleInterface: HasString interface
+Graphpinator Interface: HasString interface
 """
 interface HasString {
   fieldString: String!
 }
 
 """
-Graphpinator SimpleInterface: Query type
+Graphpinator Interface: Query type
 """
 type Query {
-  simpleUnion: ABUnion!
+  interfaceField: HasString!
 }
 
 """
-Graphpinator SimpleInterface: TypeA type
+Graphpinator Interface: TypeA type
 """
 type TypeA implements HasString {
   fieldString: String!
@@ -205,7 +205,7 @@ type TypeA implements HasString {
 }
 
 """
-Graphpinator SimpleInterface: TypeB type
+Graphpinator eInterface: TypeB type
 """
 type TypeB implements HasString {
   fieldString: String!
@@ -216,7 +216,7 @@ type TypeB implements HasString {
 
 ```php
 $json = \Graphpinator\Json::fromString(
-    '{"query":"query { simpleInterface { __typename fieldString ... on TypeA { fieldInt } } }"}'
+    '{"query":"query { interfaceField { __typename fieldString ... on TypeA { fieldInt } } }"}'
 );
 $requestFactory = new \Graphpinator\Request\JsonRequestFactory($json);
 $response = $graphpinator->run($requestFactory);
@@ -225,18 +225,18 @@ $response = $graphpinator->run($requestFactory);
 This is it, we have our response in `$response` variable. Depending on the results of our random resolve functions the result of the query could be something like:
 
 ```json
-{"data":{"simpleInterface": {"__typename": "TypeA", "fieldString": "b53b3a3d6ab90ce0268229151c9bde11", "fieldInt": 55}}}
+{"data":{"interfaceField": {"__typename": "TypeA", "fieldString": "b53b3a3d6ab90ce0268229151c9bde11", "fieldInt": 55}}}
 ```
 
 or
 
 ```json
-{"data":{"simpleUnion": {"__typename": "TypeB", "fieldString": "b53b3a3d6ab90ce0268229151c9bde11"}}}
+{"data":{"interfaceField": {"__typename": "TypeB", "fieldString": "b53b3a3d6ab90ce0268229151c9bde11"}}}
 ```
 
 ### Congratulations
 
-This is the end of the Simple Interface example, thank you for reading this far.
+This is the end of the Interface example, thank you for reading this far.
  
 - For more information visit [the complete Docs](https://github.com/infinityloop-dev/graphpinator/blob/master/docs/README.md).
 - For more examples visit [the examples folder](https://github.com/infinityloop-dev/graphpinator/blob/master/docs/examples).

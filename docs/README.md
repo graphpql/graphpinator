@@ -68,9 +68,9 @@ Information about internal components, which may be used as standalone tools.
 ## Examples:
 
 1. [Hello World](https://github.com/infinityloop-dev/graphpinator/blob/master/docs/examples/HelloWorld.md)
-2. [Union](https://github.com/infinityloop-dev/graphpinator/blob/master/docs/examples/SimpleUnion.md)
-3. [Interface](https://github.com/infinityloop-dev/graphpinator/blob/master/docs/examples/SimpleInterface.md)
-4. [Enum](https://github.com/infinityloop-dev/graphpinator/blob/master/docs/examples/SimpleEnum.md)
+2. [Union](https://github.com/infinityloop-dev/graphpinator/blob/master/docs/examples/Union.md)
+3. [Interface](https://github.com/infinityloop-dev/graphpinator/blob/master/docs/examples/Interface.md)
+4. [Enum](https://github.com/infinityloop-dev/graphpinator/blob/master/docs/examples/Enum.md)
 5. [Arguments](https://github.com/infinityloop-dev/graphpinator/blob/master/docs/examples/Arguments.md)
 6. Input
 7. [Deprecated](https://github.com/infinityloop-dev/graphpinator/blob/master/docs/examples/Deprecated.md)
