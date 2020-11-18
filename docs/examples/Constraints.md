@@ -99,7 +99,7 @@ Make sure to select Constraint corresponding to its usage eg.
 
 ## Check schema definition
 
-Visualise our GraphQL schema in type language.
+Visualize our GraphQL schema in type language.
 
 > Declaration of `Container`, `Schema` and `Graphpinator` classes is skipped in this example. Visit our HelloWorld example for more information.
 
