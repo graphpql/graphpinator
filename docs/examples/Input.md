@@ -1,6 +1,6 @@
 # Input
 
-This example serves as a simple tutorial on how to create a simple input and use it as argument type.
+This example serves as a simple tutorial on how to create a simple input and use it as an argument type.
 
 ## Introduction
 
@@ -25,7 +25,9 @@ final class Query extends \Graphpinator\Type\Type
 
     private \Example\Person $person;
 
-    public function __construct(\Example\Person $person) 
+    public function __construct(
+        \Example\Person $person
+    ) 
     {
         parent::__construct();
     
@@ -82,7 +84,7 @@ As you can see, declaring an input is really simple - just implement the `getFie
 
 ## Optional step - print schema definition
 
-Visualise our GraphQL schema in type language.
+Visualize our GraphQL schema in type language.
 
 > Declaration of `Container`, `Schema` and `Graphpinator` classes is skipped in this example. Visit our HelloWorld example for more information.
 
