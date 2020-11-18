@@ -4,7 +4,7 @@ This example serves as a simple tutorial on how to declare and use constraints o
 
 ## Introduction
 
-In this example, we define a simple schema with a few constraints - custom directives which apply value constraints to fields, arguments and types.
+In this example, we define a simple schema with a few constraints - custom directives that apply value constraints to fields, arguments, and types.
 You should be familiar with our previous HelloWorld example to understand the basics.
 
 ## Define our types
