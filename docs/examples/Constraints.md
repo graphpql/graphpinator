@@ -65,6 +65,13 @@ final class AOrB extends \Graphpinator\Type\Type
     protected const NAME = 'AOrB';
     protected const DESCRIPTION = 'Graphpinator Constraints: AOrB type';
 
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->addConstraint(new \Graphpinator\Constraint\ObjectConstraint(null, ['fieldA', 'fieldB']));
+    }
+
     protected function validateNonNullValue($rawValue) : bool
     {
         return \is_int($rawValue) && \in_array($rawValue, [0, 1], true);
