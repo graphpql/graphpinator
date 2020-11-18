@@ -634,6 +634,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldRequiredArgumentInvalid(
             name: String!
           ): SimpleType
+          fieldAOrB: AOrB!
         }
         
         """
@@ -1309,6 +1310,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldRequiredArgumentInvalid(
             name: String!
           ): SimpleType
+          fieldAOrB: AOrB!
         }
         
         """
@@ -1722,6 +1724,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldRequiredArgumentInvalid(
             name: String!
           ): SimpleType
+          fieldAOrB: AOrB!
         }
         
         """
@@ -2397,6 +2400,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldRequiredArgumentInvalid(
             name: String!
           ): SimpleType
+          fieldAOrB: AOrB!
         }
         
         """

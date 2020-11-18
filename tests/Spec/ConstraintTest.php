@@ -83,6 +83,24 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 \Graphpinator\Json::fromObject((object) [
+                    'query' => 'query queryName { fieldAOrB { fieldA fieldB } }',
+                ]),
+                \Graphpinator\Json::fromObject((object) ['data' => ['fieldAOrB' => ['fieldA' => null, 'fieldB' => 1]]]),
+            ],
+            [
+                \Graphpinator\Json::fromObject((object) [
+                    'query' => 'query queryName { fieldAOrB { fieldB } }',
+                ]),
+                \Graphpinator\Json::fromObject((object) ['data' => ['fieldAOrB' => ['fieldB' => 1]]]),
+            ],
+            [
+                \Graphpinator\Json::fromObject((object) [
+                    'query' => 'query queryName { fieldAOrB { fieldA } }',
+                ]),
+                \Graphpinator\Json::fromObject((object) ['data' => ['fieldAOrB' => ['fieldA' => null]]]),
+            ],
+            [
+                \Graphpinator\Json::fromObject((object) [
                     'query' => 'query queryName {
                         fieldListConstraint(arg: [
                             { name: "name1", number: [1,2] },
@@ -241,6 +259,12 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
             [
                 \Graphpinator\Json::fromObject((object) [
                     'query' => 'query queryName { fieldExactlyOne(arg: {int1: null}) }',
+                ]),
+                \Graphpinator\Exception\Constraint\ExactlyOneConstraintNotSatisfied::class,
+            ],
+            [
+                \Graphpinator\Json::fromObject((object) [
+                    'query' => 'query queryName { fieldExactlyOne(arg: {int2: null}) }',
                 ]),
                 \Graphpinator\Exception\Constraint\ExactlyOneConstraintNotSatisfied::class,
             ],
@@ -1058,9 +1082,7 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
             {
                 parent::__construct();
                 $this->settings = $settings;
-                $this->addConstraint(new \Graphpinator\Constraint\ObjectConstraint([
-                    'field1',
-                ]));
+                $this->addConstraint(new \Graphpinator\Constraint\ObjectConstraint(['field1']));
             }
 
             protected function validateNonNullValue($rawValue) : bool

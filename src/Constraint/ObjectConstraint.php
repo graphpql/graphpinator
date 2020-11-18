@@ -64,12 +64,13 @@ final class ObjectConstraint implements \Graphpinator\Constraint\Constraint
             $valid = false;
 
             foreach ($this->atLeastOne as $fieldName) {
-                if (isset($value->{$fieldName}) &&
-                    !$value->{$fieldName}->getValue() instanceof \Graphpinator\Value\NullValue) {
-                    $valid = true;
-
-                    break;
+                if (isset($value->{$fieldName}) && $value->{$fieldName}->getValue() instanceof \Graphpinator\Value\NullValue) {
+                    continue;
                 }
+
+                $valid = true;
+
+                break;
             }
 
             if (!$valid) {
@@ -82,15 +83,23 @@ final class ObjectConstraint implements \Graphpinator\Constraint\Constraint
         }
 
         $count = 0;
+        $notRequested = 0;
 
         foreach ($this->exactlyOne as $fieldName) {
-            if (isset($value->{$fieldName}) &&
-                !$value->{$fieldName}->getValue() instanceof \Graphpinator\Value\NullValue) {
-                ++$count;
+            if (!isset($value->{$fieldName})) {
+                ++$notRequested;
+
+                continue;
             }
+
+            if ($value->{$fieldName}->getValue() instanceof \Graphpinator\Value\NullValue) {
+                continue;
+            }
+
+            ++$count;
         }
 
-        if ($count !== 1) {
+        if ($count > 1 || ($count === 0 && $notRequested === 0)) {
             throw new \Graphpinator\Exception\Constraint\ExactlyOneConstraintNotSatisfied();
         }
     }

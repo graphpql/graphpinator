@@ -389,6 +389,13 @@ final class TestSchema
                             ),
                         ]),
                     ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'fieldAOrB',
+                        TestSchema::getAOrBType()->notNull(),
+                        static function ($parent) : int {
+                            return 0;
+                        },
+                    ),
                 ]);
             }
 
@@ -1249,6 +1256,47 @@ final class TestSchema
                                 'innerNotNull' => (object) ['name' => 'string2', 'number' => [11, 22]],
                             ],
                         ],
+                    ),
+                ]);
+            }
+        };
+    }
+
+    public static function getAOrBType() : \Graphpinator\Type\Type
+    {
+        return new class extends \Graphpinator\Type\Type
+        {
+            protected const NAME = 'AOrB';
+            protected const DESCRIPTION = 'Graphpinator Constraints: AOrB type';
+
+            public function __construct()
+            {
+                parent::__construct();
+
+                $this->addConstraint(new \Graphpinator\Constraint\ObjectConstraint(null, ['fieldA', 'fieldB']));
+            }
+
+            protected function validateNonNullValue($rawValue) : bool
+            {
+                return \is_int($rawValue) && \in_array($rawValue, [0, 1], true);
+            }
+
+            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+            {
+                return new \Graphpinator\Field\ResolvableFieldSet([
+                    new \Graphpinator\Field\ResolvableField(
+                        'fieldA',
+                        \Graphpinator\Container\Container::Int(),
+                        function (?int $parent) : ?int {
+                            return $parent === 1 ? 1 : null;
+                        },
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'fieldB',
+                        \Graphpinator\Container\Container::Int(),
+                        function (int $parent) : ?int {
+                            return $parent === 0 ? 1 : null;
+                        },
                     ),
                 ]);
             }
