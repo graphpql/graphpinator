@@ -93,7 +93,7 @@ final class AOrB extends \Graphpinator\Type\Type
 ```
 
 As you can see, declaring constraints is really simple - call `addConstraint` method on `Argument`, `Field`, `Type`, `InterfaceType` or `InputType` to add constraint.
-Make sure to select Constraint corresponding to its usage eg. 
+Make sure to select Constraint corresponding to its usage e.g. 
 - StringConstraint for String fields/arguments
 - ObjectConstraint for types/interfaces/inputs
 
