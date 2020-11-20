@@ -106,22 +106,22 @@ final class InputValue implements \Graphpinator\Value\InputedValue
         return $core;
     }
 
-    public function __isset(string $offset) : bool
+    public function __isset(string $name) : bool
     {
-        return \property_exists($this->value, $offset);
+        return \property_exists($this->value, $name);
     }
 
-    public function __get(string $offset) : ArgumentValue
+    public function __get(string $name) : ArgumentValue
     {
-        return $this->value->{$offset};
+        return $this->value->{$name};
     }
 
-    public function __set(string $offset, ArgumentValue $value) : void
+    public function __set(string $name, ArgumentValue $value) : void
     {
-        if ($value->getArgument() !== $this->type->getArguments()[$offset]) {
+        if ($value->getArgument() !== $this->type->getArguments()[$name]) {
             throw new \Exception();
         }
 
-        $this->value->{$offset} = $value;
+        $this->value->{$name} = $value;
     }
 }
