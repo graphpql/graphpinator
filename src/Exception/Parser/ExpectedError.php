@@ -6,7 +6,7 @@ namespace Graphpinator\Exception\Parser;
 
 abstract class ExpectedError extends \Graphpinator\Exception\Parser\ParserError
 {
-    final public function __construct(\Graphpinator\Source\Location $location, string $token)
+    final public function __construct(\Graphpinator\Common\Location $location, string $token)
     {
         $this->messageArgs[] = $token;
 

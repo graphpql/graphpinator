@@ -10,11 +10,11 @@ final class Parser
 {
     use \Nette\SmartObject;
 
-    private \Graphpinator\Tokenizer\TokenContainer $tokenizer;
+    private \Graphpinator\Parser\TokenContainer $tokenizer;
 
     public function __construct(\Graphpinator\Source\Source $source)
     {
-        $this->tokenizer = new \Graphpinator\Tokenizer\TokenContainer($source);
+        $this->tokenizer = new \Graphpinator\Parser\TokenContainer($source);
     }
 
     /**
@@ -32,7 +32,7 @@ final class Parser
     public function parse() : ParseResult
     {
         if ($this->tokenizer->isEmpty()) {
-            throw new \Graphpinator\Exception\Parser\EmptyRequest(new \Graphpinator\Source\Location(1, 1));
+            throw new \Graphpinator\Exception\Parser\EmptyRequest(new \Graphpinator\Common\Location(1, 1));
         }
 
         $fragments = [];
