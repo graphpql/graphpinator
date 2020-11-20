@@ -2,11 +2,11 @@ name: PHP
 
 on:
   push:
-    branches: [ master ]
+    branches: [ php74_bugfixes ]
     paths-ignore:
     - '**.md'
   pull_request:
-    branches: [ master ]
+    branches: [ php74_bugfixes ]
     paths-ignore:
     - '**.md'
 
