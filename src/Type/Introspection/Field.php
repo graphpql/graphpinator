@@ -18,7 +18,7 @@ final class Field extends \Graphpinator\Type\Type
         $this->container = $container;
     }
 
-    protected function validateNonNullValue($rawValue) : bool
+    protected function validateNonNullValue(mixed $rawValue) : bool
     {
         return $rawValue instanceof \Graphpinator\Field\Field;
     }

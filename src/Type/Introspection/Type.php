@@ -20,7 +20,7 @@ final class Type extends \Graphpinator\Type\Type
         $this->container = $container;
     }
 
-    protected function validateNonNullValue($rawValue) : bool
+    protected function validateNonNullValue(mixed $rawValue) : bool
     {
         return $rawValue instanceof Definition;
     }

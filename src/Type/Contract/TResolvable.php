@@ -6,7 +6,7 @@ namespace Graphpinator\Type\Contract;
 
 trait TResolvable
 {
-    public function validateResolvedValue($rawValue) : void
+    public function validateResolvedValue(mixed $rawValue) : void
     {
         if ($rawValue === null) {
             return;
@@ -17,5 +17,5 @@ trait TResolvable
         }
     }
 
-    abstract protected function validateNonNullValue($rawValue) : bool;
+    abstract protected function validateNonNullValue(mixed $rawValue) : bool;
 }

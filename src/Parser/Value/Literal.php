@@ -8,15 +8,14 @@ final class Literal implements \Graphpinator\Parser\Value\Value
 {
     use \Nette\SmartObject;
 
-    private $value;
+    private string|int|float|bool|null $value;
 
-    public function __construct($value)
+    public function __construct(string|int|float|bool|null $value)
     {
         $this->value = $value;
     }
 
-    //@phpcs:ignore SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingAnyTypeHint
-    public function getRawValue()
+    public function getRawValue() : string|int|float|bool|null
     {
         return $this->value;
     }

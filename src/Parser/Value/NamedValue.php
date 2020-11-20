@@ -22,8 +22,7 @@ final class NamedValue
         return $this->value;
     }
 
-    //@phpcs:ignore SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingAnyTypeHint
-    public function getRawValue()
+    public function getRawValue() : \stdClass|array|string|int|float|bool|null
     {
         return $this->value->getRawValue();
     }

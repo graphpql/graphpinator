@@ -15,8 +15,7 @@ final class NullInputedValue implements \Graphpinator\Value\InputedValue, \Graph
         $this->type = $type;
     }
 
-    /** @return null */
-    public function getRawValue()
+    public function getRawValue() : ?bool
     {
         return null;
     }

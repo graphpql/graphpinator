@@ -9,9 +9,9 @@ final class LeafValue implements \Graphpinator\Value\InputedValue, \Graphpinator
     use \Nette\SmartObject;
 
     private \Graphpinator\Type\Contract\LeafDefinition $type;
-    private $rawValue;
+    private string|int|float|bool $rawValue;
 
-    public function __construct(\Graphpinator\Type\Contract\LeafDefinition $type, $rawValue)
+    public function __construct(\Graphpinator\Type\Contract\LeafDefinition $type, string|int|float|bool $rawValue)
     {
         $type->validateResolvedValue($rawValue);
 
@@ -19,8 +19,7 @@ final class LeafValue implements \Graphpinator\Value\InputedValue, \Graphpinator
         $this->rawValue = $rawValue;
     }
 
-    /** @return string|int|float|bool */
-    public function getRawValue()
+    public function getRawValue() : string|int|float|bool
     {
         return $this->rawValue;
     }
@@ -30,8 +29,7 @@ final class LeafValue implements \Graphpinator\Value\InputedValue, \Graphpinator
         return $this->type;
     }
 
-    /** @return string|int|float|bool */
-    public function jsonSerialize()
+    public function jsonSerialize() : string|int|float|bool
     {
         return $this->rawValue;
     }

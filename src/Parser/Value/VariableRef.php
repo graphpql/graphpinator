@@ -15,7 +15,7 @@ final class VariableRef implements \Graphpinator\Parser\Value\Value
         $this->varName = $name;
     }
 
-    public function getRawValue() : void
+    public function getRawValue() : ?bool
     {
         throw new \Graphpinator\Exception\OperationNotSupported();
     }

@@ -54,7 +54,7 @@ abstract class EnumType extends \Graphpinator\Type\Contract\LeafDefinition
             . '}';
     }
 
-    final protected function validateNonNullValue($rawValue) : bool
+    final protected function validateNonNullValue(mixed $rawValue) : bool
     {
         return \is_string($rawValue) && $this->options->offsetExists($rawValue);
     }
