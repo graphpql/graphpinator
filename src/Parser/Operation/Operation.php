@@ -52,21 +52,11 @@ final class Operation
         \Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions
     ) : \Graphpinator\Normalizer\Operation\Operation
     {
-        switch ($this->type) {
-            default:
-            case \Graphpinator\Tokenizer\OperationType::QUERY:
-                $operation = $schema->getQuery();
-
-                break;
-            case \Graphpinator\Tokenizer\OperationType::MUTATION:
-                $operation = $schema->getMutation();
-
-                break;
-            case \Graphpinator\Tokenizer\OperationType::SUBSCRIPTION:
-                $operation = $schema->getSubscription();
-
-                break;
-        }
+        $operation = match ($this->type) {
+            \Graphpinator\Tokenizer\OperationType::QUERY => $schema->getQuery(),
+            \Graphpinator\Tokenizer\OperationType::MUTATION => $schema->getMutation(),
+            \Graphpinator\Tokenizer\OperationType::SUBSCRIPTION => $schema->getSubscription(),
+        };
 
         if (!$operation instanceof \Graphpinator\Type\Type) {
             throw new \Graphpinator\Exception\Normalizer\OperationNotSupported();
