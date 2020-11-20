@@ -20,8 +20,7 @@ final class UploadModule implements \Graphpinator\Module\Module
         $variables = $request->getVariables();
 
         foreach ($this->fileProvider->getMap() as $fileKey => $locations) {
-            $fileValue = new \Graphpinator\Value\LeafValue(
-                new \Graphpinator\Module\Upload\UploadType(),
+            $fileValue = new UploadValue(
                 $this->fileProvider->getFile($fileKey),
             );
 
@@ -48,7 +47,7 @@ final class UploadModule implements \Graphpinator\Module\Module
         array &$keys,
         \Graphpinator\Value\InputedValue $currentValue,
         \Graphpinator\Type\Contract\Definition $type,
-        \Graphpinator\Value\LeafValue $fileValue
+        UploadValue $fileValue
     ) : \Graphpinator\Value\InputedValue
     {
         if ($type instanceof \Graphpinator\Module\Upload\UploadType && $currentValue instanceof \Graphpinator\Value\NullValue) {
