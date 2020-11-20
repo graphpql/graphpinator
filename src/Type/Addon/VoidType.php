@@ -11,6 +11,6 @@ final class VoidType extends \Graphpinator\Type\Scalar\ScalarType
 
     protected function validateNonNullValue(mixed $rawValue) : bool
     {
-        return $rawValue === null;
+        return false;
     }
 }
