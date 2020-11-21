@@ -18,7 +18,7 @@ final class Schema extends \Graphpinator\Type\Type
         $this->container = $container;
     }
 
-    protected function validateNonNullValue($rawValue) : bool
+    public function validateNonNullValue($rawValue) : bool
     {
         return $rawValue instanceof \Graphpinator\Type\Schema;
     }

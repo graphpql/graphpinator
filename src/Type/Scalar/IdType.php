@@ -18,7 +18,7 @@ final class IdType extends \Graphpinator\Type\Scalar\ScalarType
         return parent::createInputedValue($rawValue);
     }
 
-    protected function validateNonNullValue($rawValue) : bool
+    public function validateNonNullValue($rawValue) : bool
     {
         return \is_string($rawValue);
     }

@@ -24,7 +24,7 @@ final class RgbaType extends \Graphpinator\Type\Addon\RgbType
         );
     }
 
-    protected function validateNonNullValue($rawValue) : bool
+    public function validateNonNullValue($rawValue) : bool
     {
         return parent::validateNonNullValue($rawValue)
             && \property_exists($rawValue, 'alpha')

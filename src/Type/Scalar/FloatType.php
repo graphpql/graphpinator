@@ -9,7 +9,7 @@ final class FloatType extends \Graphpinator\Type\Scalar\ScalarType
     protected const NAME = 'Float';
     protected const DESCRIPTION = 'Float built-in type';
 
-    protected function validateNonNullValue($rawValue) : bool
+    public function validateNonNullValue($rawValue) : bool
     {
         return \is_float($rawValue);
     }

@@ -34,12 +34,14 @@ final class IPv4TypeTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider simpleDataProvider
      * @param string $rawValue
-     * @doesNotPerformAssertions
      */
     public function testValidateValue(string $rawValue) : void
     {
         $ipv4 = new \Graphpinator\Type\Addon\IPv4Type();
-        $ipv4->validateResolvedValue($rawValue);
+        $value = $ipv4->createInputedValue($rawValue);
+
+        self::assertSame($ipv4, $value->getType());
+        self::assertSame($rawValue, $value->getRawValue());
     }
 
     /**
@@ -51,6 +53,6 @@ final class IPv4TypeTest extends \PHPUnit\Framework\TestCase
         $this->expectException(\Graphpinator\Exception\Value\InvalidValue::class);
 
         $ipv4 = new \Graphpinator\Type\Addon\IPv4Type();
-        $ipv4->validateResolvedValue($rawValue);
+        $ipv4->createInputedValue($rawValue);
     }
 }

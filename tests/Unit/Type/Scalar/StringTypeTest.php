@@ -32,9 +32,10 @@ final class StringTypeTest extends \PHPUnit\Framework\TestCase
     public function testValidateValue($rawValue) : void
     {
         $string = new \Graphpinator\Type\Scalar\StringType();
-        $string->validateResolvedValue($rawValue);
+        $value = $string->createInputedValue($rawValue);
 
-        self::assertSame($string->getName(), 'String');
+        self::assertSame($string, $value->getType());
+        self::assertSame($rawValue, $value->getRawValue());
     }
 
     /**
@@ -46,6 +47,6 @@ final class StringTypeTest extends \PHPUnit\Framework\TestCase
         $this->expectException(\Graphpinator\Exception\Value\InvalidValue::class);
 
         $string = new \Graphpinator\Type\Scalar\StringType();
-        $string->validateResolvedValue($rawValue);
+        $string->createInputedValue($rawValue);
     }
 }

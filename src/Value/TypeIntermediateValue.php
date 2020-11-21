@@ -13,7 +13,9 @@ final class TypeIntermediateValue implements \Graphpinator\Value\ResolvedValue
 
     public function __construct(\Graphpinator\Type\Type $type, $rawValue)
     {
-        $type->validateResolvedValue($rawValue);
+        if (!$type->validateNonNullValue($rawValue)) {
+            throw new \Graphpinator\Exception\Value\InvalidValue($type->getName(), $rawValue, false);
+        }
 
         $this->type = $type;
         $this->rawValue = $rawValue;

@@ -102,12 +102,14 @@ final class UrlTypeTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider simpleDataProvider
      * @param string $rawValue
-     * @doesNotPerformAssertions
      */
     public function testValidateValue(string $rawValue) : void
     {
         $url = new \Graphpinator\Type\Addon\UrlType();
-        $url->validateResolvedValue($rawValue);
+        $value = $url->createInputedValue($rawValue);
+
+        self::assertSame($url, $value->getType());
+        self::assertSame($rawValue, $value->getRawValue());
     }
 
     /**
@@ -119,6 +121,6 @@ final class UrlTypeTest extends \PHPUnit\Framework\TestCase
         $this->expectException(\Graphpinator\Exception\Value\InvalidValue::class);
 
         $url = new \Graphpinator\Type\Addon\UrlType();
-        $url->validateResolvedValue($rawValue);
+        $url->createInputedValue($rawValue);
     }
 }

@@ -11,9 +11,11 @@ final class LeafValue implements \Graphpinator\Value\InputedValue, \Graphpinator
     private \Graphpinator\Type\Contract\LeafDefinition $type;
     private $rawValue;
 
-    public function __construct(\Graphpinator\Type\Contract\LeafDefinition $type, $rawValue)
+    public function __construct(\Graphpinator\Type\Contract\LeafDefinition $type, $rawValue, bool $inputed)
     {
-        $type->validateResolvedValue($rawValue);
+        if (!$type->validateNonNullValue($rawValue)) {
+            throw new \Graphpinator\Exception\Value\InvalidValue($type->getName(), $rawValue, $inputed);
+        }
 
         $this->type = $type;
         $this->rawValue = $rawValue;
