@@ -90,6 +90,11 @@ final class TestSchema
         {
             protected const NAME = 'Query';
 
+            public function validateNonNullValue($rawValue) : bool
+            {
+                return true;
+            }
+
             protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
             {
                 return new \Graphpinator\Field\ResolvableFieldSet([
@@ -398,11 +403,6 @@ final class TestSchema
                     ),
                 ]);
             }
-
-            public function validateNonNullValue($rawValue) : bool
-            {
-                return true;
-            }
         };
     }
 
@@ -479,6 +479,11 @@ final class TestSchema
                 parent::__construct(new \Graphpinator\Utils\InterfaceSet([TestSchema::getInterface()]));
             }
 
+            public function validateNonNullValue($rawValue) : bool
+            {
+                return true;
+            }
+
             protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
             {
                 return new \Graphpinator\Field\ResolvableFieldSet([
@@ -491,11 +496,6 @@ final class TestSchema
                     ),
                 ]);
             }
-
-            public function validateNonNullValue($rawValue) : bool
-            {
-                return true;
-            }
         };
     }
 
@@ -505,6 +505,11 @@ final class TestSchema
         {
             protected const NAME = 'Zzz';
             protected const DESCRIPTION = null;
+
+            public function validateNonNullValue($rawValue) : bool
+            {
+                return true;
+            }
 
             protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
             {
@@ -517,11 +522,6 @@ final class TestSchema
                         },
                     ),
                 ]);
-            }
-
-            public function validateNonNullValue($rawValue) : bool
-            {
-                return true;
             }
         };
     }
@@ -954,6 +954,11 @@ final class TestSchema
                 ]));
             }
 
+            public function validateNonNullValue($rawValue) : bool
+            {
+                return true;
+            }
+
             protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
             {
                 return new \Graphpinator\Field\ResolvableFieldSet([
@@ -974,11 +979,6 @@ final class TestSchema
                     ),
                 ]);
             }
-
-            public function validateNonNullValue($rawValue) : bool
-            {
-                return true;
-            }
         };
     }
 
@@ -994,6 +994,11 @@ final class TestSchema
                 parent::__construct(new \Graphpinator\Utils\InterfaceSet([
                     TestSchema::getInterfaceEfg(),
                 ]));
+            }
+
+            public function validateNonNullValue($rawValue) : bool
+            {
+                return true;
             }
 
             protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
@@ -1045,11 +1050,6 @@ final class TestSchema
                         ]),
                     ),
                 ]);
-            }
-
-            public function validateNonNullValue($rawValue) : bool
-            {
-                return true;
             }
         };
     }
@@ -1312,6 +1312,11 @@ final class TestSchema
         return new class extends \Graphpinator\Type\Type
         {
             protected const NAME = 'AddonType';
+
+            public function validateNonNullValue($rawValue) : bool
+            {
+                return true;
+            }
 
             protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
             {
@@ -1584,11 +1589,6 @@ final class TestSchema
                     ),
                 ]);
             }
-
-            public function validateNonNullValue($rawValue) : bool
-            {
-                return true;
-            }
         };
     }
 
@@ -1597,6 +1597,11 @@ final class TestSchema
         return new class extends \Graphpinator\Type\Type
         {
             protected const NAME = 'UploadType';
+
+            public function validateNonNullValue($rawValue) : bool
+            {
+                return true;
+            }
 
             protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
             {
@@ -1616,11 +1621,6 @@ final class TestSchema
                         },
                     ),
                 ]);
-            }
-
-            public function validateNonNullValue($rawValue) : bool
-            {
-                return true;
             }
         };
     }
@@ -1653,6 +1653,11 @@ final class TestSchema
         {
             protected const NAME = 'SimpleType';
             protected const DESCRIPTION = 'Simple desc';
+
+            public function validateNonNullValue($rawValue) : bool
+            {
+                return true;
+            }
 
             protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
             {
@@ -1704,11 +1709,6 @@ final class TestSchema
                     ),
                 ]);
             }
-
-            public function validateNonNullValue($rawValue) : bool
-            {
-                return true;
-            }
         };
     }
 
@@ -1718,6 +1718,11 @@ final class TestSchema
         {
             protected const NAME = 'SimpleEmptyTestInput';
             protected const DESCRIPTION = null;
+
+            public function validateNonNullValue($rawValue) : bool
+            {
+                return true;
+            }
 
             protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
             {
@@ -1732,11 +1737,6 @@ final class TestSchema
                     ),
                 ]);
             }
-
-            public function validateNonNullValue($rawValue) : bool
-            {
-                return true;
-            }
         };
     }
 
@@ -1744,6 +1744,11 @@ final class TestSchema
     {
         return new class extends \Graphpinator\Type\Type {
             protected const NAME = 'NullFieldResolution';
+
+            public function validateNonNullValue($rawValue) : bool
+            {
+                return true;
+            }
 
             protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
             {
@@ -1792,11 +1797,6 @@ final class TestSchema
                     ),
                 ]);
             }
-
-            public function validateNonNullValue($rawValue) : bool
-            {
-                return true;
-            }
         };
     }
 
@@ -1804,6 +1804,11 @@ final class TestSchema
     {
         return new class extends \Graphpinator\Type\Type {
             protected const NAME = 'NullListResolution';
+
+            public function validateNonNullValue($rawValue) : bool
+            {
+                return true;
+            }
 
             protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
             {
@@ -1851,11 +1856,6 @@ final class TestSchema
                         ]),
                     ),
                 ]);
-            }
-
-            public function validateNonNullValue($rawValue) : bool
-            {
-                return true;
             }
         };
     }

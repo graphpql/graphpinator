@@ -8,6 +8,8 @@ abstract class LeafDefinition extends \Graphpinator\Type\Contract\ConcreteDefini
     \Graphpinator\Type\Contract\Inputable,
     \Graphpinator\Type\Contract\Resolvable
 {
+    abstract public function validateNonNullValue($rawValue) : bool;
+
     final public function resolve(
         ?\Graphpinator\Normalizer\FieldSet $requestedFields,
         \Graphpinator\Value\ResolvedValue $parentResult
@@ -15,8 +17,6 @@ abstract class LeafDefinition extends \Graphpinator\Type\Contract\ConcreteDefini
     {
         return $parentResult;
     }
-
-    abstract public function validateNonNullValue($rawValue) : bool;
 
     public function createInputedValue($rawValue) : \Graphpinator\Value\InputedValue
     {

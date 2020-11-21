@@ -9,6 +9,17 @@ class RgbType extends \Graphpinator\Type\Type
     protected const NAME = 'Rgb';
     protected const DESCRIPTION = 'Rgb type - type representing the RGB color model.';
 
+    public function validateNonNullValue($rawValue) : bool
+    {
+        return $rawValue instanceof \stdClass
+            && \property_exists($rawValue, 'red')
+            && \property_exists($rawValue, 'green')
+            && \property_exists($rawValue, 'blue')
+            && \is_int($rawValue->red)
+            && \is_int($rawValue->green)
+            && \is_int($rawValue->blue);
+    }
+
     protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
     {
         return new \Graphpinator\Field\ResolvableFieldSet([
@@ -34,16 +45,5 @@ class RgbType extends \Graphpinator\Type\Type
                 },
             ))->addConstraint(new \Graphpinator\Constraint\IntConstraint(0, 255)),
         ]);
-    }
-
-    public function validateNonNullValue($rawValue) : bool
-    {
-        return $rawValue instanceof \stdClass
-            && \property_exists($rawValue, 'red')
-            && \property_exists($rawValue, 'green')
-            && \property_exists($rawValue, 'blue')
-            && \is_int($rawValue->red)
-            && \is_int($rawValue->green)
-            && \is_int($rawValue->blue);
     }
 }

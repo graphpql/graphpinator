@@ -9,6 +9,13 @@ final class RgbaType extends \Graphpinator\Type\Addon\RgbType
     protected const NAME = 'Rgba';
     protected const DESCRIPTION = 'Rgba type - type representing the RGB color model with added alpha (transparency).';
 
+    public function validateNonNullValue($rawValue) : bool
+    {
+        return parent::validateNonNullValue($rawValue)
+            && \property_exists($rawValue, 'alpha')
+            && \is_float($rawValue->alpha);
+    }
+
     protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
     {
         return parent::getFieldDefinition()->merge(
@@ -22,12 +29,5 @@ final class RgbaType extends \Graphpinator\Type\Addon\RgbType
                 ))->addConstraint(new \Graphpinator\Constraint\FloatConstraint(0.0, 1.0)),
             ]),
         );
-    }
-
-    public function validateNonNullValue($rawValue) : bool
-    {
-        return parent::validateNonNullValue($rawValue)
-            && \property_exists($rawValue, 'alpha')
-            && \is_float($rawValue->alpha);
     }
 }

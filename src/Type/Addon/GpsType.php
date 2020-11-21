@@ -9,6 +9,15 @@ final class GpsType extends \Graphpinator\Type\Type
     protected const NAME = 'Gps';
     protected const DESCRIPTION = 'Gps type - latitude and longitude.';
 
+    public function validateNonNullValue($rawValue) : bool
+    {
+        return $rawValue instanceof \stdClass
+            && \property_exists($rawValue, 'lat')
+            && \property_exists($rawValue, 'lng')
+            && \is_float($rawValue->lat)
+            && \is_float($rawValue->lng);
+    }
+
     protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
     {
         return new \Graphpinator\Field\ResolvableFieldSet([
@@ -27,14 +36,5 @@ final class GpsType extends \Graphpinator\Type\Type
                 },
             ))->addConstraint(new \Graphpinator\Constraint\FloatConstraint(-180.0, 180.0)),
         ]);
-    }
-
-    public function validateNonNullValue($rawValue) : bool
-    {
-        return $rawValue instanceof \stdClass
-            && \property_exists($rawValue, 'lat')
-            && \property_exists($rawValue, 'lng')
-            && \is_float($rawValue->lat)
-            && \is_float($rawValue->lng);
     }
 }

@@ -9,6 +9,15 @@ final class PointType extends \Graphpinator\Type\Type
     protected const NAME = 'Point';
     protected const DESCRIPTION = 'Point type - x and y coordinates.';
 
+    public function validateNonNullValue($rawValue) : bool
+    {
+        return $rawValue instanceof \stdClass
+            && \property_exists($rawValue, 'x')
+            && \property_exists($rawValue, 'y')
+            && \is_float($rawValue->x)
+            && \is_float($rawValue->y);
+    }
+
     protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
     {
         return new \Graphpinator\Field\ResolvableFieldSet([
@@ -27,14 +36,5 @@ final class PointType extends \Graphpinator\Type\Type
                 },
             ),
         ]);
-    }
-
-    public function validateNonNullValue($rawValue) : bool
-    {
-        return $rawValue instanceof \stdClass
-            && \property_exists($rawValue, 'x')
-            && \property_exists($rawValue, 'y')
-            && \is_float($rawValue->x)
-            && \is_float($rawValue->y);
     }
 }

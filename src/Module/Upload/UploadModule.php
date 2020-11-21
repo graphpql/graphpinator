@@ -23,7 +23,7 @@ final class UploadModule implements \Graphpinator\Module\Module
             $fileValue = new \Graphpinator\Value\LeafValue(
                 new \Graphpinator\Module\Upload\UploadType(),
                 $this->fileProvider->getFile($fileKey),
-                true
+                true,
             );
 
             foreach ($locations as $location) {
