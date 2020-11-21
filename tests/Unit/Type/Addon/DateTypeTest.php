@@ -54,12 +54,14 @@ final class DateTypeTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider simpleDataProvider
      * @param string $rawValue
-     * @doesNotPerformAssertions
      */
     public function testValidateValue(string $rawValue) : void
     {
         $date = new \Graphpinator\Type\Addon\DateType();
-        $date->validateResolvedValue($rawValue);
+        $value = $date->createInputedValue($rawValue);
+
+        self::assertSame($date, $value->getType());
+        self::assertSame($rawValue, $value->getRawValue());
     }
 
     /**
@@ -71,6 +73,6 @@ final class DateTypeTest extends \PHPUnit\Framework\TestCase
         $this->expectException(\Graphpinator\Exception\Value\InvalidValue::class);
 
         $date = new \Graphpinator\Type\Addon\DateType();
-        $date->validateResolvedValue($rawValue);
+        $date->createInputedValue($rawValue);
     }
 }

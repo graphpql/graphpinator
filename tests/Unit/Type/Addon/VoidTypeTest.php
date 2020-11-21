@@ -27,12 +27,14 @@ final class VoidTypeTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider simpleDataProvider
      * @param void $rawValue
-     * @doesNotPerformAssertions
      */
     public function testValidateValue($rawValue) : void
     {
         $void = new \Graphpinator\Type\Addon\VoidType();
-        $void->validateResolvedValue($rawValue);
+        $value = $void->createInputedValue($rawValue);
+
+        self::assertSame($void, $value->getType());
+        self::assertSame($rawValue, $value->getRawValue());
     }
 
     /**
@@ -44,6 +46,6 @@ final class VoidTypeTest extends \PHPUnit\Framework\TestCase
         $this->expectException(\Graphpinator\Exception\Value\InvalidValue::class);
 
         $void = new \Graphpinator\Type\Addon\VoidType();
-        $void->validateResolvedValue($rawValue);
+        $void->createInputedValue($rawValue);
     }
 }

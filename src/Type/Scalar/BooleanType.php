@@ -9,7 +9,7 @@ final class BooleanType extends \Graphpinator\Type\Scalar\ScalarType
     protected const NAME = 'Boolean';
     protected const DESCRIPTION = 'Boolean built-in type';
 
-    protected function validateNonNullValue(mixed $rawValue) : bool
+    public function validateNonNullValue(mixed $rawValue) : bool
     {
         return \is_bool($rawValue);
     }

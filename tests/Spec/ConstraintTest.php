@@ -1085,7 +1085,7 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
                 $this->addConstraint(new \Graphpinator\Constraint\ObjectConstraint(['field1']));
             }
 
-            protected function validateNonNullValue($rawValue) : bool
+            public function validateNonNullValue($rawValue) : bool
             {
                 return true;
             }

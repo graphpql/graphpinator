@@ -8,8 +8,6 @@ abstract class LeafDefinition extends \Graphpinator\Type\Contract\ConcreteDefini
     \Graphpinator\Type\Contract\Inputable,
     \Graphpinator\Type\Contract\Resolvable
 {
-    use \Graphpinator\Type\Contract\TResolvable;
-
     final public function resolve(
         ?\Graphpinator\Normalizer\FieldSet $requestedFields,
         \Graphpinator\Value\ResolvedValue $parentResult
@@ -18,13 +16,15 @@ abstract class LeafDefinition extends \Graphpinator\Type\Contract\ConcreteDefini
         return $parentResult;
     }
 
+    abstract public function validateNonNullValue(mixed $rawValue) : bool;
+
     public function createInputedValue($rawValue) : \Graphpinator\Value\InputedValue
     {
         if ($rawValue === null) {
             return new \Graphpinator\Value\NullInputedValue($this);
         }
 
-        return new \Graphpinator\Value\LeafValue($this, $rawValue);
+        return new \Graphpinator\Value\LeafValue($this, $rawValue, true);
     }
 
     final public function createResolvedValue($rawValue) : \Graphpinator\Value\ResolvedValue
@@ -33,7 +33,7 @@ abstract class LeafDefinition extends \Graphpinator\Type\Contract\ConcreteDefini
             return new \Graphpinator\Value\NullResolvedValue($this);
         }
 
-        return new \Graphpinator\Value\LeafValue($this, $rawValue);
+        return new \Graphpinator\Value\LeafValue($this, $rawValue, false);
     }
 
     final public function getField(string $name) : \Graphpinator\Field\Field

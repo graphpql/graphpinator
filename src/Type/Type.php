@@ -9,7 +9,6 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
     \Graphpinator\Type\Contract\TypeConditionable,
     \Graphpinator\Type\Contract\InterfaceImplementor
 {
-    use \Graphpinator\Type\Contract\TResolvable;
     use \Graphpinator\Type\Contract\TInterfaceImplementor;
     use \Graphpinator\Type\Contract\TMetaFields;
     use \Graphpinator\Utils\TObjectConstraint;
@@ -20,6 +19,8 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
         $this->implements = $implements
             ?? new \Graphpinator\Utils\InterfaceSet([]);
     }
+
+    abstract public function validateNonNullValue(mixed $rawValue) : bool;
 
     final public function createResolvedValue($rawValue) : \Graphpinator\Value\ResolvedValue
     {

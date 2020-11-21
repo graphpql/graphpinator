@@ -9,7 +9,7 @@ final class JsonType extends \Graphpinator\Type\Scalar\ScalarType
     protected const NAME = 'Json';
     protected const DESCRIPTION = 'Json type - string which contains valid JSON.';
 
-    protected function validateNonNullValue(mixed $rawValue) : bool
+    public function validateNonNullValue(mixed $rawValue) : bool
     {
         try {
             return \is_string($rawValue)

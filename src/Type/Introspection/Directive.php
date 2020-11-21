@@ -18,7 +18,7 @@ final class Directive extends \Graphpinator\Type\Type
         $this->container = $container;
     }
 
-    protected function validateNonNullValue(mixed $rawValue) : bool
+    public function validateNonNullValue(mixed $rawValue) : bool
     {
         return $rawValue instanceof \Graphpinator\Directive\Directive;
     }

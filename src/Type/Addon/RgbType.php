@@ -36,7 +36,7 @@ class RgbType extends \Graphpinator\Type\Type
         ]);
     }
 
-    protected function validateNonNullValue(mixed $rawValue) : bool
+    public function validateNonNullValue(mixed $rawValue) : bool
     {
         return $rawValue instanceof \stdClass
             && \property_exists($rawValue, 'red')
