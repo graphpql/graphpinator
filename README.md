@@ -19,7 +19,7 @@ Install package using composer
 
 ## Dependencies
 
-- PHP >= 7.4
+- PHP >= 8.0 (or >= 7.4 for branched 0.25 release)
 - [infinityloop-dev/utils](https://github.com/infinityloop-dev/utils)
 
 ## How to use
