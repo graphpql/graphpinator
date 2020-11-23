@@ -13,7 +13,7 @@ final class JsonType extends \Graphpinator\Type\Scalar\ScalarType
     {
         try {
             return \is_string($rawValue)
-                && \Graphpinator\Json::fromString($rawValue)->toObject();
+                && \Infinityloop\Utils\Json::fromString($rawValue)->toNative();
         } catch (\JsonException $e) {
             return false;
         }

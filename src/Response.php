@@ -44,6 +44,6 @@ final class Response implements \JsonSerializable
 
     public function toString() : string
     {
-        return \Graphpinator\Json::fromObject($this->jsonSerialize())->toString();
+        return \Infinityloop\Utils\Json\MapJson::fromNative($this->jsonSerialize())->toString();
     }
 }

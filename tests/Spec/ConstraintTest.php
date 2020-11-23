@@ -4,103 +4,105 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Spec;
 
+use Infinityloop\Utils\Json;
+
 final class ConstraintTest extends \PHPUnit\Framework\TestCase
 {
     public function simpleDataProvider() : array
     {
         return [
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { fieldConstraint(arg: {intMinArg: -20, intMaxArg: 20, intOneOfArg: 1}) }',
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['fieldConstraint' => 1]]),
+                Json::fromNative((object) ['data' => ['fieldConstraint' => 1]]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { fieldConstraint(arg: {floatMinArg: 4.01, floatMaxArg: 20.101, floatOneOfArg: 1.01}) }',
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['fieldConstraint' => 1]]),
+                Json::fromNative((object) ['data' => ['fieldConstraint' => 1]]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { fieldConstraint(arg: {stringMinArg: "abcd", stringMaxArg: "abcdefghij"}) }',
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['fieldConstraint' => 1]]),
+                Json::fromNative((object) ['data' => ['fieldConstraint' => 1]]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { fieldConstraint(arg: {stringRegexArg: "foo", stringOneOfArg: "abc"}) }',
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['fieldConstraint' => 1]]),
+                Json::fromNative((object) ['data' => ['fieldConstraint' => 1]]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { fieldConstraint(arg: {listMinArg: [1], listMaxArg: [1, 2, 3]}) }',
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['fieldConstraint' => 1]]),
+                Json::fromNative((object) ['data' => ['fieldConstraint' => 1]]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { fieldConstraint(arg: {listUniqueArg: [1, 2, 3]}) }',
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['fieldConstraint' => 1]]),
+                Json::fromNative((object) ['data' => ['fieldConstraint' => 1]]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { fieldConstraint(arg: {listInnerListArg: [[1, 2], [1, 3]]}) }',
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['fieldConstraint' => 1]]),
+                Json::fromNative((object) ['data' => ['fieldConstraint' => 1]]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { fieldConstraint(arg: {listInnerListArg: [[1, 2], null]}) }',
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['fieldConstraint' => 1]]),
+                Json::fromNative((object) ['data' => ['fieldConstraint' => 1]]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { fieldConstraint(arg: {listMinIntMinArg: [3, 3, 3]}) }',
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['fieldConstraint' => 1]]),
+                Json::fromNative((object) ['data' => ['fieldConstraint' => 1]]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { fieldExactlyOne(arg: {int1: 3}) }',
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['fieldExactlyOne' => 1]]),
+                Json::fromNative((object) ['data' => ['fieldExactlyOne' => 1]]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { fieldExactlyOne(arg: {int2: 3}) }',
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['fieldExactlyOne' => 1]]),
+                Json::fromNative((object) ['data' => ['fieldExactlyOne' => 1]]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { fieldExactlyOne(arg: {int1: null, int2: 3}) }',
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['fieldExactlyOne' => 1]]),
+                Json::fromNative((object) ['data' => ['fieldExactlyOne' => 1]]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { fieldAOrB { fieldA fieldB } }',
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['fieldAOrB' => ['fieldA' => null, 'fieldB' => 1]]]),
+                Json::fromNative((object) ['data' => ['fieldAOrB' => ['fieldA' => null, 'fieldB' => 1]]]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { fieldAOrB { fieldB } }',
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['fieldAOrB' => ['fieldB' => 1]]]),
+                Json::fromNative((object) ['data' => ['fieldAOrB' => ['fieldB' => 1]]]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { fieldAOrB { fieldA } }',
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['fieldAOrB' => ['fieldA' => null]]]),
+                Json::fromNative((object) ['data' => ['fieldAOrB' => ['fieldA' => null]]]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName {
                         fieldListConstraint(arg: [
                             { name: "name1", number: [1,2] },
@@ -112,7 +114,7 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
                         }
                     }',
                 ]),
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'data' => [
                         'fieldListConstraint' => [
                             ['fieldName' => 'name1'],
@@ -127,10 +129,10 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider simpleDataProvider
-     * @param \Graphpinator\Json $request
-     * @param \Graphpinator\Json $expected
+     * @param Json $request
+     * @param Json $expected
      */
-    public function testSimple(\Graphpinator\Json $request, \Graphpinator\Json $expected) : void
+    public function testSimple(Json $request, Json $expected) : void
     {
         $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
         $result = $graphpinator->run(new \Graphpinator\Request\JsonRequestFactory($request));
@@ -143,139 +145,139 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
     {
         return [
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { fieldConstraint(arg: {intMinArg: -21}) }',
                 ]),
                 \Graphpinator\Exception\Constraint\MinConstraintNotSatisfied::class,
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { fieldConstraint(arg: {intMaxArg: 21}) }',
                 ]),
                 \Graphpinator\Exception\Constraint\MaxConstraintNotSatisfied::class,
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { fieldConstraint(arg: {intOneOfArg: 4}) }',
                 ]),
                 \Graphpinator\Exception\Constraint\OneOfConstraintNotSatisfied::class,
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { fieldConstraint(arg: {floatMinArg: 4.0}) }',
                 ]),
                 \Graphpinator\Exception\Constraint\MinConstraintNotSatisfied::class,
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { fieldConstraint(arg: {floatMaxArg: 20.1011}) }',
                 ]),
                 \Graphpinator\Exception\Constraint\MaxConstraintNotSatisfied::class,
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { fieldConstraint(arg: {floatOneOfArg: 2.03}) }',
                 ]),
                 \Graphpinator\Exception\Constraint\OneOfConstraintNotSatisfied::class,
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { fieldConstraint(arg: {stringMinArg: "abc"}) }',
                 ]),
                 \Graphpinator\Exception\Constraint\MinLengthConstraintNotSatisfied::class,
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { fieldConstraint(arg: {stringMaxArg: "abcdefghijk"}) }',
                 ]),
                 \Graphpinator\Exception\Constraint\MaxLengthConstraintNotSatisfied::class,
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { fieldConstraint(arg: {stringOneOfArg: "abcd"}) }',
                 ]),
                 \Graphpinator\Exception\Constraint\OneOfConstraintNotSatisfied::class,
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { fieldConstraint(arg: {stringRegexArg: "fooo"}) }',
                 ]),
                 \Graphpinator\Exception\Constraint\RegexConstraintNotSatisfied::class,
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { fieldConstraint(arg: {listMinArg: []}) }',
                 ]),
                 \Graphpinator\Exception\Constraint\MinItemsConstraintNotSatisfied::class,
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { fieldConstraint(arg: {listMaxArg: [1, 2, 3, 4]}) }',
                 ]),
                 \Graphpinator\Exception\Constraint\MaxItemsConstraintNotSatisfied::class,
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { fieldConstraint(arg: {listUniqueArg: [1, 1]}) }',
                 ]),
                 \Graphpinator\Exception\Constraint\UniqueConstraintNotSatisfied::class,
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { fieldConstraint(arg: {listMinIntMinArg: [3]}) }',
                 ]),
                 \Graphpinator\Exception\Constraint\MinItemsConstraintNotSatisfied::class,
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { fieldConstraint(arg: {listMinIntMinArg: [1, 1, 1]}) }',
                 ]),
                 \Graphpinator\Exception\Constraint\MinConstraintNotSatisfied::class,
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { fieldConstraint(arg: {}) }',
                 ]),
                 \Graphpinator\Exception\Constraint\AtLeastOneConstraintNotSatisfied::class,
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { fieldConstraint(arg: {intMinArg: null}) }',
                 ]),
                 \Graphpinator\Exception\Constraint\AtLeastOneConstraintNotSatisfied::class,
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { fieldExactlyOne(arg: {int1: 3, int2: 3}) }',
                 ]),
                 \Graphpinator\Exception\Constraint\ExactlyOneConstraintNotSatisfied::class,
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { fieldExactlyOne(arg: {}) }',
                 ]),
                 \Graphpinator\Exception\Constraint\ExactlyOneConstraintNotSatisfied::class,
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { fieldExactlyOne(arg: {int1: null}) }',
                 ]),
                 \Graphpinator\Exception\Constraint\ExactlyOneConstraintNotSatisfied::class,
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { fieldExactlyOne(arg: {int2: null}) }',
                 ]),
                 \Graphpinator\Exception\Constraint\ExactlyOneConstraintNotSatisfied::class,
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { fieldExactlyOne(arg: {int1: null, int2: null}) }',
                 ]),
                 \Graphpinator\Exception\Constraint\ExactlyOneConstraintNotSatisfied::class,
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName {
                         fieldListConstraint(arg: [
                             { name: "name1", number: [1,2] },
@@ -293,7 +295,7 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
                 \Graphpinator\Exception\Constraint\MaxItemsConstraintNotSatisfied::class,
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName {
                         fieldListConstraint(arg: [])
                         {
@@ -308,10 +310,10 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider invalidDataProvider
-     * @param \Graphpinator\Json $request
+     * @param Json $request
      * @param string $exception
      */
-    public function testInvalid(\Graphpinator\Json $request, string $exception) : void
+    public function testInvalid(Json $request, string $exception) : void
     {
         $this->expectException($exception);
         $this->expectExceptionMessage(\constant($exception . '::MESSAGE'));
@@ -775,7 +777,7 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
                     'value' => -19,
                     'constraint' => new \Graphpinator\Constraint\IntConstraint(-20),
                 ],
-                \Graphpinator\Json::fromObject((object) ['data' => ['field1' => -19]]),
+                Json::fromNative((object) ['data' => ['field1' => -19]]),
             ],
             [
                 [
@@ -783,7 +785,7 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
                     'value' => 19,
                     'constraint' => new \Graphpinator\Constraint\IntConstraint(null, 20),
                 ],
-                \Graphpinator\Json::fromObject((object) ['data' => ['field1' => 19]]),
+                Json::fromNative((object) ['data' => ['field1' => 19]]),
             ],
             [
                 [
@@ -791,7 +793,7 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
                     'value' => 2,
                     'constraint' => new \Graphpinator\Constraint\IntConstraint(null, null, [1, 2, 3]),
                 ],
-                \Graphpinator\Json::fromObject((object) ['data' => ['field1' => 2]]),
+                Json::fromNative((object) ['data' => ['field1' => 2]]),
             ],
             [
                 [
@@ -799,7 +801,7 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
                     'value' => [1, 2],
                     'constraint' => new \Graphpinator\Constraint\ListConstraint(1),
                 ],
-                \Graphpinator\Json::fromObject((object) ['data' => ['field1' => [1, 2]]]),
+                Json::fromNative((object) ['data' => ['field1' => [1, 2]]]),
             ],
             [
                 [
@@ -807,7 +809,7 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
                     'value' => [1, 2],
                     'constraint' => new \Graphpinator\Constraint\ListConstraint(null, 2),
                 ],
-                \Graphpinator\Json::fromObject((object) ['data' => ['field1' => [1, 2]]]),
+                Json::fromNative((object) ['data' => ['field1' => [1, 2]]]),
             ],
             [
                 [
@@ -815,7 +817,7 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
                     'value' => [1, 2],
                     'constraint' => new \Graphpinator\Constraint\ListConstraint(null, null, true),
                 ],
-                \Graphpinator\Json::fromObject((object) ['data' => ['field1' => [1, 2]]]),
+                Json::fromNative((object) ['data' => ['field1' => [1, 2]]]),
             ],
             [
                 [
@@ -823,7 +825,7 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
                     'value' => [1, 2],
                     'constraint' => new \Graphpinator\Constraint\ListConstraint(2, 3, true),
                 ],
-                \Graphpinator\Json::fromObject((object) ['data' => ['field1' => [1, 2]]]),
+                Json::fromNative((object) ['data' => ['field1' => [1, 2]]]),
             ],
             [
                 [
@@ -834,7 +836,7 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
                         'maxItems' => 3,
                     ]),
                 ],
-                \Graphpinator\Json::fromObject((object) ['data' => ['field1' => [[1, 2]]]]),
+                Json::fromNative((object) ['data' => ['field1' => [[1, 2]]]]),
             ],
             [
                 [
@@ -842,7 +844,7 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
                     'value' => 1.00,
                     'constraint' => new \Graphpinator\Constraint\FloatConstraint(0.99),
                 ],
-                \Graphpinator\Json::fromObject((object) ['data' => ['field1' => 1.00]]),
+                Json::fromNative((object) ['data' => ['field1' => 1.00]]),
             ],
             [
                 [
@@ -850,7 +852,7 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
                     'value' => 2.00,
                     'constraint' => new \Graphpinator\Constraint\FloatConstraint(null, 2.01),
                 ],
-                \Graphpinator\Json::fromObject((object) ['data' => ['field1' => 2.00]]),
+                Json::fromNative((object) ['data' => ['field1' => 2.00]]),
             ],
             [
                 [
@@ -858,7 +860,7 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
                     'value' => 2.00,
                     'constraint' => new \Graphpinator\Constraint\FloatConstraint(null, null, [1.05, 2.00, 2.05]),
                 ],
-                \Graphpinator\Json::fromObject((object) ['data' => ['field1' => 2.00]]),
+                Json::fromNative((object) ['data' => ['field1' => 2.00]]),
             ],
             [
                 [
@@ -866,7 +868,7 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
                     'value' => 'Shrek',
                     'constraint' => new \Graphpinator\Constraint\StringConstraint(4),
                 ],
-                \Graphpinator\Json::fromObject((object) ['data' => ['field1' => 'Shrek']]),
+                Json::fromNative((object) ['data' => ['field1' => 'Shrek']]),
             ],
             [
                 [
@@ -874,7 +876,7 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
                     'value' => 'abc',
                     'constraint' => new \Graphpinator\Constraint\StringConstraint(null, 4),
                 ],
-                \Graphpinator\Json::fromObject((object) ['data' => ['field1' => 'abc']]),
+                Json::fromNative((object) ['data' => ['field1' => 'abc']]),
             ],
             [
                 [
@@ -882,7 +884,7 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
                     'value' => 'beetlejuice',
                     'constraint' => new \Graphpinator\Constraint\StringConstraint(null, null, '/^(shrek)|(beetlejuice)$/'),
                 ],
-                \Graphpinator\Json::fromObject((object) ['data' => ['field1' => 'beetlejuice']]),
+                Json::fromNative((object) ['data' => ['field1' => 'beetlejuice']]),
             ],
         ];
     }
@@ -890,11 +892,11 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider fieldConstraintsDataProvider
      * @param array $settings
-     * @param \Graphpinator\Json $expected
+     * @param Json $expected
      */
-    public function testFieldConstraints(array $settings, \Graphpinator\Json $expected) : void
+    public function testFieldConstraints(array $settings, Json $expected) : void
     {
-        $request = \Graphpinator\Json::fromObject((object) [
+        $request = Json::fromNative((object) [
             'query' => 'query queryName { field1 }',
         ]);
 
@@ -1062,7 +1064,7 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
         $this->expectException($exception);
         $this->expectExceptionMessage(\constant($exception . '::MESSAGE'));
 
-        $request = \Graphpinator\Json::fromObject((object) [
+        $request = Json::fromNative((object) [
             'query' => 'query queryName { field1 }',
         ]);
 

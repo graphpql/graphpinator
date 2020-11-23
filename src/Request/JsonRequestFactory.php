@@ -12,13 +12,18 @@ final class JsonRequestFactory implements \Graphpinator\Request\RequestFactory
     public const VARIABLES = 'variables';
     public const OPERATION_NAME = 'operationName';
 
-    private \Graphpinator\Json $json;
+    private \Infinityloop\Utils\Json\JsonContract $json;
     private bool $strict;
 
-    public function __construct(\Graphpinator\Json $json, bool $strict = true)
+    public function __construct(\Infinityloop\Utils\Json\JsonContract $json, bool $strict = true)
     {
         $this->json = $json;
         $this->strict = $strict;
+    }
+
+    public static function fromString(string $json, bool $strict = true) : self
+    {
+        return new self(\Infinityloop\Utils\Json\MapJson::fromString($json), $strict);
     }
 
     public function create() : Request

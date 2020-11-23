@@ -30,7 +30,7 @@ final class PsrRequestFactory implements \Graphpinator\Request\RequestFactory
 
         if (\is_string($contentType) && \str_starts_with($contentType, 'multipart/form-data')) {
             if ($method === 'POST' && \array_key_exists('operations', $this->request->getParsedBody())) {
-                return $this->applyJsonFactory(\Graphpinator\Json::fromString($this->request->getParsedBody()['operations']));
+                return $this->applyJsonFactory(\Infinityloop\Utils\Json\MapJson::fromString($this->request->getParsedBody()['operations']));
             }
 
             throw new \Graphpinator\Exception\Request\InvalidMultipartRequest();
@@ -40,19 +40,19 @@ final class PsrRequestFactory implements \Graphpinator\Request\RequestFactory
             case 'application/graphql':
                 return new \Graphpinator\Request\Request($this->request->getBody()->getContents());
             case 'application/json':
-                return $this->applyJsonFactory(\Graphpinator\Json::fromString($this->request->getBody()->getContents()));
+                return $this->applyJsonFactory(\Infinityloop\Utils\Json\MapJson::fromString($this->request->getBody()->getContents()));
             default:
                 $params = $this->request->getQueryParams();
 
                 if (\array_key_exists('variables', $params)) {
-                    $params['variables'] = \Graphpinator\Json::fromString($params['variables'])->toObject();
+                    $params['variables'] = \Infinityloop\Utils\Json\MapJson::fromString($params['variables'])->toNative();
                 }
 
-                return $this->applyJsonFactory(\Graphpinator\Json::fromObject((object) $params));
+                return $this->applyJsonFactory(\Infinityloop\Utils\Json\MapJson::fromNative((object) $params));
         }
     }
 
-    private function applyJsonFactory(\Graphpinator\Json $json) : Request
+    private function applyJsonFactory(\Infinityloop\Utils\Json\MapJson $json) : Request
     {
         $jsonFactory = new \Graphpinator\Request\JsonRequestFactory($json, $this->strict);
 

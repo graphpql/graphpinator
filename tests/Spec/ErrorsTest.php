@@ -4,16 +4,18 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Spec;
 
+use Infinityloop\Utils\Json;
+
 final class ErrorsTest extends \PHPUnit\Framework\TestCase
 {
     public function tokenizerDataProvider() : array
     {
         return [
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName ($ var1: Int) { }',
                 ]),
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'errors' => [
                         [
                             'message' => \Graphpinator\Exception\Tokenizer\MissingVariableName::MESSAGE,
@@ -23,10 +25,10 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
                 ]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { .. fragment }',
                 ]),
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'errors' => [
                         [
                             'message' => \Graphpinator\Exception\Tokenizer\InvalidEllipsis::MESSAGE,
@@ -42,10 +44,10 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
     {
         return [
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => '   ',
                 ]),
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'errors' => [
                         [
                             'message' => \Graphpinator\Exception\Parser\EmptyRequest::MESSAGE,
@@ -55,10 +57,10 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
                 ]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'fragment Abc on Abc { field }',
                 ]),
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'errors' => [
                         [
                             'message' => \Graphpinator\Exception\Parser\MissingOperation::MESSAGE,
@@ -68,10 +70,10 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
                 ]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { fieldUnion { ',
                 ]),
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'errors' => [
                         [
                             'message' => \Graphpinator\Exception\Parser\UnexpectedEnd::MESSAGE,
@@ -81,10 +83,10 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
                 ]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { field } query queryName { field }',
                 ]),
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'errors' => [
                         [
                             'message' => \Graphpinator\Exception\Parser\DuplicateOperation::MESSAGE,
@@ -94,10 +96,10 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
                 ]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { field } query queryName { field }',
                 ]),
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'errors' => [
                         [
                             'message' => \Graphpinator\Exception\Parser\DuplicateOperation::MESSAGE,
@@ -113,112 +115,112 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
     {
         return [
             [
-                \Graphpinator\Json::fromObject((object) []),
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) []),
+                Json::fromNative((object) [
                     'errors' => [
                         ['message' => 'Invalid request - "query" key not found in request body JSON.'],
                     ],
                 ]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => '{ fieldAbc @blaDirective() { fieldXyz { name } } }',
                 ]),
-                \Graphpinator\Json::fromObject((object) ['errors' => [['message' => 'Unknown directive "blaDirective".']]]),
+                Json::fromNative((object) ['errors' => [['message' => 'Unknown directive "blaDirective".']]]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => '{ fieldAbc { ... on BlaType { fieldXyz { name } } } }',
                 ]),
-                \Graphpinator\Json::fromObject((object) ['errors' => [['message' => 'Unknown type "BlaType".']]]),
+                Json::fromNative((object) ['errors' => [['message' => 'Unknown type "BlaType".']]]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => '{ fieldAbc { ... on String { fieldXyz { name } } } }',
                 ]),
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'errors' => [
                         ['message' => 'Fragment type condition must be outputable composite type.'],
                     ],
                 ]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => '{ fieldAbc { ... fragmentName } } fragment fragmentName on String { fieldXyz { name } }',
                 ]),
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'errors' => [
                         ['message' => 'Fragment type condition must be outputable composite type.'],
                     ],
                 ]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => '{ fieldAbc { ... on SimpleInput { fieldXyz { name } } } }',
                 ]),
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'errors' => [
                         ['message' => 'Fragment type condition must be outputable composite type.'],
                     ],
                 ]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => '{ fieldAbc { fieldXyz @testDirective(if: true) { name } } }',
                 ]),
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'errors' => [
                         ['message' => 'Unknown argument "if" provided for "@testDirective".'],
                     ],
                 ]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => '{ fieldInvalidInput { fieldName fieldNumber fieldBool notDefinedField } }',
                 ]),
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'errors' => [
                         ['message' => 'Unknown field "notDefinedField" requested for type "SimpleType".'],
                     ],
                 ]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { fieldFragment { ... interfaceEfgFragment } }
                     fragment interfaceEfgFragment on InterfaceEfg {  
                         ... on InterfaceAbc { name }
                     }',
                 ]),
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'errors' => [
                         ['message' => 'Invalid fragment type condition. ("InterfaceAbc" is not instance of "InterfaceEfg").'],
                     ],
                 ]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName ($var1: Int = "123") { fieldAbc { fieldXyz { name } } }',
                     'variables' => (object) [],
                 ]),
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'errors' => [
                         ['message' => 'Invalid value resolved for type "Int" - got "123".'],
                     ],
                 ]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName ($var1: Int!) { fieldAbc { fieldXyz { name } } }',
                     'variables' => (object) [],
                 ]),
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'errors' => [
                         ['message' => 'Not-null type with null value.'],
                     ],
                 ]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { 
                         fieldAbstractNullList { 
                             ... on Abc { fieldXyz { name } } 
@@ -226,25 +228,25 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
                         } 
                     }',
                 ]),
-                \Graphpinator\Json::fromObject((object) ['errors' => [['message' => 'Server responded with unknown error.']]]),
+                Json::fromNative((object) ['errors' => [['message' => 'Server responded with unknown error.']]]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => '{ fieldUnion @invalidDirective() { ... on Abc { fieldXyz { name } } } }',
                 ]),
-                \Graphpinator\Json::fromObject((object) ['errors' => [['message' => 'Server responded with unknown error.']]]),
+                Json::fromNative((object) ['errors' => [['message' => 'Server responded with unknown error.']]]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => '{ fieldThrow { fieldXyz { name } } }',
                 ]),
-                \Graphpinator\Json::fromObject((object) ['errors' => [['message' => 'Server responded with unknown error.']]]),
+                Json::fromNative((object) ['errors' => [['message' => 'Server responded with unknown error.']]]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => '{ fieldInvalidType { } }',
                 ]),
-                \Graphpinator\Json::fromObject((object) ['errors' => [['message' => 'Server responded with unknown error.']]]),
+                Json::fromNative((object) ['errors' => [['message' => 'Server responded with unknown error.']]]),
             ],
         ];
     }
@@ -253,10 +255,10 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
      * @dataProvider tokenizerDataProvider
      * @dataProvider parserDataProvider
      * @dataProvider normalizerDataProvider
-     * @param \Graphpinator\Json $request
-     * @param \Graphpinator\Json $expected
+     * @param Json $request
+     * @param Json $expected
      */
-    public function testSimple(\Graphpinator\Json $request, \Graphpinator\Json $expected) : void
+    public function testSimple(Json $request, Json $expected) : void
     {
         $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema(), true);
         $result = $graphpinator->run(new \Graphpinator\Request\JsonRequestFactory($request));
@@ -282,7 +284,7 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
         return [
             [
                 $httpRequest,
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'errors' => [
                         ['message' => 'Invalid request - only GET and POST methods are supported.'],
                     ],
@@ -290,7 +292,7 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 $httpRequest2,
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'errors' => [
                         ['message' => 'Invalid multipart request - request must be POST and contain "operations" data.'],
                     ],
@@ -298,7 +300,7 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 $httpRequest3,
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'errors' => [
                         ['message' => 'Invalid multipart request - request must be POST and contain "operations" data.'],
                     ],
@@ -310,9 +312,9 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider psrDataProvider
      * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @param \Graphpinator\Json $expected
+     * @param Json $expected
      */
-    public function testPsrRequest(\Psr\Http\Message\ServerRequestInterface $request, \Graphpinator\Json $expected) : void
+    public function testPsrRequest(\Psr\Http\Message\ServerRequestInterface $request, Json $expected) : void
     {
         $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema(), true);
         $result = $graphpinator->run(new \Graphpinator\Request\PsrRequestFactory($request));
