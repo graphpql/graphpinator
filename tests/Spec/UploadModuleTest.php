@@ -113,7 +113,7 @@ final class UploadModuleTest extends \PHPUnit\Framework\TestCase
         $file->method('getClientFilename')->willReturn('a.txt');
         $file->method('getStream')->willReturn($stream);
         $fileProvider = $this->createStub(\Graphpinator\Module\Upload\FileProvider::class);
-        $fileProvider->method('getMap')->willReturn(Json::fromString($map));
+        $fileProvider->method('getMap')->willReturn(Json\MapJson::fromString($map));
         $fileProvider->method('getFile')->willReturn($file);
         $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema(), false, new \Graphpinator\Module\ModuleSet([
             new \Graphpinator\Module\Upload\UploadModule($fileProvider),
@@ -188,7 +188,7 @@ final class UploadModuleTest extends \PHPUnit\Framework\TestCase
         $file->method('getClientFilename')->willReturn('a.txt');
         $file->method('getStream')->willReturn($stream);
         $fileProvider = $this->createStub(\Graphpinator\Module\Upload\FileProvider::class);
-        $fileProvider->method('getMap')->willReturn(Json::fromString($map));
+        $fileProvider->method('getMap')->willReturn(Json\MapJson::fromString($map));
         $fileProvider->method('getFile')->willReturn($file);
         $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema(), false, new \Graphpinator\Module\ModuleSet([
             new \Graphpinator\Module\Upload\UploadModule($fileProvider),
