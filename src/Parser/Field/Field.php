@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Parser;
+namespace Graphpinator\Parser\Field;
 
 final class Field
 {
@@ -10,14 +10,14 @@ final class Field
 
     private string $name;
     private ?string $alias;
-    private ?\Graphpinator\Parser\FieldSet $children;
+    private ?\Graphpinator\Parser\Field\FieldSet $children;
     private ?\Graphpinator\Parser\Value\NamedValueSet $arguments;
     private ?\Graphpinator\Parser\Directive\DirectiveSet $directives;
 
     public function __construct(
         string $name,
         ?string $alias = null,
-        ?\Graphpinator\Parser\FieldSet $children = null,
+        ?\Graphpinator\Parser\Field\FieldSet $children = null,
         ?\Graphpinator\Parser\Value\NamedValueSet $arguments = null,
         ?\Graphpinator\Parser\Directive\DirectiveSet $directives = null
     )
@@ -39,7 +39,7 @@ final class Field
         return $this->alias;
     }
 
-    public function getFields() : ?\Graphpinator\Parser\FieldSet
+    public function getFields() : ?\Graphpinator\Parser\Field\FieldSet
     {
         return $this->children;
     }

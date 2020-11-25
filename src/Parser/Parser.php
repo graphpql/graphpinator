@@ -171,7 +171,7 @@ final class Parser
      * Expects iterator on previous token - opening brace
      * Leaves iterator to last used token - closing brace
      */
-    private function parseSelectionSet() : FieldSet
+    private function parseSelectionSet() : \Graphpinator\Parser\Field\FieldSet
     {
         $fields = [];
         $fragments = [];
@@ -198,7 +198,7 @@ final class Parser
 
         $this->tokenizer->getNext();
 
-        return new \Graphpinator\Parser\FieldSet($fields, new \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet($fragments));
+        return new \Graphpinator\Parser\Field\FieldSet($fields, new \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet($fragments));
     }
 
     /**
@@ -207,7 +207,7 @@ final class Parser
      * Expects iterator on previous token - field name
      * Leaves iterator to last used token - last token in field definition
      */
-    private function parseField() : Field
+    private function parseField() : \Graphpinator\Parser\Field\Field
     {
         $fieldName = $this->tokenizer->getCurrent()->getValue();
         $aliasName = null;
@@ -233,7 +233,7 @@ final class Parser
             $children = $this->parseSelectionSet();
         }
 
-        return new \Graphpinator\Parser\Field($fieldName, $aliasName, $children, $arguments, $directives);
+        return new \Graphpinator\Parser\Field\Field($fieldName, $aliasName, $children, $arguments, $directives);
     }
 
     /**

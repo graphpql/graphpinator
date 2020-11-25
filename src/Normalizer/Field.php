@@ -16,7 +16,7 @@ final class Field
     private ?\Graphpinator\Type\Contract\TypeConditionable $typeCond = null;
 
     public function __construct(
-        \Graphpinator\Parser\Field $parserField,
+        \Graphpinator\Parser\Field\Field $parserField,
         \Graphpinator\Type\Contract\NamedDefinition $parentType,
         \Graphpinator\Container\Container $typeContainer,
         \Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions
@@ -43,7 +43,7 @@ final class Field
             ? $parserField->getDirectives()->normalize($typeContainer)
             : new \Graphpinator\Normalizer\Directive\DirectiveSet([], \Graphpinator\Directive\ExecutableDirectiveLocation::FIELD);
 
-        if ($parserField->getFields() instanceof \Graphpinator\Parser\FieldSet) {
+        if ($parserField->getFields() instanceof \Graphpinator\Parser\Field\FieldSet) {
             $this->children = $parserField->getFields()->normalize($fieldType, $typeContainer, $fragmentDefinitions);
         } elseif (!$fieldType instanceof \Graphpinator\Type\Contract\LeafDefinition) {
             throw new \Graphpinator\Exception\Resolver\SelectionOnComposite();

@@ -10,11 +10,11 @@ final class Operation
 
     private string $type;
     private ?string $name;
-    private \Graphpinator\Parser\FieldSet $children;
+    private \Graphpinator\Parser\Field\FieldSet $children;
     private \Graphpinator\Parser\Variable\VariableSet $variables;
 
     public function __construct(
-        \Graphpinator\Parser\FieldSet $children,
+        \Graphpinator\Parser\Field\FieldSet $children,
         string $type = \Graphpinator\Tokenizer\OperationType::QUERY,
         ?string $name = null,
         ?\Graphpinator\Parser\Variable\VariableSet $variables = null
@@ -37,7 +37,7 @@ final class Operation
         return $this->name;
     }
 
-    public function getFields() : \Graphpinator\Parser\FieldSet
+    public function getFields() : \Graphpinator\Parser\Field\FieldSet
     {
         return $this->children;
     }

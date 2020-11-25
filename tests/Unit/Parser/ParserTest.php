@@ -459,7 +459,7 @@ final class ParserTest extends \PHPUnit\Framework\TestCase
         self::assertSame('fieldName', $operation->getFields()->offsetGet(0)->getName());
         self::assertNull($operation->getFields()->offsetGet(0)->getAlias());
         self::assertNull($operation->getFields()->offsetGet(0)->getArguments());
-        self::assertInstanceOf(\Graphpinator\Parser\FieldSet::class, $operation->getFields()->offsetGet(0)->getFields());
+        self::assertInstanceOf(\Graphpinator\Parser\Field\FieldSet::class, $operation->getFields()->offsetGet(0)->getFields());
         self::assertCount(1, $operation->getFields()->offsetGet(0)->getFields());
         self::assertArrayHasKey(0, $operation->getFields()->offsetGet(0)->getFields());
         self::assertSame('innerField', $operation->getFields()->offsetGet(0)->getFields()->offsetGet(0)->getName());
@@ -507,7 +507,7 @@ final class ParserTest extends \PHPUnit\Framework\TestCase
         );
         self::assertCount(1, $operation->getFields()->offsetGet(0)->getArguments());
         self::assertArrayHasKey('argName', $operation->getFields()->offsetGet(0)->getArguments());
-        self::assertInstanceOf(\Graphpinator\Parser\FieldSet::class, $operation->getFields()->offsetGet(0)->getFields());
+        self::assertInstanceOf(\Graphpinator\Parser\Field\FieldSet::class, $operation->getFields()->offsetGet(0)->getFields());
         self::assertCount(1, $operation->getFields()->offsetGet(0)->getFields());
         self::assertArrayHasKey(0, $operation->getFields()->offsetGet(0)->getFields());
         self::assertSame('innerField', $operation->getFields()->offsetGet(0)->getFields()->offsetGet(0)->getName());
@@ -543,7 +543,7 @@ final class ParserTest extends \PHPUnit\Framework\TestCase
         );
         self::assertCount(1, $operation->getFields()->offsetGet(0)->getArguments());
         self::assertArrayHasKey('argName', $operation->getFields()->offsetGet(0)->getArguments());
-        self::assertInstanceOf(\Graphpinator\Parser\FieldSet::class, $operation->getFields()->offsetGet(0)->getFields());
+        self::assertInstanceOf(\Graphpinator\Parser\Field\FieldSet::class, $operation->getFields()->offsetGet(0)->getFields());
         self::assertCount(1, $operation->getFields()->offsetGet(0)->getFields());
         self::assertArrayHasKey(0, $operation->getFields()->offsetGet(0)->getFields());
         self::assertSame('innerField', $operation->getFields()->offsetGet(0)->getFields()->offsetGet(0)->getName());

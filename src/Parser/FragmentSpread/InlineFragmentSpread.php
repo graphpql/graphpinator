@@ -8,12 +8,12 @@ final class InlineFragmentSpread implements \Graphpinator\Parser\FragmentSpread\
 {
     use \Nette\SmartObject;
 
-    private \Graphpinator\Parser\FieldSet $fields;
+    private \Graphpinator\Parser\Field\FieldSet $fields;
     private \Graphpinator\Parser\Directive\DirectiveSet $directives;
     private ?\Graphpinator\Parser\TypeRef\NamedTypeRef $typeCond;
 
     public function __construct(
-        \Graphpinator\Parser\FieldSet $fields,
+        \Graphpinator\Parser\Field\FieldSet $fields,
         ?\Graphpinator\Parser\Directive\DirectiveSet $directives = null,
         ?\Graphpinator\Parser\TypeRef\NamedTypeRef $typeCond = null
     )
@@ -24,7 +24,7 @@ final class InlineFragmentSpread implements \Graphpinator\Parser\FragmentSpread\
         $this->typeCond = $typeCond;
     }
 
-    public function getFields() : \Graphpinator\Parser\FieldSet
+    public function getFields() : \Graphpinator\Parser\Field\FieldSet
     {
         return $this->fields;
     }
