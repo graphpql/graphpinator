@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Normalizer;
+namespace Graphpinator\Normalizer\Field;
 
 final class Field
 {
@@ -12,7 +12,7 @@ final class Field
     private string $alias;
     private \Graphpinator\Parser\Value\NamedValueSet $arguments;
     private \Graphpinator\Normalizer\Directive\DirectiveSet $directives;
-    private ?\Graphpinator\Normalizer\FieldSet $children = null;
+    private ?\Graphpinator\Normalizer\Field\FieldSet $children = null;
     private ?\Graphpinator\Type\Contract\TypeConditionable $typeCond = null;
 
     public function __construct(
@@ -70,7 +70,7 @@ final class Field
         return $this->directives;
     }
 
-    public function getFields() : ?\Graphpinator\Normalizer\FieldSet
+    public function getFields() : ?\Graphpinator\Normalizer\Field\FieldSet
     {
         return $this->children;
     }

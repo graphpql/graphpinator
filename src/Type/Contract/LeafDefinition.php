@@ -9,7 +9,7 @@ abstract class LeafDefinition extends \Graphpinator\Type\Contract\ConcreteDefini
     \Graphpinator\Type\Contract\Resolvable
 {
     final public function resolve(
-        ?\Graphpinator\Normalizer\FieldSet $requestedFields,
+        ?\Graphpinator\Normalizer\Field\FieldSet $requestedFields,
         \Graphpinator\Value\ResolvedValue $parentResult
     ) : \Graphpinator\Value\LeafValue
     {

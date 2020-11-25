@@ -31,7 +31,7 @@ final class NotNullType extends \Graphpinator\Type\Contract\ModifierDefinition
     }
 
     public function resolve(
-        ?\Graphpinator\Normalizer\FieldSet $requestedFields,
+        ?\Graphpinator\Normalizer\Field\FieldSet $requestedFields,
         \Graphpinator\Value\ResolvedValue $parentResult
     ) : \Graphpinator\Value\ResolvedValue
     {

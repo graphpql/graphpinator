@@ -32,11 +32,11 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
     }
 
     final public function resolve(
-        ?\Graphpinator\Normalizer\FieldSet $requestedFields,
+        ?\Graphpinator\Normalizer\Field\FieldSet $requestedFields,
         \Graphpinator\Value\ResolvedValue $parentResult
     ) : \Graphpinator\Value\TypeValue
     {
-        \assert($requestedFields instanceof \Graphpinator\Normalizer\FieldSet);
+        \assert($requestedFields instanceof \Graphpinator\Normalizer\Field\FieldSet);
         $resolved = new \stdClass();
 
         foreach ($requestedFields as $field) {

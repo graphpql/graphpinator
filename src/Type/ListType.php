@@ -25,7 +25,7 @@ final class ListType extends \Graphpinator\Type\Contract\ModifierDefinition
     }
 
     public function resolve(
-        ?\Graphpinator\Normalizer\FieldSet $requestedFields,
+        ?\Graphpinator\Normalizer\Field\FieldSet $requestedFields,
         \Graphpinator\Value\ResolvedValue $parentResult
     ) : \Graphpinator\Value\ListResolvedValue
     {

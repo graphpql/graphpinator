@@ -8,10 +8,10 @@ final class FragmentSpread
 {
     use \Nette\SmartObject;
 
-    private \Graphpinator\Normalizer\FieldSet $children;
+    private \Graphpinator\Normalizer\Field\FieldSet $children;
 
     public function __construct(
-        \Graphpinator\Normalizer\FieldSet $fields,
+        \Graphpinator\Normalizer\Field\FieldSet $fields,
         \Graphpinator\Normalizer\Directive\DirectiveSet $directives,
         ?\Graphpinator\Type\Contract\TypeConditionable $typeCond
     )
@@ -24,7 +24,7 @@ final class FragmentSpread
         }
     }
 
-    public function getFields() : \Graphpinator\Normalizer\FieldSet
+    public function getFields() : \Graphpinator\Normalizer\Field\FieldSet
     {
         return $this->children;
     }

@@ -2,11 +2,11 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Normalizer;
+namespace Graphpinator\Normalizer\Field;
 
 /**
- * @method \Graphpinator\Normalizer\Field current() : object
- * @method \Graphpinator\Normalizer\Field offsetGet($offset) : object
+ * @method \Graphpinator\Normalizer\Field\Field current() : object
+ * @method \Graphpinator\Normalizer\Field\Field offsetGet($offset) : object
  */
 final class FieldSet extends \Infinityloop\Utils\ObjectSet
 {
@@ -27,7 +27,7 @@ final class FieldSet extends \Infinityloop\Utils\ObjectSet
 
     public function mergeFieldSet(
         \Graphpinator\Type\Contract\NamedDefinition $parentType,
-        \Graphpinator\Normalizer\FieldSet $fieldSet
+        \Graphpinator\Normalizer\Field\FieldSet $fieldSet
     ) : void
     {
         foreach ($fieldSet as $field) {
@@ -43,7 +43,7 @@ final class FieldSet extends \Infinityloop\Utils\ObjectSet
 
     public function offsetSet($offset, $object) : void
     {
-        \assert($object instanceof Field);
+        \assert($object instanceof \Graphpinator\Normalizer\Field\Field);
 
         if (!\array_key_exists($object->getAlias(), $this->fieldsForName)) {
             $this->fieldsForName[$object->getAlias()] = [];
@@ -56,7 +56,7 @@ final class FieldSet extends \Infinityloop\Utils\ObjectSet
 
     private function mergeConflictingField(
         \Graphpinator\Type\Contract\NamedDefinition $parentType,
-        \Graphpinator\Normalizer\Field $field
+        \Graphpinator\Normalizer\Field\Field $field
     ) : void
     {
         $fieldArguments = $field->getArguments();
@@ -65,7 +65,7 @@ final class FieldSet extends \Infinityloop\Utils\ObjectSet
         $fieldReturnType = $fieldParentType->getField($field->getName())->getType();
 
         foreach ($this->fieldsForName[$field->getAlias()] as $conflict) {
-            \assert($conflict instanceof Field);
+            \assert($conflict instanceof \Graphpinator\Normalizer\Field\Field);
 
             $conflictArguments = $conflict->getArguments();
             $conflictParentType = $conflict->getTypeCondition()
