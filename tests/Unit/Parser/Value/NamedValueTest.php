@@ -24,7 +24,7 @@ final class NamedValueTest extends \PHPUnit\Framework\TestCase
      */
     public function testSimple(\Graphpinator\Parser\Value\Value $value, string $name) : void
     {
-        $obj = new \Graphpinator\Parser\Value\NamedValue($value, $name);
+        $obj = new \Graphpinator\Parser\Value\ArgumentValue($value, $name);
 
         self::assertSame($name, $obj->getName());
         self::assertSame($value, $obj->getValue());
@@ -40,7 +40,7 @@ final class NamedValueTest extends \PHPUnit\Framework\TestCase
             (object) ['var1' => 'val1'],
         );
 
-        $value = new \Graphpinator\Parser\Value\NamedValue(
+        $value = new \Graphpinator\Parser\Value\ArgumentValue(
             new \Graphpinator\Parser\Value\VariableRef('var1'),
             'argumentName',
         );

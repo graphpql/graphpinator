@@ -13,7 +13,7 @@ final class ArgumentValueSet extends \Infinityloop\Utils\ObjectMap
     protected const INNER_CLASS = ArgumentValue::class;
 
     public function __construct(
-        \Graphpinator\Parser\Value\NamedValueSet $namedValueSet,
+        \Graphpinator\Parser\Value\ArgumentValueSet $namedValueSet,
         \Graphpinator\Argument\ArgumentSet $argumentSet
     )
     {

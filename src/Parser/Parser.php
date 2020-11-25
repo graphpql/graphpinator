@@ -349,7 +349,7 @@ final class Parser
      * Expects iterator on previous token - opening parenthesis
      * Leaves iterator to last used token - closing parenthesis
      */
-    private function parseArguments() : \Graphpinator\Parser\Value\NamedValueSet
+    private function parseArguments() : \Graphpinator\Parser\Value\ArgumentValueSet
     {
         $arguments = [];
 
@@ -365,12 +365,12 @@ final class Parser
             $this->tokenizer->assertNext(TokenType::COLON, \Graphpinator\Exception\Parser\ExpectedColon::class);
             $value = $this->parseValue(false);
 
-            $arguments[] = new \Graphpinator\Parser\Value\NamedValue($value, $name);
+            $arguments[] = new \Graphpinator\Parser\Value\ArgumentValue($value, $name);
         }
 
         $this->tokenizer->getNext();
 
-        return new \Graphpinator\Parser\Value\NamedValueSet($arguments);
+        return new \Graphpinator\Parser\Value\ArgumentValueSet($arguments);
     }
 
     /**

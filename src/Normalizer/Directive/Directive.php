@@ -9,7 +9,7 @@ final class Directive
     use \Nette\SmartObject;
 
     private \Graphpinator\Directive\ExecutableDirective $directive;
-    private \Graphpinator\Parser\Value\NamedValueSet $arguments;
+    private \Graphpinator\Parser\Value\ArgumentValueSet $arguments;
 
     public function __construct(
         \Graphpinator\Parser\Directive\Directive $parserDirective,
@@ -28,7 +28,7 @@ final class Directive
 
         $this->directive = $directive;
         $this->arguments = $parserDirective->getArguments()
-            ?? new \Graphpinator\Parser\Value\NamedValueSet();
+            ?? new \Graphpinator\Parser\Value\ArgumentValueSet();
 
         foreach ($this->arguments as $argument) {
             if (!$directive->getArguments()->offsetExists($argument->getName())) {
@@ -42,7 +42,7 @@ final class Directive
         return $this->directive;
     }
 
-    public function getArguments() : \Graphpinator\Parser\Value\NamedValueSet
+    public function getArguments() : \Graphpinator\Parser\Value\ArgumentValueSet
     {
         return $this->arguments;
     }

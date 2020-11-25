@@ -5,12 +5,12 @@ declare(strict_types = 1);
 namespace Graphpinator\Parser\Value;
 
 /**
- * @method \Graphpinator\Parser\Value\NamedValue current() : object
- * @method \Graphpinator\Parser\Value\NamedValue offsetGet($offset) : object
+ * @method \Graphpinator\Parser\Value\ArgumentValue current() : object
+ * @method \Graphpinator\Parser\Value\ArgumentValue offsetGet($offset) : object
  */
-final class NamedValueSet extends \Infinityloop\Utils\ImplicitObjectMap
+final class ArgumentValueSet extends \Infinityloop\Utils\ImplicitObjectMap
 {
-    protected const INNER_CLASS = NamedValue::class;
+    protected const INNER_CLASS = ArgumentValue::class;
 
     public function applyVariables(\Graphpinator\Resolver\VariableValueSet $variables) : self
     {

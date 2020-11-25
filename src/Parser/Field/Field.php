@@ -11,14 +11,14 @@ final class Field
     private string $name;
     private ?string $alias;
     private ?\Graphpinator\Parser\Field\FieldSet $children;
-    private ?\Graphpinator\Parser\Value\NamedValueSet $arguments;
+    private ?\Graphpinator\Parser\Value\ArgumentValueSet $arguments;
     private ?\Graphpinator\Parser\Directive\DirectiveSet $directives;
 
     public function __construct(
         string $name,
         ?string $alias = null,
         ?\Graphpinator\Parser\Field\FieldSet $children = null,
-        ?\Graphpinator\Parser\Value\NamedValueSet $arguments = null,
+        ?\Graphpinator\Parser\Value\ArgumentValueSet $arguments = null,
         ?\Graphpinator\Parser\Directive\DirectiveSet $directives = null
     )
     {
@@ -44,7 +44,7 @@ final class Field
         return $this->children;
     }
 
-    public function getArguments() : ?\Graphpinator\Parser\Value\NamedValueSet
+    public function getArguments() : ?\Graphpinator\Parser\Value\ArgumentValueSet
     {
         return $this->arguments;
     }
