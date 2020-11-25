@@ -19,7 +19,7 @@ final class ArgumentValue
         $argument->validateConstraints($this->value);
     }
 
-    public static function fromRaw(Argument $argument, $rawValue) : self
+    public static function fromRaw(Argument $argument, mixed $rawValue) : self
     {
         $default = $argument->getDefaultValue();
 
