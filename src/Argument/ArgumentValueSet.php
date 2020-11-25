@@ -4,6 +4,10 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Argument;
 
+/**
+ * @method \Graphpinator\Argument\ArgumentValue current() : object
+ * @method \Graphpinator\Argument\ArgumentValue offsetGet($offset) : object
+ */
 final class ArgumentValueSet extends \Infinityloop\Utils\ObjectMap
 {
     protected const INNER_CLASS = ArgumentValue::class;
