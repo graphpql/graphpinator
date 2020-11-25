@@ -6,7 +6,7 @@ namespace Graphpinator\Argument;
 
 final class ArgumentValueSet extends \Infinityloop\Utils\ObjectMap
 {
-    protected const INNER_CLASS = \Graphpinator\Value\InputedValue::class;
+    protected const INNER_CLASS = ArgumentValue::class;
 
     public function __construct(
         \Graphpinator\Parser\Value\NamedValueSet $namedValueSet,
@@ -16,17 +16,11 @@ final class ArgumentValueSet extends \Infinityloop\Utils\ObjectMap
         parent::__construct();
 
         foreach ($argumentSet as $argument) {
-            if ($namedValueSet->offsetExists($argument->getName())) {
-                $value = $argument->getType()->createInputedValue($namedValueSet[$argument->getName()]->getRawValue());
-            } elseif ($argument->getDefaultValue() instanceof \Graphpinator\Value\InputedValue) {
-                $value = $argument->getDefaultValue();
-            } else {
-                $value = $argument->getType()->createInputedValue(null);
-            }
+            $value = $namedValueSet->offsetExists($argument->getName())
+                ? $namedValueSet[$argument->getName()]->getRawValue()
+                : null;
 
-            $argument->validateConstraints($value);
-
-            $this->array[$argument->getName()] = $value;
+            $this->offsetSet($argument->getName(), ArgumentValue::fromRaw($argument, $value));
         }
     }
 
@@ -35,7 +29,7 @@ final class ArgumentValueSet extends \Infinityloop\Utils\ObjectMap
         $return = [];
 
         foreach ($this as $argumentValue) {
-            $return[] = $argumentValue->getRawValue();
+            $return[] = $argumentValue->getValue()->getRawValue();
         }
 
         return $return;
