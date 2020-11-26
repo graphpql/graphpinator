@@ -14,7 +14,7 @@ final class OperationSet extends \Infinityloop\Utils\ImplicitObjectMap
 
     public function normalize(
         \Graphpinator\Type\Schema $schema,
-        \Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions
+        \Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions,
     ) : \Graphpinator\Normalizer\Operation\OperationSet
     {
         $normalized = [];

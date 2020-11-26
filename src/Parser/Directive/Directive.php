@@ -31,7 +31,7 @@ final class Directive
     }
 
     public function normalize(
-        \Graphpinator\Container\Container $typeContainer
+        \Graphpinator\Container\Container $typeContainer,
     ) : \Graphpinator\Normalizer\Directive\Directive
     {
         return new \Graphpinator\Normalizer\Directive\Directive(

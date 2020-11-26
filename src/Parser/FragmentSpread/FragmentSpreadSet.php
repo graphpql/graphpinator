@@ -15,7 +15,7 @@ final class FragmentSpreadSet extends \Infinityloop\Utils\ObjectSet
     public function normalize(
         \Graphpinator\Type\Contract\NamedDefinition $parentType,
         \Graphpinator\Container\Container $typeContainer,
-        \Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions
+        \Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions,
     ) : \Graphpinator\Normalizer\FragmentSpread\FragmentSpreadSet
     {
         $normalized = [];

@@ -13,7 +13,7 @@ final class ParseResult
 
     public function __construct(
         \Graphpinator\Parser\Operation\OperationSet $operations,
-        \Graphpinator\Parser\Fragment\FragmentSet $fragments
+        \Graphpinator\Parser\Fragment\FragmentSet $fragments,
     )
     {
         $this->operations = $operations;

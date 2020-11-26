@@ -17,7 +17,7 @@ final class Operation
         \Graphpinator\Parser\Field\FieldSet $children,
         string $type = \Graphpinator\Tokenizer\OperationType::QUERY,
         ?string $name = null,
-        ?\Graphpinator\Parser\Variable\VariableSet $variables = null
+        ?\Graphpinator\Parser\Variable\VariableSet $variables = null,
     )
     {
         $this->children = $children;
@@ -49,7 +49,7 @@ final class Operation
 
     public function normalize(
         \Graphpinator\Type\Schema $schema,
-        \Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions
+        \Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions,
     ) : \Graphpinator\Normalizer\Operation\Operation
     {
         $operation = match ($this->type) {

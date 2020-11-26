@@ -15,7 +15,7 @@ final class InlineFragmentSpread implements \Graphpinator\Parser\FragmentSpread\
     public function __construct(
         \Graphpinator\Parser\Field\FieldSet $fields,
         ?\Graphpinator\Parser\Directive\DirectiveSet $directives = null,
-        ?\Graphpinator\Parser\TypeRef\NamedTypeRef $typeCond = null
+        ?\Graphpinator\Parser\TypeRef\NamedTypeRef $typeCond = null,
     )
     {
         $this->fields = $fields;
@@ -42,7 +42,7 @@ final class InlineFragmentSpread implements \Graphpinator\Parser\FragmentSpread\
     public function normalize(
         \Graphpinator\Type\Contract\NamedDefinition $parentType,
         \Graphpinator\Container\Container $typeContainer,
-        \Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions
+        \Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions,
     ) : \Graphpinator\Normalizer\FragmentSpread\FragmentSpread
     {
         $typeCond = $this->typeCond instanceof \Graphpinator\Parser\TypeRef\NamedTypeRef
