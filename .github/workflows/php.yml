@@ -30,7 +30,7 @@ jobs:
       run: composer validate
 
     - name: Install dependencies
-      run: composer install --prefer-dist --no-progress --no-suggest
+      run: composer install --prefer-dist --no-progress --no-suggest --ignore-platform-reqs
 
     - name: Tests
       run: composer run-script phpunit
