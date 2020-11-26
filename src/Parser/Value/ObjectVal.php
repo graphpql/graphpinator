@@ -8,17 +8,9 @@ final class ObjectVal implements \Graphpinator\Parser\Value\Value
 {
     use \Nette\SmartObject;
 
-    private \stdClass $value;
-
-    public function __construct(\stdClass $value)
-    {
-        $this->value = $value;
-    }
-
-    public function getValue() : \stdClass
-    {
-        return $this->value;
-    }
+    public function __construct(
+        private \stdClass $value
+    ) {}
 
     public function getRawValue() : \stdClass
     {

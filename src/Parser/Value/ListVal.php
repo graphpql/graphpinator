@@ -8,17 +8,9 @@ final class ListVal implements \Graphpinator\Parser\Value\Value
 {
     use \Nette\SmartObject;
 
-    private array $value;
-
-    public function __construct(array $value)
-    {
-        $this->value = $value;
-    }
-
-    public function getValue() : array
-    {
-        return $this->value;
-    }
+    public function __construct(
+        private array $value
+    ) {}
 
     public function getRawValue() : array
     {

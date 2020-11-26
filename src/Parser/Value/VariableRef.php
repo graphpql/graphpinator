@@ -8,12 +8,9 @@ final class VariableRef implements \Graphpinator\Parser\Value\Value
 {
     use \Nette\SmartObject;
 
-    private string $varName;
-
-    public function __construct(string $name)
-    {
-        $this->varName = $name;
-    }
+    public function __construct(
+        private string $varName
+    ) {}
 
     public function getRawValue() : ?bool
     {
