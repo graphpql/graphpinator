@@ -21,7 +21,7 @@ jobs:
       uses: shivammathur/setup-php@v2
       with:
         php-version: '8.0'
-        ini-values: zend.assertions=1, assert.exception=1
+        ini-values: zend.assertions=1, assert.exception=1, opcache.enable_cli=1, opcache.jit=on, opcache.jit_buffer_size=256M
         coverage: xdebug
       env:
         update: true
