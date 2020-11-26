@@ -8,12 +8,9 @@ final class NamedTypeRef implements \Graphpinator\Parser\TypeRef\TypeRef
 {
     use \Nette\SmartObject;
 
-    private string $name;
-
-    public function __construct(string $name)
-    {
-        $this->name = $name;
-    }
+    public function __construct(
+        private string $name,
+    ) {}
 
     public function normalize(\Graphpinator\Container\Container $typeContainer) : \Graphpinator\Type\Contract\NamedDefinition
     {

@@ -8,12 +8,9 @@ final class NotNullRef implements \Graphpinator\Parser\TypeRef\TypeRef
 {
     use \Nette\SmartObject;
 
-    private TypeRef $innerRef;
-
-    public function __construct(TypeRef $innerRef)
-    {
-        $this->innerRef = $innerRef;
-    }
+    public function __construct(
+        private TypeRef $innerRef,
+    ) {}
 
     public function getInnerRef() : TypeRef
     {

@@ -11,7 +11,10 @@ final class NamedFragmentSpread implements \Graphpinator\Parser\FragmentSpread\F
     private string $name;
     private \Graphpinator\Parser\Directive\DirectiveSet $directives;
 
-    public function __construct(string $name, ?\Graphpinator\Parser\Directive\DirectiveSet $directives = null)
+    public function __construct(
+        string $name,
+        ?\Graphpinator\Parser\Directive\DirectiveSet $directives = null,
+    )
     {
         $this->name = $name;
         $this->directives = $directives
@@ -31,7 +34,7 @@ final class NamedFragmentSpread implements \Graphpinator\Parser\FragmentSpread\F
     public function normalize(
         \Graphpinator\Type\Contract\NamedDefinition $parentType,
         \Graphpinator\Container\Container $typeContainer,
-        \Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions
+        \Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions,
     ) : \Graphpinator\Normalizer\FragmentSpread\FragmentSpread
     {
         if (!$fragmentDefinitions->offsetExists($this->name)) {

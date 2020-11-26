@@ -8,26 +8,13 @@ final class Field
 {
     use \Nette\SmartObject;
 
-    private string $name;
-    private ?string $alias;
-    private ?\Graphpinator\Parser\Field\FieldSet $children;
-    private ?\Graphpinator\Parser\Value\ArgumentValueSet $arguments;
-    private ?\Graphpinator\Parser\Directive\DirectiveSet $directives;
-
     public function __construct(
-        string $name,
-        ?string $alias = null,
-        ?\Graphpinator\Parser\Field\FieldSet $children = null,
-        ?\Graphpinator\Parser\Value\ArgumentValueSet $arguments = null,
-        ?\Graphpinator\Parser\Directive\DirectiveSet $directives = null
-    )
-    {
-        $this->name = $name;
-        $this->alias = $alias;
-        $this->children = $children;
-        $this->arguments = $arguments;
-        $this->directives = $directives;
-    }
+        private string $name,
+        private ?string $alias = null,
+        private ?\Graphpinator\Parser\Field\FieldSet $children = null,
+        private ?\Graphpinator\Parser\Value\ArgumentValueSet $arguments = null,
+        private ?\Graphpinator\Parser\Directive\DirectiveSet $directives = null,
+    ) {}
 
     public function getName() : string
     {

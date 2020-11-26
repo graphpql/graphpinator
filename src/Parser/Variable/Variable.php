@@ -8,20 +8,11 @@ final class Variable
 {
     use \Nette\SmartObject;
 
-    private string $name;
-    private \Graphpinator\Parser\TypeRef\TypeRef $type;
-    private ?\Graphpinator\Parser\Value\Value $default;
-
     public function __construct(
-        string $name,
-        \Graphpinator\Parser\TypeRef\TypeRef $type,
-        ?\Graphpinator\Parser\Value\Value $default = null,
-    )
-    {
-        $this->name = $name;
-        $this->type = $type;
-        $this->default = $default;
-    }
+        private string $name,
+        private \Graphpinator\Parser\TypeRef\TypeRef $type,
+        private ?\Graphpinator\Parser\Value\Value $default = null,
+    ) {}
 
     public function getName() : string
     {

@@ -8,14 +8,10 @@ final class ArgumentValue
 {
     use \Nette\SmartObject;
 
-    private \Graphpinator\Parser\Value\Value $value;
-    private string $name;
-
-    public function __construct(\Graphpinator\Parser\Value\Value $value, string $name)
-    {
-        $this->value = $value;
-        $this->name = $name;
-    }
+    public function __construct(
+        private \Graphpinator\Parser\Value\Value $value,
+        private string $name,
+    ) {}
 
     public function getValue() : \Graphpinator\Parser\Value\Value
     {

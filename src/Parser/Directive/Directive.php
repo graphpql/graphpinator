@@ -8,17 +8,10 @@ final class Directive
 {
     use \Nette\SmartObject;
 
-    private string $name;
-    private ?\Graphpinator\Parser\Value\ArgumentValueSet $arguments;
-
     public function __construct(
-        string $name,
-        ?\Graphpinator\Parser\Value\ArgumentValueSet $arguments
-    )
-    {
-        $this->name = $name;
-        $this->arguments = $arguments;
-    }
+        private string $name,
+        private ?\Graphpinator\Parser\Value\ArgumentValueSet $arguments,
+    ) {}
 
     public function getName() : string
     {
