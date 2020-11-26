@@ -41,17 +41,17 @@ final class FieldSet extends \Infinityloop\Utils\ObjectSet
         }
     }
 
-    public function offsetSet($offset, $object) : void
+    public function offsetSet($offset, $value) : void
     {
-        \assert($object instanceof \Graphpinator\Normalizer\Field\Field);
+        \assert($value instanceof \Graphpinator\Normalizer\Field\Field);
 
-        if (!\array_key_exists($object->getAlias(), $this->fieldsForName)) {
-            $this->fieldsForName[$object->getAlias()] = [];
+        if (!\array_key_exists($value->getAlias(), $this->fieldsForName)) {
+            $this->fieldsForName[$value->getAlias()] = [];
         }
 
-        $this->fieldsForName[$object->getAlias()][] = $object;
+        $this->fieldsForName[$value->getAlias()][] = $value;
 
-        parent::offsetSet($offset, $object);
+        parent::offsetSet($offset, $value);
     }
 
     private function mergeConflictingField(

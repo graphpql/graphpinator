@@ -38,11 +38,11 @@ final class DirectiveSet extends \Infinityloop\Utils\ObjectSet
         return new self($fields, $this->location);
     }
 
-    public function offsetSet($offset, $object) : void
+    public function offsetSet($offset, $value) : void
     {
-        \assert($object instanceof Directive);
+        \assert($value instanceof Directive);
 
-        $directive = $object->getDirective();
+        $directive = $value->getDirective();
 
         if (!\in_array($this->location, $directive->getLocations(), true)) {
             throw new \Graphpinator\Exception\Normalizer\MisplacedDirective();
@@ -56,6 +56,6 @@ final class DirectiveSet extends \Infinityloop\Utils\ObjectSet
             $this->directiveTypes[$directive->getName()] = true;
         }
 
-        parent::offsetSet($offset, $object);
+        parent::offsetSet($offset, $value);
     }
 }
