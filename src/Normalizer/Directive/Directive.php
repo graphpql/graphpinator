@@ -9,7 +9,7 @@ final class Directive
     use \Nette\SmartObject;
 
     private \Graphpinator\Directive\ExecutableDirective $directive;
-    private \Graphpinator\Parser\Value\ArgumentValueSet $arguments;
+    private \Graphpinator\Normalizer\Value\ArgumentValueSet $arguments;
 
     public function __construct(
         \Graphpinator\Parser\Directive\Directive $parserDirective,
@@ -27,8 +27,9 @@ final class Directive
         }
 
         $this->directive = $directive;
-        $this->arguments = $parserDirective->getArguments()
-            ?? new \Graphpinator\Parser\Value\ArgumentValueSet();
+        $this->arguments = $parserDirective->getArguments() instanceof \Graphpinator\Parser\Value\ArgumentValueSet
+            ? $parserDirective->getArguments()->normalize($directive->getArguments(), $typeContainer)
+            : new \Graphpinator\Normalizer\Value\ArgumentValueSet();
 
         foreach ($this->arguments as $argument) {
             if (!$directive->getArguments()->offsetExists($argument->getName())) {
@@ -42,18 +43,15 @@ final class Directive
         return $this->directive;
     }
 
-    public function getArguments() : \Graphpinator\Parser\Value\ArgumentValueSet
+    public function getArguments() : \Graphpinator\Normalizer\Value\ArgumentValueSet
     {
         return $this->arguments;
     }
 
     public function applyVariables(
         \Graphpinator\Resolver\VariableValueSet $variables
-    ) : self
+    ) : void
     {
-        $clone = clone $this;
-        $clone->arguments = $this->arguments->applyVariables($variables);
-
-        return $clone;
+        $this->arguments->applyVariables($variables);
     }
 }

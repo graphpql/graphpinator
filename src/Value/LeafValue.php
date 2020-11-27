@@ -45,4 +45,15 @@ final class LeafValue implements \Graphpinator\Value\InputedValue, \Graphpinator
     {
         return $this->printValue();
     }
+
+    public function applyVariables(\Graphpinator\Resolver\VariableValueSet $variables) : void
+    {
+        // nothing here
+    }
+
+    public function isSame(Value $compare) : bool
+    {
+        return $compare instanceof self
+            && $this->rawValue === $compare->getRawValue();
+    }
 }

@@ -48,8 +48,10 @@ final class Operation
 
     public function resolve(\Graphpinator\Resolver\VariableValueSet $variables) : \Graphpinator\Response
     {
+        $this->children->applyVariables($variables);
+
         $data = $this->operation->resolve(
-            $this->children->applyVariables($variables),
+            $this->children,
             new \Graphpinator\Value\TypeIntermediateValue($this->operation, null),
         );
 

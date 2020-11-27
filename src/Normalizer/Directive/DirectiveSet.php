@@ -27,15 +27,11 @@ final class DirectiveSet extends \Infinityloop\Utils\ObjectSet
         return $this->location;
     }
 
-    public function applyVariables(\Graphpinator\Resolver\VariableValueSet $variables) : self
+    public function applyVariables(\Graphpinator\Resolver\VariableValueSet $variables) : void
     {
-        $fields = [];
-
         foreach ($this as $directive) {
-            $fields[] = $directive->applyVariables($variables);
+            $directive->applyVariables($variables);
         }
-
-        return new self($fields, $this->location);
     }
 
     public function offsetSet($offset, $value) : void

@@ -16,15 +16,4 @@ final class Literal implements \Graphpinator\Parser\Value\Value
     {
         return $this->value;
     }
-
-    public function applyVariables(\Graphpinator\Resolver\VariableValueSet $variables) : Value
-    {
-        return $this;
-    }
-
-    public function isSame(Value $compare) : bool
-    {
-        return $compare instanceof self
-            && $this->value === $compare->getRawValue();
-    }
 }

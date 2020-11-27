@@ -28,10 +28,10 @@ final class ArgumentValue
         return $this->name;
     }
 
-    public function applyVariables(\Graphpinator\Resolver\VariableValueSet $variables) : self
+    public function normalize(\Graphpinator\Container\Container $typeContainer) : \Graphpinator\Normalizer\Value\ArgumentValue
     {
-        return new self(
-            $this->value->applyVariables($variables),
+        return new \Graphpinator\Normalizer\Value\ArgumentValue(
+            $this->value->normalize($typeContainer),
             $this->name,
         );
     }

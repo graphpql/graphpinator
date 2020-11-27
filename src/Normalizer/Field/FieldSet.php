@@ -14,15 +14,11 @@ final class FieldSet extends \Infinityloop\Utils\ObjectSet
 
     protected array $fieldsForName = [];
 
-    public function applyVariables(\Graphpinator\Resolver\VariableValueSet $variables) : self
+    public function applyVariables(\Graphpinator\Resolver\VariableValueSet $variables) : void
     {
-        $fields = [];
-
         foreach ($this as $field) {
-            $fields[] = $field->applyVariables($variables);
+            $field->applyVariables($variables);
         }
-
-        return new self($fields);
     }
 
     public function mergeFieldSet(

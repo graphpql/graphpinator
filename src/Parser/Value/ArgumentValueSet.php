@@ -10,17 +10,20 @@ namespace Graphpinator\Parser\Value;
  */
 final class ArgumentValueSet extends \Infinityloop\Utils\ImplicitObjectMap
 {
-    protected const INNER_CLASS = ArgumentValue::class;
+    protected const INNER_CLASS = \Graphpinator\Parser\Value\ArgumentValue::class;
 
-    public function applyVariables(\Graphpinator\Resolver\VariableValueSet $variables) : self
+    public function normalize(
+        \Graphpinator\Argument\ArgumentSet $argumentSet,
+        \Graphpinator\Container\Container $typeContainer,
+    ) : \Graphpinator\Normalizer\Value\ArgumentValueSet
     {
         $values = [];
 
         foreach ($this as $value) {
-            $values[] = $value->applyVariables($variables);
+            $values[] = $value->normalize($typeContainer);
         }
 
-        return new self($values);
+        return new \Graphpinator\Normalizer\Value\ArgumentValueSet($values);
     }
 
     protected function getKey(object $object) : string

@@ -34,4 +34,14 @@ final class NullInputedValue implements \Graphpinator\Value\InputedValue, \Graph
     {
         return $this->printValue();
     }
+
+    public function applyVariables(\Graphpinator\Resolver\VariableValueSet $variables) : void
+    {
+        // nothing here
+    }
+
+    public function isSame(Value $compare) : bool
+    {
+        return $compare instanceof self;
+    }
 }

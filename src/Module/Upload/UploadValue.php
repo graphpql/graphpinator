@@ -36,4 +36,15 @@ final class UploadValue implements \Graphpinator\Value\InputedValue
     {
         return $this->printValue();
     }
+
+    public function applyVariables(\Graphpinator\Resolver\VariableValueSet $variables) : void
+    {
+        // nothing here
+    }
+
+    public function isSame(\Graphpinator\Value\Value $value) : bool
+    {
+        return $value instanceof self
+            && $this->rawValue === $value->getRawValue();
+    }
 }

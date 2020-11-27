@@ -4,36 +4,16 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Value;
 
-abstract class ListValue implements \Graphpinator\Value\Value, \Iterator, \ArrayAccess
+abstract class ListValue implements \Graphpinator\Value\Value, \IteratorAggregate, \ArrayAccess
 {
     use \Nette\SmartObject;
 
     protected \Graphpinator\Type\ListType $type;
     protected array $value;
 
-    public function current() : InputedValue
+    public function getIterator() : \ArrayIterator
     {
-        return \current($this->value);
-    }
-
-    public function next() : void
-    {
-        \next($this->value);
-    }
-
-    public function key() : int
-    {
-        return \key($this->value);
-    }
-
-    public function valid() : bool
-    {
-        return \key($this->value) !== null;
-    }
-
-    public function rewind() : void
-    {
-        \reset($this->value);
+        return new \ArrayIterator($this->value);
     }
 
     public function offsetExists($offset) : bool

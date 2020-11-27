@@ -70,4 +70,36 @@ final class ListInputedValue extends \Graphpinator\Value\ListValue implements \G
 
         return '[' . \PHP_EOL . $innerIndent . \implode(',' . \PHP_EOL . $innerIndent, $component) . \PHP_EOL . $indent . ']';
     }
+
+    public function applyVariables(\Graphpinator\Resolver\VariableValueSet $variables) : void
+    {
+        foreach ($this->value as $value) {
+            \assert($value instanceof InputedValue);
+
+            $value->applyVariables($variables);
+        }
+    }
+
+    public function isSame(Value $compare) : bool
+    {
+        if (!$compare instanceof self) {
+            return false;
+        }
+
+        $secondArray = $compare->value;
+
+        if (\count($secondArray) !== \count($this->value)) {
+            return false;
+        }
+
+        foreach ($this->value as $key => $value) {
+            \assert($value instanceof Value);
+
+            if (!\array_key_exists($key, $secondArray) || !$value->isSame($secondArray[$key])) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }

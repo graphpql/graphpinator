@@ -25,40 +25,12 @@ final class ObjectVal implements \Graphpinator\Parser\Value\Value
         return $return;
     }
 
-    public function applyVariables(\Graphpinator\Resolver\VariableValueSet $variables) : Value
+    public function normalize(\Graphpinator\Type\Contract\Inputable $type) : \Graphpinator\Value\InputValue
     {
-        $return = new \stdClass();
+        if ($type instanceof \Graphpinator\Type\InputType) {
 
-        foreach ($this->value as $key => $value) {
-            \assert($value instanceof Value);
-
-            $return->{$key} = $value->applyVariables($variables);
         }
 
-        return new self($return);
-    }
-
-    public function isSame(Value $compare) : bool
-    {
-        if (!$compare instanceof self) {
-            return false;
-        }
-
-        $secondObject = $compare->getValue();
-
-        if (\count((array) $secondObject) !== \count((array) $this->value)) {
-            return false;
-        }
-
-        foreach ($this->value as $key => $value) {
-            \assert($value instanceof Value);
-
-            if (!\property_exists($secondObject, $key) ||
-                !$value->isSame($secondObject->{$key})) {
-                return false;
-            }
-        }
-
-        return true;
+        return new \Graphpinator\Value\InputValue($type, $this->value);
     }
 }

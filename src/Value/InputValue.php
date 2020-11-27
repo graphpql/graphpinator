@@ -88,6 +88,38 @@ final class InputValue implements \Graphpinator\Value\InputedValue
         return '{' . \PHP_EOL . $innerIndent . \implode(',' . \PHP_EOL . $innerIndent, $component) . \PHP_EOL . $indent . '}';
     }
 
+    public function applyVariables(\Graphpinator\Resolver\VariableValueSet $variables) : void
+    {
+        foreach ($this->value as $key => $value) {
+            \assert($value instanceof ArgumentValue);
+
+            $value->getValue()->applyVariables($variables);
+        }
+    }
+
+    public function isSame(Value $compare) : bool
+    {
+        if (!$compare instanceof self) {
+            return false;
+        }
+
+        $secondObject = $compare->value;
+
+        if (\count((array) $secondObject) !== \count((array) $this->value)) {
+            return false;
+        }
+
+        foreach ($this->value as $key => $value) {
+            \assert($value instanceof ArgumentValue);
+
+            if (!\property_exists($secondObject, $key) || !$value->getValue()->isSame($secondObject->{$key})) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     private static function merge(\stdClass $core, \stdClass $supplement) : \stdClass
     {
         foreach ((array) $supplement as $key => $value) {
