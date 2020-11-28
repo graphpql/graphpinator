@@ -960,7 +960,7 @@ final class TestSchema
                     new \Graphpinator\Field\ResolvableField(
                         'name',
                         \Graphpinator\Container\Container::String()->notNull(),
-                        static function (\stdClass $parent, $name) {
+                        static function (\stdClass $parent, string $name = 'defaultA') {
                             return $parent->name
                                 ?? $name;
                         },

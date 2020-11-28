@@ -85,14 +85,32 @@ final class FieldSet extends \Infinityloop\Utils\ObjectSet
                 throw new \Graphpinator\Exception\Normalizer\ConflictingFieldAlias();
             }
 
-            /** Fields have different arguments */
-            if ($fieldArguments->count() !== $conflictArguments->count()) {
+            /** Fields have different arguments,
+             * -> possible when type implementing some interface adds new optional argument
+             * -> in this case the argument value must be the default one
+             */
+            foreach ($conflictArguments as $lhs) {
+                if ($fieldArguments->offsetExists($lhs->getArgument()->getName())) {
+                    if ($lhs->getValue()->isSame($fieldArguments[$lhs->getArgument()->getName()]->getValue())) {
+                        continue;
+                    }
+
+                    throw new \Graphpinator\Exception\Normalizer\ConflictingFieldArguments();
+                }
+
+                if ($lhs->getValue()->isSame($lhs->getArgument()->getDefaultValue())) {
+                    continue;
+                }
+
                 throw new \Graphpinator\Exception\Normalizer\ConflictingFieldArguments();
             }
 
-            foreach ($conflictArguments as $lhs) {
-                if ($fieldArguments->offsetExists($lhs->getArgument()->getName()) &&
-                    $lhs->getValue()->isSame($fieldArguments[$lhs->getArgument()->getName()]->getValue())) {
+            foreach ($fieldArguments as $lhs) {
+                if ($conflictArguments->offsetExists($lhs->getArgument()->getName())) {
+                    continue;
+                }
+
+                if ($lhs->getValue()->isSame($lhs->getArgument()->getDefaultValue())) {
                     continue;
                 }
 

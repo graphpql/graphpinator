@@ -291,7 +291,7 @@ final class FragmentTest extends \PHPUnit\Framework\TestCase
             [
                 Json::fromNative((object) [
                     'query' => 'query queryName { fieldUnion { ... on Abc { 
-                    fieldXyz(arg1: 456) { name } ... on Abc { fieldXyz(arg1: [456]) { name } } 
+                    fieldXyz(arg1: 456) { name } ... on Abc { fieldXyz { name } } 
                     } } }',
                 ]),
                 \Graphpinator\Exception\Normalizer\ConflictingFieldArguments::class,
