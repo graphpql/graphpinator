@@ -24,10 +24,9 @@ final class ResolvableField extends \Graphpinator\Field\Field
         \Graphpinator\Normalizer\Field\Field $field
     ) : \Graphpinator\Field\FieldValue
     {
-        $arguments = new \Graphpinator\Argument\ArgumentValueSet($field->getArguments(), $this->getArguments());
+        $arguments = $field->getArguments();
         $rawArguments = $arguments->getRawValues();
         \array_unshift($rawArguments, $parentValue->getRawValue());
-
         $result = \call_user_func_array($this->resolveFn, $rawArguments);
         $value = $this->type->createResolvedValue($result);
 

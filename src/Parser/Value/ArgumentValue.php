@@ -27,12 +27,4 @@ final class ArgumentValue
     {
         return $this->name;
     }
-
-    public function normalize(\Graphpinator\Container\Container $typeContainer) : \Graphpinator\Normalizer\Value\ArgumentValue
-    {
-        return new \Graphpinator\Normalizer\Value\ArgumentValue(
-            $this->value->normalize($typeContainer),
-            $this->name,
-        );
-    }
 }

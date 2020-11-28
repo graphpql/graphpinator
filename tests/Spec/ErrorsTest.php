@@ -170,7 +170,7 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
                 ]),
                 Json::fromNative((object) [
                     'errors' => [
-                        ['message' => 'Unknown argument "if" provided for "@testDirective".'],
+                        ['message' => 'Unknown argument "if" provided for field/directive "testDirective".'],
                     ],
                 ]),
             ],

@@ -12,14 +12,14 @@ final class Directive
     private \Graphpinator\Normalizer\Value\ArgumentValueSet $arguments;
 
     public function __construct(
-        \Graphpinator\Parser\Directive\Directive $parserDirective,
+        \Graphpinator\Parser\Directive\Directive $parsed,
         \Graphpinator\Container\Container $typeContainer
     )
     {
-        $directive = $typeContainer->getDirective($parserDirective->getName());
+        $directive = $typeContainer->getDirective($parsed->getName());
 
         if (!$directive instanceof \Graphpinator\Directive\Directive) {
-            throw new \Graphpinator\Exception\Normalizer\UnknownDirective($parserDirective->getName());
+            throw new \Graphpinator\Exception\Normalizer\UnknownDirective($parsed->getName());
         }
 
         if (!$directive instanceof \Graphpinator\Directive\ExecutableDirective) {
@@ -27,15 +27,12 @@ final class Directive
         }
 
         $this->directive = $directive;
-        $this->arguments = $parserDirective->getArguments() instanceof \Graphpinator\Parser\Value\ArgumentValueSet
-            ? $parserDirective->getArguments()->normalize($directive->getArguments(), $typeContainer)
-            : new \Graphpinator\Normalizer\Value\ArgumentValueSet();
-
-        foreach ($this->arguments as $argument) {
-            if (!$directive->getArguments()->offsetExists($argument->getName())) {
-                throw new \Graphpinator\Exception\Normalizer\UnknownDirectiveArgument($argument->getName(), $directive->getName());
-            }
-        }
+        $this->arguments = new \Graphpinator\Normalizer\Value\ArgumentValueSet(
+            $parsed->getArguments() instanceof \Graphpinator\Parser\Value\ArgumentValueSet
+                ? $parsed->getArguments()
+                : new \Graphpinator\Parser\Value\ArgumentValueSet([]),
+            $directive,
+        );
     }
 
     public function getDirective() : \Graphpinator\Directive\ExecutableDirective

@@ -15,7 +15,7 @@ abstract class ExecutableDirective extends \Graphpinator\Directive\Directive
         $this->resolveFn = $resolveFn;
     }
 
-    public function resolve(\Graphpinator\Argument\ArgumentValueSet $arguments) : string
+    public function resolve(\Graphpinator\Normalizer\Value\ArgumentValueSet $arguments) : string
     {
         $result = \call_user_func_array($this->resolveFn, $arguments->getRawValues());
 
