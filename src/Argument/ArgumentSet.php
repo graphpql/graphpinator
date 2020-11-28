@@ -19,16 +19,16 @@ final class ArgumentSet extends \Infinityloop\Utils\ImplicitObjectMap implements
         return $this->defaults;
     }
 
-    public function offsetSet($offset, $object) : void
+    public function offsetSet($offset, $value) : void
     {
-        \assert($object instanceof Argument);
+        \assert($value instanceof Argument);
 
-        parent::offsetSet($offset, $object);
+        parent::offsetSet($offset, $value);
 
-        $defaultValue = $object->getDefaultValue();
+        $defaultValue = $value->getDefaultValue();
 
         if ($defaultValue instanceof \Graphpinator\Value\InputedValue) {
-            $this->defaults[$object->getName()] = $defaultValue->getRawValue();
+            $this->defaults[$value->getName()] = $defaultValue->getRawValue();
         }
     }
 

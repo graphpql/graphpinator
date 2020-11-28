@@ -49,19 +49,19 @@ final class IntConstraint extends \Graphpinator\Constraint\LeafConstraint
         return $type->getNamedType() instanceof \Graphpinator\Type\Scalar\IntType;
     }
 
-    protected function validateFactoryMethod($inputValue) : void
+    protected function validateFactoryMethod(\stdClass|array|string|int|float|bool|null $rawValue) : void
     {
-        \assert(\is_int($inputValue));
+        \assert(\is_int($rawValue));
 
-        if (\is_int($this->min) && $inputValue < $this->min) {
+        if (\is_int($this->min) && $rawValue < $this->min) {
             throw new \Graphpinator\Exception\Constraint\MinConstraintNotSatisfied();
         }
 
-        if (\is_int($this->max) && $inputValue > $this->max) {
+        if (\is_int($this->max) && $rawValue > $this->max) {
             throw new \Graphpinator\Exception\Constraint\MaxConstraintNotSatisfied();
         }
 
-        if (\is_array($this->oneOf) && !\in_array($inputValue, $this->oneOf, true)) {
+        if (\is_array($this->oneOf) && !\in_array($rawValue, $this->oneOf, true)) {
             throw new \Graphpinator\Exception\Constraint\OneOfConstraintNotSatisfied();
         }
     }

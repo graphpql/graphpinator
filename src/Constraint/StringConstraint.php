@@ -65,23 +65,23 @@ final class StringConstraint extends \Graphpinator\Constraint\LeafConstraint
             || $namedType instanceof \Graphpinator\Type\Scalar\IdType;
     }
 
-    protected function validateFactoryMethod($inputValue) : void
+    protected function validateFactoryMethod(\stdClass|array|string|int|float|bool|null $rawValue) : void
     {
-        \assert(\is_string($inputValue));
+        \assert(\is_string($rawValue));
 
-        if (\is_int($this->minLength) && \mb_strlen($inputValue) < $this->minLength) {
+        if (\is_int($this->minLength) && \mb_strlen($rawValue) < $this->minLength) {
             throw new \Graphpinator\Exception\Constraint\MinLengthConstraintNotSatisfied();
         }
 
-        if (\is_int($this->maxLength) && \mb_strlen($inputValue) > $this->maxLength) {
+        if (\is_int($this->maxLength) && \mb_strlen($rawValue) > $this->maxLength) {
             throw new \Graphpinator\Exception\Constraint\MaxLengthConstraintNotSatisfied();
         }
 
-        if (\is_string($this->regex) && \preg_match($this->regex, $inputValue) !== 1) {
+        if (\is_string($this->regex) && \preg_match($this->regex, $rawValue) !== 1) {
             throw new \Graphpinator\Exception\Constraint\RegexConstraintNotSatisfied();
         }
 
-        if (\is_array($this->oneOf) && !\in_array($inputValue, $this->oneOf, true)) {
+        if (\is_array($this->oneOf) && !\in_array($rawValue, $this->oneOf, true)) {
             throw new \Graphpinator\Exception\Constraint\OneOfConstraintNotSatisfied();
         }
     }

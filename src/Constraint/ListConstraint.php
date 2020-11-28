@@ -28,11 +28,11 @@ final class ListConstraint extends \Graphpinator\Constraint\ArgumentFieldConstra
         return self::recursiveValidateType($this->options, $type);
     }
 
-    protected function validateFactoryMethod($inputValue) : void
+    protected function validateFactoryMethod(\stdClass|array|string|int|float|bool|null $rawValue) : void
     {
-        \assert(\is_array($inputValue));
+        \assert(\is_array($rawValue));
 
-        self::recursiveValidateFactoryMethod($this->options, $inputValue);
+        self::recursiveValidateFactoryMethod($this->options, $rawValue);
     }
 
     protected function isGreaterSet(
