@@ -91,8 +91,8 @@ final class FieldSet extends \Infinityloop\Utils\ObjectSet
             }
 
             foreach ($conflictArguments as $lhs) {
-                if ($fieldArguments->offsetExists($lhs->getName()) &&
-                    $lhs->getValue()->isSame($fieldArguments[$lhs->getName()]->getValue())) {
+                if ($fieldArguments->offsetExists($lhs->getArgument()->getName()) &&
+                    $lhs->getValue()->isSame($fieldArguments[$lhs->getArgument()->getName()]->getValue())) {
                     continue;
                 }
 
