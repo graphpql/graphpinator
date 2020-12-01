@@ -36,7 +36,7 @@ trait TOptionalDescription
             return $indentation;
         }
 
-        if (\mb_strpos($this->getDescription(), \PHP_EOL) === false) {
+        if (!\str_contains($this->getDescription(), \PHP_EOL)) {
             return $indentation . '"' . $this->getDescription() . '"' . \PHP_EOL . $indentation;
         }
 
