@@ -12,7 +12,7 @@
     }
   ],
   "require": {
-    "php": ">=8.0",
+    "php": ">=8.0.1",
     "ext-json": "*",
     "infinityloop-dev/graphpinator-tokenizer": "^1.0",
     "infinityloop-dev/graphpinator-common": "^1.0",
