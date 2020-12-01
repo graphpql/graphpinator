@@ -28,25 +28,6 @@ final class NamedValueTest extends \PHPUnit\Framework\TestCase
 
         self::assertSame($name, $obj->getName());
         self::assertSame($value, $obj->getValue());
-        self::assertSame($value->getRawValue(), $obj->getRawValue());
-    }
-
-    public function testApplyVariables() : void
-    {
-        $variables = new \Graphpinator\Resolver\VariableValueSet(
-            new \Graphpinator\Normalizer\Variable\VariableSet([
-                new \Graphpinator\Normalizer\Variable\Variable('var1', \Graphpinator\Container\Container::String()),
-            ]),
-            (object) ['var1' => 'val1'],
-        );
-
-        $value = new \Graphpinator\Parser\Value\ArgumentValue(
-            new \Graphpinator\Parser\Value\VariableRef('var1'),
-            'argumentName',
-        );
-
-        $newValue = $value->applyVariables($variables);
-
-        self::assertSame('val1', $newValue->getRawValue());
+        self::assertSame($value->getRawValue(), $obj->getValue()->getRawValue());
     }
 }

@@ -10,21 +10,19 @@ final class Argument implements \Graphpinator\Printable\Printable
     use \Graphpinator\Utils\TOptionalDescription;
     use \Graphpinator\Utils\TFieldConstraint;
 
-    private string $name;
-    private \Graphpinator\Type\Contract\Inputable $type;
-    private ?\Graphpinator\Value\InputedValue $defaultValue;
+    private ?\Graphpinator\Value\InputedValue $defaultValue = null;
 
-    public function __construct(string $name, \Graphpinator\Type\Contract\Inputable $type, $defaultValue = null)
+    public function __construct(
+        private string $name,
+        private \Graphpinator\Type\Contract\Inputable $type,
+        \stdClass|array|string|int|float|bool|null $defaultValue = null
+    )
     {
-        $this->name = $name;
-        $this->type = $type;
         $this->constraints = new \Graphpinator\Constraint\ArgumentFieldConstraintSet([]);
 
         if (\func_num_args() === 3) {
-            $defaultValue = $type->createInputedValue($defaultValue);
+            $this->defaultValue = $type->createInputedValue($defaultValue);
         }
-
-        $this->defaultValue = $defaultValue;
     }
 
     public function getName() : string

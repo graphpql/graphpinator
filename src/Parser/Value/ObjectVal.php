@@ -9,7 +9,7 @@ final class ObjectVal implements \Graphpinator\Parser\Value\Value
     use \Nette\SmartObject;
 
     public function __construct(
-        private \stdClass $value
+        private \stdClass $value,
     ) {}
 
     public function getRawValue() : \stdClass
@@ -25,12 +25,26 @@ final class ObjectVal implements \Graphpinator\Parser\Value\Value
         return $return;
     }
 
-    public function normalize(\Graphpinator\Type\Contract\Inputable $type) : \Graphpinator\Value\InputValue
+    public function hasVariables() : bool
     {
-        if ($type instanceof \Graphpinator\Type\InputType) {
+        foreach ($this->value as $key => $value) {
+            \assert($value instanceof Value);
 
+            if ($value->hasVariables()) {
+                return true;
+            }
         }
 
-        return new \Graphpinator\Value\InputValue($type, $this->value);
+        return false;
+    }
+
+    public function createInputedValue(
+        \Graphpinator\Type\Contract\Inputable $type,
+        \Graphpinator\Normalizer\Variable\VariableSet $variableSet,
+    ) : \Graphpinator\Value\InputedValue
+    {
+
+
+        //foreach ($t)
     }
 }

@@ -9,11 +9,21 @@ final class Literal implements \Graphpinator\Parser\Value\Value
     use \Nette\SmartObject;
 
     public function __construct(
-        private string|int|float|bool|null|array|\stdClass $value
+        private string|int|float|bool|null $value
     ) {}
 
-    public function getRawValue() : string|int|float|bool|null|array|\stdClass
+    public function getRawValue() : string|int|float|bool|null
     {
         return $this->value;
+    }
+
+    public function hasVariables() : bool
+    {
+        return false;
+    }
+
+    public function createInputedValue(\Graphpinator\Type\Contract\Inputable $type) : \Graphpinator\Value\InputedValue
+    {
+        return $type->createInputedValue($this->value);
     }
 }

@@ -127,6 +127,7 @@ final class ParserTest extends \PHPUnit\Framework\TestCase
                 ->offsetGet(0)
                 ->getArguments()
                 ->offsetGet('arg1')
+                ->getValue()
                 ->getRawValue(),
         );
     }
@@ -440,7 +441,7 @@ final class ParserTest extends \PHPUnit\Framework\TestCase
         );
         self::assertCount(1, $operation->getFields()->offsetGet(0)->getArguments());
         self::assertArrayHasKey('argName', $operation->getFields()->offsetGet(0)->getArguments());
-        self::assertSame('argVal', $operation->getFields()->offsetGet(0)->getArguments()->offsetGet('argName')->getRawValue());
+        self::assertSame('argVal', $operation->getFields()->offsetGet(0)->getArguments()->offsetGet('argName')->getValue()->getRawValue());
         self::assertNull($operation->getFields()->offsetGet(0)->getFields());
     }
 

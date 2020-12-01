@@ -8,14 +8,18 @@ final class VariableValue implements \Graphpinator\Value\InputedValue
 {
     use \Nette\SmartObject;
 
-    private \Graphpinator\Type\InputType $type;
-    private ?Value $value;
-    private string $variableName;
-    private \Graphpinator\Type\Contract\Inputable $variableType;
+    private \Graphpinator\Type\Contract\Inputable $type;
+    private \Graphpinator\Normalizer\Variable\Variable $variable;
+    private ?\Graphpinator\Value\Value $value = null;
 
-    public function __construct(\Graphpinator\Type\InputType $type, \stdClass $rawValue)
+    public function __construct(\Graphpinator\Type\Contract\Inputable $type, \Graphpinator\Normalizer\Variable\Variable $variable)
     {
+        if (!$variable->getType()->isInstanceOf($type)) {
+            throw new \Exception();
+        }
 
+        $this->type = $type;
+        $this->variable = $variable;
     }
 
     public function getRawValue() : \stdClass|array|string|int|float|bool|null
@@ -23,7 +27,7 @@ final class VariableValue implements \Graphpinator\Value\InputedValue
         return $this->value->getRawValue();
     }
 
-    public function getType() : \Graphpinator\Type\InputType
+    public function getType() : \Graphpinator\Type\Contract\Inputable
     {
         return $this->type;
     }
@@ -40,7 +44,7 @@ final class VariableValue implements \Graphpinator\Value\InputedValue
 
     public function applyVariables(\Graphpinator\Resolver\VariableValueSet $variables) : void
     {
-        // nothing here
+        $this->value = $this->variable->createInputedValue($variables);
     }
 
     public function isSame(Value $compare) : bool

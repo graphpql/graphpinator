@@ -44,16 +44,16 @@ final class Variable
         return $this->defaultValue;
     }
 
-    public function createInputedValue(\stdClass $variables) : \Graphpinator\Value\InputedValue
+    public function createInputedValue(\Graphpinator\Resolver\VariableValueSet $variables) : \Graphpinator\Value\InputedValue
     {
-        $value = null;
+        if ($variables->offsetExists($this->name)) {
+            return $variables->offsetGet($this->name);
+        }
 
-        if (isset($variables->{$this->name})) {
-            $value = $variables->{$this->name};
-        } elseif ($this->defaultValue instanceof \Graphpinator\Value\InputedValue) {
+        if ($this->defaultValue instanceof \Graphpinator\Value\InputedValue) {
             return $this->defaultValue;
         }
 
-        return $this->type->createInputedValue($value);
+        return $this->type->createInputedValue(null);
     }
 }

@@ -104,10 +104,6 @@ final class NormalizerTest extends \PHPUnit\Framework\TestCase
         self::assertSame('fieldAbc', $operation->getFields()->offsetGet(0)->getName());
         self::assertCount(1, $operation->getFields()->offsetGet(0)->getDirectives());
         self::assertArrayHasKey(0, $operation->getFields()->offsetGet(0)->getDirectives());
-        self::assertSame(
-            \Graphpinator\Directive\ExecutableDirectiveLocation::FIELD,
-            $operation->getFields()->offsetGet(0)->getDirectives()->getLocation(),
-        );
         self::assertInstanceOf(
             \Graphpinator\Directive\SkipDirective::class,
             $operation->getFields()->offsetGet(0)->getDirectives()->offsetGet(0)->getDirective(),

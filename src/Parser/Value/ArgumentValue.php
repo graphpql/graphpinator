@@ -18,11 +18,6 @@ final class ArgumentValue
         return $this->value;
     }
 
-    public function getRawValue() : \stdClass|array|string|int|float|bool|null
-    {
-        return $this->value->getRawValue();
-    }
-
     public function getName() : string
     {
         return $this->name;

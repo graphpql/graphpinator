@@ -5,8 +5,8 @@ declare(strict_types = 1);
 namespace Graphpinator\Normalizer\Value;
 
 /**
- * @method \Graphpinator\Normalizer\Value\ArgumentValue current() : object
- * @method \Graphpinator\Normalizer\Value\ArgumentValue offsetGet($offset) : object
+ * @method \Graphpinator\Normalizer\Value\ConstantArgumentValue current() : object
+ * @method \Graphpinator\Normalizer\Value\ConstantArgumentValue offsetGet($offset) : object
  */
 final class ArgumentValueSet extends \Infinityloop\Utils\ImplicitObjectMap
 {
@@ -22,11 +22,17 @@ final class ArgumentValueSet extends \Infinityloop\Utils\ImplicitObjectMap
         $argumentSet = $element->getArguments();
 
         foreach ($argumentSet as $argument) {
-            $value = $parsed->offsetExists($argument->getName())
-                ? $parsed->offsetGet($argument->getName())->getValue()->getRawValue()
-                : null;
+            if (!$parsed->offsetExists($argument->getName())) {
+                $this[] = new \Graphpinator\Normalizer\Value\ConstantArgumentValue($argument, null);
 
-            $this[] = new \Graphpinator\Normalizer\Value\ArgumentValue($argument, $value);
+                continue;
+            }
+
+            $parsedArg = $parsed->offsetGet($argument->getName());
+
+            $this[] = $parsedArg->getValue()->hasVariables()
+                ? new \Graphpinator\Normalizer\Value\VariableArgumentValue($argument, $parsedArg->getValue())
+                : new \Graphpinator\Normalizer\Value\ConstantArgumentValue($argument, $parsedArg->getValue()->getRawValue());
         }
 
         foreach ($parsed as $value) {
@@ -56,7 +62,7 @@ final class ArgumentValueSet extends \Infinityloop\Utils\ImplicitObjectMap
 
     protected function getKey(object $object) : string
     {
-        \assert($object instanceof ArgumentValue);
+        \assert($object instanceof ConstantArgumentValue);
 
         return $object->getArgument()->getName();
     }

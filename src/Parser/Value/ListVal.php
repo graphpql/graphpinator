@@ -9,7 +9,7 @@ final class ListVal implements \Graphpinator\Parser\Value\Value
     use \Nette\SmartObject;
 
     public function __construct(
-        private array $value
+        private array $value,
     ) {}
 
     public function getRawValue() : array
@@ -23,5 +23,26 @@ final class ListVal implements \Graphpinator\Parser\Value\Value
         }
 
         return $return;
+    }
+
+    public function hasVariables() : bool
+    {
+        foreach ($this->value as $key => $value) {
+            \assert($value instanceof Value);
+
+            if ($value->hasVariables()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public function createInputedValue(
+        \Graphpinator\Type\Contract\Inputable $type,
+        \Graphpinator\Normalizer\Variable\VariableSet $variableSet,
+    ) : \Graphpinator\Value\InputedValue
+    {
+        return $type->createInputedValue($this->value);
     }
 }
