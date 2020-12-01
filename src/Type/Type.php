@@ -22,7 +22,7 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
 
     abstract public function validateNonNullValue(mixed $rawValue) : bool;
 
-    final public function createResolvedValue($rawValue) : \Graphpinator\Value\ResolvedValue
+    final public function createResolvedValue(mixed $rawValue) : \Graphpinator\Value\ResolvedValue
     {
         if ($rawValue === null) {
             return new \Graphpinator\Value\NullResolvedValue($this);
