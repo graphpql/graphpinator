@@ -43,6 +43,7 @@ final class InlineFragmentSpread implements \Graphpinator\Parser\FragmentSpread\
         \Graphpinator\Type\Contract\NamedDefinition $parentType,
         \Graphpinator\Container\Container $typeContainer,
         \Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions,
+        \Graphpinator\Normalizer\Variable\VariableSet $variableSet,
     ) : \Graphpinator\Normalizer\FragmentSpread\FragmentSpread
     {
         $typeCond = $this->typeCond instanceof \Graphpinator\Parser\TypeRef\NamedTypeRef
@@ -56,8 +57,8 @@ final class InlineFragmentSpread implements \Graphpinator\Parser\FragmentSpread\
 
         return new \Graphpinator\Normalizer\FragmentSpread\FragmentSpread(
             $this->fields->normalize($typeCond
-                ?? $parentType, $typeContainer, $fragmentDefinitions),
-            $this->directives->normalize($typeContainer),
+                ?? $parentType, $typeContainer, $fragmentDefinitions, $variableSet),
+            $this->directives->normalize($typeContainer, $variableSet),
             $typeCond,
         );
     }

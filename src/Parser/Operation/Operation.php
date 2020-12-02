@@ -62,10 +62,12 @@ final class Operation
             throw new \Graphpinator\Exception\Normalizer\OperationNotSupported();
         }
 
+        $variables = $this->variables->normalize($schema->getContainer());
+
         return new \Graphpinator\Normalizer\Operation\Operation(
             $operation,
-            $this->children->normalize($operation, $schema->getContainer(), $fragmentDefinitions),
-            $this->variables->normalize($schema->getContainer()),
+            $this->children->normalize($operation, $schema->getContainer(), $fragmentDefinitions, $variables),
+            $variables,
             $this->getName(),
         );
     }

@@ -44,7 +44,7 @@ final class VariableValue implements \Graphpinator\Value\InputedValue
 
     public function applyVariables(\Graphpinator\Resolver\VariableValueSet $variables) : void
     {
-        $this->value = $this->variable->createInputedValue($variables);
+        $this->value = $variables->offsetGet($this->variable->getName());
     }
 
     public function isSame(Value $compare) : bool

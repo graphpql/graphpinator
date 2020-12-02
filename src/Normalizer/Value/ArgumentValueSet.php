@@ -15,6 +15,7 @@ final class ArgumentValueSet extends \Infinityloop\Utils\ImplicitObjectMap
     public function __construct(
         \Graphpinator\Parser\Value\ArgumentValueSet $parsed,
         \Graphpinator\Field\Field|\Graphpinator\Directive\Directive $element,
+        \Graphpinator\Normalizer\Variable\VariableSet $variableSet,
     )
     {
         parent::__construct();
@@ -31,7 +32,7 @@ final class ArgumentValueSet extends \Infinityloop\Utils\ImplicitObjectMap
             $parsedArg = $parsed->offsetGet($argument->getName());
 
             $this[] = $parsedArg->getValue()->hasVariables()
-                ? new \Graphpinator\Normalizer\Value\VariableArgumentValue($argument, $parsedArg->getValue())
+                ? new \Graphpinator\Normalizer\Value\VariableArgumentValue($argument, $parsedArg->getValue(), $variableSet)
                 : new \Graphpinator\Normalizer\Value\ConstantArgumentValue($argument, $parsedArg->getValue()->getRawValue());
         }
 
@@ -62,7 +63,7 @@ final class ArgumentValueSet extends \Infinityloop\Utils\ImplicitObjectMap
 
     protected function getKey(object $object) : string
     {
-        \assert($object instanceof ConstantArgumentValue);
+        \assert($object instanceof ArgumentValue);
 
         return $object->getArgument()->getName();
     }

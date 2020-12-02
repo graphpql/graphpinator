@@ -61,7 +61,12 @@ final class NormalizerTest extends \PHPUnit\Framework\TestCase
                             ], new \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet()),
                             null,
                             new \Graphpinator\Parser\Directive\DirectiveSet([
-                                new \Graphpinator\Parser\Directive\Directive('skip', null),
+                                new \Graphpinator\Parser\Directive\Directive(
+                                    'skip',
+                                    new \Graphpinator\Parser\Value\ArgumentValueSet([
+                                        new \Graphpinator\Parser\Value\ArgumentValue(new \Graphpinator\Parser\Value\Literal(true), 'if'),
+                                    ]),
+                                ),
                             ], \Graphpinator\Directive\ExecutableDirectiveLocation::FIELD),
                         ),
                     ], new \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet([
@@ -70,13 +75,23 @@ final class NormalizerTest extends \PHPUnit\Framework\TestCase
                                 new \Graphpinator\Parser\Field\Field('fieldExactlyOne'),
                             ], new \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet()),
                             new \Graphpinator\Parser\Directive\DirectiveSet([
-                                new \Graphpinator\Parser\Directive\Directive('skip', null),
+                                new \Graphpinator\Parser\Directive\Directive(
+                                    'skip',
+                                    new \Graphpinator\Parser\Value\ArgumentValueSet([
+                                        new \Graphpinator\Parser\Value\ArgumentValue(new \Graphpinator\Parser\Value\Literal(true), 'if'),
+                                    ]),
+                                ),
                             ], \Graphpinator\Directive\ExecutableDirectiveLocation::INLINE_FRAGMENT),
                         ),
                         new \Graphpinator\Parser\FragmentSpread\NamedFragmentSpread(
                             'fragmentName',
                             new \Graphpinator\Parser\Directive\DirectiveSet([
-                                new \Graphpinator\Parser\Directive\Directive('include', null),
+                                new \Graphpinator\Parser\Directive\Directive(
+                                    'include',
+                                    new \Graphpinator\Parser\Value\ArgumentValueSet([
+                                        new \Graphpinator\Parser\Value\ArgumentValue(new \Graphpinator\Parser\Value\Literal(true), 'if'),
+                                    ]),
+                                ),
                             ], \Graphpinator\Directive\ExecutableDirectiveLocation::FRAGMENT_SPREAD),
                         ),
                     ])),
@@ -113,10 +128,6 @@ final class NormalizerTest extends \PHPUnit\Framework\TestCase
         self::assertSame('fieldExactlyOne', $operation->getFields()->offsetGet(1)->getName());
         self::assertCount(1, $operation->getFields()->offsetGet(1)->getDirectives());
         self::assertArrayHasKey(0, $operation->getFields()->offsetGet(1)->getDirectives());
-        self::assertSame(
-            \Graphpinator\Directive\ExecutableDirectiveLocation::FIELD,
-            $operation->getFields()->offsetGet(1)->getDirectives()->getLocation(),
-        );
         self::assertInstanceOf(
             \Graphpinator\Directive\SkipDirective::class,
             $operation->getFields()->offsetGet(1)->getDirectives()->offsetGet(0)->getDirective(),

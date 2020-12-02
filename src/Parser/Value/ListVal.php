@@ -41,8 +41,16 @@ final class ListVal implements \Graphpinator\Parser\Value\Value
     public function createInputedValue(
         \Graphpinator\Type\Contract\Inputable $type,
         \Graphpinator\Normalizer\Variable\VariableSet $variableSet,
-    ) : \Graphpinator\Value\InputedValue
+    ) : \Graphpinator\Value\ListInputedValue
     {
+        if ($type instanceof \Graphpinator\Type\NotNullType) {
+            return $this->createInputedValue($type->getInnerType(), $variableSet);
+        }
+
+        if (!$type instanceof \Graphpinator\Type\ListType) {
+
+        }
+
         return $type->createInputedValue($this->value);
     }
 }

@@ -105,7 +105,7 @@ final class VariableTest extends \PHPUnit\Framework\TestCase
                     'query' => 'query queryName { fieldAbc { fieldXyz(arg1: $varNonExistent) { name } } }',
                     'variables' => (object) [],
                 ]),
-                \Graphpinator\Exception\Resolver\MissingVariable::class,
+                \Graphpinator\Exception\Normalizer\UnknownVariable::class,
             ],
         ];
     }

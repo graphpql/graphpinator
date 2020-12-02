@@ -16,12 +16,13 @@ final class FragmentSpreadSet extends \Infinityloop\Utils\ObjectSet
         \Graphpinator\Type\Contract\NamedDefinition $parentType,
         \Graphpinator\Container\Container $typeContainer,
         \Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions,
+        \Graphpinator\Normalizer\Variable\VariableSet $variableSet,
     ) : \Graphpinator\Normalizer\FragmentSpread\FragmentSpreadSet
     {
         $normalized = [];
 
         foreach ($this as $spread) {
-            $normalized[] = $spread->normalize($parentType, $typeContainer, $fragmentDefinitions);
+            $normalized[] = $spread->normalize($parentType, $typeContainer, $fragmentDefinitions, $variableSet);
         }
 
         return new \Graphpinator\Normalizer\FragmentSpread\FragmentSpreadSet($normalized);

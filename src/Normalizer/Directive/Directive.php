@@ -13,7 +13,8 @@ final class Directive
 
     public function __construct(
         \Graphpinator\Parser\Directive\Directive $parsed,
-        \Graphpinator\Container\Container $typeContainer
+        \Graphpinator\Container\Container $typeContainer,
+        \Graphpinator\Normalizer\Variable\VariableSet $variableSet,
     )
     {
         $directive = $typeContainer->getDirective($parsed->getName());
@@ -32,6 +33,7 @@ final class Directive
                 ? $parsed->getArguments()
                 : new \Graphpinator\Parser\Value\ArgumentValueSet([]),
             $directive,
+            $variableSet,
         );
     }
 

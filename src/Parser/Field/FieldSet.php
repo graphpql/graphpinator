@@ -47,17 +47,18 @@ final class FieldSet extends \Infinityloop\Utils\ObjectSet
         \Graphpinator\Type\Contract\NamedDefinition $parentType,
         \Graphpinator\Container\Container $typeContainer,
         \Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions,
+        \Graphpinator\Normalizer\Variable\VariableSet $variableSet,
     ) : \Graphpinator\Normalizer\Field\FieldSet
     {
         $normalized = [];
 
         foreach ($this as $field) {
-            $normalized[] = $field->normalize($parentType, $typeContainer, $fragmentDefinitions);
+            $normalized[] = $field->normalize($parentType, $typeContainer, $fragmentDefinitions, $variableSet);
         }
 
         $return = new \Graphpinator\Normalizer\Field\FieldSet($normalized);
 
-        foreach ($this->fragments->normalize($parentType, $typeContainer, $fragmentDefinitions) as $fragmentSpread) {
+        foreach ($this->fragments->normalize($parentType, $typeContainer, $fragmentDefinitions, $variableSet) as $fragmentSpread) {
             $return->mergeFieldSet($parentType, $fragmentSpread->getFields());
         }
 

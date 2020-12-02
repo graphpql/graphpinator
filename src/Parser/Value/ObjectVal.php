@@ -41,10 +41,12 @@ final class ObjectVal implements \Graphpinator\Parser\Value\Value
     public function createInputedValue(
         \Graphpinator\Type\Contract\Inputable $type,
         \Graphpinator\Normalizer\Variable\VariableSet $variableSet,
-    ) : \Graphpinator\Value\InputedValue
+    ) : \Graphpinator\Value\InputValue
     {
+        if (!$type instanceof \Graphpinator\Type\InputType) {
+            throw new \Exception();
+        }
 
-
-        //foreach ($t)
+        return new \Graphpinator\Value\InputValue($type, $this->value);
     }
 }

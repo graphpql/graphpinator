@@ -22,7 +22,10 @@ final class Literal implements \Graphpinator\Parser\Value\Value
         return false;
     }
 
-    public function createInputedValue(\Graphpinator\Type\Contract\Inputable $type) : \Graphpinator\Value\InputedValue
+    public function createInputedValue(
+        \Graphpinator\Type\Contract\Inputable $type,
+        \Graphpinator\Normalizer\Variable\VariableSet $variableSet,
+    ) : \Graphpinator\Value\InputedValue
     {
         return $type->createInputedValue($this->value);
     }

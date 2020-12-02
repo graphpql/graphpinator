@@ -292,7 +292,7 @@ final class InputTest extends \PHPUnit\Framework\TestCase
                 Json::fromNative((object) [
                     'query' => 'query queryName { fieldAbc { fieldXyz(arg1: $varNonExistent) { name } } }',
                 ]),
-                \Graphpinator\Exception\Resolver\MissingVariable::class,
+                \Graphpinator\Exception\Normalizer\UnknownVariable::class,
             ],
 
         ];

@@ -15,6 +15,7 @@ final class DirectiveSet extends \Infinityloop\Utils\ObjectSet
     public function __construct(
         \Graphpinator\Parser\Directive\DirectiveSet $parsed,
         \Graphpinator\Container\Container $typeContainer,
+        \Graphpinator\Normalizer\Variable\VariableSet $variableSet,
     )
     {
         parent::__construct();
@@ -22,7 +23,7 @@ final class DirectiveSet extends \Infinityloop\Utils\ObjectSet
         $directiveTypes = [];
 
         foreach ($parsed as $parsedDirective) {
-            $normalizedDirective = new Directive($parsedDirective, $typeContainer);
+            $normalizedDirective = new Directive($parsedDirective, $typeContainer, $variableSet);
 
             $directive = $normalizedDirective->getDirective();
 

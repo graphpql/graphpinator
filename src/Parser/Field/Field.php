@@ -45,6 +45,7 @@ final class Field
         \Graphpinator\Type\Contract\NamedDefinition $parentType,
         \Graphpinator\Container\Container $typeContainer,
         \Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions,
+        \Graphpinator\Normalizer\Variable\VariableSet $variableSet,
     ) : \Graphpinator\Normalizer\Field\Field
     {
         return new \Graphpinator\Normalizer\Field\Field(
@@ -52,6 +53,7 @@ final class Field
             $parentType,
             $typeContainer,
             $fragmentDefinitions,
+            $variableSet,
         );
     }
 }

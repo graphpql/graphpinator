@@ -19,7 +19,8 @@ final class Field
         \Graphpinator\Parser\Field\Field $parsed,
         \Graphpinator\Type\Contract\NamedDefinition $parentType,
         \Graphpinator\Container\Container $typeContainer,
-        \Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions
+        \Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions,
+        \Graphpinator\Normalizer\Variable\VariableSet $variableSet,
     )
     {
         \assert($parentType instanceof \Graphpinator\Type\Contract\Outputable);
@@ -36,16 +37,18 @@ final class Field
                 ? $parsed->getArguments()
                 : new \Graphpinator\Parser\Value\ArgumentValueSet([]),
             $field,
+            $variableSet,
         );
         $this->directives = new \Graphpinator\Normalizer\Directive\DirectiveSet(
             $parsed->getDirectives() instanceof \Graphpinator\Parser\Directive\DirectiveSet
                 ? $parsed->getDirectives()
                 : new \Graphpinator\Parser\Directive\DirectiveSet([], \Graphpinator\Directive\ExecutableDirectiveLocation::FIELD),
             $typeContainer,
+            $variableSet,
         );
 
         if ($parsed->getFields() instanceof \Graphpinator\Parser\Field\FieldSet) {
-            $this->children = $parsed->getFields()->normalize($fieldType, $typeContainer, $fragmentDefinitions);
+            $this->children = $parsed->getFields()->normalize($fieldType, $typeContainer, $fragmentDefinitions, $variableSet);
         } elseif (!$fieldType instanceof \Graphpinator\Type\Contract\LeafDefinition) {
             throw new \Graphpinator\Exception\Resolver\SelectionOnComposite();
         }
