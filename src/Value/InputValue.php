@@ -22,7 +22,7 @@ final class InputValue implements \Graphpinator\Value\InputedValue
                 continue;
             }
 
-            throw new \Exception('Unknown field for input value');
+            throw new \Graphpinator\Exception\Normalizer\UnknownInputField($name, $type->getName());
         }
 
         $value = new \stdClass();
