@@ -5,8 +5,8 @@ declare(strict_types = 1);
 namespace Graphpinator\Normalizer\Value;
 
 /**
- * @method \Graphpinator\Normalizer\Value\ConstantArgumentValue current() : object
- * @method \Graphpinator\Normalizer\Value\ConstantArgumentValue offsetGet($offset) : object
+ * @method \Graphpinator\Normalizer\Value\ArgumentValue current() : object
+ * @method \Graphpinator\Normalizer\Value\ArgumentValue offsetGet($offset) : object
  */
 final class ArgumentValueSet extends \Infinityloop\Utils\ImplicitObjectMap
 {
@@ -24,16 +24,13 @@ final class ArgumentValueSet extends \Infinityloop\Utils\ImplicitObjectMap
 
         foreach ($argumentSet as $argument) {
             if (!$parsed->offsetExists($argument->getName())) {
-                $this[] = new \Graphpinator\Normalizer\Value\ConstantArgumentValue($argument, null);
+                $this[] = \Graphpinator\Normalizer\Value\ArgumentValue::fromRaw($argument, null);
 
                 continue;
             }
 
             $parsedArg = $parsed->offsetGet($argument->getName());
-
-            $this[] = $parsedArg->getValue()->hasVariables()
-                ? new \Graphpinator\Normalizer\Value\VariableArgumentValue($argument, $parsedArg->getValue(), $variableSet)
-                : new \Graphpinator\Normalizer\Value\ConstantArgumentValue($argument, $parsedArg->getValue()->getRawValue());
+            $this[] = \Graphpinator\Normalizer\Value\ArgumentValue::fromParsed($argument, $parsedArg->getValue(), $variableSet);
         }
 
         foreach ($parsed as $value) {

@@ -9,7 +9,7 @@ final class ListType extends \Graphpinator\Type\Contract\ModifierDefinition
     public function createInputedValue($rawValue) : \Graphpinator\Value\InputedValue
     {
         if (\is_array($rawValue)) {
-            return new \Graphpinator\Value\ListInputedValue($this, $rawValue);
+            return \Graphpinator\Value\ListInputedValue::fromRawValue($this, $rawValue);
         }
 
         return new \Graphpinator\Value\NullInputedValue($this);

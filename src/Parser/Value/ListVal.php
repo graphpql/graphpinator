@@ -12,6 +12,11 @@ final class ListVal implements \Graphpinator\Parser\Value\Value
         private array $value,
     ) {}
 
+    public function getValue() : array
+    {
+        return $this->value;
+    }
+
     public function getRawValue() : array
     {
         $return = [];
@@ -48,9 +53,9 @@ final class ListVal implements \Graphpinator\Parser\Value\Value
         }
 
         if (!$type instanceof \Graphpinator\Type\ListType) {
-
+            throw new \Exception();
         }
 
-        return $type->createInputedValue($this->value);
+        return \Graphpinator\Value\ListInputedValue::fromParserValue($type, $this, $variableSet);
     }
 }

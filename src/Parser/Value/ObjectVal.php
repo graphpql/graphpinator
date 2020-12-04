@@ -12,6 +12,11 @@ final class ObjectVal implements \Graphpinator\Parser\Value\Value
         private \stdClass $value,
     ) {}
 
+    public function getValue() : \stdClass
+    {
+        return $this->value;
+    }
+
     public function getRawValue() : \stdClass
     {
         $return = new \stdClass();
@@ -43,10 +48,14 @@ final class ObjectVal implements \Graphpinator\Parser\Value\Value
         \Graphpinator\Normalizer\Variable\VariableSet $variableSet,
     ) : \Graphpinator\Value\InputValue
     {
+        if ($type instanceof \Graphpinator\Type\NotNullType) {
+            return $this->createInputedValue($type->getInnerType(), $variableSet);
+        }
+
         if (!$type instanceof \Graphpinator\Type\InputType) {
             throw new \Exception();
         }
 
-        return new \Graphpinator\Value\InputValue($type, $this->value);
+        return \Graphpinator\Value\InputValue::fromParserValue($type, $this, $variableSet);
     }
 }

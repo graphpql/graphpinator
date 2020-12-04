@@ -10,10 +10,17 @@ final class InputValue implements \Graphpinator\Value\InputedValue
 
     private \Graphpinator\Type\InputType $type;
     private \stdClass $value;
+    private bool $constraintValidated = false;
 
-    public function __construct(\Graphpinator\Type\InputType $type, \stdClass $rawValue)
+    private function __construct(\Graphpinator\Type\InputType $type, \stdClass $value)
     {
-        $rawValue = self::merge($rawValue, (object) $type->getArguments()->getRawDefaults());
+        $this->type = $type;
+        $this->value = $value;
+    }
+
+    public static function fromRawValue(\Graphpinator\Type\InputType $type, \stdClass $rawValue) : self
+    {
+        $rawValue = self::mergeRaw($rawValue, (object) $type->getArguments()->getRawDefaults());
 
         foreach ((array) $rawValue as $name => $temp) {
             if ($type->getArguments()->offsetExists($name)) {
@@ -23,20 +30,50 @@ final class InputValue implements \Graphpinator\Value\InputedValue
             throw new \Graphpinator\Exception\Normalizer\UnknownInputField($name, $type->getName());
         }
 
-        $value = new \stdClass();
+        $inner = new \stdClass();
 
         foreach ($type->getArguments() as $argument) {
-            $value->{$argument->getName()} = new \Graphpinator\Normalizer\Value\ConstantArgumentValue(
+            $inner->{$argument->getName()} = \Graphpinator\Normalizer\Value\ArgumentValue::fromRaw(
                 $argument,
                 $rawValue->{$argument->getName()}
                     ?? null,
             );
         }
 
-        $this->type = $type;
-        $this->value = $value;
+        return new self($type, $inner);
+    }
 
-        $type->validateConstraints($this);
+    public static function fromParserValue(
+        \Graphpinator\Type\InputType $type,
+        \Graphpinator\Parser\Value\ObjectVal $value,
+        \Graphpinator\Normalizer\Variable\VariableSet $variableSet,
+    ) : self
+    {
+        foreach ($value->getValue() as $name => $temp) {
+            if ($type->getArguments()->offsetExists($name)) {
+                continue;
+            }
+
+            throw new \Graphpinator\Exception\Normalizer\UnknownInputField($name, $type->getName());
+        }
+
+        $inner = new \stdClass();
+
+        foreach ($type->getArguments() as $argument) {
+            if (!\property_exists($value->getValue(), $argument->getName())) {
+                $inner->{$argument->getName()} = \Graphpinator\Normalizer\Value\ArgumentValue::fromRaw($argument, null);
+
+                continue;
+            }
+
+            $inner->{$argument->getName()} = \Graphpinator\Normalizer\Value\ArgumentValue::fromParsed(
+                $argument,
+                $value->getValue()->{$argument->getName()},
+                $variableSet,
+            );
+        }
+
+        return new self($type, $inner);
     }
 
     public function getRawValue() : \stdClass
@@ -44,7 +81,7 @@ final class InputValue implements \Graphpinator\Value\InputedValue
         $return = new \stdClass();
 
         foreach ((array) $this->value as $fieldName => $fieldValue) {
-            \assert($fieldValue instanceof \Graphpinator\Normalizer\Value\ConstantArgumentValue);
+            \assert($fieldValue instanceof \Graphpinator\Normalizer\Value\ArgumentValue);
 
             $return->{$fieldName} = $fieldValue->getValue()->getRawValue();
         }
@@ -62,7 +99,7 @@ final class InputValue implements \Graphpinator\Value\InputedValue
         $component = [];
 
         foreach ((array) $this->value as $key => $value) {
-            \assert($value instanceof \Graphpinator\Normalizer\Value\ConstantArgumentValue);
+            \assert($value instanceof \Graphpinator\Normalizer\Value\ArgumentValue);
 
             $component[] = $key . ':' . $value->getValue()->printValue();
         }
@@ -81,7 +118,7 @@ final class InputValue implements \Graphpinator\Value\InputedValue
         $innerIndent = $indent . '  ';
 
         foreach ((array) $this->value as $key => $value) {
-            \assert($value instanceof \Graphpinator\Normalizer\Value\ConstantArgumentValue);
+            \assert($value instanceof \Graphpinator\Normalizer\Value\ArgumentValue);
 
             $component[] = $key . ': ' . $value->getValue()->prettyPrint($indentLevel + 1);
         }
@@ -92,10 +129,12 @@ final class InputValue implements \Graphpinator\Value\InputedValue
     public function applyVariables(\Graphpinator\Resolver\VariableValueSet $variables) : void
     {
         foreach ($this->value as $key => $value) {
-            \assert($value instanceof \Graphpinator\Normalizer\Value\ConstantArgumentValue);
+            \assert($value instanceof \Graphpinator\Normalizer\Value\ArgumentValue);
 
             $value->getValue()->applyVariables($variables);
         }
+
+        $this->type->validateConstraints($this);
     }
 
     public function isSame(Value $compare) : bool
@@ -111,7 +150,7 @@ final class InputValue implements \Graphpinator\Value\InputedValue
         }
 
         foreach ($this->value as $key => $value) {
-            \assert($value instanceof \Graphpinator\Normalizer\Value\ConstantArgumentValue);
+            \assert($value instanceof \Graphpinator\Normalizer\Value\ArgumentValue);
 
             if (!\property_exists($secondObject, $key) || !$value->getValue()->isSame($secondObject->{$key})) {
                 return false;
@@ -121,13 +160,32 @@ final class InputValue implements \Graphpinator\Value\InputedValue
         return true;
     }
 
-    private static function merge(\stdClass $core, \stdClass $supplement) : \stdClass
+    public function __isset(string $name) : bool
+    {
+        return \property_exists($this->value, $name);
+    }
+
+    public function __get(string $name) : \Graphpinator\Normalizer\Value\ArgumentValue
+    {
+        return $this->value->{$name};
+    }
+
+    public function __set(string $name, \Graphpinator\Normalizer\Value\ArgumentValue $value) : void
+    {
+        if ($value->getArgument() !== $this->type->getArguments()[$name]) {
+            throw new \Exception();
+        }
+
+        $this->value->{$name} = $value;
+    }
+
+    private static function mergeRaw(\stdClass $core, \stdClass $supplement) : \stdClass
     {
         foreach ((array) $supplement as $key => $value) {
             if (\property_exists($core, $key)) {
                 if ($core->{$key} instanceof \stdClass &&
                     $supplement->{$key} instanceof \stdClass) {
-                    $core->{$key} = self::merge($core->{$key}, $supplement->{$key});
+                    $core->{$key} = self::mergeRaw($core->{$key}, $supplement->{$key});
                 }
 
                 continue;
@@ -137,24 +195,5 @@ final class InputValue implements \Graphpinator\Value\InputedValue
         }
 
         return $core;
-    }
-
-    public function __isset(string $name) : bool
-    {
-        return \property_exists($this->value, $name);
-    }
-
-    public function __get(string $name) : \Graphpinator\Normalizer\Value\ConstantArgumentValue
-    {
-        return $this->value->{$name};
-    }
-
-    public function __set(string $name, \Graphpinator\Normalizer\Value\ConstantArgumentValue $value) : void
-    {
-        if ($value->getArgument() !== $this->type->getArguments()[$name]) {
-            throw new \Exception();
-        }
-
-        $this->value->{$name} = $value;
     }
 }
