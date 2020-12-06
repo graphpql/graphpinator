@@ -29,25 +29,23 @@ final class ArgumentValue
             ? $default
             : $argument->getType()->createInputedValue($rawValue);
 
-        $argument->validateConstraints($value);
-
         return new self($argument, $value);
     }
 
     public static function fromParsed(
         \Graphpinator\Argument\Argument $argument,
-        \Graphpinator\Parser\Value\Value $value,
+        \Graphpinator\Parser\Value\Value $parsedValue,
         \Graphpinator\Normalizer\Variable\VariableSet $variableSet,
     ) : self
     {
-        $val = $value->createInputedValue($argument->getType(), $variableSet);
+        $value = $parsedValue->createInputedValue($argument->getType(), $variableSet);
         $default = $argument->getDefaultValue();
 
-        if ($val instanceof \Graphpinator\Value\NullInputedValue && $default instanceof \Graphpinator\Value\InputedValue) {
+        if ($value instanceof \Graphpinator\Value\NullInputedValue && $default instanceof \Graphpinator\Value\InputedValue) {
             return new self($argument, $default);
         }
 
-        return new self($argument, $val);
+        return new self($argument, $value);
     }
 
     public function getValue() : \Graphpinator\Value\InputedValue
@@ -63,5 +61,6 @@ final class ArgumentValue
     public function applyVariables(\Graphpinator\Resolver\VariableValueSet $variables) : void
     {
         $this->value->applyVariables($variables);
+        $this->argument->validateConstraints($this->value);
     }
 }

@@ -131,7 +131,7 @@ final class InputValue implements \Graphpinator\Value\InputedValue
         foreach ($this->value as $key => $value) {
             \assert($value instanceof \Graphpinator\Normalizer\Value\ArgumentValue);
 
-            $value->getValue()->applyVariables($variables);
+            $value->applyVariables($variables);
         }
 
         $this->type->validateConstraints($this);
