@@ -784,26 +784,38 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
 
     public function testValidateSchemaProperties() : void
     {
-        self::assertTrue(TestSchema::getFullSchema()->getMutation() instanceof \Graphpinator\Type\Type);
-        self::assertTrue(TestSchema::getFullSchema()->getSubscription() instanceof \Graphpinator\Type\Type);
+        $schema = \explode(\PHP_EOL . \PHP_EOL, TestSchema::getFullSchema()->printSchema());
+
+        self::assertSame(
+            'schema {' . \PHP_EOL . '  query: Query' . \PHP_EOL . '  mutation: Query' . \PHP_EOL . '  subscription: Query' . \PHP_EOL . '}',
+            $schema[0],
+        );
     }
 
     public function testValidateCorrectOrder() : void
     {
-        $sorter = new \Graphpinator\Utils\Sort\TypeKindSorter();
-        $types = TestSchema::getSchema()->getContainer()->getTypes();
-        $sortedTypes = [];
+        $schema = \explode(\PHP_EOL . \PHP_EOL, TestSchema::getSchema()->printSchema(new \Graphpinator\Utils\Sort\TypeKindSorter()));
+        \array_splice($schema, 0, 1);
 
-        foreach ($sorter->sortTypes($types) as $type) {
-            $sortedTypes[$type->getTypeKind()] = $type->getTypeKind();
+        $sorter = new \Graphpinator\Utils\Sort\TypeKindSorter();
+        $types = $sorter->sortTypes(TestSchema::getSchema()->getContainer()->getTypes());
+        $directives = $sorter->sortDirectives(TestSchema::getSchema()->getContainer()->getDirectives());
+
+        $sortedTypes = [];
+        $sortedDirectives = [];
+
+        foreach ($types as $type) {
+            $sortedTypes[] = $type->printSchema();
         }
 
-        self::assertSame(0, \array_search(\Graphpinator\Type\Introspection\TypeKind::INTERFACE, \array_keys($sortedTypes)));
-        self::assertSame(1, \array_search(\Graphpinator\Type\Introspection\TypeKind::OBJECT, \array_keys($sortedTypes)));
-        self::assertSame(2, \array_search(\Graphpinator\Type\Introspection\TypeKind::UNION, \array_keys($sortedTypes)));
-        self::assertSame(3, \array_search(\Graphpinator\Type\Introspection\TypeKind::INPUT_OBJECT, \array_keys($sortedTypes)));
-        self::assertSame(4, \array_search(\Graphpinator\Type\Introspection\TypeKind::SCALAR, \array_keys($sortedTypes)));
-        self::assertSame(5, \array_search(\Graphpinator\Type\Introspection\TypeKind::ENUM, \array_keys($sortedTypes)));
+        foreach ($directives as $directive) {
+            $sortedDirectives[] = $directive->printSchema();
+        }
+
+        self::assertSame(
+            \implode(\PHP_EOL . \PHP_EOL, \array_merge($sortedTypes, $sortedDirectives)),
+            \implode(\PHP_EOL . \PHP_EOL, $schema),
+        );
     }
 }
 // phpcs:enable SlevomatCodingStandard.Files.LineLength.LineTooLong
