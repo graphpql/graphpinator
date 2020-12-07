@@ -93,8 +93,7 @@ final class ArgumentTest extends \PHPUnit\Framework\TestCase
                 \Graphpinator\Json::fromObject((object) [
                     'query' => 'query queryName { fieldAbc { fieldXyz(arg1: 123, arg1: 456) { name } } }',
                 ]),
-                //phpcs:ignore SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly.ReferencedGeneralException
-                \Exception::class,
+                \Graphpinator\Exception\Parser\DuplicateArgument::class,
             ],
             [
                 \Graphpinator\Json::fromObject((object) [

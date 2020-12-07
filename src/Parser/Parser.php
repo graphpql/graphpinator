@@ -362,10 +362,15 @@ final class Parser
             }
 
             $name = $this->tokenizer->getCurrent()->getValue();
+
+            if (\array_key_exists($name, $arguments)) {
+                throw new \Graphpinator\Exception\Parser\DuplicateArgument($name, $this->tokenizer->getCurrent()->getLocation());
+            }
+
             $this->tokenizer->assertNext(TokenType::COLON, \Graphpinator\Exception\Parser\ExpectedColon::class);
             $value = $this->parseValue(false);
 
-            $arguments[] = new \Graphpinator\Parser\Value\NamedValue($value, $name);
+            $arguments[$name] = new \Graphpinator\Parser\Value\NamedValue($value, $name);
         }
 
         $this->tokenizer->getNext();
