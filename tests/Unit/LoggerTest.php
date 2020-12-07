@@ -93,9 +93,9 @@ final class LoggerTest extends \PHPUnit\Framework\TestCase
         );
 
         $request = Json::fromNative((object) [
-            'query' => 'query queryName { fieldAbc { fieldXyz(arg1: 123, arg1: 456) { name } } }',
+            'query' => 'query queryName { fieldThrow { fieldXyz { name } } }',
         ]);
-        $expected = 'Duplicated item';
+        $expected = 'Random exception';
 
         $graphpinator->run(new \Graphpinator\Request\JsonRequestFactory($request));
 
