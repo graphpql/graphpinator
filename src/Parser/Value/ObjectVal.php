@@ -56,6 +56,6 @@ final class ObjectVal implements \Graphpinator\Parser\Value\Value
             throw new \Exception();
         }
 
-        return \Graphpinator\Value\InputValue::fromParserValue($type, $this, $variableSet);
+        return \Graphpinator\Value\InputValue::fromParsed($type, $this, $variableSet);
     }
 }

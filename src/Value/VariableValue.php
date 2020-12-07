@@ -15,14 +15,14 @@ final class VariableValue implements \Graphpinator\Value\InputedValue
     public function __construct(\Graphpinator\Type\Contract\Inputable $type, \Graphpinator\Normalizer\Variable\Variable $variable)
     {
         if (!$variable->getType()->isInstanceOf($type)) {
-            throw new \Exception();
+            throw new \Graphpinator\Exception\Normalizer\VariableTypeMismatch();
         }
 
         $this->type = $type;
         $this->variable = $variable;
     }
 
-    public function getRawValue() : \stdClass|array|string|int|float|bool|null
+    public function getRawValue() : mixed
     {
         return $this->value->getRawValue();
     }

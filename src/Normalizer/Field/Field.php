@@ -10,7 +10,7 @@ final class Field
 
     private string $name;
     private string $alias;
-    private \Graphpinator\Normalizer\Value\ArgumentValueSet $arguments;
+    private \Graphpinator\Value\ArgumentValueSet $arguments;
     private \Graphpinator\Normalizer\Directive\DirectiveSet $directives;
     private ?\Graphpinator\Normalizer\Field\FieldSet $children = null;
     private ?\Graphpinator\Type\Contract\TypeConditionable $typeCond = null;
@@ -32,7 +32,7 @@ final class Field
         $field = $parentType->getField($this->name);
         $fieldType = $field->getType()->getNamedType();
 
-        $this->arguments = new \Graphpinator\Normalizer\Value\ArgumentValueSet(
+        $this->arguments = new \Graphpinator\Value\ArgumentValueSet(
             $parsed->getArguments() instanceof \Graphpinator\Parser\Value\ArgumentValueSet
                 ? $parsed->getArguments()
                 : new \Graphpinator\Parser\Value\ArgumentValueSet([]),
@@ -64,7 +64,7 @@ final class Field
         return $this->alias;
     }
 
-    public function getArguments() : \Graphpinator\Normalizer\Value\ArgumentValueSet
+    public function getArguments() : \Graphpinator\Value\ArgumentValueSet
     {
         return $this->arguments;
     }

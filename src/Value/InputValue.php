@@ -18,7 +18,7 @@ final class InputValue implements \Graphpinator\Value\InputedValue
         $this->value = $value;
     }
 
-    public static function fromRawValue(\Graphpinator\Type\InputType $type, \stdClass $rawValue) : self
+    public static function fromRaw(\Graphpinator\Type\InputType $type, \stdClass $rawValue) : self
     {
         $rawValue = self::mergeRaw($rawValue, (object) $type->getArguments()->getRawDefaults());
 
@@ -33,7 +33,7 @@ final class InputValue implements \Graphpinator\Value\InputedValue
         $inner = new \stdClass();
 
         foreach ($type->getArguments() as $argument) {
-            $inner->{$argument->getName()} = \Graphpinator\Normalizer\Value\ArgumentValue::fromRaw(
+            $inner->{$argument->getName()} = \Graphpinator\Value\ArgumentValue::fromRaw(
                 $argument,
                 $rawValue->{$argument->getName()}
                     ?? null,
@@ -43,13 +43,13 @@ final class InputValue implements \Graphpinator\Value\InputedValue
         return new self($type, $inner);
     }
 
-    public static function fromParserValue(
+    public static function fromParsed(
         \Graphpinator\Type\InputType $type,
-        \Graphpinator\Parser\Value\ObjectVal $value,
+        \Graphpinator\Parser\Value\ObjectVal $parsed,
         \Graphpinator\Normalizer\Variable\VariableSet $variableSet,
     ) : self
     {
-        foreach ($value->getValue() as $name => $temp) {
+        foreach ($parsed->getValue() as $name => $temp) {
             if ($type->getArguments()->offsetExists($name)) {
                 continue;
             }
@@ -60,15 +60,15 @@ final class InputValue implements \Graphpinator\Value\InputedValue
         $inner = new \stdClass();
 
         foreach ($type->getArguments() as $argument) {
-            if (!\property_exists($value->getValue(), $argument->getName())) {
-                $inner->{$argument->getName()} = \Graphpinator\Normalizer\Value\ArgumentValue::fromRaw($argument, null);
+            if (!\property_exists($parsed->getValue(), $argument->getName())) {
+                $inner->{$argument->getName()} = \Graphpinator\Value\ArgumentValue::fromRaw($argument, null);
 
                 continue;
             }
 
-            $inner->{$argument->getName()} = \Graphpinator\Normalizer\Value\ArgumentValue::fromParsed(
+            $inner->{$argument->getName()} = \Graphpinator\Value\ArgumentValue::fromParsed(
                 $argument,
-                $value->getValue()->{$argument->getName()},
+                $parsed->getValue()->{$argument->getName()},
                 $variableSet,
             );
         }
@@ -81,7 +81,7 @@ final class InputValue implements \Graphpinator\Value\InputedValue
         $return = new \stdClass();
 
         foreach ((array) $this->value as $fieldName => $fieldValue) {
-            \assert($fieldValue instanceof \Graphpinator\Normalizer\Value\ArgumentValue);
+            \assert($fieldValue instanceof \Graphpinator\Value\ArgumentValue);
 
             $return->{$fieldName} = $fieldValue->getValue()->getRawValue();
         }
@@ -99,7 +99,7 @@ final class InputValue implements \Graphpinator\Value\InputedValue
         $component = [];
 
         foreach ((array) $this->value as $key => $value) {
-            \assert($value instanceof \Graphpinator\Normalizer\Value\ArgumentValue);
+            \assert($value instanceof \Graphpinator\Value\ArgumentValue);
 
             $component[] = $key . ':' . $value->getValue()->printValue();
         }
@@ -118,7 +118,7 @@ final class InputValue implements \Graphpinator\Value\InputedValue
         $innerIndent = $indent . '  ';
 
         foreach ((array) $this->value as $key => $value) {
-            \assert($value instanceof \Graphpinator\Normalizer\Value\ArgumentValue);
+            \assert($value instanceof \Graphpinator\Value\ArgumentValue);
 
             $component[] = $key . ': ' . $value->getValue()->prettyPrint($indentLevel + 1);
         }
@@ -129,7 +129,7 @@ final class InputValue implements \Graphpinator\Value\InputedValue
     public function applyVariables(\Graphpinator\Resolver\VariableValueSet $variables) : void
     {
         foreach ($this->value as $key => $value) {
-            \assert($value instanceof \Graphpinator\Normalizer\Value\ArgumentValue);
+            \assert($value instanceof \Graphpinator\Value\ArgumentValue);
 
             $value->applyVariables($variables);
         }
@@ -150,7 +150,7 @@ final class InputValue implements \Graphpinator\Value\InputedValue
         }
 
         foreach ($this->value as $key => $value) {
-            \assert($value instanceof \Graphpinator\Normalizer\Value\ArgumentValue);
+            \assert($value instanceof \Graphpinator\Value\ArgumentValue);
 
             if (!\property_exists($secondObject, $key) || !$value->getValue()->isSame($secondObject->{$key})) {
                 return false;
@@ -165,12 +165,12 @@ final class InputValue implements \Graphpinator\Value\InputedValue
         return \property_exists($this->value, $name);
     }
 
-    public function __get(string $name) : \Graphpinator\Normalizer\Value\ArgumentValue
+    public function __get(string $name) : \Graphpinator\Value\ArgumentValue
     {
         return $this->value->{$name};
     }
 
-    public function __set(string $name, \Graphpinator\Normalizer\Value\ArgumentValue $value) : void
+    public function __set(string $name, \Graphpinator\Value\ArgumentValue $value) : void
     {
         if ($value->getArgument() !== $this->type->getArguments()[$name]) {
             throw new \Exception();

@@ -72,7 +72,7 @@ final class UploadModule implements \Graphpinator\Module\Module
             $index = (int) $index;
 
             if ($currentValue instanceof \Graphpinator\Value\NullValue) {
-                $currentValue = new \Graphpinator\Value\ListInputedValue($type, []);
+                $currentValue = \Graphpinator\Value\ListInputedValue::fromRaw($type, []);
             }
 
             if (!isset($currentValue[$index])) {
@@ -93,7 +93,7 @@ final class UploadModule implements \Graphpinator\Module\Module
 
             $argument = $type->getArguments()[$index];
 
-            $currentValue->{$index} = \Graphpinator\Argument\ArgumentValue::fromInputed(
+            $currentValue->{$index} = \Graphpinator\Value\ArgumentValue::fromInputed(
                 $argument,
                 $this->insertFiles($keys, $currentValue->{$index}->getValue(), $argument->getType(), $fileValue),
             );

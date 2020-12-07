@@ -14,7 +14,7 @@ abstract class InputType extends \Graphpinator\Type\Contract\ConcreteDefinition 
     final public function createInputedValue(mixed $rawValue) : \Graphpinator\Value\InputedValue
     {
         if ($rawValue instanceof \stdClass) {
-            return \Graphpinator\Value\InputValue::fromRawValue($this, $rawValue);
+            return \Graphpinator\Value\InputValue::fromRaw($this, $rawValue);
         }
 
         return new \Graphpinator\Value\NullInputedValue($this);

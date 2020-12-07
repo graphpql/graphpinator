@@ -12,7 +12,7 @@ final class ListInputedValue extends \Graphpinator\Value\ListValue implements \G
         $this->value = $value;
     }
 
-    public static function fromRawValue(
+    public static function fromRaw(
         \Graphpinator\Type\ListType $type,
         array $rawValue
     ) : self
@@ -29,15 +29,15 @@ final class ListInputedValue extends \Graphpinator\Value\ListValue implements \G
         return new self($type, $inner);
     }
 
-    public static function fromParserValue(
+    public static function fromParsed(
         \Graphpinator\Type\ListType $type,
-        \Graphpinator\Parser\Value\ListVal $value,
+        \Graphpinator\Parser\Value\ListVal $parsed,
         \Graphpinator\Normalizer\Variable\VariableSet $variableSet,
     ) : self
     {
         $inner = [];
 
-        foreach ($value->getValue() as $parserValue) {
+        foreach ($parsed->getValue() as $parserValue) {
             \assert($parserValue instanceof \Graphpinator\Parser\Value\Value);
 
             $inner[] = $parserValue->createInputedValue($type->getInnerType(), $variableSet);

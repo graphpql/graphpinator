@@ -56,6 +56,6 @@ final class ListVal implements \Graphpinator\Parser\Value\Value
             throw new \Exception();
         }
 
-        return \Graphpinator\Value\ListInputedValue::fromParserValue($type, $this, $variableSet);
+        return \Graphpinator\Value\ListInputedValue::fromParsed($type, $this, $variableSet);
     }
 }

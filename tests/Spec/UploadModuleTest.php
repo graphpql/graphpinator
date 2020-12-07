@@ -157,7 +157,7 @@ final class UploadModuleTest extends \PHPUnit\Framework\TestCase
             [
                 '{ "0": ["variables.var1"] }',
                 Json::fromNative((object) [
-                    'query' => 'query queryName($var1: Int) { fieldInputUpload(fileInput: $var1) { fileName } }',
+                    'query' => 'query queryName($var1: UploadInput) { fieldInputUpload(fileInput: $var1) { fileName } }',
                 ]),
                 \Graphpinator\Exception\Upload\InvalidMap::class,
             ],
@@ -166,7 +166,7 @@ final class UploadModuleTest extends \PHPUnit\Framework\TestCase
                 Json::fromNative((object) [
                     'query' => 'query queryName($var1: Int) { fieldInputUpload(fileInput: $var1) { fileName } }',
                 ]),
-                \Graphpinator\Exception\Upload\InvalidMap::class,
+                \Graphpinator\Exception\Normalizer\VariableTypeMismatch::class,
             ],
         ];
     }

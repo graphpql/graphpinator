@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Normalizer\Value;
+namespace Graphpinator\Value;
 
 final class ArgumentValue
 {
@@ -30,6 +30,18 @@ final class ArgumentValue
             : $argument->getType()->createInputedValue($rawValue);
 
         return new self($argument, $value);
+    }
+
+    public static function fromInputed(
+        \Graphpinator\Argument\Argument $argument,
+        \Graphpinator\Value\InputedValue $value,
+    ) : self
+    {
+        if ($value->getType()->isInstanceOf($argument->getType())) {
+            return new self($argument, $value);
+        }
+
+        throw new \Exception();
     }
 
     public static function fromParsed(
