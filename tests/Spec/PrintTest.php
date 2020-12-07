@@ -784,38 +784,82 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
 
     public function testValidateSchemaProperties() : void
     {
-        $schema = \explode(\PHP_EOL . \PHP_EOL, TestSchema::getFullSchema()->printSchema());
-
-        self::assertSame(
+        self::assertTrue(\str_starts_with(
+            TestSchema::getFullSchema()->printSchema(),
             'schema {' . \PHP_EOL . '  query: Query' . \PHP_EOL . '  mutation: Query' . \PHP_EOL . '  subscription: Query' . \PHP_EOL . '}',
-            $schema[0],
-        );
+        ));
     }
 
     public function testValidateCorrectOrder() : void
     {
-        $schema = \explode(\PHP_EOL . \PHP_EOL, TestSchema::getSchema()->printSchema(new \Graphpinator\Utils\Sort\TypeKindSorter()));
-        \array_splice($schema, 0, 1);
+        $expected = [
+            'interface InterfaceAbc',
+            'interface InterfaceEfg',
+            'interface TestInterface',
+            'type Abc',
+            'type AddonType',
+            'type ConstraintType',
+            'type FragmentTypeA',
+            'type FragmentTypeB',
+            'type Gps',
+            'type Hsl',
+            'type Hsla',
+            'type NullFieldResolution',
+            'type NullListResolution',
+            'type Point',
+            'type Query',
+            'type Rgb',
+            'type Rgba',
+            'type SimpleEmptyTestInput',
+            'type SimpleType',
+            'type UploadType',
+            'type Xyz',
+            'type Zzz',
+            'union TestUnion',
+            'union TestUnionInvalidResolvedType',
+            'input ComplexDefaultsInput',
+            'input CompositeInput',
+            'input ConstraintInput',
+            'input DefaultsInput',
+            'input ExactlyOneInput',
+            'input ListConstraintInput',
+            'input SimpleInput',
+            'input UploadInput',
+            'scalar BigInt',
+            'scalar Date',
+            'scalar DateTime',
+            'scalar EmailAddress',
+            'scalar Ipv4',
+            'scalar Ipv6',
+            'scalar Json',
+            'scalar Mac',
+            'scalar PhoneNumber',
+            'scalar PostalCode',
+            'scalar TestScalar',
+            'scalar Time',
+            'scalar Upload',
+            'scalar Url',
+            'scalar Void',
+            'enum ArrayEnum',
+            'enum DescriptionEnum',
+            'enum SimpleEnum',
+            'directive @floatConstraint',
+            'directive @intConstraint',
+            'directive @invalidDirective',
+            'directive @listConstraint',
+            'directive @objectConstraint',
+            'directive @stringConstraint',
+            'directive @testDirective',
+        ];
 
-        $sorter = new \Graphpinator\Utils\Sort\TypeKindSorter();
-        $types = $sorter->sortTypes(TestSchema::getSchema()->getContainer()->getTypes());
-        $directives = $sorter->sortDirectives(TestSchema::getSchema()->getContainer()->getDirectives());
+        $schema = TestSchema::getSchema()->printSchema(new \Graphpinator\Utils\Sort\TypeKindSorter());
+        $lastCheckedPos = 0;
 
-        $sortedTypes = [];
-        $sortedDirectives = [];
-
-        foreach ($types as $type) {
-            $sortedTypes[] = $type->printSchema();
+        foreach ($expected as $type) {
+            $pos = \strpos($schema, $type);
+            self::assertGreaterThan($lastCheckedPos, $pos);
+            $lastCheckedPos = $pos;
         }
-
-        foreach ($directives as $directive) {
-            $sortedDirectives[] = $directive->printSchema();
-        }
-
-        self::assertSame(
-            \implode(\PHP_EOL . \PHP_EOL, \array_merge($sortedTypes, $sortedDirectives)),
-            \implode(\PHP_EOL . \PHP_EOL, $schema),
-        );
     }
 }
 // phpcs:enable SlevomatCodingStandard.Files.LineLength.LineTooLong
