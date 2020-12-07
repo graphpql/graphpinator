@@ -12,13 +12,9 @@ final class OperationSet extends \Infinityloop\Utils\ImplicitObjectMap
 {
     protected const INNER_CLASS = Operation::class;
 
-    public function createRequest(?string $operationName, \stdClass $variables) : \Graphpinator\ParsedRequest
+    public function createRequest(?string $operationName, \stdClass $variables) : \Graphpinator\OperationRequest
     {
-        $operation = $operationName === null
-            ? $this->current()
-            : $this->offsetGet($operationName);
-
-        return new \Graphpinator\ParsedRequest($operation, $variables);
+        return new \Graphpinator\OperationRequest($this, $operationName, $variables);
     }
 
     protected function getKey(object $object) : string

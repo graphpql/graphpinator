@@ -40,7 +40,7 @@ final class ListVal implements \Graphpinator\Parser\Value\Value
         }
 
         if (!$type instanceof \Graphpinator\Type\ListType) {
-            throw new \Exception();
+            throw new \Graphpinator\Exception\Value\InvalidValue($type->printName(), [], true);
         }
 
         return \Graphpinator\Value\ListInputedValue::fromParsed($type, $this, $variableSet);

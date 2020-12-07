@@ -8,25 +8,17 @@ final class InvalidValue extends \Graphpinator\Exception\Value\ValueError
 {
     public const MESSAGE = 'Invalid value resolved for type "%s" - got %s.';
 
-    public function __construct(string $type, $rawValue, bool $outputable)
+    public function __construct(string $type, mixed $rawValue, bool $outputable)
     {
         $this->messageArgs = [$type, $this->printValue($rawValue)];
 
         parent::__construct($outputable);
     }
 
-    private function printValue($rawValue) : string
+    private function printValue(mixed $rawValue) : string
     {
-        if ($rawValue === null) {
-            return 'null';
-        }
-
-        if (\is_string($rawValue)) {
-            return '"' . $rawValue . '"';
-        }
-
-        if (\is_scalar($rawValue)) {
-            return (string) $rawValue;
+        if ($rawValue === null || \is_scalar($rawValue)) {
+            return \json_encode($rawValue, \JSON_THROW_ON_ERROR);
         }
 
         if (\is_array($rawValue)) {

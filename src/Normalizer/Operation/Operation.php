@@ -46,7 +46,7 @@ final class Operation
         return $this->name;
     }
 
-    public function resolve(\Graphpinator\Resolver\VariableValueSet $variables) : \Graphpinator\Response
+    public function resolve(\Graphpinator\Resolver\VariableValueSet $variables) : \Graphpinator\OperationResponse
     {
         $this->children->applyVariables($variables);
 
@@ -55,6 +55,6 @@ final class Operation
             new \Graphpinator\Value\TypeIntermediateValue($this->operation, null),
         );
 
-        return new \Graphpinator\Response($data);
+        return new \Graphpinator\OperationResponse($data);
     }
 }

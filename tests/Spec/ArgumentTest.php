@@ -104,6 +104,18 @@ final class ArgumentTest extends \PHPUnit\Framework\TestCase
                 ]),
                 \Graphpinator\Exception\Value\InvalidValue::class,
             ],
+            [
+                Json::fromNative((object) [
+                    'query' => 'query queryName { fieldArgumentDefaults(inputNumberList: {val: 3}) { fieldName } }',
+                ]),
+                \Graphpinator\Exception\Value\InvalidValue::class,
+            ],
+            [
+                Json::fromNative((object) [
+                    'query' => 'query queryName { fieldAbc { fieldXyz(arg2: []) { name } } }',
+                ]),
+                \Graphpinator\Exception\Value\InvalidValue::class,
+            ],
         ];
     }
 

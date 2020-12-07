@@ -28,9 +28,4 @@ final class VariableRef implements \Graphpinator\Parser\Value\Value
 
         return new \Graphpinator\Value\VariableValue($type, $variableSet->offsetGet($this->varName));
     }
-
-    public function getVarName() : string
-    {
-        return $this->varName;
-    }
 }

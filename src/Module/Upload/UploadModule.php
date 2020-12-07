@@ -15,7 +15,7 @@ final class UploadModule implements \Graphpinator\Module\Module
         $this->fileProvider = $fileProvider;
     }
 
-    public function process(\Graphpinator\ParsedRequest $request) : \Graphpinator\ParsedRequest
+    public function process(\Graphpinator\OperationRequest $request) : \Graphpinator\OperationRequest
     {
         $variables = $request->getVariables();
 

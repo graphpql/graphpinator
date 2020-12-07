@@ -294,7 +294,6 @@ final class InputTest extends \PHPUnit\Framework\TestCase
                 ]),
                 \Graphpinator\Exception\Normalizer\UnknownVariable::class,
             ],
-
         ];
     }
 

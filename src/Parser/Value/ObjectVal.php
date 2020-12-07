@@ -40,7 +40,7 @@ final class ObjectVal implements \Graphpinator\Parser\Value\Value
         }
 
         if (!$type instanceof \Graphpinator\Type\InputType) {
-            throw new \Exception();
+            throw new \Graphpinator\Exception\Value\InvalidValue($type->printName(), new \stdClass(), true);
         }
 
         return \Graphpinator\Value\InputValue::fromParsed($type, $this, $variableSet);
