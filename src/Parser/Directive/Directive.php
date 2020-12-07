@@ -22,14 +22,4 @@ final class Directive
     {
         return $this->arguments;
     }
-
-    public function normalize(
-        \Graphpinator\Container\Container $typeContainer,
-    ) : \Graphpinator\Normalizer\Directive\Directive
-    {
-        return new \Graphpinator\Normalizer\Directive\Directive(
-            $this,
-            $typeContainer,
-        );
-    }
 }

@@ -17,11 +17,6 @@ final class VariableRef implements \Graphpinator\Parser\Value\Value
         throw new \Graphpinator\Exception\OperationNotSupported();
     }
 
-    public function hasVariables() : bool
-    {
-        return true;
-    }
-
     public function createInputedValue(
         \Graphpinator\Type\Contract\Inputable $type,
         \Graphpinator\Normalizer\Variable\VariableSet $variableSet,

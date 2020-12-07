@@ -17,11 +17,6 @@ final class Literal implements \Graphpinator\Parser\Value\Value
         return $this->value;
     }
 
-    public function hasVariables() : bool
-    {
-        return false;
-    }
-
     public function createInputedValue(
         \Graphpinator\Type\Contract\Inputable $type,
         \Graphpinator\Normalizer\Variable\VariableSet $variableSet,
