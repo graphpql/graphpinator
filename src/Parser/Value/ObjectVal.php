@@ -8,12 +8,9 @@ final class ObjectVal implements \Graphpinator\Parser\Value\Value
 {
     use \Nette\SmartObject;
 
-    private \stdClass $value;
-
-    public function __construct(\stdClass $value)
-    {
-        $this->value = $value;
-    }
+    public function __construct(
+        private \stdClass $value,
+    ) {}
 
     public function getValue() : \stdClass
     {
@@ -33,40 +30,19 @@ final class ObjectVal implements \Graphpinator\Parser\Value\Value
         return $return;
     }
 
-    public function applyVariables(\Graphpinator\Resolver\VariableValueSet $variables) : Value
+    public function createInputedValue(
+        \Graphpinator\Type\Contract\Inputable $type,
+        \Graphpinator\Normalizer\Variable\VariableSet $variableSet,
+    ) : \Graphpinator\Value\InputValue
     {
-        $return = new \stdClass();
-
-        foreach ($this->value as $key => $value) {
-            \assert($value instanceof Value);
-
-            $return->{$key} = $value->applyVariables($variables);
+        if ($type instanceof \Graphpinator\Type\NotNullType) {
+            return $this->createInputedValue($type->getInnerType(), $variableSet);
         }
 
-        return new self($return);
-    }
-
-    public function isSame(Value $compare) : bool
-    {
-        if (!$compare instanceof self) {
-            return false;
+        if (!$type instanceof \Graphpinator\Type\InputType) {
+            throw new \Graphpinator\Exception\Value\InvalidValue($type->printName(), new \stdClass(), true);
         }
 
-        $secondObject = $compare->getValue();
-
-        if (\count((array) $secondObject) !== \count((array) $this->value)) {
-            return false;
-        }
-
-        foreach ($this->value as $key => $value) {
-            \assert($value instanceof Value);
-
-            if (!\property_exists($secondObject, $key) ||
-                !$value->isSame($secondObject->{$key})) {
-                return false;
-            }
-        }
-
-        return true;
+        return \Graphpinator\Value\InputValue::fromParsed($type, $this, $variableSet);
     }
 }

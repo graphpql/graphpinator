@@ -49,19 +49,19 @@ final class FloatConstraint extends \Graphpinator\Constraint\LeafConstraint
         return $type->getNamedType() instanceof \Graphpinator\Type\Scalar\FloatType;
     }
 
-    protected function validateFactoryMethod($inputValue) : void
+    protected function validateFactoryMethod(\stdClass|array|string|int|float|bool|null $rawValue) : void
     {
-        \assert(\is_float($inputValue));
+        \assert(\is_float($rawValue));
 
-        if (\is_float($this->min) && $inputValue < $this->min) {
+        if (\is_float($this->min) && $rawValue < $this->min) {
             throw new \Graphpinator\Exception\Constraint\MinConstraintNotSatisfied();
         }
 
-        if (\is_float($this->max) && $inputValue > $this->max) {
+        if (\is_float($this->max) && $rawValue > $this->max) {
             throw new \Graphpinator\Exception\Constraint\MaxConstraintNotSatisfied();
         }
 
-        if (\is_array($this->oneOf) && !\in_array($inputValue, $this->oneOf, true)) {
+        if (\is_array($this->oneOf) && !\in_array($rawValue, $this->oneOf, true)) {
             throw new \Graphpinator\Exception\Constraint\OneOfConstraintNotSatisfied();
         }
     }

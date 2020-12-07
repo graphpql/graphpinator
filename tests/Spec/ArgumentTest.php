@@ -4,22 +4,24 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Spec;
 
+use Infinityloop\Utils\Json;
+
 final class ArgumentTest extends \PHPUnit\Framework\TestCase
 {
     public function simpleDataProvider() : array
     {
         return [
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { fieldAbc { fieldXyz(arg1: 456) { name } } }',
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['fieldAbc' => ['fieldXyz' => ['name' => 'Test 456']]]]),
+                Json::fromNative((object) ['data' => ['fieldAbc' => ['fieldXyz' => ['name' => 'Test 456']]]]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { fieldArgumentDefaults { fieldName fieldNumber fieldBool } }',
                 ]),
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'data' => [
                         'fieldArgumentDefaults' => [
                             'fieldName' => 'testValue',
@@ -30,10 +32,10 @@ final class ArgumentTest extends \PHPUnit\Framework\TestCase
                 ]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { fieldArgumentDefaults(inputBool: false) { fieldName fieldNumber fieldBool } }',
                 ]),
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'data' => [
                         'fieldArgumentDefaults' => [
                             'fieldName' => 'testValue',
@@ -44,10 +46,10 @@ final class ArgumentTest extends \PHPUnit\Framework\TestCase
                 ]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { fieldArgumentDefaults(inputNumberList: [3, 4]) { fieldName fieldNumber fieldBool } }',
                 ]),
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'data' => [
                         'fieldArgumentDefaults' => [
                             'fieldName' => 'testValue',
@@ -62,10 +64,10 @@ final class ArgumentTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider simpleDataProvider
-     * @param \Graphpinator\Json $request
-     * @param \Graphpinator\Json $expected
+     * @param Json $request
+     * @param Json $expected
      */
-    public function testSimple(\Graphpinator\Json $request, \Graphpinator\Json $expected) : void
+    public function testSimple(Json $request, Json $expected) : void
     {
         $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
         $result = $graphpinator->run(new \Graphpinator\Request\JsonRequestFactory($request));
@@ -78,27 +80,38 @@ final class ArgumentTest extends \PHPUnit\Framework\TestCase
     {
         return [
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { fieldAbc { fieldXyz(argNonExistent: 123) { name } } }',
                 ]),
-                \Graphpinator\Exception\Normalizer\UnknownFieldArgument::class,
+                \Graphpinator\Exception\Normalizer\UnknownArgument::class,
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { fieldAbc { fieldXyz(arg1: "123") { name } } }',
                 ]),
                 \Graphpinator\Exception\Value\InvalidValue::class,
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { fieldAbc { fieldXyz(arg1: 123, arg1: 456) { name } } }',
                 ]),
-                //phpcs:ignore SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly.ReferencedGeneralException
-                \Exception::class,
+                \Graphpinator\Exception\Parser\DuplicateArgument::class,
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { fieldAbc { fieldXyz(arg1: 2147483649) { name } } }',
+                ]),
+                \Graphpinator\Exception\Value\InvalidValue::class,
+            ],
+            [
+                Json::fromNative((object) [
+                    'query' => 'query queryName { fieldArgumentDefaults(inputNumberList: {val: 3}) { fieldName } }',
+                ]),
+                \Graphpinator\Exception\Value\InvalidValue::class,
+            ],
+            [
+                Json::fromNative((object) [
+                    'query' => 'query queryName { fieldAbc { fieldXyz(arg2: []) { name } } }',
                 ]),
                 \Graphpinator\Exception\Value\InvalidValue::class,
             ],
@@ -107,10 +120,10 @@ final class ArgumentTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider invalidDataProvider
-     * @param \Graphpinator\Json $request
+     * @param Json $request
      * @param string $exception
      */
-    public function testInvalid(\Graphpinator\Json $request, string $exception) : void
+    public function testInvalid(Json $request, string $exception) : void
     {
         $this->expectException($exception);
 

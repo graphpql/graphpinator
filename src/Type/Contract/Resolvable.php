@@ -7,7 +7,7 @@ namespace Graphpinator\Type\Contract;
 interface Resolvable extends \Graphpinator\Type\Contract\Outputable
 {
     public function resolve(
-        ?\Graphpinator\Normalizer\FieldSet $requestedFields,
+        ?\Graphpinator\Normalizer\Field\FieldSet $requestedFields,
         \Graphpinator\Value\ResolvedValue $parentResult
     ) : \Graphpinator\Value\ResolvedValue;
 }

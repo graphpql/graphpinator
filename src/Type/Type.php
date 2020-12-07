@@ -9,7 +9,6 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
     \Graphpinator\Type\Contract\TypeConditionable,
     \Graphpinator\Type\Contract\InterfaceImplementor
 {
-    use \Graphpinator\Type\Contract\TResolvable;
     use \Graphpinator\Type\Contract\TInterfaceImplementor;
     use \Graphpinator\Type\Contract\TMetaFields;
     use \Graphpinator\Utils\TObjectConstraint;
@@ -21,7 +20,9 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
             ?? new \Graphpinator\Utils\InterfaceSet([]);
     }
 
-    final public function createResolvedValue($rawValue) : \Graphpinator\Value\ResolvedValue
+    abstract public function validateNonNullValue(mixed $rawValue) : bool;
+
+    final public function createResolvedValue(mixed $rawValue) : \Graphpinator\Value\ResolvedValue
     {
         if ($rawValue === null) {
             return new \Graphpinator\Value\NullResolvedValue($this);
@@ -31,11 +32,11 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
     }
 
     final public function resolve(
-        ?\Graphpinator\Normalizer\FieldSet $requestedFields,
+        ?\Graphpinator\Normalizer\Field\FieldSet $requestedFields,
         \Graphpinator\Value\ResolvedValue $parentResult
     ) : \Graphpinator\Value\TypeValue
     {
-        \assert($requestedFields instanceof \Graphpinator\Normalizer\FieldSet);
+        \assert($requestedFields instanceof \Graphpinator\Normalizer\Field\FieldSet);
         $resolved = new \stdClass();
 
         foreach ($requestedFields as $field) {
@@ -46,7 +47,7 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
 
             foreach ($field->getDirectives() as $directive) {
                 $directiveDef = $directive->getDirective();
-                $arguments = new \Graphpinator\Argument\ArgumentValueSet($directive->getArguments(), $directiveDef->getArguments());
+                $arguments = $directive->getArguments();
                 $directiveResult = $directiveDef->resolve($arguments);
 
                 if ($directiveResult === \Graphpinator\Directive\DirectiveResult::SKIP) {

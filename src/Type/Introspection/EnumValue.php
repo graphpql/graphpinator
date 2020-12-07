@@ -14,7 +14,7 @@ final class EnumValue extends \Graphpinator\Type\Type
         parent::__construct();
     }
 
-    protected function validateNonNullValue($rawValue) : bool
+    public function validateNonNullValue(mixed $rawValue) : bool
     {
         return $rawValue instanceof \Graphpinator\Type\Enum\EnumItem;
     }

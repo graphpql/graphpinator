@@ -9,13 +9,13 @@ final class ListType extends \Graphpinator\Type\Contract\ModifierDefinition
     public function createInputedValue($rawValue) : \Graphpinator\Value\InputedValue
     {
         if (\is_array($rawValue)) {
-            return new \Graphpinator\Value\ListInputedValue($this, $rawValue);
+            return \Graphpinator\Value\ListInputedValue::fromRaw($this, $rawValue);
         }
 
         return new \Graphpinator\Value\NullInputedValue($this);
     }
 
-    public function createResolvedValue($rawValue) : \Graphpinator\Value\ResolvedValue
+    public function createResolvedValue(mixed $rawValue) : \Graphpinator\Value\ResolvedValue
     {
         if (\is_iterable($rawValue)) {
             return new \Graphpinator\Value\ListIntermediateValue($this, $rawValue);
@@ -25,7 +25,7 @@ final class ListType extends \Graphpinator\Type\Contract\ModifierDefinition
     }
 
     public function resolve(
-        ?\Graphpinator\Normalizer\FieldSet $requestedFields,
+        ?\Graphpinator\Normalizer\Field\FieldSet $requestedFields,
         \Graphpinator\Value\ResolvedValue $parentResult
     ) : \Graphpinator\Value\ListResolvedValue
     {

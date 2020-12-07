@@ -49,12 +49,14 @@ final class HslaTypeTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider simpleDataProvider
      * @param array $rawValue
-     * @doesNotPerformAssertions
      */
     public function testValidateValue($rawValue) : void
     {
         $hsla = new \Graphpinator\Type\Addon\HslaType();
-        $hsla->validateResolvedValue($rawValue);
+        $value = $hsla->createResolvedValue($rawValue);
+
+        self::assertSame($hsla, $value->getType());
+        self::assertSame($rawValue, $value->getRawValue());
     }
 
     /**
@@ -66,7 +68,7 @@ final class HslaTypeTest extends \PHPUnit\Framework\TestCase
         $this->expectException(\Graphpinator\Exception\Value\InvalidValue::class);
 
         $hsla = new \Graphpinator\Type\Addon\HslaType();
-        $hsla->validateResolvedValue($rawValue);
+        $hsla->createResolvedValue($rawValue);
     }
 
     public function testInputConstraintDefaultValue() : void

@@ -8,12 +8,9 @@ final class ListVal implements \Graphpinator\Parser\Value\Value
 {
     use \Nette\SmartObject;
 
-    private array $value;
-
-    public function __construct(array $value)
-    {
-        $this->value = $value;
-    }
+    public function __construct(
+        private array $value,
+    ) {}
 
     public function getValue() : array
     {
@@ -33,39 +30,19 @@ final class ListVal implements \Graphpinator\Parser\Value\Value
         return $return;
     }
 
-    public function applyVariables(\Graphpinator\Resolver\VariableValueSet $variables) : Value
+    public function createInputedValue(
+        \Graphpinator\Type\Contract\Inputable $type,
+        \Graphpinator\Normalizer\Variable\VariableSet $variableSet,
+    ) : \Graphpinator\Value\ListInputedValue
     {
-        $return = [];
-
-        foreach ($this->value as $key => $value) {
-            \assert($value instanceof Value);
-
-            $return[$key] = $value->applyVariables($variables);
+        if ($type instanceof \Graphpinator\Type\NotNullType) {
+            return $this->createInputedValue($type->getInnerType(), $variableSet);
         }
 
-        return new self($return);
-    }
-
-    public function isSame(Value $compare) : bool
-    {
-        if (!$compare instanceof self) {
-            return false;
+        if (!$type instanceof \Graphpinator\Type\ListType) {
+            throw new \Graphpinator\Exception\Value\InvalidValue($type->printName(), [], true);
         }
 
-        $secondArray = $compare->getValue();
-
-        if (\count($secondArray) !== \count($this->value)) {
-            return false;
-        }
-
-        foreach ($this->value as $key => $value) {
-            \assert($value instanceof Value);
-
-            if (!$value->isSame($secondArray[$key])) {
-                return false;
-            }
-        }
-
-        return true;
+        return \Graphpinator\Value\ListInputedValue::fromParsed($type, $this, $variableSet);
     }
 }

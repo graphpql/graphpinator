@@ -4,16 +4,18 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Spec;
 
+use Infinityloop\Utils\Json;
+
 final class InputTest extends \PHPUnit\Framework\TestCase
 {
     public function simpleDataProvider() : array
     {
         return [
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { fieldAbc { fieldXyz(arg2: null) { name } } }',
                 ]),
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'data' => [
                         'fieldAbc' => [
                             'fieldXyz' => [
@@ -24,12 +26,12 @@ final class InputTest extends \PHPUnit\Framework\TestCase
                 ]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { 
                         fieldAbc { fieldXyz(arg2: {name: "foo", innerList: [], innerNotNull: {name: "bar", number: []} }) { name } } 
                     }',
                 ]),
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'data' => [
                         'fieldAbc' => [
                             'fieldXyz' => [
@@ -40,7 +42,7 @@ final class InputTest extends \PHPUnit\Framework\TestCase
                 ]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { 
                         fieldAbc { 
                             fieldXyz(arg2: {
@@ -54,7 +56,7 @@ final class InputTest extends \PHPUnit\Framework\TestCase
                         } 
                     }',
                 ]),
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'data' => [
                         'fieldAbc' => [
                             'fieldXyz' => [
@@ -65,7 +67,7 @@ final class InputTest extends \PHPUnit\Framework\TestCase
                 ]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { 
                         fieldAbc { 
                             fieldXyz(arg2: {
@@ -79,7 +81,7 @@ final class InputTest extends \PHPUnit\Framework\TestCase
                         } 
                     }',
                 ]),
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'data' => [
                         'fieldAbc' => [
                             'fieldXyz' => [
@@ -90,7 +92,7 @@ final class InputTest extends \PHPUnit\Framework\TestCase
                 ]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { 
                         fieldAbc { 
                             fieldXyz(arg2: {
@@ -104,7 +106,7 @@ final class InputTest extends \PHPUnit\Framework\TestCase
                         } 
                     }',
                 ]),
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'data' => [
                         'fieldAbc' => [
                             'fieldXyz' => [
@@ -115,7 +117,7 @@ final class InputTest extends \PHPUnit\Framework\TestCase
                 ]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { 
                         fieldAbc { 
                             fieldXyz(arg2: {
@@ -129,7 +131,7 @@ final class InputTest extends \PHPUnit\Framework\TestCase
                         } 
                     }',
                 ]),
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'data' => [
                         'fieldAbc' => [
                             'fieldXyz' => [
@@ -140,7 +142,7 @@ final class InputTest extends \PHPUnit\Framework\TestCase
                 ]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { 
                         fieldAbc { 
                             fieldXyz(arg2: {
@@ -160,7 +162,7 @@ final class InputTest extends \PHPUnit\Framework\TestCase
                         } 
                     }',
                 ]),
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'data' => [
                         'fieldAbc' => [
                             'fieldXyz' => [
@@ -171,7 +173,7 @@ final class InputTest extends \PHPUnit\Framework\TestCase
                 ]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName ($var1: SimpleInput = {
                         name: "bar", number: []
                     })
@@ -186,7 +188,7 @@ final class InputTest extends \PHPUnit\Framework\TestCase
                         } 
                     }',
                 ]),
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'data' => [
                         'fieldAbc' => [
                             'fieldXyz' => [
@@ -197,7 +199,7 @@ final class InputTest extends \PHPUnit\Framework\TestCase
                 ]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName ($var1: SimpleInput) { 
                         fieldAbc { 
                             fieldXyz(arg2: {
@@ -210,7 +212,7 @@ final class InputTest extends \PHPUnit\Framework\TestCase
                     }',
                     'variables' => (object) ['var1' => (object) ['name' => 'bar', 'number' => []]],
                 ]),
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'data' => [
                         'fieldAbc' => [
                             'fieldXyz' => [
@@ -221,7 +223,7 @@ final class InputTest extends \PHPUnit\Framework\TestCase
                 ]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName ($var1: [SimpleInput] = [
                         {name: "bar", number: []}
                     ])
@@ -238,7 +240,7 @@ final class InputTest extends \PHPUnit\Framework\TestCase
                         } 
                     }',
                 ]),
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'data' => [
                         'fieldAbc' => [
                             'fieldXyz' => [
@@ -253,10 +255,10 @@ final class InputTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider simpleDataProvider
-     * @param \Graphpinator\Json $request
-     * @param \Graphpinator\Json $expected
+     * @param Json $request
+     * @param Json $expected
      */
-    public function testSimple(\Graphpinator\Json $request, \Graphpinator\Json $expected) : void
+    public function testSimple(Json $request, Json $expected) : void
     {
         $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
         $result = $graphpinator->run(new \Graphpinator\Request\JsonRequestFactory($request));
@@ -268,40 +270,39 @@ final class InputTest extends \PHPUnit\Framework\TestCase
     {
         return [
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName ($var1: Int = "123") { fieldAbc { fieldXyz { name } } }',
                 ]),
                 \Graphpinator\Exception\Value\InvalidValue::class,
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName ($var1: Int = 123) { fieldAbc { fieldXyz { name } } }',
                     'variables' => ['var1' => '123'],
                 ]),
                 \Graphpinator\Exception\Request\VariablesNotObject::class,
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName ($var1: Int!) { fieldAbc { fieldXyz { name } } }',
                 ]),
                 \Graphpinator\Exception\Value\ValueCannotBeNull::class,
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { fieldAbc { fieldXyz(arg1: $varNonExistent) { name } } }',
                 ]),
-                \Graphpinator\Exception\Resolver\MissingVariable::class,
+                \Graphpinator\Exception\Normalizer\UnknownVariable::class,
             ],
-
         ];
     }
 
     /**
      * @dataProvider invalidDataProvider
-     * @param \Graphpinator\Json $request
+     * @param Json $request
      * @param string $exception
      */
-    public function testInvalid(\Graphpinator\Json $request, string $exception) : void
+    public function testInvalid(Json $request, string $exception) : void
     {
         $this->expectException($exception);
 

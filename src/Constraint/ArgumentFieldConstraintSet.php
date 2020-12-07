@@ -24,7 +24,7 @@ final class ArgumentFieldConstraintSet extends \Graphpinator\Constraint\Constrai
 
             $childConstraint = $childSet[$index];
 
-            if (\get_class($parentConstraint) === \get_class($childConstraint) && !$parentConstraint->isContravariant($childConstraint)) {
+            if ($parentConstraint::class === $childConstraint::class && !$parentConstraint->isContravariant($childConstraint)) {
                 return false;
             }
 
@@ -46,7 +46,7 @@ final class ArgumentFieldConstraintSet extends \Graphpinator\Constraint\Constrai
 
             $parentConstraint = $this[$index];
 
-            if (\get_class($parentConstraint) === \get_class($childConstraint) && !$parentConstraint->isCovariant($childConstraint)) {
+            if ($parentConstraint::class === $childConstraint::class && !$parentConstraint->isCovariant($childConstraint)) {
                 return false;
             }
 

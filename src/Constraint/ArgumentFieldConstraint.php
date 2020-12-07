@@ -31,7 +31,7 @@ abstract class ArgumentFieldConstraint implements \Graphpinator\Constraint\Const
         return $this->isGreaterSet($this, $childConstraint);
     }
 
-    abstract protected function validateFactoryMethod($rawValue) : void;
+    abstract protected function validateFactoryMethod(\stdClass|array|string|int|float|bool|null $rawValue) : void;
 
     abstract protected function isGreaterSet(self $greater, self $smaller) : bool;
 

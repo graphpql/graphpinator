@@ -2,15 +2,15 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Parser;
+namespace Graphpinator\Parser\Field;
 
 /**
- * @method \Graphpinator\Parser\Field current() : object
- * @method \Graphpinator\Parser\Field offsetGet($offset) : object
+ * @method \Graphpinator\Parser\Field\Field current() : object
+ * @method \Graphpinator\Parser\Field\Field offsetGet($offset) : object
  */
 final class FieldSet extends \Infinityloop\Utils\ObjectSet
 {
-    protected const INNER_CLASS = Field::class;
+    protected const INNER_CLASS = \Graphpinator\Parser\Field\Field::class;
 
     private \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet $fragments;
 
@@ -46,18 +46,19 @@ final class FieldSet extends \Infinityloop\Utils\ObjectSet
     public function normalize(
         \Graphpinator\Type\Contract\NamedDefinition $parentType,
         \Graphpinator\Container\Container $typeContainer,
-        \Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions
-    ) : \Graphpinator\Normalizer\FieldSet
+        \Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions,
+        \Graphpinator\Normalizer\Variable\VariableSet $variableSet,
+    ) : \Graphpinator\Normalizer\Field\FieldSet
     {
         $normalized = [];
 
         foreach ($this as $field) {
-            $normalized[] = $field->normalize($parentType, $typeContainer, $fragmentDefinitions);
+            $normalized[] = $field->normalize($parentType, $typeContainer, $fragmentDefinitions, $variableSet);
         }
 
-        $return = new \Graphpinator\Normalizer\FieldSet($normalized);
+        $return = new \Graphpinator\Normalizer\Field\FieldSet($normalized);
 
-        foreach ($this->fragments->normalize($parentType, $typeContainer, $fragmentDefinitions) as $fragmentSpread) {
+        foreach ($this->fragments->normalize($parentType, $typeContainer, $fragmentDefinitions, $variableSet) as $fragmentSpread) {
             $return->mergeFieldSet($parentType, $fragmentSpread->getFields());
         }
 

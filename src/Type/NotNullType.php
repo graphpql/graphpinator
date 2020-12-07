@@ -18,7 +18,7 @@ final class NotNullType extends \Graphpinator\Type\Contract\ModifierDefinition
         return $value;
     }
 
-    public function createResolvedValue($rawValue) : \Graphpinator\Value\ResolvedValue
+    public function createResolvedValue(mixed $rawValue) : \Graphpinator\Value\ResolvedValue
     {
         \assert($this->innerType instanceof \Graphpinator\Type\Contract\Outputable);
         $value = $this->innerType->createResolvedValue($rawValue);
@@ -31,7 +31,7 @@ final class NotNullType extends \Graphpinator\Type\Contract\ModifierDefinition
     }
 
     public function resolve(
-        ?\Graphpinator\Normalizer\FieldSet $requestedFields,
+        ?\Graphpinator\Normalizer\Field\FieldSet $requestedFields,
         \Graphpinator\Value\ResolvedValue $parentResult
     ) : \Graphpinator\Value\ResolvedValue
     {

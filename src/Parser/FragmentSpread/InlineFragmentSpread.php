@@ -8,14 +8,14 @@ final class InlineFragmentSpread implements \Graphpinator\Parser\FragmentSpread\
 {
     use \Nette\SmartObject;
 
-    private \Graphpinator\Parser\FieldSet $fields;
+    private \Graphpinator\Parser\Field\FieldSet $fields;
     private \Graphpinator\Parser\Directive\DirectiveSet $directives;
     private ?\Graphpinator\Parser\TypeRef\NamedTypeRef $typeCond;
 
     public function __construct(
-        \Graphpinator\Parser\FieldSet $fields,
+        \Graphpinator\Parser\Field\FieldSet $fields,
         ?\Graphpinator\Parser\Directive\DirectiveSet $directives = null,
-        ?\Graphpinator\Parser\TypeRef\NamedTypeRef $typeCond = null
+        ?\Graphpinator\Parser\TypeRef\NamedTypeRef $typeCond = null,
     )
     {
         $this->fields = $fields;
@@ -24,7 +24,7 @@ final class InlineFragmentSpread implements \Graphpinator\Parser\FragmentSpread\
         $this->typeCond = $typeCond;
     }
 
-    public function getFields() : \Graphpinator\Parser\FieldSet
+    public function getFields() : \Graphpinator\Parser\Field\FieldSet
     {
         return $this->fields;
     }
@@ -42,7 +42,8 @@ final class InlineFragmentSpread implements \Graphpinator\Parser\FragmentSpread\
     public function normalize(
         \Graphpinator\Type\Contract\NamedDefinition $parentType,
         \Graphpinator\Container\Container $typeContainer,
-        \Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions
+        \Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions,
+        \Graphpinator\Normalizer\Variable\VariableSet $variableSet,
     ) : \Graphpinator\Normalizer\FragmentSpread\FragmentSpread
     {
         $typeCond = $this->typeCond instanceof \Graphpinator\Parser\TypeRef\NamedTypeRef
@@ -56,8 +57,8 @@ final class InlineFragmentSpread implements \Graphpinator\Parser\FragmentSpread\
 
         return new \Graphpinator\Normalizer\FragmentSpread\FragmentSpread(
             $this->fields->normalize($typeCond
-                ?? $parentType, $typeContainer, $fragmentDefinitions),
-            $this->directives->normalize($typeContainer),
+                ?? $parentType, $typeContainer, $fragmentDefinitions, $variableSet),
+            $this->directives->normalize($typeContainer, $variableSet),
             $typeCond,
         );
     }

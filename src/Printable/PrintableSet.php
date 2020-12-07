@@ -8,8 +8,7 @@ interface PrintableSet extends \Iterator
 {
     public function current() : object;
 
-    //@phpcs:ignore SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
-    public function key();
+    public function key() : string;
 
     public function next() : void;
 

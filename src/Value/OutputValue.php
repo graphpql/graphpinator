@@ -6,6 +6,5 @@ namespace Graphpinator\Value;
 
 interface OutputValue extends \Graphpinator\Value\ResolvedValue, \JsonSerializable
 {
-    /** @return string|int|float|bool|array|object|null */
-    public function jsonSerialize();
+    public function jsonSerialize() : \stdClass|array|string|int|float|bool|null;
 }

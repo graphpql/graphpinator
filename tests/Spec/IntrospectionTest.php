@@ -4,32 +4,34 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Spec;
 
+use Infinityloop\Utils\Json;
+
 final class IntrospectionTest extends \PHPUnit\Framework\TestCase
 {
     public function typenameDataProvider() : array
     {
         return [
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => '{ __typename }',
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['__typename' => 'Query']]),
+                Json::fromNative((object) ['data' => ['__typename' => 'Query']]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => '{ fieldUnion { __typename } }',
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['fieldUnion' => ['__typename' => 'Abc']]]),
+                Json::fromNative((object) ['data' => ['fieldUnion' => ['__typename' => 'Abc']]]),
             ],
         ];
     }
 
     /**
      * @dataProvider typenameDataProvider
-     * @param \Graphpinator\Json $request
-     * @param \Graphpinator\Json $expected
+     * @param Json $request
+     * @param Json $expected
      */
-    public function testSimple(\Graphpinator\Json $request, \Graphpinator\Json $expected) : void
+    public function testSimple(Json $request, Json $expected) : void
     {
         $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
         $result = $graphpinator->run(new \Graphpinator\Request\JsonRequestFactory($request));
@@ -41,34 +43,34 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
     {
         return [
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => '{ __schema { description } }',
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['__schema' => ['description' => 'Test schema description']]]),
+                Json::fromNative((object) ['data' => ['__schema' => ['description' => 'Test schema description']]]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => '{ __schema { queryType {name} } }',
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['__schema' => ['queryType' => ['name' => 'Query']]]]),
+                Json::fromNative((object) ['data' => ['__schema' => ['queryType' => ['name' => 'Query']]]]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => '{ __schema { mutationType {name} } }',
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['__schema' => ['mutationType' => null]]]),
+                Json::fromNative((object) ['data' => ['__schema' => ['mutationType' => null]]]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => '{ __schema { subscriptionType {name} } }',
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['__schema' => ['subscriptionType' => null]]]),
+                Json::fromNative((object) ['data' => ['__schema' => ['subscriptionType' => null]]]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => '{ __schema { types {name} } }',
                 ]),
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'data' => [
                         '__schema' => [
                             'types' => [
@@ -141,10 +143,10 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                 ]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => '{ __schema { directives {name description args{name} locations isRepeatable} } }',
                 ]),
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'data' => [
                         '__schema' => [
                             'directives' => [
@@ -255,10 +257,10 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider schemaDataProvider
-     * @param \Graphpinator\Json $request
-     * @param \Graphpinator\Json $expected
+     * @param Json $request
+     * @param Json $expected
      */
-    public function testSchema(\Graphpinator\Json $request, \Graphpinator\Json $expected) : void
+    public function testSchema(Json $request, Json $expected) : void
     {
         $schema = TestSchema::getSchema();
         $schema->setDescription('Test schema description');
@@ -272,7 +274,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
     {
         return [
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => '{ 
                         __type(name: "Abc") { 
                             kind name description 
@@ -297,7 +299,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                         } 
                     }',
                 ]),
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'data' => [
                         '__type' => [
                             'kind' => 'OBJECT',
@@ -314,7 +316,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                 ]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => '{ 
                         __type(name: "Xyz") { 
                             kind name description fields {
@@ -338,7 +340,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                         } 
                     }',
                 ]),
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'data' => [
                         '__type' => [
                             'kind' => 'OBJECT',
@@ -355,7 +357,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                 ]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => '{ 
                         __type(name: "TestInterface") { 
                             kind name description fields {
@@ -379,7 +381,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                         } 
                     }',
                 ]),
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'data' => [
                         '__type' => [
                             'kind' => 'INTERFACE',
@@ -396,7 +398,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                 ]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => '{ 
                         __type(name: "TestUnion") { 
                             kind name description 
@@ -409,7 +411,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                         } 
                     }',
                 ]),
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'data' => [
                         '__type' => [
                             'kind' => 'UNION',
@@ -426,7 +428,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                 ]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => '{ 
                         __type(name: "SimpleInput") { 
                             kind name description 
@@ -439,7 +441,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                         } 
                     }',
                 ]),
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'data' => [
                         '__type' => [
                             'kind' => 'INPUT_OBJECT',
@@ -456,7 +458,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                 ]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => '{ 
                         __type(name: "SimpleEnum") { 
                             kind name description 
@@ -469,7 +471,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                         } 
                     }',
                 ]),
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'data' => [
                         '__type' => [
                             'kind' => 'ENUM',
@@ -491,12 +493,12 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                 ]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => '{ __type(name: "DescriptionEnum") { 
                         enumValues(includeDeprecated: true){name description isDeprecated deprecationReason} } 
                     }',
                 ]),
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'data' => [
                         '__type' => [
                             'enumValues' => [
@@ -530,12 +532,12 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                 ]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => '{ __type(name: "DescriptionEnum") { 
                         enumValues(includeDeprecated: false){name description isDeprecated deprecationReason} } 
                     }',
                 ]),
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'data' => [
                         '__type' => [
                             'enumValues' => [
@@ -557,7 +559,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                 ]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => '{ 
                         __type(name: "TestInterface") { 
                             fields {
@@ -569,7 +571,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                         } 
                     }',
                 ]),
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'data' => [
                         '__type' => [
                             'fields' => [
@@ -587,7 +589,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                 ]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => '{ 
                         __type(name: "Abc") { 
                             fields(includeDeprecated: false) {
@@ -600,7 +602,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                         } 
                     }',
                 ]),
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'data' => [
                         '__type' => [
                             'fields' => [],
@@ -609,7 +611,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                 ]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => '{ 
                         __type(name: "Abc") { 
                             fields(includeDeprecated: true) { 
@@ -622,7 +624,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                         } 
                     }',
                 ]),
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'data' => [
                         '__type' => [
                             'fields' => [
@@ -653,7 +655,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                 ]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => '{ 
                         __type(name: "DefaultsInput") { 
                             inputFields {
@@ -662,7 +664,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                         } 
                     }',
                 ]),
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'data' => [
                         '__type' => [
                             'inputFields' => [
@@ -697,10 +699,10 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                 ]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => '{ __type(name: "String") { name kind } }',
                 ]),
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'data' => [
                         '__type' => [
                             'name' => 'String',
@@ -710,10 +712,10 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                 ]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => '{ __type(name: "Zzz") { fields {name type{name kind ofType{name}}}}}',
                 ]),
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'data' => [
                         '__type' => [
                             'fields' => [
@@ -733,10 +735,10 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                 ]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => '{ __type(name: "TestScalar") { name kind } }',
                 ]),
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'data' => [
                         '__type' => [
                             'name' => 'TestScalar',
@@ -750,10 +752,10 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider typeDataProvider
-     * @param \Graphpinator\Json $request
-     * @param \Graphpinator\Json $expected
+     * @param Json $request
+     * @param Json $expected
      */
-    public function testType(\Graphpinator\Json $request, \Graphpinator\Json $expected) : void
+    public function testType(Json $request, Json $expected) : void
     {
         $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
         $result = $graphpinator->run(new \Graphpinator\Request\JsonRequestFactory($request));
@@ -763,7 +765,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
 
     public function testDescription() : void
     {
-        $request = \Graphpinator\Json::fromObject((object) [
+        $request = Json::fromNative((object) [
             'query' => '{ 
                 __type(name: "Abc") { 
                     kind name description fields { name }
@@ -775,7 +777,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                 } 
             }',
         ]);
-        $expected = \Graphpinator\Json::fromObject((object) [
+        $expected = Json::fromNative((object) [
             'data' => [
                 '__type' => [
                     'kind' => 'OBJECT',
@@ -798,7 +800,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
 
     public function testDeprecatedFields() : void
     {
-        $request = \Graphpinator\Json::fromObject((object) [
+        $request = Json::fromNative((object) [
             'query' => '{ 
                 __type(name: "Abc") { 
                     fields(includeDeprecated: false) {
@@ -812,7 +814,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                 } 
             }',
         ]);
-        $expected = \Graphpinator\Json::fromObject((object) [
+        $expected = Json::fromNative((object) [
             'data' => [
                 '__type' => [
                     'fields' => [],
@@ -827,12 +829,12 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
 
     public function testDeprecatedFalseEnum() : void
     {
-        $request = \Graphpinator\Json::fromObject((object) [
+        $request = Json::fromNative((object) [
             'query' => '{ __type(name: "DescriptionEnum") { 
                 enumValues(includeDeprecated: false){ name description isDeprecated deprecationReason } } 
             }',
         ]);
-        $expected = \Graphpinator\Json::fromObject((object) [
+        $expected = Json::fromNative((object) [
             'data' => [
                 '__type' => [
                     'enumValues' => [
@@ -860,12 +862,12 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
 
     public function testDeprecatedTrueEnum() : void
     {
-        $request = \Graphpinator\Json::fromObject((object) [
+        $request = Json::fromNative((object) [
             'query' => '{ __type(name: "DescriptionEnum") { 
                 enumValues(includeDeprecated: true){name description isDeprecated deprecationReason} } 
             }',
         ]);
-        $expected = \Graphpinator\Json::fromObject((object) [
+        $expected = Json::fromNative((object) [
             'data' => [
                 '__type' => [
                     'enumValues' => [

@@ -8,27 +8,20 @@ final class Literal implements \Graphpinator\Parser\Value\Value
 {
     use \Nette\SmartObject;
 
-    private $value;
+    public function __construct(
+        private string|int|float|bool|null $value
+    ) {}
 
-    public function __construct($value)
-    {
-        $this->value = $value;
-    }
-
-    //@phpcs:ignore SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingAnyTypeHint
-    public function getRawValue()
+    public function getRawValue() : string|int|float|bool|null
     {
         return $this->value;
     }
 
-    public function applyVariables(\Graphpinator\Resolver\VariableValueSet $variables) : Value
+    public function createInputedValue(
+        \Graphpinator\Type\Contract\Inputable $type,
+        \Graphpinator\Normalizer\Variable\VariableSet $variableSet,
+    ) : \Graphpinator\Value\InputedValue
     {
-        return $this;
-    }
-
-    public function isSame(Value $compare) : bool
-    {
-        return $compare instanceof self
-            && $this->value === $compare->getRawValue();
+        return $type->createInputedValue($this->value);
     }
 }

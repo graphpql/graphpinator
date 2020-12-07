@@ -9,17 +9,18 @@ final class Directive
     use \Nette\SmartObject;
 
     private \Graphpinator\Directive\ExecutableDirective $directive;
-    private \Graphpinator\Parser\Value\NamedValueSet $arguments;
+    private \Graphpinator\Value\ArgumentValueSet $arguments;
 
     public function __construct(
-        \Graphpinator\Parser\Directive\Directive $parserDirective,
-        \Graphpinator\Container\Container $typeContainer
+        \Graphpinator\Parser\Directive\Directive $parsed,
+        \Graphpinator\Container\Container $typeContainer,
+        \Graphpinator\Normalizer\Variable\VariableSet $variableSet,
     )
     {
-        $directive = $typeContainer->getDirective($parserDirective->getName());
+        $directive = $typeContainer->getDirective($parsed->getName());
 
         if (!$directive instanceof \Graphpinator\Directive\Directive) {
-            throw new \Graphpinator\Exception\Normalizer\UnknownDirective($parserDirective->getName());
+            throw new \Graphpinator\Exception\Normalizer\UnknownDirective($parsed->getName());
         }
 
         if (!$directive instanceof \Graphpinator\Directive\ExecutableDirective) {
@@ -27,14 +28,13 @@ final class Directive
         }
 
         $this->directive = $directive;
-        $this->arguments = $parserDirective->getArguments()
-            ?? new \Graphpinator\Parser\Value\NamedValueSet();
-
-        foreach ($this->arguments as $argument) {
-            if (!$directive->getArguments()->offsetExists($argument->getName())) {
-                throw new \Graphpinator\Exception\Normalizer\UnknownDirectiveArgument($argument->getName(), $directive->getName());
-            }
-        }
+        $this->arguments = new \Graphpinator\Value\ArgumentValueSet(
+            $parsed->getArguments() instanceof \Graphpinator\Parser\Value\ArgumentValueSet
+                ? $parsed->getArguments()
+                : new \Graphpinator\Parser\Value\ArgumentValueSet([]),
+            $directive,
+            $variableSet,
+        );
     }
 
     public function getDirective() : \Graphpinator\Directive\ExecutableDirective
@@ -42,18 +42,15 @@ final class Directive
         return $this->directive;
     }
 
-    public function getArguments() : \Graphpinator\Parser\Value\NamedValueSet
+    public function getArguments() : \Graphpinator\Value\ArgumentValueSet
     {
         return $this->arguments;
     }
 
     public function applyVariables(
         \Graphpinator\Resolver\VariableValueSet $variables
-    ) : self
+    ) : void
     {
-        $clone = clone $this;
-        $clone->arguments = $this->arguments->applyVariables($variables);
-
-        return $clone;
+        $this->arguments->applyVariables($variables);
     }
 }

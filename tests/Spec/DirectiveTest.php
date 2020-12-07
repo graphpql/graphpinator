@@ -4,102 +4,104 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Spec;
 
+use Infinityloop\Utils\Json;
+
 final class DirectiveTest extends \PHPUnit\Framework\TestCase
 {
     public function simpleDataProvider() : array
     {
         return [
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { fieldAbc { fieldXyz @skip(if: true) { name } } }',
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['fieldAbc' => new \stdClass()]]),
+                Json::fromNative((object) ['data' => ['fieldAbc' => new \stdClass()]]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { fieldAbc { fieldXyz @skip(if: false) { name } } }',
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['fieldAbc' => ['fieldXyz' => ['name' => 'Test 123']]]]),
+                Json::fromNative((object) ['data' => ['fieldAbc' => ['fieldXyz' => ['name' => 'Test 123']]]]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { fieldAbc { fieldXyz @include(if: true) { name } } }',
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['fieldAbc' => ['fieldXyz' => ['name' => 'Test 123']]]]),
+                Json::fromNative((object) ['data' => ['fieldAbc' => ['fieldXyz' => ['name' => 'Test 123']]]]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { fieldAbc { fieldXyz @include(if: false) { name } } }',
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['fieldAbc' => new \stdClass()]]),
+                Json::fromNative((object) ['data' => ['fieldAbc' => new \stdClass()]]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { fieldAbc { fieldXyz @include(if: false) @skip(if: false) { name } } }',
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['fieldAbc' => new \stdClass()]]),
+                Json::fromNative((object) ['data' => ['fieldAbc' => new \stdClass()]]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { fieldAbc { fieldXyz @include(if: true) @skip(if: true) { name } } }',
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['fieldAbc' => new \stdClass()]]),
+                Json::fromNative((object) ['data' => ['fieldAbc' => new \stdClass()]]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { fieldAbc { fieldXyz @include(if: false) @skip(if: true) { name } } }',
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['fieldAbc' => new \stdClass()]]),
+                Json::fromNative((object) ['data' => ['fieldAbc' => new \stdClass()]]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { fieldAbc { fieldXyz @include(if: true) @skip(if: false) { name } } }',
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['fieldAbc' => ['fieldXyz' => ['name' => 'Test 123']]]]),
+                Json::fromNative((object) ['data' => ['fieldAbc' => ['fieldXyz' => ['name' => 'Test 123']]]]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { fieldAbc { ... @include(if: true) { fieldXyz { name } } } }',
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['fieldAbc' => ['fieldXyz' => ['name' => 'Test 123']]]]),
+                Json::fromNative((object) ['data' => ['fieldAbc' => ['fieldXyz' => ['name' => 'Test 123']]]]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { fieldAbc { ... @include(if: false) { fieldXyz { name } } } }',
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['fieldAbc' => new \stdClass()]]),
+                Json::fromNative((object) ['data' => ['fieldAbc' => new \stdClass()]]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { 
                         fieldAbc { ... namedFragment @include(if: true) } } fragment namedFragment on Abc { fieldXyz { name } 
                     }',
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['fieldAbc' => ['fieldXyz' => ['name' => 'Test 123']]]]),
+                Json::fromNative((object) ['data' => ['fieldAbc' => ['fieldXyz' => ['name' => 'Test 123']]]]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { 
                         fieldAbc { ... namedFragment @include(if: false) } } fragment namedFragment on Abc { fieldXyz { name } 
                     }',
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['fieldAbc' => new \stdClass()]]),
+                Json::fromNative((object) ['data' => ['fieldAbc' => new \stdClass()]]),
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { fieldAbc { fieldXyz @testDirective() { name } } }',
                 ]),
-                \Graphpinator\Json::fromObject((object) ['data' => ['fieldAbc' => ['fieldXyz' => ['name' => 'Test 123']]]]),
+                Json::fromNative((object) ['data' => ['fieldAbc' => ['fieldXyz' => ['name' => 'Test 123']]]]),
             ],
         ];
     }
 
     /**
      * @dataProvider simpleDataProvider
-     * @param \Graphpinator\Json $request
-     * @param \Graphpinator\Json $expected
+     * @param Json $request
+     * @param Json $expected
      */
-    public function testSimple(\Graphpinator\Json $request, \Graphpinator\Json $expected) : void
+    public function testSimple(Json $request, Json $expected) : void
     {
         $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
         $result = $graphpinator->run(new \Graphpinator\Request\JsonRequestFactory($request));
@@ -114,10 +116,10 @@ final class DirectiveTest extends \PHPUnit\Framework\TestCase
         TestSchema::getSchema()->getContainer()->getDirective('testDirective')::$count = 0;
 
         self::assertSame(
-            \Graphpinator\Json::fromObject((object) ['data' => ['fieldAbc' => ['fieldXyz' => ['name' => 'Test 123']]]])->toString(),
+            Json::fromNative((object) ['data' => ['fieldAbc' => ['fieldXyz' => ['name' => 'Test 123']]]])->toString(),
             $graphpinator->run(
                 new \Graphpinator\Request\JsonRequestFactory(
-                    \Graphpinator\Json::fromObject((object) [
+                    Json::fromNative((object) [
                         'query' => 'query queryName { fieldAbc { fieldXyz @testDirective @testDirective @testDirective { name } } }',
                     ]),
                 ),
@@ -130,37 +132,37 @@ final class DirectiveTest extends \PHPUnit\Framework\TestCase
     {
         return [
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { fieldAbc { fieldXyz @skip(if: false) @skip(if: false) { name } } }',
                 ]),
                 \Graphpinator\Exception\Normalizer\DuplicatedDirective::class,
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { fieldAbc { fieldXyz @include(if: false) @include(if: false) { name } } }',
                 ]),
                 \Graphpinator\Exception\Normalizer\DuplicatedDirective::class,
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { fieldAbc { fieldXyz @include(if: false) @testDirective @include(if: false) { name } } }',
                 ]),
                 \Graphpinator\Exception\Normalizer\DuplicatedDirective::class,
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { fieldAbc { ... on Abc @testDirective { fieldXyz { name } } } }',
                 ]),
                 \Graphpinator\Exception\Normalizer\MisplacedDirective::class,
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { fieldAbc @invalidDirective() { fieldXyz { name } } }',
                 ]),
                 \Graphpinator\Exception\Resolver\InvalidDirectiveResult::class,
             ],
             [
-                \Graphpinator\Json::fromObject((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName { fieldList @listConstraint(minItems: 3, maxItems: 5) { name } }',
                 ]),
                 \Graphpinator\Exception\Normalizer\DirectiveNotExecutable::class,
@@ -170,10 +172,10 @@ final class DirectiveTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider invalidDataProvider
-     * @param \Graphpinator\Json $request
+     * @param Json $request
      * @param string $exception
      */
-    public function testInvalid(\Graphpinator\Json $request, string $exception) : void
+    public function testInvalid(Json $request, string $exception) : void
     {
         $this->expectException($exception);
         $this->expectExceptionMessage(\constant($exception . '::MESSAGE'));

@@ -12,50 +12,41 @@ final class DirectiveSet extends \Infinityloop\Utils\ObjectSet
 {
     protected const INNER_CLASS = Directive::class;
 
-    private string $location;
-    private array $directiveTypes = [];
-
-    public function __construct(array $data, string $location)
+    public function __construct(
+        \Graphpinator\Parser\Directive\DirectiveSet $parsed,
+        \Graphpinator\Container\Container $typeContainer,
+        \Graphpinator\Normalizer\Variable\VariableSet $variableSet,
+    )
     {
-        $this->location = $location;
+        parent::__construct();
 
-        parent::__construct($data);
-    }
+        $directiveTypes = [];
 
-    public function getLocation() : string
-    {
-        return $this->location;
-    }
+        foreach ($parsed as $parsedDirective) {
+            $normalizedDirective = new Directive($parsedDirective, $typeContainer, $variableSet);
 
-    public function applyVariables(\Graphpinator\Resolver\VariableValueSet $variables) : self
-    {
-        $fields = [];
+            $directive = $normalizedDirective->getDirective();
 
-        foreach ($this as $directive) {
-            $fields[] = $directive->applyVariables($variables);
-        }
-
-        return new self($fields, $this->location);
-    }
-
-    public function offsetSet($offset, $object) : void
-    {
-        \assert($object instanceof Directive);
-
-        $directive = $object->getDirective();
-
-        if (!\in_array($this->location, $directive->getLocations(), true)) {
-            throw new \Graphpinator\Exception\Normalizer\MisplacedDirective();
-        }
-
-        if (!$directive->isRepeatable()) {
-            if (\array_key_exists($directive->getName(), $this->directiveTypes)) {
-                throw new \Graphpinator\Exception\Normalizer\DuplicatedDirective();
+            if (!\in_array($parsed->getLocation(), $directive->getLocations(), true)) {
+                throw new \Graphpinator\Exception\Normalizer\MisplacedDirective();
             }
 
-            $this->directiveTypes[$directive->getName()] = true;
-        }
+            if (!$directive->isRepeatable()) {
+                if (\array_key_exists($directive->getName(), $directiveTypes)) {
+                    throw new \Graphpinator\Exception\Normalizer\DuplicatedDirective();
+                }
 
-        parent::offsetSet($offset, $object);
+                $directiveTypes[$directive->getName()] = true;
+            }
+
+            $this[] = $normalizedDirective;
+        }
+    }
+
+    public function applyVariables(\Graphpinator\Resolver\VariableValueSet $variables) : void
+    {
+        foreach ($this as $directive) {
+            $directive->applyVariables($variables);
+        }
     }
 }

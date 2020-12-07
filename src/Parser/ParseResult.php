@@ -8,17 +8,10 @@ final class ParseResult
 {
     use \Nette\SmartObject;
 
-    private \Graphpinator\Parser\Operation\OperationSet $operations;
-    private \Graphpinator\Parser\Fragment\FragmentSet $fragments;
-
     public function __construct(
-        \Graphpinator\Parser\Operation\OperationSet $operations,
-        \Graphpinator\Parser\Fragment\FragmentSet $fragments
-    )
-    {
-        $this->operations = $operations;
-        $this->fragments = $fragments;
-    }
+        private \Graphpinator\Parser\Operation\OperationSet $operations,
+        private \Graphpinator\Parser\Fragment\FragmentSet $fragments,
+    ) {}
 
     public function getOperations() : \Graphpinator\Parser\Operation\OperationSet
     {

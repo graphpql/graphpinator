@@ -6,10 +6,10 @@ namespace Graphpinator\Parser\Value;
 
 interface Value
 {
-    //@phpcs:ignore SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
-    public function getRawValue();
+    public function getRawValue() : \stdClass|array|string|int|float|bool|null;
 
-    public function applyVariables(\Graphpinator\Resolver\VariableValueSet $variables) : self;
-
-    public function isSame(Value $compare) : bool;
+    public function createInputedValue(
+        \Graphpinator\Type\Contract\Inputable $type,
+        \Graphpinator\Normalizer\Variable\VariableSet $variableSet,
+    ) : \Graphpinator\Value\InputedValue;
 }

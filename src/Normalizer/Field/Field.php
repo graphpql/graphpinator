@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Normalizer;
+namespace Graphpinator\Normalizer\Field;
 
 final class Field
 {
@@ -10,41 +10,45 @@ final class Field
 
     private string $name;
     private string $alias;
-    private \Graphpinator\Parser\Value\NamedValueSet $arguments;
+    private \Graphpinator\Value\ArgumentValueSet $arguments;
     private \Graphpinator\Normalizer\Directive\DirectiveSet $directives;
-    private ?\Graphpinator\Normalizer\FieldSet $children = null;
+    private ?\Graphpinator\Normalizer\Field\FieldSet $children = null;
     private ?\Graphpinator\Type\Contract\TypeConditionable $typeCond = null;
 
     public function __construct(
-        \Graphpinator\Parser\Field $parserField,
+        \Graphpinator\Parser\Field\Field $parsed,
         \Graphpinator\Type\Contract\NamedDefinition $parentType,
         \Graphpinator\Container\Container $typeContainer,
-        \Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions
+        \Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions,
+        \Graphpinator\Normalizer\Variable\VariableSet $variableSet,
     )
     {
         \assert($parentType instanceof \Graphpinator\Type\Contract\Outputable);
 
-        $this->name = $parserField->getName();
-        $this->alias = $parserField->getAlias()
+        $this->name = $parsed->getName();
+        $this->alias = $parsed->getAlias()
             ?? $this->name;
-        $this->arguments = $parserField->getArguments()
-            ?? new \Graphpinator\Parser\Value\NamedValueSet([]);
 
         $field = $parentType->getField($this->name);
         $fieldType = $field->getType()->getNamedType();
 
-        foreach ($this->arguments as $argument) {
-            if (!$field->getArguments()->offsetExists($argument->getName())) {
-                throw new \Graphpinator\Exception\Normalizer\UnknownFieldArgument($argument->getName(), $field->getName(), $parentType->getName());
-            }
-        }
+        $this->arguments = new \Graphpinator\Value\ArgumentValueSet(
+            $parsed->getArguments() instanceof \Graphpinator\Parser\Value\ArgumentValueSet
+                ? $parsed->getArguments()
+                : new \Graphpinator\Parser\Value\ArgumentValueSet([]),
+            $field,
+            $variableSet,
+        );
+        $this->directives = new \Graphpinator\Normalizer\Directive\DirectiveSet(
+            $parsed->getDirectives() instanceof \Graphpinator\Parser\Directive\DirectiveSet
+                ? $parsed->getDirectives()
+                : new \Graphpinator\Parser\Directive\DirectiveSet([], \Graphpinator\Directive\ExecutableDirectiveLocation::FIELD),
+            $typeContainer,
+            $variableSet,
+        );
 
-        $this->directives = $parserField->getDirectives() instanceof \Graphpinator\Parser\Directive\DirectiveSet
-            ? $parserField->getDirectives()->normalize($typeContainer)
-            : new \Graphpinator\Normalizer\Directive\DirectiveSet([], \Graphpinator\Directive\ExecutableDirectiveLocation::FIELD);
-
-        if ($parserField->getFields() instanceof \Graphpinator\Parser\FieldSet) {
-            $this->children = $parserField->getFields()->normalize($fieldType, $typeContainer, $fragmentDefinitions);
+        if ($parsed->getFields() instanceof \Graphpinator\Parser\Field\FieldSet) {
+            $this->children = $parsed->getFields()->normalize($fieldType, $typeContainer, $fragmentDefinitions, $variableSet);
         } elseif (!$fieldType instanceof \Graphpinator\Type\Contract\LeafDefinition) {
             throw new \Graphpinator\Exception\Resolver\SelectionOnComposite();
         }
@@ -60,7 +64,7 @@ final class Field
         return $this->alias;
     }
 
-    public function getArguments() : \Graphpinator\Parser\Value\NamedValueSet
+    public function getArguments() : \Graphpinator\Value\ArgumentValueSet
     {
         return $this->arguments;
     }
@@ -70,7 +74,7 @@ final class Field
         return $this->directives;
     }
 
-    public function getFields() : ?\Graphpinator\Normalizer\FieldSet
+    public function getFields() : ?\Graphpinator\Normalizer\Field\FieldSet
     {
         return $this->children;
     }
@@ -99,15 +103,10 @@ final class Field
         throw new \Graphpinator\Exception\Normalizer\InvalidFragmentType($this->typeCond->getName(), $typeCond->getName());
     }
 
-    public function applyVariables(\Graphpinator\Resolver\VariableValueSet $variables) : self
+    public function applyVariables(\Graphpinator\Resolver\VariableValueSet $variables) : void
     {
-        $clone = clone $this;
-        $clone->arguments = $this->arguments->applyVariables($variables);
-        $clone->directives = $this->directives->applyVariables($variables);
-        $clone->children = $this->children instanceof FieldSet
-            ? $this->children->applyVariables($variables)
-            : null;
-
-        return $clone;
+        $this->arguments->applyVariables($variables);
+        $this->directives->applyVariables($variables);
+        $this->children?->applyVariables($variables);
     }
 }

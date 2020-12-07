@@ -24,7 +24,7 @@ final class HslaType extends \Graphpinator\Type\Addon\HslType
         );
     }
 
-    protected function validateNonNullValue($rawValue) : bool
+    public function validateNonNullValue(mixed $rawValue) : bool
     {
         return parent::validateNonNullValue($rawValue)
             && \property_exists($rawValue, 'alpha')

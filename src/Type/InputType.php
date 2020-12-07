@@ -11,10 +11,10 @@ abstract class InputType extends \Graphpinator\Type\Contract\ConcreteDefinition 
 
     protected ?\Graphpinator\Argument\ArgumentSet $arguments = null;
 
-    final public function createInputedValue($rawValue) : \Graphpinator\Value\InputedValue
+    final public function createInputedValue(mixed $rawValue) : \Graphpinator\Value\InputedValue
     {
         if ($rawValue instanceof \stdClass) {
-            return new \Graphpinator\Value\InputValue($this, $rawValue);
+            return \Graphpinator\Value\InputValue::fromRaw($this, $rawValue);
         }
 
         return new \Graphpinator\Value\NullInputedValue($this);

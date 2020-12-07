@@ -9,13 +9,13 @@ final class Operation
     use \Nette\SmartObject;
 
     private \Graphpinator\Type\Type $operation;
-    private \Graphpinator\Normalizer\FieldSet $children;
+    private \Graphpinator\Normalizer\Field\FieldSet $children;
     private \Graphpinator\Normalizer\Variable\VariableSet $variables;
     private ?string $name;
 
     public function __construct(
         \Graphpinator\Type\Type $operation,
-        \Graphpinator\Normalizer\FieldSet $children,
+        \Graphpinator\Normalizer\Field\FieldSet $children,
         \Graphpinator\Normalizer\Variable\VariableSet $variables,
         ?string $name
     )
@@ -31,7 +31,7 @@ final class Operation
         return $this->operation;
     }
 
-    public function getFields() : \Graphpinator\Normalizer\FieldSet
+    public function getFields() : \Graphpinator\Normalizer\Field\FieldSet
     {
         return $this->children;
     }
@@ -46,13 +46,15 @@ final class Operation
         return $this->name;
     }
 
-    public function resolve(\Graphpinator\Resolver\VariableValueSet $variables) : \Graphpinator\Response
+    public function resolve(\Graphpinator\Resolver\VariableValueSet $variables) : \Graphpinator\OperationResponse
     {
+        $this->children->applyVariables($variables);
+
         $data = $this->operation->resolve(
-            $this->children->applyVariables($variables),
+            $this->children,
             new \Graphpinator\Value\TypeIntermediateValue($this->operation, null),
         );
 
-        return new \Graphpinator\Response($data);
+        return new \Graphpinator\OperationResponse($data);
     }
 }

@@ -11,7 +11,10 @@ final class NamedFragmentSpread implements \Graphpinator\Parser\FragmentSpread\F
     private string $name;
     private \Graphpinator\Parser\Directive\DirectiveSet $directives;
 
-    public function __construct(string $name, ?\Graphpinator\Parser\Directive\DirectiveSet $directives = null)
+    public function __construct(
+        string $name,
+        ?\Graphpinator\Parser\Directive\DirectiveSet $directives = null,
+    )
     {
         $this->name = $name;
         $this->directives = $directives
@@ -31,7 +34,8 @@ final class NamedFragmentSpread implements \Graphpinator\Parser\FragmentSpread\F
     public function normalize(
         \Graphpinator\Type\Contract\NamedDefinition $parentType,
         \Graphpinator\Container\Container $typeContainer,
-        \Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions
+        \Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions,
+        \Graphpinator\Normalizer\Variable\VariableSet $variableSet,
     ) : \Graphpinator\Normalizer\FragmentSpread\FragmentSpread
     {
         if (!$fragmentDefinitions->offsetExists($this->name)) {
@@ -46,8 +50,8 @@ final class NamedFragmentSpread implements \Graphpinator\Parser\FragmentSpread\F
         }
 
         return new \Graphpinator\Normalizer\FragmentSpread\FragmentSpread(
-            $fragment->getFields()->normalize($typeCond, $typeContainer, $fragmentDefinitions),
-            $this->directives->normalize($typeContainer),
+            $fragment->getFields()->normalize($typeCond, $typeContainer, $fragmentDefinitions, $variableSet),
+            $this->directives->normalize($typeContainer, $variableSet),
             $typeCond,
         );
     }

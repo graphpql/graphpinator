@@ -38,12 +38,14 @@ final class EmailAddressTypeTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider simpleDataProvider
      * @param string $rawValue
-     * @doesNotPerformAssertions
      */
     public function testValidateValue(string $rawValue) : void
     {
-        $date = new \Graphpinator\Type\Addon\EmailAddressType();
-        $date->validateResolvedValue($rawValue);
+        $email = new \Graphpinator\Type\Addon\EmailAddressType();
+        $value = $email->createInputedValue($rawValue);
+
+        self::assertSame($email, $value->getType());
+        self::assertSame($rawValue, $value->getRawValue());
     }
 
     /**
@@ -55,6 +57,6 @@ final class EmailAddressTypeTest extends \PHPUnit\Framework\TestCase
         $this->expectException(\Graphpinator\Exception\Value\InvalidValue::class);
 
         $date = new \Graphpinator\Type\Addon\EmailAddressType();
-        $date->validateResolvedValue($rawValue);
+        $date->createInputedValue($rawValue);
     }
 }

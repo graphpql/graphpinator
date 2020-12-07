@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator;
 
-final class ParsedRequest
+final class OperationRequest
 {
     use \Nette\SmartObject;
 
@@ -12,15 +12,18 @@ final class ParsedRequest
     private \Graphpinator\Resolver\VariableValueSet $variables;
 
     public function __construct(
-        \Graphpinator\Normalizer\Operation\Operation $operation,
-        \stdClass $variables
+        \Graphpinator\Normalizer\Operation\OperationSet $operationSet,
+        ?string $operationName,
+        \stdClass $variables,
     )
     {
-        $this->operation = $operation;
-        $this->variables = new \Graphpinator\Resolver\VariableValueSet($operation->getVariables(), $variables);
+        $this->operation = $operationName === null
+            ? $operationSet->current()
+            : $operationSet->offsetGet($operationName);
+        $this->variables = new \Graphpinator\Resolver\VariableValueSet($this->operation->getVariables(), $variables);
     }
 
-    public function execute() : \Graphpinator\Response
+    public function execute() : \Graphpinator\OperationResponse
     {
         return $this->operation->resolve($this->variables);
     }

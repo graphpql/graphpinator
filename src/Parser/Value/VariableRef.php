@@ -8,37 +8,24 @@ final class VariableRef implements \Graphpinator\Parser\Value\Value
 {
     use \Nette\SmartObject;
 
-    private string $varName;
+    public function __construct(
+        private string $varName,
+    ) {}
 
-    public function __construct(string $name)
-    {
-        $this->varName = $name;
-    }
-
-    public function getRawValue() : void
+    public function getRawValue() : ?bool
     {
         throw new \Graphpinator\Exception\OperationNotSupported();
     }
 
-    public function getVarName() : string
+    public function createInputedValue(
+        \Graphpinator\Type\Contract\Inputable $type,
+        \Graphpinator\Normalizer\Variable\VariableSet $variableSet,
+    ) : \Graphpinator\Value\InputedValue
     {
-        return $this->varName;
-    }
-
-    public function applyVariables(\Graphpinator\Resolver\VariableValueSet $variables) : Value
-    {
-        if ($variables->offsetExists($this->varName)) {
-            $value = $variables[$this->varName];
-
-            return new \Graphpinator\Parser\Value\Literal($value->getRawValue());
+        if (!$variableSet->offsetExists($this->varName)) {
+            throw new \Graphpinator\Exception\Normalizer\UnknownVariable($this->varName);
         }
 
-        throw new \Graphpinator\Exception\Resolver\MissingVariable();
-    }
-
-    public function isSame(Value $compare) : bool
-    {
-        return $compare instanceof self
-            && $this->varName === $compare->getVarName();
+        return new \Graphpinator\Value\VariableValue($type, $variableSet->offsetGet($this->varName));
     }
 }

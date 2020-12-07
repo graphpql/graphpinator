@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Unit;
 
+use Infinityloop\Utils\Json;
+
 final class LoggerTest extends \PHPUnit\Framework\TestCase
 {
     protected array $logs;
@@ -24,7 +26,7 @@ final class LoggerTest extends \PHPUnit\Framework\TestCase
         $loggerMock = $this->createPartialMock(\Psr\Log\AbstractLogger::class, ['log']);
         $loggerMock->expects($this->any())
             ->method('log')
-            ->will($this->returnCallback([$this, 'mockLog']));
+            ->willReturnCallback([$this, 'mockLog']);
 
         $graphpinator = new \Graphpinator\Graphpinator(
             \Graphpinator\Tests\Spec\TestSchema::getSchema(),
@@ -33,7 +35,7 @@ final class LoggerTest extends \PHPUnit\Framework\TestCase
             $loggerMock,
         );
 
-        $request = \Graphpinator\Json::fromObject((object) [
+        $request = Json::fromNative((object) [
             'query' => 'query queryName { fieldArgumentDefaults(inputNumberList: [3, 4]) { fieldName fieldNumber fieldBool } }',
         ]);
 
@@ -51,7 +53,7 @@ final class LoggerTest extends \PHPUnit\Framework\TestCase
         $loggerMock = $this->createPartialMock(\Psr\Log\AbstractLogger::class, ['log']);
         $loggerMock->expects($this->any())
             ->method('log')
-            ->will($this->returnCallback([$this, 'mockLog']));
+            ->willReturnCallback([$this, 'mockLog']);
 
         $graphpinator = new \Graphpinator\Graphpinator(
             \Graphpinator\Tests\Spec\TestSchema::getSchema(),
@@ -60,7 +62,7 @@ final class LoggerTest extends \PHPUnit\Framework\TestCase
             $loggerMock,
         );
 
-        $request = \Graphpinator\Json::fromObject((object) [
+        $request = Json::fromNative((object) [
             'query' => 'query queryName ($var: Int) field',
         ]);
         $expected = 'Expected selection set, got "name".';
@@ -81,7 +83,7 @@ final class LoggerTest extends \PHPUnit\Framework\TestCase
         $loggerMock = $this->createPartialMock(\Psr\Log\AbstractLogger::class, ['log']);
         $loggerMock->expects($this->any())
             ->method('log')
-            ->will($this->returnCallback([$this, 'mockLog']));
+            ->willReturnCallback([$this, 'mockLog']);
 
         $graphpinator = new \Graphpinator\Graphpinator(
             \Graphpinator\Tests\Spec\TestSchema::getSchema(),
@@ -90,10 +92,10 @@ final class LoggerTest extends \PHPUnit\Framework\TestCase
             $loggerMock,
         );
 
-        $request = \Graphpinator\Json::fromObject((object) [
-            'query' => 'query queryName { fieldAbc { fieldXyz(arg1: 123, arg1: 456) { name } } }',
+        $request = Json::fromNative((object) [
+            'query' => 'query queryName { fieldThrow { fieldXyz { name } } }',
         ]);
-        $expected = 'Duplicated item';
+        $expected = 'Random exception';
 
         $graphpinator->run(new \Graphpinator\Request\JsonRequestFactory($request));
 
@@ -111,7 +113,7 @@ final class LoggerTest extends \PHPUnit\Framework\TestCase
         $loggerMock = $this->createPartialMock(\Psr\Log\AbstractLogger::class, ['log']);
         $loggerMock->expects($this->any())
             ->method('log')
-            ->will($this->returnCallback([$this, 'mockLog']));
+            ->willReturnCallback([$this, 'mockLog']);
 
         $graphpinator = new \Graphpinator\Graphpinator(
             \Graphpinator\Tests\Spec\TestSchema::getSchema(),
@@ -119,7 +121,7 @@ final class LoggerTest extends \PHPUnit\Framework\TestCase
             null,
             $loggerMock,
         );
-        $request = \Graphpinator\Json::fromObject((object) [
+        $request = Json::fromNative((object) [
             'query' => 'query queryName { fieldArgumentDefaults(inputNumberList: [3, 4]) { fieldName fieldNumber fieldBool } }',
         ]);
 

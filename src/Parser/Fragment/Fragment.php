@@ -8,24 +8,20 @@ final class Fragment
 {
     use \Nette\SmartObject;
 
-    private string $name;
-    private \Graphpinator\Parser\FieldSet $fields;
-    private \Graphpinator\Parser\TypeRef\NamedTypeRef $typeCond;
     private bool $cycleValidated = false;
 
-    public function __construct(string $name, \Graphpinator\Parser\TypeRef\NamedTypeRef $typeCond, \Graphpinator\Parser\FieldSet $fields)
-    {
-        $this->name = $name;
-        $this->typeCond = $typeCond;
-        $this->fields = $fields;
-    }
+    public function __construct(
+        private string $name,
+        private \Graphpinator\Parser\TypeRef\NamedTypeRef $typeCond,
+        private \Graphpinator\Parser\Field\FieldSet $fields,
+    ) {}
 
     public function getName() : string
     {
         return $this->name;
     }
 
-    public function getFields() : \Graphpinator\Parser\FieldSet
+    public function getFields() : \Graphpinator\Parser\Field\FieldSet
     {
         return $this->fields;
     }

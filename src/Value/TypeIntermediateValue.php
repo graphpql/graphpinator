@@ -9,20 +9,19 @@ final class TypeIntermediateValue implements \Graphpinator\Value\ResolvedValue
     use \Nette\SmartObject;
 
     private \Graphpinator\Type\Type $type;
-    private $rawValue;
+    private mixed $rawValue;
 
-    public function __construct(\Graphpinator\Type\Type $type, $rawValue)
+    public function __construct(\Graphpinator\Type\Type $type, mixed $rawValue)
     {
-        $type->validateResolvedValue($rawValue);
+        if (!$type->validateNonNullValue($rawValue)) {
+            throw new \Graphpinator\Exception\Value\InvalidValue($type->getName(), $rawValue, false);
+        }
 
         $this->type = $type;
         $this->rawValue = $rawValue;
     }
 
-    /**
-     * @return array|bool|float|int|\stdClass|string|null
-     */
-    public function getRawValue()
+    public function getRawValue() : mixed
     {
         return $this->rawValue;
     }

@@ -34,13 +34,13 @@ final class VariableValueSet implements \ArrayAccess
         return $this->array[$offset];
     }
 
-    public function offsetSet($offset, $object) : void
+    public function offsetSet($offset, $value) : void
     {
-        if (!\is_string($offset) || !$object instanceof \Graphpinator\Value\InputedValue) {
+        if (!\is_string($offset) || !$value instanceof \Graphpinator\Value\InputedValue) {
             throw new \Exception('Invalid input.');
         }
 
-        $this->array[$offset] = $object;
+        $this->array[$offset] = $value;
     }
 
     public function offsetUnset($offset) : void

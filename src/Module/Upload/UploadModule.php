@@ -15,13 +15,12 @@ final class UploadModule implements \Graphpinator\Module\Module
         $this->fileProvider = $fileProvider;
     }
 
-    public function process(\Graphpinator\ParsedRequest $request) : \Graphpinator\ParsedRequest
+    public function process(\Graphpinator\OperationRequest $request) : \Graphpinator\OperationRequest
     {
         $variables = $request->getVariables();
 
         foreach ($this->fileProvider->getMap() as $fileKey => $locations) {
-            $fileValue = new \Graphpinator\Value\LeafValue(
-                new \Graphpinator\Module\Upload\UploadType(),
+            $fileValue = new UploadValue(
                 $this->fileProvider->getFile($fileKey),
             );
 
@@ -48,7 +47,7 @@ final class UploadModule implements \Graphpinator\Module\Module
         array &$keys,
         \Graphpinator\Value\InputedValue $currentValue,
         \Graphpinator\Type\Contract\Definition $type,
-        \Graphpinator\Value\LeafValue $fileValue
+        UploadValue $fileValue
     ) : \Graphpinator\Value\InputedValue
     {
         if ($type instanceof \Graphpinator\Module\Upload\UploadType && $currentValue instanceof \Graphpinator\Value\NullValue) {
@@ -73,7 +72,7 @@ final class UploadModule implements \Graphpinator\Module\Module
             $index = (int) $index;
 
             if ($currentValue instanceof \Graphpinator\Value\NullValue) {
-                $currentValue = new \Graphpinator\Value\ListInputedValue($type, []);
+                $currentValue = \Graphpinator\Value\ListInputedValue::fromRaw($type, []);
             }
 
             if (!isset($currentValue[$index])) {
@@ -94,7 +93,7 @@ final class UploadModule implements \Graphpinator\Module\Module
 
             $argument = $type->getArguments()[$index];
 
-            $currentValue->{$index} = \Graphpinator\Argument\ArgumentValue::fromInputed(
+            $currentValue->{$index} = \Graphpinator\Value\ArgumentValue::fromInputed(
                 $argument,
                 $this->insertFiles($keys, $currentValue->{$index}->getValue(), $argument->getType(), $fileValue),
             );

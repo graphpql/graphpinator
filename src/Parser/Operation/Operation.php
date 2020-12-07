@@ -10,14 +10,14 @@ final class Operation
 
     private string $type;
     private ?string $name;
-    private \Graphpinator\Parser\FieldSet $children;
+    private \Graphpinator\Parser\Field\FieldSet $children;
     private \Graphpinator\Parser\Variable\VariableSet $variables;
 
     public function __construct(
-        \Graphpinator\Parser\FieldSet $children,
+        \Graphpinator\Parser\Field\FieldSet $children,
         string $type = \Graphpinator\Tokenizer\OperationType::QUERY,
         ?string $name = null,
-        ?\Graphpinator\Parser\Variable\VariableSet $variables = null
+        ?\Graphpinator\Parser\Variable\VariableSet $variables = null,
     )
     {
         $this->children = $children;
@@ -37,7 +37,7 @@ final class Operation
         return $this->name;
     }
 
-    public function getFields() : \Graphpinator\Parser\FieldSet
+    public function getFields() : \Graphpinator\Parser\Field\FieldSet
     {
         return $this->children;
     }
@@ -49,7 +49,7 @@ final class Operation
 
     public function normalize(
         \Graphpinator\Type\Schema $schema,
-        \Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions
+        \Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions,
     ) : \Graphpinator\Normalizer\Operation\Operation
     {
         $operation = match ($this->type) {
@@ -62,10 +62,12 @@ final class Operation
             throw new \Graphpinator\Exception\Normalizer\OperationNotSupported();
         }
 
+        $variables = $this->variables->normalize($schema->getContainer());
+
         return new \Graphpinator\Normalizer\Operation\Operation(
             $operation,
-            $this->children->normalize($operation, $schema->getContainer(), $fragmentDefinitions),
-            $this->variables->normalize($schema->getContainer()),
+            $this->children->normalize($operation, $schema->getContainer(), $fragmentDefinitions, $variables),
+            $variables,
             $this->getName(),
         );
     }

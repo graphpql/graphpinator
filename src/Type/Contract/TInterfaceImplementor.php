@@ -27,7 +27,7 @@ trait TInterfaceImplementor
     public function implements(\Graphpinator\Type\InterfaceType $interface) : bool
     {
         foreach ($this->implements as $temp) {
-            if (\get_class($temp) === \get_class($interface) || $temp->implements($interface)) {
+            if ($temp::class === $interface::class || $temp->implements($interface)) {
                 return true;
             }
         }

@@ -399,7 +399,7 @@ final class TestSchema
                 ]);
             }
 
-            protected function validateNonNullValue($rawValue) : bool
+            public function validateNonNullValue($rawValue) : bool
             {
                 return true;
             }
@@ -413,7 +413,7 @@ final class TestSchema
             protected const NAME = 'Abc';
             protected const DESCRIPTION = 'Test Abc description';
 
-            protected function validateNonNullValue($rawValue) : bool
+            public function validateNonNullValue($rawValue) : bool
             {
                 return $rawValue === 1;
             }
@@ -492,7 +492,7 @@ final class TestSchema
                 ]);
             }
 
-            protected function validateNonNullValue($rawValue) : bool
+            public function validateNonNullValue($rawValue) : bool
             {
                 return true;
             }
@@ -519,7 +519,7 @@ final class TestSchema
                 ]);
             }
 
-            protected function validateNonNullValue($rawValue) : bool
+            public function validateNonNullValue($rawValue) : bool
             {
                 return true;
             }
@@ -647,7 +647,7 @@ final class TestSchema
                 ]));
             }
 
-            protected function validateNonNullValue($rawValue) : bool
+            public function validateNonNullValue($rawValue) : bool
             {
                 return true;
             }
@@ -960,7 +960,7 @@ final class TestSchema
                     new \Graphpinator\Field\ResolvableField(
                         'name',
                         \Graphpinator\Container\Container::String()->notNull(),
-                        static function (\stdClass $parent, $name) {
+                        static function (\stdClass $parent, string $name = 'defaultA') {
                             return $parent->name
                                 ?? $name;
                         },
@@ -975,7 +975,7 @@ final class TestSchema
                 ]);
             }
 
-            protected function validateNonNullValue($rawValue) : bool
+            public function validateNonNullValue($rawValue) : bool
             {
                 return true;
             }
@@ -1047,7 +1047,7 @@ final class TestSchema
                 ]);
             }
 
-            protected function validateNonNullValue($rawValue) : bool
+            public function validateNonNullValue($rawValue) : bool
             {
                 return true;
             }
@@ -1161,7 +1161,7 @@ final class TestSchema
         {
             protected const NAME = 'TestScalar';
 
-            protected function validateNonNullValue($rawValue) : bool
+            public function validateNonNullValue($rawValue) : bool
             {
                 return true;
             }
@@ -1276,7 +1276,7 @@ final class TestSchema
                 $this->addConstraint(new \Graphpinator\Constraint\ObjectConstraint(null, ['fieldA', 'fieldB']));
             }
 
-            protected function validateNonNullValue($rawValue) : bool
+            public function validateNonNullValue($rawValue) : bool
             {
                 return \is_int($rawValue) && \in_array($rawValue, [0, 1], true);
             }
@@ -1585,7 +1585,7 @@ final class TestSchema
                 ]);
             }
 
-            protected function validateNonNullValue($rawValue) : bool
+            public function validateNonNullValue($rawValue) : bool
             {
                 return true;
             }
@@ -1618,7 +1618,7 @@ final class TestSchema
                 ]);
             }
 
-            protected function validateNonNullValue($rawValue) : bool
+            public function validateNonNullValue($rawValue) : bool
             {
                 return true;
             }
@@ -1705,7 +1705,7 @@ final class TestSchema
                 ]);
             }
 
-            protected function validateNonNullValue($rawValue) : bool
+            public function validateNonNullValue($rawValue) : bool
             {
                 return true;
             }
@@ -1733,7 +1733,7 @@ final class TestSchema
                 ]);
             }
 
-            protected function validateNonNullValue($rawValue) : bool
+            public function validateNonNullValue($rawValue) : bool
             {
                 return true;
             }
@@ -1793,7 +1793,7 @@ final class TestSchema
                 ]);
             }
 
-            protected function validateNonNullValue($rawValue) : bool
+            public function validateNonNullValue($rawValue) : bool
             {
                 return true;
             }
@@ -1853,7 +1853,7 @@ final class TestSchema
                 ]);
             }
 
-            protected function validateNonNullValue($rawValue) : bool
+            public function validateNonNullValue($rawValue) : bool
             {
                 return true;
             }

@@ -62,12 +62,14 @@ final class IPv6TypeTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider simpleDataProvider
      * @param string $rawValue
-     * @doesNotPerformAssertions
      */
     public function testValidateValue(string $rawValue) : void
     {
         $ipv6 = new \Graphpinator\Type\Addon\IPv6Type();
-        $ipv6->validateResolvedValue($rawValue);
+        $value = $ipv6->createInputedValue($rawValue);
+
+        self::assertSame($ipv6, $value->getType());
+        self::assertSame($rawValue, $value->getRawValue());
     }
 
     /**
@@ -79,6 +81,6 @@ final class IPv6TypeTest extends \PHPUnit\Framework\TestCase
         $this->expectException(\Graphpinator\Exception\Value\InvalidValue::class);
 
         $ipv6 = new \Graphpinator\Type\Addon\IPv6Type();
-        $ipv6->validateResolvedValue($rawValue);
+        $ipv6->createInputedValue($rawValue);
     }
 }

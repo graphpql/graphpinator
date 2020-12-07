@@ -21,13 +21,12 @@ final class ResolvableField extends \Graphpinator\Field\Field
 
     public function resolve(
         \Graphpinator\Value\ResolvedValue $parentValue,
-        \Graphpinator\Normalizer\Field $field
+        \Graphpinator\Normalizer\Field\Field $field
     ) : \Graphpinator\Field\FieldValue
     {
-        $arguments = new \Graphpinator\Argument\ArgumentValueSet($field->getArguments(), $this->getArguments());
+        $arguments = $field->getArguments();
         $rawArguments = $arguments->getRawValues();
         \array_unshift($rawArguments, $parentValue->getRawValue());
-
         $result = \call_user_func_array($this->resolveFn, $rawArguments);
         $value = $this->type->createResolvedValue($result);
 
