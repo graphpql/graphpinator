@@ -48,8 +48,8 @@ abstract class ExecutableDirective extends \Graphpinator\Directive\Directive
         }
 
         $rawArguments = $arguments->getRawValues();
-        \array_unshift($rawArguments, $fieldValue->getValue()->getRawValue());
-        $result = \call_user_func_array($this->resolveFnAfter, $arguments->getRawValues());
+        \array_unshift($rawArguments, $fieldValue->getValue());
+        $result = \call_user_func_array($this->resolveFnAfter, $rawArguments);
 
         if (\is_string($result) && \array_key_exists($result, DirectiveResult::ENUM)) {
             return $result;

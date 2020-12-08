@@ -21,7 +21,7 @@ abstract class ListValue implements \Graphpinator\Value\Value, \IteratorAggregat
         return \array_key_exists($offset, $this->value);
     }
 
-    public function offsetGet($offset) : InputedValue
+    public function offsetGet($offset) : Value
     {
         return $this->value[$offset];
     }
