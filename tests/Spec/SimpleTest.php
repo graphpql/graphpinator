@@ -25,11 +25,11 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 Json::fromNative((object) [
-                    'query' => 'query queryName { fieldList { name } }',
+                    'query' => 'query queryName { fieldObjectList { name } }',
                 ]),
                 Json::fromNative((object) [
                     'data' => [
-                        'fieldList' => [['name' => 'testValue1'], ['name' => 'testValue2'], ['name' => 'testValue3']],
+                        'fieldObjectList' => [['name' => 'testValue1'], ['name' => 'testValue2'], ['name' => 'testValue3']],
                     ],
                 ]),
             ],

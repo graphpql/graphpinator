@@ -619,7 +619,8 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldMultiInputMultiUpload(
             fileInputs: [UploadInput!]!
           ): [UploadType!]!
-          fieldList: [Xyz!]!
+          fieldList: [String!]!
+          fieldObjectList: [Xyz!]!
           fieldAbstractList: [TestUnion]
           fieldNull: NullFieldResolution
           fieldNullList: NullListResolution
@@ -784,6 +785,15 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           regex: String
           oneOf: [String!]
         ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION | FIELD_DEFINITION
+        
+        directive @stringWhere(
+          field: String
+          not: Boolean! = false
+          equals: String
+          contains: String
+          startsWith: String
+          endsWith: String
+        ) repeatable on FIELD
 
         directive @testDirective repeatable on FIELD
         EOL;
