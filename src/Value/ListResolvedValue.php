@@ -32,6 +32,6 @@ final class ListResolvedValue extends \Graphpinator\Value\ListValue implements \
 
     public function jsonSerialize() : array
     {
-        return $this->value;
+        return \array_values($this->value);
     }
 }
