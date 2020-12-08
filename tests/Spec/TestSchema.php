@@ -81,6 +81,7 @@ final class TestSchema
         ], [
             'testDirective' => self::getTestDirective(),
             'invalidDirective' => self::getInvalidDirective(),
+            'filter' => new \Graphpinator\Directive\StringWhereDirective(),
         ]);
     }
 
@@ -246,6 +247,13 @@ final class TestSchema
                     ),
                     new \Graphpinator\Field\ResolvableField(
                         'fieldList',
+                        \Graphpinator\Container\Container::String()->notNullList(),
+                        static function () : array {
+                            return ['testValue1', 'testValue2', 'testValue3'];
+                        },
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'fieldObjectList',
                         TestSchema::getTypeXyz()->notNullList(),
                         static function () {
                             return [
