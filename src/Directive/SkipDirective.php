@@ -26,6 +26,7 @@ final class SkipDirective extends \Graphpinator\Directive\ExecutableDirective
                     ? DirectiveResult::SKIP
                     : DirectiveResult::NONE;
             },
+            null,
         );
     }
 }

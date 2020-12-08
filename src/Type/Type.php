@@ -48,7 +48,7 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
             foreach ($field->getDirectives() as $directive) {
                 $directiveDef = $directive->getDirective();
                 $arguments = $directive->getArguments();
-                $directiveResult = $directiveDef->resolve($arguments);
+                $directiveResult = $directiveDef->resolveBefore($arguments);
 
                 if ($directiveResult === \Graphpinator\Directive\DirectiveResult::SKIP) {
                     continue 2;
@@ -57,7 +57,19 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
 
             $fieldDef = $this->getMetaFields()[$field->getName()]
                 ?? $this->getFields()[$field->getName()];
-            $resolved->{$field->getAlias()} = $fieldDef->resolve($parentResult, $field);
+            $fieldResult = $fieldDef->resolve($parentResult, $field);
+
+            foreach ($field->getDirectives() as $directive) {
+                $directiveDef = $directive->getDirective();
+                $arguments = $directive->getArguments();
+                $directiveResult = $directiveDef->resolveAfter($fieldResult, $arguments);
+
+                if ($directiveResult === \Graphpinator\Directive\DirectiveResult::SKIP) {
+                    continue 2;
+                }
+            }
+
+            $resolved->{$field->getAlias()} = $fieldResult;
         }
 
         return new \Graphpinator\Value\TypeValue($this, $resolved);

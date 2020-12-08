@@ -26,6 +26,7 @@ final class IncludeDirective extends \Graphpinator\Directive\ExecutableDirective
                     ? DirectiveResult::NONE
                     : DirectiveResult::SKIP;
             },
+            null,
         );
     }
 }

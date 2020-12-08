@@ -12,7 +12,7 @@ final class ResolvableField extends \Graphpinator\Field\Field
         string $name,
         \Graphpinator\Type\Contract\Outputable $type,
         callable $resolveFn,
-        ?\Graphpinator\Argument\ArgumentSet $arguments = null
+        ?\Graphpinator\Argument\ArgumentSet $arguments = null,
     )
     {
         parent::__construct($name, $type, $arguments);
@@ -21,7 +21,7 @@ final class ResolvableField extends \Graphpinator\Field\Field
 
     public function resolve(
         \Graphpinator\Value\ResolvedValue $parentValue,
-        \Graphpinator\Normalizer\Field\Field $field
+        \Graphpinator\Normalizer\Field\Field $field,
     ) : \Graphpinator\Field\FieldValue
     {
         $arguments = $field->getArguments();

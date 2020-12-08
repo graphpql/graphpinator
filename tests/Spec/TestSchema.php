@@ -1186,6 +1186,7 @@ final class TestSchema
 
                         return \Graphpinator\Directive\DirectiveResult::NONE;
                     },
+                    null,
                 );
             }
         };
@@ -1206,6 +1207,7 @@ final class TestSchema
                     static function() {
                         return 'blahblah';
                     },
+                    null,
                 );
             }
         };
