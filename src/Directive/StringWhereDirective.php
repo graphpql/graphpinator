@@ -27,7 +27,7 @@ final class StringWhereDirective extends \Graphpinator\Directive\ExecutableDirec
             null,
             static function (\Graphpinator\Value\ListResolvedValue $value, ?string $field, bool $not, ?string $equals, ?string $contains, ?string $startsWith, ?string $endsWith) : string {
                 foreach ($value as $key => $item) {
-                    $singleValue = self::extractValue($item, $field)->getRawValue();
+                    $singleValue = self::extractValue($item, $field);
                     $condition = self::satisfiesCondition($singleValue, $equals, $contains, $startsWith, $endsWith);
 
                     if ($condition === $not) {
@@ -61,10 +61,10 @@ final class StringWhereDirective extends \Graphpinator\Directive\ExecutableDirec
         return true;
     }
 
-    private static function extractValue(\Graphpinator\Value\ResolvedValue $singleValue, ?string $where) : \Graphpinator\Value\ResolvedValue
+    private static function extractValue(\Graphpinator\Value\ResolvedValue $singleValue, ?string $where) : string
     {
         if ($where === null) {
-            return $singleValue;
+            return $singleValue->getRawValue();
         }
     }
 }
