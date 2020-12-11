@@ -13,7 +13,7 @@ final class ListConstraintInput extends \Graphpinator\Type\InputType
         return new \Graphpinator\Argument\ArgumentSet([
             new \Graphpinator\Argument\Argument('minItems', \Graphpinator\Container\Container::Int()),
             new \Graphpinator\Argument\Argument('maxItems', \Graphpinator\Container\Container::Int()),
-            new \Graphpinator\Argument\Argument('unique', \Graphpinator\Container\Container::Boolean(), false),
+            \Graphpinator\Argument\Argument::create('unique', \Graphpinator\Container\Container::Boolean())->setDefaultValue(false),
             new \Graphpinator\Argument\Argument('innerList', $this),
         ]);
     }

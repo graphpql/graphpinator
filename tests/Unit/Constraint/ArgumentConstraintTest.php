@@ -1348,13 +1348,12 @@ final class ArgumentConstraintTest extends \PHPUnit\Framework\TestCase
                 }
 
                 return new \Graphpinator\Field\FieldSet([
-                    new \Graphpinator\Field\Field(
+                    \Graphpinator\Field\Field::create(
                         'field1',
                         $this->settings['fieldType'],
-                        new \Graphpinator\Argument\ArgumentSet([
-                            $argument,
-                        ]),
-                    ),
+                    )->setArguments(new \Graphpinator\Argument\ArgumentSet([
+                        $argument,
+                    ])),
                 ]);
             }
         };
@@ -1390,16 +1389,15 @@ final class ArgumentConstraintTest extends \PHPUnit\Framework\TestCase
                 }
 
                 return new \Graphpinator\Field\ResolvableFieldSet([
-                    new \Graphpinator\Field\ResolvableField(
+                    \Graphpinator\Field\ResolvableField::create(
                         'field1',
                         $this->settings['fieldType'],
                         static function() {
                             return null;
                         },
-                        new \Graphpinator\Argument\ArgumentSet([
-                            $argument,
-                        ]),
-                    ),
+                    )->setArguments(new \Graphpinator\Argument\ArgumentSet([
+                        $argument,
+                    ])),
                 ]);
             }
         };

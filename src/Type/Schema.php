@@ -33,16 +33,16 @@ final class Schema
                 return $this;
             },
         ));
-        $this->query->addMetaField(new \Graphpinator\Field\ResolvableField(
-            '__type',
-            $this->container->introspectionType(),
-            function($parent, string $name) : \Graphpinator\Type\Contract\Definition {
-                return $this->container->getType($name);
-            },
-            new \Graphpinator\Argument\ArgumentSet([
+        $this->query->addMetaField(\Graphpinator\Field\ResolvableField::create(
+                '__type',
+                $this->container->introspectionType(),
+                function($parent, string $name) : \Graphpinator\Type\Contract\Definition {
+                    return $this->container->getType($name);
+                },
+            )->setArguments(new \Graphpinator\Argument\ArgumentSet([
                 new \Graphpinator\Argument\Argument('name', \Graphpinator\Container\Container::String()->notNull()),
-            ]),
-        ));
+            ]))
+        );
     }
 
     public function getContainer() : \Graphpinator\Container\Container

@@ -16,12 +16,16 @@ class Field implements \Graphpinator\Printable\Printable
     protected \Graphpinator\Type\Contract\Outputable $type;
     protected \Graphpinator\Argument\ArgumentSet $arguments;
 
-    public function __construct(string $name, \Graphpinator\Type\Contract\Outputable $type, ?\Graphpinator\Argument\ArgumentSet $arguments = null)
+    public function __construct(string $name, \Graphpinator\Type\Contract\Outputable $type)
     {
         $this->name = $name;
         $this->type = $type;
-        $this->arguments = $arguments
-            ?? new \Graphpinator\Argument\ArgumentSet([]);
+        $this->arguments = new \Graphpinator\Argument\ArgumentSet([]);
+    }
+
+    public static function create(string $name, \Graphpinator\Type\Contract\Outputable $type) : self
+    {
+        return new self($name, $type);
     }
 
     public function getName() : string
@@ -37,6 +41,13 @@ class Field implements \Graphpinator\Printable\Printable
     public function getArguments() : \Graphpinator\Argument\ArgumentSet
     {
         return $this->arguments;
+    }
+
+    public function setArguments(\Graphpinator\Argument\ArgumentSet $arguments) : static
+    {
+        $this->arguments = $arguments;
+
+        return $this;
     }
 
     public function printSchema(int $indentLevel) : string

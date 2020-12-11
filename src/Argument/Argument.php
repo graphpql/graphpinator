@@ -15,14 +15,14 @@ final class Argument implements \Graphpinator\Printable\Printable
     public function __construct(
         private string $name,
         private \Graphpinator\Type\Contract\Inputable $type,
-        \stdClass|array|string|int|float|bool|null $defaultValue = null
     )
     {
         $this->constraints = new \Graphpinator\Constraint\ArgumentFieldConstraintSet([]);
+    }
 
-        if (\func_num_args() === 3) {
-            $this->defaultValue = $type->createInputedValue($defaultValue);
-        }
+    public static function create(string $name, \Graphpinator\Type\Contract\Inputable $type) : self
+    {
+        return new self($name, $type);
     }
 
     public function getName() : string
@@ -38,6 +38,13 @@ final class Argument implements \Graphpinator\Printable\Printable
     public function getDefaultValue() : ?\Graphpinator\Value\InputedValue
     {
         return $this->defaultValue;
+    }
+
+    public function setDefaultValue(\stdClass|array|string|int|float|bool|null $defaultValue) : self
+    {
+        $this->defaultValue = $this->type->createInputedValue($defaultValue);
+
+        return $this;
     }
 
     public function printSchema(int $indentLevel) : string
