@@ -14,7 +14,7 @@ final class Argument implements \Graphpinator\Printable\Printable
 
     public function __construct(
         private string $name,
-        private \Graphpinator\Type\Contract\Inputable $type
+        private \Graphpinator\Type\Contract\Inputable $type,
     )
     {
         $this->constraints = new \Graphpinator\Constraint\ArgumentFieldConstraintSet([]);
