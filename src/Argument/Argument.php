@@ -25,6 +25,15 @@ final class Argument implements \Graphpinator\Printable\Printable
         }
     }
 
+    public static function create(
+        string $name,
+        \Graphpinator\Type\Contract\Inputable $type,
+        \stdClass|array|string|int|float|bool|null $defaultValue = null
+    ) : self
+    {
+        return new self($name, $type, $defaultValue);
+    }
+
     public function getName() : string
     {
         return $this->name;

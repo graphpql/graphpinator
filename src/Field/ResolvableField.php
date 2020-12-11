@@ -8,15 +8,15 @@ final class ResolvableField extends \Graphpinator\Field\Field
 {
     private \Closure $resolveFn;
 
-    public function __construct(
-        string $name,
-        \Graphpinator\Type\Contract\Outputable $type,
-        callable $resolveFn,
-        ?\Graphpinator\Argument\ArgumentSet $arguments = null,
-    )
+    public function __construct(string $name, \Graphpinator\Type\Contract\Outputable $type, callable $resolveFn)
     {
-        parent::__construct($name, $type, $arguments);
+        parent::__construct($name, $type);
         $this->resolveFn = $resolveFn;
+    }
+
+    public static function create(string $name, \Graphpinator\Type\Contract\Outputable $type, ?callable $resolveFn = null) : self
+    {
+        return new self($name, $type, $resolveFn);
     }
 
     public function resolve(

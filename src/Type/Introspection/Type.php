@@ -53,7 +53,7 @@ final class Type extends \Graphpinator\Type\Type
                         : null;
                 },
             ),
-            new \Graphpinator\Field\ResolvableField(
+            \Graphpinator\Field\ResolvableField::create(
                 'fields',
                 $this->container->introspectionField()->notNull()->list(),
                 static function (Definition $definition, bool $includeDeprecated) : ?\Graphpinator\Field\FieldSet {
@@ -77,10 +77,9 @@ final class Type extends \Graphpinator\Type\Type
 
                     return new \Graphpinator\Field\FieldSet($filtered);
                 },
-                new \Graphpinator\Argument\ArgumentSet([
-                    new \Graphpinator\Argument\Argument('includeDeprecated', \Graphpinator\Container\Container::Boolean()->notNull(), false),
-                ]),
-            ),
+            )->setArguments(new \Graphpinator\Argument\ArgumentSet([
+                new \Graphpinator\Argument\Argument('includeDeprecated', \Graphpinator\Container\Container::Boolean()->notNull(), false),
+            ])),
             new \Graphpinator\Field\ResolvableField(
                 'interfaces',
                 $this->notNull()->list(),
@@ -114,7 +113,7 @@ final class Type extends \Graphpinator\Type\Type
                     return null;
                 },
             ),
-            new \Graphpinator\Field\ResolvableField(
+            \Graphpinator\Field\ResolvableField::create(
                 'enumValues',
                 $this->container->introspectionEnumValue()->notNull()->list(),
                 static function (Definition $definition, bool $includeDeprecated) : ?\Graphpinator\Type\Enum\EnumItemSet {
@@ -138,10 +137,9 @@ final class Type extends \Graphpinator\Type\Type
 
                     return new \Graphpinator\Type\Enum\EnumItemSet($filtered);
                 },
-                new \Graphpinator\Argument\ArgumentSet([
-                    new \Graphpinator\Argument\Argument('includeDeprecated', \Graphpinator\Container\Container::Boolean()->notNull(), false),
-                ]),
-            ),
+            )->setArguments(new \Graphpinator\Argument\ArgumentSet([
+                new \Graphpinator\Argument\Argument('includeDeprecated', \Graphpinator\Container\Container::Boolean()->notNull(), false),
+            ])),
             new \Graphpinator\Field\ResolvableField(
                 'inputFields',
                 $this->container->introspectionInputValue()->notNull()->list(),
