@@ -78,7 +78,8 @@ final class Type extends \Graphpinator\Type\Type
                     return new \Graphpinator\Field\FieldSet($filtered);
                 },
             )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                new \Graphpinator\Argument\Argument('includeDeprecated', \Graphpinator\Container\Container::Boolean()->notNull(), false),
+                \Graphpinator\Argument\Argument::create('includeDeprecated', \Graphpinator\Container\Container::Boolean()->notNull())
+                    ->setDefaultValue(false),
             ])),
             new \Graphpinator\Field\ResolvableField(
                 'interfaces',
@@ -138,7 +139,8 @@ final class Type extends \Graphpinator\Type\Type
                     return new \Graphpinator\Type\Enum\EnumItemSet($filtered);
                 },
             )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                new \Graphpinator\Argument\Argument('includeDeprecated', \Graphpinator\Container\Container::Boolean()->notNull(), false),
+                \Graphpinator\Argument\Argument::create('includeDeprecated', \Graphpinator\Container\Container::Boolean()->notNull())
+                    ->setDefaultValue(false),
             ])),
             new \Graphpinator\Field\ResolvableField(
                 'inputFields',

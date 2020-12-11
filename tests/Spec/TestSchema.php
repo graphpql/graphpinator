@@ -448,7 +448,7 @@ final class TestSchema
                             return $object;
                         },
                     ))->setDeprecated(true)->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        new \Graphpinator\Argument\Argument('arg1', \Graphpinator\Container\Container::Int(), 123),
+                        \Graphpinator\Argument\Argument::create('arg1', \Graphpinator\Container\Container::Int())->setDefaultValue(123),
                         new \Graphpinator\Argument\Argument('arg2', TestSchema::getCompositeInput()),
                     ])),
                 ]);
@@ -580,31 +580,26 @@ final class TestSchema
             protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
             {
                 return new \Graphpinator\Argument\ArgumentSet([
-                    new \Graphpinator\Argument\Argument(
+                    \Graphpinator\Argument\Argument::create(
                         'scalar',
                         \Graphpinator\Container\Container::String()->notNull(),
-                        'defaultString',
-                    ),
-                    new \Graphpinator\Argument\Argument(
+                    )->setDefaultValue('defaultString'),
+                    \Graphpinator\Argument\Argument::create(
                         'enum',
                         TestSchema::getSimpleEnum()->notNull(),
-                        'A',
-                    ),
-                    new \Graphpinator\Argument\Argument(
+                    )->setDefaultValue('A'),
+                    \Graphpinator\Argument\Argument::create(
                         'list',
                         \Graphpinator\Container\Container::String()->notNullList(),
-                        ['string1', 'string2'],
-                    ),
-                    new \Graphpinator\Argument\Argument(
+                    )->setDefaultValue(['string1', 'string2']),
+                    \Graphpinator\Argument\Argument::create(
                         'object',
                         TestSchema::getSimpleInput()->notNull(),
-                        (object) ['name' => 'string', 'number' => [1, 2]],
-                    ),
-                    new \Graphpinator\Argument\Argument(
+                    )->setDefaultValue((object) ['name' => 'string', 'number' => [1, 2]]),
+                    \Graphpinator\Argument\Argument::create(
                         'listObjects',
                         TestSchema::getSimpleInput()->notNullList(),
-                        [(object) ['name' => 'string', 'number' => [1]], (object) ['name' => 'string', 'number' => []]],
-                    ),
+                    )->setDefaultValue([(object) ['name' => 'string', 'number' => [1]], (object) ['name' => 'string', 'number' => []]]),
                 ]);
             }
         };
@@ -954,11 +949,10 @@ final class TestSchema
                                 ?? $name;
                         },
                     )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        new \Graphpinator\Argument\Argument(
+                        \Graphpinator\Argument\Argument::create(
                             'name',
                             \Graphpinator\Container\Container::String()->notNull(),
-                            'defaultA',
-                        ),
+                        )->setDefaultValue('defaultA'),
                     ])),
                 ]);
             }
@@ -995,11 +989,10 @@ final class TestSchema
                                 ?? $name;
                         },
                     )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        new \Graphpinator\Argument\Argument(
+                        \Graphpinator\Argument\Argument::create(
                             'name',
                             \Graphpinator\Container\Container::String()->notNull(),
-                            'defaultB',
-                        ),
+                        )->setDefaultValue('defaultB'),
                     ])),
                     \Graphpinator\Field\ResolvableField::create(
                         'number',
@@ -1009,11 +1002,10 @@ final class TestSchema
                                 ?? $number;
                         },
                     )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        new \Graphpinator\Argument\Argument(
+                        \Graphpinator\Argument\Argument::create(
                             'number',
                             \Graphpinator\Container\Container::Int(),
-                            5,
-                        ),
+                        )->setDefaultValue(5),
                     ])),
                     \Graphpinator\Field\ResolvableField::create(
                         'bool',
@@ -1023,11 +1015,10 @@ final class TestSchema
                                 ?? $bool;
                         },
                     )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        new \Graphpinator\Argument\Argument(
+                        \Graphpinator\Argument\Argument::create(
                             'bool',
                             \Graphpinator\Container\Container::Boolean(),
-                            false,
-                        ),
+                        )->setDefaultValue(false),
                     ])),
                 ]);
             }
@@ -1207,9 +1198,22 @@ final class TestSchema
             protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
             {
                 return new \Graphpinator\Argument\ArgumentSet([
-                    new \Graphpinator\Argument\Argument(
+                    \Graphpinator\Argument\Argument::create(
                         'innerObject',
                         TestSchema::getCompositeInput(),
+                    )->setDefaultValue((object) [
+                        'name' => 'testName',
+                        'inner' => (object) ['name' => 'string', 'number' => [1, 2, 3]],
+                        'innerList' => [
+                            (object) ['name' => 'string', 'number' => [1]],
+                            (object) ['name' => 'string', 'number' => [1, 2, 3, 4]],
+                        ],
+                        'innerNotNull' => (object) ['name' => 'string', 'number' => [1, 2]],
+                    ]),
+                    \Graphpinator\Argument\Argument::create(
+                        'innerListObjects',
+                        TestSchema::getCompositeInput()->list(),
+                    )->setDefaultValue([
                         (object) [
                             'name' => 'testName',
                             'inner' => (object) ['name' => 'string', 'number' => [1, 2, 3]],
@@ -1219,31 +1223,16 @@ final class TestSchema
                             ],
                             'innerNotNull' => (object) ['name' => 'string', 'number' => [1, 2]],
                         ],
-                    ),
-                    new \Graphpinator\Argument\Argument(
-                        'innerListObjects',
-                        TestSchema::getCompositeInput()->list(),
-                        [
-                            (object) [
-                                'name' => 'testName',
-                                'inner' => (object) ['name' => 'string', 'number' => [1, 2, 3]],
-                                'innerList' => [
-                                    (object) ['name' => 'string', 'number' => [1]],
-                                    (object) ['name' => 'string', 'number' => [1, 2, 3, 4]],
-                                ],
-                                'innerNotNull' => (object) ['name' => 'string', 'number' => [1, 2]],
+                        (object) [
+                            'name' => 'testName2',
+                            'inner' => (object) ['name' => 'string2', 'number' => [11, 22, 33]],
+                            'innerList' => [
+                                (object) ['name' => 'string2', 'number' => [11]],
+                                (object) ['name' => 'string2', 'number' => [11, 22, 33, 44]],
                             ],
-                            (object) [
-                                'name' => 'testName2',
-                                'inner' => (object) ['name' => 'string2', 'number' => [11, 22, 33]],
-                                'innerList' => [
-                                    (object) ['name' => 'string2', 'number' => [11]],
-                                    (object) ['name' => 'string2', 'number' => [11, 22, 33, 44]],
-                                ],
-                                'innerNotNull' => (object) ['name' => 'string2', 'number' => [11, 22]],
-                            ],
+                            'innerNotNull' => (object) ['name' => 'string2', 'number' => [11, 22]],
                         ],
-                    ),
+                    ]),
                 ]);
             }
         };
@@ -1310,11 +1299,10 @@ final class TestSchema
                             return $dateTime;
                         },
                     )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        new \Graphpinator\Argument\Argument(
+                        \Graphpinator\Argument\Argument::create(
                             'dateTime',
                             new \Graphpinator\Type\Addon\DateTimeType(),
-                            '2010-01-01 12:12:50',
-                        ),
+                        )->setDefaultValue('2010-01-01 12:12:50'),
                     ])),
                     \Graphpinator\Field\ResolvableField::create(
                         'date',
@@ -1323,11 +1311,10 @@ final class TestSchema
                             return $date;
                         },
                     )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        new \Graphpinator\Argument\Argument(
+                        \Graphpinator\Argument\Argument::create(
                             'date',
                             new \Graphpinator\Type\Addon\DateType(),
-                            '2010-01-01',
-                        ),
+                        )->setDefaultValue('2010-01-01'),
                     ])),
                     \Graphpinator\Field\ResolvableField::create(
                         'emailAddress',
@@ -1336,11 +1323,10 @@ final class TestSchema
                             return $emailAddress;
                         },
                     )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        new \Graphpinator\Argument\Argument(
+                        \Graphpinator\Argument\Argument::create(
                             'emailAddress',
                             new \Graphpinator\Type\Addon\EmailAddressType(),
-                            'test@test.com',
-                        ),
+                        )->setDefaultValue('test@test.com'),
                     ])),
                     \Graphpinator\Field\ResolvableField::create(
                         'hsla',
@@ -1349,11 +1335,10 @@ final class TestSchema
                             return $hsla;
                         },
                     )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        new \Graphpinator\Argument\Argument(
+                        \Graphpinator\Argument\Argument::create(
                             'hsla',
                             new \Graphpinator\Type\Addon\HslaInput(),
-                            (object) ['hue' => 180, 'saturation' => 50, 'lightness' => 50, 'alpha' => 0.5],
-                        ),
+                        )->setDefaultValue((object) ['hue' => 180, 'saturation' => 50, 'lightness' => 50, 'alpha' => 0.5]),
                     ])),
                     \Graphpinator\Field\ResolvableField::create(
                         'hsl',
@@ -1362,11 +1347,10 @@ final class TestSchema
                             return $hsl;
                         },
                     )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        new \Graphpinator\Argument\Argument(
+                        \Graphpinator\Argument\Argument::create(
                             'hsl',
                             new \Graphpinator\Type\Addon\HslInput(),
-                            (object) ['hue' => 180, 'saturation' => 50, 'lightness' => 50],
-                        ),
+                        )->setDefaultValue((object) ['hue' => 180, 'saturation' => 50, 'lightness' => 50]),
                     ])),
                     \Graphpinator\Field\ResolvableField::create(
                         'ipv4',
@@ -1375,11 +1359,10 @@ final class TestSchema
                             return $ipv4;
                         },
                     )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        new \Graphpinator\Argument\Argument(
+                        \Graphpinator\Argument\Argument::create(
                             'ipv4',
                             new \Graphpinator\Type\Addon\IPv4Type(),
-                            '128.0.1.1',
-                        ),
+                        )->setDefaultValue('128.0.1.1'),
                     ])),
                     \Graphpinator\Field\ResolvableField::create(
                         'ipv6',
@@ -1388,11 +1371,10 @@ final class TestSchema
                             return $ipv6;
                         },
                     )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        new \Graphpinator\Argument\Argument(
+                        \Graphpinator\Argument\Argument::create(
                             'ipv6',
                             new \Graphpinator\Type\Addon\IPv6Type(),
-                            'AAAA:1111:FFFF:9999:1111:AAAA:9999:FFFF',
-                        ),
+                        )->setDefaultValue('AAAA:1111:FFFF:9999:1111:AAAA:9999:FFFF'),
                     ])),
                     \Graphpinator\Field\ResolvableField::create(
                         'json',
@@ -1401,11 +1383,10 @@ final class TestSchema
                             return $json;
                         },
                     )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        new \Graphpinator\Argument\Argument(
+                        \Graphpinator\Argument\Argument::create(
                             'json',
                             new \Graphpinator\Type\Addon\JsonType(),
-                            '{"testName":"testValue"}',
-                        ),
+                        )->setDefaultValue('{"testName":"testValue"}'),
                     ])),
                     \Graphpinator\Field\ResolvableField::create(
                         'mac',
@@ -1414,11 +1395,10 @@ final class TestSchema
                             return $mac;
                         },
                     )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        new \Graphpinator\Argument\Argument(
+                        \Graphpinator\Argument\Argument::create(
                             'mac',
                             new \Graphpinator\Type\Addon\MacType(),
-                            'AA:11:FF:99:11:AA',
-                        ),
+                        )->setDefaultValue('AA:11:FF:99:11:AA'),
                     ])),
                     \Graphpinator\Field\ResolvableField::create(
                         'phoneNumber',
@@ -1427,11 +1407,10 @@ final class TestSchema
                             return $phoneNumber;
                         },
                     )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        new \Graphpinator\Argument\Argument(
+                        \Graphpinator\Argument\Argument::create(
                             'phoneNumber',
                             new \Graphpinator\Type\Addon\PhoneNumberType(),
-                            '+999123456789',
-                        ),
+                        )->setDefaultValue('+999123456789'),
                     ])),
                     \Graphpinator\Field\ResolvableField::create(
                         'postalCode',
@@ -1440,11 +1419,10 @@ final class TestSchema
                             return $postalCode;
                         },
                     )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        new \Graphpinator\Argument\Argument(
+                        \Graphpinator\Argument\Argument::create(
                             'postalCode',
                             new \Graphpinator\Type\Addon\PostalCodeType(),
-                            '111 22',
-                        ),
+                        )->setDefaultValue('111 22'),
                     ])),
                     \Graphpinator\Field\ResolvableField::create(
                         'rgba',
@@ -1453,11 +1431,10 @@ final class TestSchema
                             return $rgba;
                         },
                     )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        new \Graphpinator\Argument\Argument(
+                        \Graphpinator\Argument\Argument::create(
                             'rgba',
                             new \Graphpinator\Type\Addon\RgbaInput(),
-                            (object) ['red' => 150, 'green' => 150, 'blue' => 150, 'alpha' => 0.5],
-                        ),
+                        )->setDefaultValue((object) ['red' => 150, 'green' => 150, 'blue' => 150, 'alpha' => 0.5]),
                     ])),
                     \Graphpinator\Field\ResolvableField::create(
                         'rgb',
@@ -1466,11 +1443,10 @@ final class TestSchema
                             return $rgb;
                         },
                     )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        new \Graphpinator\Argument\Argument(
+                        \Graphpinator\Argument\Argument::create(
                             'rgb',
                             new \Graphpinator\Type\Addon\RgbInput(),
-                            (object) ['red' => 150, 'green' => 150, 'blue' => 150],
-                        ),
+                        )->setDefaultValue((object) ['red' => 150, 'green' => 150, 'blue' => 150]),
                     ])),
                     \Graphpinator\Field\ResolvableField::create(
                         'time',
@@ -1479,11 +1455,10 @@ final class TestSchema
                             return $time;
                         },
                     )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        new \Graphpinator\Argument\Argument(
+                        \Graphpinator\Argument\Argument::create(
                             'time',
                             new \Graphpinator\Type\Addon\TimeType(),
-                            '12:12:50',
-                        ),
+                        )->setDefaultValue('12:12:50'),
                     ])),
                     \Graphpinator\Field\ResolvableField::create(
                         'url',
@@ -1492,11 +1467,10 @@ final class TestSchema
                             return $url;
                         },
                     )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        new \Graphpinator\Argument\Argument(
+                        \Graphpinator\Argument\Argument::create(
                             'url',
                             new \Graphpinator\Type\Addon\UrlType(),
-                            'https://test.com/boo/blah.php?testValue=test&testName=name',
-                        ),
+                        )->setDefaultValue('https://test.com/boo/blah.php?testValue=test&testName=name'),
                     ])),
                     \Graphpinator\Field\ResolvableField::create(
                         'void',
@@ -1505,11 +1479,10 @@ final class TestSchema
                             return $void;
                         },
                     )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        new \Graphpinator\Argument\Argument(
+                        \Graphpinator\Argument\Argument::create(
                             'void',
                             new \Graphpinator\Type\Addon\VoidType(),
-                            null,
-                        ),
+                        )->setDefaultValue(null),
                     ])),
                     \Graphpinator\Field\ResolvableField::create(
                         'gps',
@@ -1518,11 +1491,10 @@ final class TestSchema
                             return $gps;
                         },
                     )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        new \Graphpinator\Argument\Argument(
+                        \Graphpinator\Argument\Argument::create(
                             'gps',
                             new \Graphpinator\Type\Addon\GpsInput(),
-                            (object) ['lat' => 45.0, 'lng' => 90.0],
-                        ),
+                        )->setDefaultValue((object) ['lat' => 45.0, 'lng' => 90.0]),
                     ])),
                     \Graphpinator\Field\ResolvableField::create(
                         'point',
@@ -1531,11 +1503,10 @@ final class TestSchema
                             return $point;
                         },
                     )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        new \Graphpinator\Argument\Argument(
+                        \Graphpinator\Argument\Argument::create(
                             'point',
                             new \Graphpinator\Type\Addon\PointInput(),
-                            (object) ['x' => 420.42, 'y' => 420.42],
-                        ),
+                        )->setDefaultValue((object) ['x' => 420.42, 'y' => 420.42]),
                     ])),
                     \Graphpinator\Field\ResolvableField::create(
                         'bigInt',
@@ -1544,11 +1515,10 @@ final class TestSchema
                             return $bigInt;
                         },
                     )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        new \Graphpinator\Argument\Argument(
+                        \Graphpinator\Argument\Argument::create(
                             'bigInt',
                             new \Graphpinator\Type\Addon\BigIntType(),
-                            \PHP_INT_MAX,
-                        ),
+                        )->setDefaultValue(\PHP_INT_MAX),
                     ])),
                 ]);
             }
@@ -1633,11 +1603,10 @@ final class TestSchema
                                 ?? $name;
                         },
                     )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        new \Graphpinator\Argument\Argument(
+                        \Graphpinator\Argument\Argument::create(
                             'name',
                             \Graphpinator\Container\Container::String()->notNull(),
-                            'testValue',
-                        ),
+                        )->setDefaultValue('testValue'),
                     ])),
                     \Graphpinator\Field\ResolvableField::create(
                         'fieldNumber',
@@ -1647,11 +1616,10 @@ final class TestSchema
                                 ?? $number;
                         },
                     )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        new \Graphpinator\Argument\Argument(
+                        \Graphpinator\Argument\Argument::create(
                             'number',
                             \Graphpinator\Container\Container::Int()->notNullList(),
-                            [1, 2],
-                        ),
+                        )->setDefaultValue([1, 2]),
                     ])),
                     \Graphpinator\Field\ResolvableField::create(
                         'fieldBool',
@@ -1661,11 +1629,10 @@ final class TestSchema
                                 ?? $bool;
                         },
                     )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        new \Graphpinator\Argument\Argument(
+                        \Graphpinator\Argument\Argument::create(
                             'bool',
                             \Graphpinator\Container\Container::Boolean(),
-                            true,
-                        ),
+                        )->setDefaultValue(true),
                     ])),
                 ]);
             }
@@ -1720,11 +1687,10 @@ final class TestSchema
                             return $string;
                         },
                     )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        new \Graphpinator\Argument\Argument(
+                        \Graphpinator\Argument\Argument::create(
                             'nullString',
                             \Graphpinator\Container\Container::String(),
-                            null,
-                        ),
+                        )->setDefaultValue(null),
                     ])),
                     \Graphpinator\Field\ResolvableField::create(
                         'interfaceType',
@@ -1733,11 +1699,10 @@ final class TestSchema
                             return $interface;
                         },
                     )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        new \Graphpinator\Argument\Argument(
+                        \Graphpinator\Argument\Argument::create(
                             'nullInterface',
                             \Graphpinator\Container\Container::String(),
-                            null,
-                        ),
+                        )->setDefaultValue(null),
                     ])),
                     \Graphpinator\Field\ResolvableField::create(
                         'unionType',
@@ -1746,11 +1711,10 @@ final class TestSchema
                             return $union;
                         },
                     )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        new \Graphpinator\Argument\Argument(
+                        \Graphpinator\Argument\Argument::create(
                             'nullUnion',
                             \Graphpinator\Container\Container::String(),
-                            null,
-                        ),
+                        )->setDefaultValue(null),
                     ])),
                 ]);
             }
@@ -1777,11 +1741,10 @@ final class TestSchema
                             return $string;
                         },
                     )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        new \Graphpinator\Argument\Argument(
+                        \Graphpinator\Argument\Argument::create(
                             'nullString',
                             \Graphpinator\Container\Container::String(),
-                            null,
-                        ),
+                        )->setDefaultValue(null),
                     ])),
                     \Graphpinator\Field\ResolvableField::create(
                         'interfaceListType',
@@ -1790,11 +1753,10 @@ final class TestSchema
                             return $interface;
                         },
                     )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        new \Graphpinator\Argument\Argument(
+                        \Graphpinator\Argument\Argument::create(
                             'nullInterface',
                             TestSchema::getInterface()->list(),
-                            null,
-                        ),
+                        )->setDefaultValue(null),
                     ])),
                     \Graphpinator\Field\ResolvableField::create(
                         'unionListType',
@@ -1806,8 +1768,7 @@ final class TestSchema
                         \Graphpinator\Argument\Argument::create(
                             'nullUnion',
                             TestSchema::getUnion()->list(),
-                            null,
-                        ),
+                        )->setDefaultValue(null),
                     ])),
                 ]);
             }
