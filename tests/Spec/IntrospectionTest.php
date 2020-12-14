@@ -165,6 +165,20 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                                     'isRepeatable' => true,
                                 ],
                                 [
+                                    'name' => 'stringWhere',
+                                    'description' => 'Graphpinator stringWhere directive.',
+                                    'args' => [
+                                        ['name' => 'field'],
+                                        ['name' => 'not'],
+                                        ['name' => 'equals'],
+                                        ['name' => 'contains'],
+                                        ['name' => 'startsWith'],
+                                        ['name' => 'endsWith'],
+                                    ],
+                                    'locations' => ['FIELD'],
+                                    'isRepeatable' => true,
+                                ],
+                                [
                                     'name' => 'intConstraint',
                                     'description' => 'Graphpinator intConstraint directive.',
                                     'args' => [
