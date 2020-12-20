@@ -60,48 +60,4 @@ final class StringWhereDirective extends \Graphpinator\Directive\BaseWhereDirect
 
         return true;
     }
-
-    /*private static function extractValue(\Graphpinator\Value\ResolvedValue $singleValue, ?string $where) : string
-    {
-        $whereArr = \is_string($where)
-            ? \array_reverse(\explode('.', $where))
-            : [];
-
-        return static::extractValueImpl($singleValue, $whereArr)->getRawValue();
-    }
-
-    private static function extractValueImpl(\Graphpinator\Value\ResolvedValue $singleValue, array& $value) : \Graphpinator\Value\ResolvedValue
-    {
-        if (\count($value) === 0) {
-            return $singleValue->getType() instanceof \Graphpinator\Type\Scalar\StringType
-                ? $singleValue
-                : throw new \Exception('Value has invalid type');
-        }
-
-        $where = \array_pop($value);
-
-        if (\is_numeric($where)) {
-            $where = (int) $where;
-
-            if (!$singleValue instanceof \Graphpinator\Value\ListValue) {
-                throw new \Exception('Invalid Resolved value');
-            }
-
-            if (!$singleValue->offsetExists($where)) {
-                throw new \Exception('Invalid list offset');
-            }
-
-            return static::extractValueImpl($singleValue[$where], $value);
-        }
-
-        if (!$singleValue instanceof \Graphpinator\Value\TypeValue) {
-            throw new \Exception('Invalid Resolved value');
-        }
-
-        if (!isset($singleValue->{$where})) {
-            throw new \Exception('Invalid field offset');
-        }
-
-        return static::extractValueImpl($singleValue->{$where}->getValue(), $value);
-    }*/
 }
