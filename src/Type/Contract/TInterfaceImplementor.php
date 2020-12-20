@@ -59,6 +59,12 @@ trait TInterfaceImplementor
 
                 $field = $this->getFields()->offsetGet($fieldContract->getName());
 
+                foreach ($field->getArguments() as $argument) {
+                    if (!$argument->getDefaultValue()) {
+                        throw new \Exception('Additional arguments for the interface\'s children cannot be null!');
+                    }
+                }
+
                 if (!$fieldContract->getType()->isInstanceOf($field->getType())) {
                     throw new \Graphpinator\Exception\Type\InterfaceContractFieldTypeMismatch();
                 }
