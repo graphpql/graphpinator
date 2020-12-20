@@ -180,6 +180,54 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                                     'isRepeatable' => true,
                                 ],
                                 [
+                                    'name' => 'intWhere',
+                                    'description' => 'Graphpinator intWhere directive.',
+                                    'args' => [
+                                        ['name' => 'field'],
+                                        ['name' => 'not'],
+                                        ['name' => 'equals'],
+                                        ['name' => 'greaterThan'],
+                                        ['name' => 'lessThan'],
+                                    ],
+                                    'locations' => ['FIELD'],
+                                    'isRepeatable' => true,
+                                ],
+                                [
+                                    'name' => 'floatWhere',
+                                    'description' => 'Graphpinator floatWhere directive.',
+                                    'args' => [
+                                        ['name' => 'field'],
+                                        ['name' => 'not'],
+                                        ['name' => 'equals'],
+                                        ['name' => 'greaterThan'],
+                                        ['name' => 'lessThan'],
+                                    ],
+                                    'locations' => ['FIELD'],
+                                    'isRepeatable' => true,
+                                ],
+                                [
+                                    'name' => 'listWhere',
+                                    'description' => 'Graphpinator listWhere directive.',
+                                    'args' => [
+                                        ['name' => 'field'],
+                                        ['name' => 'not'],
+                                        ['name' => 'minItems'],
+                                        ['name' => 'maxItems'],
+                                    ],
+                                    'locations' => ['FIELD'],
+                                    'isRepeatable' => true,
+                                ],
+                                [
+                                    'name' => 'booleanWhere',
+                                    'description' => 'Graphpinator booleanWhere directive.',
+                                    'args' => [
+                                        ['name' => 'field'],
+                                        ['name' => 'equals'],
+                                    ],
+                                    'locations' => ['FIELD'],
+                                    'isRepeatable' => true,
+                                ],
+                                [
                                     'name' => 'intConstraint',
                                     'description' => 'Graphpinator intConstraint directive.',
                                     'args' => [

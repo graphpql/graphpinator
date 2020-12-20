@@ -4,10 +4,10 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Directive;
 
-final class StringWhereDirective extends \Graphpinator\Directive\BaseWhereDirective
+final class ListWhereDirective extends \Graphpinator\Directive\BaseWhereDirective
 {
-    protected const NAME = 'stringWhere';
-    protected const DESCRIPTION = 'Graphpinator stringWhere directive.';
+    protected const NAME = 'listWhere';
+    protected const DESCRIPTION = 'Graphpinator listWhere directive.';
 
     public function __construct()
     {
@@ -19,16 +19,14 @@ final class StringWhereDirective extends \Graphpinator\Directive\BaseWhereDirect
             new \Graphpinator\Argument\ArgumentSet([
                 new \Graphpinator\Argument\Argument('field', \Graphpinator\Container\Container::String()),
                 \Graphpinator\Argument\Argument::create('not', \Graphpinator\Container\Container::Boolean()->notNull())->setDefaultValue(false),
-                new \Graphpinator\Argument\Argument('equals', \Graphpinator\Container\Container::String()),
-                new \Graphpinator\Argument\Argument('contains', \Graphpinator\Container\Container::String()),
-                new \Graphpinator\Argument\Argument('startsWith', \Graphpinator\Container\Container::String()),
-                new \Graphpinator\Argument\Argument('endsWith', \Graphpinator\Container\Container::String()),
+                new \Graphpinator\Argument\Argument('minItems', \Graphpinator\Container\Container::Int()),
+                new \Graphpinator\Argument\Argument('maxItems', \Graphpinator\Container\Container::Int()),
             ]),
             null,
-            static function (\Graphpinator\Value\ListResolvedValue $value, ?string $field, bool $not, ?string $equals, ?string $contains, ?string $startsWith, ?string $endsWith) : string {
+            static function (\Graphpinator\Value\ListResolvedValue $value, ?string $field, bool $not, ?int $minItems, ?int $maxItems) : string {
                 foreach ($value as $key => $item) {
-                    $singleValue = self::extractValue($item, $field, \Graphpinator\Type\Scalar\StringType::class);
-                    $condition = self::satisfiesCondition($singleValue, $equals, $contains, $startsWith, $endsWith);
+                    $singleValue = self::extractValue($item, $field, \Graphpinator\Type\ListType::class);
+                    $condition = self::satisfiesCondition($singleValue, $minItems, $maxItems);
 
                     if ($condition === $not) {
                         unset($value[$key]);
@@ -40,28 +38,20 @@ final class StringWhereDirective extends \Graphpinator\Directive\BaseWhereDirect
         );
     }
 
-    private static function satisfiesCondition(string $value, ?string $equals, ?string $contains, ?string $startsWith, ?string $endsWith) : bool
+    private static function satisfiesCondition(array $value, ?int $minItems, ?int $maxItems) : bool
     {
-        if (\is_string($equals) && $value !== $equals) {
+        if (\is_int($minItems) && \count($value) < $minItems) {
             return false;
         }
 
-        if (\is_string($contains) && !\str_contains($value, $contains)) {
-            return false;
-        }
-
-        if (\is_string($startsWith) && !\str_starts_with($value, $startsWith)) {
-            return false;
-        }
-
-        if (\is_string($endsWith) && !\str_ends_with($value, $endsWith)) {
+        if (\is_int($maxItems) && \count($value) > $maxItems) {
             return false;
         }
 
         return true;
     }
 
-    /*private static function extractValue(\Graphpinator\Value\ResolvedValue $singleValue, ?string $where) : string
+    /*private static function extractValue(\Graphpinator\Value\ResolvedValue $singleValue, ?string $where) : array
     {
         $whereArr = \is_string($where)
             ? \array_reverse(\explode('.', $where))
@@ -73,9 +63,11 @@ final class StringWhereDirective extends \Graphpinator\Directive\BaseWhereDirect
     private static function extractValueImpl(\Graphpinator\Value\ResolvedValue $singleValue, array& $value) : \Graphpinator\Value\ResolvedValue
     {
         if (\count($value) === 0) {
-            return $singleValue->getType() instanceof \Graphpinator\Type\Scalar\StringType
-                ? $singleValue
-                : throw new \Exception('Value has invalid type');
+            if (!$singleValue->getType() instanceof \Graphpinator\Type\ListType) {
+                throw new \Exception('Value has invalid type');
+            }
+
+            return $singleValue;
         }
 
         $where = \array_pop($value);

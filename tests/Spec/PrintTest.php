@@ -620,6 +620,10 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             fileInputs: [UploadInput!]!
           ): [UploadType!]!
           fieldList: [String!]!
+          fieldListList: [[String!]!]
+          fieldListInt: [Int!]!
+          fieldListFilter: [FilterData!]!
+          fieldListFloat: [Float!]!
           fieldObjectList: [Xyz!]!
           fieldAbstractList: [TestUnion]
           fieldNull: NullFieldResolution
@@ -753,17 +757,38 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           enumList: [SimpleEnum]
         }
         
+        directive @booleanWhere(
+          field: String
+          equals: Boolean
+        ) repeatable on FIELD
+        
         directive @floatConstraint(
           min: Float
           max: Float
           oneOf: [Float!]
         ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION | FIELD_DEFINITION
+        
+        directive @floatWhere(
+          field: String
+          not: Boolean! = false
+          equals: Float
+          greaterThan: Float
+          lessThan: Float
+        ) repeatable on FIELD
 
         directive @intConstraint(
           min: Int
           max: Int
           oneOf: [Int!]
         ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION | FIELD_DEFINITION
+        
+        directive @intWhere(
+          field: String
+          not: Boolean! = false
+          equals: Int
+          greaterThan: Int
+          lessThan: Int
+        ) repeatable on FIELD
         
         directive @invalidDirective repeatable on FIELD
         
@@ -773,6 +798,13 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           unique: Boolean = false
           innerList: ListConstraintInput
         ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION | FIELD_DEFINITION
+        
+        directive @listWhere(
+          field: String
+          not: Boolean! = false
+          minItems: Int
+          maxItems: Int
+        ) repeatable on FIELD
 
         directive @objectConstraint(
           atLeastOne: [String!]

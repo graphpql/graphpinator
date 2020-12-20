@@ -82,7 +82,11 @@ final class TestSchema
         ], [
             'testDirective' => self::getTestDirective(),
             'invalidDirective' => self::getInvalidDirective(),
-            'filter' => new \Graphpinator\Directive\StringWhereDirective(),
+            'stringFilter' => new \Graphpinator\Directive\StringWhereDirective(),
+            'intFilter' => new \Graphpinator\Directive\IntWhereDirective(),
+            'floatFilter' => new \Graphpinator\Directive\FloatWhereDirective(),
+            'listFilter' => new \Graphpinator\Directive\ListWhereDirective(),
+            'booleanFilter' => new \Graphpinator\Directive\BooleanWhereDirective(),
         ]);
     }
 
@@ -243,6 +247,48 @@ final class TestSchema
                         \Graphpinator\Container\Container::String()->notNullList(),
                         static function () : array {
                             return ['testValue1', 'testValue2', 'testValue3'];
+                        },
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'fieldListList',
+                        \Graphpinator\Container\Container::String()->notNullList()->list(),
+                        static function () : array {
+                            return [
+                                ['testValue11', 'testValue12', 'testValue13'],
+                                ['testValue21', 'testValue22'],
+                                ['testValue31'],
+                            ];
+                        },
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'fieldListInt',
+                        \Graphpinator\Container\Container::Int()->notNullList(),
+                        static function () : array {
+                            return [1, 2, 3];
+                        },
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'fieldListFilter',
+                        TestSchema::getTypeFilterData()->notNullList(),
+                        static function () {
+                            return [
+                                (object) ['data' => (object) [
+                                    'name' => 'testValue1', 'rating' => 98, 'coefficient' => 0.99, 'listName' => ['testValue', '1'], 'isReady' => true,
+                                ]],
+                                (object) ['data' => (object) [
+                                    'name' => 'testValue2', 'rating' => 99, 'coefficient' => 1.00, 'listName' => ['testValue', '2', 'test1'], 'isReady' => false,
+                                ]],
+                                (object) ['data' => (object) [
+                                    'name' => 'testValue3', 'rating' => 100, 'coefficient' => 1.01, 'listName' => ['testValue', '3', 'test1', 'test2'], 'isReady' => false,
+                                ]],
+                            ];
+                        },
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'fieldListFloat',
+                        \Graphpinator\Container\Container::Float()->notNullList(),
+                        static function () : array {
+                            return [1.00, 1.01, 1.02];
                         },
                     ),
                     new \Graphpinator\Field\ResolvableField(
@@ -524,6 +570,98 @@ final class TestSchema
                         TestSchema::getSimpleEnum()->list(),
                         static function () {
                             return ['A', 'B'];
+                        },
+                    ),
+                ]);
+            }
+
+            public function validateNonNullValue($rawValue) : bool
+            {
+                return true;
+            }
+        };
+    }
+
+    public static function getTypeFilterInner() : \Graphpinator\Type\Type
+    {
+        return new class extends \Graphpinator\Type\Type
+        {
+            protected const NAME = 'FilterInner';
+            protected const DESCRIPTION = null;
+
+            public function __construct()
+            {
+                parent::__construct(new \Graphpinator\Utils\InterfaceSet([TestSchema::getInterface()]));
+            }
+
+            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+            {
+                return new \Graphpinator\Field\ResolvableFieldSet([
+                    new \Graphpinator\Field\ResolvableField(
+                        'name',
+                        \Graphpinator\Container\Container::String()->notNull(),
+                        static function (\stdClass $parent) : string {
+                            return $parent->name;
+                        },
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'listName',
+                        \Graphpinator\Container\Container::String()->notNullList(),
+                        static function (\stdClass $parent) : array {
+                            return $parent->listName;
+                        },
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'rating',
+                        \Graphpinator\Container\Container::Int()->notNull(),
+                        static function (\stdClass $parent) : int {
+                            return $parent->rating;
+                        },
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'coefficient',
+                        \Graphpinator\Container\Container::Float()->notNull(),
+                        static function (\stdClass $parent) : float {
+                            return $parent->coefficient;
+                        },
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'isReady',
+                        \Graphpinator\Container\Container::Boolean()->notNull(),
+                        static function (\stdClass $parent) : bool {
+                            return $parent->isReady;
+                        },
+                    ),
+                ]);
+            }
+
+            public function validateNonNullValue($rawValue) : bool
+            {
+                return true;
+            }
+        };
+    }
+
+    public static function getTypeFilterData() : \Graphpinator\Type\Type
+    {
+        return new class extends \Graphpinator\Type\Type
+        {
+            protected const NAME = 'FilterData';
+            protected const DESCRIPTION = null;
+
+            public function __construct()
+            {
+                parent::__construct();
+            }
+
+            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+            {
+                return new \Graphpinator\Field\ResolvableFieldSet([
+                    new \Graphpinator\Field\ResolvableField(
+                        'data',
+                        TestSchema::getTypeFilterInner()->notNull(),
+                        static function (\stdClass $parent) : \stdClass {
+                            return $parent->data;
                         },
                     ),
                 ]);

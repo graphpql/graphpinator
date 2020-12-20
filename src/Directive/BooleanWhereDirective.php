@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Directive;
 
-final class BooleanWhereDirective extends \Graphpinator\Directive\ExecutableDirective
+final class BooleanWhereDirective extends \Graphpinator\Directive\BaseWhereDirective
 {
     protected const NAME = 'booleanWhere';
     protected const DESCRIPTION = 'Graphpinator booleanWhere directive.';
@@ -23,7 +23,7 @@ final class BooleanWhereDirective extends \Graphpinator\Directive\ExecutableDire
             null,
             static function (\Graphpinator\Value\ListResolvedValue $value, ?string $field, ?bool $equals) : string {
                 foreach ($value as $key => $item) {
-                    $singleValue = self::extractValue($item, $field);
+                    $singleValue = self::extractValue($item, $field, \Graphpinator\Type\Scalar\BooleanType::class);
                     $condition = self::satisfiesCondition($singleValue, $equals);
 
                     if (!$condition) {
@@ -39,12 +39,5 @@ final class BooleanWhereDirective extends \Graphpinator\Directive\ExecutableDire
     private static function satisfiesCondition(bool $value, ?bool $equals) : bool
     {
         return !\is_bool($equals) || $value === $equals;
-    }
-
-    private static function extractValue(\Graphpinator\Value\ResolvedValue $singleValue, ?string $where) : bool
-    {
-        if ($where === null) {
-            return $singleValue->getRawValue();
-        }
     }
 }
