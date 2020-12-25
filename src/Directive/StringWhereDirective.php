@@ -8,6 +8,8 @@ final class StringWhereDirective extends \Graphpinator\Directive\BaseWhereDirect
 {
     protected const NAME = 'stringWhere';
     protected const DESCRIPTION = 'Graphpinator stringWhere directive.';
+    protected const TYPE = \Graphpinator\Type\Scalar\StringType::class;
+    protected const TYPE_NAME = 'String';
 
     public function __construct()
     {
@@ -27,7 +29,7 @@ final class StringWhereDirective extends \Graphpinator\Directive\BaseWhereDirect
             null,
             static function (\Graphpinator\Value\ListResolvedValue $value, ?string $field, bool $not, ?string $equals, ?string $contains, ?string $startsWith, ?string $endsWith) : string {
                 foreach ($value as $key => $item) {
-                    $singleValue = self::extractValue($item, $field, \Graphpinator\Type\Scalar\StringType::class);
+                    $singleValue = self::extractValue($item, $field);
                     $condition = self::satisfiesCondition($singleValue, $equals, $contains, $startsWith, $endsWith);
 
                     if ($condition === $not) {

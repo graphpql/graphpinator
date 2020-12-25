@@ -391,6 +391,70 @@ final class FilterTest extends \PHPUnit\Framework\TestCase
                     'query' => 'query queryName { fieldAbc { fieldXyz @skip(if: false) @skip(if: false) { name } } }',
                 ]),
                 \Graphpinator\Exception\Normalizer\DuplicatedDirective::class,
+                'Duplicated directive which is not repeatable.',
+            ],
+            [
+                Json::fromNative((object) [
+                    'query' => '{ fieldListFilter @booleanWhere(field: "data.coefficient", equals: false) { data { name coefficient } } }',
+                ]),
+                \Graphpinator\Exception\Directive\InvalidValueType::class,
+                'BooleanWhere directive expects filtered value to be Boolean, got Float.',
+            ],
+            [
+                Json::fromNative((object) [
+                    'query' => '{ fieldListFilter @intWhere(field: "data.coefficient", equals: 1) { data { name coefficient } } }',
+                ]),
+                \Graphpinator\Exception\Directive\InvalidValueType::class,
+                'IntWhere directive expects filtered value to be Int, got Float.',
+            ],
+            [
+                Json::fromNative((object) [
+                    'query' => '{ fieldListFilter @floatWhere(field: "data.isReady", equals: 1.00) { data { name isReady } } }',
+                ]),
+                \Graphpinator\Exception\Directive\InvalidValueType::class,
+                'FloatWhere directive expects filtered value to be Float, got Boolean.',
+            ],
+            [
+                Json::fromNative((object) [
+                    'query' => '{ fieldListFilter @stringWhere(field: "data.rating", equals: "123") { data { name rating } } }',
+                ]),
+                \Graphpinator\Exception\Directive\InvalidValueType::class,
+                'StringWhere directive expects filtered value to be String, got Int.',
+            ],
+            [
+                Json::fromNative((object) [
+                    'query' => '{ fieldListFilter @listWhere(field: "data.rating", maxItems: 3) { data { name rating } } }',
+                ]),
+                \Graphpinator\Exception\Directive\InvalidValueType::class,
+                'ListWhere directive expects filtered value to be List, got Int.',
+            ],
+            [
+                Json::fromNative((object) [
+                    'query' => '{ fieldListFilter @listWhere(field: "data.1", maxItems: 3) { data { listName } } }',
+                ]),
+                \Graphpinator\Exception\Directive\ExpectedListValue::class,
+                'The specified numeric index "1" is only usable for a list, got FilterInner.',
+            ],
+            [
+                Json::fromNative((object) [
+                'query' => '{ fieldListFilter @stringWhere(field: "data.listName.5", startsWith: "testValue") { data { name listName } } }',
+                ]),
+                \Graphpinator\Exception\Directive\InvalidListOffset::class,
+                'The specified numeric index "5" is out of range.',
+            ],
+            [
+                Json::fromNative((object) [
+                    'query' => '{ fieldListFilter @booleanWhere(field: "data.invalid", equals: false) { data { name isReady } } }',
+                ]),
+                \Graphpinator\Exception\Directive\InvalidFieldOffset::class,
+                'The specified Field "invalid" doesnt exist in Type "FilterInner"',
+            ],
+            [
+                Json::fromNative((object) [
+                    'query' => '{ fieldListFilter @booleanWhere(field: "data.listName.isReady", equals: false) { data { name listName isReady } } }',
+                ]),
+                \Graphpinator\Exception\Directive\ExpectedTypeValue::class,
+                'The specified Field "isReady" doesnt exist in Type "[String!]".',
             ],
         ];
     }
@@ -399,11 +463,12 @@ final class FilterTest extends \PHPUnit\Framework\TestCase
      * @dataProvider invalidDataProvider
      * @param Json $request
      * @param string $exception
+     * @param string $exceptionMessage
      */
-    public function testInvalid(Json $request, string $exception) : void
+    public function testInvalid(Json $request, string $exception, string $exceptionMessage) : void
     {
         $this->expectException($exception);
-        $this->expectExceptionMessage(\constant($exception . '::MESSAGE'));
+        $this->expectExceptionMessage($exceptionMessage);
 
         $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
         $graphpinator->run(new \Graphpinator\Request\JsonRequestFactory($request));

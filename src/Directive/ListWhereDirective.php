@@ -8,6 +8,8 @@ final class ListWhereDirective extends \Graphpinator\Directive\BaseWhereDirectiv
 {
     protected const NAME = 'listWhere';
     protected const DESCRIPTION = 'Graphpinator listWhere directive.';
+    protected const TYPE = \Graphpinator\Type\ListType::class;
+    protected const TYPE_NAME = 'List';
 
     public function __construct()
     {
@@ -25,7 +27,7 @@ final class ListWhereDirective extends \Graphpinator\Directive\BaseWhereDirectiv
             null,
             static function (\Graphpinator\Value\ListResolvedValue $value, ?string $field, bool $not, ?int $minItems, ?int $maxItems) : string {
                 foreach ($value as $key => $item) {
-                    $singleValue = self::extractValue($item, $field, \Graphpinator\Type\ListType::class);
+                    $singleValue = self::extractValue($item, $field);
                     $condition = self::satisfiesCondition($singleValue, $minItems, $maxItems);
 
                     if ($condition === $not) {

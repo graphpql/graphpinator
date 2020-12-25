@@ -34,15 +34,14 @@ final class Schema
             },
         ));
         $this->query->addMetaField(\Graphpinator\Field\ResolvableField::create(
-                '__type',
-                $this->container->introspectionType(),
-                function($parent, string $name) : \Graphpinator\Type\Contract\Definition {
-                    return $this->container->getType($name);
-                },
-            )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                new \Graphpinator\Argument\Argument('name', \Graphpinator\Container\Container::String()->notNull()),
-            ]))
-        );
+            '__type',
+            $this->container->introspectionType(),
+            function($parent, string $name) : \Graphpinator\Type\Contract\Definition {
+                return $this->container->getType($name);
+            },
+        )->setArguments(new \Graphpinator\Argument\ArgumentSet([
+            new \Graphpinator\Argument\Argument('name', \Graphpinator\Container\Container::String()->notNull()),
+        ])));
     }
 
     public function getContainer() : \Graphpinator\Container\Container
