@@ -8,6 +8,8 @@ final class FloatWhereDirective extends \Graphpinator\Directive\BaseWhereDirecti
 {
     protected const NAME = 'floatWhere';
     protected const DESCRIPTION = 'Graphpinator floatWhere directive.';
+    protected const TYPE = \Graphpinator\Type\Scalar\FloatType::class;
+    protected const TYPE_NAME = 'Float';
 
     public function __construct()
     {
@@ -26,7 +28,7 @@ final class FloatWhereDirective extends \Graphpinator\Directive\BaseWhereDirecti
             null,
             static function (\Graphpinator\Value\ListResolvedValue $value, ?string $field, bool $not, ?float $equals, ?float $greaterThan, ?float $lessThan) : string {
                 foreach ($value as $key => $item) {
-                    $singleValue = self::extractValue($item, $field, \Graphpinator\Type\Scalar\FloatType::class);
+                    $singleValue = self::extractValue($item, $field);
                     $condition = self::satisfiesCondition($singleValue, $equals, $greaterThan, $lessThan);
 
                     if ($condition === $not) {

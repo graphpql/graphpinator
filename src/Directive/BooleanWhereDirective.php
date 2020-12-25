@@ -8,6 +8,8 @@ final class BooleanWhereDirective extends \Graphpinator\Directive\BaseWhereDirec
 {
     protected const NAME = 'booleanWhere';
     protected const DESCRIPTION = 'Graphpinator booleanWhere directive.';
+    protected const TYPE = \Graphpinator\Type\Scalar\BooleanType::class;
+    protected const TYPE_NAME = 'Boolean';
 
     public function __construct()
     {
@@ -23,7 +25,7 @@ final class BooleanWhereDirective extends \Graphpinator\Directive\BaseWhereDirec
             null,
             static function (\Graphpinator\Value\ListResolvedValue $value, ?string $field, ?bool $equals) : string {
                 foreach ($value as $key => $item) {
-                    $singleValue = self::extractValue($item, $field, \Graphpinator\Type\Scalar\BooleanType::class);
+                    $singleValue = self::extractValue($item, $field);
                     $condition = self::satisfiesCondition($singleValue, $equals);
 
                     if (!$condition) {

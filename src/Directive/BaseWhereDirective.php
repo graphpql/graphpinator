@@ -6,49 +6,57 @@ namespace Graphpinator\Directive;
 
 abstract class BaseWhereDirective extends \Graphpinator\Directive\ExecutableDirective
 {
-    protected static function extractValue(\Graphpinator\Value\ResolvedValue $singleValue, ?string $where, string $expectedType) : mixed
+    protected const TYPE = '';
+    protected const TYPE_NAME = '';
+
+    protected static function extractValue(\Graphpinator\Value\ResolvedValue $singleValue, ?string $where) : mixed
     {
         $whereArr = \is_string($where)
             ? \array_reverse(\explode('.', $where))
             : [];
 
-        return static::extractValueImpl($singleValue, $whereArr, $expectedType)->getRawValue();
+        $resolvedValue = static::extractValueImpl($singleValue, $whereArr);
+
+        if (!$resolvedValue->getType() instanceof (static::TYPE)) {
+            throw new \Graphpinator\Exception\Directive\InvalidValueType(
+                static::NAME,
+                static::TYPE_NAME,
+                $resolvedValue->getType()->printName());
+        }
+
+        return $resolvedValue->getRawValue();
     }
 
-    protected static function extractValueImpl(\Graphpinator\Value\ResolvedValue $singleValue, array& $value, string $expectedType) : \Graphpinator\Value\ResolvedValue
+    protected static function extractValueImpl(\Graphpinator\Value\ResolvedValue $singleValue, array& $where) : \Graphpinator\Value\ResolvedValue
     {
-        if (\count($value) === 0) {
-            if (!$singleValue->getType() instanceof $expectedType) {
-                throw new \Graphpinator\Exception\Directive\InvalidValueType();
-            }
-
+        if (\count($where) === 0) {
             return $singleValue;
         }
 
-        $where = \array_pop($value);
+        $currentWhere = \array_pop($where);
 
-        if (\is_numeric($where)) {
-            $where = (int) $where;
+        if (\is_numeric($currentWhere)) {
+            $currentWhere = (int) $currentWhere;
 
             if (!$singleValue instanceof \Graphpinator\Value\ListValue) {
-                throw new \Graphpinator\Exception\Directive\ExpectedListValue(\get_class($singleValue));
+                throw new \Graphpinator\Exception\Directive\ExpectedListValue($currentWhere, $singleValue->getType()->printName());
             }
 
-            if (!$singleValue->offsetExists($where)) {
-                throw new \Graphpinator\Exception\Directive\InvalidListOffset();
+            if (!$singleValue->offsetExists($currentWhere)) {
+                throw new \Graphpinator\Exception\Directive\InvalidListOffset($currentWhere);
             }
 
-            return static::extractValueImpl($singleValue[$where], $value, $expectedType);
+            return static::extractValueImpl($singleValue[$currentWhere], $where);
         }
 
         if (!$singleValue instanceof \Graphpinator\Value\TypeValue) {
-            throw new \Graphpinator\Exception\Directive\ExpectedTypeValue(\get_class($singleValue));
+            throw new \Graphpinator\Exception\Directive\ExpectedTypeValue($currentWhere, $singleValue->getType()->printName());
         }
 
-        if (!isset($singleValue->{$where})) {
-            throw new \Graphpinator\Exception\Directive\InvalidFieldOffset();
+        if (!isset($singleValue->{$currentWhere})) {
+            throw new \Graphpinator\Exception\Directive\InvalidFieldOffset($currentWhere, $singleValue->getType()->printName());
         }
 
-        return static::extractValueImpl($singleValue->{$where}->getValue(), $value, $expectedType);
+        return static::extractValueImpl($singleValue->{$currentWhere}->getValue(), $where);
     }
 }

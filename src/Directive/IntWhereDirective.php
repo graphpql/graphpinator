@@ -8,6 +8,8 @@ final class IntWhereDirective extends \Graphpinator\Directive\BaseWhereDirective
 {
     protected const NAME = 'intWhere';
     protected const DESCRIPTION = 'Graphpinator intWhere directive.';
+    protected const TYPE = \Graphpinator\Type\Scalar\IntType::class;
+    protected const TYPE_NAME = 'Int';
 
     public function __construct()
     {
@@ -26,7 +28,7 @@ final class IntWhereDirective extends \Graphpinator\Directive\BaseWhereDirective
             null,
             static function (\Graphpinator\Value\ListResolvedValue $value, ?string $field, bool $not, ?int $equals, ?int $greaterThan, ?int $lessThan) : string {
                 foreach ($value as $key => $item) {
-                    $singleValue = self::extractValue($item, $field, \Graphpinator\Type\Scalar\IntType::class);
+                    $singleValue = self::extractValue($item, $field);
                     $condition = self::satisfiesCondition($singleValue, $equals, $greaterThan, $lessThan);
 
                     if ($condition === $not) {
