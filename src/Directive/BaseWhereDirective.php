@@ -17,7 +17,7 @@ abstract class BaseWhereDirective extends \Graphpinator\Directive\ExecutableDire
 
         $resolvedValue = static::extractValueImpl($singleValue, $whereArr);
 
-        if (!$resolvedValue->getType() instanceof (static::TYPE)) {
+        if (!$resolvedValue->getType() instanceof (static::TYPE) && !$resolvedValue instanceof \Graphpinator\Value\NullResolvedValue) {
             throw new \Graphpinator\Exception\Directive\InvalidValueType(
                 static::NAME,
                 static::TYPE_NAME,
@@ -37,6 +37,10 @@ abstract class BaseWhereDirective extends \Graphpinator\Directive\ExecutableDire
 
         if (\is_numeric($currentWhere)) {
             $currentWhere = (int) $currentWhere;
+
+            if ($singleValue instanceof \Graphpinator\Value\NullResolvedValue) {
+                return static::extractValueImpl($singleValue, $where);
+            }
 
             if (!$singleValue instanceof \Graphpinator\Value\ListValue) {
                 throw new \Graphpinator\Exception\Directive\ExpectedListValue($currentWhere, $singleValue->getType()->printName());

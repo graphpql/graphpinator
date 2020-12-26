@@ -251,12 +251,13 @@ final class TestSchema
                     ),
                     new \Graphpinator\Field\ResolvableField(
                         'fieldListList',
-                        \Graphpinator\Container\Container::String()->notNullList()->list(),
+                        \Graphpinator\Container\Container::String()->list()->list(),
                         static function () : array {
                             return [
                                 ['testValue11', 'testValue12', 'testValue13'],
                                 ['testValue21', 'testValue22'],
                                 ['testValue31'],
+                                null,
                             ];
                         },
                     ),
@@ -280,6 +281,9 @@ final class TestSchema
                                 ]],
                                 (object) ['data' => (object) [
                                     'name' => 'testValue3', 'rating' => 100, 'coefficient' => 1.01, 'listName' => ['testValue', '3', 'test1', 'test2'], 'isReady' => false,
+                                ]],
+                                (object) ['data' => (object) [
+                                    'name' => 'testValue4', 'rating' => null, 'coefficient' => null, 'listName' => null, 'isReady' => null,
                                 ]],
                             ];
                         },
@@ -606,29 +610,29 @@ final class TestSchema
                     ),
                     new \Graphpinator\Field\ResolvableField(
                         'listName',
-                        \Graphpinator\Container\Container::String()->notNullList(),
-                        static function (\stdClass $parent) : array {
+                        \Graphpinator\Container\Container::String()->list(),
+                        static function (\stdClass $parent) : ?array {
                             return $parent->listName;
                         },
                     ),
                     new \Graphpinator\Field\ResolvableField(
                         'rating',
-                        \Graphpinator\Container\Container::Int()->notNull(),
-                        static function (\stdClass $parent) : int {
+                        \Graphpinator\Container\Container::Int(),
+                        static function (\stdClass $parent) : ?int {
                             return $parent->rating;
                         },
                     ),
                     new \Graphpinator\Field\ResolvableField(
                         'coefficient',
-                        \Graphpinator\Container\Container::Float()->notNull(),
-                        static function (\stdClass $parent) : float {
+                        \Graphpinator\Container\Container::Float(),
+                        static function (\stdClass $parent) : ?float {
                             return $parent->coefficient;
                         },
                     ),
                     new \Graphpinator\Field\ResolvableField(
                         'isReady',
-                        \Graphpinator\Container\Container::Boolean()->notNull(),
-                        static function (\stdClass $parent) : bool {
+                        \Graphpinator\Container\Container::Boolean(),
+                        static function (\stdClass $parent) : ?bool {
                             return $parent->isReady;
                         },
                     ),

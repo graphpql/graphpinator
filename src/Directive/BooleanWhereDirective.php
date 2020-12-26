@@ -21,12 +21,14 @@ final class BooleanWhereDirective extends \Graphpinator\Directive\BaseWhereDirec
             new \Graphpinator\Argument\ArgumentSet([
                 new \Graphpinator\Argument\Argument('field', \Graphpinator\Container\Container::String()),
                 new \Graphpinator\Argument\Argument('equals', \Graphpinator\Container\Container::Boolean()),
+                \Graphpinator\Argument\Argument::create('orNull', \Graphpinator\Container\Container::Boolean()->notNull())
+                    ->setDefaultValue(false),
             ]),
             null,
-            static function (\Graphpinator\Value\ListResolvedValue $value, ?string $field, ?bool $equals) : string {
+            static function (\Graphpinator\Value\ListResolvedValue $value, ?string $field, ?bool $equals, bool $orNull) : string {
                 foreach ($value as $key => $item) {
                     $singleValue = self::extractValue($item, $field);
-                    $condition = self::satisfiesCondition($singleValue, $equals);
+                    $condition = self::satisfiesCondition($singleValue, $equals, $orNull);
 
                     if (!$condition) {
                         unset($value[$key]);
@@ -38,8 +40,16 @@ final class BooleanWhereDirective extends \Graphpinator\Directive\BaseWhereDirec
         );
     }
 
-    private static function satisfiesCondition(bool $value, ?bool $equals) : bool
+    private static function satisfiesCondition(?bool $value, ?bool $equals, bool $orNull) : bool
     {
-        return !\is_bool($equals) || $value === $equals;
+        if ($value === null) {
+            return $orNull === true;
+        }
+
+        if (\is_bool($equals) && $value !== $equals) {
+            return false;
+        }
+
+        return true;
     }
 }

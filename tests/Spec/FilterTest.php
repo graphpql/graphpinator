@@ -79,6 +79,7 @@ final class FilterTest extends \PHPUnit\Framework\TestCase
                     'fieldListFilter' => [
                         ['data' => ['name' => 'testValue2']],
                         ['data' => ['name' => 'testValue3']],
+                        ['data' => ['name' => 'testValue4']],
                     ]
                 ]]),
             ],
@@ -147,7 +148,8 @@ final class FilterTest extends \PHPUnit\Framework\TestCase
                     'query' => '{ fieldListFilter @intWhere(field: "data.rating", equals: 99, not: true) { data { name rating } } }',
                 ]),
                 Json::fromNative((object) ['data' => ['fieldListFilter' => [
-                    ['data' => ['name' => 'testValue1', 'rating' => 98]], ['data' => ['name' => 'testValue3', 'rating' => 100]]
+                    ['data' => ['name' => 'testValue1', 'rating' => 98]], ['data' => ['name' => 'testValue3', 'rating' => 100]],
+                    ['data' => ['name' => 'testValue4', 'rating' => null]],
                 ]]]),
             ],
             [
@@ -160,10 +162,19 @@ final class FilterTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 Json::fromNative((object) [
+                    'query' => '{ fieldListFilter @intWhere(field: "data.rating", lessThan: 99, orNull: true) { data { name rating } } }',
+                ]),
+                Json::fromNative((object) ['data' => ['fieldListFilter' => [
+                    ['data' => ['name' => 'testValue1', 'rating' => 98]], ['data' => ['name' => 'testValue2', 'rating' => 99]],
+                    ['data' => ['name' => 'testValue4', 'rating' => null]]
+                ]]]),
+            ],
+            [
+                Json::fromNative((object) [
                     'query' => '{ fieldListFilter @intWhere(field: "data.rating", lessThan: 99, not: true) { data { name rating } } }',
                 ]),
                 Json::fromNative((object) ['data' => ['fieldListFilter' => [
-                    ['data' => ['name' => 'testValue3', 'rating' => 100]]
+                    ['data' => ['name' => 'testValue3', 'rating' => 100]], ['data' => ['name' => 'testValue4', 'rating' => null]],
                 ]]]),
             ],
             [
@@ -171,7 +182,15 @@ final class FilterTest extends \PHPUnit\Framework\TestCase
                     'query' => '{ fieldListFilter @intWhere(field: "data.rating", greaterThan: 99, not: true) { data { name rating } } }',
                 ]),
                 Json::fromNative((object) ['data' => ['fieldListFilter' => [
-                    ['data' => ['name' => 'testValue1', 'rating' => 98]]
+                    ['data' => ['name' => 'testValue1', 'rating' => 98]], ['data' => ['name' => 'testValue4', 'rating' => null]],
+                ]]]),
+            ],
+            [
+                Json::fromNative((object) [
+                    'query' => '{ fieldListFilter @intWhere(field: "data.rating", greaterThan: 99, not: true, orNull: true) { data { name rating } } }',
+                ]),
+                Json::fromNative((object) ['data' => ['fieldListFilter' => [
+                    ['data' => ['name' => 'testValue1', 'rating' => 98]],
                 ]]]),
             ],
             [
@@ -235,7 +254,8 @@ final class FilterTest extends \PHPUnit\Framework\TestCase
                     'query' => '{ fieldListFilter @floatWhere(field: "data.coefficient", equals: 1.00, not: true) { data { name coefficient } } }',
                 ]),
                 Json::fromNative((object) ['data' => ['fieldListFilter' => [
-                    ['data' => ['name' => 'testValue1', 'coefficient' => 0.99]], ['data' => ['name' => 'testValue3', 'coefficient' => 1.01]]
+                    ['data' => ['name' => 'testValue1', 'coefficient' => 0.99]], ['data' => ['name' => 'testValue3', 'coefficient' => 1.01]],
+                    ['data' => ['name' => 'testValue4', 'coefficient' => null]],
                 ]]]),
             ],
             [
@@ -251,7 +271,7 @@ final class FilterTest extends \PHPUnit\Framework\TestCase
                     'query' => '{ fieldListFilter @floatWhere(field: "data.coefficient", lessThan: 1.00, not: true) { data { name coefficient } } }',
                 ]),
                 Json::fromNative((object) ['data' => ['fieldListFilter' => [
-                    ['data' => ['name' => 'testValue3', 'coefficient' => 1.01]]
+                    ['data' => ['name' => 'testValue3', 'coefficient' => 1.01]], ['data' => ['name' => 'testValue4', 'coefficient' => null]],
                 ]]]),
             ],
             [
@@ -259,7 +279,15 @@ final class FilterTest extends \PHPUnit\Framework\TestCase
                     'query' => '{ fieldListFilter @floatWhere(field: "data.coefficient", greaterThan: 1.00, not: true) { data { name coefficient } } }',
                 ]),
                 Json::fromNative((object) ['data' => ['fieldListFilter' => [
-                    ['data' => ['name' => 'testValue1', 'coefficient' => 0.99]]
+                    ['data' => ['name' => 'testValue1', 'coefficient' => 0.99]], ['data' => ['name' => 'testValue4', 'coefficient' => null]],
+                ]]]),
+            ],
+            [
+                Json::fromNative((object) [
+                    'query' => '{ fieldListFilter @floatWhere(field: "data.coefficient", greaterThan: 1.00, not: true, orNull: true) { data { name coefficient } } }',
+                ]),
+                Json::fromNative((object) ['data' => ['fieldListFilter' => [
+                    ['data' => ['name' => 'testValue1', 'coefficient' => 0.99]],
                 ]]]),
             ],
             [
@@ -268,6 +296,15 @@ final class FilterTest extends \PHPUnit\Framework\TestCase
                 ]),
                 Json::fromNative((object) ['data' => ['fieldListFilter' => [
                     ['data' => ['name' => 'testValue2', 'coefficient' => 1.00]], ['data' => ['name' => 'testValue3', 'coefficient' => 1.01]]
+                ]]]),
+            ],
+            [
+                Json::fromNative((object) [
+                    'query' => '{ fieldListFilter @floatWhere(field: "data.coefficient", greaterThan: 1.00, orNull: true) { data { name coefficient } } }',
+                ]),
+                Json::fromNative((object) ['data' => ['fieldListFilter' => [
+                    ['data' => ['name' => 'testValue2', 'coefficient' => 1.00]], ['data' => ['name' => 'testValue3', 'coefficient' => 1.01]]
+                    , ['data' => ['name' => 'testValue4', 'coefficient' => null]]
                 ]]]),
             ],
         ];
@@ -289,6 +326,14 @@ final class FilterTest extends \PHPUnit\Framework\TestCase
                     'query' => '{ fieldListList @listWhere(minItems: 2, not: true) }',
                 ]),
                 Json::fromNative((object) ['data' => ['fieldListList' =>
+                    [['testValue31'], null],
+                ]]),
+            ],
+            [
+                Json::fromNative((object) [
+                    'query' => '{ fieldListList @listWhere(minItems: 2, not: true, orNull: true) }',
+                ]),
+                Json::fromNative((object) ['data' => ['fieldListList' =>
                     [['testValue31']],
                 ]]),
             ],
@@ -305,7 +350,7 @@ final class FilterTest extends \PHPUnit\Framework\TestCase
                     'query' => '{ fieldListList @listWhere(maxItems: 2, not: true) }',
                 ]),
                 Json::fromNative((object) ['data' => ['fieldListList' =>
-                    [['testValue11', 'testValue12', 'testValue13']],
+                    [['testValue11', 'testValue12', 'testValue13'], null],
                 ]]),
             ],
             [
@@ -321,7 +366,7 @@ final class FilterTest extends \PHPUnit\Framework\TestCase
                     'query' => '{ fieldListFilter @listWhere(field: "data.listName", minItems: 3, not: true) { data { listName } } }',
                 ]),
                 Json::fromNative((object) ['data' => ['fieldListFilter' => [
-                    ['data' => ['listName' => ['testValue', '1']]],
+                    ['data' => ['listName' => ['testValue', '1']]], ['data' => ['listName' => null]],
                 ]]]),
             ],
             [
@@ -335,6 +380,14 @@ final class FilterTest extends \PHPUnit\Framework\TestCase
             [
                 Json::fromNative((object) [
                     'query' => '{ fieldListFilter @listWhere(field: "data.listName", maxItems: 3, not: true) { data { listName } } }',
+                ]),
+                Json::fromNative((object) ['data' => ['fieldListFilter' => [
+                    ['data' => ['listName' => ['testValue', '3', 'test1', 'test2']]], ['data' => ['listName' => null]],
+                ]]]),
+            ],
+            [
+                Json::fromNative((object) [
+                    'query' => '{ fieldListFilter @listWhere(field: "data.listName", maxItems: 3, not: true, orNull: true) { data { listName } } }',
                 ]),
                 Json::fromNative((object) ['data' => ['fieldListFilter' => [
                     ['data' => ['listName' => ['testValue', '3', 'test1', 'test2']]],
@@ -360,6 +413,23 @@ final class FilterTest extends \PHPUnit\Framework\TestCase
                 ]),
                 Json::fromNative((object) ['data' => ['fieldListFilter' => [
                     ['data' => ['name' => 'testValue2', 'isReady' => false]], ['data' => ['name' => 'testValue3', 'isReady' => false]],
+                ]]]),
+            ],
+            [
+                Json::fromNative((object) [
+                    'query' => '{ fieldListFilter @booleanWhere(field: "data.isReady", equals: true, orNull: true) { data { name isReady } } }',
+                ]),
+                Json::fromNative((object) ['data' => ['fieldListFilter' => [
+                    ['data' => ['name' => 'testValue1', 'isReady' => true]], ['data' => ['name' => 'testValue4', 'isReady' => null]],
+                ]]]),
+            ],
+            [
+                Json::fromNative((object) [
+                    'query' => '{ fieldListFilter @booleanWhere(field: "data.isReady", equals: false, orNull: true) { data { name isReady } } }',
+                ]),
+                Json::fromNative((object) ['data' => ['fieldListFilter' => [
+                    ['data' => ['name' => 'testValue2', 'isReady' => false]], ['data' => ['name' => 'testValue3', 'isReady' => false]],
+                    ['data' => ['name' => 'testValue4', 'isReady' => null]],
                 ]]]),
             ],
         ];
@@ -454,7 +524,7 @@ final class FilterTest extends \PHPUnit\Framework\TestCase
                     'query' => '{ fieldListFilter @booleanWhere(field: "data.listName.isReady", equals: false) { data { name listName isReady } } }',
                 ]),
                 \Graphpinator\Exception\Directive\ExpectedTypeValue::class,
-                'The specified Field "isReady" doesnt exist in Type "[String!]".',
+                'The specified Field "isReady" doesnt exist in Type "[String]".',
             ],
         ];
     }
