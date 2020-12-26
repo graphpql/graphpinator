@@ -20,17 +20,29 @@ final class StringWhereDirective extends \Graphpinator\Directive\BaseWhereDirect
             true,
             new \Graphpinator\Argument\ArgumentSet([
                 new \Graphpinator\Argument\Argument('field', \Graphpinator\Container\Container::String()),
-                \Graphpinator\Argument\Argument::create('not', \Graphpinator\Container\Container::Boolean()->notNull())->setDefaultValue(false),
+                \Graphpinator\Argument\Argument::create('not', \Graphpinator\Container\Container::Boolean()->notNull())
+                    ->setDefaultValue(false),
                 new \Graphpinator\Argument\Argument('equals', \Graphpinator\Container\Container::String()),
                 new \Graphpinator\Argument\Argument('contains', \Graphpinator\Container\Container::String()),
                 new \Graphpinator\Argument\Argument('startsWith', \Graphpinator\Container\Container::String()),
                 new \Graphpinator\Argument\Argument('endsWith', \Graphpinator\Container\Container::String()),
+                \Graphpinator\Argument\Argument::create('orNull', \Graphpinator\Container\Container::Boolean()->notNull())
+                    ->setDefaultValue(false),
             ]),
             null,
-            static function (\Graphpinator\Value\ListResolvedValue $value, ?string $field, bool $not, ?string $equals, ?string $contains, ?string $startsWith, ?string $endsWith) : string {
+            static function (
+                \Graphpinator\Value\ListResolvedValue $value,
+                ?string $field,
+                bool $not,
+                ?string $equals,
+                ?string $contains,
+                ?string $startsWith,
+                ?string $endsWith,
+                bool $orNull,
+            ) : string {
                 foreach ($value as $key => $item) {
                     $singleValue = self::extractValue($item, $field);
-                    $condition = self::satisfiesCondition($singleValue, $equals, $contains, $startsWith, $endsWith);
+                    $condition = self::satisfiesCondition($singleValue, $equals, $contains, $startsWith, $endsWith, $orNull);
 
                     if ($condition === $not) {
                         unset($value[$key]);
@@ -42,8 +54,12 @@ final class StringWhereDirective extends \Graphpinator\Directive\BaseWhereDirect
         );
     }
 
-    private static function satisfiesCondition(string $value, ?string $equals, ?string $contains, ?string $startsWith, ?string $endsWith) : bool
+    private static function satisfiesCondition(?string $value, ?string $equals, ?string $contains, ?string $startsWith, ?string $endsWith, bool $orNull) : bool
     {
+        if ($value === null) {
+            return $orNull === true;
+        }
+
         if (\is_string($equals) && $value !== $equals) {
             return false;
         }

@@ -20,15 +20,20 @@ final class ListWhereDirective extends \Graphpinator\Directive\BaseWhereDirectiv
             true,
             new \Graphpinator\Argument\ArgumentSet([
                 new \Graphpinator\Argument\Argument('field', \Graphpinator\Container\Container::String()),
-                \Graphpinator\Argument\Argument::create('not', \Graphpinator\Container\Container::Boolean()->notNull())->setDefaultValue(false),
+                \Graphpinator\Argument\Argument::create('not', \Graphpinator\Container\Container::Boolean()->notNull())
+                    ->setDefaultValue(false),
                 new \Graphpinator\Argument\Argument('minItems', \Graphpinator\Container\Container::Int()),
                 new \Graphpinator\Argument\Argument('maxItems', \Graphpinator\Container\Container::Int()),
+                \Graphpinator\Argument\Argument::create('orNull', \Graphpinator\Container\Container::Boolean()->notNull())
+                    ->setDefaultValue(false),
             ]),
             null,
-            static function (\Graphpinator\Value\ListResolvedValue $value, ?string $field, bool $not, ?int $minItems, ?int $maxItems) : string {
+            static function (
+                \Graphpinator\Value\ListResolvedValue $value, ?string $field, bool $not, ?int $minItems, ?int $maxItems, bool $orNull,
+            ) : string {
                 foreach ($value as $key => $item) {
                     $singleValue = self::extractValue($item, $field);
-                    $condition = self::satisfiesCondition($singleValue, $minItems, $maxItems);
+                    $condition = self::satisfiesCondition($singleValue, $minItems, $maxItems, $orNull);
 
                     if ($condition === $not) {
                         unset($value[$key]);
@@ -40,8 +45,12 @@ final class ListWhereDirective extends \Graphpinator\Directive\BaseWhereDirectiv
         );
     }
 
-    private static function satisfiesCondition(array $value, ?int $minItems, ?int $maxItems) : bool
+    private static function satisfiesCondition(?array $value, ?int $minItems, ?int $maxItems, bool $orNull) : bool
     {
+        if ($value === null) {
+            return $orNull === true;
+        }
+
         if (\is_int($minItems) && \count($value) < $minItems) {
             return false;
         }

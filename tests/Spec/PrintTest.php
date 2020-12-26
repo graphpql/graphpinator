@@ -614,7 +614,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             fileInputs: [UploadInput!]!
           ): [UploadType!]!
           fieldList: [String!]!
-          fieldListList: [[String!]!]
+          fieldListList: [[String]]
           fieldListInt: [Int!]!
           fieldListFilter: [FilterData!]!
           fieldListFloat: [Float!]!
@@ -751,6 +751,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         directive @booleanWhere(
           field: String
           equals: Boolean
+          orNull: Boolean! = false
         ) repeatable on FIELD
         
         directive @floatConstraint(
@@ -765,6 +766,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           equals: Float
           greaterThan: Float
           lessThan: Float
+          orNull: Boolean! = false
         ) repeatable on FIELD
 
         directive @intConstraint(
@@ -779,6 +781,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           equals: Int
           greaterThan: Int
           lessThan: Int
+          orNull: Boolean! = false
         ) repeatable on FIELD
         
         directive @invalidDirective repeatable on FIELD
@@ -795,6 +798,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           not: Boolean! = false
           minItems: Int
           maxItems: Int
+          orNull: Boolean! = false
         ) repeatable on FIELD
 
         directive @objectConstraint(
@@ -816,6 +820,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           contains: String
           startsWith: String
           endsWith: String
+          orNull: Boolean! = false
         ) repeatable on FIELD
 
         directive @testDirective repeatable on FIELD
