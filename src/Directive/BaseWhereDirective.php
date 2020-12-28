@@ -21,10 +21,7 @@ abstract class BaseWhereDirective extends \Graphpinator\Directive\ExecutableDire
             return $resolvedValue->getRawValue();
         }
 
-        throw new \Graphpinator\Exception\Directive\InvalidValueType(
-            static::NAME,
-            static::TYPE_NAME,
-            $resolvedValue->getType()->printName());
+        throw new \Graphpinator\Exception\Directive\InvalidValueType(static::NAME, static::TYPE_NAME, $resolvedValue);
     }
 
     protected static function extractValueImpl(\Graphpinator\Value\ResolvedValue $singleValue, array& $where) : \Graphpinator\Value\ResolvedValue
@@ -39,7 +36,7 @@ abstract class BaseWhereDirective extends \Graphpinator\Directive\ExecutableDire
             $currentWhere = (int) $currentWhere;
 
             if (!$singleValue instanceof \Graphpinator\Value\ListValue) {
-                throw new \Graphpinator\Exception\Directive\ExpectedListValue($currentWhere, $singleValue->getType()->printName());
+                throw new \Graphpinator\Exception\Directive\ExpectedListValue($currentWhere, $singleValue);
             }
 
             if (!$singleValue->offsetExists($currentWhere)) {
@@ -50,11 +47,11 @@ abstract class BaseWhereDirective extends \Graphpinator\Directive\ExecutableDire
         }
 
         if (!$singleValue instanceof \Graphpinator\Value\TypeValue) {
-            throw new \Graphpinator\Exception\Directive\ExpectedTypeValue($currentWhere, $singleValue->getType()->printName());
+            throw new \Graphpinator\Exception\Directive\ExpectedTypeValue($currentWhere, $singleValue);
         }
 
         if (!isset($singleValue->{$currentWhere})) {
-            throw new \Graphpinator\Exception\Directive\InvalidFieldOffset($currentWhere, $singleValue->getType()->printName());
+            throw new \Graphpinator\Exception\Directive\InvalidFieldOffset($currentWhere, $singleValue);
         }
 
         return static::extractValueImpl($singleValue->{$currentWhere}->getValue(), $where);
