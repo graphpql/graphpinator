@@ -8,9 +8,9 @@ final class ExpectedTypeValue extends \Graphpinator\Exception\Directive\BaseWher
 {
     public const MESSAGE = 'The specified Field "%s" doesnt exist in Type "%s".';
 
-    public function __construct(string $currentWhere, string $got)
+    public function __construct(string $currentWhere, \Graphpinator\Value\ResolvedValue $resolvedValue)
     {
-        $this->messageArgs = [$currentWhere, $got];
+        $this->messageArgs = [$currentWhere, $this->printType($resolvedValue)];
 
         parent::__construct();
     }

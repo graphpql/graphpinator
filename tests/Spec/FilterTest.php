@@ -519,7 +519,7 @@ final class FilterTest extends \PHPUnit\Framework\TestCase
                     'query' => '{ fieldListFilter @stringWhere(field: "data.listName.0", startsWith: "testValue") { data { name listName } } }',
                 ]),
                 \Graphpinator\Exception\Directive\ExpectedListValue::class,
-                'The specified numeric index "0" is only usable for a list, got [String].',
+                'The specified numeric index "0" is only usable for a list, got Null.',
             ],
         ];
     }

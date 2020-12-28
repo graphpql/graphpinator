@@ -8,12 +8,12 @@ final class InvalidValueType extends \Graphpinator\Exception\Directive\BaseWhere
 {
     public const MESSAGE = '%s directive expects filtered value to be %s, got %s.';
 
-    public function __construct(string $directiveName, string $expected, string $got)
+    public function __construct(string $directiveName, string $expected, \Graphpinator\Value\ResolvedValue $resolvedValue)
     {
         $this->messageArgs = [
             \Infinityloop\Utils\CaseConverter::toPascalCase($directiveName),
             $expected,
-            $got,
+            $this->printType($resolvedValue),
         ];
 
         parent::__construct();

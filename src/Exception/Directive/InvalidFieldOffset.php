@@ -8,9 +8,9 @@ final class InvalidFieldOffset extends \Graphpinator\Exception\Directive\BaseWhe
 {
     public const MESSAGE = 'The specified Field "%s" doesnt exist in Type "%s"';
 
-    public function __construct(string $currentWhere, string $type)
+    public function __construct(string $currentWhere, \Graphpinator\Value\ResolvedValue $resolvedValue)
     {
-        $this->messageArgs = [$currentWhere, $type];
+        $this->messageArgs = [$currentWhere, $this->printType($resolvedValue)];
 
         parent::__construct();
     }
