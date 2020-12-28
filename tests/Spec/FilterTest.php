@@ -83,18 +83,6 @@ final class FilterTest extends \PHPUnit\Framework\TestCase
                     ]
                 ]]),
             ],
-            [
-                Json::fromNative((object) [
-                    'query' => '{ fieldListFilter @stringWhere(field: "data.listName.0", startsWith: "testValue") { data { name listName } } }',
-                ]),
-                Json::fromNative((object) ['data' => [
-                    'fieldListFilter' => [
-                        ['data' => ['name' => 'testValue1', 'listName' => ['testValue', '1']]],
-                        ['data' => ['name' => 'testValue2', 'listName' => ['testValue', '2', 'test1']]],
-                        ['data' => ['name' => 'testValue3', 'listName' => ['testValue', '3', 'test1', 'test2']]],
-                    ]
-                ]]),
-            ],
         ];
     }
 
@@ -525,6 +513,13 @@ final class FilterTest extends \PHPUnit\Framework\TestCase
                 ]),
                 \Graphpinator\Exception\Directive\ExpectedTypeValue::class,
                 'The specified Field "isReady" doesnt exist in Type "[String]".',
+            ],
+            [
+                Json::fromNative((object) [
+                    'query' => '{ fieldListFilter @stringWhere(field: "data.listName.0", startsWith: "testValue") { data { name listName } } }',
+                ]),
+                \Graphpinator\Exception\Directive\ExpectedListValue::class,
+                'The specified numeric index "0" is only usable for a list, got [String].',
             ],
         ];
     }
