@@ -17,14 +17,14 @@ abstract class BaseWhereDirective extends \Graphpinator\Directive\ExecutableDire
 
         $resolvedValue = static::extractValueImpl($singleValue, $whereArr);
 
-        if (!$resolvedValue->getType() instanceof (static::TYPE) && !$resolvedValue instanceof \Graphpinator\Value\NullResolvedValue) {
-            throw new \Graphpinator\Exception\Directive\InvalidValueType(
-                static::NAME,
-                static::TYPE_NAME,
-                $resolvedValue->getType()->printName());
+        if ($resolvedValue->getType() instanceof (static::TYPE) || $resolvedValue instanceof \Graphpinator\Value\NullResolvedValue) {
+            return $resolvedValue->getRawValue();
         }
 
-        return $resolvedValue->getRawValue();
+        throw new \Graphpinator\Exception\Directive\InvalidValueType(
+            static::NAME,
+            static::TYPE_NAME,
+            $resolvedValue->getType()->printName());
     }
 
     protected static function extractValueImpl(\Graphpinator\Value\ResolvedValue $singleValue, array& $where) : \Graphpinator\Value\ResolvedValue
@@ -38,10 +38,6 @@ abstract class BaseWhereDirective extends \Graphpinator\Directive\ExecutableDire
         if (\is_numeric($currentWhere)) {
             $currentWhere = (int) $currentWhere;
 
-            if ($singleValue instanceof \Graphpinator\Value\NullResolvedValue) {
-                return static::extractValueImpl($singleValue, $where);
-            }
-
             if (!$singleValue instanceof \Graphpinator\Value\ListValue) {
                 throw new \Graphpinator\Exception\Directive\ExpectedListValue($currentWhere, $singleValue->getType()->printName());
             }
@@ -50,7 +46,7 @@ abstract class BaseWhereDirective extends \Graphpinator\Directive\ExecutableDire
                 throw new \Graphpinator\Exception\Directive\InvalidListOffset($currentWhere);
             }
 
-            return static::extractValueImpl($singleValue[$currentWhere], $where);
+            return static::extractValueImpl($singleValue->offsetGet($currentWhere), $where);
         }
 
         if (!$singleValue instanceof \Graphpinator\Value\TypeValue) {
