@@ -398,6 +398,8 @@ final class Parser
                 }
 
                 return new \Graphpinator\Parser\Value\VariableRef($this->tokenizer->getCurrent()->getValue());
+            case TokenType::NAME:
+                return new \Graphpinator\Parser\Value\EnumLiteral($this->tokenizer->getCurrent()->getValue());
             case TokenType::STRING:
                 return new \Graphpinator\Parser\Value\Literal($this->tokenizer->getCurrent()->getValue());
             case TokenType::INT:
