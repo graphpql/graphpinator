@@ -78,6 +78,7 @@ final class TestSchema
             'FragmentTypeA' => self::getFragmentTypeA(),
             'FragmentTypeB' => self::getFragmentTypeB(),
             'SimpleEmptyTestInput' => self::getSimpleEmptyTestInput(),
+            'InterfaceChildType' => self::getInterfaceChildType(),
         ], [
             'testDirective' => self::getTestDirective(),
             'invalidDirective' => self::getInvalidDirective(),
@@ -920,6 +921,45 @@ final class TestSchema
                         \Graphpinator\Container\Container::Int(),
                     ),
                 ]);
+            }
+        };
+    }
+
+    public static function getInterfaceChildType() : \Graphpinator\Type\Type
+    {
+        return new class extends \Graphpinator\Type\Type
+        {
+            protected const NAME = 'InterfaceChildType';
+            protected const DESCRIPTION = null;
+
+            public function __construct()
+            {
+                parent::__construct(new \Graphpinator\Utils\InterfaceSet([
+                    TestSchema::getInterfaceAbc(),
+                ]));
+            }
+
+            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+            {
+                return new \Graphpinator\Field\ResolvableFieldSet([
+                    \Graphpinator\Field\ResolvableField::create(
+                        'name',
+                        \Graphpinator\Container\Container::String()->notNull(),
+                        static function (\stdClass $parent, string $argName) {
+                            return $argName;
+                        },
+                    )->setArguments(new \Graphpinator\Argument\ArgumentSet([
+                        (new \Graphpinator\Argument\Argument(
+                            'argName',
+                            \Graphpinator\Container\Container::String(),
+                        ))->setDefaultValue('testValue'),
+                    ])),
+                ]);
+            }
+
+            public function validateNonNullValue($rawValue) : bool
+            {
+                return true;
             }
         };
     }
