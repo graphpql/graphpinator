@@ -59,18 +59,19 @@ trait TInterfaceImplementor
 
                 $field = $this->getFields()->offsetGet($fieldContract->getName());
 
-                foreach ($field->getArguments() as $argument) {
-                    if (!$argument->getDefaultValue()) {
-                        throw new \Exception('Additional arguments for the interface\'s children cannot be null!');
-                    }
-                }
-
                 if (!$fieldContract->getType()->isInstanceOf($field->getType())) {
                     throw new \Graphpinator\Exception\Type\InterfaceContractFieldTypeMismatch();
                 }
 
                 if (!$fieldContract->getConstraints()->isCovariant($field->getConstraints())) {
                     throw new \Graphpinator\Exception\Type\FieldConstraintNotCovariant();
+                }
+
+                foreach ($field->getArguments() as $argument) {
+                    if (!$fieldContract->getArguments()->offsetExists($argument->getName())
+                        && !$argument->getDefaultValue()) {
+                        throw new \Graphpinator\Exception\Type\InterfaceAdditionalChildArgumentCannotBeNull();
+                    }
                 }
 
                 foreach ($fieldContract->getArguments() as $argumentContract) {
