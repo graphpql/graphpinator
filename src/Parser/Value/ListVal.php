@@ -39,10 +39,10 @@ final class ListVal implements \Graphpinator\Parser\Value\Value
             return $this->createInputedValue($type->getInnerType(), $variableSet);
         }
 
-        if (!$type instanceof \Graphpinator\Type\ListType) {
-            throw new \Graphpinator\Exception\Value\InvalidValue($type->printName(), [], true);
+        if ($type instanceof \Graphpinator\Type\ListType) {
+            return \Graphpinator\Value\ListInputedValue::fromParsed($type, $this, $variableSet);
         }
 
-        return \Graphpinator\Value\ListInputedValue::fromParsed($type, $this, $variableSet);
+        throw new \Graphpinator\Exception\Value\InvalidValue($type->printName(), [], true);
     }
 }

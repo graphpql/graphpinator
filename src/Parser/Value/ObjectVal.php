@@ -39,10 +39,10 @@ final class ObjectVal implements \Graphpinator\Parser\Value\Value
             return $this->createInputedValue($type->getInnerType(), $variableSet);
         }
 
-        if (!$type instanceof \Graphpinator\Type\InputType) {
-            throw new \Graphpinator\Exception\Value\InvalidValue($type->printName(), new \stdClass(), true);
+        if ($type instanceof \Graphpinator\Type\InputType) {
+            return \Graphpinator\Value\InputValue::fromParsed($type, $this, $variableSet);
         }
 
-        return \Graphpinator\Value\InputValue::fromParsed($type, $this, $variableSet);
+        throw new \Graphpinator\Exception\Value\InvalidValue($type->printName(), new \stdClass(), true);
     }
 }
