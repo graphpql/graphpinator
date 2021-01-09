@@ -54,7 +54,11 @@ trait TInterfaceImplementor
 
             foreach ($interface->getFields() as $fieldContract) {
                 if (!$this->getFields()->offsetExists($fieldContract->getName())) {
-                    throw new \Graphpinator\Exception\Type\InterfaceContractMissingField();
+                    throw new \Graphpinator\Exception\Type\InterfaceContractMissingField(
+                        $this->getName(),
+                        $interface->getName(),
+                        $fieldContract->getName(),
+                    );
                 }
 
                 $field = $this->getFields()->offsetGet($fieldContract->getName());
