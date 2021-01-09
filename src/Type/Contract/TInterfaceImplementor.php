@@ -64,26 +64,49 @@ trait TInterfaceImplementor
                 $field = $this->getFields()->offsetGet($fieldContract->getName());
 
                 if (!$fieldContract->getType()->isInstanceOf($field->getType())) {
-                    throw new \Graphpinator\Exception\Type\InterfaceContractFieldTypeMismatch();
+                    throw new \Graphpinator\Exception\Type\InterfaceContractFieldTypeMismatch(
+                        $this->getName(),
+                        $interface->getName(),
+                        $fieldContract->getName(),
+                    );
                 }
 
                 if (!$fieldContract->getConstraints()->isCovariant($field->getConstraints())) {
-                    throw new \Graphpinator\Exception\Type\FieldConstraintNotCovariant();
+                    throw new \Graphpinator\Exception\Type\FieldConstraintNotCovariant(
+                        $this->getName(),
+                        $interface->getName(),
+                        $fieldContract->getName(),
+                    );
                 }
 
                 foreach ($fieldContract->getArguments() as $argumentContract) {
                     if (!$field->getArguments()->offsetExists($argumentContract->getName())) {
-                        throw new \Graphpinator\Exception\Type\InterfaceContractMissingArgument();
+                        throw new \Graphpinator\Exception\Type\InterfaceContractMissingArgument(
+                            $this->getName(),
+                            $interface->getName(),
+                            $fieldContract->getName(),
+                            $argumentContract->getName(),
+                        );
                     }
 
                     $argument = $field->getArguments()->offsetGet($argumentContract->getName());
 
                     if (!$argument->getType()->isInstanceOf($argumentContract->getType())) {
-                        throw new \Graphpinator\Exception\Type\InterfaceContractArgumentTypeMismatch();
+                        throw new \Graphpinator\Exception\Type\InterfaceContractArgumentTypeMismatch(
+                            $this->getName(),
+                            $interface->getName(),
+                            $fieldContract->getName(),
+                            $argumentContract->getName(),
+                        );
                     }
 
                     if (!$argumentContract->getConstraints()->isContravariant($argument->getConstraints())) {
-                        throw new \Graphpinator\Exception\Type\ArgumentConstraintNotContravariant();
+                        throw new \Graphpinator\Exception\Type\ArgumentConstraintNotContravariant(
+                            $this->getName(),
+                            $interface->getName(),
+                            $fieldContract->getName(),
+                            $argumentContract->getName(),
+                        );
                     }
                 }
             }
