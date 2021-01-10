@@ -949,10 +949,10 @@ final class TestSchema
                             return $argName;
                         },
                     )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        (new \Graphpinator\Argument\Argument(
+                        \Graphpinator\Argument\Argument::create(
                             'argName',
                             \Graphpinator\Container\Container::String(),
-                        ))->setDefaultValue('testValue'),
+                        )->setDefaultValue('testValue'),
                     ])),
                 ]);
             }

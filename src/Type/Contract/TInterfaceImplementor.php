@@ -89,7 +89,10 @@ trait TInterfaceImplementor
                     if (!$fieldContract->getArguments()->offsetExists($argument->getName())
                         && !$argument->getDefaultValue()) {
                         throw new \Graphpinator\Exception\Type\InterfaceContractNewArgumentWithoutDefault(
-                            $this->getName(), $interface->getName(), $argument->getName(), $field->getName(),
+                            $this->getName(),
+                            $interface->getName(),
+                            $field->getName(),
+                            $argument->getName(),
                         );
                     }
                 }

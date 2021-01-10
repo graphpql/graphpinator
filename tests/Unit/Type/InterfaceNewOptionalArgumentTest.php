@@ -6,7 +6,32 @@ namespace Graphpinator\Tests\Unit\Type;
 
 final class InterfaceNewOptionalArgumentTest extends \PHPUnit\Framework\TestCase
 {
-    public static function getTypeAdditionalChildArgumentCannotBeNull() : \Graphpinator\Type\Type
+    public static function createDefaultInterface() : \Graphpinator\Type\InterfaceType
+    {
+        return new class extends \Graphpinator\Type\InterfaceType {
+            protected const NAME = 'DefaultInterface';
+
+            public function createResolvedValue($rawValue) : \Graphpinator\Value\TypeIntermediateValue
+            {
+                return new \Graphpinator\Value\TypeIntermediateValue(
+                    InterfaceNewOptionalArgumentTest::getInterfaceContractNewArgumentWithoutDefault(),
+                    123,
+                );
+            }
+
+            protected function getFieldDefinition() : \Graphpinator\Field\FieldSet
+            {
+                return new \Graphpinator\Field\FieldSet([
+                    new \Graphpinator\Field\Field(
+                        'field',
+                        \Graphpinator\Container\Container::Int(),
+                    ),
+                ]);
+            }
+        };
+    }
+
+    public static function getInterfaceContractNewArgumentWithoutDefault() : \Graphpinator\Type\Type
     {
         return new class extends \Graphpinator\Type\Type {
             protected const NAME = 'Fff';
@@ -15,7 +40,7 @@ final class InterfaceNewOptionalArgumentTest extends \PHPUnit\Framework\TestCase
             {
                 parent::__construct(
                     new \Graphpinator\Utils\InterfaceSet([
-                        InterfaceTypeTest::createInterface(),
+                        InterfaceNewOptionalArgumentTest::createDefaultInterface(),
                     ]),
                 );
             }
@@ -23,44 +48,19 @@ final class InterfaceNewOptionalArgumentTest extends \PHPUnit\Framework\TestCase
             protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
             {
                 return new \Graphpinator\Field\ResolvableFieldSet([
-                    new \Graphpinator\Field\ResolvableField(
+                    \Graphpinator\Field\ResolvableField::create(
                         'field',
                         \Graphpinator\Container\Container::Int(),
-                        static function () : void {
+                        static function ($parent, $argumentDefaultNull) : void {
                         },
+                    )->setArguments(
+                        new \Graphpinator\Argument\ArgumentSet([
+                            \Graphpinator\Argument\Argument::create(
+                                'argumentDefaultNull',
+                                \Graphpinator\Container\Container::Int(),
+                            ),
+                        ]),
                     ),
-                    new \Graphpinator\Field\ResolvableField(
-                        'fieldNotNull',
-                        \Graphpinator\Container\Container::Int()->notNull(),
-                        static function () : void {
-                        },
-                    ),
-                    \Graphpinator\Field\ResolvableField::create(
-                        'argument',
-                        \Graphpinator\Container\Container::Int()->notNull(),
-                        static function () : void {
-                        },
-                    )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        \Graphpinator\Argument\Argument::create(
-                            'argumentName',
-                            \Graphpinator\Container\Container::Int(),
-                        ),
-                    ])),
-                    \Graphpinator\Field\ResolvableField::create(
-                        'argumentNotNull',
-                        \Graphpinator\Container\Container::Int()->notNull(),
-                        static function () : void {
-                        },
-                    )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        \Graphpinator\Argument\Argument::create(
-                            'argumentName',
-                            \Graphpinator\Container\Container::Int()->notNull(),
-                        ),
-                        \Graphpinator\Argument\Argument::create(
-                            'argumentDefaultNull',
-                            \Graphpinator\Container\Container::Int(),
-                        ),
-                    ])),
                 ]);
             }
 
@@ -77,12 +77,12 @@ final class InterfaceNewOptionalArgumentTest extends \PHPUnit\Framework\TestCase
         $this->expectExceptionMessage(
             (new \Graphpinator\Exception\Type\InterfaceContractNewArgumentWithoutDefault(
                 'Fff',
-                'Foo',
+                'DefaultInterface',
+                'field',
                 'argumentDefaultNull',
-                'argumentNotNull',
             ))->getMessage(),
         );
 
-        self::getTypeAdditionalChildArgumentCannotBeNull()->getFields();
+        self::getInterfaceContractNewArgumentWithoutDefault()->getFields();
     }
 }
