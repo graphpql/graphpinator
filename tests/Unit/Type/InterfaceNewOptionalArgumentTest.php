@@ -6,7 +6,7 @@ namespace Graphpinator\Tests\Unit\Type;
 
 final class InterfaceNewOptionalArgumentTest extends \PHPUnit\Framework\TestCase
 {
-    public static function createDefaultInterface() : \Graphpinator\Type\InterfaceType
+    public static function createInterface() : \Graphpinator\Type\InterfaceType
     {
         return new class extends \Graphpinator\Type\InterfaceType {
             protected const NAME = 'SomeInterface';
@@ -27,15 +27,15 @@ final class InterfaceNewOptionalArgumentTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    public static function getInterfaceContractNewArgumentWithoutDefault() : \Graphpinator\Type\Type
+    public static function createChildType() : \Graphpinator\Type\Type
     {
         return new class extends \Graphpinator\Type\Type {
-            protected const NAME = 'ChildInterface';
+            protected const NAME = 'ChildType';
 
             public function __construct()
             {
                 parent::__construct(
-                    new \Graphpinator\Utils\InterfaceSet([InterfaceNewOptionalArgumentTest::createDefaultInterface()]),
+                    new \Graphpinator\Utils\InterfaceSet([InterfaceNewOptionalArgumentTest::createInterface()]),
                 );
             }
 
@@ -70,13 +70,13 @@ final class InterfaceNewOptionalArgumentTest extends \PHPUnit\Framework\TestCase
         $this->expectException(\Graphpinator\Exception\Type\InterfaceContractNewArgumentWithoutDefault::class);
         $this->expectExceptionMessage(
             (new \Graphpinator\Exception\Type\InterfaceContractNewArgumentWithoutDefault(
-                'ChildInterface',
+                'ChildType',
                 'SomeInterface',
                 'field',
                 'argument',
             ))->getMessage(),
         );
 
-        self::getInterfaceContractNewArgumentWithoutDefault()->getFields();
+        self::createChildType()->getFields();
     }
 }
