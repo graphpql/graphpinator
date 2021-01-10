@@ -42,6 +42,7 @@ jobs:
 
   mutation:
     runs-on: ubuntu-latest
+    needs: [tests]
 
     steps:
     - uses: actions/checkout@v2
