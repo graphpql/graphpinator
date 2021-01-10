@@ -9,14 +9,10 @@ final class InterfaceNewOptionalArgumentTest extends \PHPUnit\Framework\TestCase
     public static function createDefaultInterface() : \Graphpinator\Type\InterfaceType
     {
         return new class extends \Graphpinator\Type\InterfaceType {
-            protected const NAME = 'DefaultInterface';
+            protected const NAME = 'SomeInterface';
 
             public function createResolvedValue($rawValue) : \Graphpinator\Value\TypeIntermediateValue
             {
-                return new \Graphpinator\Value\TypeIntermediateValue(
-                    InterfaceNewOptionalArgumentTest::getInterfaceContractNewArgumentWithoutDefault(),
-                    123,
-                );
             }
 
             protected function getFieldDefinition() : \Graphpinator\Field\FieldSet
@@ -34,14 +30,12 @@ final class InterfaceNewOptionalArgumentTest extends \PHPUnit\Framework\TestCase
     public static function getInterfaceContractNewArgumentWithoutDefault() : \Graphpinator\Type\Type
     {
         return new class extends \Graphpinator\Type\Type {
-            protected const NAME = 'Fff';
+            protected const NAME = 'ChildInterface';
 
             public function __construct()
             {
                 parent::__construct(
-                    new \Graphpinator\Utils\InterfaceSet([
-                        InterfaceNewOptionalArgumentTest::createDefaultInterface(),
-                    ]),
+                    new \Graphpinator\Utils\InterfaceSet([InterfaceNewOptionalArgumentTest::createDefaultInterface()]),
                 );
             }
 
@@ -56,7 +50,7 @@ final class InterfaceNewOptionalArgumentTest extends \PHPUnit\Framework\TestCase
                     )->setArguments(
                         new \Graphpinator\Argument\ArgumentSet([
                             \Graphpinator\Argument\Argument::create(
-                                'argumentDefaultNull',
+                                'argument',
                                 \Graphpinator\Container\Container::Int(),
                             ),
                         ]),
@@ -76,10 +70,10 @@ final class InterfaceNewOptionalArgumentTest extends \PHPUnit\Framework\TestCase
         $this->expectException(\Graphpinator\Exception\Type\InterfaceContractNewArgumentWithoutDefault::class);
         $this->expectExceptionMessage(
             (new \Graphpinator\Exception\Type\InterfaceContractNewArgumentWithoutDefault(
-                'Fff',
-                'DefaultInterface',
+                'ChildInterface',
+                'SomeInterface',
                 'field',
-                'argumentDefaultNull',
+                'argument',
             ))->getMessage(),
         );
 
