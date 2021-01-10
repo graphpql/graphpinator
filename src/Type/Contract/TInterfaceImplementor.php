@@ -67,13 +67,6 @@ trait TInterfaceImplementor
                     throw new \Graphpinator\Exception\Type\FieldConstraintNotCovariant();
                 }
 
-                foreach ($field->getArguments() as $argument) {
-                    if (!$fieldContract->getArguments()->offsetExists($argument->getName())
-                        && !$argument->getDefaultValue()) {
-                        throw new \Graphpinator\Exception\Type\InterfaceAdditionalChildArgumentCannotBeNull();
-                    }
-                }
-
                 foreach ($fieldContract->getArguments() as $argumentContract) {
                     if (!$field->getArguments()->offsetExists($argumentContract->getName())) {
                         throw new \Graphpinator\Exception\Type\InterfaceContractMissingArgument();
@@ -87,6 +80,17 @@ trait TInterfaceImplementor
 
                     if (!$argumentContract->getConstraints()->isContravariant($argument->getConstraints())) {
                         throw new \Graphpinator\Exception\Type\ArgumentConstraintNotContravariant();
+                    }
+                }
+            }
+
+            if ($field->getArguments()->count() > $fieldContract->getArguments()->count()) {
+                foreach ($field->getArguments() as $argument) {
+                    if (!$fieldContract->getArguments()->offsetExists($argument->getName())
+                        && !$argument->getDefaultValue()) {
+                        throw new \Graphpinator\Exception\Type\InterfaceContractNewArgumentWithoutDefault(
+                            $this->getName(), $interface->getName(), $argument->getName(), $field->getName(),
+                        );
                     }
                 }
             }
