@@ -386,6 +386,18 @@ final class TestSchema
                             return 0;
                         },
                     ),
+                    \Graphpinator\Field\ResolvableField::create(
+                        'fieldEnumArg',
+                        TestSchema::getSimpleEnum()->notNull(),
+                        static function ($parent, string $val) : string {
+                            return $val;
+                        },
+                    )->setArguments(new \Graphpinator\Argument\ArgumentSet([
+                        new \Graphpinator\Argument\Argument(
+                            'val',
+                            TestSchema::getSimpleEnum()->notNull(),
+                        ),
+                    ])),
                 ]);
             }
 

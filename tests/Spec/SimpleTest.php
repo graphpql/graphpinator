@@ -146,6 +146,26 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
                         ],
                     ],
                 ]),
+                [
+                    Json::fromNative((object) [
+                        'query' => 'query { fieldEnumArg(val: "C")  }',
+                    ]),
+                    Json::fromNative((object) [
+                        'data' => [
+                            'fieldEnumArg' => 'C',
+                        ],
+                    ]),
+                ],
+                [
+                    Json::fromNative((object) [
+                        'query' => 'query { fieldEnumArg(val: C)  }',
+                    ]),
+                    Json::fromNative((object) [
+                        'data' => [
+                            'fieldEnumArg' => 'C',
+                        ],
+                    ]),
+                ],
             ],
         ];
     }

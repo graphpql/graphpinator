@@ -635,6 +635,9 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             name: String!
           ): SimpleType
           fieldAOrB: AOrB!
+          fieldEnumArg(
+            val: SimpleEnum!
+          ): SimpleEnum!
         }
         
         """
