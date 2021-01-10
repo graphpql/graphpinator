@@ -109,6 +109,19 @@ trait TInterfaceImplementor
                         );
                     }
                 }
+                
+                if ($field->getArguments()->count() !== $fieldContract->getArguments()->count()) {
+                    foreach ($field->getArguments() as $argument) {
+                        if (!$fieldContract->getArguments()->offsetExists($argument->getName()) && $argument->getDefaultValue() === null) {
+                            throw new \Graphpinator\Exception\Type\InterfaceContractNewArgumentWithoutDefault(
+                                $this->getName(),
+                                $interface->getName(),
+                                $field->getName(),
+                                $argument->getName(),
+                            );
+                        }
+                    }
+                }
             }
         }
     }

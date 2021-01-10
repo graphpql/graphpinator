@@ -505,6 +505,12 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           name: String!
         }
         
+        type InterfaceChildType implements InterfaceAbc {
+          name(
+            argName: String = "testValue"
+          ): String!
+        }
+        
         """
         Interface Efg Description
         """
