@@ -17,17 +17,10 @@ final class UploadModule implements \Graphpinator\Module\Module
 
     public function processRequest(\Graphpinator\Request\Request $request) : \Graphpinator\Request\Request
     {
-        return $request;
-    }
-
-    public function processParsed(\Graphpinator\Parser\ParsedRequest $request) : \Graphpinator\Parser\ParsedRequest
-    {
         $variables = $request->getVariables();
 
         foreach ($this->fileProvider->getMap() as $fileKey => $locations) {
-            $fileValue = new UploadValue(
-                $this->fileProvider->getFile($fileKey),
-            );
+            $fileValue = $this->fileProvider->getFile($fileKey);
 
             foreach ($locations as $location) {
                 /**
@@ -40,11 +33,21 @@ final class UploadModule implements \Graphpinator\Module\Module
                 }
 
                 $variableName = \array_pop($keys);
-                $variable = $variables[$variableName];
-                $variables[$variableName] = $this->insertFiles($keys, $variable, $variable->getType(), $fileValue);
+
+                if (!\property_exists($variables, $variableName)) {
+                    throw new \Graphpinator\Exception\Upload\InvalidMap();
+                }
+
+                $variable = $variables->{$variableName};
+                $variables->{$variableName} = $this->insertFiles($keys, $variable, $fileValue);
             }
         }
 
+        return $request;
+    }
+
+    public function processParsed(\Graphpinator\Parser\ParsedRequest $request) : \Graphpinator\Parser\ParsedRequest
+    {
         return $request;
     }
 
@@ -60,62 +63,50 @@ final class UploadModule implements \Graphpinator\Module\Module
 
     private function insertFiles(
         array &$keys,
-        \Graphpinator\Value\InputedValue $currentValue,
-        \Graphpinator\Type\Contract\Definition $type,
-        UploadValue $fileValue
-    ) : \Graphpinator\Value\InputedValue
+        array|\stdClass|null $currentValue,
+        \Psr\Http\Message\UploadedFileInterface $fileValue,
+    ) : array|\stdClass|\Psr\Http\Message\UploadedFileInterface
     {
-        if ($type instanceof \Graphpinator\Module\Upload\UploadType && $currentValue instanceof \Graphpinator\Value\NullValue) {
-            if (\count($keys) === 0) {
+        if (\count($keys) === 0) {
+            if ($currentValue === null) {
                 return $fileValue;
             }
 
             throw new \Graphpinator\Exception\Upload\InvalidMap();
         }
 
-        if ($type instanceof \Graphpinator\Type\NotNullType) {
-            return $this->insertFiles($keys, $currentValue, $type->getInnerType(), $fileValue);
-        }
+        $index = \array_pop($keys);
 
-        if ($type instanceof \Graphpinator\Type\ListType) {
-            $index = \array_pop($keys);
-
-            if (!\is_numeric($index)) {
-                throw new \Graphpinator\Exception\Upload\InvalidMap();
-            }
-
+        if (\is_numeric($index)) {
             $index = (int) $index;
 
-            if ($currentValue instanceof \Graphpinator\Value\NullValue) {
-                $currentValue = \Graphpinator\Value\ListInputedValue::fromRaw($type, []);
+            if ($currentValue === null) {
+                $currentValue = [];
             }
 
-            if (!isset($currentValue[$index])) {
-                $currentValue[$index] = new \Graphpinator\Value\NullInputedValue($type->getInnerType());
+            if (\is_array($currentValue)) {
+                if (!\array_key_exists($index, $currentValue)) {
+                    $currentValue[$index] = null;
+                }
+
+                $currentValue[$index] = $this->insertFiles($keys, $currentValue[$index], $fileValue);
+
+                return $currentValue;
             }
 
-            $currentValue[$index] = $this->insertFiles($keys, $currentValue[$index], $type->getInnerType(), $fileValue);
-
-            return $currentValue;
+            throw new \Graphpinator\Exception\Upload\InvalidMap();
         }
 
-        if ($type instanceof \Graphpinator\Type\InputType && $currentValue instanceof \Graphpinator\Value\InputValue) {
-            $index = \array_pop($keys);
-
-            if (\is_numeric($index)) {
-                throw new \Graphpinator\Exception\Upload\InvalidMap();
-            }
-
-            $argument = $type->getArguments()[$index];
-
-            $currentValue->{$index} = \Graphpinator\Value\ArgumentValue::fromInputed(
-                $argument,
-                $this->insertFiles($keys, $currentValue->{$index}->getValue(), $argument->getType(), $fileValue),
-            );
-
-            return $currentValue;
+        if (!$currentValue instanceof \stdClass) {
+            throw new \Graphpinator\Exception\Upload\InvalidMap();
         }
 
-        throw new \Graphpinator\Exception\Upload\InvalidMap();
+        if (!\property_exists($currentValue, $index)) {
+            $currentValue->{$index} = null;
+        }
+
+        $currentValue->{$index} = $this->insertFiles($keys, $currentValue->{$index}, $fileValue);
+
+        return $currentValue;
     }
 }
