@@ -20,7 +20,7 @@ final class ArgumentValue
 
     public static function fromRaw(
         \Graphpinator\Argument\Argument $argument,
-        \stdClass|array|string|int|float|bool|null $rawValue,
+        string|int|float|bool|null|array|\stdClass|\Psr\Http\Message\UploadedFileInterface $rawValue,
     ) : self
     {
         $default = $argument->getDefaultValue();

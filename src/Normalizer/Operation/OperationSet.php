@@ -12,11 +12,6 @@ final class OperationSet extends \Infinityloop\Utils\ImplicitObjectMap
 {
     protected const INNER_CLASS = Operation::class;
 
-    public function createRequest(?string $operationName, \stdClass $variables) : \Graphpinator\OperationRequest
-    {
-        return new \Graphpinator\OperationRequest($this, $operationName, $variables);
-    }
-
     protected function getKey(object $object) : string
     {
         \assert($object instanceof Operation);

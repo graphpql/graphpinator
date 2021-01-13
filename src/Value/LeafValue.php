@@ -9,7 +9,7 @@ final class LeafValue implements \Graphpinator\Value\InputedValue, \Graphpinator
     use \Nette\SmartObject;
 
     private \Graphpinator\Type\Contract\LeafDefinition $type;
-    private string|int|float|bool $rawValue;
+    private string|int|float|bool|\Psr\Http\Message\UploadedFileInterface $rawValue;
 
     public function __construct(\Graphpinator\Type\Contract\LeafDefinition $type, mixed $rawValue, bool $inputed)
     {
@@ -21,7 +21,7 @@ final class LeafValue implements \Graphpinator\Value\InputedValue, \Graphpinator
         $this->rawValue = $rawValue;
     }
 
-    public function getRawValue() : string|int|float|bool
+    public function getRawValue() : string|int|float|bool|\Psr\Http\Message\UploadedFileInterface
     {
         return $this->rawValue;
     }

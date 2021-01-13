@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Parser;
 
-final class ParseResult
+final class ParsedRequest
 {
     use \Nette\SmartObject;
 
@@ -23,12 +23,12 @@ final class ParseResult
         return $this->fragments;
     }
 
-    public function normalize(\Graphpinator\Type\Schema $schema) : \Graphpinator\Normalizer\Operation\OperationSet
+    public function normalize(\Graphpinator\Type\Schema $schema) : \Graphpinator\Normalizer\NormalizedRequest
     {
         foreach ($this->fragments as $fragment) {
             $fragment->validateCycles($this->fragments, []);
         }
 
-        return $this->operations->normalize($schema, $this->fragments);
+        return new \Graphpinator\Normalizer\NormalizedRequest($this->operations->normalize($schema, $this->fragments));
     }
 }

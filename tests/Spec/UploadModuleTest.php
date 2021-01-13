@@ -15,6 +15,19 @@ final class UploadModuleTest extends \PHPUnit\Framework\TestCase
                 '{ "0": ["variables.var1"] }',
                 Json::fromNative((object) [
                     'query' => 'query queryName($var1: Upload) { fieldUpload(file: $var1) { fileName fileContent } }',
+                    'variables' => (object) ['var1' => null],
+                ]),
+                Json::fromNative((object) [
+                    'data' => [
+                        'fieldUpload' => ['fileName' => 'a.txt', 'fileContent' => 'test file'],
+                    ],
+                ]),
+            ],
+            [
+                '{ "0": ["variables.var1"] }',
+                Json::fromNative((object) [
+                    'query' => 'query queryName($var1: Upload!) { fieldUpload(file: $var1) { fileName fileContent } }',
+                    'variables' => (object) ['var1' => null],
                 ]),
                 Json::fromNative((object) [
                     'data' => [
@@ -26,6 +39,7 @@ final class UploadModuleTest extends \PHPUnit\Framework\TestCase
                 '{ "0": ["variables.var1.0", "variables.var1.1"] }',
                 Json::fromNative((object) [
                     'query' => 'query queryName($var1: [Upload]) { fieldMultiUpload(files: $var1) { fileName fileContent } }',
+                    'variables' => (object) ['var1' => null],
                 ]),
                 Json::fromNative((object) [
                     'data' => [
@@ -42,6 +56,7 @@ final class UploadModuleTest extends \PHPUnit\Framework\TestCase
                     'query' => 'query queryName($var1: UploadInput! = {}) { 
                         fieldInputUpload(fileInput: $var1) { fileName fileContent } 
                     }',
+                    'variables' => (object) ['var1' => (object) []],
                 ]),
                 Json::fromNative((object) [
                     'data' => [
@@ -52,9 +67,10 @@ final class UploadModuleTest extends \PHPUnit\Framework\TestCase
             [
                 '{ "0": ["variables.var1.files.0", "variables.var1.files.1"] }',
                 Json::fromNative((object) [
-                    'query' => 'query queryName($var1: UploadInput! = {}) { 
+                    'query' => 'query queryName($var1: UploadInput!) { 
                         fieldInputMultiUpload(fileInput: $var1) { fileName fileContent } 
                     }',
+                    'variables' => (object) ['var1' => (object) ['files' => null]],
                 ]),
                 Json::fromNative((object) [
                     'data' => [
@@ -68,9 +84,10 @@ final class UploadModuleTest extends \PHPUnit\Framework\TestCase
             [
                 '{ "0": ["variables.var1.0.file"] }',
                 Json::fromNative((object) [
-                    'query' => 'query queryName($var1: [UploadInput!]! = [{}]) { 
+                    'query' => 'query queryName($var1: [UploadInput!]!) { 
                         fieldMultiInputUpload(fileInputs: $var1) { fileName fileContent } 
                     }',
+                    'variables' => (object) ['var1' => [(object) ['file' => null]]],
                 ]),
                 Json::fromNative((object) [
                     'data' => [
@@ -83,9 +100,10 @@ final class UploadModuleTest extends \PHPUnit\Framework\TestCase
             [
                 '{ "0": ["variables.var1.0.files.0", "variables.var1.0.files.1"] }',
                 Json::fromNative((object) [
-                    'query' => 'query queryName($var1: [UploadInput!]! = [{}]) { 
+                    'query' => 'query queryName($var1: [UploadInput!]!) { 
                         fieldMultiInputMultiUpload(fileInputs: $var1) { fileName fileContent } 
                     }',
+                    'variables' => (object) ['var1' => [(object) ['files' => null]]],
                 ]),
                 Json::fromNative((object) [
                     'data' => [
@@ -134,16 +152,58 @@ final class UploadModuleTest extends \PHPUnit\Framework\TestCase
                 \Graphpinator\Exception\Upload\OnlyVariablesSupported::class,
             ],
             [
-                '{ "0": ["variables.var1.invalid"] }',
+                '{ "0": ["variables.var1"] }',
                 Json::fromNative((object) [
                     'query' => 'query queryName($var1: Upload) { fieldUpload(file: $var1) { fileName } }',
                 ]),
+                \Graphpinator\Exception\Upload\UninitializedVariable::class,
+            ],
+            [
+                '{ "0": ["variables.var1"] }',
+                Json::fromNative((object) [
+                    'query' => 'query queryName($var1: Upload) { fieldUpload(file: $var1) { fileName } }',
+                    'variables' => (object) ['var1' => 123],
+                ]),
+                \Graphpinator\Exception\Upload\ConflictingMap::class,
+            ],
+            [
+                '{ "0": ["variables.var1"] }',
+                Json::fromNative((object) [
+                    'query' => 'query queryName($var1: Upload) { fieldUpload(file: $var1) { fileName } }',
+                    'variables' => (object) ['var1' => []],
+                ]),
                 \Graphpinator\Exception\Upload\InvalidMap::class,
+            ],
+            [
+                '{ "0": ["variables.var1"] }',
+                Json::fromNative((object) [
+                    'query' => 'query queryName($var1: Upload) { fieldUpload(file: $var1) { fileName } }',
+                    'variables' => (object) ['var1' => (object) []],
+                ]),
+                \Graphpinator\Exception\Upload\InvalidMap::class,
+            ],
+            [
+                '{ "0": ["variables.var1.invalid"] }',
+                Json::fromNative((object) [
+                    'query' => 'query queryName($var1: Upload) { fieldUpload(file: $var1) { fileName } }',
+                    'variables' => (object) ['var1' => (object) []],
+                ]),
+                \Graphpinator\Exception\Value\InvalidValue::class,
+                'Invalid value resolved for type "Upload" - got object.',
             ],
             [
                 '{ "0": ["variables.var1.invalid", "variables.var1.1"] }',
                 Json::fromNative((object) [
                     'query' => 'query queryName($var1: [Upload]) { fieldMultiUpload(files: $var1) { fileName } }',
+                    'variables' => (object) ['var1' => []],
+                ]),
+                \Graphpinator\Exception\Upload\InvalidMap::class,
+            ],
+            [
+                '{ "0": ["variables.var1.0", "variables.var1.1"] }',
+                Json::fromNative((object) [
+                    'query' => 'query queryName($var1: [Upload]) { fieldMultiUpload(files: $var1) { fileName } }',
+                    'variables' => (object) ['var1' => (object) []],
                 ]),
                 \Graphpinator\Exception\Upload\InvalidMap::class,
             ],
@@ -151,20 +211,24 @@ final class UploadModuleTest extends \PHPUnit\Framework\TestCase
                 '{ "0": ["variables.var1.0"] }',
                 Json::fromNative((object) [
                     'query' => 'query queryName($var1: UploadInput! = {}) { fieldInputUpload(fileInput: $var1) { fileName } }',
+                    'variables' => (object) ['var1' => []],
                 ]),
-                \Graphpinator\Exception\Upload\InvalidMap::class,
+                \Graphpinator\Exception\Value\InvalidValue::class,
+                'Invalid value resolved for type "UploadInput" - got list.',
             ],
             [
                 '{ "0": ["variables.var1"] }',
                 Json::fromNative((object) [
                     'query' => 'query queryName($var1: UploadInput) { fieldInputUpload(fileInput: $var1) { fileName } }',
+                    'variables' => (object) ['var1' => null],
                 ]),
-                \Graphpinator\Exception\Upload\InvalidMap::class,
+                \Graphpinator\Exception\Normalizer\VariableTypeMismatch::class,
             ],
             [
                 '{ "0": ["variables.var1"] }',
                 Json::fromNative((object) [
                     'query' => 'query queryName($var1: Int) { fieldInputUpload(fileInput: $var1) { fileName } }',
+                    'variables' => (object) ['var1' => null],
                 ]),
                 \Graphpinator\Exception\Normalizer\VariableTypeMismatch::class,
             ],
@@ -177,10 +241,10 @@ final class UploadModuleTest extends \PHPUnit\Framework\TestCase
      * @param Json $request
      * @param string $exception
      */
-    public function testInvalid(string $map, Json $request, string $exception) : void
+    public function testInvalid(string $map, Json $request, string $exception, ?string $message = null) : void
     {
         $this->expectException($exception);
-        $this->expectExceptionMessage(\constant($exception . '::MESSAGE'));
+        $this->expectExceptionMessage($message ?? \constant($exception . '::MESSAGE'));
 
         $stream = $this->createStub(\Psr\Http\Message\StreamInterface::class);
         $stream->method('getContents')->willReturn('test file');

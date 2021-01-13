@@ -13,8 +13,8 @@ final class OperationRequest
 
     public function __construct(
         \Graphpinator\Normalizer\Operation\OperationSet $operationSet,
-        ?string $operationName,
         \stdClass $variables,
+        ?string $operationName,
     )
     {
         $this->operation = $operationName === null

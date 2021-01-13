@@ -34,18 +34,55 @@ final class Graphpinator implements \Psr\Log\LoggerAwareInterface
     {
         try {
             $request = $requestFactory->create();
+            $result = $request;
 
             $this->logger->debug($request->getQuery());
 
-            $parsedRequest = \Graphpinator\Parser\Parser::parseString($request->getQuery())
-                ->normalize($this->schema)
-                ->createRequest($request->getOperationName(), $request->getVariables());
-
             foreach ($this->modules as $module) {
-                $parsedRequest = $module->process($parsedRequest);
+                $result = $module->processRequest($request);
+
+                if (!$result instanceof \Graphpinator\Request\Request) {
+                    break;
+                }
             }
 
-            return $parsedRequest->execute();
+            if ($result instanceof \Graphpinator\Request\Request) {
+                $result = \Graphpinator\Parser\Parser::parseString($request->getQuery());
+
+                foreach ($this->modules as $module) {
+                    $result = $module->processParsed($result);
+
+                    if (!$result instanceof \Graphpinator\Parser\ParsedRequest) {
+                        break;
+                    }
+                }
+            }
+
+            if ($result instanceof \Graphpinator\Parser\ParsedRequest) {
+                $result = $result->normalize($this->schema);
+
+                foreach ($this->modules as $module) {
+                    $result = $module->processNormalized($result);
+
+                    if (!$result instanceof \Graphpinator\Normalizer\NormalizedRequest) {
+                        break;
+                    }
+                }
+            }
+
+            if ($result instanceof \Graphpinator\Normalizer\NormalizedRequest) {
+                $result = $result->finalize($request->getVariables(), $request->getOperationName());
+
+                foreach ($this->modules as $module) {
+                    $result = $module->processFinalized($result);
+
+                    if (!$result instanceof OperationRequest) {
+                        break;
+                    }
+                }
+            }
+
+            return $result->execute();
         } catch (\Throwable $exception) {
             if (!$this->catchExceptions) {
                 throw $exception;
