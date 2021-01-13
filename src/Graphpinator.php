@@ -40,6 +40,10 @@ final class Graphpinator implements \Psr\Log\LoggerAwareInterface
 
             foreach ($this->modules as $module) {
                 $result = $module->processRequest($request);
+
+                if (!$result instanceof \Graphpinator\Request\Request) {
+                    break;
+                }
             }
 
             if ($result instanceof \Graphpinator\Request\Request) {
@@ -47,6 +51,10 @@ final class Graphpinator implements \Psr\Log\LoggerAwareInterface
 
                 foreach ($this->modules as $module) {
                     $result = $module->processParsed($result);
+
+                    if (!$result instanceof \Graphpinator\Parser\ParsedRequest) {
+                        break;
+                    }
                 }
             }
 
@@ -55,6 +63,10 @@ final class Graphpinator implements \Psr\Log\LoggerAwareInterface
 
                 foreach ($this->modules as $module) {
                     $result = $module->processNormalized($result);
+
+                    if (!$result instanceof \Graphpinator\Normalizer\NormalizedRequest) {
+                        break;
+                    }
                 }
             }
 
@@ -63,6 +75,10 @@ final class Graphpinator implements \Psr\Log\LoggerAwareInterface
 
                 foreach ($this->modules as $module) {
                     $result = $module->processFinalized($result);
+
+                    if (!$result instanceof OperationRequest) {
+                        break;
+                    }
                 }
             }
 
