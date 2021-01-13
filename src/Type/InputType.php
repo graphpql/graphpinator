@@ -17,7 +17,11 @@ abstract class InputType extends \Graphpinator\Type\Contract\ConcreteDefinition 
             return \Graphpinator\Value\InputValue::fromRaw($this, $rawValue);
         }
 
-        return new \Graphpinator\Value\NullInputedValue($this);
+        if ($rawValue === null) {
+            return new \Graphpinator\Value\NullInputedValue($this);
+        }
+
+        throw new \Graphpinator\Exception\Value\InvalidValue($this->getName(), $rawValue, true);
     }
 
     final public function getArguments() : \Graphpinator\Argument\ArgumentSet
