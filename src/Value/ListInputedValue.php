@@ -118,7 +118,7 @@ final class ListInputedValue extends \Graphpinator\Value\ListValue implements \G
         }
 
         foreach ($this->value as $key => $value) {
-            \assert($value instanceof Value);
+            \assert($value instanceof InputedValue);
 
             if (!\array_key_exists($key, $secondArray) || !$value->isSame($secondArray[$key])) {
                 return false;
