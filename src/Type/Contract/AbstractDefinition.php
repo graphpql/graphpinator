@@ -9,7 +9,7 @@ abstract class AbstractDefinition extends \Graphpinator\Type\Contract\NamedDefin
     \Graphpinator\Type\Contract\Outputable,
     \Graphpinator\Type\Contract\TypeConditionable
 {
-    abstract public function isImplementedBy(\Graphpinator\Type\Contract\Definition $definition) : bool;
+    abstract public function isImplementedBy(\Graphpinator\Type\Contract\Definition $type) : bool;
 
     abstract public function createResolvedValue(mixed $rawValue) : \Graphpinator\Value\TypeIntermediateValue;
 }
