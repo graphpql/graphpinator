@@ -81,54 +81,26 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
                         fieldMerge(inputComplex: {
                             innerObject: {
                                 name: "mergeVal",
-                                inner: {
-                                    name: "mergeVal2",
-                                    number: [8,9]
-                                },
+                                inner: { name: "mergeVal2", number: [8,9] },
                                 innerList: [],
-                                innerNotNull: {
-                                    name: "mergeVal3",
-                                    number: [5,5],
-                                    bool: true
-                                }
+                                innerNotNull: { name: "mergeVal3", number: [5,5], bool: true }
                             },
                             innerListObjects: [
                                 {
                                     name: "mergeValList1",
-                                    inner: {
-                                        name: "mergeValList2",
-                                        number: [7,9]
-                                    },
+                                    inner: { name: "mergeValList2", number: [7,9] },
                                     innerList: [],
-                                    innerNotNull: {
-                                        name: "mergeValList3",
-                                        number: [6,5],
-                                        bool: false
-                                    }
+                                    innerNotNull: { name: "mergeValList3", number: [6,5], bool: false }
                                 },
                                 {
                                     name: "mergeValList4",
-                                    inner: {
-                                        name: "mergeValList5",
-                                        number: [6,9]
-                                    },
-                                    innerList: [
-                                        {
-                                            name: "mergeValInnerList1",
-                                            number: [1,2]
-                                            bool: false
-                                        },
-                                        {
-                                            name: "mergeValInnerList2",
-                                            number: [3,2]
-                                            bool: true
-                                        }
-                                    ],
-                                    innerNotNull: {
-                                        name: "mergeValList6",
-                                        number: [7,5],
-                                        bool: true
-                                    }
+                                    inner: { name: "mergeValList5", number: [6,9] },
+                                    innerList: [{
+                                        name: "mergeValInnerList1", number: [1,2], bool: false
+                                    }, {
+                                        name: "mergeValInnerList2", number: [3,2], bool: true
+                                    }],
+                                    innerNotNull: { name: "mergeValList6", number: [7,5], bool: true }
                                 }
                             ]
                         })

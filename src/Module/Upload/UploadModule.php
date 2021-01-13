@@ -35,11 +35,11 @@ final class UploadModule implements \Graphpinator\Module\Module
                 $variableName = \array_pop($keys);
 
                 if (!\property_exists($variables, $variableName)) {
-                    throw new \Graphpinator\Exception\Upload\InvalidMap();
+                    throw new \Graphpinator\Exception\Upload\UninitializedVariable();
                 }
 
-                $variable = $variables->{$variableName};
-                $variables->{$variableName} = $this->insertFiles($keys, $variable, $fileValue);
+                $variableValue = $variables->{$variableName};
+                $variables->{$variableName} = $this->insertFiles($keys, $variableValue, $fileValue);
             }
         }
 
@@ -63,10 +63,14 @@ final class UploadModule implements \Graphpinator\Module\Module
 
     private function insertFiles(
         array &$keys,
-        array|\stdClass|null $currentValue,
+        string|int|float|bool|null|array|\stdClass $currentValue,
         \Psr\Http\Message\UploadedFileInterface $fileValue,
     ) : array|\stdClass|\Psr\Http\Message\UploadedFileInterface
     {
+        if (\is_scalar($currentValue)) {
+            throw new \Graphpinator\Exception\Upload\ConflictingMap();
+        }
+
         if (\count($keys) === 0) {
             if ($currentValue === null) {
                 return $fileValue;
