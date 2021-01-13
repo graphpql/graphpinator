@@ -24,7 +24,6 @@ final class DirectiveSet extends \Infinityloop\Utils\ObjectSet
 
         foreach ($parsed as $parsedDirective) {
             $normalizedDirective = new Directive($parsedDirective, $typeContainer, $variableSet);
-
             $directive = $normalizedDirective->getDirective();
 
             if (!\in_array($parsed->getLocation(), $directive->getLocations(), true)) {
