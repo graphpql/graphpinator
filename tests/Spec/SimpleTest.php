@@ -198,7 +198,7 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
         $variables = $request['variables']
             ?? new \stdClass();
 
-        $result = $parser->parse()->normalize(TestSchema::getSchema())->createRequest($operationName, $variables)->execute();
+        $result = $parser->parse()->normalize(TestSchema::getSchema())->finalize($variables, $operationName)->execute();
 
         self::assertSame($expected->toString(), $result->toString());
     }

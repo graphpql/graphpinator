@@ -15,7 +15,12 @@ final class UploadModule implements \Graphpinator\Module\Module
         $this->fileProvider = $fileProvider;
     }
 
-    public function process(\Graphpinator\OperationRequest $request) : \Graphpinator\OperationRequest
+    public function processRequest(\Graphpinator\Request\Request $request) : \Graphpinator\Request\Request
+    {
+        return $request;
+    }
+
+    public function processParsed(\Graphpinator\Parser\ParsedRequest $request) : \Graphpinator\Parser\ParsedRequest
     {
         $variables = $request->getVariables();
 
@@ -40,6 +45,16 @@ final class UploadModule implements \Graphpinator\Module\Module
             }
         }
 
+        return $request;
+    }
+
+    public function processNormalized(\Graphpinator\Normalizer\NormalizedRequest $request) : \Graphpinator\Normalizer\NormalizedRequest
+    {
+        return $request;
+    }
+
+    public function processFinalized(\Graphpinator\OperationRequest $request) : \Graphpinator\OperationRequest
+    {
         return $request;
     }
 

@@ -21,7 +21,7 @@ final class Parser
      * Static shortcut.
      * @param string $source
      */
-    public static function parseString(string $source) : ParseResult
+    public static function parseString(string $source) : ParsedRequest
     {
         return (new self(new \Graphpinator\Source\StringSource($source)))->parse();
     }
@@ -29,7 +29,7 @@ final class Parser
     /**
      * Parses document and produces ParseResult object.
      */
-    public function parse() : ParseResult
+    public function parse() : ParsedRequest
     {
         if ($this->tokenizer->isEmpty()) {
             throw new \Graphpinator\Exception\Parser\EmptyRequest(new \Graphpinator\Common\Location(1, 1));
@@ -75,7 +75,7 @@ final class Parser
                 }
         }
 
-        return new \Graphpinator\Parser\ParseResult(
+        return new \Graphpinator\Parser\ParsedRequest(
             new \Graphpinator\Parser\Operation\OperationSet($operations),
             new \Graphpinator\Parser\Fragment\FragmentSet($fragments),
         );
