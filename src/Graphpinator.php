@@ -30,7 +30,7 @@ final class Graphpinator implements \Psr\Log\LoggerAwareInterface
             : new \Psr\Log\NullLogger();
     }
 
-    public function run(\Graphpinator\Request\RequestFactory $requestFactory) : \Graphpinator\OperationResponse
+    public function run(\Graphpinator\Request\RequestFactory $requestFactory) : \Graphpinator\Result
     {
         try {
             $request = $requestFactory->create();
@@ -76,7 +76,7 @@ final class Graphpinator implements \Psr\Log\LoggerAwareInterface
                 foreach ($this->modules as $module) {
                     $result = $module->processFinalized($result);
 
-                    if (!$result instanceof OperationRequest) {
+                    if (!$result instanceof \Graphpinator\Normalizer\FinalizedRequest) {
                         break;
                     }
                 }
@@ -91,12 +91,12 @@ final class Graphpinator implements \Psr\Log\LoggerAwareInterface
             if ($exception instanceof \Graphpinator\Exception\GraphpinatorBase) {
                 $this->logger->info($exception->getMessage());
 
-                return new \Graphpinator\OperationResponse(null, [$exception]);
+                return new \Graphpinator\Result(null, [$exception]);
             }
 
             $this->logger->emergency($exception->getMessage());
 
-            return new \Graphpinator\OperationResponse(null, [\Graphpinator\Exception\GraphpinatorBase::notOutputableResponse()]);
+            return new \Graphpinator\Result(null, [\Graphpinator\Exception\GraphpinatorBase::notOutputableResponse()]);
         }
     }
 

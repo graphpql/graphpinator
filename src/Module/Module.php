@@ -10,16 +10,16 @@ interface Module
     \Graphpinator\Request\Request|
     \Graphpinator\Parser\ParsedRequest|
     \Graphpinator\Normalizer\NormalizedRequest|
-    \Graphpinator\OperationRequest;
+    \Graphpinator\Normalizer\FinalizedRequest;
 
     public function processParsed(\Graphpinator\Parser\ParsedRequest $request) :
     \Graphpinator\Parser\ParsedRequest|
     \Graphpinator\Normalizer\NormalizedRequest|
-    \Graphpinator\OperationRequest;
+    \Graphpinator\Normalizer\FinalizedRequest;
 
     public function processNormalized(\Graphpinator\Normalizer\NormalizedRequest $request) :
     \Graphpinator\Normalizer\NormalizedRequest|
-    \Graphpinator\OperationRequest;
+    \Graphpinator\Normalizer\FinalizedRequest;
 
-    public function processFinalized(\Graphpinator\OperationRequest $request) : \Graphpinator\OperationRequest;
+    public function processFinalized(\Graphpinator\Normalizer\FinalizedRequest $request) : \Graphpinator\Normalizer\FinalizedRequest;
 }

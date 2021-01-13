@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator;
 
-final class OperationResponse implements \JsonSerializable
+final class Result implements \JsonSerializable
 {
     use \Nette\SmartObject;
 

@@ -42,7 +42,7 @@ final class DirectiveSet extends \Infinityloop\Utils\ObjectSet
         }
     }
 
-    public function applyVariables(\Graphpinator\Resolver\VariableValueSet $variables) : void
+    public function applyVariables(\Graphpinator\Normalizer\VariableValueSet $variables) : void
     {
         foreach ($this as $directive) {
             $directive->applyVariables($variables);

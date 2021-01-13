@@ -103,7 +103,7 @@ final class Field
         throw new \Graphpinator\Exception\Normalizer\InvalidFragmentType($this->typeCond->getName(), $typeCond->getName());
     }
 
-    public function applyVariables(\Graphpinator\Resolver\VariableValueSet $variables) : void
+    public function applyVariables(\Graphpinator\Normalizer\VariableValueSet $variables) : void
     {
         $this->arguments->applyVariables($variables);
         $this->directives->applyVariables($variables);

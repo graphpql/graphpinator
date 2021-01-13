@@ -2,14 +2,14 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator;
+namespace Graphpinator\Normalizer;
 
-final class OperationRequest
+final class FinalizedRequest
 {
     use \Nette\SmartObject;
 
     private \Graphpinator\Normalizer\Operation\Operation $operation;
-    private \Graphpinator\Resolver\VariableValueSet $variables;
+    private \Graphpinator\Normalizer\VariableValueSet $variables;
 
     public function __construct(
         \Graphpinator\Normalizer\Operation\OperationSet $operationSet,
@@ -20,10 +20,10 @@ final class OperationRequest
         $this->operation = $operationName === null
             ? $operationSet->current()
             : $operationSet->offsetGet($operationName);
-        $this->variables = new \Graphpinator\Resolver\VariableValueSet($this->operation->getVariables(), $variables);
+        $this->variables = new \Graphpinator\Normalizer\VariableValueSet($this->operation->getVariables(), $variables);
     }
 
-    public function execute() : \Graphpinator\OperationResponse
+    public function execute() : \Graphpinator\Result
     {
         return $this->operation->resolve($this->variables);
     }
@@ -33,7 +33,7 @@ final class OperationRequest
         return $this->operation;
     }
 
-    public function getVariables() : \Graphpinator\Resolver\VariableValueSet
+    public function getVariables() : \Graphpinator\Normalizer\VariableValueSet
     {
         return $this->variables;
     }

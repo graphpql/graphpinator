@@ -70,7 +70,7 @@ final class ArgumentValue
         return $this->argument;
     }
 
-    public function applyVariables(\Graphpinator\Resolver\VariableValueSet $variables) : void
+    public function applyVariables(\Graphpinator\Normalizer\VariableValueSet $variables) : void
     {
         $this->value->applyVariables($variables);
         $this->argument->validateConstraints($this->value);

@@ -11,7 +11,7 @@ interface InputedValue extends \Graphpinator\Value\Value
     /**
      * Function used to replace variable references with concrete values before query execution.
      */
-    public function applyVariables(\Graphpinator\Resolver\VariableValueSet $variables) : void;
+    public function applyVariables(\Graphpinator\Normalizer\VariableValueSet $variables) : void;
 
     /**
      * Function used to compare argument values in field merging.

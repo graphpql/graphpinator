@@ -126,7 +126,7 @@ final class InputValue implements \Graphpinator\Value\InputedValue
         return '{' . \PHP_EOL . $innerIndent . \implode(',' . \PHP_EOL . $innerIndent, $component) . \PHP_EOL . $indent . '}';
     }
 
-    public function applyVariables(\Graphpinator\Resolver\VariableValueSet $variables) : void
+    public function applyVariables(\Graphpinator\Normalizer\VariableValueSet $variables) : void
     {
         foreach ($this->value as $key => $value) {
             \assert($value instanceof \Graphpinator\Value\ArgumentValue);

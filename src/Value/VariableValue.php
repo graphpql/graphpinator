@@ -43,7 +43,7 @@ final class VariableValue implements \Graphpinator\Value\InputedValue
         throw new \Graphpinator\Exception\OperationNotSupported();
     }
 
-    public function applyVariables(\Graphpinator\Resolver\VariableValueSet $variables) : void
+    public function applyVariables(\Graphpinator\Normalizer\VariableValueSet $variables) : void
     {
         $this->value = $variables->offsetGet($this->variable->getName());
     }

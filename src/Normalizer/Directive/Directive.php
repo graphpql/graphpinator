@@ -48,7 +48,7 @@ final class Directive
     }
 
     public function applyVariables(
-        \Graphpinator\Resolver\VariableValueSet $variables
+        \Graphpinator\Normalizer\VariableValueSet $variables
     ) : void
     {
         $this->arguments->applyVariables($variables);

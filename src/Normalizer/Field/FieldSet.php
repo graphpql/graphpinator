@@ -14,7 +14,7 @@ final class FieldSet extends \Infinityloop\Utils\ObjectSet
 
     protected array $fieldsForName = [];
 
-    public function applyVariables(\Graphpinator\Resolver\VariableValueSet $variables) : void
+    public function applyVariables(\Graphpinator\Normalizer\VariableValueSet $variables) : void
     {
         foreach ($this as $field) {
             $field->applyVariables($variables);

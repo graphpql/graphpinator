@@ -46,7 +46,7 @@ final class LeafValue implements \Graphpinator\Value\InputedValue, \Graphpinator
         return $this->printValue();
     }
 
-    public function applyVariables(\Graphpinator\Resolver\VariableValueSet $variables) : void
+    public function applyVariables(\Graphpinator\Normalizer\VariableValueSet $variables) : void
     {
         // nothing here
     }

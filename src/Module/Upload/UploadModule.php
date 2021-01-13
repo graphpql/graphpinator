@@ -56,7 +56,7 @@ final class UploadModule implements \Graphpinator\Module\Module
         return $request;
     }
 
-    public function processFinalized(\Graphpinator\OperationRequest $request) : \Graphpinator\OperationRequest
+    public function processFinalized(\Graphpinator\Normalizer\FinalizedRequest $request) : \Graphpinator\Normalizer\FinalizedRequest
     {
         return $request;
     }

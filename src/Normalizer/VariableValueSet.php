@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Resolver;
+namespace Graphpinator\Normalizer;
 
 final class VariableValueSet implements \ArrayAccess
 {

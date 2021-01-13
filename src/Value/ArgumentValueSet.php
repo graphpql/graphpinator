@@ -51,7 +51,7 @@ final class ArgumentValueSet extends \Infinityloop\Utils\ImplicitObjectMap
         return $return;
     }
 
-    public function applyVariables(\Graphpinator\Resolver\VariableValueSet $variables) : void
+    public function applyVariables(\Graphpinator\Normalizer\VariableValueSet $variables) : void
     {
         foreach ($this as $value) {
             $value->applyVariables($variables);

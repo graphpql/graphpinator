@@ -35,7 +35,7 @@ final class NullInputedValue implements \Graphpinator\Value\InputedValue, \Graph
         return $this->printValue();
     }
 
-    public function applyVariables(\Graphpinator\Resolver\VariableValueSet $variables) : void
+    public function applyVariables(\Graphpinator\Normalizer\VariableValueSet $variables) : void
     {
         // nothing here
     }

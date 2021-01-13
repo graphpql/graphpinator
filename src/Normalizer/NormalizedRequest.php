@@ -17,8 +17,8 @@ final class NormalizedRequest
         return $this->operations;
     }
 
-    public function finalize(\stdClass $variables, ?string $operationName) : \Graphpinator\OperationRequest
+    public function finalize(\stdClass $variables, ?string $operationName) : \Graphpinator\Normalizer\FinalizedRequest
     {
-        return new \Graphpinator\OperationRequest($this->operations, $variables, $operationName);
+        return new \Graphpinator\Normalizer\FinalizedRequest($this->operations, $variables, $operationName);
     }
 }
