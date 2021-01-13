@@ -29,4 +29,9 @@ final class SkipDirective extends \Graphpinator\Directive\ExecutableDirective
             null,
         );
     }
+
+    public function validateType(\Graphpinator\Type\Contract\Outputable $type) : bool
+    {
+        return true;
+    }
 }

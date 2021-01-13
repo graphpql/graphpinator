@@ -52,6 +52,12 @@ final class IntWhereDirective extends \Graphpinator\Directive\BaseWhereDirective
         );
     }
 
+    public function validateType(\Graphpinator\Type\Contract\Outputable $type) : bool
+    {
+        return $type instanceof \Graphpinator\Type\ListType
+            && $type->getInnerType() instanceof \Graphpinator\Type\Scalar\IntType;
+    }
+
     private static function satisfiesCondition(?int $value, ?int $equals, ?int $greaterThan, ?int $lessThan, bool $orNull) : bool
     {
         if ($value === null) {

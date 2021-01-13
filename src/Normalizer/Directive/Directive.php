@@ -27,6 +27,10 @@ final class Directive
             throw new \Graphpinator\Exception\Normalizer\DirectiveNotExecutable();
         }
 
+        if (!$directive->validateType()) {
+
+        }
+
         $this->directive = $directive;
         $this->arguments = new \Graphpinator\Value\ArgumentValueSet(
             $parsed->getArguments() instanceof \Graphpinator\Parser\Value\ArgumentValueSet
