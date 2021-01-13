@@ -25,7 +25,7 @@ final class Request
         return $this->query;
     }
 
-    public function getVariables() : ?\stdClass
+    public function getVariables() : \stdClass
     {
         return $this->variables;
     }
