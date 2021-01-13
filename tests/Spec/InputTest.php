@@ -174,7 +174,7 @@ final class InputTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 Json::fromNative((object) [
-                    'query' => 'query queryName ($var1: SimpleInput = {
+                    'query' => 'query queryName ($var1: SimpleInput! = {
                         name: "bar", number: []
                     })
                     {
@@ -200,7 +200,7 @@ final class InputTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 Json::fromNative((object) [
-                    'query' => 'query queryName ($var1: SimpleInput) { 
+                    'query' => 'query queryName ($var1: SimpleInput!) { 
                         fieldAbc { 
                             fieldXyz(arg2: {
                                 name: "foo", innerList: [$var1, $var1], innerNotNull: $var1 
@@ -224,7 +224,7 @@ final class InputTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 Json::fromNative((object) [
-                    'query' => 'query queryName ($var1: [SimpleInput] = [
+                    'query' => 'query queryName ($var1: [SimpleInput!]! = [
                         {name: "bar", number: []}
                     ])
                     { 
