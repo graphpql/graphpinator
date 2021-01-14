@@ -19,11 +19,11 @@ final class ListWhereDirective extends \Graphpinator\Directive\BaseWhereDirectiv
             ],
             true,
             new \Graphpinator\Argument\ArgumentSet([
-                new \Graphpinator\Argument\Argument('field', \Graphpinator\Container\Container::String()),
+                \Graphpinator\Argument\Argument::create('field', \Graphpinator\Container\Container::String()),
                 \Graphpinator\Argument\Argument::create('not', \Graphpinator\Container\Container::Boolean()->notNull())
                     ->setDefaultValue(false),
-                new \Graphpinator\Argument\Argument('minItems', \Graphpinator\Container\Container::Int()),
-                new \Graphpinator\Argument\Argument('maxItems', \Graphpinator\Container\Container::Int()),
+                \Graphpinator\Argument\Argument::create('minItems', \Graphpinator\Container\Container::Int()),
+                \Graphpinator\Argument\Argument::create('maxItems', \Graphpinator\Container\Container::Int()),
                 \Graphpinator\Argument\Argument::create('orNull', \Graphpinator\Container\Container::Boolean()->notNull())
                     ->setDefaultValue(false),
             ]),
@@ -48,7 +48,7 @@ final class ListWhereDirective extends \Graphpinator\Directive\BaseWhereDirectiv
     private static function satisfiesCondition(?array $value, ?int $minItems, ?int $maxItems, bool $orNull) : bool
     {
         if ($value === null) {
-            return $orNull === true;
+            return $orNull;
         }
 
         if (\is_int($minItems) && \count($value) < $minItems) {

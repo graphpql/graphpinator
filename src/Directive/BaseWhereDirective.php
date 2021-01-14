@@ -18,7 +18,7 @@ abstract class BaseWhereDirective extends \Graphpinator\Directive\ExecutableDire
         return $type instanceof \Graphpinator\Type\ListType;
     }
 
-    protected static function extractValue(\Graphpinator\Value\ResolvedValue $singleValue, ?string $where) : mixed
+    protected static function extractValue(\Graphpinator\Value\ResolvedValue $singleValue, ?string $where) : string|int|float|bool|array|null
     {
         $whereArr = \is_string($where)
             ? \array_reverse(\explode('.', $where))
@@ -26,7 +26,7 @@ abstract class BaseWhereDirective extends \Graphpinator\Directive\ExecutableDire
 
         $resolvedValue = static::extractValueImpl($singleValue, $whereArr);
 
-        if ($resolvedValue->getType() instanceof (static::TYPE) || $resolvedValue instanceof \Graphpinator\Value\NullResolvedValue) {
+        if ($resolvedValue instanceof \Graphpinator\Value\NullResolvedValue || $resolvedValue->getType() instanceof (static::TYPE)) {
             return $resolvedValue->getRawValue();
         }
 

@@ -19,13 +19,13 @@ final class StringWhereDirective extends \Graphpinator\Directive\BaseWhereDirect
             ],
             true,
             new \Graphpinator\Argument\ArgumentSet([
-                new \Graphpinator\Argument\Argument('field', \Graphpinator\Container\Container::String()),
+                \Graphpinator\Argument\Argument::create('field', \Graphpinator\Container\Container::String()),
                 \Graphpinator\Argument\Argument::create('not', \Graphpinator\Container\Container::Boolean()->notNull())
                     ->setDefaultValue(false),
-                new \Graphpinator\Argument\Argument('equals', \Graphpinator\Container\Container::String()),
-                new \Graphpinator\Argument\Argument('contains', \Graphpinator\Container\Container::String()),
-                new \Graphpinator\Argument\Argument('startsWith', \Graphpinator\Container\Container::String()),
-                new \Graphpinator\Argument\Argument('endsWith', \Graphpinator\Container\Container::String()),
+                \Graphpinator\Argument\Argument::create('equals', \Graphpinator\Container\Container::String()),
+                \Graphpinator\Argument\Argument::create('contains', \Graphpinator\Container\Container::String()),
+                \Graphpinator\Argument\Argument::create('startsWith', \Graphpinator\Container\Container::String()),
+                \Graphpinator\Argument\Argument::create('endsWith', \Graphpinator\Container\Container::String()),
                 \Graphpinator\Argument\Argument::create('orNull', \Graphpinator\Container\Container::Boolean()->notNull())
                     ->setDefaultValue(false),
             ]),
@@ -54,10 +54,17 @@ final class StringWhereDirective extends \Graphpinator\Directive\BaseWhereDirect
         );
     }
 
-    private static function satisfiesCondition(?string $value, ?string $equals, ?string $contains, ?string $startsWith, ?string $endsWith, bool $orNull) : bool
+    private static function satisfiesCondition(
+        ?string $value,
+        ?string $equals,
+        ?string $contains,
+        ?string $startsWith,
+        ?string $endsWith,
+        bool $orNull,
+    ) : bool
     {
         if ($value === null) {
-            return $orNull === true;
+            return $orNull;
         }
 
         if (\is_string($equals) && $value !== $equals) {

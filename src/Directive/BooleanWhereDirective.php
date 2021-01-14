@@ -19,8 +19,8 @@ final class BooleanWhereDirective extends \Graphpinator\Directive\BaseWhereDirec
             ],
             true,
             new \Graphpinator\Argument\ArgumentSet([
-                new \Graphpinator\Argument\Argument('field', \Graphpinator\Container\Container::String()),
-                new \Graphpinator\Argument\Argument('equals', \Graphpinator\Container\Container::Boolean()),
+                \Graphpinator\Argument\Argument::create('field', \Graphpinator\Container\Container::String()),
+                \Graphpinator\Argument\Argument::create('equals', \Graphpinator\Container\Container::Boolean()),
                 \Graphpinator\Argument\Argument::create('orNull', \Graphpinator\Container\Container::Boolean()->notNull())
                     ->setDefaultValue(false),
             ]),
@@ -43,7 +43,7 @@ final class BooleanWhereDirective extends \Graphpinator\Directive\BaseWhereDirec
     private static function satisfiesCondition(?bool $value, ?bool $equals, bool $orNull) : bool
     {
         if ($value === null) {
-            return $orNull === true;
+            return $orNull;
         }
 
         if (\is_bool($equals) && $value !== $equals) {

@@ -19,12 +19,12 @@ final class FloatWhereDirective extends \Graphpinator\Directive\BaseWhereDirecti
             ],
             true,
             new \Graphpinator\Argument\ArgumentSet([
-                new \Graphpinator\Argument\Argument('field', \Graphpinator\Container\Container::String()),
+                \Graphpinator\Argument\Argument::create('field', \Graphpinator\Container\Container::String()),
                 \Graphpinator\Argument\Argument::create('not', \Graphpinator\Container\Container::Boolean()->notNull())
                     ->setDefaultValue(false),
-                new \Graphpinator\Argument\Argument('equals', \Graphpinator\Container\Container::Float()),
-                new \Graphpinator\Argument\Argument('greaterThan', \Graphpinator\Container\Container::Float()),
-                new \Graphpinator\Argument\Argument('lessThan', \Graphpinator\Container\Container::Float()),
+                \Graphpinator\Argument\Argument::create('equals', \Graphpinator\Container\Container::Float()),
+                \Graphpinator\Argument\Argument::create('greaterThan', \Graphpinator\Container\Container::Float()),
+                \Graphpinator\Argument\Argument::create('lessThan', \Graphpinator\Container\Container::Float()),
                 \Graphpinator\Argument\Argument::create('orNull', \Graphpinator\Container\Container::Boolean()->notNull())
                     ->setDefaultValue(false),
             ]),
