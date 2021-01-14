@@ -51,7 +51,7 @@ final class NamedFragmentSpread implements \Graphpinator\Parser\FragmentSpread\F
 
         return new \Graphpinator\Normalizer\FragmentSpread\FragmentSpread(
             $fragment->getFields()->normalize($typeCond, $typeContainer, $fragmentDefinitions, $variableSet),
-            $this->directives->normalize($typeContainer, $variableSet),
+            $this->directives->normalize($typeCond, $typeContainer, $variableSet),
             $typeCond,
         );
     }

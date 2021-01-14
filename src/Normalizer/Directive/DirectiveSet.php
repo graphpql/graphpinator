@@ -14,6 +14,7 @@ final class DirectiveSet extends \Infinityloop\Utils\ObjectSet
 
     public function __construct(
         \Graphpinator\Parser\Directive\DirectiveSet $parsed,
+        \Graphpinator\Type\Contract\Definition $scopeType,
         \Graphpinator\Container\Container $typeContainer,
         \Graphpinator\Normalizer\Variable\VariableSet $variableSet,
     )
@@ -23,12 +24,8 @@ final class DirectiveSet extends \Infinityloop\Utils\ObjectSet
         $directiveTypes = [];
 
         foreach ($parsed as $parsedDirective) {
-            $normalizedDirective = new Directive($parsedDirective, $typeContainer, $variableSet);
+            $normalizedDirective = new Directive($parsedDirective, $scopeType, $typeContainer, $variableSet);
             $directive = $normalizedDirective->getDirective();
-
-            if (!\in_array($parsed->getLocation(), $directive->getLocations(), true)) {
-                throw new \Graphpinator\Exception\Normalizer\MisplacedDirective();
-            }
 
             if (!$directive->isRepeatable()) {
                 if (\array_key_exists($directive->getName(), $directiveTypes)) {

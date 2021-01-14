@@ -63,6 +63,7 @@ final class NormalizerTest extends \PHPUnit\Framework\TestCase
                             new \Graphpinator\Parser\Directive\DirectiveSet([
                                 new \Graphpinator\Parser\Directive\Directive(
                                     'skip',
+                                    \Graphpinator\Directive\ExecutableDirectiveLocation::FIELD,
                                     new \Graphpinator\Parser\Value\ArgumentValueSet([
                                         new \Graphpinator\Parser\Value\ArgumentValue(new \Graphpinator\Parser\Value\Literal(true), 'if'),
                                     ]),
@@ -77,6 +78,7 @@ final class NormalizerTest extends \PHPUnit\Framework\TestCase
                             new \Graphpinator\Parser\Directive\DirectiveSet([
                                 new \Graphpinator\Parser\Directive\Directive(
                                     'skip',
+                                    \Graphpinator\Directive\ExecutableDirectiveLocation::INLINE_FRAGMENT,
                                     new \Graphpinator\Parser\Value\ArgumentValueSet([
                                         new \Graphpinator\Parser\Value\ArgumentValue(new \Graphpinator\Parser\Value\Literal(true), 'if'),
                                     ]),
@@ -88,6 +90,7 @@ final class NormalizerTest extends \PHPUnit\Framework\TestCase
                             new \Graphpinator\Parser\Directive\DirectiveSet([
                                 new \Graphpinator\Parser\Directive\Directive(
                                     'include',
+                                    \Graphpinator\Directive\ExecutableDirectiveLocation::FRAGMENT_SPREAD,
                                     new \Graphpinator\Parser\Value\ArgumentValueSet([
                                         new \Graphpinator\Parser\Value\ArgumentValue(new \Graphpinator\Parser\Value\Literal(true), 'if'),
                                     ]),

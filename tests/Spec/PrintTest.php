@@ -619,7 +619,12 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           fieldMultiInputMultiUpload(
             fileInputs: [UploadInput!]!
           ): [UploadType!]!
-          fieldList: [Xyz!]!
+          fieldList: [String!]!
+          fieldListList: [[String]]
+          fieldListInt: [Int!]!
+          fieldListFilter: [FilterData!]!
+          fieldListFloat: [Float!]!
+          fieldObjectList: [Xyz!]!
           fieldAbstractList: [TestUnion]
           fieldNull: NullFieldResolution
           fieldNullList: NullListResolution
@@ -752,11 +757,26 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           enumList: [SimpleEnum]
         }
         
+        directive @booleanWhere(
+          field: String
+          equals: Boolean
+          orNull: Boolean! = false
+        ) repeatable on FIELD
+        
         directive @floatConstraint(
           min: Float
           max: Float
           oneOf: [Float!]
         ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION | FIELD_DEFINITION
+        
+        directive @floatWhere(
+          field: String
+          not: Boolean! = false
+          equals: Float
+          greaterThan: Float
+          lessThan: Float
+          orNull: Boolean! = false
+        ) repeatable on FIELD
 
         directive @intConstraint(
           min: Int
@@ -764,7 +784,18 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           oneOf: [Int!]
         ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION | FIELD_DEFINITION
         
-        directive @invalidDirective repeatable on FIELD
+        directive @intWhere(
+          field: String
+          not: Boolean! = false
+          equals: Int
+          greaterThan: Int
+          lessThan: Int
+          orNull: Boolean! = false
+        ) repeatable on FIELD
+        
+        directive @invalidDirectiveResult repeatable on FIELD
+        
+        directive @invalidDirectiveType on FIELD
         
         directive @listConstraint(
           minItems: Int
@@ -772,6 +803,14 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           unique: Boolean = false
           innerList: ListConstraintInput
         ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION | FIELD_DEFINITION
+        
+        directive @listWhere(
+          field: String
+          not: Boolean! = false
+          minItems: Int
+          maxItems: Int
+          orNull: Boolean! = false
+        ) repeatable on FIELD
 
         directive @objectConstraint(
           atLeastOne: [String!]
@@ -784,6 +823,16 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           regex: String
           oneOf: [String!]
         ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION | FIELD_DEFINITION
+        
+        directive @stringWhere(
+          field: String
+          not: Boolean! = false
+          equals: String
+          contains: String
+          startsWith: String
+          endsWith: String
+          orNull: Boolean! = false
+        ) repeatable on FIELD
 
         directive @testDirective repeatable on FIELD
         EOL;
@@ -854,7 +903,8 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             'enum SimpleEnum',
             'directive @floatConstraint',
             'directive @intConstraint',
-            'directive @invalidDirective',
+            'directive @invalidDirectiveResult',
+            'directive @invalidDirectiveType',
             'directive @listConstraint',
             'directive @objectConstraint',
             'directive @stringConstraint',

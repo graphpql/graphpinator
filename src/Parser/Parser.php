@@ -337,7 +337,7 @@ final class Parser
                 $dirArguments = $this->parseArguments();
             }
 
-            $directives[] = new \Graphpinator\Parser\Directive\Directive($dirName, $dirArguments);
+            $directives[] = new \Graphpinator\Parser\Directive\Directive($dirName, $location, $dirArguments);
         }
 
         return new \Graphpinator\Parser\Directive\DirectiveSet($directives, $location);

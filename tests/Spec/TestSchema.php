@@ -81,7 +81,13 @@ final class TestSchema
             'InterfaceChildType' => self::getInterfaceChildType(),
         ], [
             'testDirective' => self::getTestDirective(),
-            'invalidDirective' => self::getInvalidDirective(),
+            'invalidDirectiveResult' => self::getInvalidDirectiveResult(),
+            'invalidDirectiveType' => self::getInvalidDirectiveType(),
+            'stringFilter' => new \Graphpinator\Directive\StringWhereDirective(),
+            'intFilter' => new \Graphpinator\Directive\IntWhereDirective(),
+            'floatFilter' => new \Graphpinator\Directive\FloatWhereDirective(),
+            'listFilter' => new \Graphpinator\Directive\ListWhereDirective(),
+            'booleanFilter' => new \Graphpinator\Directive\BooleanWhereDirective(),
         ]);
     }
 
@@ -239,6 +245,59 @@ final class TestSchema
                     ])),
                     new \Graphpinator\Field\ResolvableField(
                         'fieldList',
+                        \Graphpinator\Container\Container::String()->notNullList(),
+                        static function () : array {
+                            return ['testValue1', 'testValue2', 'testValue3'];
+                        },
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'fieldListList',
+                        \Graphpinator\Container\Container::String()->list()->list(),
+                        static function () : array {
+                            return [
+                                ['testValue11', 'testValue12', 'testValue13'],
+                                ['testValue21', 'testValue22'],
+                                ['testValue31'],
+                                null,
+                            ];
+                        },
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'fieldListInt',
+                        \Graphpinator\Container\Container::Int()->notNullList(),
+                        static function () : array {
+                            return [1, 2, 3];
+                        },
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'fieldListFilter',
+                        TestSchema::getTypeFilterData()->notNullList(),
+                        static function () {
+                            return [
+                                (object) ['data' => (object) [
+                                    'name' => 'testValue1', 'rating' => 98, 'coefficient' => 0.99, 'listName' => ['testValue', '1'], 'isReady' => true,
+                                ]],
+                                (object) ['data' => (object) [
+                                    'name' => 'testValue2', 'rating' => 99, 'coefficient' => 1.00, 'listName' => ['testValue', '2', 'test1'], 'isReady' => false,
+                                ]],
+                                (object) ['data' => (object) [
+                                    'name' => 'testValue3', 'rating' => 100, 'coefficient' => 1.01, 'listName' => ['testValue', '3', 'test1', 'test2'], 'isReady' => false,
+                                ]],
+                                (object) ['data' => (object) [
+                                    'name' => 'testValue4', 'rating' => null, 'coefficient' => null, 'listName' => null, 'isReady' => null,
+                                ]],
+                            ];
+                        },
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'fieldListFloat',
+                        \Graphpinator\Container\Container::Float()->notNullList(),
+                        static function () : array {
+                            return [1.00, 1.01, 1.02];
+                        },
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'fieldObjectList',
                         TestSchema::getTypeXyz()->notNullList(),
                         static function () {
                             return [
@@ -516,6 +575,98 @@ final class TestSchema
                         TestSchema::getSimpleEnum()->list(),
                         static function () {
                             return ['A', 'B'];
+                        },
+                    ),
+                ]);
+            }
+
+            public function validateNonNullValue($rawValue) : bool
+            {
+                return true;
+            }
+        };
+    }
+
+    public static function getTypeFilterInner() : \Graphpinator\Type\Type
+    {
+        return new class extends \Graphpinator\Type\Type
+        {
+            protected const NAME = 'FilterInner';
+            protected const DESCRIPTION = null;
+
+            public function __construct()
+            {
+                parent::__construct(new \Graphpinator\Utils\InterfaceSet([TestSchema::getInterface()]));
+            }
+
+            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+            {
+                return new \Graphpinator\Field\ResolvableFieldSet([
+                    new \Graphpinator\Field\ResolvableField(
+                        'name',
+                        \Graphpinator\Container\Container::String()->notNull(),
+                        static function (\stdClass $parent) : string {
+                            return $parent->name;
+                        },
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'listName',
+                        \Graphpinator\Container\Container::String()->list(),
+                        static function (\stdClass $parent) : ?array {
+                            return $parent->listName;
+                        },
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'rating',
+                        \Graphpinator\Container\Container::Int(),
+                        static function (\stdClass $parent) : ?int {
+                            return $parent->rating;
+                        },
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'coefficient',
+                        \Graphpinator\Container\Container::Float(),
+                        static function (\stdClass $parent) : ?float {
+                            return $parent->coefficient;
+                        },
+                    ),
+                    new \Graphpinator\Field\ResolvableField(
+                        'isReady',
+                        \Graphpinator\Container\Container::Boolean(),
+                        static function (\stdClass $parent) : ?bool {
+                            return $parent->isReady;
+                        },
+                    ),
+                ]);
+            }
+
+            public function validateNonNullValue($rawValue) : bool
+            {
+                return true;
+            }
+        };
+    }
+
+    public static function getTypeFilterData() : \Graphpinator\Type\Type
+    {
+        return new class extends \Graphpinator\Type\Type
+        {
+            protected const NAME = 'FilterData';
+            protected const DESCRIPTION = null;
+
+            public function __construct()
+            {
+                parent::__construct();
+            }
+
+            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+            {
+                return new \Graphpinator\Field\ResolvableFieldSet([
+                    new \Graphpinator\Field\ResolvableField(
+                        'data',
+                        TestSchema::getTypeFilterInner()->notNull(),
+                        static function (\stdClass $parent) : \stdClass {
+                            return $parent->data;
                         },
                     ),
                 ]);
@@ -1217,14 +1368,19 @@ final class TestSchema
                     null,
                 );
             }
+
+            public function validateType(\Graphpinator\Type\Contract\Definition $type) : bool
+            {
+                return true;
+            }
         };
     }
 
-    public static function getInvalidDirective() : \Graphpinator\Directive\Directive
+    public static function getInvalidDirectiveResult() : \Graphpinator\Directive\Directive
     {
         return new class extends \Graphpinator\Directive\ExecutableDirective
         {
-            protected const NAME = 'invalidDirective';
+            protected const NAME = 'invalidDirectiveResult';
 
             public function __construct()
             {
@@ -1232,11 +1388,40 @@ final class TestSchema
                     [\Graphpinator\Directive\ExecutableDirectiveLocation::FIELD],
                     true,
                     new \Graphpinator\Argument\ArgumentSet(),
-                    static function() {
-                        return 'blahblah';
+                    static function() : string {
+                        return 'random';
                     },
                     null,
                 );
+            }
+
+            public function validateType(\Graphpinator\Type\Contract\Definition $type) : bool
+            {
+                return true;
+            }
+        };
+    }
+
+    public static function getInvalidDirectiveType() : \Graphpinator\Directive\Directive
+    {
+        return new class extends \Graphpinator\Directive\ExecutableDirective
+        {
+            protected const NAME = 'invalidDirectiveType';
+
+            public function __construct()
+            {
+                parent::__construct(
+                    [\Graphpinator\Directive\ExecutableDirectiveLocation::FIELD],
+                    false,
+                    new \Graphpinator\Argument\ArgumentSet(),
+                    static function() : void {},
+                    null,
+                );
+            }
+
+            public function validateType(\Graphpinator\Type\Contract\Definition $type) : bool
+            {
+                return false;
             }
         };
     }
