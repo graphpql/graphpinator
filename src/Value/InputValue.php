@@ -152,7 +152,7 @@ final class InputValue implements \Graphpinator\Value\InputedValue
         foreach ($this->value as $key => $value) {
             \assert($value instanceof \Graphpinator\Value\ArgumentValue);
 
-            if (!\property_exists($secondObject, $key) || !$value->getValue()->isSame($secondObject->{$key})) {
+            if (!\property_exists($secondObject, $key) || !$value->getValue()->isSame($secondObject->{$key}->getValue())) {
                 return false;
             }
         }

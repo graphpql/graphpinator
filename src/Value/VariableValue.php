@@ -50,6 +50,7 @@ final class VariableValue implements \Graphpinator\Value\InputedValue
 
     public function isSame(Value $compare) : bool
     {
-        return $compare instanceof self;
+        return $compare instanceof self
+            && $compare->variable->getName() === $this->variable->getName();
     }
 }
