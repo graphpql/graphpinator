@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Directive;
+namespace Graphpinator\Directive\Spec;
 
 final class IncludeDirective extends \Graphpinator\Directive\ExecutableDirective
 {
@@ -13,9 +13,9 @@ final class IncludeDirective extends \Graphpinator\Directive\ExecutableDirective
     {
         parent::__construct(
             [
-                ExecutableDirectiveLocation::FIELD,
-                ExecutableDirectiveLocation::FRAGMENT_SPREAD,
-                ExecutableDirectiveLocation::INLINE_FRAGMENT,
+                \Graphpinator\Directive\ExecutableDirectiveLocation::FIELD,
+                \Graphpinator\Directive\ExecutableDirectiveLocation::FRAGMENT_SPREAD,
+                \Graphpinator\Directive\ExecutableDirectiveLocation::INLINE_FRAGMENT,
             ],
             false,
             new \Graphpinator\Argument\ArgumentSet([
@@ -23,8 +23,8 @@ final class IncludeDirective extends \Graphpinator\Directive\ExecutableDirective
             ]),
             static function (bool $if) : string {
                 return $if
-                    ? DirectiveResult::NONE
-                    : DirectiveResult::SKIP;
+                    ? \Graphpinator\Directive\DirectiveResult::NONE
+                    : \Graphpinator\Directive\DirectiveResult::SKIP;
             },
             null,
         );

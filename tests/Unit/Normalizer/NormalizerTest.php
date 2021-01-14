@@ -120,7 +120,7 @@ final class NormalizerTest extends \PHPUnit\Framework\TestCase
         self::assertCount(1, $operation->getFields()->offsetGet(0)->getDirectives());
         self::assertArrayHasKey(0, $operation->getFields()->offsetGet(0)->getDirectives());
         self::assertInstanceOf(
-            \Graphpinator\Directive\SkipDirective::class,
+            \Graphpinator\Directive\Spec\SkipDirective::class,
             $operation->getFields()->offsetGet(0)->getDirectives()->offsetGet(0)->getDirective(),
         );
 
@@ -129,7 +129,7 @@ final class NormalizerTest extends \PHPUnit\Framework\TestCase
         self::assertCount(1, $operation->getFields()->offsetGet(1)->getDirectives());
         self::assertArrayHasKey(0, $operation->getFields()->offsetGet(1)->getDirectives());
         self::assertInstanceOf(
-            \Graphpinator\Directive\SkipDirective::class,
+            \Graphpinator\Directive\Spec\SkipDirective::class,
             $operation->getFields()->offsetGet(1)->getDirectives()->offsetGet(0)->getDirective(),
         );
     }

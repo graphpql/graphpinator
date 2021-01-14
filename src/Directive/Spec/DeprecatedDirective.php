@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Directive;
+namespace Graphpinator\Directive\Spec;
 
 final class DeprecatedDirective extends \Graphpinator\Directive\TypeSystemDirective
 {
@@ -13,8 +13,8 @@ final class DeprecatedDirective extends \Graphpinator\Directive\TypeSystemDirect
     {
         parent::__construct(
             [
-                TypeSystemDirectiveLocation::FIELD_DEFINITION,
-                TypeSystemDirectiveLocation::ENUM_VALUE,
+                \Graphpinator\Directive\TypeSystemDirectiveLocation::FIELD_DEFINITION,
+                \Graphpinator\Directive\TypeSystemDirectiveLocation::ENUM_VALUE,
             ],
             false,
             new \Graphpinator\Argument\ArgumentSet([

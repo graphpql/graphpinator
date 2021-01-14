@@ -77,25 +77,25 @@ abstract class Container
     /**
      * Built-in Skip directive.
      */
-    public static function directiveSkip() : \Graphpinator\Directive\SkipDirective
+    public static function directiveSkip() : \Graphpinator\Directive\Spec\SkipDirective
     {
-        return new \Graphpinator\Directive\SkipDirective();
+        return new \Graphpinator\Directive\Spec\SkipDirective();
     }
 
     /**
      * Built-in Include directive.
      */
-    public static function directiveInclude() : \Graphpinator\Directive\IncludeDirective
+    public static function directiveInclude() : \Graphpinator\Directive\Spec\IncludeDirective
     {
-        return new \Graphpinator\Directive\IncludeDirective();
+        return new \Graphpinator\Directive\Spec\IncludeDirective();
     }
 
     /**
      * Built-in Deprecated directive.
      */
-    public static function directiveDeprecated() : \Graphpinator\Directive\DeprecatedDirective
+    public static function directiveDeprecated() : \Graphpinator\Directive\Spec\DeprecatedDirective
     {
-        return new \Graphpinator\Directive\DeprecatedDirective();
+        return new \Graphpinator\Directive\Spec\DeprecatedDirective();
     }
 
     /**
