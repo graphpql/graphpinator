@@ -45,12 +45,6 @@ final class ListWhereDirective extends \Graphpinator\Directive\BaseWhereDirectiv
         );
     }
 
-    public function validateType(\Graphpinator\Type\Contract\Definition $type) : bool
-    {
-        return $type instanceof \Graphpinator\Type\ListType
-            && $type->getInnerType() instanceof \Graphpinator\Type\ListType;
-    }
-
     private static function satisfiesCondition(?array $value, ?int $minItems, ?int $maxItems, bool $orNull) : bool
     {
         if ($value === null) {

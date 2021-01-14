@@ -9,6 +9,15 @@ abstract class BaseWhereDirective extends \Graphpinator\Directive\ExecutableDire
     protected const TYPE = '';
     protected const TYPE_NAME = '';
 
+    public function validateType(\Graphpinator\Type\Contract\Definition $type) : bool
+    {
+        if ($type instanceof \Graphpinator\Type\NotNullType) {
+            $type = $type->getInnerType();
+        }
+
+        return $type instanceof \Graphpinator\Type\ListType;
+    }
+
     protected static function extractValue(\Graphpinator\Value\ResolvedValue $singleValue, ?string $where) : mixed
     {
         $whereArr = \is_string($where)

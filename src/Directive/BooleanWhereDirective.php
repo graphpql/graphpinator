@@ -40,12 +40,6 @@ final class BooleanWhereDirective extends \Graphpinator\Directive\BaseWhereDirec
         );
     }
 
-    public function validateType(\Graphpinator\Type\Contract\Definition $type) : bool
-    {
-        return $type instanceof \Graphpinator\Type\ListType
-            && $type->getInnerType() instanceof \Graphpinator\Type\Scalar\BooleanType;
-    }
-
     private static function satisfiesCondition(?bool $value, ?bool $equals, bool $orNull) : bool
     {
         if ($value === null) {

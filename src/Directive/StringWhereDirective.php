@@ -54,12 +54,6 @@ final class StringWhereDirective extends \Graphpinator\Directive\BaseWhereDirect
         );
     }
 
-    public function validateType(\Graphpinator\Type\Contract\Definition $type) : bool
-    {
-        return $type instanceof \Graphpinator\Type\ListType
-            && $type->getInnerType() instanceof \Graphpinator\Type\Scalar\StringType;
-    }
-
     private static function satisfiesCondition(?string $value, ?string $equals, ?string $contains, ?string $startsWith, ?string $endsWith, bool $orNull) : bool
     {
         if ($value === null) {

@@ -52,16 +52,10 @@ final class FloatWhereDirective extends \Graphpinator\Directive\BaseWhereDirecti
         );
     }
 
-    public function validateType(\Graphpinator\Type\Contract\Definition $type) : bool
-    {
-        return $type instanceof \Graphpinator\Type\ListType
-            && $type->getInnerType() instanceof \Graphpinator\Type\Scalar\FloatType;
-    }
-
     private static function satisfiesCondition(?float $value, ?float $equals, ?float $greaterThan, ?float $lessThan, bool $orNull) : bool
     {
         if ($value === null) {
-            return $orNull === true;
+            return $orNull;
         }
 
         if (\is_float($equals) && $value !== $equals) {
