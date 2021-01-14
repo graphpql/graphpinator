@@ -27,10 +27,11 @@ final class DirectiveSet extends \Infinityloop\Utils\ObjectSet
     }
 
     public function normalize(
+        \Graphpinator\Type\Contract\Definition $scopeType,
         \Graphpinator\Container\Container $typeContainer,
         \Graphpinator\Normalizer\Variable\VariableSet $variableSet,
     ) : \Graphpinator\Normalizer\Directive\DirectiveSet
     {
-        return new \Graphpinator\Normalizer\Directive\DirectiveSet($this, $typeContainer, $variableSet);
+        return new \Graphpinator\Normalizer\Directive\DirectiveSet($this, $scopeType, $typeContainer, $variableSet);
     }
 }

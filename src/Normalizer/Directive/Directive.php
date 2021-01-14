@@ -13,6 +13,7 @@ final class Directive
 
     public function __construct(
         \Graphpinator\Parser\Directive\Directive $parsed,
+        \Graphpinator\Type\Contract\Definition $scopeType,
         \Graphpinator\Container\Container $typeContainer,
         \Graphpinator\Normalizer\Variable\VariableSet $variableSet,
     )
@@ -27,15 +28,18 @@ final class Directive
             throw new \Graphpinator\Exception\Normalizer\DirectiveNotExecutable();
         }
 
-        if (!$directive->validateType()) {
+        if (!\in_array($parsed->getLocation(), $directive->getLocations(), true)) {
+            throw new \Graphpinator\Exception\Normalizer\DirectiveIncorrectLocation();
+        }
 
+        if (!$directive->validateType($scopeType)) {
+            throw new \Graphpinator\Exception\Normalizer\DirectiveIncorrectType();
         }
 
         $this->directive = $directive;
         $this->arguments = new \Graphpinator\Value\ArgumentValueSet(
-            $parsed->getArguments() instanceof \Graphpinator\Parser\Value\ArgumentValueSet
-                ? $parsed->getArguments()
-                : new \Graphpinator\Parser\Value\ArgumentValueSet([]),
+            $parsed->getArguments()
+                ?? new \Graphpinator\Parser\Value\ArgumentValueSet([]),
             $directive,
             $variableSet,
         );
