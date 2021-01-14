@@ -4,12 +4,12 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Value;
 
-final class LeafValue implements \Graphpinator\Value\InputedValue, \Graphpinator\Value\OutputValue
+abstract class LeafValue implements \Graphpinator\Value\InputedValue, \Graphpinator\Value\OutputValue
 {
     use \Nette\SmartObject;
 
-    private \Graphpinator\Type\Contract\LeafDefinition $type;
-    private string|int|float|bool|\Psr\Http\Message\UploadedFileInterface $rawValue;
+    protected \Graphpinator\Type\Contract\LeafDefinition $type;
+    protected string|int|float|bool|\Psr\Http\Message\UploadedFileInterface $rawValue;
 
     public function __construct(\Graphpinator\Type\Contract\LeafDefinition $type, mixed $rawValue, bool $inputed)
     {
@@ -36,11 +36,6 @@ final class LeafValue implements \Graphpinator\Value\InputedValue, \Graphpinator
         return $this->rawValue;
     }
 
-    public function printValue() : string
-    {
-        return \json_encode($this->rawValue, \JSON_THROW_ON_ERROR);
-    }
-
     public function prettyPrint(int $indentLevel) : string
     {
         return $this->printValue();
@@ -53,7 +48,7 @@ final class LeafValue implements \Graphpinator\Value\InputedValue, \Graphpinator
 
     public function isSame(Value $compare) : bool
     {
-        return $compare instanceof self
+        return $compare instanceof static
             && $this->rawValue === $compare->getRawValue();
     }
 }

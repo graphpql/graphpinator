@@ -398,7 +398,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         
         input DefaultsInput {
           scalar: String! = "defaultString"
-          enum: SimpleEnum! = "A"
+          enum: SimpleEnum! = A
           list: [String!]! = [
             "string1",
             "string2"

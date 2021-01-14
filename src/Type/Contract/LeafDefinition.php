@@ -24,7 +24,7 @@ abstract class LeafDefinition extends \Graphpinator\Type\Contract\ConcreteDefini
             return new \Graphpinator\Value\NullInputedValue($this);
         }
 
-        return new \Graphpinator\Value\LeafValue($this, $rawValue, true);
+        return new \Graphpinator\Value\ScalarValue($this, $rawValue, true);
     }
 
     final public function createResolvedValue(mixed $rawValue) : \Graphpinator\Value\ResolvedValue
@@ -33,7 +33,7 @@ abstract class LeafDefinition extends \Graphpinator\Type\Contract\ConcreteDefini
             return new \Graphpinator\Value\NullResolvedValue($this);
         }
 
-        return new \Graphpinator\Value\LeafValue($this, $rawValue, false);
+        return new \Graphpinator\Value\ScalarValue($this, $rawValue, false);
     }
 
     final public function getField(string $name) : \Graphpinator\Field\Field

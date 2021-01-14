@@ -751,7 +751,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                                 [
                                     'name' => 'enum',
                                     'description' => null,
-                                    'defaultValue' => '"A"',
+                                    'defaultValue' => 'A',
                                 ],
                                 [
                                     'name' => 'list',
