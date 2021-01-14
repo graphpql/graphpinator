@@ -10,6 +10,7 @@ abstract class InputType extends \Graphpinator\Type\Contract\ConcreteDefinition 
     use \Graphpinator\Utils\TObjectConstraint;
 
     protected ?\Graphpinator\Argument\ArgumentSet $arguments = null;
+    private bool $cycleValidated = false;
 
     final public function createInputedValue(mixed $rawValue) : \Graphpinator\Value\InputedValue
     {
@@ -28,6 +29,8 @@ abstract class InputType extends \Graphpinator\Type\Contract\ConcreteDefinition 
     {
         if (!$this->arguments instanceof \Graphpinator\Argument\ArgumentSet) {
             $this->arguments = $this->getFieldDefinition();
+
+            $this->validateCycles([]);
         }
 
         return $this->arguments;
@@ -47,4 +50,41 @@ abstract class InputType extends \Graphpinator\Type\Contract\ConcreteDefinition 
     }
 
     abstract protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet;
+
+    private function validateCycles(array $stack) : void
+    {
+        if ($this->cycleValidated) {
+            return;
+        }
+
+        if (\array_key_exists($this->getName(), $stack)) {
+            throw new \Graphpinator\Exception\Type\InputCycle();
+        }
+
+        foreach ($this->arguments as $argumentContract) {
+            $type = $argumentContract->getType();
+
+            if (!$type instanceof NotNullType) {
+                continue;
+            }
+
+            $type = $type->getInnerType();
+
+            if ($type instanceof ListType || $type instanceof \Graphpinator\Type\Contract\LeafDefinition) {
+                continue;
+            }
+
+            \assert($type instanceof self);
+
+            if ($type->arguments === null) {
+                $type->arguments = $type->getFieldDefinition();
+            }
+
+            $stack[$this->getName()] = true;
+            $type->validateCycles($stack);
+            unset($stack[$this->getName()]);
+        }
+
+        $this->cycleValidated = true;
+    }
 }
