@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Directive;
+namespace Graphpinator\Directive\Constraint;
 
 final class ObjectConstraintDirective extends \Graphpinator\Directive\TypeSystemDirective
 {
@@ -13,9 +13,9 @@ final class ObjectConstraintDirective extends \Graphpinator\Directive\TypeSystem
     {
         parent::__construct(
             [
-                TypeSystemDirectiveLocation::INPUT_OBJECT,
-                TypeSystemDirectiveLocation::INTERFACE,
-                TypeSystemDirectiveLocation::OBJECT,
+                \Graphpinator\Directive\TypeSystemDirectiveLocation::INPUT_OBJECT,
+                \Graphpinator\Directive\TypeSystemDirectiveLocation::INTERFACE,
+                \Graphpinator\Directive\TypeSystemDirectiveLocation::OBJECT,
             ],
             false,
             new \Graphpinator\Argument\ArgumentSet([

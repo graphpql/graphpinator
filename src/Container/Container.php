@@ -101,41 +101,41 @@ abstract class Container
     /**
      * Graphpinator IntConstraint directive.
      */
-    public static function directiveIntConstraint() : \Graphpinator\Directive\IntConstraintDirective
+    public static function directiveIntConstraint() : \Graphpinator\Directive\Constraint\IntConstraintDirective
     {
-        return new \Graphpinator\Directive\IntConstraintDirective();
+        return new \Graphpinator\Directive\Constraint\IntConstraintDirective();
     }
 
     /**
      * Graphpinator FloatConstraint directive.
      */
-    public static function directiveFloatConstraint() : \Graphpinator\Directive\FloatConstraintDirective
+    public static function directiveFloatConstraint() : \Graphpinator\Directive\Constraint\FloatConstraintDirective
     {
-        return new \Graphpinator\Directive\FloatConstraintDirective();
+        return new \Graphpinator\Directive\Constraint\FloatConstraintDirective();
     }
 
     /**
      * Graphpinator StringConstraint directive.
      */
-    public static function directiveStringConstraint() : \Graphpinator\Directive\StringConstraintDirective
+    public static function directiveStringConstraint() : \Graphpinator\Directive\Constraint\StringConstraintDirective
     {
-        return new \Graphpinator\Directive\StringConstraintDirective();
+        return new \Graphpinator\Directive\Constraint\StringConstraintDirective();
     }
 
     /**
      * Graphpinator ListConstraint directive.
      */
-    public static function directiveListConstraint() : \Graphpinator\Directive\ListConstraintDirective
+    public static function directiveListConstraint() : \Graphpinator\Directive\Constraint\ListConstraintDirective
     {
-        return new \Graphpinator\Directive\ListConstraintDirective();
+        return new \Graphpinator\Directive\Constraint\ListConstraintDirective();
     }
 
     /**
      * Graphpinator ObjectConstraint directive.
      */
-    public static function directiveObjectConstraint() : \Graphpinator\Directive\ObjectConstraintDirective
+    public static function directiveObjectConstraint() : \Graphpinator\Directive\Constraint\ObjectConstraintDirective
     {
-        return new \Graphpinator\Directive\ObjectConstraintDirective();
+        return new \Graphpinator\Directive\Constraint\ObjectConstraintDirective();
     }
 
     /**
