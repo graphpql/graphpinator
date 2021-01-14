@@ -23,7 +23,7 @@ abstract class ExecutableDirective extends \Graphpinator\Directive\Directive
         $this->resolveFnAfter = $resolveFnAfter;
     }
 
-    abstract public function validateType(\Graphpinator\Type\Contract\Outputable $type) : bool;
+    abstract public function validateType(\Graphpinator\Type\Contract\Definition $type) : bool;
 
     public function resolveBefore(\Graphpinator\Value\ArgumentValueSet $arguments) : string
     {

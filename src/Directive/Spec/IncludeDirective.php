@@ -30,7 +30,7 @@ final class IncludeDirective extends \Graphpinator\Directive\ExecutableDirective
         );
     }
 
-    public function validateType(\Graphpinator\Type\Contract\Outputable $type) : bool
+    public function validateType(\Graphpinator\Type\Contract\Definition $type) : bool
     {
         return true;
     }

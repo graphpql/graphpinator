@@ -45,7 +45,7 @@ final class ListWhereDirective extends \Graphpinator\Directive\BaseWhereDirectiv
         );
     }
 
-    public function validateType(\Graphpinator\Type\Contract\Outputable $type) : bool
+    public function validateType(\Graphpinator\Type\Contract\Definition $type) : bool
     {
         return $type instanceof \Graphpinator\Type\ListType
             && $type->getInnerType() instanceof \Graphpinator\Type\ListType;

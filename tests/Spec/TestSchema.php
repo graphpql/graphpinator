@@ -1367,6 +1367,11 @@ final class TestSchema
                     null,
                 );
             }
+
+            public function validateType(\Graphpinator\Type\Contract\Definition $type) : bool
+            {
+                return true;
+            }
         };
     }
 
@@ -1382,11 +1387,16 @@ final class TestSchema
                     [\Graphpinator\Directive\ExecutableDirectiveLocation::FIELD],
                     true,
                     new \Graphpinator\Argument\ArgumentSet(),
-                    static function() {
-                        return 'blahblah';
+                    static function() : string {
+                        return 'random';
                     },
                     null,
                 );
+            }
+
+            public function validateType(\Graphpinator\Type\Contract\Definition $type) : bool
+            {
+                return true;
             }
         };
     }
