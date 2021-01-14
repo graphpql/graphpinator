@@ -232,7 +232,7 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 Json::fromNative((object) [
-                    'query' => '{ fieldUnion @invalidDirective() { ... on Abc { fieldXyz { name } } } }',
+                    'query' => '{ fieldUnion @invalidDirectiveResult() { ... on Abc { fieldXyz { name } } } }',
                 ]),
                 Json::fromNative((object) ['errors' => [['message' => 'Server responded with unknown error.']]]),
             ],

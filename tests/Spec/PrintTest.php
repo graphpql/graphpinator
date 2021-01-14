@@ -793,7 +793,9 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           orNull: Boolean! = false
         ) repeatable on FIELD
         
-        directive @invalidDirective repeatable on FIELD
+        directive @invalidDirectiveResult repeatable on FIELD
+        
+        directive @invalidDirectiveType on FIELD
         
         directive @listConstraint(
           minItems: Int
@@ -901,7 +903,8 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             'enum SimpleEnum',
             'directive @floatConstraint',
             'directive @intConstraint',
-            'directive @invalidDirective',
+            'directive @invalidDirectiveResult',
+            'directive @invalidDirectiveType',
             'directive @listConstraint',
             'directive @objectConstraint',
             'directive @stringConstraint',

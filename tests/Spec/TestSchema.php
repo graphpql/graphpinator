@@ -81,7 +81,8 @@ final class TestSchema
             'InterfaceChildType' => self::getInterfaceChildType(),
         ], [
             'testDirective' => self::getTestDirective(),
-            'invalidDirective' => self::getInvalidDirective(),
+            'invalidDirectiveResult' => self::getInvalidDirectiveResult(),
+            'invalidDirectiveType' => self::getInvalidDirectiveType(),
             'stringFilter' => new \Graphpinator\Directive\StringWhereDirective(),
             'intFilter' => new \Graphpinator\Directive\IntWhereDirective(),
             'floatFilter' => new \Graphpinator\Directive\FloatWhereDirective(),
@@ -1375,11 +1376,11 @@ final class TestSchema
         };
     }
 
-    public static function getInvalidDirective() : \Graphpinator\Directive\Directive
+    public static function getInvalidDirectiveResult() : \Graphpinator\Directive\Directive
     {
         return new class extends \Graphpinator\Directive\ExecutableDirective
         {
-            protected const NAME = 'invalidDirective';
+            protected const NAME = 'invalidDirectiveResult';
 
             public function __construct()
             {
@@ -1397,6 +1398,30 @@ final class TestSchema
             public function validateType(\Graphpinator\Type\Contract\Definition $type) : bool
             {
                 return true;
+            }
+        };
+    }
+
+    public static function getInvalidDirectiveType() : \Graphpinator\Directive\Directive
+    {
+        return new class extends \Graphpinator\Directive\ExecutableDirective
+        {
+            protected const NAME = 'invalidDirectiveType';
+
+            public function __construct()
+            {
+                parent::__construct(
+                    [\Graphpinator\Directive\ExecutableDirectiveLocation::FIELD],
+                    false,
+                    new \Graphpinator\Argument\ArgumentSet(),
+                    static function() : void {},
+                    null,
+                );
+            }
+
+            public function validateType(\Graphpinator\Type\Contract\Definition $type) : bool
+            {
+                return false;
             }
         };
     }

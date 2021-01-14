@@ -159,11 +159,18 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                                     'isRepeatable' => true,
                                 ],
                                 [
-                                    'name' => 'invalidDirective',
+                                    'name' => 'invalidDirectiveResult',
                                     'description' => null,
                                     'args' => [],
                                     'locations' => ['FIELD'],
                                     'isRepeatable' => true,
+                                ],
+                                [
+                                    'name' => 'invalidDirectiveType',
+                                    'description' => null,
+                                    'args' => [],
+                                    'locations' => ['FIELD'],
+                                    'isRepeatable' => false,
                                 ],
                                 [
                                     'name' => 'stringWhere',
