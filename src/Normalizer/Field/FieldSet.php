@@ -56,9 +56,9 @@ final class FieldSet extends \Infinityloop\Utils\ObjectSet
     ) : void
     {
         $fieldArguments = $field->getArguments();
-        $fieldParentType = $field->getTypeCondition()
+        $scopeType = $field->getTypeCondition()
             ?? $parentType;
-        $fieldReturnType = $fieldParentType->getField($field->getName())->getType();
+        $fieldReturnType = $scopeType->getField($field->getName())->getType();
 
         foreach ($this->fieldsForName[$field->getAlias()] as $conflict) {
             \assert($conflict instanceof \Graphpinator\Normalizer\Field\Field);
@@ -75,8 +75,8 @@ final class FieldSet extends \Infinityloop\Utils\ObjectSet
             }
 
             /** Fields have type conditions which can never occur together */
-            if (!$conflictParentType->isInstanceOf($fieldParentType) &&
-                !$fieldParentType->isInstanceOf($conflictParentType)) {
+            if (!$conflictParentType->isInstanceOf($scopeType) &&
+                !$scopeType->isInstanceOf($conflictParentType)) {
                 continue;
             }
 

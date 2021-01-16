@@ -23,7 +23,7 @@ final class Field
         \Graphpinator\Normalizer\Variable\VariableSet $variableSet,
     )
     {
-        \assert($parentType instanceof \Graphpinator\Type\Contract\Outputable);
+        \assert($parentType instanceof \Graphpinator\Type\Contract\Scopable);
 
         $this->name = $parsed->getName();
         $this->alias = $parsed->getAlias()

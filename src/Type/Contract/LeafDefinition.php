@@ -6,7 +6,8 @@ namespace Graphpinator\Type\Contract;
 
 abstract class LeafDefinition extends \Graphpinator\Type\Contract\ConcreteDefinition implements
     \Graphpinator\Type\Contract\Inputable,
-    \Graphpinator\Type\Contract\Resolvable
+    \Graphpinator\Type\Contract\Resolvable,
+    \Graphpinator\Type\Contract\Scopable
 {
     final public function resolve(
         ?\Graphpinator\Normalizer\Field\FieldSet $requestedFields,

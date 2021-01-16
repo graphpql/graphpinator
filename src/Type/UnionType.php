@@ -42,14 +42,8 @@ abstract class UnionType extends \Graphpinator\Type\Contract\AbstractDefinition
 
     final public function getField(string $name) : \Graphpinator\Field\Field
     {
-        $field = $this->getMetaFields()[$name]
-            ?? null;
-
-        if ($field instanceof \Graphpinator\Field\ResolvableField) {
-            return $field;
-        }
-
-        throw new \Graphpinator\Exception\Normalizer\SelectionOnUnion();
+        return $this->getMetaFields()[$name]
+            ?? throw new \Graphpinator\Exception\Normalizer\SelectionOnUnion();
     }
 
     final public function getTypeKind() : string

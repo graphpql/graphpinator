@@ -102,15 +102,9 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
 
     final public function getField(string $name) : \Graphpinator\Field\Field
     {
-        $field = $this->getMetaFields()[$name]
+        return $this->getMetaFields()[$name]
             ?? $this->getFields()[$name]
-            ?? null;
-
-        if ($field instanceof \Graphpinator\Field\ResolvableField) {
-            return $field;
-        }
-
-        throw new \Graphpinator\Exception\Normalizer\UnknownField($name, $this->getName());
+            ?? throw new \Graphpinator\Exception\Normalizer\UnknownField($name, $this->getName());
     }
 
     final public function getTypeKind() : string
