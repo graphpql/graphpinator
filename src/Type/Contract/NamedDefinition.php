@@ -71,4 +71,9 @@ abstract class NamedDefinition implements \Graphpinator\Type\Contract\Definition
 
         return '"""' . \PHP_EOL . $this->getDescription() . \PHP_EOL . '"""' . \PHP_EOL;
     }
+
+    public function getShapingType() : \Graphpinator\Type\Contract\Definition
+    {
+        return $this;
+    }
 }

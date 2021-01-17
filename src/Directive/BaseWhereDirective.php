@@ -11,11 +11,7 @@ abstract class BaseWhereDirective extends \Graphpinator\Directive\ExecutableDire
 
     public function validateType(\Graphpinator\Type\Contract\Definition $type) : bool
     {
-        if ($type instanceof \Graphpinator\Type\NotNullType) {
-            $type = $type->getInnerType();
-        }
-
-        return $type instanceof \Graphpinator\Type\ListType;
+        return $type->getShapingType() instanceof \Graphpinator\Type\ListType;
     }
 
     protected static function extractValue(\Graphpinator\Value\ResolvedValue $singleValue, ?string $where) : string|int|float|bool|array|null

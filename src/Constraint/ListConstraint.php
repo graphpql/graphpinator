@@ -71,21 +71,13 @@ final class ListConstraint extends \Graphpinator\Constraint\ArgumentFieldConstra
 
     private static function recursiveValidateType(\stdClass $options, \Graphpinator\Type\Contract\Definition $type) : bool
     {
-        $usedType = $type;
-
-        if ($usedType instanceof \Graphpinator\Type\NotNullType) {
-            $usedType = $usedType->getInnerType();
-        }
+        $usedType = $type->getShapingType();
 
         if (!$usedType instanceof \Graphpinator\Type\ListType) {
             return false;
         }
 
-        $usedType = $usedType->getInnerType();
-
-        if ($usedType instanceof \Graphpinator\Type\NotNullType) {
-            $usedType = $usedType->getInnerType();
-        }
+        $usedType = $usedType->getInnerType()->getShapingType();
 
         if ($options->unique && !$usedType instanceof \Graphpinator\Type\Contract\LeafDefinition) {
             throw new \Graphpinator\Exception\Constraint\UniqueConstraintOnlyScalar();
