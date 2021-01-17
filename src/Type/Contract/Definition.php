@@ -19,4 +19,6 @@ interface Definition
     public function isOutputable() : bool;
 
     public function isResolvable() : bool;
+
+    public function getShapingType() : \Graphpinator\Type\Contract\Definition;
 }

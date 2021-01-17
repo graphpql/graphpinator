@@ -58,4 +58,9 @@ final class NotNullType extends \Graphpinator\Type\Contract\ModifierDefinition
     {
         return $this->innerType->printName() . '!';
     }
+
+    public function getShapingType() : \Graphpinator\Type\Contract\Definition
+    {
+        return $this->getInnerType();
+    }
 }

@@ -72,4 +72,9 @@ final class ListType extends \Graphpinator\Type\Contract\ModifierDefinition
     {
         return new \Graphpinator\Type\NotNullType($this);
     }
+
+    public function getShapingType() : \Graphpinator\Type\Contract\Definition
+    {
+        return $this;
+    }
 }
