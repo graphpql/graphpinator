@@ -35,6 +35,11 @@ abstract class NamedDefinition implements \Graphpinator\Type\Contract\Definition
         return $this;
     }
 
+    final public function getShapingType() : \Graphpinator\Type\Contract\Definition
+    {
+        return $this;
+    }
+
     final public function isInputable() : bool
     {
         return $this instanceof Inputable;
@@ -63,10 +68,5 @@ abstract class NamedDefinition implements \Graphpinator\Type\Contract\Definition
     final public function list() : \Graphpinator\Type\ListType
     {
         return new \Graphpinator\Type\ListType($this);
-    }
-
-    public function getShapingType() : \Graphpinator\Type\Contract\Definition
-    {
-        return $this;
     }
 }

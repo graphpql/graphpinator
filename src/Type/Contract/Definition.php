@@ -10,6 +10,8 @@ interface Definition
 
     public function getNamedType() : \Graphpinator\Type\Contract\NamedDefinition;
 
+    public function getShapingType() : \Graphpinator\Type\Contract\Definition;
+
     public function printName() : string;
 
     public function isInstanceOf(\Graphpinator\Type\Contract\Definition $type) : bool;
@@ -19,6 +21,4 @@ interface Definition
     public function isOutputable() : bool;
 
     public function isResolvable() : bool;
-
-    public function getShapingType() : \Graphpinator\Type\Contract\Definition;
 }
