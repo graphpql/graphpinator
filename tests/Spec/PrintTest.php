@@ -757,18 +757,27 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           enumList: [SimpleEnum]
         }
         
+        """
+        Graphpinator booleanWhere directive.
+        """
         directive @booleanWhere(
           field: String
           equals: Boolean
           orNull: Boolean! = false
         ) repeatable on FIELD
         
+        """
+        Graphpinator floatConstraint directive.
+        """
         directive @floatConstraint(
           min: Float
           max: Float
           oneOf: [Float!]
         ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION | FIELD_DEFINITION
         
+        """
+        Graphpinator floatWhere directive.
+        """
         directive @floatWhere(
           field: String
           not: Boolean! = false
@@ -778,12 +787,18 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           orNull: Boolean! = false
         ) repeatable on FIELD
 
+        """
+        Graphpinator intConstraint directive.
+        """
         directive @intConstraint(
           min: Int
           max: Int
           oneOf: [Int!]
         ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION | FIELD_DEFINITION
         
+        """
+        Graphpinator intWhere directive.
+        """
         directive @intWhere(
           field: String
           not: Boolean! = false
@@ -797,6 +812,9 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         
         directive @invalidDirectiveType on FIELD
         
+        """
+        Graphpinator listConstraint directive.
+        """
         directive @listConstraint(
           minItems: Int
           maxItems: Int
@@ -804,6 +822,9 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           innerList: ListConstraintInput
         ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION | FIELD_DEFINITION
         
+        """
+        Graphpinator listWhere directive.
+        """
         directive @listWhere(
           field: String
           not: Boolean! = false
@@ -812,11 +833,17 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           orNull: Boolean! = false
         ) repeatable on FIELD
 
+        """
+        Graphpinator objectConstraint directive.
+        """
         directive @objectConstraint(
           atLeastOne: [String!]
           exactlyOne: [String!]
         ) on INPUT_OBJECT | INTERFACE | OBJECT
         
+        """
+        Graphpinator stringConstraint directive.
+        """
         directive @stringConstraint(
           minLength: Int
           maxLength: Int
@@ -824,6 +851,9 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           oneOf: [String!]
         ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION | FIELD_DEFINITION
         
+        """
+        Graphpinator stringWhere directive.
+        """
         directive @stringWhere(
           field: String
           not: Boolean! = false

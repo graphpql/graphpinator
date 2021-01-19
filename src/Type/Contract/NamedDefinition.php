@@ -9,6 +9,8 @@ abstract class NamedDefinition implements \Graphpinator\Type\Contract\Definition
     protected const NAME = '';
     protected const DESCRIPTION = null;
 
+    use \Graphpinator\Utils\TTypeSystemElement;
+
     abstract public function printSchema() : string;
 
     abstract public function isInstanceOf(\Graphpinator\Type\Contract\Definition $type) : bool;
@@ -61,15 +63,6 @@ abstract class NamedDefinition implements \Graphpinator\Type\Contract\Definition
     final public function list() : \Graphpinator\Type\ListType
     {
         return new \Graphpinator\Type\ListType($this);
-    }
-
-    final protected function printDescription() : string
-    {
-        if ($this->getDescription() === null) {
-            return '';
-        }
-
-        return '"""' . \PHP_EOL . $this->getDescription() . \PHP_EOL . '"""' . \PHP_EOL;
     }
 
     public function getShapingType() : \Graphpinator\Type\Contract\Definition

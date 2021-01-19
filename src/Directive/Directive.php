@@ -8,6 +8,7 @@ abstract class Directive
 {
     use \Nette\SmartObject;
     use \Graphpinator\Printable\TRepeatablePrint;
+    use \Graphpinator\Utils\TTypeSystemElement;
 
     protected const NAME = '';
     protected const DESCRIPTION = null;
@@ -50,7 +51,7 @@ abstract class Directive
 
     public function printSchema() : string
     {
-        $schema = 'directive @' . $this->getName();
+        $schema = $this->printDescription() . 'directive @' . $this->getName();
 
         if ($this->arguments->count() > 0) {
             $schema .= '(' . \PHP_EOL . $this->printItems($this->getArguments(), 1) . ')';
