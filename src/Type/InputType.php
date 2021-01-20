@@ -9,6 +9,7 @@ abstract class InputType extends \Graphpinator\Type\Contract\ConcreteDefinition 
     use \Graphpinator\Printable\TRepeatablePrint;
     use \Graphpinator\Utils\TObjectConstraint;
 
+    protected const DATA_CLASS = \stdClass::class;
     protected ?\Graphpinator\Argument\ArgumentSet $arguments = null;
     private bool $cycleValidated = false;
 
@@ -47,6 +48,11 @@ abstract class InputType extends \Graphpinator\Type\Contract\ConcreteDefinition 
             . 'input ' . $this->getName() . $this->printConstraints() . ' {' . \PHP_EOL
             . $this->printItems($this->getArguments(), 1)
             . '}';
+    }
+
+    final public function getDataClass() : string
+    {
+        return static::DATA_CLASS;
     }
 
     abstract protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet;

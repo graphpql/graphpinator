@@ -23,9 +23,9 @@ final class VariableValue implements \Graphpinator\Value\InputedValue
         $this->variable = $variable;
     }
 
-    public function getRawValue() : mixed
+    public function getRawValue(bool $convertToObject = false) : mixed
     {
-        return $this->value->getRawValue();
+        return $this->value->getRawValue($convertToObject);
     }
 
     public function getType() : \Graphpinator\Type\Contract\Inputable

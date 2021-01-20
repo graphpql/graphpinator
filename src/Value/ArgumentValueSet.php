@@ -40,12 +40,12 @@ final class ArgumentValueSet extends \Infinityloop\Utils\ImplicitObjectMap
         }
     }
 
-    public function getRawValues() : array
+    public function getRawValues(bool $convertToObject = false) : array
     {
         $return = [];
 
         foreach ($this as $argumentValue) {
-            $return[] = $argumentValue->getValue()->getRawValue();
+            $return[] = $argumentValue->getValue()->getRawValue($convertToObject);
         }
 
         return $return;

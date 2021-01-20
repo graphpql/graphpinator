@@ -21,7 +21,7 @@ abstract class LeafValue implements \Graphpinator\Value\InputedValue, \Graphpina
         $this->rawValue = $rawValue;
     }
 
-    public function getRawValue() : string|int|float|bool|\Psr\Http\Message\UploadedFileInterface
+    public function getRawValue(bool $convertToObject = false) : string|int|float|bool|\Psr\Http\Message\UploadedFileInterface
     {
         return $this->rawValue;
     }

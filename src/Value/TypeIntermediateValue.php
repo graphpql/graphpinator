@@ -21,7 +21,7 @@ final class TypeIntermediateValue implements \Graphpinator\Value\ResolvedValue
         $this->rawValue = $rawValue;
     }
 
-    public function getRawValue() : mixed
+    public function getRawValue(bool $convertToObject = false) : mixed
     {
         return $this->rawValue;
     }
