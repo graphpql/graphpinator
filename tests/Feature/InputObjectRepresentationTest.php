@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Feature;
 
-final class InputObjectRepresentation extends \PHPUnit\Framework\TestCase
+final class InputObjectRepresentationTest extends \PHPUnit\Framework\TestCase
 {
     public static function getSimpleInput() : \Graphpinator\Type\InputType
     {
@@ -17,20 +17,16 @@ final class InputObjectRepresentation extends \PHPUnit\Framework\TestCase
             {
                 return new \Graphpinator\Argument\ArgumentSet([
                     new \Graphpinator\Argument\Argument(
-                        'name',
-                        \Graphpinator\Container\Container::String()->notNull(),
-                    ),
-                    new \Graphpinator\Argument\Argument(
                         'number',
-                        \Graphpinator\Container\Container::Int()->notNullList(),
-                    ),
-                    new \Graphpinator\Argument\Argument(
-                        'bool',
-                        \Graphpinator\Container\Container::Boolean(),
+                        \Graphpinator\Container\Container::Int(),
                     ),
                     new \Graphpinator\Argument\Argument(
                         'simpleInput2',
-                        \Graphpinator\Tests\Feature\InputObjectRepresentation::getSimpleInput2(),
+                        \Graphpinator\Tests\Feature\InputObjectRepresentationTest::getSimpleInput2(),
+                    ),
+                    new \Graphpinator\Argument\Argument(
+                        'simpleInput3',
+                        \Graphpinator\Tests\Feature\InputObjectRepresentationTest::getSimpleInput3(),
                     ),
                 ]);
             }
@@ -41,23 +37,33 @@ final class InputObjectRepresentation extends \PHPUnit\Framework\TestCase
     {
         return new class extends \Graphpinator\Type\InputType
         {
-            protected const NAME = 'SimpleInput';
+            protected const NAME = 'SimpleInput2';
             protected const DATA_CLASS = \Graphpinator\Tests\Feature\InputObject2::class;
 
             protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
             {
                 return new \Graphpinator\Argument\ArgumentSet([
                     new \Graphpinator\Argument\Argument(
-                        'name',
-                        \Graphpinator\Container\Container::String()->notNull(),
+                        'number',
+                        \Graphpinator\Container\Container::Int(),
                     ),
+                ]);
+            }
+        };
+    }
+
+    public static function getSimpleInput3() : \Graphpinator\Type\InputType
+    {
+        return new class extends \Graphpinator\Type\InputType
+        {
+            protected const NAME = 'SimpleInput3';
+
+            protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
+            {
+                return new \Graphpinator\Argument\ArgumentSet([
                     new \Graphpinator\Argument\Argument(
                         'number',
-                        \Graphpinator\Container\Container::Int()->notNullList(),
-                    ),
-                    new \Graphpinator\Argument\Argument(
-                        'bool',
-                        \Graphpinator\Container\Container::Boolean(),
+                        \Graphpinator\Container\Container::Int(),
                     ),
                 ]);
             }
@@ -67,12 +73,12 @@ final class InputObjectRepresentation extends \PHPUnit\Framework\TestCase
     public function testInputObject() : void
     {
         $request = \Infinityloop\Utils\Json::fromNative((object) [
-            'query' => 'query queryName { field1(arg: {name: "foo", number: [123], bool: false, 
-                simpleInput2: {name: "foo", number: [123], bool: false} }) }',
+            'query' => 'query queryName { field1(arg: { number: 123, 
+                simpleInput2: {number: 123}, simpleInput3: {number: 123} }) }',
         ]);
         $expected = \Infinityloop\Utils\Json::fromNative((object) [
             'data' => [
-                'field1' => 246,
+                'field1' => 369,
             ],
         ]);
 
@@ -104,13 +110,14 @@ final class InputObjectRepresentation extends \PHPUnit\Framework\TestCase
                         \Graphpinator\Container\Container::Int(),
                         static function($parent, \Graphpinator\Tests\Feature\InputObject $arg) : int {
                             \assert($arg->simpleInput2 instanceof \Graphpinator\Tests\Feature\InputObject2);
+                            \assert($arg->simpleInput3 instanceof \stdClass);
 
-                            return $arg->number[0] + $arg->simpleInput2->number[0];
+                            return $arg->number + $arg->simpleInput2->number + $arg->simpleInput3->number;
                         },
                     )->setArguments(new \Graphpinator\Argument\ArgumentSet([
                         new \Graphpinator\Argument\Argument(
                             'arg',
-                            \Graphpinator\Tests\Feature\InputObjectRepresentation::getSimpleInput(),
+                            \Graphpinator\Tests\Feature\InputObjectRepresentationTest::getSimpleInput(),
                         ),
                     ])),
                 ]);

@@ -15,7 +15,7 @@ final class NullResolvedValue implements \Graphpinator\Value\OutputValue, \Graph
         $this->type = $type;
     }
 
-    public function getRawValue(bool $forResolvers = false) : ?bool
+    public function getRawValue() : ?bool
     {
         return null;
     }

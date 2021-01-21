@@ -19,7 +19,7 @@ final class TypeValue implements \Graphpinator\Value\OutputValue
         $type->validateConstraints($this);
     }
 
-    public function getRawValue(bool $forResolvers = false) : \stdClass
+    public function getRawValue() : \stdClass
     {
         return $this->value;
     }

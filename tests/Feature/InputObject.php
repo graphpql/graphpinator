@@ -6,8 +6,7 @@ namespace Graphpinator\Tests\Feature;
 
 final class InputObject
 {
-    public string $name;
-    public array $number;
-    public ?bool $bool;
+    public int $number;
     public ?InputObject2 $simpleInput2;
+    public \stdClass $simpleInput3;
 }
