@@ -12,14 +12,14 @@ final class ListResolvedValue extends \Graphpinator\Value\ListValue implements \
         $this->value = $rawValue;
     }
 
-    public function getRawValue(bool $convertToObject = false) : array
+    public function getRawValue(bool $forResolvers = false) : array
     {
         $return = [];
 
         foreach ($this->value as $listItem) {
             \assert($listItem instanceof ResolvedValue);
 
-            $return[] = $listItem->getRawValue($convertToObject);
+            $return[] = $listItem->getRawValue($forResolvers);
         }
 
         return $return;

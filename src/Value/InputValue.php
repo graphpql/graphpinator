@@ -76,16 +76,16 @@ final class InputValue implements \Graphpinator\Value\InputedValue
         return new self($type, $inner);
     }
 
-    public function getRawValue(bool $convertToObject = false) : object
+    public function getRawValue(bool $forResolvers = false) : object
     {
-        $return = $convertToObject === true
+        $return = $forResolvers === true
             ? new ($this->getType()->getDataClass())
-            : new \stdClass;
+            : new \stdClass();
 
         foreach ((array) $this->value as $fieldName => $fieldValue) {
             \assert($fieldValue instanceof \Graphpinator\Value\ArgumentValue);
 
-            $return->{$fieldName} = $fieldValue->getValue()->getRawValue($convertToObject);
+            $return->{$fieldName} = $fieldValue->getValue()->getRawValue($forResolvers);
         }
 
         return $return;

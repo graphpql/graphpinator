@@ -10,6 +10,7 @@ abstract class InputType extends \Graphpinator\Type\Contract\ConcreteDefinition 
     use \Graphpinator\Utils\TObjectConstraint;
 
     protected const DATA_CLASS = \stdClass::class;
+
     protected ?\Graphpinator\Argument\ArgumentSet $arguments = null;
     private bool $cycleValidated = false;
 
