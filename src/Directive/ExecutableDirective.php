@@ -31,7 +31,7 @@ abstract class ExecutableDirective extends \Graphpinator\Directive\Directive
             return DirectiveResult::NONE;
         }
 
-        $result = \call_user_func_array($this->resolveFnBefore, $arguments->getRawValues());
+        $result = \call_user_func_array($this->resolveFnBefore, $arguments->getValuesForResolver());
 
         if (\is_string($result) && \array_key_exists($result, DirectiveResult::ENUM)) {
             return $result;
@@ -49,7 +49,7 @@ abstract class ExecutableDirective extends \Graphpinator\Directive\Directive
             return DirectiveResult::NONE;
         }
 
-        $rawArguments = $arguments->getRawValues();
+        $rawArguments = $arguments->getValuesForResolver();
         \array_unshift($rawArguments, $fieldValue->getValue());
         $result = \call_user_func_array($this->resolveFnAfter, $rawArguments);
 

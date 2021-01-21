@@ -46,14 +46,14 @@ final class ListInputedValue extends \Graphpinator\Value\ListValue implements \G
         return new self($type, $inner);
     }
 
-    public function getRawValue() : array
+    public function getRawValue(bool $forResolvers = false) : array
     {
         $return = [];
 
         foreach ($this->value as $listItem) {
             \assert($listItem instanceof InputedValue);
 
-            $return[] = $listItem->getRawValue();
+            $return[] = $listItem->getRawValue($forResolvers);
         }
 
         return $return;

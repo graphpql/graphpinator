@@ -6,6 +6,8 @@ namespace Graphpinator\Value;
 
 interface InputedValue extends \Graphpinator\Value\Value
 {
+    public function getRawValue(bool $forResolvers = false) : mixed;
+
     public function getType() : \Graphpinator\Type\Contract\Inputable;
 
     /**
