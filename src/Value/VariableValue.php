@@ -10,7 +10,7 @@ final class VariableValue implements \Graphpinator\Value\InputedValue
 
     private \Graphpinator\Type\Contract\Inputable $type;
     private \Graphpinator\Normalizer\Variable\Variable $variable;
-    private ?\Graphpinator\Value\Value $value = null;
+    private ?\Graphpinator\Value\InputedValue $value = null;
 
     public function __construct(\Graphpinator\Type\Contract\Inputable $type, \Graphpinator\Normalizer\Variable\Variable $variable)
     {
