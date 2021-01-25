@@ -26,11 +26,9 @@ abstract class EnumType extends \Graphpinator\Type\Contract\LeafDefinition
                 continue;
             }
 
-            if (\is_string($value)) {
-                $values[] = new \Graphpinator\Type\Enum\EnumItem(\strtoupper($value));
-            } elseif (\is_array($value) && \count($value) === 2) {
-                $values[] = new \Graphpinator\Type\Enum\EnumItem(\strtoupper($value[0]), $value[1]);
-            }
+            $values[] = new \Graphpinator\Type\Enum\EnumItem($value, $constant->getDocComment()
+                ? \trim($constant->getDocComment(), '/* ')
+                : null);
         }
 
         return new \Graphpinator\Type\Enum\EnumItemSet($values);
