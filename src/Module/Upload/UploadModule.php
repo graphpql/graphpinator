@@ -19,7 +19,7 @@ final class UploadModule implements \Graphpinator\Module\Module
     {
         $variables = $request->getVariables();
 
-        foreach ($this->fileProvider->getMap() as $fileKey => $locations) {
+        foreach ($this->fileProvider->getMap() ?? [] as $fileKey => $locations) {
             $fileValue = $this->fileProvider->getFile($fileKey);
 
             foreach ($locations as $location) {
