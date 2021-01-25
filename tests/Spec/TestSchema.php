@@ -1300,9 +1300,12 @@ final class TestSchema
     {
         return new class extends \Graphpinator\Type\EnumType
         {
-            public const A = ['A', 'First description'];
-            public const B = ['B', 'Second description'];
-            public const C = ['C', 'Third description'];
+            /** First description */
+            public const A = 'A';
+            /** Second description */
+            public const B = 'B';
+            /** Third description */
+            public const C = 'C';
 
             protected const NAME = 'ArrayEnum';
 
