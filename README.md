@@ -7,9 +7,9 @@
 Feature complete PHP implementation of GraphQL server. Its job is transformation of query string into resolved Json result for a given Schema. 
 
 - Aims to be compliant with the latest draft of GraphlQL specification.
-- Includes some opt-in extensions which are out of scope of official specs, such as custom scalars, constraint directives and file upload using [multipart-formdata](https://github.com/jaydenseric/graphql-multipart-request-spec) specs.
+- Includes some opt-in extensions which are out of scope of official specs, such as custom scalars, constraint directives, where directives or file upload using [multipart-formdata](https://github.com/jaydenseric/graphql-multipart-request-spec) specs.
 - Fully typesafe, and therefore minimum required PHP version is 7.4+.
-- Sacrafices a tiny bit of convenience for huge amount of clarity and safety - no random configuration `array`s, no variable function arguments, ... - this library doesnt try to save you from verbosity, but makes sure you always know what you've got.
+- Sacrafices a tiny bit of convenience for huge amount of clarity and safety - no random configuration `array`s, no mixed types, no variable function arguments ... - this library doesnt try to save you from verbosity, but makes sure you always know what you've got.
 
 ## Installation
 
