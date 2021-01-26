@@ -4,8 +4,10 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Directive\Spec;
 
-final class IncludeDirective extends \Graphpinator\Directive\ExecutableDirective
+final class IncludeDirective extends \Graphpinator\Directive\Directive implements \Graphpinator\Directive\ExecutableDirective
 {
+    use \Graphpinator\Directive\TExecutableDirective;
+
     protected const NAME = 'include';
     protected const DESCRIPTION = 'Built-in include directive.';
 
@@ -21,13 +23,13 @@ final class IncludeDirective extends \Graphpinator\Directive\ExecutableDirective
             new \Graphpinator\Argument\ArgumentSet([
                 new \Graphpinator\Argument\Argument('if', \Graphpinator\Container\Container::Boolean()->notNull()),
             ]),
-            static function (bool $if) : string {
-                return $if
-                    ? \Graphpinator\Directive\DirectiveResult::NONE
-                    : \Graphpinator\Directive\DirectiveResult::SKIP;
-            },
-            null,
         );
+
+        $this->fieldBeforeFn = static function (bool $if) : string {
+            return $if
+                ? \Graphpinator\Directive\FieldDirectiveResult::NONE
+                : \Graphpinator\Directive\FieldDirectiveResult::SKIP;
+        };
     }
 
     public function validateType(\Graphpinator\Type\Contract\Definition $type) : bool

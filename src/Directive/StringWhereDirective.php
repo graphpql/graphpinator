@@ -29,29 +29,29 @@ final class StringWhereDirective extends \Graphpinator\Directive\BaseWhereDirect
                 \Graphpinator\Argument\Argument::create('orNull', \Graphpinator\Container\Container::Boolean()->notNull())
                     ->setDefaultValue(false),
             ]),
-            null,
-            static function (
-                \Graphpinator\Value\ListResolvedValue $value,
-                ?string $field,
-                bool $not,
-                ?string $equals,
-                ?string $contains,
-                ?string $startsWith,
-                ?string $endsWith,
-                bool $orNull,
-            ) : string {
-                foreach ($value as $key => $item) {
-                    $singleValue = self::extractValue($item, $field);
-                    $condition = self::satisfiesCondition($singleValue, $equals, $contains, $startsWith, $endsWith, $orNull);
-
-                    if ($condition === $not) {
-                        unset($value[$key]);
-                    }
-                }
-
-                return DirectiveResult::NONE;
-            },
         );
+
+        $this->fieldAfterFn = static function (
+            \Graphpinator\Value\ListResolvedValue $value,
+            ?string $field,
+            bool $not,
+            ?string $equals,
+            ?string $contains,
+            ?string $startsWith,
+            ?string $endsWith,
+            bool $orNull,
+        ) : string {
+            foreach ($value as $key => $item) {
+                $singleValue = self::extractValue($item, $field);
+                $condition = self::satisfiesCondition($singleValue, $equals, $contains, $startsWith, $endsWith, $orNull);
+
+                if ($condition === $not) {
+                    unset($value[$key]);
+                }
+            }
+
+            return FieldDirectiveResult::NONE;
+        };
     }
 
     private static function satisfiesCondition(

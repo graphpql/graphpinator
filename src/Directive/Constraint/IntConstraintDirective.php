@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Directive\Constraint;
 
-final class IntConstraintDirective extends \Graphpinator\Directive\TypeSystemDirective
+final class IntConstraintDirective extends \Graphpinator\Directive\Directive implements \Graphpinator\Directive\TypeSystemDirective
 {
     protected const NAME = 'intConstraint';
     protected const DESCRIPTION = 'Graphpinator intConstraint directive.';

@@ -1352,8 +1352,10 @@ final class TestSchema
 
     public static function getTestDirective() : \Graphpinator\Directive\Directive
     {
-        return new class extends \Graphpinator\Directive\ExecutableDirective
+        return new class extends \Graphpinator\Directive\Directive implements \Graphpinator\Directive\ExecutableDirective
         {
+            use \Graphpinator\Directive\TExecutableDirective;
+
             protected const NAME = 'testDirective';
             public static $count = 0;
 
@@ -1363,13 +1365,13 @@ final class TestSchema
                     [\Graphpinator\Directive\ExecutableDirectiveLocation::FIELD],
                     true,
                     new \Graphpinator\Argument\ArgumentSet(),
-                    static function() {
-                        ++self::$count;
-
-                        return \Graphpinator\Directive\DirectiveResult::NONE;
-                    },
-                    null,
                 );
+
+                $this->fieldBeforeFn = static function() {
+                    ++self::$count;
+
+                    return \Graphpinator\Directive\FieldDirectiveResult::NONE;
+                };
             }
 
             public function validateType(\Graphpinator\Type\Contract\Definition $type) : bool
@@ -1381,8 +1383,10 @@ final class TestSchema
 
     public static function getInvalidDirectiveResult() : \Graphpinator\Directive\Directive
     {
-        return new class extends \Graphpinator\Directive\ExecutableDirective
+        return new class extends \Graphpinator\Directive\Directive implements \Graphpinator\Directive\ExecutableDirective
         {
+            use \Graphpinator\Directive\TExecutableDirective;
+
             protected const NAME = 'invalidDirectiveResult';
 
             public function __construct()
@@ -1391,11 +1395,11 @@ final class TestSchema
                     [\Graphpinator\Directive\ExecutableDirectiveLocation::FIELD],
                     true,
                     new \Graphpinator\Argument\ArgumentSet(),
-                    static function() : string {
-                        return 'random';
-                    },
-                    null,
                 );
+
+                $this->fieldBeforeFn = static function() : string {
+                    return 'random';
+                };
             }
 
             public function validateType(\Graphpinator\Type\Contract\Definition $type) : bool
@@ -1407,8 +1411,10 @@ final class TestSchema
 
     public static function getInvalidDirectiveType() : \Graphpinator\Directive\Directive
     {
-        return new class extends \Graphpinator\Directive\ExecutableDirective
+        return new class extends \Graphpinator\Directive\Directive implements \Graphpinator\Directive\ExecutableDirective
         {
+            use \Graphpinator\Directive\TExecutableDirective;
+
             protected const NAME = 'invalidDirectiveType';
 
             public function __construct()
@@ -1417,8 +1423,6 @@ final class TestSchema
                     [\Graphpinator\Directive\ExecutableDirectiveLocation::FIELD],
                     false,
                     new \Graphpinator\Argument\ArgumentSet(),
-                    static function() : void {},
-                    null,
                 );
             }
 

@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Directive\Spec;
 
-final class DeprecatedDirective extends \Graphpinator\Directive\TypeSystemDirective
+final class DeprecatedDirective extends \Graphpinator\Directive\Directive implements \Graphpinator\Directive\TypeSystemDirective
 {
     protected const NAME = 'deprecated';
     protected const DESCRIPTION = 'Built-in deprecated directive.';

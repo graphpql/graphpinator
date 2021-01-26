@@ -4,59 +4,16 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Directive;
 
-abstract class ExecutableDirective extends \Graphpinator\Directive\Directive
+interface ExecutableDirective
 {
-    private ?\Closure $resolveFnBefore;
-    private ?\Closure $resolveFnAfter;
+    public function validateType(\Graphpinator\Type\Contract\Definition $type) : bool;
 
-    public function __construct(
-        array $locations,
-        bool $repeatable,
-        \Graphpinator\Argument\ArgumentSet $arguments,
-        ?callable $resolveFnBefore,
-        ?callable $resolveFnAfter,
-    )
-    {
-        parent::__construct($locations, $repeatable, $arguments);
+    public function resolveFieldBefore(
+        \Graphpinator\Value\ArgumentValueSet $arguments,
+    ) : string;
 
-        $this->resolveFnBefore = $resolveFnBefore;
-        $this->resolveFnAfter = $resolveFnAfter;
-    }
-
-    abstract public function validateType(\Graphpinator\Type\Contract\Definition $type) : bool;
-
-    public function resolveBefore(\Graphpinator\Value\ArgumentValueSet $arguments) : string
-    {
-        if (!$this->resolveFnBefore instanceof \Closure) {
-            return DirectiveResult::NONE;
-        }
-
-        $result = \call_user_func_array($this->resolveFnBefore, $arguments->getValuesForResolver());
-
-        if (\is_string($result) && \array_key_exists($result, DirectiveResult::ENUM)) {
-            return $result;
-        }
-
-        throw new \Graphpinator\Exception\Resolver\InvalidDirectiveResult();
-    }
-
-    public function resolveAfter(
+    public function resolveFieldAfter(
         \Graphpinator\Field\FieldValue $fieldValue,
         \Graphpinator\Value\ArgumentValueSet $arguments,
-    ) : string
-    {
-        if (!$this->resolveFnAfter instanceof \Closure) {
-            return DirectiveResult::NONE;
-        }
-
-        $rawArguments = $arguments->getValuesForResolver();
-        \array_unshift($rawArguments, $fieldValue->getValue());
-        $result = \call_user_func_array($this->resolveFnAfter, $rawArguments);
-
-        if (\is_string($result) && \array_key_exists($result, DirectiveResult::ENUM)) {
-            return $result;
-        }
-
-        throw new \Graphpinator\Exception\Resolver\InvalidDirectiveResult();
-    }
+    ) : string;
 }

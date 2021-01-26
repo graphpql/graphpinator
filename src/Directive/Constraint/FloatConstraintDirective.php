@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Directive\Constraint;
 
-final class FloatConstraintDirective extends \Graphpinator\Directive\TypeSystemDirective
+final class FloatConstraintDirective extends \Graphpinator\Directive\Directive implements \Graphpinator\Directive\TypeSystemDirective
 {
     protected const NAME = 'floatConstraint';
     protected const DESCRIPTION = 'Graphpinator floatConstraint directive.';

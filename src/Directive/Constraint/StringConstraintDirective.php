@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Directive\Constraint;
 
-final class StringConstraintDirective extends \Graphpinator\Directive\TypeSystemDirective
+final class StringConstraintDirective extends \Graphpinator\Directive\Directive implements \Graphpinator\Directive\TypeSystemDirective
 {
     protected const NAME = 'stringConstraint';
     protected const DESCRIPTION = 'Graphpinator stringConstraint directive.';

@@ -27,22 +27,27 @@ final class ListWhereDirective extends \Graphpinator\Directive\BaseWhereDirectiv
                 \Graphpinator\Argument\Argument::create('orNull', \Graphpinator\Container\Container::Boolean()->notNull())
                     ->setDefaultValue(false),
             ]),
-            null,
-            static function (
-                \Graphpinator\Value\ListResolvedValue $value, ?string $field, bool $not, ?int $minItems, ?int $maxItems, bool $orNull,
-            ) : string {
-                foreach ($value as $key => $item) {
-                    $singleValue = self::extractValue($item, $field);
-                    $condition = self::satisfiesCondition($singleValue, $minItems, $maxItems, $orNull);
-
-                    if ($condition === $not) {
-                        unset($value[$key]);
-                    }
-                }
-
-                return DirectiveResult::NONE;
-            },
         );
+
+        $this->fieldAfterFn = static function (
+            \Graphpinator\Value\ListResolvedValue $value,
+            ?string $field,
+            bool $not,
+            ?int $minItems,
+            ?int $maxItems,
+            bool $orNull,
+        ) : string {
+            foreach ($value as $key => $item) {
+                $singleValue = self::extractValue($item, $field);
+                $condition = self::satisfiesCondition($singleValue, $minItems, $maxItems, $orNull);
+
+                if ($condition === $not) {
+                    unset($value[$key]);
+                }
+            }
+
+            return FieldDirectiveResult::NONE;
+        };
     }
 
     private static function satisfiesCondition(?array $value, ?int $minItems, ?int $maxItems, bool $orNull) : bool

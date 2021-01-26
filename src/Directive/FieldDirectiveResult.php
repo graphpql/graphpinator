@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Directive;
 
-final class DirectiveResult
+final class FieldDirectiveResult
 {
     use \Nette\StaticClass;
 

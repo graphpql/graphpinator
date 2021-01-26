@@ -48,9 +48,9 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
             foreach ($field->getDirectives() as $directive) {
                 $directiveDef = $directive->getDirective();
                 $arguments = $directive->getArguments();
-                $directiveResult = $directiveDef->resolveBefore($arguments);
+                $directiveResult = $directiveDef->resolveFieldBefore($arguments);
 
-                if ($directiveResult === \Graphpinator\Directive\DirectiveResult::SKIP) {
+                if ($directiveResult === \Graphpinator\Directive\FieldDirectiveResult::SKIP) {
                     continue 2;
                 }
             }
@@ -62,9 +62,9 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
             foreach ($field->getDirectives() as $directive) {
                 $directiveDef = $directive->getDirective();
                 $arguments = $directive->getArguments();
-                $directiveResult = $directiveDef->resolveAfter($fieldResult, $arguments);
+                $directiveResult = $directiveDef->resolveFieldAfter($fieldResult, $arguments);
 
-                if ($directiveResult === \Graphpinator\Directive\DirectiveResult::SKIP) {
+                if ($directiveResult === \Graphpinator\Directive\FieldDirectiveResult::SKIP) {
                     continue 2;
                 }
             }

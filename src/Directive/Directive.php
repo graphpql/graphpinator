@@ -24,32 +24,32 @@ abstract class Directive
         $this->arguments = $arguments;
     }
 
-    public function getName() : string
+    final public function getName() : string
     {
         return static::NAME;
     }
 
-    public function getDescription() : ?string
+    final public function getDescription() : ?string
     {
         return static::DESCRIPTION;
     }
 
-    public function getLocations() : array
+    final public function getLocations() : array
     {
         return $this->locations;
     }
 
-    public function isRepeatable() : bool
+    final public function isRepeatable() : bool
     {
         return $this->repeatable;
     }
 
-    public function getArguments() : \Graphpinator\Argument\ArgumentSet
+    final public function getArguments() : \Graphpinator\Argument\ArgumentSet
     {
         return $this->arguments;
     }
 
-    public function printSchema() : string
+    final public function printSchema() : string
     {
         $schema = $this->printDescription() . 'directive @' . $this->getName();
 

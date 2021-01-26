@@ -24,20 +24,25 @@ final class BooleanWhereDirective extends \Graphpinator\Directive\BaseWhereDirec
                 \Graphpinator\Argument\Argument::create('orNull', \Graphpinator\Container\Container::Boolean()->notNull())
                     ->setDefaultValue(false),
             ]),
-            null,
-            static function (\Graphpinator\Value\ListResolvedValue $value, ?string $field, ?bool $equals, bool $orNull) : string {
-                foreach ($value as $key => $item) {
-                    $singleValue = self::extractValue($item, $field);
-                    $condition = self::satisfiesCondition($singleValue, $equals, $orNull);
-
-                    if (!$condition) {
-                        unset($value[$key]);
-                    }
-                }
-
-                return DirectiveResult::NONE;
-            },
         );
+
+        $this->fieldAfterFn = static function (
+            \Graphpinator\Value\ListResolvedValue $value,
+            ?string $field,
+            ?bool $equals,
+            bool $orNull,
+        ) : string {
+            foreach ($value as $key => $item) {
+                $singleValue = self::extractValue($item, $field);
+                $condition = self::satisfiesCondition($singleValue, $equals, $orNull);
+
+                if (!$condition) {
+                    unset($value[$key]);
+                }
+            }
+
+            return FieldDirectiveResult::NONE;
+        };
     }
 
     private static function satisfiesCondition(?bool $value, ?bool $equals, bool $orNull) : bool
