@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Directive;
+namespace Graphpinator\Directive\Contract;
 
-interface ExecutableDirective
+interface ExecutableDefinition extends Definition
 {
     public function validateType(\Graphpinator\Type\Contract\Definition $type) : bool;
 

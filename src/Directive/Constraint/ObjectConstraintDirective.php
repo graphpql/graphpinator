@@ -4,7 +4,8 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Directive\Constraint;
 
-final class ObjectConstraintDirective extends \Graphpinator\Directive\Directive implements \Graphpinator\Directive\TypeSystemDirective
+final class ObjectConstraintDirective extends \Graphpinator\Directive\Directive
+    implements \Graphpinator\Directive\Contract\TypeSystemDefinition
 {
     protected const NAME = 'objectConstraint';
     protected const DESCRIPTION = 'Graphpinator objectConstraint directive.';

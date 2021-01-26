@@ -1352,7 +1352,7 @@ final class TestSchema
 
     public static function getTestDirective() : \Graphpinator\Directive\Directive
     {
-        return new class extends \Graphpinator\Directive\Directive implements \Graphpinator\Directive\ExecutableDirective
+        return new class extends \Graphpinator\Directive\Directive implements \Graphpinator\Directive\Contract\ExecutableDefinition
         {
             use \Graphpinator\Directive\TExecutableDirective;
 
@@ -1383,7 +1383,7 @@ final class TestSchema
 
     public static function getInvalidDirectiveResult() : \Graphpinator\Directive\Directive
     {
-        return new class extends \Graphpinator\Directive\Directive implements \Graphpinator\Directive\ExecutableDirective
+        return new class extends \Graphpinator\Directive\Directive implements \Graphpinator\Directive\Contract\ExecutableDefinition
         {
             use \Graphpinator\Directive\TExecutableDirective;
 
@@ -1411,7 +1411,7 @@ final class TestSchema
 
     public static function getInvalidDirectiveType() : \Graphpinator\Directive\Directive
     {
-        return new class extends \Graphpinator\Directive\Directive implements \Graphpinator\Directive\ExecutableDirective
+        return new class extends \Graphpinator\Directive\Directive implements \Graphpinator\Directive\Contract\ExecutableDefinition
         {
             use \Graphpinator\Directive\TExecutableDirective;
 

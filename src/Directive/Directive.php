@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Directive;
 
-abstract class Directive
+abstract class Directive implements \Graphpinator\Directive\Contract\Definition
 {
     use \Nette\SmartObject;
     use \Graphpinator\Printable\TRepeatablePrint;

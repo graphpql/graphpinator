@@ -4,7 +4,8 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Directive;
 
-abstract class BaseWhereDirective extends \Graphpinator\Directive\Directive implements \Graphpinator\Directive\ExecutableDirective
+abstract class BaseWhereDirective extends \Graphpinator\Directive\Directive
+    implements \Graphpinator\Directive\Contract\ExecutableDefinition
 {
     use \Graphpinator\Directive\TExecutableDirective;
 

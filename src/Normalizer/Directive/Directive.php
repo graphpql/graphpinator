@@ -8,7 +8,7 @@ final class Directive
 {
     use \Nette\SmartObject;
 
-    private \Graphpinator\Directive\ExecutableDirective $directive;
+    private \Graphpinator\Directive\Contract\ExecutableDefinition $directive;
     private \Graphpinator\Value\ArgumentValueSet $arguments;
 
     public function __construct(
@@ -24,7 +24,7 @@ final class Directive
             throw new \Graphpinator\Exception\Normalizer\UnknownDirective($parsed->getName());
         }
 
-        if (!$directive instanceof \Graphpinator\Directive\ExecutableDirective) {
+        if (!$directive instanceof \Graphpinator\Directive\Contract\ExecutableDefinition) {
             throw new \Graphpinator\Exception\Normalizer\DirectiveNotExecutable();
         }
 
@@ -45,7 +45,7 @@ final class Directive
         );
     }
 
-    public function getDirective() : \Graphpinator\Directive\ExecutableDirective
+    public function getDirective() : \Graphpinator\Directive\Contract\ExecutableDefinition
     {
         return $this->directive;
     }

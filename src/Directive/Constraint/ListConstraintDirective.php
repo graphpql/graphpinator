@@ -4,7 +4,8 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Directive\Constraint;
 
-final class ListConstraintDirective extends \Graphpinator\Directive\Directive implements \Graphpinator\Directive\TypeSystemDirective
+final class ListConstraintDirective extends \Graphpinator\Directive\Directive
+    implements \Graphpinator\Directive\Contract\TypeSystemDefinition
 {
     protected const NAME = 'listConstraint';
     protected const DESCRIPTION = 'Graphpinator listConstraint directive.';

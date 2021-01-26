@@ -4,7 +4,8 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Directive\Spec;
 
-final class IncludeDirective extends \Graphpinator\Directive\Directive implements \Graphpinator\Directive\ExecutableDirective
+final class IncludeDirective extends \Graphpinator\Directive\Directive
+    implements \Graphpinator\Directive\Contract\ExecutableDefinition
 {
     use \Graphpinator\Directive\TExecutableDirective;
 
