@@ -6,7 +6,6 @@ namespace Graphpinator\Tests\Feature;
 
 final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
 {
-    /* Self-ref Nullable ++*/
     private static function createNullableType() : \Graphpinator\Type\InputType
     {
         return new class extends \Graphpinator\Type\InputType {
@@ -22,7 +21,6 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    /* Self-ref NullableInNullableList ++*/
     private static function createNullableInNullableListType() : \Graphpinator\Type\InputType
     {
         return new class extends \Graphpinator\Type\InputType {
@@ -38,7 +36,6 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    /* Self-ref NonNullInNullableList */
     private static function createNonNullInNullableListType() : \Graphpinator\Type\InputType
     {
         return new class extends \Graphpinator\Type\InputType {
@@ -54,7 +51,6 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    /* Self-ref NonNullInNonNullList */
     private static function createNonNullInNonNullListType() : \Graphpinator\Type\InputType
     {
         return new class extends \Graphpinator\Type\InputType {
@@ -70,7 +66,6 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    /* Self-ref NullableInNonNullList */
     private static function createNullableInNonNullListType() : \Graphpinator\Type\InputType
     {
         return new class extends \Graphpinator\Type\InputType {
@@ -86,7 +81,6 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    /* Self-ref Invalid - NonNull */
     private static function createInvalidNonNullType() : \Graphpinator\Type\InputType
     {
         return new class extends \Graphpinator\Type\InputType
@@ -103,7 +97,6 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    /* Objects-ref Nullable on Nullable */
     private static function createNullableBooType() : \Graphpinator\Type\InputType
     {
         return new class extends \Graphpinator\Type\InputType {
@@ -134,7 +127,6 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    /* Objects-ref NullableInNullableList on NullableInNullableList */
     private static function createNullableInNullableListBooType() : \Graphpinator\Type\InputType
     {
         return new class extends \Graphpinator\Type\InputType {
@@ -165,7 +157,6 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    /* Objects-ref NonNullInNullableList on NullableInNullableList */
     private static function createNonNullInNullableListBooType() : \Graphpinator\Type\InputType
     {
         return new class extends \Graphpinator\Type\InputType {
@@ -196,7 +187,6 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    /* Objects-ref NonNullInNonNullList on NullableInNullableList */
     private static function createNonNullInNonNullListBooType() : \Graphpinator\Type\InputType
     {
         return new class extends \Graphpinator\Type\InputType {
@@ -227,7 +217,6 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    /* Objects-ref NonNullInNonNullList on NonNullInNullableList */
     private static function createNonNullInNonNullListBahType() : \Graphpinator\Type\InputType
     {
         return new class extends \Graphpinator\Type\InputType {
@@ -258,7 +247,6 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    /* Objects-ref NonNullInNonNullList on NonNullInNonNullList */
     private static function createNonNullInNonNullListBohType() : \Graphpinator\Type\InputType
     {
         return new class extends \Graphpinator\Type\InputType {
@@ -289,7 +277,6 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    /* Objects-ref Nullable on NonNull */
     private static function createNullableBoohType() : \Graphpinator\Type\InputType
     {
         return new class extends \Graphpinator\Type\InputType {
@@ -320,7 +307,6 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    /* Objects-ref NullableInNullableList on NonNull */
     private static function createNullableInNullableListBoohType() : \Graphpinator\Type\InputType
     {
         return new class extends \Graphpinator\Type\InputType {
@@ -351,7 +337,6 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    /* Objects-ref NonNullInNullableList on NonNull */
     private static function createNonNullInNullableListBoohType() : \Graphpinator\Type\InputType
     {
         return new class extends \Graphpinator\Type\InputType {
@@ -382,7 +367,6 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    /* Objects-ref NonNullInNonNullList on NonNull */
     private static function createNonNullInNonNullListBoohType() : \Graphpinator\Type\InputType
     {
         return new class extends \Graphpinator\Type\InputType {
@@ -412,8 +396,7 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
             }
         };
     }
-
-    /* Objects-ref Invalid - NonNull on NonNull */
+    
     private static function createInvalidNonNullBooType() : \Graphpinator\Type\InputType
     {
         return new class extends \Graphpinator\Type\InputType {
