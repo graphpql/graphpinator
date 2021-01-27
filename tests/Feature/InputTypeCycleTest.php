@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Tests\Feature\Cycle;
+namespace Graphpinator\Tests\Feature;
 
 final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
 {
@@ -446,105 +446,167 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
 
     public static function getType(string $typeName) : \Graphpinator\Type\InputType
     {
-        switch ($typeName)
+        return match ($typeName)
         {
-            case 'nullableType':
-                return InputTypeCycleTest::createNullableType();
-            case 'nullableInNullableListType':
-                return InputTypeCycleTest::createNullableInNullableListType();
-            case 'nonNullInNullableListType':
-                return InputTypeCycleTest::createNonNullInNullableListType();
-            case 'nonNullInNonNullListType':
-                return InputTypeCycleTest::createNonNullInNonNullListType();
-            case 'nullableInNonNullListType':
-                return InputTypeCycleTest::createNullableInNonNullListType();
-            case 'nullableBooType':
-                return InputTypeCycleTest::createNullableBooType();
-            case 'nullableBlahType':
-                return InputTypeCycleTest::createNullableBlahType();
-            case 'nullableInNullableListBlahType':
-                return InputTypeCycleTest::createNullableInNullableListBlahType();
-            case 'nullableInNullableListBooType':
-                return InputTypeCycleTest::createNullableInNullableListBooType();
-            case 'nullableInNullableListBahType':
-                return InputTypeCycleTest::createNullableInNullableListBahType();
-            case 'nonNullInNullableListBooType':
-                return InputTypeCycleTest::createNonNullInNullableListBooType();
-            case 'nullableInNullableListBohType':
-                return InputTypeCycleTest::createNullableInNullableListBohType();
-            case 'nonNullInNonNullListBooType':
-                return InputTypeCycleTest::createNonNullInNonNullListBooType();
-            case 'nonNullInNullableListBlahType':
-                return InputTypeCycleTest::createNonNullInNullableListBlahType();
-            case 'nonNullInNonNullListBahType':
-                return InputTypeCycleTest::createNonNullInNonNullListBahType();
-            case 'nonNullInNonNullListBlahType':
-                return InputTypeCycleTest::createNonNullInNonNullListBlahType();
-            case 'nonNullInNonNullListBohType':
-                return InputTypeCycleTest::createNonNullInNonNullListBohType();
-            case 'invalidNonNullType':
-                return InputTypeCycleTest::createInvalidNonNullType();
-            case 'invalidNonNullBlahType':
-                return InputTypeCycleTest::createInvalidNonNullBlahType();
-            case 'invalidNonNullBooType':
-                return InputTypeCycleTest::createInvalidNonNullBooType();
-            case 'nonNullBahType':
-                return InputTypeCycleTest::createNonNullBahType();
-            case 'nullableBoohType':
-                return InputTypeCycleTest::createNullableBoohType();
-            case 'nonNullBohType':
-                return InputTypeCycleTest::createNonNullBohType();
-            case 'nullableInNullableListBoohType':
-                return InputTypeCycleTest::createNullableInNullableListBoohType();
-            case 'nonNullBleType':
-                return InputTypeCycleTest::createNonNullBleType();
-            case 'nonNullInNullableListBoohType':
-                return InputTypeCycleTest::createNonNullInNullableListBoohType();
-            case 'nonNullBehType':
-                return InputTypeCycleTest::createNonNullBehType();
-            case 'nonNullInNonNullListBoohType':
-                return InputTypeCycleTest::createNonNullInNonNullListBoohType();
-        }
+            'nullableType' => InputTypeCycleTest::createNullableType(),
+            'nullableInNullableListType' => InputTypeCycleTest::createNullableInNullableListType(),
+            'nonNullInNullableListType' => InputTypeCycleTest::createNonNullInNullableListType(),
+            'nonNullInNonNullListType' => InputTypeCycleTest::createNonNullInNonNullListType(),
+            'nullableInNonNullListType' => InputTypeCycleTest::createNullableInNonNullListType(),
+            'nullableBooType' => InputTypeCycleTest::createNullableBooType(),
+            'nullableBlahType' => InputTypeCycleTest::createNullableBlahType(),
+            'nullableInNullableListBlahType' => InputTypeCycleTest::createNullableInNullableListBlahType(),
+            'nullableInNullableListBooType' => InputTypeCycleTest::createNullableInNullableListBooType(),
+            'nullableInNullableListBahType' => InputTypeCycleTest::createNullableInNullableListBahType(),
+            'nonNullInNullableListBooType' => InputTypeCycleTest::createNonNullInNullableListBooType(),
+            'nullableInNullableListBohType' => InputTypeCycleTest::createNullableInNullableListBohType(),
+            'nonNullInNonNullListBooType' => InputTypeCycleTest::createNonNullInNonNullListBooType(),
+            'nonNullInNullableListBlahType' => InputTypeCycleTest::createNonNullInNullableListBlahType(),
+            'nonNullInNonNullListBahType' => InputTypeCycleTest::createNonNullInNonNullListBahType(),
+            'nonNullInNonNullListBlahType' => InputTypeCycleTest::createNonNullInNonNullListBlahType(),
+            'nonNullInNonNullListBohType' => InputTypeCycleTest::createNonNullInNonNullListBohType(),
+            'invalidNonNullType' => InputTypeCycleTest::createInvalidNonNullType(),
+            'invalidNonNullBlahType' => InputTypeCycleTest::createInvalidNonNullBlahType(),
+            'invalidNonNullBooType' => InputTypeCycleTest::createInvalidNonNullBooType(),
+            'nonNullBahType' => InputTypeCycleTest::createNonNullBahType(),
+            'nullableBoohType' => InputTypeCycleTest::createNullableBoohType(),
+            'nonNullBohType' => InputTypeCycleTest::createNonNullBohType(),
+            'nullableInNullableListBoohType' => InputTypeCycleTest::createNullableInNullableListBoohType(),
+            'nonNullBleType' => InputTypeCycleTest::createNonNullBleType(),
+            'nonNullInNullableListBoohType' => InputTypeCycleTest::createNonNullInNullableListBoohType(),
+            'nonNullBehType' => InputTypeCycleTest::createNonNullBehType(),
+            'nonNullInNonNullListBoohType' => InputTypeCycleTest::createNonNullInNonNullListBoohType(),
+        };
     }
 
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testNullable() : void
     {
-        self::assertInstanceOf(
-            \Graphpinator\Argument\ArgumentSet::class,
-            self::getType('nullableType')->getArguments(),
-        );
+        self::getType('nullableType')->getArguments();
     }
 
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testNullableInNullableList() : void
     {
-        self::assertInstanceOf(
-            \Graphpinator\Argument\ArgumentSet::class,
-            self::getType('nullableInNullableListType')->getArguments(),
-        );
+        self::getType('nullableInNullableListType')->getArguments();
     }
 
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testNonNullInNullableList() : void
     {
-        self::assertInstanceOf(
-            \Graphpinator\Argument\ArgumentSet::class,
-            self::getType('nonNullInNullableListType')->getArguments(),
-        );
+        self::getType('nonNullInNullableListType')->getArguments();
     }
 
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testNonNullInNonNullList() : void
     {
-        self::assertInstanceOf(
-            \Graphpinator\Argument\ArgumentSet::class,
-            self::getType('nonNullInNonNullListType')->getArguments(),
-        );
+        self::getType('nonNullInNonNullListType')->getArguments();
     }
 
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testNullableInNonNullList() : void
     {
-        self::assertInstanceOf(
-            \Graphpinator\Argument\ArgumentSet::class,
-            self::getType('nullableInNonNullListType')->getArguments(),
-        );
+        self::getType('nullableInNonNullListType')->getArguments();
+    }
+
+    /**
+     * @doesNotPerformAssertions
+     */
+    public function testNullableOnNullable() : void
+    {
+        self::getType('nullableBlahType')->getArguments();
+        self::getType('nullableBooType')->getArguments();
+    }
+
+    /**
+     * @doesNotPerformAssertions
+     */
+    public function testNullableInNullableListOnNullableInNullableList() : void
+    {
+        self::getType('nullableInNullableListBooType')->getArguments();
+        self::getType('nullableInNullableListBlahType')->getArguments();
+    }
+
+    /**
+     * @doesNotPerformAssertions
+     */
+    public function testNonNullInNullableListOnNullableInNullableList() : void
+    {
+        self::getType('nullableInNullableListBahType')->getArguments();
+        self::getType('nonNullInNullableListBooType')->getArguments();
+    }
+
+    /**
+     * @doesNotPerformAssertions
+     */
+    public function testNonNullInNonNullListOnNullableInNullableList() : void
+    {
+        self::getType('nullableInNullableListBohType')->getArguments();
+        self::getType('nonNullInNonNullListBooType')->getArguments();
+    }
+
+    /**
+     * @doesNotPerformAssertions
+     */
+    public function testNonNullInNonNullListOnNonNullInNullableList() : void
+    {
+        self::getType('nonNullInNullableListBlahType')->getArguments();
+        self::getType('nonNullInNonNullListBahType')->getArguments();
+    }
+
+    /**
+     * @doesNotPerformAssertions
+     */
+    public function testNonNullInNonNullListOnNonNullInNonNullList() : void
+    {
+        self::getType('nonNullInNonNullListBohType')->getArguments();
+        self::getType('nonNullInNonNullListBlahType')->getArguments();
+    }
+
+    /**
+     * @doesNotPerformAssertions
+     */
+    public function testNullableOnNonNull() : void
+    {
+        self::getType('nonNullBahType')->getArguments();
+        self::getType('nullableBooType')->getArguments();
+    }
+
+    /**
+     * @doesNotPerformAssertions
+     */
+    public function testNullableInNullableListOnNonNull() : void
+    {
+        self::getType('nonNullBohType')->getArguments();
+        self::getType('nullableInNullableListBooType')->getArguments();
+    }
+
+    /**
+     * @doesNotPerformAssertions
+     */
+    public function testNonNullInNullableListOnNonNull() : void
+    {
+        self::getType('nonNullInNullableListBooType')->getArguments();
+        self::getType('nonNullBleType')->getArguments();
+    }
+
+    /**
+     * @doesNotPerformAssertions
+     */
+    public function testNonNullInNonNullListOnNonNull() : void
+    {
+        self::getType('nonNullBehType')->getArguments();
+        self::getType('nonNullInNonNullListBooType')->getArguments();
     }
 
     public function testInvalidNonNull() : void
@@ -553,127 +615,6 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
         $this->expectDeprecationMessage(\Graphpinator\Exception\Type\InputCycle::MESSAGE);
 
         self::getType('invalidNonNullType')->getArguments();
-    }
-
-    public function testNullableOnNullable() : void
-    {
-        self::assertInstanceOf(
-            \Graphpinator\Argument\ArgumentSet::class,
-            self::getType('nullableBooType')->getArguments(),
-        );
-        self::assertInstanceOf(
-            \Graphpinator\Argument\ArgumentSet::class,
-            self::getType('nullableBlahType')->getArguments(),
-        );
-    }
-
-    public function testNullableInNullableListOnNullableInNullableList() : void
-    {
-        self::assertInstanceOf(
-            \Graphpinator\Argument\ArgumentSet::class,
-            self::getType('nullableInNullableListBlahType')->getArguments(),
-        );
-        self::assertInstanceOf(
-            \Graphpinator\Argument\ArgumentSet::class,
-            self::getType('nullableInNullableListBooType')->getArguments(),
-        );
-    }
-
-    public function testNonNullInNullableListOnNullableInNullableList() : void
-    {
-        self::assertInstanceOf(
-            \Graphpinator\Argument\ArgumentSet::class,
-            self::getType('nullableInNullableListBahType')->getArguments(),
-        );
-        self::assertInstanceOf(
-            \Graphpinator\Argument\ArgumentSet::class,
-            self::getType('nonNullInNullableListBooType')->getArguments(),
-        );
-    }
-
-    public function testNonNullInNonNullListOnNullableInNullableList() : void
-    {
-        self::assertInstanceOf(
-            \Graphpinator\Argument\ArgumentSet::class,
-            self::getType('nullableInNullableListBohType')->getArguments(),
-        );
-        self::assertInstanceOf(
-            \Graphpinator\Argument\ArgumentSet::class,
-            self::getType('nonNullInNonNullListBooType')->getArguments(),
-        );
-    }
-
-    public function testNonNullInNonNullListOnNonNullInNullableList() : void
-    {
-        self::assertInstanceOf(
-            \Graphpinator\Argument\ArgumentSet::class,
-            self::getType('nonNullInNullableListBlahType')->getArguments(),
-        );
-        self::assertInstanceOf(
-            \Graphpinator\Argument\ArgumentSet::class,
-            self::getType('nonNullInNonNullListBahType')->getArguments(),
-        );
-    }
-
-    public function testNonNullInNonNullListOnNonNullInNonNullList() : void
-    {
-        self::assertInstanceOf(
-            \Graphpinator\Argument\ArgumentSet::class,
-            self::getType('nonNullInNonNullListBlahType')->getArguments(),
-        );
-        self::assertInstanceOf(
-            \Graphpinator\Argument\ArgumentSet::class,
-            self::getType('nonNullInNonNullListBohType')->getArguments(),
-        );
-    }
-
-
-    public function testNullableOnNonNull() : void
-    {
-        self::assertInstanceOf(
-            \Graphpinator\Argument\ArgumentSet::class,
-            self::getType('nonNullBahType')->getArguments(),
-        );
-        self::assertInstanceOf(
-            \Graphpinator\Argument\ArgumentSet::class,
-            self::getType('nullableBooType')->getArguments(),
-        );
-    }
-
-    public function testNullableInNullableListOnNonNull() : void
-    {
-        self::assertInstanceOf(
-            \Graphpinator\Argument\ArgumentSet::class,
-            self::getType('nonNullBohType')->getArguments(),
-        );
-        self::assertInstanceOf(
-            \Graphpinator\Argument\ArgumentSet::class,
-            self::getType('nullableInNullableListBooType')->getArguments(),
-        );
-    }
-
-    public function testNonNullInNullableListOnNonNull() : void
-    {
-        self::assertInstanceOf(
-            \Graphpinator\Argument\ArgumentSet::class,
-            self::getType('nonNullBleType')->getArguments(),
-        );
-        self::assertInstanceOf(
-            \Graphpinator\Argument\ArgumentSet::class,
-            self::getType('nonNullInNullableListBooType')->getArguments(),
-        );
-    }
-
-    public function testNonNullInNonNullListOnNonNull() : void
-    {
-        self::assertInstanceOf(
-            \Graphpinator\Argument\ArgumentSet::class,
-            self::getType('nonNullBehType')->getArguments(),
-        );
-        self::assertInstanceOf(
-            \Graphpinator\Argument\ArgumentSet::class,
-            self::getType('nonNullInNonNullListBooType')->getArguments(),
-        );
     }
 
     public function testInvalidNonNullOnNonNull() : void
