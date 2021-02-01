@@ -49,7 +49,7 @@ final class FloatConstraint extends \Graphpinator\Constraint\LeafConstraint
         return $type->getNamedType() instanceof \Graphpinator\Type\Scalar\FloatType;
     }
 
-    protected function validateFactoryMethod(\stdClass|array|string|int|float|bool|null $rawValue) : void
+    protected function validateFactoryMethod(\stdClass|array|string|int|float|bool|null|\Psr\Http\Message\UploadedFileInterface $rawValue) : void
     {
         \assert(\is_float($rawValue));
 

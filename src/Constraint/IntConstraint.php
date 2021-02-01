@@ -49,7 +49,7 @@ final class IntConstraint extends \Graphpinator\Constraint\LeafConstraint
         return $type->getNamedType() instanceof \Graphpinator\Type\Scalar\IntType;
     }
 
-    protected function validateFactoryMethod(\stdClass|array|string|int|float|bool|null $rawValue) : void
+    protected function validateFactoryMethod(\stdClass|array|string|int|float|bool|null|\Psr\Http\Message\UploadedFileInterface $rawValue) : void
     {
         \assert(\is_int($rawValue));
 

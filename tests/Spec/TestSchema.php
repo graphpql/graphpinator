@@ -903,6 +903,9 @@ final class TestSchema
                     'listUniqueArg',
                     'listInnerListArg',
                     'listMinIntMinArg',
+                    'uploadMaxSize',
+                    'uploadMimeType',
+                    'uploadMimeTypeEmpty',
                 ]));
             }
 
@@ -977,6 +980,18 @@ final class TestSchema
                         \Graphpinator\Container\Container::Int()->list(),
                     ))->addConstraint(new \Graphpinator\Constraint\ListConstraint(3))
                     ->addConstraint(new \Graphpinator\Constraint\IntConstraint(3)),
+                    (new \Graphpinator\Argument\Argument(
+                        'uploadMaxSize',
+                        new \Graphpinator\Module\Upload\UploadType(),
+                    ))->addConstraint(new \Graphpinator\Constraint\UploadConstraint(5000)),
+                    (new \Graphpinator\Argument\Argument(
+                        'uploadMimeType',
+                        new \Graphpinator\Module\Upload\UploadType(),
+                    ))->addConstraint(new \Graphpinator\Constraint\UploadConstraint(null, ['text/plain', 'text/html'])),
+                    (new \Graphpinator\Argument\Argument(
+                        'uploadMimeTypeEmpty',
+                        new \Graphpinator\Module\Upload\UploadType(),
+                    ))->addConstraint(new \Graphpinator\Constraint\UploadConstraint(null, [])),
                 ]);
             }
         };

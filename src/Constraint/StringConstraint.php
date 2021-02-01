@@ -65,7 +65,7 @@ final class StringConstraint extends \Graphpinator\Constraint\LeafConstraint
             || $namedType instanceof \Graphpinator\Type\Scalar\IdType;
     }
 
-    protected function validateFactoryMethod(\stdClass|array|string|int|float|bool|null $rawValue) : void
+    protected function validateFactoryMethod(\stdClass|array|string|int|float|bool|null|\Psr\Http\Message\UploadedFileInterface $rawValue) : void
     {
         \assert(\is_string($rawValue));
 

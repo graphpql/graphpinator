@@ -1071,7 +1071,121 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
         self::getGraphpinator($settings)->run(new \Graphpinator\Request\JsonRequestFactory($request));
     }
 
-    protected static function getGraphpinator(array $settings) : \Graphpinator\Graphpinator
+    public static function getUploadType() : \Graphpinator\Type\Type
+    {
+        return new class extends \Graphpinator\Type\Type
+        {
+            protected const NAME = 'UploadType';
+
+            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+            {
+                return new \Graphpinator\Field\ResolvableFieldSet([
+                    new \Graphpinator\Field\ResolvableField(
+                        'fileContent',
+                        \Graphpinator\Container\Container::String(),
+                        static function (\Psr\Http\Message\UploadedFileInterface $file) : string {
+                            return $file->getStream()->getContents();
+                        },
+                    ),
+                ]);
+            }
+
+            public function validateNonNullValue($rawValue) : bool
+            {
+                return true;
+            }
+        };
+    }
+
+    public function simpleUploadDataProvider() : array
+    {
+        return [
+            [
+                new \Graphpinator\Constraint\UploadConstraint(10000),
+            ],
+            [
+                new \Graphpinator\Constraint\UploadConstraint(5000),
+            ],
+            [
+                new \Graphpinator\Constraint\UploadConstraint(null, ['text/plain']),
+            ],
+            [
+                new \Graphpinator\Constraint\UploadConstraint(null, ['application/x-httpd-php', 'text/html', 'text/plain', 'application/pdf']),
+            ],
+        ];
+    }
+
+    public function invalidUploadDataProvider() : array
+    {
+        return [
+            [
+                \Graphpinator\Exception\Constraint\MaxSizeConstraintNotSatisfied::class,
+                new \Graphpinator\Constraint\UploadConstraint(4999),
+            ],
+            [
+                \Graphpinator\Exception\Constraint\MimeTypeConstraintNotSatisfied::class,
+                new \Graphpinator\Constraint\UploadConstraint(null, ['application/x-httpd-php']),
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider simpleUploadDataProvider
+     * @param \Graphpinator\Constraint\UploadConstraint $constraint
+     */
+    public function testUploadSimple(\Graphpinator\Constraint\UploadConstraint $constraint) : void
+    {
+        $request = Json::fromNative((object) [
+            'query' => 'query queryName($var1: Upload) { fieldUpload(file: $var1) { fileContent } }',
+            'variables' => (object) ['var1' => null],
+        ]);
+
+        $stream = $this->createStub(\Psr\Http\Message\StreamInterface::class);
+        $stream->method('getContents')->willReturn('test file');
+        $stream->method('getMetaData')->willReturn(__DIR__ . '/textFile.txt');
+        $file = $this->createStub(\Psr\Http\Message\UploadedFileInterface::class);
+        $file->method('getStream')->willReturn($stream);
+        $file->method('getSize')->willReturn(5000);
+        $fileProvider = $this->createStub(\Graphpinator\Module\Upload\FileProvider::class);
+        $fileProvider->method('getMap')->willReturn(Json\MapJson::fromString('{ "0": ["variables.var1"] }'));
+        $fileProvider->method('getFile')->willReturn($file);
+        self::getGraphpinatorForUpload($fileProvider, $constraint)
+            ->run(new \Graphpinator\Request\JsonRequestFactory($request));
+
+        self::assertTrue(true);
+    }
+
+    /**
+     * @dataProvider invalidUploadDataProvider
+     * @param string $exception
+     * @param \Graphpinator\Constraint\UploadConstraint $constraint
+     */
+    public function testUploadInvalid(string $exception, \Graphpinator\Constraint\UploadConstraint $constraint) : void
+    {
+        $map = '{ "0": ["variables.var1"] }';
+        $request = Json::fromNative((object) [
+            'query' => 'query queryName($var1: Upload) { fieldUpload(file: $var1) { fileContent } }',
+            'variables' => (object) ['var1' => null],
+        ]);
+
+        $stream = $this->createStub(\Psr\Http\Message\StreamInterface::class);
+        $stream->method('getContents')->willReturn('test file');
+        $stream->method('getMetaData')->willReturn(__DIR__ . '/textFile.txt');
+        $file = $this->createStub(\Psr\Http\Message\UploadedFileInterface::class);
+        $file->method('getStream')->willReturn($stream);
+        $file->method('getSize')->willReturn(5000);
+        $fileProvider = $this->createStub(\Graphpinator\Module\Upload\FileProvider::class);
+        $fileProvider->method('getMap')->willReturn(Json\MapJson::fromString($map));
+        $fileProvider->method('getFile')->willReturn($file);
+
+        self::expectException($exception);
+        self::expectExceptionMessage(\constant($exception . '::MESSAGE'));
+
+        self::getGraphpinatorForUpload($fileProvider, $constraint)
+            ->run(new \Graphpinator\Request\JsonRequestFactory($request));
+    }
+
+    protected static function getGraphpinator(array $settings, ?\Graphpinator\Module\Upload\FileProvider $fileProvider = null) : \Graphpinator\Graphpinator
     {
         $query = new class ($settings) extends \Graphpinator\Type\Type
         {
@@ -1111,6 +1225,60 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
                 new \Graphpinator\Container\SimpleContainer([], []),
                 $query,
             ),
+        );
+    }
+
+    protected static function getGraphpinatorForUpload(
+        \Graphpinator\Module\Upload\FileProvider $fileProvider,
+        \Graphpinator\Constraint\UploadConstraint $constraint,
+    ) : \Graphpinator\Graphpinator
+    {
+        $query = new class ($constraint) extends \Graphpinator\Type\Type
+        {
+            protected const NAME = 'Query';
+
+            public function __construct(protected \Graphpinator\Constraint\UploadConstraint $constraint)
+            {
+                parent::__construct();
+            }
+
+            public function validateNonNullValue($rawValue) : bool
+            {
+                return true;
+            }
+
+            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+            {
+                return new \Graphpinator\Field\ResolvableFieldSet([
+                    \Graphpinator\Field\ResolvableField::create(
+                        'fieldUpload',
+                        \Graphpinator\Tests\Spec\ConstraintTest::getUploadType()->notNull(),
+                        static function ($parent, ?\Psr\Http\Message\UploadedFileInterface $file) : \Psr\Http\Message\UploadedFileInterface {
+                            return $file;
+                        },
+                    )->setArguments(new \Graphpinator\Argument\ArgumentSet([
+                        \Graphpinator\Argument\Argument::create(
+                            'file',
+                            new \Graphpinator\Module\Upload\UploadType(),
+                        )->addConstraint($this->constraint),
+                    ])),
+                ]);
+            }
+        };
+
+        return new \Graphpinator\Graphpinator(
+            new \Graphpinator\Type\Schema(
+                new \Graphpinator\Container\SimpleContainer([
+                    'Query' => $query,
+                    'UploadType' => \Graphpinator\Tests\Spec\ConstraintTest::getUploadType(),
+                    'Upload' => new \Graphpinator\Module\Upload\UploadType(),
+                ], []),
+                $query,
+            ),
+            false,
+            new \Graphpinator\Module\ModuleSet([
+                new \Graphpinator\Module\Upload\UploadModule($fileProvider),
+            ]),
         );
     }
 }

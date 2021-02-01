@@ -354,7 +354,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           innerNotNull: SimpleInput!
         }
         
-        input ConstraintInput @objectConstraint(atLeastOne: ["intMinArg", "intMaxArg", "intOneOfArg", "floatMinArg", "floatMaxArg", "floatOneOfArg", "stringMinArg", "stringMaxArg", "stringRegexArg", "stringOneOfArg", "stringOneOfEmptyArg", "listMinArg", "listMaxArg", "listUniqueArg", "listInnerListArg", "listMinIntMinArg"]) {
+        input ConstraintInput @objectConstraint(atLeastOne: ["intMinArg", "intMaxArg", "intOneOfArg", "floatMinArg", "floatMaxArg", "floatOneOfArg", "stringMinArg", "stringMaxArg", "stringRegexArg", "stringOneOfArg", "stringOneOfEmptyArg", "listMinArg", "listMaxArg", "listUniqueArg", "listInnerListArg", "listMinIntMinArg", "uploadMaxSize", "uploadMimeType", "uploadMimeTypeEmpty"]) {
           intMinArg: Int @intConstraint(min: -20)
           intMaxArg: Int @intConstraint(max: 20)
           intOneOfArg: Int @intConstraint(oneOf: [1, 2, 3])
@@ -371,6 +371,9 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           listUniqueArg: [Int] @listConstraint(unique: true)
           listInnerListArg: [[Int]] @listConstraint(innerList: {minItems: 1, maxItems: 3})
           listMinIntMinArg: [Int] @listConstraint(minItems: 3) @intConstraint(min: 3)
+          uploadMaxSize: Upload @uploadConstraint(maxSize: 5000)
+          uploadMimeType: Upload @uploadConstraint(mimeType: ["text/plain", "text/html"])
+          uploadMimeTypeEmpty: Upload @uploadConstraint(mimeType: [])
         }
         
         type ConstraintType @objectConstraint(atLeastOne: ["intMinField", "intMaxField", "intOneOfField", "floatMinField", "floatMaxField", "floatOneOfField", "stringMinField", "stringMaxField", "listMinField", "listMaxField"]) {
@@ -865,6 +868,14 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         ) repeatable on FIELD
 
         directive @testDirective repeatable on FIELD
+        
+        """
+        Graphpinator uploadConstraint directive.
+        """
+        directive @uploadConstraint(
+          maxSize: Int
+          mimeType: [String]
+        ) on ARGUMENT_DEFINITION
         EOL;
 
         self::assertSame($expected, TestSchema::getSchema()->printSchema());

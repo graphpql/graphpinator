@@ -139,6 +139,14 @@ abstract class Container
     }
 
     /**
+     * Graphpinator UploadConstraint directive.
+     */
+    public static function directiveUploadConstraint() : \Graphpinator\Directive\Constraint\UploadConstraintDirective
+    {
+        return new \Graphpinator\Directive\Constraint\UploadConstraintDirective();
+    }
+
+    /**
      * Graphpinator ListConstraint input.
      */
     public static function listConstraintInput() : \Graphpinator\Constraint\ListConstraintInput

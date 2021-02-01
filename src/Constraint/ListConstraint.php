@@ -28,7 +28,7 @@ final class ListConstraint extends \Graphpinator\Constraint\ArgumentFieldConstra
         return self::recursiveValidateType($this->options, $type);
     }
 
-    protected function validateFactoryMethod(\stdClass|array|string|int|float|bool|null $rawValue) : void
+    protected function validateFactoryMethod(\stdClass|array|string|int|float|bool|null|\Psr\Http\Message\UploadedFileInterface $rawValue) : void
     {
         \assert(\is_array($rawValue));
 

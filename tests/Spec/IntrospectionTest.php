@@ -296,6 +296,16 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                                     'isRepeatable' => false,
                                 ],
                                 [
+                                    'name' => 'uploadConstraint',
+                                    'description' => 'Graphpinator uploadConstraint directive.',
+                                    'args' => [
+                                        ['name' => 'maxSize'],
+                                        ['name' => 'mimeType'],
+                                    ],
+                                    'locations' => ['ARGUMENT_DEFINITION'],
+                                    'isRepeatable' => false,
+                                ],
+                                [
                                     'name' => 'skip',
                                     'description' => 'Built-in skip directive.',
                                     'args' => [
@@ -988,6 +998,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
             \Graphpinator\Constraint\StringConstraint::class => \Graphpinator\Container\Container::directiveStringConstraint(),
             \Graphpinator\Constraint\ListConstraint::class => \Graphpinator\Container\Container::directiveListConstraint(),
             \Graphpinator\Constraint\ObjectConstraint::class => \Graphpinator\Container\Container::directiveObjectConstraint(),
+            \Graphpinator\Constraint\UploadConstraint::class => \Graphpinator\Container\Container::directiveUploadConstraint(),
         ];
 
         foreach ($array as $constraintClass => $directive) {

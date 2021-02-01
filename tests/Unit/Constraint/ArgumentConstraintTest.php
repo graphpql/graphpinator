@@ -1290,20 +1290,99 @@ final class ArgumentConstraintTest extends \PHPUnit\Framework\TestCase
                     ],
                 ],
             ],
+            [
+                [
+                    'fieldType' => \Graphpinator\Tests\Spec\ConstraintTest::getUploadType()->notNull(),
+                    'inputType' => new \Graphpinator\Module\Upload\UploadType(),
+                    'interfaceInputConstraints' => [
+                        new \Graphpinator\Constraint\UploadConstraint(5000),
+                    ],
+                    'inputConstraints' => [
+                        new \Graphpinator\Constraint\UploadConstraint(4000),
+                    ],
+                ],
+            ],
+            [
+                [
+                    'fieldType' => \Graphpinator\Tests\Spec\ConstraintTest::getUploadType()->notNull(),
+                    'inputType' => new \Graphpinator\Module\Upload\UploadType(),
+                    'interfaceInputConstraints' => [
+                        new \Graphpinator\Constraint\UploadConstraint(null, ['text/plain', 'text/html']),
+                    ],
+                    'inputConstraints' => [
+                        new \Graphpinator\Constraint\UploadConstraint(null, ['text/plain']),
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    public function simpleUploadDataProvider() : array
+    {
+        return [
+            [
+                [
+                    'fieldType' => \Graphpinator\Tests\Spec\ConstraintTest::getUploadType()->notNull(),
+                    'inputType' => new \Graphpinator\Module\Upload\UploadType(),
+                    'interfaceInputConstraints' => [
+                        new \Graphpinator\Constraint\UploadConstraint(5000),
+                    ],
+                    'inputConstraints' => [
+                        new \Graphpinator\Constraint\UploadConstraint(5000),
+                    ],
+                ],
+            ],
+            [
+                [
+                    'fieldType' => \Graphpinator\Tests\Spec\ConstraintTest::getUploadType()->notNull(),
+                    'inputType' => new \Graphpinator\Module\Upload\UploadType(),
+                    'interfaceInputConstraints' => [
+                        new \Graphpinator\Constraint\UploadConstraint(5000),
+                    ],
+                    'inputConstraints' => [
+                        new \Graphpinator\Constraint\UploadConstraint(6000),
+                    ],
+                ],
+            ],
+            [
+                [
+                    'fieldType' => \Graphpinator\Tests\Spec\ConstraintTest::getUploadType()->notNull(),
+                    'inputType' => new \Graphpinator\Module\Upload\UploadType(),
+                    'interfaceInputConstraints' => [
+                        new \Graphpinator\Constraint\UploadConstraint(null, ['text/plain']),
+                    ],
+                    'inputConstraints' => [
+                        new \Graphpinator\Constraint\UploadConstraint(null, ['text/plain']),
+                    ],
+                ],
+            ],
+            [
+                [
+                    'fieldType' => \Graphpinator\Tests\Spec\ConstraintTest::getUploadType()->notNull(),
+                    'inputType' => new \Graphpinator\Module\Upload\UploadType(),
+                    'interfaceInputConstraints' => [
+                        new \Graphpinator\Constraint\UploadConstraint(null, ['text/plain']),
+                    ],
+                    'inputConstraints' => [
+                        new \Graphpinator\Constraint\UploadConstraint(null, ['text/plain', 'text/html']),
+                    ],
+                ],
+            ],
         ];
     }
 
     /**
-     * @doesNotPerformAssertions
      * @dataProvider simpleStringDataProvider
      * @dataProvider simpleIntDataProvider
      * @dataProvider simpleFloatDataProvider
      * @dataProvider simpleListDataProvider
+     * @dataProvider simpleUploadDataProvider
      * @param array $settings
      */
     public function testSimple(array $settings) : void
     {
         self::getSchema($settings)->printSchema();
+        self::assertTrue(true);
     }
 
     /**
