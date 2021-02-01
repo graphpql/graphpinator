@@ -12,6 +12,7 @@ final class FloatTypeTest extends \PHPUnit\Framework\TestCase
             [123.123],
             [456.789],
             [0.1],
+            [123],
             [null],
         ];
     }
@@ -19,7 +20,6 @@ final class FloatTypeTest extends \PHPUnit\Framework\TestCase
     public function invalidDataProvider() : array
     {
         return [
-            [123],
             [true],
             ['123'],
             [[]],
