@@ -7,7 +7,7 @@ namespace Graphpinator\Directive;
 abstract class BaseWhereDirective extends \Graphpinator\Directive\Directive
     implements \Graphpinator\Directive\Contract\ExecutableDefinition
 {
-    use \Graphpinator\Directive\TExecutableDirective;
+    use \Graphpinator\Directive\Contract\TExecutableDirective;
 
     protected const TYPE = '';
     protected const TYPE_NAME = '';

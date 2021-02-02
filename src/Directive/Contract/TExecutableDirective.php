@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Directive;
+namespace Graphpinator\Directive\Contract;
 
 trait TExecutableDirective
 {
@@ -16,12 +16,12 @@ trait TExecutableDirective
     ) : string
     {
         if (!$this->fieldBeforeFn instanceof \Closure) {
-            return FieldDirectiveResult::NONE;
+            return \Graphpinator\Directive\FieldDirectiveResult::NONE;
         }
 
         $result = \call_user_func_array($this->fieldBeforeFn, $arguments->getValuesForResolver());
 
-        if (\is_string($result) && \array_key_exists($result, FieldDirectiveResult::ENUM)) {
+        if (\is_string($result) && \array_key_exists($result, \Graphpinator\Directive\FieldDirectiveResult::ENUM)) {
             return $result;
         }
 
@@ -34,14 +34,14 @@ trait TExecutableDirective
     ) : string
     {
         if (!$this->fieldAfterFn instanceof \Closure) {
-            return FieldDirectiveResult::NONE;
+            return \Graphpinator\Directive\FieldDirectiveResult::NONE;
         }
 
         $rawArguments = $arguments->getValuesForResolver();
         \array_unshift($rawArguments, $fieldValue->getValue());
         $result = \call_user_func_array($this->fieldAfterFn, $rawArguments);
 
-        if (\is_string($result) && \array_key_exists($result, FieldDirectiveResult::ENUM)) {
+        if (\is_string($result) && \array_key_exists($result, \Graphpinator\Directive\FieldDirectiveResult::ENUM)) {
             return $result;
         }
 

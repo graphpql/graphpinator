@@ -7,7 +7,7 @@ namespace Graphpinator\Directive\Spec;
 final class IncludeDirective extends \Graphpinator\Directive\Directive
     implements \Graphpinator\Directive\Contract\ExecutableDefinition
 {
-    use \Graphpinator\Directive\TExecutableDirective;
+    use \Graphpinator\Directive\Contract\TExecutableDirective;
 
     protected const NAME = 'include';
     protected const DESCRIPTION = 'Built-in include directive.';
