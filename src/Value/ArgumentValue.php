@@ -73,6 +73,9 @@ final class ArgumentValue
     public function applyVariables(\Graphpinator\Normalizer\VariableValueSet $variables) : void
     {
         $this->value->applyVariables($variables);
-        $this->argument->validateConstraints($this->value);
+
+        foreach ($this->argument->getDirectives() as $directive) {
+            $directive->getDirective()->resolveArgumentDefinition($this, $directive->getArguments());
+        }
     }
 }

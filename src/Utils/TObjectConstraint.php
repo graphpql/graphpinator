@@ -6,8 +6,6 @@ namespace Graphpinator\Utils;
 
 trait TObjectConstraint
 {
-    use \Graphpinator\Utils\THasConstraints;
-
     public function addConstraint(\Graphpinator\Constraint\ObjectConstraint $constraint) : self
     {
         $this->getConstraints()[] = $constraint;

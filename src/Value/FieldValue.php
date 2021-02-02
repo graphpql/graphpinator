@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Field;
+namespace Graphpinator\Value;
 
 final class FieldValue implements \JsonSerializable
 {
@@ -16,7 +16,9 @@ final class FieldValue implements \JsonSerializable
         $this->field = $field;
         $this->value = $value;
 
-        $field->validateConstraints($this->value);
+        foreach ($field->getDirectives() as $directive) {
+            $directive->getDirective()->resolveFieldDefinitionAfter($this, $directive->getArguments());
+        }
     }
 
     public function jsonSerialize() : \Graphpinator\Value\ResolvedValue

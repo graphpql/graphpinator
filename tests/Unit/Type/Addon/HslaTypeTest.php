@@ -70,15 +70,4 @@ final class HslaTypeTest extends \PHPUnit\Framework\TestCase
         $hsla = new \Graphpinator\Type\Addon\HslaType();
         $hsla->createResolvedValue($rawValue);
     }
-
-    public function testInputConstraintDefaultValue() : void
-    {
-        $hsla = new \Graphpinator\Type\Addon\HslaInput();
-        $args = $hsla->getArguments()->toArray();
-
-        self::assertSame(' @intConstraint(min: 0, max: 360)', $args['hue']->printConstraints());
-        self::assertSame(' @intConstraint(min: 0, max: 100)', $args['saturation']->printConstraints());
-        self::assertSame(' @intConstraint(min: 0, max: 100)', $args['lightness']->printConstraints());
-        self::assertSame(' @floatConstraint(min: 0, max: 1)', $args['alpha']->printConstraints());
-    }
 }

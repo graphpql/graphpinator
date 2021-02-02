@@ -29,7 +29,7 @@ trait TExecutableDirective
     }
 
     final public function resolveFieldAfter(
-        \Graphpinator\Field\FieldValue $fieldValue,
+        \Graphpinator\Value\FieldValue $fieldValue,
         \Graphpinator\Value\ArgumentValueSet $arguments,
     ) : string
     {

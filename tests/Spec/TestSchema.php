@@ -519,7 +519,7 @@ final class TestSchema
 
                             return $object;
                         },
-                    ))->setDeprecated(true)->setArguments(new \Graphpinator\Argument\ArgumentSet([
+                    ))->setDeprecated()->setArguments(new \Graphpinator\Argument\ArgumentSet([
                         \Graphpinator\Argument\Argument::create('arg1', \Graphpinator\Container\Container::Int())->setDefaultValue(123),
                         new \Graphpinator\Argument\Argument('arg2', TestSchema::getCompositeInput()),
                     ])),
@@ -1327,11 +1327,10 @@ final class TestSchema
                 parent::__construct(new \Graphpinator\Type\Enum\EnumItemSet([
                     new \Graphpinator\Type\Enum\EnumItem('A', 'single line description'),
                     (new \Graphpinator\Type\Enum\EnumItem('B'))
-                        ->setDeprecated(true),
+                        ->setDeprecated(),
                     new \Graphpinator\Type\Enum\EnumItem('C', 'multi line' . \PHP_EOL . 'description'),
                     (new \Graphpinator\Type\Enum\EnumItem('D', 'single line description'))
-                        ->setDeprecated(true)
-                        ->setDeprecationReason('reason'),
+                        ->setDeprecated('reason'),
                 ]));
             }
         };

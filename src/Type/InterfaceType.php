@@ -10,12 +10,15 @@ abstract class InterfaceType extends \Graphpinator\Type\Contract\AbstractDefinit
     use \Graphpinator\Type\Contract\TInterfaceImplementor;
     use \Graphpinator\Type\Contract\TMetaFields;
     use \Graphpinator\Printable\TRepeatablePrint;
+    use \Graphpinator\Directive\THasDirectives;
     use \Graphpinator\Utils\TObjectConstraint;
 
     public function __construct(?\Graphpinator\Utils\InterfaceSet $implements = null)
     {
         $this->implements = $implements
             ?? new \Graphpinator\Utils\InterfaceSet([]);
+        $this->directives = new \Graphpinator\Directive\DirectiveUsageSet();
+        $this->directiveLocation = \Graphpinator\Directive\TypeSystemDirectiveLocation::INTERFACE;
     }
 
     final public function isInstanceOf(\Graphpinator\Type\Contract\Definition $type) : bool
@@ -70,7 +73,7 @@ abstract class InterfaceType extends \Graphpinator\Type\Contract\AbstractDefinit
     final public function printSchema() : string
     {
         return $this->printDescription()
-            . 'interface ' . $this->getName() . $this->printImplements() . $this->printConstraints() . ' {' . \PHP_EOL
+            . 'interface ' . $this->getName() . $this->printImplements() . $this->printDirectives() . ' {' . \PHP_EOL
             . $this->printItems($this->getFields(), 1)
             . '}';
     }

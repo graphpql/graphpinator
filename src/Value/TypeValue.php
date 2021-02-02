@@ -16,7 +16,9 @@ final class TypeValue implements \Graphpinator\Value\OutputValue
         $this->type = $type;
         $this->value = $rawValue;
 
-        $type->validateConstraints($this);
+        foreach ($type->getDirectives() as $directive) {
+            $directive->getDirective()->resolveObject($this, $directive->getArguments());
+        }
     }
 
     public function getRawValue() : \stdClass
@@ -34,7 +36,7 @@ final class TypeValue implements \Graphpinator\Value\OutputValue
         return $this->value;
     }
 
-    public function __get(string $name) : \Graphpinator\Field\FieldValue
+    public function __get(string $name) : \Graphpinator\Value\FieldValue
     {
         return $this->value->{$name};
     }

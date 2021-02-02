@@ -6,8 +6,6 @@ namespace Graphpinator\Utils;
 
 trait TFieldConstraint
 {
-    use \Graphpinator\Utils\THasConstraints;
-
     public function addConstraint(\Graphpinator\Constraint\ArgumentFieldConstraint $constraint) : self
     {
         if (!$constraint->validateType($this->getType())) {

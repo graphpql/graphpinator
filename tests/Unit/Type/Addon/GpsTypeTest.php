@@ -60,13 +60,4 @@ final class GpsTypeTest extends \PHPUnit\Framework\TestCase
         $gps = new \Graphpinator\Type\Addon\GpsType();
         $gps->createResolvedValue($rawValue);
     }
-
-    public function testInputConstraintDefaultValue() : void
-    {
-        $gps = new \Graphpinator\Type\Addon\GpsInput();
-        $args = $gps->getArguments()->toArray();
-
-        self::assertSame(' @floatConstraint(min: -90, max: 90)', $args['lat']->printConstraints());
-        self::assertSame(' @floatConstraint(min: -180, max: 180)', $args['lng']->printConstraints());
-    }
 }

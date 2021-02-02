@@ -8,11 +8,18 @@ abstract class InputType extends \Graphpinator\Type\Contract\ConcreteDefinition 
 {
     use \Graphpinator\Printable\TRepeatablePrint;
     use \Graphpinator\Utils\TObjectConstraint;
+    use \Graphpinator\Directive\THasDirectives;
 
     protected const DATA_CLASS = \stdClass::class;
 
     protected ?\Graphpinator\Argument\ArgumentSet $arguments = null;
     private bool $cycleValidated = false;
+
+    public function __construct()
+    {
+        $this->directives = new \Graphpinator\Directive\DirectiveUsageSet();
+        $this->directiveLocation = \Graphpinator\Directive\TypeSystemDirectiveLocation::INPUT_OBJECT;
+    }
 
     final public function createInputedValue(mixed $rawValue) : \Graphpinator\Value\InputedValue
     {
@@ -46,7 +53,7 @@ abstract class InputType extends \Graphpinator\Type\Contract\ConcreteDefinition 
     final public function printSchema() : string
     {
         return $this->printDescription()
-            . 'input ' . $this->getName() . $this->printConstraints() . ' {' . \PHP_EOL
+            . 'input ' . $this->getName() . $this->printDirectives() . ' {' . \PHP_EOL
             . $this->printItems($this->getArguments(), 1)
             . '}';
     }

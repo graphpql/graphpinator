@@ -65,14 +65,4 @@ final class HslTypeTest extends \PHPUnit\Framework\TestCase
         $hsl = new \Graphpinator\Type\Addon\HslType();
         $hsl->createResolvedValue($rawValue);
     }
-
-    public function testInputConstraintDefaultValue() : void
-    {
-        $hsl = new \Graphpinator\Type\Addon\HslInput();
-        $args = $hsl->getArguments()->toArray();
-
-        self::assertSame(' @intConstraint(min: 0, max: 360)', $args['hue']->printConstraints());
-        self::assertSame(' @intConstraint(min: 0, max: 100)', $args['saturation']->printConstraints());
-        self::assertSame(' @intConstraint(min: 0, max: 100)', $args['lightness']->printConstraints());
-    }
 }

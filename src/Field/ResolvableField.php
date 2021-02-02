@@ -22,8 +22,12 @@ final class ResolvableField extends \Graphpinator\Field\Field
     public function resolve(
         \Graphpinator\Value\ResolvedValue $parentValue,
         \Graphpinator\Normalizer\Field\Field $field,
-    ) : \Graphpinator\Field\FieldValue
+    ) : \Graphpinator\Value\FieldValue
     {
+        foreach ($this->directives as $directive) {
+            $directive->getDirective()->resolveFieldDefinitionBefore($directive->getArguments());
+        }
+
         $arguments = $field->getArguments();
         $rawArguments = $arguments->getValuesForResolver();
         \array_unshift($rawArguments, $parentValue->getRawValue());
@@ -38,6 +42,6 @@ final class ResolvableField extends \Graphpinator\Field\Field
             ? $value
             : $value->getType()->resolve($field->getFields(), $value);
 
-        return new \Graphpinator\Field\FieldValue($this, $fieldValue);
+        return new \Graphpinator\Value\FieldValue($this, $fieldValue);
     }
 }

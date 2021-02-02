@@ -25,4 +25,43 @@ final class ObjectConstraintDirective extends \Graphpinator\Directive\Directive
             ]),
         );
     }
+
+    public function resolveFieldDefinitionBefore(
+        \Graphpinator\Value\ArgumentValueSet $arguments,
+    ) : void
+    {
+        // nothing here
+    }
+
+    public function resolveFieldDefinitionAfter(
+        \Graphpinator\Value\FieldValue $fieldValue,
+        \Graphpinator\Value\ArgumentValueSet $arguments,
+    ) : void
+    {
+        // nothing here
+    }
+
+    public function resolveObject(
+        \Graphpinator\Value\TypeValue $typeValue,
+        \Graphpinator\Value\ArgumentValueSet $arguments,
+    ) : void
+    {
+        // nothing here
+    }
+
+    public function resolveInputObject(
+        \Graphpinator\Value\InputValue $inputValue,
+        \Graphpinator\Value\ArgumentValueSet $arguments,
+    ) : void
+    {
+        // nothing here
+    }
+
+    public function resolveArgumentDefinition(
+        \Graphpinator\Value\ArgumentValue $argumentValue,
+        \Graphpinator\Value\ArgumentValueSet $arguments,
+    ) : void
+    {
+        // nothing here
+    }
 }

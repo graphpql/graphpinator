@@ -8,6 +8,7 @@ final class Argument implements \Graphpinator\Printable\Printable
 {
     use \Nette\SmartObject;
     use \Graphpinator\Utils\TOptionalDescription;
+    use \Graphpinator\Directive\THasDirectives;
     use \Graphpinator\Utils\TFieldConstraint;
 
     private ?\Graphpinator\Value\InputedValue $defaultValue = null;
@@ -17,7 +18,8 @@ final class Argument implements \Graphpinator\Printable\Printable
         private \Graphpinator\Type\Contract\Inputable $type,
     )
     {
-        $this->constraints = new \Graphpinator\Constraint\ArgumentFieldConstraintSet([]);
+        $this->directives = new \Graphpinator\Directive\DirectiveUsageSet();
+        $this->directiveLocation = \Graphpinator\Directive\TypeSystemDirectiveLocation::ARGUMENT_DEFINITION;
     }
 
     public static function create(string $name, \Graphpinator\Type\Contract\Inputable $type) : self
@@ -55,7 +57,7 @@ final class Argument implements \Graphpinator\Printable\Printable
             $schema .= ' = ' . $this->defaultValue->prettyPrint($indentLevel);
         }
 
-        $schema .= $this->printConstraints();
+        $schema .= $this->printDirectives();
 
         return $schema;
     }

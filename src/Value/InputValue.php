@@ -136,7 +136,9 @@ final class InputValue implements \Graphpinator\Value\InputedValue
             $value->applyVariables($variables);
         }
 
-        $this->type->validateConstraints($this);
+        foreach ($this->type->getDirectives() as $directive) {
+            $directive->getDirective()->resolveInputObject($this, $directive->getArguments());
+        }
     }
 
     public function isSame(Value $compare) : bool

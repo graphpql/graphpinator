@@ -37,7 +37,7 @@ final class Directive
         }
 
         $this->directive = $directive;
-        $this->arguments = new \Graphpinator\Value\ArgumentValueSet(
+        $this->arguments = \Graphpinator\Value\ArgumentValueSet::fromParsed(
             $parsed->getArguments()
                 ?? new \Graphpinator\Parser\Value\ArgumentValueSet([]),
             $directive,
