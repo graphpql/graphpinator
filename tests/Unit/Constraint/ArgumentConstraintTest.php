@@ -1292,7 +1292,7 @@ final class ArgumentConstraintTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 [
-                    'fieldType' => \Graphpinator\Tests\Spec\ConstraintTest::getUploadType()->notNull(),
+                    'fieldType' => \Graphpinator\Tests\Feature\UploadConstraintTest::getUploadType()->notNull(),
                     'inputType' => new \Graphpinator\Module\Upload\UploadType(),
                     'interfaceInputConstraints' => [
                         new \Graphpinator\Constraint\UploadConstraint(5000),
@@ -1304,7 +1304,7 @@ final class ArgumentConstraintTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 [
-                    'fieldType' => \Graphpinator\Tests\Spec\ConstraintTest::getUploadType()->notNull(),
+                    'fieldType' => \Graphpinator\Tests\Feature\UploadConstraintTest::getUploadType()->notNull(),
                     'inputType' => new \Graphpinator\Module\Upload\UploadType(),
                     'interfaceInputConstraints' => [
                         new \Graphpinator\Constraint\UploadConstraint(null, ['text/plain', 'text/html']),
@@ -1322,7 +1322,7 @@ final class ArgumentConstraintTest extends \PHPUnit\Framework\TestCase
         return [
             [
                 [
-                    'fieldType' => \Graphpinator\Tests\Spec\ConstraintTest::getUploadType()->notNull(),
+                    'fieldType' => \Graphpinator\Tests\Feature\UploadConstraintTest::getUploadType()->notNull(),
                     'inputType' => new \Graphpinator\Module\Upload\UploadType(),
                     'interfaceInputConstraints' => [
                         new \Graphpinator\Constraint\UploadConstraint(5000),
@@ -1334,7 +1334,7 @@ final class ArgumentConstraintTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 [
-                    'fieldType' => \Graphpinator\Tests\Spec\ConstraintTest::getUploadType()->notNull(),
+                    'fieldType' => \Graphpinator\Tests\Feature\UploadConstraintTest::getUploadType()->notNull(),
                     'inputType' => new \Graphpinator\Module\Upload\UploadType(),
                     'interfaceInputConstraints' => [
                         new \Graphpinator\Constraint\UploadConstraint(5000),
@@ -1346,7 +1346,7 @@ final class ArgumentConstraintTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 [
-                    'fieldType' => \Graphpinator\Tests\Spec\ConstraintTest::getUploadType()->notNull(),
+                    'fieldType' => \Graphpinator\Tests\Feature\UploadConstraintTest::getUploadType()->notNull(),
                     'inputType' => new \Graphpinator\Module\Upload\UploadType(),
                     'interfaceInputConstraints' => [
                         new \Graphpinator\Constraint\UploadConstraint(null, ['text/plain']),
@@ -1358,7 +1358,7 @@ final class ArgumentConstraintTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 [
-                    'fieldType' => \Graphpinator\Tests\Spec\ConstraintTest::getUploadType()->notNull(),
+                    'fieldType' => \Graphpinator\Tests\Feature\UploadConstraintTest::getUploadType()->notNull(),
                     'inputType' => new \Graphpinator\Module\Upload\UploadType(),
                     'interfaceInputConstraints' => [
                         new \Graphpinator\Constraint\UploadConstraint(null, ['text/plain']),
