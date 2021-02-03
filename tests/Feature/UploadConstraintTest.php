@@ -56,12 +56,12 @@ final class UploadConstraintTest extends \PHPUnit\Framework\TestCase
     {
         return [
             [
-                \Graphpinator\Exception\Constraint\MaxSizeConstraintNotSatisfied::class,
                 new \Graphpinator\Constraint\UploadConstraint(4999),
+                \Graphpinator\Exception\Constraint\MaxSizeConstraintNotSatisfied::class,
             ],
             [
-                \Graphpinator\Exception\Constraint\MimeTypeConstraintNotSatisfied::class,
                 new \Graphpinator\Constraint\UploadConstraint(null, ['application/x-httpd-php']),
+                \Graphpinator\Exception\Constraint\MimeTypeConstraintNotSatisfied::class,
             ],
         ];
     }
@@ -97,9 +97,8 @@ final class UploadConstraintTest extends \PHPUnit\Framework\TestCase
      * @param string $exception
      * @param \Graphpinator\Constraint\UploadConstraint $constraint
      */
-    public function testUploadInvalid(string $exception, \Graphpinator\Constraint\UploadConstraint $constraint) : void
+    public function testUploadInvalid(\Graphpinator\Constraint\UploadConstraint $constraint, string $exception) : void
     {
-        $map = '{ "0": ["variables.var1"] }';
         $request = Json::fromNative((object) [
             'query' => 'query queryName($var1: Upload) { fieldUpload(file: $var1) { fileContent } }',
             'variables' => (object) ['var1' => null],
@@ -112,7 +111,7 @@ final class UploadConstraintTest extends \PHPUnit\Framework\TestCase
         $file->method('getStream')->willReturn($stream);
         $file->method('getSize')->willReturn(5000);
         $fileProvider = $this->createStub(\Graphpinator\Module\Upload\FileProvider::class);
-        $fileProvider->method('getMap')->willReturn(Json\MapJson::fromString($map));
+        $fileProvider->method('getMap')->willReturn(Json\MapJson::fromString('{ "0": ["variables.var1"] }'));
         $fileProvider->method('getFile')->willReturn($file);
 
         self::expectException($exception);

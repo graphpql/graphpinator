@@ -874,7 +874,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         """
         directive @uploadConstraint(
           maxSize: Int
-          mimeType: [String]
+          mimeType: [String!]
         ) on ARGUMENT_DEFINITION
         EOL;
 

@@ -19,7 +19,7 @@ final class UploadConstraintDirective extends \Graphpinator\Directive\Directive
             false,
             new \Graphpinator\Argument\ArgumentSet([
                 new \Graphpinator\Argument\Argument('maxSize', \Graphpinator\Container\Container::Int()),
-                new \Graphpinator\Argument\Argument('mimeType', \Graphpinator\Container\Container::String()->list()),
+                new \Graphpinator\Argument\Argument('mimeType', \Graphpinator\Container\Container::String()->notNull()->list()),
             ]),
         );
     }
