@@ -68,6 +68,8 @@ abstract class InputType extends \Graphpinator\Type\Contract\ConcreteDefinition 
             throw new \Graphpinator\Exception\Type\InputCycle();
         }
 
+        $stack[$this->getName()] = true;
+
         foreach ($this->arguments as $argumentContract) {
             $type = $argumentContract->getType();
 
@@ -77,21 +79,18 @@ abstract class InputType extends \Graphpinator\Type\Contract\ConcreteDefinition 
 
             $type = $type->getInnerType();
 
-            if ($type instanceof ListType || $type instanceof \Graphpinator\Type\Contract\LeafDefinition) {
+            if (!$type instanceof self) {
                 continue;
             }
-
-            \assert($type instanceof self);
 
             if ($type->arguments === null) {
                 $type->arguments = $type->getFieldDefinition();
             }
 
-            $stack[$this->getName()] = true;
             $type->validateCycles($stack);
-            unset($stack[$this->getName()]);
         }
 
+        unset($stack[$this->getName()]);
         $this->cycleValidated = true;
     }
 }

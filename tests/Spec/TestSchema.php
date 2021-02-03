@@ -1369,7 +1369,7 @@ final class TestSchema
     {
         return new class extends \Graphpinator\Directive\Directive implements \Graphpinator\Directive\Contract\ExecutableDefinition
         {
-            use \Graphpinator\Directive\TExecutableDirective;
+            use \Graphpinator\Directive\Contract\TExecutableDirective;
 
             protected const NAME = 'testDirective';
             public static $count = 0;
@@ -1400,7 +1400,7 @@ final class TestSchema
     {
         return new class extends \Graphpinator\Directive\Directive implements \Graphpinator\Directive\Contract\ExecutableDefinition
         {
-            use \Graphpinator\Directive\TExecutableDirective;
+            use \Graphpinator\Directive\Contract\TExecutableDirective;
 
             protected const NAME = 'invalidDirectiveResult';
 
@@ -1428,7 +1428,7 @@ final class TestSchema
     {
         return new class extends \Graphpinator\Directive\Directive implements \Graphpinator\Directive\Contract\ExecutableDefinition
         {
-            use \Graphpinator\Directive\TExecutableDirective;
+            use \Graphpinator\Directive\Contract\TExecutableDirective;
 
             protected const NAME = 'invalidDirectiveType';
 
