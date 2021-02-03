@@ -18,7 +18,7 @@ final class ObjectConstraintDirective extends \Graphpinator\Directive\Directive
                 \Graphpinator\Directive\TypeSystemDirectiveLocation::INTERFACE,
                 \Graphpinator\Directive\TypeSystemDirectiveLocation::OBJECT,
             ],
-            false,
+            true,
             new \Graphpinator\Argument\ArgumentSet([
                 new \Graphpinator\Argument\Argument('atLeastOne', \Graphpinator\Container\Container::String()->notNull()->list()),
                 new \Graphpinator\Argument\Argument('exactlyOne', \Graphpinator\Container\Container::String()->notNull()->list()),
