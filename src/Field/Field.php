@@ -10,7 +10,6 @@ class Field implements \Graphpinator\Printable\Printable
     use \Graphpinator\Utils\TOptionalDescription;
     use \Graphpinator\Directive\THasDirectives;
     use \Graphpinator\Directive\TDeprecatable;
-    use \Graphpinator\Utils\TFieldConstraint;
     use \Graphpinator\Printable\TRepeatablePrint;
 
     protected string $name;

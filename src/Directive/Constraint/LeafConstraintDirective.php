@@ -7,16 +7,15 @@ namespace Graphpinator\Directive\Constraint;
 abstract class LeafConstraintDirective extends \Graphpinator\Directive\Directive
     implements \Graphpinator\Directive\Contract\TypeSystemDefinition
 {
-    public function __construct(\Graphpinator\Argument\ArgumentSet $arguments)
+    public function __construct()
     {
         parent::__construct(
             [
+                \Graphpinator\Directive\TypeSystemDirectiveLocation::FIELD_DEFINITION,
                 \Graphpinator\Directive\TypeSystemDirectiveLocation::ARGUMENT_DEFINITION,
                 \Graphpinator\Directive\TypeSystemDirectiveLocation::INPUT_FIELD_DEFINITION,
-                \Graphpinator\Directive\TypeSystemDirectiveLocation::FIELD_DEFINITION,
             ],
             false,
-            $arguments,
         );
     }
 
@@ -32,7 +31,7 @@ abstract class LeafConstraintDirective extends \Graphpinator\Directive\Directive
         \Graphpinator\Value\ArgumentValueSet $arguments,
     ) : void
     {
-        // nothing here
+        $this->validate($fieldValue->getValue(), $arguments);
     }
 
     public function resolveObject(
@@ -56,6 +55,11 @@ abstract class LeafConstraintDirective extends \Graphpinator\Directive\Directive
         \Graphpinator\Value\ArgumentValueSet $arguments,
     ) : void
     {
-        // nothing here
+        $this->validate($argumentValue->getValue(), $arguments);
     }
+
+    abstract protected function validate(
+        \Graphpinator\Value\Value $value,
+        \Graphpinator\Value\ArgumentValueSet $arguments,
+    ) : void;
 }

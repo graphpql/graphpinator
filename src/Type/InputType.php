@@ -7,7 +7,6 @@ namespace Graphpinator\Type;
 abstract class InputType extends \Graphpinator\Type\Contract\ConcreteDefinition implements \Graphpinator\Type\Contract\Inputable
 {
     use \Graphpinator\Printable\TRepeatablePrint;
-    use \Graphpinator\Utils\TObjectConstraint;
     use \Graphpinator\Directive\THasDirectives;
 
     protected const DATA_CLASS = \stdClass::class;

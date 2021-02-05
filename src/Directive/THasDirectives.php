@@ -14,13 +14,30 @@ trait THasDirectives
         return $this->directives;
     }
 
-    public function addDirective(\Graphpinator\Directive\DirectiveUsage $directive) : static
+    public function addDirective(
+        \Graphpinator\Directive\Contract\TypeSystemDefinition $directive,
+        array $arguments,
+    ) : static
     {
-        if (!\in_array($this->directiveLocation, $directive->getDirective()->getLocations(), true)) {
+        if (!\in_array($this->directiveLocation, $directive->getLocations(), true)) {
             throw new \Graphpinator\Exception\Normalizer\DirectiveIncorrectLocation();
         }
 
-        $this->directives[] = $directive;
+        $usage = new DirectiveUsage($directive, $arguments);
+        $type = match ($this->directiveLocation) {
+            TypeSystemDirectiveLocation::OBJECT,
+            TypeSystemDirectiveLocation::INTERFACE,
+            TypeSystemDirectiveLocation::INPUT_OBJECT => $this,
+            TypeSystemDirectiveLocation::FIELD_DEFINITION,
+            TypeSystemDirectiveLocation::ARGUMENT_DEFINITION => $this->getType(),
+            TypeSystemDirectiveLocation::ENUM_VALUE => null,
+        };
+
+        if (!$directive->validateType($type, $usage->getArguments())) {
+            throw new \Graphpinator\Exception\Constraint\InvalidConstraintType();
+        }
+
+        $this->directives[] = $usage;
 
         return $this;
     }

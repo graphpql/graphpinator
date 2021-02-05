@@ -19,11 +19,58 @@ final class ObjectConstraintDirective extends \Graphpinator\Directive\Directive
                 \Graphpinator\Directive\TypeSystemDirectiveLocation::OBJECT,
             ],
             true,
-            new \Graphpinator\Argument\ArgumentSet([
-                new \Graphpinator\Argument\Argument('atLeastOne', \Graphpinator\Container\Container::String()->notNull()->list()),
-                new \Graphpinator\Argument\Argument('exactlyOne', \Graphpinator\Container\Container::String()->notNull()->list()),
-            ]),
         );
+    }
+
+    public function validateType(
+        ?\Graphpinator\Type\Contract\Definition $definition,
+        \Graphpinator\Value\ArgumentValueSet $arguments,
+    ) : bool
+    {
+        if ($definition instanceof \Graphpinator\Type\InputType) {
+            $fields = $definition->getArguments();
+        } elseif ($definition instanceof \Graphpinator\Type\Type || $definition instanceof \Graphpinator\Type\InterfaceType) {
+            $fields = $definition->getFields();
+        } else {
+            return false;
+        }
+
+        $atLeastOne = $arguments->offsetGet('atLeastOne');
+        $exactlyOne = $arguments->offsetGet('exactlyOne');
+
+        if ($atLeastOne instanceof \Graphpinator\Value\ListValue) {
+            foreach ($atLeastOne as $item) {
+                if ($fields->offsetExists($item->getRawValue())) {
+                    return false;
+                }
+            }
+        }
+
+        if ($exactlyOne instanceof \Graphpinator\Value\ListValue) {
+            foreach ($exactlyOne as $item) {
+                if ($fields->offsetExists($item->getRawValue())) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
+    {
+        return new \Graphpinator\Argument\ArgumentSet([
+            \Graphpinator\Argument\Argument::create('atLeastOne', \Graphpinator\Container\Container::String()->notNull()->list())
+                ->addDirective(
+                    \Graphpinator\Container\Container::directiveListConstraint(),
+                    ['minCount' => 1],
+                ),
+            \Graphpinator\Argument\Argument::create('exactlyOne', \Graphpinator\Container\Container::String()->notNull()->list())
+                ->addDirective(
+                    \Graphpinator\Container\Container::directiveListConstraint(),
+                    ['minCount' => 1],
+                ),
+        ]);
     }
 
     public function resolveFieldDefinitionBefore(

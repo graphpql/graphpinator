@@ -13,7 +13,6 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
     use \Graphpinator\Type\Contract\TMetaFields;
     use \Graphpinator\Printable\TRepeatablePrint;
     use \Graphpinator\Directive\THasDirectives;
-    use \Graphpinator\Utils\TObjectConstraint;
 
     public function __construct(?\Graphpinator\Utils\InterfaceSet $implements = null)
     {

@@ -18,10 +18,15 @@ final class DeprecatedDirective extends \Graphpinator\Directive\Directive
                 \Graphpinator\Directive\TypeSystemDirectiveLocation::ENUM_VALUE,
             ],
             false,
-            new \Graphpinator\Argument\ArgumentSet([
-                new \Graphpinator\Argument\Argument('reason', \Graphpinator\Container\Container::String()),
-            ]),
         );
+    }
+
+    public function validateType(
+        ?\Graphpinator\Type\Contract\Definition $definition,
+        \Graphpinator\Value\ArgumentValueSet $arguments,
+    ) : bool
+    {
+        return true;
     }
 
     public function resolveFieldDefinitionBefore(
@@ -61,5 +66,12 @@ final class DeprecatedDirective extends \Graphpinator\Directive\Directive
     ) : void
     {
         // nothing here
+    }
+
+    protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
+    {
+        return new \Graphpinator\Argument\ArgumentSet([
+            new \Graphpinator\Argument\Argument('reason', \Graphpinator\Container\Container::String()),
+        ]);
     }
 }

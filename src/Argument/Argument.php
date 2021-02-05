@@ -9,7 +9,6 @@ final class Argument implements \Graphpinator\Printable\Printable
     use \Nette\SmartObject;
     use \Graphpinator\Utils\TOptionalDescription;
     use \Graphpinator\Directive\THasDirectives;
-    use \Graphpinator\Utils\TFieldConstraint;
 
     private ?\Graphpinator\Value\InputedValue $defaultValue = null;
 

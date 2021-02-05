@@ -11,7 +11,6 @@ abstract class InterfaceType extends \Graphpinator\Type\Contract\AbstractDefinit
     use \Graphpinator\Type\Contract\TMetaFields;
     use \Graphpinator\Printable\TRepeatablePrint;
     use \Graphpinator\Directive\THasDirectives;
-    use \Graphpinator\Utils\TObjectConstraint;
 
     public function __construct(?\Graphpinator\Utils\InterfaceSet $implements = null)
     {

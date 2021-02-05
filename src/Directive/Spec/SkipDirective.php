@@ -21,9 +21,6 @@ final class SkipDirective extends \Graphpinator\Directive\Directive
                 \Graphpinator\Directive\ExecutableDirectiveLocation::INLINE_FRAGMENT,
             ],
             false,
-            new \Graphpinator\Argument\ArgumentSet([
-                new \Graphpinator\Argument\Argument('if', \Graphpinator\Container\Container::Boolean()->notNull()),
-            ]),
         );
 
         $this->fieldBeforeFn = static function (bool $if) : string {
@@ -36,5 +33,12 @@ final class SkipDirective extends \Graphpinator\Directive\Directive
     public function validateType(\Graphpinator\Type\Contract\Definition $type) : bool
     {
         return true;
+    }
+
+    protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
+    {
+        return new \Graphpinator\Argument\ArgumentSet([
+            new \Graphpinator\Argument\Argument('if', \Graphpinator\Container\Container::Boolean()->notNull()),
+        ]);
     }
 }

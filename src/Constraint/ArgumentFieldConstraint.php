@@ -8,19 +8,6 @@ abstract class ArgumentFieldConstraint implements \Graphpinator\Constraint\Const
 {
     use \Nette\SmartObject;
 
-    abstract public function print() : string;
-
-    abstract public function validateType(\Graphpinator\Type\Contract\Definition $type) : bool;
-
-    public function validate(\Graphpinator\Value\Value $value) : void
-    {
-        if ($value instanceof \Graphpinator\Value\NullValue) {
-            return;
-        }
-
-        $this->validateFactoryMethod($value->getRawValue());
-    }
-
     public function isContravariant(\Graphpinator\Constraint\ArgumentFieldConstraint $childConstraint) : bool
     {
         return $this->isGreaterSet($childConstraint, $this);

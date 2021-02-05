@@ -15,13 +15,12 @@ abstract class Directive implements \Graphpinator\Directive\Contract\Definition
 
     private array $locations;
     private bool $repeatable;
-    private \Graphpinator\Argument\ArgumentSet $arguments;
+    private ?\Graphpinator\Argument\ArgumentSet $arguments = null;
 
-    public function __construct(array $locations, bool $repeatable, \Graphpinator\Argument\ArgumentSet $arguments)
+    public function __construct(array $locations, bool $repeatable)
     {
         $this->locations = $locations;
         $this->repeatable = $repeatable;
-        $this->arguments = $arguments;
     }
 
     final public function getName() : string
@@ -46,6 +45,10 @@ abstract class Directive implements \Graphpinator\Directive\Contract\Definition
 
     final public function getArguments() : \Graphpinator\Argument\ArgumentSet
     {
+        if (!$this->arguments instanceof \Graphpinator\Argument\ArgumentSet) {
+            $this->arguments = $this->getFieldDefinition();
+        }
+
         return $this->arguments;
     }
 
@@ -63,4 +66,6 @@ abstract class Directive implements \Graphpinator\Directive\Contract\Definition
 
         return $schema . ' on ' . \implode(' | ', $this->locations);
     }
+
+    abstract protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet;
 }

@@ -9,7 +9,8 @@ final class DirectiveUsage
     use \Nette\SmartObject;
 
     private \Graphpinator\Directive\Contract\TypeSystemDefinition $directive;
-    private \Graphpinator\Value\ArgumentValueSet $arguments;
+    private array $rawArguments;
+    private ?\Graphpinator\Value\ArgumentValueSet $arguments = null;
 
     public function __construct(
         \Graphpinator\Directive\Contract\TypeSystemDefinition $directive,
@@ -17,7 +18,7 @@ final class DirectiveUsage
     )
     {
         $this->directive = $directive;
-        $this->arguments = \Graphpinator\Value\ArgumentValueSet::fromRaw($arguments, $directive);
+        $this->rawArguments = $arguments;
     }
 
     public function getDirective() : \Graphpinator\Directive\Contract\TypeSystemDefinition
@@ -27,6 +28,10 @@ final class DirectiveUsage
 
     public function getArguments() : \Graphpinator\Value\ArgumentValueSet
     {
+        if ($this->arguments === null) {
+            $this->arguments = \Graphpinator\Value\ArgumentValueSet::fromRaw($this->rawArguments, $this->directive);
+        }
+
         return $this->arguments;
     }
 
