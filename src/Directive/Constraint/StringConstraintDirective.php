@@ -23,23 +23,27 @@ final class StringConstraintDirective extends LeafConstraintDirective
     protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
     {
         return new \Graphpinator\Argument\ArgumentSet([
-            \Graphpinator\Argument\Argument::create('minLength', \Graphpinator\Container\Container::Int())
-                ->addDirective(
-                    \Graphpinator\Container\Container::directiveIntConstraint(),
-                    ['min' => 0],
-                ),
-            \Graphpinator\Argument\Argument::create('maxLength', \Graphpinator\Container\Container::Int())
-                ->addDirective(
-                    \Graphpinator\Container\Container::directiveIntConstraint(),
-                    ['min' => 0],
-                ),
+            \Graphpinator\Argument\Argument::create('minLength', \Graphpinator\Container\Container::Int()),
+            \Graphpinator\Argument\Argument::create('maxLength', \Graphpinator\Container\Container::Int()),
             \Graphpinator\Argument\Argument::create('regex', \Graphpinator\Container\Container::String()),
-            \Graphpinator\Argument\Argument::create('oneOf', \Graphpinator\Container\Container::String()->notNull()->list())
-                ->addDirective(
-                    \Graphpinator\Container\Container::directiveListConstraint(),
-                    ['minItems' => 1],
-                ),
+            \Graphpinator\Argument\Argument::create('oneOf', \Graphpinator\Container\Container::String()->notNull()->list()),
         ]);
+    }
+
+    protected function appendDirectives(): void
+    {
+        $this->arguments['minLength']->addDirective(
+            \Graphpinator\Container\Container::directiveIntConstraint(),
+            ['min' => 0],
+        );
+        $this->arguments['maxLength']->addDirective(
+            \Graphpinator\Container\Container::directiveIntConstraint(),
+            ['min' => 0],
+        );
+        $this->arguments['oneOf']->addDirective(
+            \Graphpinator\Container\Container::directiveListConstraint(),
+            ['minItems' => 1],
+        );
     }
 
     protected function validate(

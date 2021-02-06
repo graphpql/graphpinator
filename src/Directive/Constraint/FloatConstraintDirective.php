@@ -22,12 +22,16 @@ final class FloatConstraintDirective extends LeafConstraintDirective
         return new \Graphpinator\Argument\ArgumentSet([
             \Graphpinator\Argument\Argument::create('min', \Graphpinator\Container\Container::Float()),
             \Graphpinator\Argument\Argument::create('max', \Graphpinator\Container\Container::Float()),
-            \Graphpinator\Argument\Argument::create('oneOf', \Graphpinator\Container\Container::Float()->notNull()->list())
-                ->addDirective(
-                    \Graphpinator\Container\Container::directiveListConstraint(),
-                    ['minItems' => 1],
-                ),
+            \Graphpinator\Argument\Argument::create('oneOf', \Graphpinator\Container\Container::Float()->notNull()->list()),
         ]);
+    }
+
+    protected function appendDirectives(): void
+    {
+        $this->arguments['oneOf']->addDirective(
+            \Graphpinator\Container\Container::directiveListConstraint(),
+            ['minItems' => 1],
+        );
     }
 
     protected function validate(

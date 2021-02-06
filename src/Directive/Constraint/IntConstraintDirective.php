@@ -23,11 +23,15 @@ final class IntConstraintDirective extends LeafConstraintDirective
             \Graphpinator\Argument\Argument::create('min', \Graphpinator\Container\Container::Int()),
             \Graphpinator\Argument\Argument::create('max', \Graphpinator\Container\Container::Int()),
             \Graphpinator\Argument\Argument::create('oneOf', \Graphpinator\Container\Container::Int()->notNull()->list())
-                ->addDirective(
-                    \Graphpinator\Container\Container::directiveListConstraint(),
-                    ['minItems' => 1],
-                ),
         ]);
+    }
+
+    protected function appendDirectives(): void
+    {
+        $this->arguments['oneOf']->addDirective(
+            \Graphpinator\Container\Container::directiveListConstraint(),
+            ['minItems' => 1],
+        );
     }
 
     protected function validate(

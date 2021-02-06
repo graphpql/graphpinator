@@ -13,9 +13,9 @@ abstract class Directive implements \Graphpinator\Directive\Contract\Definition
     protected const NAME = '';
     protected const DESCRIPTION = null;
 
-    private array $locations;
-    private bool $repeatable;
-    private ?\Graphpinator\Argument\ArgumentSet $arguments = null;
+    protected array $locations;
+    protected bool $repeatable;
+    protected ?\Graphpinator\Argument\ArgumentSet $arguments = null;
 
     public function __construct(array $locations, bool $repeatable)
     {
@@ -47,6 +47,7 @@ abstract class Directive implements \Graphpinator\Directive\Contract\Definition
     {
         if (!$this->arguments instanceof \Graphpinator\Argument\ArgumentSet) {
             $this->arguments = $this->getFieldDefinition();
+            $this->appendDirectives();
         }
 
         return $this->arguments;
@@ -68,4 +69,8 @@ abstract class Directive implements \Graphpinator\Directive\Contract\Definition
     }
 
     abstract protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet;
+
+    protected function appendDirectives() : void
+    {
+    }
 }
