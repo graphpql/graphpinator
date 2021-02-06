@@ -11,9 +11,9 @@ trait TDeprecatable
 {
     public function setDeprecated(?string $reason = null) : self
     {
-        $this->directives[] = new \Graphpinator\Directive\DirectiveUsage(
+        $this->addDirective(
             \Graphpinator\Container\Container::directiveDeprecated(),
-            ['reason' => $reason]
+            ['reason' => $reason],
         );
 
         return $this;
