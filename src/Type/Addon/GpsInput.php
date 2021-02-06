@@ -12,14 +12,20 @@ final class GpsInput extends \Graphpinator\Type\InputType
     protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
     {
         return new \Graphpinator\Argument\ArgumentSet([
-            (new \Graphpinator\Argument\Argument(
+            \Graphpinator\Argument\Argument::create(
                 'lat',
                 \Graphpinator\Container\Container::Float()->notNull(),
-            ))->addConstraint(new \Graphpinator\Constraint\FloatConstraint(-90.0, 90.0)),
-            (new \Graphpinator\Argument\Argument(
+            )->addDirective(
+                \Graphpinator\Container\Container::directiveFloatConstraint(),
+                ['min' => -90.0, 'max' => 90.0],
+            ),
+            \Graphpinator\Argument\Argument::create(
                 'lng',
                 \Graphpinator\Container\Container::Float()->notNull(),
-            ))->addConstraint(new \Graphpinator\Constraint\FloatConstraint(-180.0, 180.0)),
+            )->addDirective(
+                \Graphpinator\Container\Container::directiveFloatConstraint(),
+                ['min' => -180.0, 'max' => 180.0],
+            ),
         ]);
     }
 }

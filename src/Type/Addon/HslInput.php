@@ -12,18 +12,27 @@ class HslInput extends \Graphpinator\Type\InputType
     protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
     {
         return new \Graphpinator\Argument\ArgumentSet([
-            (new \Graphpinator\Argument\Argument(
+            \Graphpinator\Argument\Argument::create(
                 'hue',
                 \Graphpinator\Container\Container::Int()->notNull(),
-            ))->addConstraint(new \Graphpinator\Constraint\IntConstraint(0, 360)),
-            (new \Graphpinator\Argument\Argument(
+            )->addDirective(
+                \Graphpinator\Container\Container::directiveIntConstraint(),
+                ['min' => 0, 'max' => 360],
+            ),
+            \Graphpinator\Argument\Argument::create(
                 'saturation',
                 \Graphpinator\Container\Container::Int()->notNull(),
-            ))->addConstraint(new \Graphpinator\Constraint\IntConstraint(0, 100)),
-            (new \Graphpinator\Argument\Argument(
+            )->addDirective(
+                \Graphpinator\Container\Container::directiveIntConstraint(),
+                ['min' => 0, 'max' => 100],
+            ),
+            \Graphpinator\Argument\Argument::create(
                 'lightness',
                 \Graphpinator\Container\Container::Int()->notNull(),
-            ))->addConstraint(new \Graphpinator\Constraint\IntConstraint(0, 100)),
+            )->addDirective(
+                \Graphpinator\Container\Container::directiveIntConstraint(),
+                ['min' => 0, 'max' => 100],
+            ),
         ]);
     }
 }

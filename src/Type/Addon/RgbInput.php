@@ -12,18 +12,27 @@ class RgbInput extends \Graphpinator\Type\InputType
     protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
     {
         return new \Graphpinator\Argument\ArgumentSet([
-            (new \Graphpinator\Argument\Argument(
+            \Graphpinator\Argument\Argument::create(
                 'red',
                 \Graphpinator\Container\Container::Int()->notNull(),
-            ))->addConstraint(new \Graphpinator\Constraint\IntConstraint(0, 255)),
-            (new \Graphpinator\Argument\Argument(
+            )->addDirective(
+                \Graphpinator\Container\Container::directiveIntConstraint(),
+                ['min' => 0, 'max' => 255],
+            ),
+            \Graphpinator\Argument\Argument::create(
                 'green',
                 \Graphpinator\Container\Container::Int()->notNull(),
-            ))->addConstraint(new \Graphpinator\Constraint\IntConstraint(0, 255)),
-            (new \Graphpinator\Argument\Argument(
+            )->addDirective(
+                \Graphpinator\Container\Container::directiveIntConstraint(),
+                ['min' => 0, 'max' => 255],
+            ),
+            \Graphpinator\Argument\Argument::create(
                 'blue',
                 \Graphpinator\Container\Container::Int()->notNull(),
-            ))->addConstraint(new \Graphpinator\Constraint\IntConstraint(0, 255)),
+            )->addDirective(
+                \Graphpinator\Container\Container::directiveIntConstraint(),
+                ['min' => 0, 'max' => 255],
+            ),
         ]);
     }
 }

@@ -12,27 +12,36 @@ class HslType extends \Graphpinator\Type\Type
     protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
     {
         return new \Graphpinator\Field\ResolvableFieldSet([
-            (new \Graphpinator\Field\ResolvableField(
+            \Graphpinator\Field\ResolvableField::create(
                 'hue',
                 \Graphpinator\Container\Container::Int()->notNull(),
                 static function (\stdClass $hsl) : int {
                     return $hsl->hue;
                 },
-            ))->addConstraint(new \Graphpinator\Constraint\IntConstraint(0, 360)),
-            (new \Graphpinator\Field\ResolvableField(
+            )->addDirective(
+                \Graphpinator\Container\Container::directiveIntConstraint(),
+                ['min' => 0, 'max' => 360],
+            ),
+            \Graphpinator\Field\ResolvableField::create(
                 'saturation',
                 \Graphpinator\Container\Container::Int()->notNull(),
                 static function (\stdClass $hsl) : int {
                     return $hsl->saturation;
                 },
-            ))->addConstraint(new \Graphpinator\Constraint\IntConstraint(0, 100)),
-            (new \Graphpinator\Field\ResolvableField(
+            )->addDirective(
+                \Graphpinator\Container\Container::directiveIntConstraint(),
+                ['min' => 0, 'max' => 100],
+            ),
+            \Graphpinator\Field\ResolvableField::create(
                 'lightness',
                 \Graphpinator\Container\Container::Int()->notNull(),
                 static function (\stdClass $hsl) : int {
                     return $hsl->lightness;
                 },
-            ))->addConstraint(new \Graphpinator\Constraint\IntConstraint(0, 100)),
+            )->addDirective(
+                \Graphpinator\Container\Container::directiveIntConstraint(),
+                ['min' => 0, 'max' => 100],
+            ),
         ]);
     }
 
