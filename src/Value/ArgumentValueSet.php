@@ -48,7 +48,7 @@ final class ArgumentValueSet extends \Infinityloop\Utils\ImplicitObjectMap
 
     public static function fromRaw(
         array $rawValues,
-        \Graphpinator\Field\Field|\Graphpinator\Directive\Directive $element,
+        \Graphpinator\Field\Field|\Graphpinator\Directive\Contract\Definition $element,
     ) : self
     {
         $items = [];
@@ -77,8 +77,8 @@ final class ArgumentValueSet extends \Infinityloop\Utils\ImplicitObjectMap
     {
         $return = [];
 
-        foreach ($this as $argumentValue) {
-            $return[] = $argumentValue->getValue()->getRawValue(true);
+        foreach ($this as $name => $argumentValue) {
+            $return[$name] = $argumentValue->getValue()->getRawValue(true);
         }
 
         return $return;
