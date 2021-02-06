@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Constraint;
 
-final class ObjectConstraint implements \Graphpinator\Constraint\Constraint
+final class ObjectConstraint
 {
 
     public function validateConstraint(\Graphpinator\Constraint\ObjectConstraint $childConstraint) : bool

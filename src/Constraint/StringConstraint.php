@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Constraint;
 
-final class StringConstraint extends \Graphpinator\Constraint\LeafConstraint
+final class StringConstraint
 {
     protected function isGreaterSet(
         \Graphpinator\Constraint\ArgumentFieldConstraint $greater,

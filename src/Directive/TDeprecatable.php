@@ -34,7 +34,7 @@ trait TDeprecatable
     {
         foreach ($this->directiveUsages as $directive) {
             if ($directive->getDirective() instanceof \Graphpinator\Directive\Spec\DeprecatedDirective) {
-                return $directive->getArguments()->offsetGet('reason')->getValue()->getRawValue();
+                return $directive->getArgumentValues()->offsetGet('reason')->getValue()->getRawValue();
             }
         }
 

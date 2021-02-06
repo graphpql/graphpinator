@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Constraint;
 
-abstract class ArgumentFieldConstraint implements \Graphpinator\Constraint\Constraint
+abstract class ArgumentFieldConstraint
 {
     use \Nette\SmartObject;
 

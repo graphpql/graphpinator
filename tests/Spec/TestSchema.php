@@ -894,7 +894,7 @@ final class TestSchema
                 parent::__construct();
 
                 $this->addDirective(
-                    new \Graphpinator\Directive\Constraint\ObjectConstraintDirective(),
+                    \Graphpinator\Container\Container::directiveObjectConstraint(),
                     ['atLeastOne' => [
                         'intMinArg',
                         'intMaxArg',
@@ -906,7 +906,6 @@ final class TestSchema
                         'stringMaxArg',
                         'stringRegexArg',
                         'stringOneOfArg',
-                        'stringOneOfEmptyArg',
                         'listMinArg',
                         'listMaxArg',
                         'listUniqueArg',
@@ -959,10 +958,6 @@ final class TestSchema
                         'stringOneOfArg',
                         \Graphpinator\Container\Container::String(),
                     ))->addDirective(new \Graphpinator\Directive\Constraint\StringConstraintDirective(), ['oneOf' => ['abc', 'foo']]),
-                    (new \Graphpinator\Argument\Argument(
-                        'stringOneOfEmptyArg',
-                        \Graphpinator\Container\Container::String(),
-                    ))->addDirective(new \Graphpinator\Directive\Constraint\StringConstraintDirective(), ['oneOf' => []]),
                     (new \Graphpinator\Argument\Argument(
                         'listMinArg',
                         \Graphpinator\Container\Container::Int()->list(),

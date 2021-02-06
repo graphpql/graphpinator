@@ -9,19 +9,15 @@ final class DirectiveUsage
     use \Nette\SmartObject;
 
     private \Graphpinator\Directive\Contract\TypeSystemDefinition $directive;
-    private ?\Graphpinator\Type\Contract\Definition $type;
-    private array $rawArgumentValues;
-    private ?\Graphpinator\Value\ArgumentValueSet $argumentValues = null;
+    private \Graphpinator\Value\ArgumentValueSet $argumentValues;
 
     public function __construct(
         \Graphpinator\Directive\Contract\TypeSystemDefinition $directive,
-        ?\Graphpinator\Type\Contract\Definition $type,
         array $arguments,
     )
     {
         $this->directive = $directive;
-        $this->type = $type;
-        $this->rawArgumentValues = $arguments;
+        $this->argumentValues = \Graphpinator\Value\ArgumentValueSet::fromRaw($arguments, $this->directive);
     }
 
     public function getDirective() : \Graphpinator\Directive\Contract\TypeSystemDefinition
@@ -31,14 +27,6 @@ final class DirectiveUsage
 
     public function getArgumentValues() : \Graphpinator\Value\ArgumentValueSet
     {
-        if ($this->argumentValues === null) {
-            $this->argumentValues = \Graphpinator\Value\ArgumentValueSet::fromRaw($this->rawArgumentValues, $this->directive);
-
-            if (!$this->directive->validateType($this->type, $this->argumentValues)) {
-                throw new \Graphpinator\Exception\Constraint\InvalidConstraintType();
-            }
-        }
-
         return $this->argumentValues;
     }
 

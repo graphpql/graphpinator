@@ -8,7 +8,7 @@ namespace Graphpinator\Constraint;
  * @method \Graphpinator\Constraint\ArgumentFieldConstraint current() : object
  * @method \Graphpinator\Constraint\ArgumentFieldConstraint offsetGet($offset) : object
  */
-final class ArgumentFieldConstraintSet extends \Graphpinator\Constraint\ConstraintSet
+final class ArgumentFieldConstraintSet
 {
     protected const INNER_CLASS = ArgumentFieldConstraint::class;
 

@@ -48,9 +48,9 @@ trait TInterfaceImplementor
     protected function validateInterfaces() : void
     {
         foreach ($this->implements as $interface) {
-            if (!$interface->getConstraints()->validateObjectConstraint($this->getConstraints())) {
+            /*if (!$interface->getConstraints()->validateObjectConstraint($this->getConstraints())) {
                 throw new \Graphpinator\Exception\Type\ObjectConstraintsNotPreserved();
-            }
+            }*/
 
             foreach ($interface->getFields() as $fieldContract) {
                 if (!$this->getFields()->offsetExists($fieldContract->getName())) {
@@ -71,13 +71,13 @@ trait TInterfaceImplementor
                     );
                 }
 
-                if (!$fieldContract->getConstraints()->isCovariant($field->getConstraints())) {
+                /*if (!$fieldContract->getConstraints()->isCovariant($field->getConstraints())) {
                     throw new \Graphpinator\Exception\Type\FieldConstraintNotCovariant(
                         $this->getName(),
                         $interface->getName(),
                         $fieldContract->getName(),
                     );
-                }
+                }*/
 
                 foreach ($fieldContract->getArguments() as $argumentContract) {
                     if (!$field->getArguments()->offsetExists($argumentContract->getName())) {
@@ -100,14 +100,14 @@ trait TInterfaceImplementor
                         );
                     }
 
-                    if (!$argumentContract->getConstraints()->isContravariant($argument->getConstraints())) {
+                    /*if (!$argumentContract->getConstraints()->isContravariant($argument->getConstraints())) {
                         throw new \Graphpinator\Exception\Type\ArgumentConstraintNotContravariant(
                             $this->getName(),
                             $interface->getName(),
                             $fieldContract->getName(),
                             $argumentContract->getName(),
                         );
-                    }
+                    }*/
                 }
                 
                 if ($field->getArguments()->count() !== $fieldContract->getArguments()->count()) {

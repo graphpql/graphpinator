@@ -354,7 +354,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           innerNotNull: SimpleInput!
         }
         
-        input ConstraintInput @objectConstraint(atLeastOne: ["intMinArg","intMaxArg","intOneOfArg","floatMinArg","floatMaxArg","floatOneOfArg","stringMinArg","stringMaxArg","stringRegexArg","stringOneOfArg","stringOneOfEmptyArg","listMinArg","listMaxArg","listUniqueArg","listInnerListArg","listMinIntMinArg"]) {
+        input ConstraintInput @objectConstraint(atLeastOne: ["intMinArg","intMaxArg","intOneOfArg","floatMinArg","floatMaxArg","floatOneOfArg","stringMinArg","stringMaxArg","stringRegexArg","stringOneOfArg","listMinArg","listMaxArg","listUniqueArg","listInnerListArg","listMinIntMinArg"]) {
           intMinArg: Int @intConstraint(min: -20)
           intMaxArg: Int @intConstraint(max: 20)
           intOneOfArg: Int @intConstraint(oneOf: [1,2,3])
@@ -365,7 +365,6 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           stringMaxArg: String @stringConstraint(maxLength: 10)
           stringRegexArg: String @stringConstraint(regex: "/^(abc)|(foo)$/")
           stringOneOfArg: String @stringConstraint(oneOf: ["abc","foo"])
-          stringOneOfEmptyArg: String @stringConstraint(oneOf: [])
           listMinArg: [Int] @listConstraint(minItems: 1)
           listMaxArg: [Int] @listConstraint(maxItems: 3)
           listUniqueArg: [Int] @listConstraint(unique: true)

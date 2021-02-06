@@ -31,7 +31,12 @@ trait THasDirectives
             TypeSystemDirectiveLocation::ARGUMENT_DEFINITION => $this->getType(),
             TypeSystemDirectiveLocation::ENUM_VALUE => null,
         };
-        $usage = new DirectiveUsage($directive, $type, $arguments);
+
+        $usage = new DirectiveUsage($directive, $arguments);
+
+        if (!$directive->validateType($type, $usage->getArgumentValues())) {
+            throw new \Graphpinator\Exception\Constraint\InvalidConstraintType();
+        }
 
         $this->directiveUsages[] = $usage;
 

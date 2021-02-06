@@ -35,12 +35,12 @@ final class ObjectConstraintDirective extends \Graphpinator\Directive\Directive
             return false;
         }
 
-        $atLeastOne = $arguments->offsetGet('atLeastOne');
-        $exactlyOne = $arguments->offsetGet('exactlyOne');
+        $atLeastOne = $arguments->offsetGet('atLeastOne')->getValue();
+        $exactlyOne = $arguments->offsetGet('exactlyOne')->getValue();
 
         if ($atLeastOne instanceof \Graphpinator\Value\ListValue) {
             foreach ($atLeastOne as $item) {
-                if ($fields->offsetExists($item->getRawValue())) {
+                if (!$fields->offsetExists($item->getRawValue())) {
                     return false;
                 }
             }
@@ -48,7 +48,7 @@ final class ObjectConstraintDirective extends \Graphpinator\Directive\Directive
 
         if ($exactlyOne instanceof \Graphpinator\Value\ListValue) {
             foreach ($exactlyOne as $item) {
-                if ($fields->offsetExists($item->getRawValue())) {
+                if (!$fields->offsetExists($item->getRawValue())) {
                     return false;
                 }
             }
