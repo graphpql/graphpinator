@@ -8,6 +8,10 @@ final class ScalarValue extends LeafValue
 {
     public function printValue() : string
     {
-        return \json_encode($this->rawValue, \JSON_THROW_ON_ERROR);
+        return \json_encode($this->rawValue, \JSON_THROW_ON_ERROR |
+            \JSON_UNESCAPED_UNICODE |
+            \JSON_UNESCAPED_SLASHES |
+            \JSON_PRESERVE_ZERO_FRACTION
+        );
     }
 }
