@@ -56,7 +56,7 @@ abstract class Directive implements \Graphpinator\Directive\Contract\Definition
     {
         $schema = $this->printDescription() . 'directive @' . $this->getName();
 
-        if ($this->arguments->count() > 0) {
+        if ($this->getArguments()->count() > 0) {
             $schema .= '(' . \PHP_EOL . $this->printItems($this->getArguments(), 1) . ')';
         }
 

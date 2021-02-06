@@ -6,11 +6,6 @@ namespace Graphpinator\Directive\Contract;
 
 interface TypeSystemDefinition extends Definition
 {
-    public function validateType(
-        ?\Graphpinator\Type\Contract\Definition $definition,
-        \Graphpinator\Value\ArgumentValueSet $arguments,
-    ) : bool;
-
     public function resolveFieldDefinitionBefore(
         \Graphpinator\Value\ArgumentValueSet $arguments,
     ) : void;

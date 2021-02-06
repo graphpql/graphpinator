@@ -25,7 +25,7 @@ final class FloatConstraintDirective extends LeafConstraintDirective
             \Graphpinator\Argument\Argument::create('oneOf', \Graphpinator\Container\Container::Float()->notNull()->list())
                 ->addDirective(
                     \Graphpinator\Container\Container::directiveListConstraint(),
-                    ['minCount' => 1],
+                    ['minItems' => 1],
                 ),
         ]);
     }

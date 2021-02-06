@@ -14,9 +14,9 @@ final class ObjectConstraintDirective extends \Graphpinator\Directive\Directive
     {
         parent::__construct(
             [
-                \Graphpinator\Directive\TypeSystemDirectiveLocation::INPUT_OBJECT,
-                \Graphpinator\Directive\TypeSystemDirectiveLocation::INTERFACE,
                 \Graphpinator\Directive\TypeSystemDirectiveLocation::OBJECT,
+                \Graphpinator\Directive\TypeSystemDirectiveLocation::INTERFACE,
+                \Graphpinator\Directive\TypeSystemDirectiveLocation::INPUT_OBJECT,
             ],
             true,
         );
@@ -57,22 +57,6 @@ final class ObjectConstraintDirective extends \Graphpinator\Directive\Directive
         return true;
     }
 
-    protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
-    {
-        return new \Graphpinator\Argument\ArgumentSet([
-            \Graphpinator\Argument\Argument::create('atLeastOne', \Graphpinator\Container\Container::String()->notNull()->list())
-                ->addDirective(
-                    \Graphpinator\Container\Container::directiveListConstraint(),
-                    ['minCount' => 1],
-                ),
-            \Graphpinator\Argument\Argument::create('exactlyOne', \Graphpinator\Container\Container::String()->notNull()->list())
-                ->addDirective(
-                    \Graphpinator\Container\Container::directiveListConstraint(),
-                    ['minCount' => 1],
-                ),
-        ]);
-    }
-
     public function resolveFieldDefinitionBefore(
         \Graphpinator\Value\ArgumentValueSet $arguments,
     ) : void
@@ -93,7 +77,7 @@ final class ObjectConstraintDirective extends \Graphpinator\Directive\Directive
         \Graphpinator\Value\ArgumentValueSet $arguments,
     ) : void
     {
-        // nothing here
+        $this->validate($typeValue, $arguments);
     }
 
     public function resolveInputObject(
@@ -101,7 +85,7 @@ final class ObjectConstraintDirective extends \Graphpinator\Directive\Directive
         \Graphpinator\Value\ArgumentValueSet $arguments,
     ) : void
     {
-        // nothing here
+        $this->validate($inputValue, $arguments);
     }
 
     public function resolveArgumentDefinition(
@@ -110,5 +94,74 @@ final class ObjectConstraintDirective extends \Graphpinator\Directive\Directive
     ) : void
     {
         // nothing here
+    }
+
+    protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
+    {
+        return new \Graphpinator\Argument\ArgumentSet([
+            \Graphpinator\Argument\Argument::create('atLeastOne', \Graphpinator\Container\Container::String()->notNull()->list())
+                ->addDirective(
+                    \Graphpinator\Container\Container::directiveListConstraint(),
+                    ['minItems' => 1],
+                ),
+            \Graphpinator\Argument\Argument::create('exactlyOne', \Graphpinator\Container\Container::String()->notNull()->list())
+                ->addDirective(
+                    \Graphpinator\Container\Container::directiveListConstraint(),
+                    ['minItems' => 1],
+                ),
+        ]);
+    }
+
+    private function validate(
+        \Graphpinator\Value\TypeValue|\Graphpinator\Value\InputValue $value,
+        \Graphpinator\Value\ArgumentValueSet $arguments,
+    ) : void
+    {
+        $atLeastOne = $arguments->offsetGet('atLeastOne')->getValue()->getRawValue();
+        $exactlyOne = $arguments->offsetGet('exactlyOne')->getValue()->getRawValue();
+
+        if (\is_array($atLeastOne)) {
+            $valid = false;
+
+            foreach ($atLeastOne as $fieldName) {
+                if (isset($value->{$fieldName}) && $value->{$fieldName}->getValue() instanceof \Graphpinator\Value\NullValue) {
+                    continue;
+                }
+
+                $valid = true;
+
+                break;
+            }
+
+            if (!$valid) {
+                throw new \Graphpinator\Exception\Constraint\AtLeastOneConstraintNotSatisfied();
+            }
+        }
+
+        if (!\is_array($exactlyOne)) {
+            return;
+        }
+
+        $count = 0;
+        $notRequested = 0;
+
+        foreach ($exactlyOne as $fieldName) {
+            // fields were not requested and are not included in final value
+            if (!isset($value->{$fieldName})) {
+                ++$notRequested;
+
+                continue;
+            }
+
+            if ($value->{$fieldName}->getValue() instanceof \Graphpinator\Value\NullValue) {
+                continue;
+            }
+
+            ++$count;
+        }
+
+        if ($count > 1 || ($count === 0 && $notRequested === 0)) {
+            throw new \Graphpinator\Exception\Constraint\ExactlyOneConstraintNotSatisfied();
+        }
     }
 }

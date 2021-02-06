@@ -18,15 +18,6 @@ final class ListWhereDirective extends \Graphpinator\Directive\BaseWhereDirectiv
                 ExecutableDirectiveLocation::FIELD,
             ],
             true,
-            new \Graphpinator\Argument\ArgumentSet([
-                \Graphpinator\Argument\Argument::create('field', \Graphpinator\Container\Container::String()),
-                \Graphpinator\Argument\Argument::create('not', \Graphpinator\Container\Container::Boolean()->notNull())
-                    ->setDefaultValue(false),
-                \Graphpinator\Argument\Argument::create('minItems', \Graphpinator\Container\Container::Int()),
-                \Graphpinator\Argument\Argument::create('maxItems', \Graphpinator\Container\Container::Int()),
-                \Graphpinator\Argument\Argument::create('orNull', \Graphpinator\Container\Container::Boolean()->notNull())
-                    ->setDefaultValue(false),
-            ]),
         );
 
         $this->fieldAfterFn = static function (
@@ -48,6 +39,27 @@ final class ListWhereDirective extends \Graphpinator\Directive\BaseWhereDirectiv
 
             return FieldDirectiveResult::NONE;
         };
+    }
+
+    protected function getFieldDefinition(): \Graphpinator\Argument\ArgumentSet
+    {
+        return new \Graphpinator\Argument\ArgumentSet([
+            \Graphpinator\Argument\Argument::create('field', \Graphpinator\Container\Container::String()),
+            \Graphpinator\Argument\Argument::create('not', \Graphpinator\Container\Container::Boolean()->notNull())
+                ->setDefaultValue(false),
+            \Graphpinator\Argument\Argument::create('minItems', \Graphpinator\Container\Container::Int())
+                ->addDirective(
+                    \Graphpinator\Container\Container::directiveIntConstraint(),
+                    ['min' => 0],
+                ),
+            \Graphpinator\Argument\Argument::create('maxItems', \Graphpinator\Container\Container::Int())
+                ->addDirective(
+                    \Graphpinator\Container\Container::directiveIntConstraint(),
+                    ['min' => 0],
+                ),
+            \Graphpinator\Argument\Argument::create('orNull', \Graphpinator\Container\Container::Boolean()->notNull())
+                ->setDefaultValue(false),
+        ]);
     }
 
     private static function satisfiesCondition(?array $value, ?int $minItems, ?int $maxItems, bool $orNull) : bool

@@ -15,4 +15,9 @@ interface Definition
     public function getLocations() : array;
 
     public function getArguments() : \Graphpinator\Argument\ArgumentSet;
+
+    public function validateType(
+        ?\Graphpinator\Type\Contract\Definition $definition,
+        \Graphpinator\Value\ArgumentValueSet $arguments,
+    ) : bool;
 }

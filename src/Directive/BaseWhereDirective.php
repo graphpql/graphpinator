@@ -12,9 +12,14 @@ abstract class BaseWhereDirective extends \Graphpinator\Directive\Directive
     protected const TYPE = '';
     protected const TYPE_NAME = '';
 
-    public function validateType(\Graphpinator\Type\Contract\Definition $type) : bool
+    public function validateType(
+        ?\Graphpinator\Type\Contract\Definition $definition,
+        \Graphpinator\Value\ArgumentValueSet $arguments,
+    ) : bool
     {
-        return $type->getShapingType() instanceof \Graphpinator\Type\ListType;
+        return $definition instanceof \Graphpinator\Type\Contract\Definition
+            ? $definition->getShapingType() instanceof \Graphpinator\Type\ListType
+            : false;
     }
 
     protected static function extractValue(\Graphpinator\Value\ResolvedValue $singleValue, ?string $where) : string|int|float|bool|array|null

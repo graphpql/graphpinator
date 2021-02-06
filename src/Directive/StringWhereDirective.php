@@ -18,17 +18,6 @@ final class StringWhereDirective extends \Graphpinator\Directive\BaseWhereDirect
                 ExecutableDirectiveLocation::FIELD,
             ],
             true,
-            new \Graphpinator\Argument\ArgumentSet([
-                \Graphpinator\Argument\Argument::create('field', \Graphpinator\Container\Container::String()),
-                \Graphpinator\Argument\Argument::create('not', \Graphpinator\Container\Container::Boolean()->notNull())
-                    ->setDefaultValue(false),
-                \Graphpinator\Argument\Argument::create('equals', \Graphpinator\Container\Container::String()),
-                \Graphpinator\Argument\Argument::create('contains', \Graphpinator\Container\Container::String()),
-                \Graphpinator\Argument\Argument::create('startsWith', \Graphpinator\Container\Container::String()),
-                \Graphpinator\Argument\Argument::create('endsWith', \Graphpinator\Container\Container::String()),
-                \Graphpinator\Argument\Argument::create('orNull', \Graphpinator\Container\Container::Boolean()->notNull())
-                    ->setDefaultValue(false),
-            ]),
         );
 
         $this->fieldAfterFn = static function (
@@ -52,6 +41,21 @@ final class StringWhereDirective extends \Graphpinator\Directive\BaseWhereDirect
 
             return FieldDirectiveResult::NONE;
         };
+    }
+
+    protected function getFieldDefinition(): \Graphpinator\Argument\ArgumentSet
+    {
+        return new \Graphpinator\Argument\ArgumentSet([
+            \Graphpinator\Argument\Argument::create('field', \Graphpinator\Container\Container::String()),
+            \Graphpinator\Argument\Argument::create('not', \Graphpinator\Container\Container::Boolean()->notNull())
+                ->setDefaultValue(false),
+            \Graphpinator\Argument\Argument::create('equals', \Graphpinator\Container\Container::String()),
+            \Graphpinator\Argument\Argument::create('contains', \Graphpinator\Container\Container::String()),
+            \Graphpinator\Argument\Argument::create('startsWith', \Graphpinator\Container\Container::String()),
+            \Graphpinator\Argument\Argument::create('endsWith', \Graphpinator\Container\Container::String()),
+            \Graphpinator\Argument\Argument::create('orNull', \Graphpinator\Container\Container::Boolean()->notNull())
+                ->setDefaultValue(false),
+        ]);
     }
 
     private static function satisfiesCondition(

@@ -23,7 +23,6 @@ trait THasDirectives
             throw new \Graphpinator\Exception\Normalizer\DirectiveIncorrectLocation();
         }
 
-        $usage = new DirectiveUsage($directive, $arguments);
         $type = match ($this->directiveLocation) {
             TypeSystemDirectiveLocation::OBJECT,
             TypeSystemDirectiveLocation::INTERFACE,
@@ -32,10 +31,7 @@ trait THasDirectives
             TypeSystemDirectiveLocation::ARGUMENT_DEFINITION => $this->getType(),
             TypeSystemDirectiveLocation::ENUM_VALUE => null,
         };
-
-        if (!$directive->validateType($type, $usage->getArguments())) {
-            throw new \Graphpinator\Exception\Constraint\InvalidConstraintType();
-        }
+        $usage = new DirectiveUsage($directive, $type, $arguments);
 
         $this->directives[] = $usage;
 
@@ -47,7 +43,7 @@ trait THasDirectives
         $return = '';
 
         foreach ($this->directives as $directive) {
-            $return .= ' ' . $directive->print();
+            $return .= ' ' . $directive->printSchema();
         }
 
         return $return;

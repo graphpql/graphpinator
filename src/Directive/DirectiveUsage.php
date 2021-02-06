@@ -9,15 +9,18 @@ final class DirectiveUsage
     use \Nette\SmartObject;
 
     private \Graphpinator\Directive\Contract\TypeSystemDefinition $directive;
+    private ?\Graphpinator\Type\Contract\Definition $type;
     private array $rawArguments;
     private ?\Graphpinator\Value\ArgumentValueSet $arguments = null;
 
     public function __construct(
         \Graphpinator\Directive\Contract\TypeSystemDefinition $directive,
+        ?\Graphpinator\Type\Contract\Definition $type,
         array $arguments,
     )
     {
         $this->directive = $directive;
+        $this->type = $type;
         $this->rawArguments = $arguments;
     }
 
@@ -30,18 +33,23 @@ final class DirectiveUsage
     {
         if ($this->arguments === null) {
             $this->arguments = \Graphpinator\Value\ArgumentValueSet::fromRaw($this->rawArguments, $this->directive);
+
+            if (!$this->directive->validateType($this->type, $this->arguments)) {
+                throw new \Graphpinator\Exception\Constraint\InvalidConstraintType();
+            }
         }
 
         return $this->arguments;
     }
 
-    public function print() : string
+    public function printSchema() : string
     {
         $return = '@' . $this->directive->getName();
         $notNullArguments = [];
 
-        foreach ($this->arguments as $argument) {
-            if ($argument->getValue() instanceof \Graphpinator\Value\NullValue) {
+        foreach ($this->getArguments() as $argument) {
+            // do not print default value
+            if ($argument->getValue()->getRawValue() === $argument->getArgument()->getDefaultValue()?->getRawValue()) {
                 continue;
             }
 

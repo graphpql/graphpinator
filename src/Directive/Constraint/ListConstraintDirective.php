@@ -33,7 +33,9 @@ final class ListConstraintDirective extends LeafConstraintDirective
             return;
         }
 
+        \assert($value instanceof \Graphpinator\Value\ListValue);
 
+        self::recursiveValidate($value->getRawValue(), (object) $arguments->getValuesForResolver());
     }
 
     private static function recursiveValidateType(
@@ -60,20 +62,20 @@ final class ListConstraintDirective extends LeafConstraintDirective
         return true;
     }
 
-    private static function recursiveValidateFactoryMethod(\stdClass $options, array $value) : void
+    private static function recursiveValidate(array $rawValue, \stdClass $options) : void
     {
-        if (\is_int($options->minItems) && \count($value) < $options->minItems) {
+        if (\is_int($options->minItems) && \count($rawValue) < $options->minItems) {
             throw new \Graphpinator\Exception\Constraint\MinItemsConstraintNotSatisfied();
         }
 
-        if (\is_int($options->maxItems) && \count($value) > $options->maxItems) {
+        if (\is_int($options->maxItems) && \count($rawValue) > $options->maxItems) {
             throw new \Graphpinator\Exception\Constraint\MaxItemsConstraintNotSatisfied();
         }
 
         if ($options->unique) {
             $differentValues = [];
 
-            foreach ($value as $innerValue) {
+            foreach ($rawValue as $innerValue) {
                 if (!\array_key_exists($innerValue, $differentValues)) {
                     $differentValues[$innerValue] = true;
 
@@ -88,12 +90,12 @@ final class ListConstraintDirective extends LeafConstraintDirective
             return;
         }
 
-        foreach ($value as $innerValue) {
+        foreach ($rawValue as $innerValue) {
             if ($innerValue === null) {
                 continue;
             }
 
-            self::recursiveValidateFactoryMethod($options->innerList, $innerValue);
+            self::recursiveValidate($innerValue, $options->innerList);
         }
     }
 }

@@ -18,16 +18,6 @@ final class IntWhereDirective extends \Graphpinator\Directive\BaseWhereDirective
                 ExecutableDirectiveLocation::FIELD,
             ],
             true,
-            new \Graphpinator\Argument\ArgumentSet([
-                \Graphpinator\Argument\Argument::create('field', \Graphpinator\Container\Container::String()),
-                \Graphpinator\Argument\Argument::create('not', \Graphpinator\Container\Container::Boolean()->notNull())
-                    ->setDefaultValue(false),
-                \Graphpinator\Argument\Argument::create('equals', \Graphpinator\Container\Container::Int()),
-                \Graphpinator\Argument\Argument::create('greaterThan', \Graphpinator\Container\Container::Int()),
-                \Graphpinator\Argument\Argument::create('lessThan', \Graphpinator\Container\Container::Int()),
-                \Graphpinator\Argument\Argument::create('orNull', \Graphpinator\Container\Container::Boolean()->notNull())
-                    ->setDefaultValue(false),
-            ]),
         );
 
         $this->fieldAfterFn = static function (
@@ -50,6 +40,20 @@ final class IntWhereDirective extends \Graphpinator\Directive\BaseWhereDirective
 
             return FieldDirectiveResult::NONE;
         };
+    }
+
+    protected function getFieldDefinition(): \Graphpinator\Argument\ArgumentSet
+    {
+        return new \Graphpinator\Argument\ArgumentSet([
+            \Graphpinator\Argument\Argument::create('field', \Graphpinator\Container\Container::String()),
+            \Graphpinator\Argument\Argument::create('not', \Graphpinator\Container\Container::Boolean()->notNull())
+                ->setDefaultValue(false),
+            \Graphpinator\Argument\Argument::create('equals', \Graphpinator\Container\Container::Int()),
+            \Graphpinator\Argument\Argument::create('greaterThan', \Graphpinator\Container\Container::Int()),
+            \Graphpinator\Argument\Argument::create('lessThan', \Graphpinator\Container\Container::Int()),
+            \Graphpinator\Argument\Argument::create('orNull', \Graphpinator\Container\Container::Boolean()->notNull())
+                ->setDefaultValue(false),
+        ]);
     }
 
     private static function satisfiesCondition(?int $value, ?int $equals, ?int $greaterThan, ?int $lessThan, bool $orNull) : bool

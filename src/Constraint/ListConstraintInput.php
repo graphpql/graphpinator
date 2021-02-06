@@ -21,7 +21,8 @@ final class ListConstraintInput extends \Graphpinator\Type\InputType
                     \Graphpinator\Container\Container::directiveIntConstraint(),
                     ['min' => 0],
                 ),
-            \Graphpinator\Argument\Argument::create('unique', \Graphpinator\Container\Container::Boolean())->setDefaultValue(false),
+            \Graphpinator\Argument\Argument::create('unique', \Graphpinator\Container\Container::Boolean()->notNull())
+                ->setDefaultValue(false),
             \Graphpinator\Argument\Argument::create('innerList', $this),
         ]);
     }

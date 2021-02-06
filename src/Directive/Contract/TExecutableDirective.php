@@ -9,8 +9,6 @@ trait TExecutableDirective
     protected ?\Closure $fieldBeforeFn = null;
     protected ?\Closure $fieldAfterFn = null;
 
-    abstract public function validateType(\Graphpinator\Type\Contract\Definition $type) : bool;
-
     final public function resolveFieldBefore(
         \Graphpinator\Value\ArgumentValueSet $arguments,
     ) : string

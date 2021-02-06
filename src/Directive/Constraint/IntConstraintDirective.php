@@ -25,7 +25,7 @@ final class IntConstraintDirective extends LeafConstraintDirective
             \Graphpinator\Argument\Argument::create('oneOf', \Graphpinator\Container\Container::Int()->notNull()->list())
                 ->addDirective(
                     \Graphpinator\Container\Container::directiveListConstraint(),
-                    ['minCount' => 1],
+                    ['minItems' => 1],
                 ),
         ]);
     }
@@ -52,11 +52,11 @@ final class IntConstraintDirective extends LeafConstraintDirective
         $max = $arguments->offsetGet('max')->getValue()->getRawValue();
         $oneOf = $arguments->offsetGet('oneOf')->getValue()->getRawValue();
 
-        if (\is_float($min) && $rawValue < $min) {
+        if (\is_int($min) && $rawValue < $min) {
             throw new \Graphpinator\Exception\Constraint\MinConstraintNotSatisfied();
         }
 
-        if (\is_float($max) && $rawValue > $max) {
+        if (\is_int($max) && $rawValue > $max) {
             throw new \Graphpinator\Exception\Constraint\MaxConstraintNotSatisfied();
         }
 

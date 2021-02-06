@@ -32,10 +32,6 @@ final class Directive
             throw new \Graphpinator\Exception\Normalizer\DirectiveIncorrectLocation();
         }
 
-        if (!$directive->validateType($scopeType)) {
-            throw new \Graphpinator\Exception\Normalizer\DirectiveIncorrectType();
-        }
-
         $this->directive = $directive;
         $this->arguments = \Graphpinator\Value\ArgumentValueSet::fromParsed(
             $parsed->getArguments()
@@ -43,6 +39,10 @@ final class Directive
             $directive,
             $variableSet,
         );
+
+        if (!$directive->validateType($scopeType, $this->arguments)) {
+            throw new \Graphpinator\Exception\Normalizer\DirectiveIncorrectType();
+        }
     }
 
     public function getDirective() : \Graphpinator\Directive\Contract\ExecutableDefinition
