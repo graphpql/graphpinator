@@ -6,7 +6,7 @@
     </include>
     <report>
       <clover outputFile="./build/phpunit.clover.xml"/>
-      <html outputDirectory="./build/html" lowUpperBound="50" highLowerBound="90"/>
+      <html outputDirectory="./build/html" lowUpperBound="70" highLowerBound="100"/>
       <text outputFile="php://stdout" showOnlySummary="true"/>
     </report>
   </coverage>
