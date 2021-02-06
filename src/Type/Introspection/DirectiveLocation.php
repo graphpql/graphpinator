@@ -6,25 +6,25 @@ namespace Graphpinator\Type\Introspection;
 
 final class DirectiveLocation extends \Graphpinator\Type\EnumType
 {
-    public const QUERY = 'QUERY';
-    public const MUTATION = 'MUTATION';
-    public const SUBSCRIPTION = 'SUBSCRIPTION';
-    public const FIELD = 'FIELD';
-    public const FRAGMENT_DEFINITION = 'FRAGMENT_DEFINITION';
-    public const FRAGMENT_SPREAD = 'FRAGMENT_SPREAD';
-    public const INLINE_FRAGMENT = 'INLINE_FRAGMENT';
-    public const VARIABLE_DEFINITION = 'VARIABLE_DEFINITION';
-    public const SCHEMA = 'SCHEMA';
-    public const SCALAR = 'SCALAR';
-    public const OBJECT = 'OBJECT';
-    public const FIELD_DEFINITION = 'FIELD_DEFINITION';
-    public const ARGUMENT_DEFINITION = 'ARGUMENT_DEFINITION';
-    public const INTERFACE = 'INTERFACE';
-    public const UNION = 'UNION';
-    public const ENUM = 'ENUM';
-    public const ENUM_VALUE = 'ENUM_VALUE';
-    public const INPUT_OBJECT = 'INPUT_OBJECT';
-    public const INPUT_FIELD_DEFINITION = 'INPUT_FIELD_DEFINITION';
+    public const QUERY = \Graphpinator\Directive\ExecutableDirectiveLocation::QUERY;
+    public const MUTATION = \Graphpinator\Directive\ExecutableDirectiveLocation::MUTATION;
+    public const SUBSCRIPTION = \Graphpinator\Directive\ExecutableDirectiveLocation::SUBSCRIPTION;
+    public const FIELD = \Graphpinator\Directive\ExecutableDirectiveLocation::FIELD;
+    public const FRAGMENT_DEFINITION = \Graphpinator\Directive\ExecutableDirectiveLocation::FRAGMENT_DEFINITION;
+    public const FRAGMENT_SPREAD = \Graphpinator\Directive\ExecutableDirectiveLocation::FRAGMENT_SPREAD;
+    public const INLINE_FRAGMENT = \Graphpinator\Directive\ExecutableDirectiveLocation::INLINE_FRAGMENT;
+    public const VARIABLE_DEFINITION = \Graphpinator\Directive\ExecutableDirectiveLocation::VARIABLE_DEFINITION;
+    public const SCHEMA = \Graphpinator\Directive\TypeSystemDirectiveLocation::SCHEMA;
+    public const SCALAR = \Graphpinator\Directive\TypeSystemDirectiveLocation::SCALAR;
+    public const OBJECT = \Graphpinator\Directive\TypeSystemDirectiveLocation::OBJECT;
+    public const FIELD_DEFINITION = \Graphpinator\Directive\TypeSystemDirectiveLocation::FIELD_DEFINITION;
+    public const ARGUMENT_DEFINITION = \Graphpinator\Directive\TypeSystemDirectiveLocation::ARGUMENT_DEFINITION;
+    public const INTERFACE = \Graphpinator\Directive\TypeSystemDirectiveLocation::INTERFACE;
+    public const UNION = \Graphpinator\Directive\TypeSystemDirectiveLocation::UNION;
+    public const ENUM = \Graphpinator\Directive\TypeSystemDirectiveLocation::ENUM;
+    public const ENUM_VALUE = \Graphpinator\Directive\TypeSystemDirectiveLocation::ENUM_VALUE;
+    public const INPUT_OBJECT = \Graphpinator\Directive\TypeSystemDirectiveLocation::INPUT_OBJECT;
+    public const INPUT_FIELD_DEFINITION = \Graphpinator\Directive\TypeSystemDirectiveLocation::INPUT_FIELD_DEFINITION;
 
     protected const NAME = '__DirectiveLocation';
     protected const DESCRIPTION = 'Built-in introspection enum.';
