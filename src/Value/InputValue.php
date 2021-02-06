@@ -10,7 +10,6 @@ final class InputValue implements \Graphpinator\Value\InputedValue
 
     private \Graphpinator\Type\InputType $type;
     private \stdClass $value;
-    private bool $constraintValidated = false;
 
     private function __construct(\Graphpinator\Type\InputType $type, \stdClass $value)
     {
@@ -136,8 +135,8 @@ final class InputValue implements \Graphpinator\Value\InputedValue
             $value->applyVariables($variables);
         }
 
-        foreach ($this->type->getDirectives() as $directive) {
-            $directive->getDirective()->resolveInputObject($this, $directive->getArguments());
+        foreach ($this->type->getDirectiveUsages() as $directive) {
+            $directive->getDirective()->resolveInputObject($this, $directive->getArgumentValues());
         }
     }
 

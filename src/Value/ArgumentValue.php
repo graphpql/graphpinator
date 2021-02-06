@@ -8,14 +8,15 @@ final class ArgumentValue
 {
     use \Nette\SmartObject;
 
-    private \Graphpinator\Argument\Argument $argument;
-    private \Graphpinator\Value\InputedValue $value;
-    private bool $constraintValidated = false;
-
-    private function __construct(\Graphpinator\Argument\Argument $argument, \Graphpinator\Value\InputedValue $value)
+    private function __construct(
+        private \Graphpinator\Argument\Argument $argument,
+        private \Graphpinator\Value\InputedValue $value,
+        private bool $hasVariables,
+    )
     {
-        $this->argument = $argument;
-        $this->value = $value;
+        if (!$this->hasVariables) {
+            $this->resolveDirectives();
+        }
     }
 
     public static function fromRaw(
@@ -29,7 +30,7 @@ final class ArgumentValue
             ? $default
             : $argument->getType()->createInputedValue($rawValue);
 
-        return new self($argument, $value);
+        return new self($argument, $value, false);
     }
 
     public static function fromInputed(
@@ -38,7 +39,7 @@ final class ArgumentValue
     ) : self
     {
         if ($value->getType()->isInstanceOf($argument->getType())) {
-            return new self($argument, $value);
+            return new self($argument, $value, true);
         }
 
         throw new \Exception();
@@ -54,10 +55,10 @@ final class ArgumentValue
         $default = $argument->getDefaultValue();
 
         if ($value instanceof \Graphpinator\Value\NullInputedValue && $default instanceof \Graphpinator\Value\InputedValue) {
-            return new self($argument, $default);
+            return new self($argument, $default, false);
         }
 
-        return new self($argument, $value);
+        return new self($argument, $value, true);
     }
 
     public function getValue() : \Graphpinator\Value\InputedValue
@@ -72,10 +73,16 @@ final class ArgumentValue
 
     public function applyVariables(\Graphpinator\Normalizer\VariableValueSet $variables) : void
     {
-        $this->value->applyVariables($variables);
+        if ($this->hasVariables) {
+            $this->value->applyVariables($variables);
+            $this->resolveDirectives();
+        }
+    }
 
-        foreach ($this->argument->getDirectives() as $directive) {
-            $directive->getDirective()->resolveArgumentDefinition($this, $directive->getArguments());
+    private function resolveDirectives() : void
+    {
+        foreach ($this->argument->getDirectiveUsages() as $directiveUsage) {
+            $directiveUsage->getDirective()->resolveArgumentDefinition($this, $directiveUsage->getArgumentValues());
         }
     }
 }

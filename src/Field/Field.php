@@ -21,7 +21,7 @@ class Field implements \Graphpinator\Printable\Printable
         $this->name = $name;
         $this->type = $type;
         $this->arguments = new \Graphpinator\Argument\ArgumentSet([]);
-        $this->directives = new \Graphpinator\Directive\DirectiveUsageSet([]);
+        $this->directiveUsages = new \Graphpinator\Directive\DirectiveUsageSet([]);
         $this->directiveLocation = \Graphpinator\Directive\TypeSystemDirectiveLocation::FIELD_DEFINITION;
     }
 

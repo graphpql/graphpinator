@@ -6,12 +6,12 @@ namespace Graphpinator\Directive;
 
 trait THasDirectives
 {
-    protected \Graphpinator\Directive\DirectiveUsageSet $directives;
+    protected \Graphpinator\Directive\DirectiveUsageSet $directiveUsages;
     protected string $directiveLocation;
 
-    public function getDirectives() : \Graphpinator\Directive\DirectiveUsageSet
+    public function getDirectiveUsages() : \Graphpinator\Directive\DirectiveUsageSet
     {
-        return $this->directives;
+        return $this->directiveUsages;
     }
 
     public function addDirective(
@@ -33,7 +33,7 @@ trait THasDirectives
         };
         $usage = new DirectiveUsage($directive, $type, $arguments);
 
-        $this->directives[] = $usage;
+        $this->directiveUsages[] = $usage;
 
         return $this;
     }
@@ -42,8 +42,8 @@ trait THasDirectives
     {
         $return = '';
 
-        foreach ($this->directives as $directive) {
-            $return .= ' ' . $directive->printSchema();
+        foreach ($this->directiveUsages as $directiveUsage) {
+            $return .= ' ' . $directiveUsage->printSchema();
         }
 
         return $return;

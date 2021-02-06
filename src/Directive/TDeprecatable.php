@@ -21,7 +21,7 @@ trait TDeprecatable
 
     public function isDeprecated() : bool
     {
-        foreach ($this->directives as $directive) {
+        foreach ($this->directiveUsages as $directive) {
             if ($directive->getDirective() instanceof \Graphpinator\Directive\Spec\DeprecatedDirective) {
                 return true;
             }
@@ -32,7 +32,7 @@ trait TDeprecatable
 
     public function getDeprecationReason() : ?string
     {
-        foreach ($this->directives as $directive) {
+        foreach ($this->directiveUsages as $directive) {
             if ($directive->getDirective() instanceof \Graphpinator\Directive\Spec\DeprecatedDirective) {
                 return $directive->getArguments()->offsetGet('reason')->getValue()->getRawValue();
             }

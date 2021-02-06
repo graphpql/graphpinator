@@ -10,8 +10,8 @@ final class DirectiveUsage
 
     private \Graphpinator\Directive\Contract\TypeSystemDefinition $directive;
     private ?\Graphpinator\Type\Contract\Definition $type;
-    private array $rawArguments;
-    private ?\Graphpinator\Value\ArgumentValueSet $arguments = null;
+    private array $rawArgumentValues;
+    private ?\Graphpinator\Value\ArgumentValueSet $argumentValues = null;
 
     public function __construct(
         \Graphpinator\Directive\Contract\TypeSystemDefinition $directive,
@@ -21,7 +21,7 @@ final class DirectiveUsage
     {
         $this->directive = $directive;
         $this->type = $type;
-        $this->rawArguments = $arguments;
+        $this->rawArgumentValues = $arguments;
     }
 
     public function getDirective() : \Graphpinator\Directive\Contract\TypeSystemDefinition
@@ -29,35 +29,35 @@ final class DirectiveUsage
         return $this->directive;
     }
 
-    public function getArguments() : \Graphpinator\Value\ArgumentValueSet
+    public function getArgumentValues() : \Graphpinator\Value\ArgumentValueSet
     {
-        if ($this->arguments === null) {
-            $this->arguments = \Graphpinator\Value\ArgumentValueSet::fromRaw($this->rawArguments, $this->directive);
+        if ($this->argumentValues === null) {
+            $this->argumentValues = \Graphpinator\Value\ArgumentValueSet::fromRaw($this->rawArgumentValues, $this->directive);
 
-            if (!$this->directive->validateType($this->type, $this->arguments)) {
+            if (!$this->directive->validateType($this->type, $this->argumentValues)) {
                 throw new \Graphpinator\Exception\Constraint\InvalidConstraintType();
             }
         }
 
-        return $this->arguments;
+        return $this->argumentValues;
     }
 
     public function printSchema() : string
     {
         $return = '@' . $this->directive->getName();
-        $notNullArguments = [];
+        $printableArguments = [];
 
-        foreach ($this->getArguments() as $argument) {
+        foreach ($this->getArgumentValues() as $argument) {
             // do not print default value
             if ($argument->getValue()->getRawValue() === $argument->getArgument()->getDefaultValue()?->getRawValue()) {
                 continue;
             }
 
-            $notNullArguments[] = $argument->getArgument()->getName() . ': ' . $argument->getValue()->printValue();
+            $printableArguments[] = $argument->getArgument()->getName() . ': ' . $argument->getValue()->printValue();
         }
 
-        if (\count($notNullArguments)) {
-            $return .= '(' . \implode(', ', $notNullArguments) . ')';
+        if (\count($printableArguments)) {
+            $return .= '(' . \implode(', ', $printableArguments) . ')';
         }
 
         return $return;

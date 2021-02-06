@@ -17,7 +17,7 @@ final class EnumItem implements \Graphpinator\Printable\Printable
     {
         $this->name = $name;
         $this->description = $description;
-        $this->directives = new \Graphpinator\Directive\DirectiveUsageSet();
+        $this->directiveUsages = new \Graphpinator\Directive\DirectiveUsageSet();
         $this->directiveLocation = \Graphpinator\Directive\TypeSystemDirectiveLocation::ENUM_VALUE;
     }
 

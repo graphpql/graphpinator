@@ -16,7 +16,7 @@ abstract class InputType extends \Graphpinator\Type\Contract\ConcreteDefinition 
 
     public function __construct()
     {
-        $this->directives = new \Graphpinator\Directive\DirectiveUsageSet();
+        $this->directiveUsages = new \Graphpinator\Directive\DirectiveUsageSet();
         $this->directiveLocation = \Graphpinator\Directive\TypeSystemDirectiveLocation::INPUT_OBJECT;
     }
 

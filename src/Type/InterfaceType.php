@@ -16,7 +16,7 @@ abstract class InterfaceType extends \Graphpinator\Type\Contract\AbstractDefinit
     {
         $this->implements = $implements
             ?? new \Graphpinator\Utils\InterfaceSet([]);
-        $this->directives = new \Graphpinator\Directive\DirectiveUsageSet();
+        $this->directiveUsages = new \Graphpinator\Directive\DirectiveUsageSet();
         $this->directiveLocation = \Graphpinator\Directive\TypeSystemDirectiveLocation::INTERFACE;
     }
 

@@ -17,7 +17,7 @@ final class Argument implements \Graphpinator\Printable\Printable
         private \Graphpinator\Type\Contract\Inputable $type,
     )
     {
-        $this->directives = new \Graphpinator\Directive\DirectiveUsageSet();
+        $this->directiveUsages = new \Graphpinator\Directive\DirectiveUsageSet();
         $this->directiveLocation = \Graphpinator\Directive\TypeSystemDirectiveLocation::ARGUMENT_DEFINITION;
     }
 

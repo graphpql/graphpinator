@@ -16,8 +16,8 @@ final class FieldValue implements \JsonSerializable
         $this->field = $field;
         $this->value = $value;
 
-        foreach ($field->getDirectives() as $directive) {
-            $directive->getDirective()->resolveFieldDefinitionAfter($this, $directive->getArguments());
+        foreach ($field->getDirectiveUsages() as $directive) {
+            $directive->getDirective()->resolveFieldDefinitionAfter($this, $directive->getArgumentValues());
         }
     }
 

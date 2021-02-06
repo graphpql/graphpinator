@@ -333,15 +333,15 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
             protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
             {
                 return new \Graphpinator\Argument\ArgumentSet([
-                    (new \Graphpinator\Argument\Argument(
+                    \Graphpinator\Argument\Argument::create(
                         'arg',
                         \Graphpinator\Container\Container::Float(),
-                    ))->addConstraint(new \Graphpinator\Constraint\StringConstraint()),
+                    )->addDirective(\Graphpinator\Container\Container::directiveStringConstraint(), []),
                 ]);
             }
         };
 
-        $type->getArguments();
+        $type->printSchema();
     }
 
     public function testInvalidConstraintTypeInt() : void
@@ -355,15 +355,15 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
             protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
             {
                 return new \Graphpinator\Argument\ArgumentSet([
-                    (new \Graphpinator\Argument\Argument(
+                    \Graphpinator\Argument\Argument::create(
                         'arg',
                         \Graphpinator\Container\Container::String(),
-                    ))->addConstraint(new \Graphpinator\Constraint\IntConstraint()),
+                    )->addDirective(\Graphpinator\Container\Container::directiveIntConstraint(), []),
                 ]);
             }
         };
 
-        $type->getArguments();
+        $type->printSchema();
     }
 
     public function testInvalidConstraintTypeFloat() : void
@@ -377,21 +377,21 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
             protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
             {
                 return new \Graphpinator\Argument\ArgumentSet([
-                    (new \Graphpinator\Argument\Argument(
+                    \Graphpinator\Argument\Argument::create(
                         'arg',
                         \Graphpinator\Container\Container::Int(),
-                    ))->addConstraint(new \Graphpinator\Constraint\FloatConstraint()),
+                    )->addDirective(\Graphpinator\Container\Container::directiveFloatConstraint(), []),
                 ]);
             }
         };
 
-        $type->getArguments();
+        $type->printSchema();
     }
 
     public function testNegativeMinLength() : void
     {
-        $this->expectException(\Graphpinator\Exception\Constraint\NegativeLengthParameter::class);
-        $this->expectExceptionMessage(\Graphpinator\Exception\Constraint\NegativeLengthParameter::MESSAGE);
+        $this->expectException(\Graphpinator\Exception\Constraint\MinConstraintNotSatisfied::class);
+        $this->expectExceptionMessage(\Graphpinator\Exception\Constraint\MinConstraintNotSatisfied::MESSAGE);
 
         $type = new class extends \Graphpinator\Type\InputType {
             protected const NAME = 'ConstraintInput';
@@ -399,15 +399,15 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
             protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
             {
                 return new \Graphpinator\Argument\ArgumentSet([
-                    (new \Graphpinator\Argument\Argument(
+                    \Graphpinator\Argument\Argument::create(
                         'arg',
                         \Graphpinator\Container\Container::String(),
-                    ))->addConstraint(new \Graphpinator\Constraint\StringConstraint(-20)),
+                    )->addDirective(\Graphpinator\Container\Container::directiveStringConstraint(), ['minLength' => -20]),
                 ]);
             }
         };
 
-        $type->getArguments();
+        $type->printSchema();
     }
 
     public function testNegativeMaxLength() : void
@@ -429,7 +429,7 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
             }
         };
 
-        $type->getArguments();
+        $type->printSchema();
     }
 
     public function testNegativeMinItems() : void
@@ -451,7 +451,7 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
             }
         };
 
-        $type->getArguments();
+        $type->printSchema();
     }
 
     public function testNegativeMaxItems() : void
@@ -473,7 +473,7 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
             }
         };
 
-        $type->getArguments();
+        $type->printSchema();
     }
 
     public function testInnerNegativeMinItems() : void
@@ -495,7 +495,7 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
             }
         };
 
-        $type->getArguments();
+        $type->printSchema();
     }
 
     public function testInnerNegativeMaxItems() : void
@@ -517,7 +517,7 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
             }
         };
 
-        $type->getArguments();
+        $type->printSchema();
     }
 
     public function testInvalidOneOfInt() : void
@@ -539,7 +539,7 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
             }
         };
 
-        $type->getArguments();
+        $type->printSchema();
     }
 
     public function testInvalidOneOfFloat() : void
@@ -561,7 +561,7 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
             }
         };
 
-        $type->getArguments();
+        $type->printSchema();
     }
 
     public function testInvalidOneOfString() : void
@@ -583,7 +583,7 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
             }
         };
 
-        $type->getArguments();
+        $type->printSchema();
     }
 
     public function testInvalidConstraintTypeList() : void
@@ -605,7 +605,7 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
             }
         };
 
-        $type->getArguments();
+        $type->printSchema();
     }
 
     public function testUniqueConstraintList() : void
@@ -627,7 +627,7 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
             }
         };
 
-        $type->getArguments();
+        $type->printSchema();
     }
 
     public function testInvalidAtLeastOneParameter() : void

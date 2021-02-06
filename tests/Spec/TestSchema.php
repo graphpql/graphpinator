@@ -387,7 +387,7 @@ final class TestSchema
                     ))
                     ->addDirective(
                         new \Graphpinator\Directive\Constraint\ListConstraintDirective(),
-                        ['minCount' => 3, 'maxCount' => 5],
+                        ['minItems' => 3, 'maxItems' => 5],
                     )
                     ->setArguments(new \Graphpinator\Argument\ArgumentSet([
                         new \Graphpinator\Argument\Argument(
@@ -870,14 +870,14 @@ final class TestSchema
                         static function () : array {
                             return [1];
                         },
-                    ))->addDirective(new \Graphpinator\Directive\Constraint\ListConstraintDirective(), ['minCount' => 1]),
+                    ))->addDirective(new \Graphpinator\Directive\Constraint\ListConstraintDirective(), ['minItems' => 1]),
                     (new \Graphpinator\Field\ResolvableField(
                         'listMaxField',
                         \Graphpinator\Container\Container::Int()->list(),
                         static function () : array {
                             return [1, 2];
                         },
-                    ))->addDirective(new \Graphpinator\Directive\Constraint\ListConstraintDirective(), ['maxCount' => 4]),
+                    ))->addDirective(new \Graphpinator\Directive\Constraint\ListConstraintDirective(), ['maxItems' => 3]),
                 ]);
             }
         };
@@ -926,7 +926,7 @@ final class TestSchema
                     (new \Graphpinator\Argument\Argument(
                         'intMaxArg',
                         \Graphpinator\Container\Container::Int(),
-                    ))->addDirective(new \Graphpinator\Directive\Constraint\IntConstraintDirective(), ['max' => -20]),
+                    ))->addDirective(new \Graphpinator\Directive\Constraint\IntConstraintDirective(), ['max' => 20]),
                     (new \Graphpinator\Argument\Argument(
                         'intOneOfArg',
                         \Graphpinator\Container\Container::Int(),
@@ -966,11 +966,11 @@ final class TestSchema
                     (new \Graphpinator\Argument\Argument(
                         'listMinArg',
                         \Graphpinator\Container\Container::Int()->list(),
-                    ))->addDirective(new \Graphpinator\Directive\Constraint\ListConstraintDirective(), ['minCount' => 1]),
+                    ))->addDirective(new \Graphpinator\Directive\Constraint\ListConstraintDirective(), ['minItems' => 1]),
                     (new \Graphpinator\Argument\Argument(
                         'listMaxArg',
                         \Graphpinator\Container\Container::Int()->list(),
-                    ))->addDirective(new \Graphpinator\Directive\Constraint\ListConstraintDirective(), ['maxCount' => 4]),
+                    ))->addDirective(new \Graphpinator\Directive\Constraint\ListConstraintDirective(), ['maxItems' => 3]),
                     (new \Graphpinator\Argument\Argument(
                         'listUniqueArg',
                         \Graphpinator\Container\Container::Int()->list(),
@@ -983,7 +983,7 @@ final class TestSchema
                         'maxItems' => 3,
                     ]]),
                     \Graphpinator\Argument\Argument::create('listMinIntMinArg', \Graphpinator\Container\Container::Int()->list())
-                        ->addDirective(new \Graphpinator\Directive\Constraint\ListConstraintDirective(), ['minCount' => 3])
+                        ->addDirective(new \Graphpinator\Directive\Constraint\ListConstraintDirective(), ['minItems' => 3])
                         ->addDirective(new \Graphpinator\Directive\Constraint\IntConstraintDirective(), ['min' => 3]),
                 ]);
             }
@@ -1382,7 +1382,10 @@ final class TestSchema
                 };
             }
 
-            public function validateType(\Graphpinator\Type\Contract\Definition $type) : bool
+            public function validateType(
+                ?\Graphpinator\Type\Contract\Definition $definition,
+                \Graphpinator\Value\ArgumentValueSet $arguments,
+            ) : bool
             {
                 return true;
             }
@@ -1414,7 +1417,10 @@ final class TestSchema
                 };
             }
 
-            public function validateType(\Graphpinator\Type\Contract\Definition $type) : bool
+            public function validateType(
+                ?\Graphpinator\Type\Contract\Definition $definition,
+                \Graphpinator\Value\ArgumentValueSet $arguments,
+            ) : bool
             {
                 return true;
             }
@@ -1442,7 +1448,10 @@ final class TestSchema
                 );
             }
 
-            public function validateType(\Graphpinator\Type\Contract\Definition $type) : bool
+            public function validateType(
+                ?\Graphpinator\Type\Contract\Definition $definition,
+                \Graphpinator\Value\ArgumentValueSet $arguments,
+            ) : bool
             {
                 return false;
             }

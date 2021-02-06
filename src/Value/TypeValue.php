@@ -16,8 +16,8 @@ final class TypeValue implements \Graphpinator\Value\OutputValue
         $this->type = $type;
         $this->value = $rawValue;
 
-        foreach ($type->getDirectives() as $directive) {
-            $directive->getDirective()->resolveObject($this, $directive->getArguments());
+        foreach ($type->getDirectiveUsages() as $directive) {
+            $directive->getDirective()->resolveObject($this, $directive->getArgumentValues());
         }
     }
 

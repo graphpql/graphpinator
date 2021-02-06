@@ -24,8 +24,8 @@ final class ResolvableField extends \Graphpinator\Field\Field
         \Graphpinator\Normalizer\Field\Field $field,
     ) : \Graphpinator\Value\FieldValue
     {
-        foreach ($this->directives as $directive) {
-            $directive->getDirective()->resolveFieldDefinitionBefore($directive->getArguments());
+        foreach ($this->directiveUsages as $directive) {
+            $directive->getDirective()->resolveFieldDefinitionBefore($directive->getArgumentValues());
         }
 
         $arguments = $field->getArguments();
