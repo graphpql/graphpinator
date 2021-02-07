@@ -11,7 +11,6 @@ class SimpleContainer extends \Graphpinator\Container\Container
 {
     protected array $types = [];
     protected array $directives = [];
-    protected array $builtInTypes = [];
     protected array $builtInDirectives = [];
     protected array $combinedTypes = [];
     protected array $combinedDirectives = [];
@@ -32,7 +31,7 @@ class SimpleContainer extends \Graphpinator\Container\Container
             $this->directives[$directive->getName()] = $directive;
         }
 
-        $this->builtInTypes = [
+        self::$builtInTypes = [
             'ID' => self::ID(),
             'Int' => self::Int(),
             'Float' => self::Float(),
@@ -61,7 +60,7 @@ class SimpleContainer extends \Graphpinator\Container\Container
         $this->directives['listConstraint'] = self::directiveListConstraint();
         $this->directives['objectConstraint'] = self::directiveObjectConstraint();
 
-        $this->combinedTypes = \array_merge($this->types, $this->builtInTypes);
+        $this->combinedTypes = \array_merge($this->types, self::$builtInTypes);
         $this->combinedDirectives = \array_merge($this->directives, $this->builtInDirectives);
     }
 

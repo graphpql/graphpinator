@@ -10,6 +10,9 @@ namespace Graphpinator\Container;
  */
 abstract class Container
 {
+    protected static array $builtInTypes = [];
+    protected static array $constraintDirectives = [];
+
     /**
      * Core function to find type by its name.
      * @param string $name
@@ -39,7 +42,11 @@ abstract class Container
      */
     public static function Int() : \Graphpinator\Type\Scalar\IntType
     {
-        return new \Graphpinator\Type\Scalar\IntType();
+        if (!\array_key_exists('Int', self::$builtInTypes)) {
+            self::$builtInTypes['Int'] = new \Graphpinator\Type\Scalar\IntType();
+        }
+
+        return self::$builtInTypes['Int'];
     }
 
     /**
@@ -47,7 +54,11 @@ abstract class Container
      */
     public static function Float() : \Graphpinator\Type\Scalar\FloatType
     {
-        return new \Graphpinator\Type\Scalar\FloatType();
+        if (!\array_key_exists('Float', self::$builtInTypes)) {
+            self::$builtInTypes['Float'] = new \Graphpinator\Type\Scalar\FloatType();
+        }
+
+        return self::$builtInTypes['Float'];
     }
 
     /**
@@ -55,7 +66,11 @@ abstract class Container
      */
     public static function String() : \Graphpinator\Type\Scalar\StringType
     {
-        return new \Graphpinator\Type\Scalar\StringType();
+        if (!\array_key_exists('String', self::$builtInTypes)) {
+            self::$builtInTypes['String'] = new \Graphpinator\Type\Scalar\StringType();
+        }
+
+        return self::$builtInTypes['String'];
     }
 
     /**
@@ -63,7 +78,11 @@ abstract class Container
      */
     public static function Boolean() : \Graphpinator\Type\Scalar\BooleanType
     {
-        return new \Graphpinator\Type\Scalar\BooleanType();
+        if (!\array_key_exists('Boolean', self::$builtInTypes)) {
+            self::$builtInTypes['Boolean'] = new \Graphpinator\Type\Scalar\BooleanType();
+        }
+
+        return self::$builtInTypes['Boolean'];
     }
 
     /**
@@ -71,7 +90,11 @@ abstract class Container
      */
     public static function ID() : \Graphpinator\Type\Scalar\IdType
     {
-        return new \Graphpinator\Type\Scalar\IdType();
+        if (!\array_key_exists('ID', self::$builtInTypes)) {
+            self::$builtInTypes['ID'] = new \Graphpinator\Type\Scalar\IdType();
+        }
+
+        return self::$builtInTypes['ID'];
     }
 
     /**
@@ -103,7 +126,11 @@ abstract class Container
      */
     public static function directiveIntConstraint() : \Graphpinator\Directive\Constraint\IntConstraintDirective
     {
-        return new \Graphpinator\Directive\Constraint\IntConstraintDirective();
+        if (!\array_key_exists('IntConstraint', self::$constraintDirectives)) {
+            self::$constraintDirectives['IntConstraint'] = new \Graphpinator\Directive\Constraint\IntConstraintDirective();
+        }
+
+        return self::$constraintDirectives['IntConstraint'];
     }
 
     /**
@@ -111,7 +138,11 @@ abstract class Container
      */
     public static function directiveFloatConstraint() : \Graphpinator\Directive\Constraint\FloatConstraintDirective
     {
-        return new \Graphpinator\Directive\Constraint\FloatConstraintDirective();
+        if (!\array_key_exists('FloatConstraint', self::$constraintDirectives)) {
+            self::$constraintDirectives['FloatConstraint'] = new \Graphpinator\Directive\Constraint\FloatConstraintDirective();
+        }
+
+        return self::$constraintDirectives['FloatConstraint'];
     }
 
     /**
@@ -119,7 +150,11 @@ abstract class Container
      */
     public static function directiveStringConstraint() : \Graphpinator\Directive\Constraint\StringConstraintDirective
     {
-        return new \Graphpinator\Directive\Constraint\StringConstraintDirective();
+        if (!\array_key_exists('StringConstraint', self::$constraintDirectives)) {
+            self::$constraintDirectives['StringConstraint'] = new \Graphpinator\Directive\Constraint\StringConstraintDirective();
+        }
+
+        return self::$constraintDirectives['StringConstraint'];
     }
 
     /**
@@ -127,7 +162,11 @@ abstract class Container
      */
     public static function directiveListConstraint() : \Graphpinator\Directive\Constraint\ListConstraintDirective
     {
-        return new \Graphpinator\Directive\Constraint\ListConstraintDirective();
+        if (!\array_key_exists('ListConstraint', self::$constraintDirectives)) {
+            self::$constraintDirectives['ListConstraint'] = new \Graphpinator\Directive\Constraint\ListConstraintDirective();
+        }
+
+        return self::$constraintDirectives['ListConstraint'];
     }
 
     /**
