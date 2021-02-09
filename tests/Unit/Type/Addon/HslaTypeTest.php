@@ -52,7 +52,7 @@ final class HslaTypeTest extends \PHPUnit\Framework\TestCase
      */
     public function testValidateValue($rawValue) : void
     {
-        $hsla = new \Graphpinator\Type\Addon\HslaType();
+        $hsla = \Graphpinator\Tests\Spec\TestSchema::getType('Hsla');
         $value = $hsla->createResolvedValue($rawValue);
 
         self::assertSame($hsla, $value->getType());
@@ -67,18 +67,7 @@ final class HslaTypeTest extends \PHPUnit\Framework\TestCase
     {
         $this->expectException(\Graphpinator\Exception\Value\InvalidValue::class);
 
-        $hsla = new \Graphpinator\Type\Addon\HslaType();
+        $hsla = \Graphpinator\Tests\Spec\TestSchema::getType('Hsla');
         $hsla->createResolvedValue($rawValue);
-    }
-
-    public function testInputConstraintDefaultValue() : void
-    {
-        $hsla = new \Graphpinator\Type\Addon\HslaInput();
-        $args = $hsla->getArguments()->toArray();
-
-        self::assertSame(' @intConstraint(min: 0, max: 360)', $args['hue']->printConstraints());
-        self::assertSame(' @intConstraint(min: 0, max: 100)', $args['saturation']->printConstraints());
-        self::assertSame(' @intConstraint(min: 0, max: 100)', $args['lightness']->printConstraints());
-        self::assertSame(' @floatConstraint(min: 0, max: 1)', $args['alpha']->printConstraints());
     }
 }

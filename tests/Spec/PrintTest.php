@@ -187,15 +187,15 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             time: Time = "12:12:50"
           ): Time
           url(
-            url: Url = "https:\/\/test.com\/boo\/blah.php?testValue=test&testName=name"
+            url: Url = "https://test.com/boo/blah.php?testValue=test&testName=name"
           ): Url
           void(
             void: Void = null
           ): Void
           gps(
             gps: GpsInput = {
-              lat: 45,
-              lng: 90
+              lat: 45.0,
+              lng: 90.0
             }
           ): Gps
           point(
@@ -354,32 +354,31 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           innerNotNull: SimpleInput!
         }
         
-        input ConstraintInput @objectConstraint(atLeastOne: ["intMinArg", "intMaxArg", "intOneOfArg", "floatMinArg", "floatMaxArg", "floatOneOfArg", "stringMinArg", "stringMaxArg", "stringRegexArg", "stringOneOfArg", "stringOneOfEmptyArg", "listMinArg", "listMaxArg", "listUniqueArg", "listInnerListArg", "listMinIntMinArg"]) {
+        input ConstraintInput @objectConstraint(atLeastOne: ["intMinArg","intMaxArg","intOneOfArg","floatMinArg","floatMaxArg","floatOneOfArg","stringMinArg","stringMaxArg","stringRegexArg","stringOneOfArg","listMinArg","listMaxArg","listUniqueArg","listInnerListArg","listMinIntMinArg"]) {
           intMinArg: Int @intConstraint(min: -20)
           intMaxArg: Int @intConstraint(max: 20)
-          intOneOfArg: Int @intConstraint(oneOf: [1, 2, 3])
+          intOneOfArg: Int @intConstraint(oneOf: [1,2,3])
           floatMinArg: Float @floatConstraint(min: 4.01)
           floatMaxArg: Float @floatConstraint(max: 20.101)
-          floatOneOfArg: Float @floatConstraint(oneOf: [1.01, 2.02, 3])
+          floatOneOfArg: Float @floatConstraint(oneOf: [1.01,2.02,3.0])
           stringMinArg: String @stringConstraint(minLength: 4)
           stringMaxArg: String @stringConstraint(maxLength: 10)
           stringRegexArg: String @stringConstraint(regex: "/^(abc)|(foo)$/")
-          stringOneOfArg: String @stringConstraint(oneOf: ["abc", "foo"])
-          stringOneOfEmptyArg: String @stringConstraint(oneOf: [])
+          stringOneOfArg: String @stringConstraint(oneOf: ["abc","foo"])
           listMinArg: [Int] @listConstraint(minItems: 1)
           listMaxArg: [Int] @listConstraint(maxItems: 3)
           listUniqueArg: [Int] @listConstraint(unique: true)
-          listInnerListArg: [[Int]] @listConstraint(innerList: {minItems: 1, maxItems: 3})
+          listInnerListArg: [[Int]] @listConstraint(innerList: {minItems:1,maxItems:3,unique:false,innerList:null})
           listMinIntMinArg: [Int] @listConstraint(minItems: 3) @intConstraint(min: 3)
         }
         
-        type ConstraintType @objectConstraint(atLeastOne: ["intMinField", "intMaxField", "intOneOfField", "floatMinField", "floatMaxField", "floatOneOfField", "stringMinField", "stringMaxField", "listMinField", "listMaxField"]) {
+        type ConstraintType @objectConstraint(atLeastOne: ["intMinField","intMaxField","intOneOfField","floatMinField","floatMaxField","floatOneOfField","stringMinField","stringMaxField","listMinField","listMaxField"]) {
           intMinField: Int @intConstraint(min: -20)
           intMaxField: Int @intConstraint(max: 20)
-          intOneOfField: Int @intConstraint(oneOf: [1, 2, 3])
+          intOneOfField: Int @intConstraint(oneOf: [1,2,3])
           floatMinField: Float @floatConstraint(min: 4.01)
           floatMaxField: Float @floatConstraint(max: 20.101)
-          floatOneOfField: Float @floatConstraint(oneOf: [1.01, 2.02, 3])
+          floatOneOfField: Float @floatConstraint(oneOf: [1.01,2.02,3.0])
           stringMinField: String @stringConstraint(minLength: 4)
           stringMaxField: String @stringConstraint(maxLength: 10)
           listMinField: [Int] @listConstraint(minItems: 1)
@@ -448,7 +447,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         """
         scalar EmailAddress
         
-        input ExactlyOneInput @objectConstraint(exactlyOne: ["int1", "int2"]) {
+        input ExactlyOneInput @objectConstraint(exactlyOne: ["int1","int2"]) {
           int1: Int
           int2: Int
         }
@@ -475,8 +474,8 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         Gps type - latitude and longitude.
         """
         type Gps {
-          lat: Float! @floatConstraint(min: -90, max: 90)
-          lng: Float! @floatConstraint(min: -180, max: 180)
+          lat: Float! @floatConstraint(min: -90.0, max: 90.0)
+          lng: Float! @floatConstraint(min: -180.0, max: 180.0)
         }
         
         """
@@ -495,7 +494,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           hue: Int! @intConstraint(min: 0, max: 360)
           saturation: Int! @intConstraint(min: 0, max: 100)
           lightness: Int! @intConstraint(min: 0, max: 100)
-          alpha: Float! @floatConstraint(min: 0, max: 1)
+          alpha: Float! @floatConstraint(min: 0.0, max: 1.0)
         }
         
         """
@@ -535,9 +534,9 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         scalar Json
         
         input ListConstraintInput {
-          minItems: Int
-          maxItems: Int
-          unique: Boolean = false
+          minItems: Int @intConstraint(min: 0)
+          maxItems: Int @intConstraint(min: 0)
+          unique: Boolean! = false
           innerList: ListConstraintInput
         }
         
@@ -667,7 +666,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           red: Int! @intConstraint(min: 0, max: 255)
           green: Int! @intConstraint(min: 0, max: 255)
           blue: Int! @intConstraint(min: 0, max: 255)
-          alpha: Float! @floatConstraint(min: 0, max: 1)
+          alpha: Float! @floatConstraint(min: 0.0, max: 1.0)
         }
         
         type SimpleEmptyTestInput {
@@ -772,8 +771,8 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         directive @floatConstraint(
           min: Float
           max: Float
-          oneOf: [Float!]
-        ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION | FIELD_DEFINITION
+          oneOf: [Float!] @listConstraint(minItems: 1)
+        ) on FIELD_DEFINITION | ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
         
         """
         Graphpinator floatWhere directive.
@@ -793,8 +792,8 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         directive @intConstraint(
           min: Int
           max: Int
-          oneOf: [Int!]
-        ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION | FIELD_DEFINITION
+          oneOf: [Int!] @listConstraint(minItems: 1)
+        ) on FIELD_DEFINITION | ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
         
         """
         Graphpinator intWhere directive.
@@ -816,11 +815,11 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         Graphpinator listConstraint directive.
         """
         directive @listConstraint(
-          minItems: Int
-          maxItems: Int
-          unique: Boolean = false
+          minItems: Int @intConstraint(min: 0)
+          maxItems: Int @intConstraint(min: 0)
+          unique: Boolean! = false
           innerList: ListConstraintInput
-        ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION | FIELD_DEFINITION
+        ) on FIELD_DEFINITION | ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
         
         """
         Graphpinator listWhere directive.
@@ -828,8 +827,8 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         directive @listWhere(
           field: String
           not: Boolean! = false
-          minItems: Int
-          maxItems: Int
+          minItems: Int @intConstraint(min: 0)
+          maxItems: Int @intConstraint(min: 0)
           orNull: Boolean! = false
         ) repeatable on FIELD
 
@@ -837,19 +836,19 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         Graphpinator objectConstraint directive.
         """
         directive @objectConstraint(
-          atLeastOne: [String!]
-          exactlyOne: [String!]
-        ) on INPUT_OBJECT | INTERFACE | OBJECT
+          atLeastOne: [String!] @listConstraint(minItems: 1)
+          exactlyOne: [String!] @listConstraint(minItems: 1)
+        ) repeatable on OBJECT | INTERFACE | INPUT_OBJECT
         
         """
         Graphpinator stringConstraint directive.
         """
         directive @stringConstraint(
-          minLength: Int
-          maxLength: Int
+          minLength: Int @intConstraint(min: 0)
+          maxLength: Int @intConstraint(min: 0)
           regex: String
-          oneOf: [String!]
-        ) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION | FIELD_DEFINITION
+          oneOf: [String!] @listConstraint(minItems: 1)
+        ) on FIELD_DEFINITION | ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
         
         """
         Graphpinator stringWhere directive.

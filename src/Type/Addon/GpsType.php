@@ -9,23 +9,36 @@ final class GpsType extends \Graphpinator\Type\Type
     protected const NAME = 'Gps';
     protected const DESCRIPTION = 'Gps type - latitude and longitude.';
 
+    public function __construct(
+        private \Graphpinator\Directive\Constraint\ConstraintDirectiveAccessor $constraintDirectiveAccessor,
+    )
+    {
+        parent::__construct();
+    }
+
     protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
     {
         return new \Graphpinator\Field\ResolvableFieldSet([
-            (new \Graphpinator\Field\ResolvableField(
+            \Graphpinator\Field\ResolvableField::create(
                 'lat',
                 \Graphpinator\Container\Container::Float()->notNull(),
                 static function(\stdClass $gps) : float {
                     return $gps->lat;
                 },
-            ))->addConstraint(new \Graphpinator\Constraint\FloatConstraint(-90.0, 90.0)),
-            (new \Graphpinator\Field\ResolvableField(
+            )->addDirective(
+                $this->constraintDirectiveAccessor->getFloat(),
+                ['min' => -90.0, 'max' => 90.0],
+            ),
+            \Graphpinator\Field\ResolvableField::create(
                 'lng',
                 \Graphpinator\Container\Container::Float()->notNull(),
                 static function(\stdClass $gps) : float {
                     return $gps->lng;
                 },
-            ))->addConstraint(new \Graphpinator\Constraint\FloatConstraint(-180.0, 180.0)),
+            )->addDirective(
+                $this->constraintDirectiveAccessor->getFloat(),
+                ['min' => -180.0, 'max' => 180.0],
+            ),
         ]);
     }
 

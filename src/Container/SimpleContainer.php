@@ -11,8 +11,6 @@ class SimpleContainer extends \Graphpinator\Container\Container
 {
     protected array $types = [];
     protected array $directives = [];
-    protected array $builtInTypes = [];
-    protected array $builtInDirectives = [];
     protected array $combinedTypes = [];
     protected array $combinedDirectives = [];
 
@@ -32,7 +30,7 @@ class SimpleContainer extends \Graphpinator\Container\Container
             $this->directives[$directive->getName()] = $directive;
         }
 
-        $this->builtInTypes = [
+        self::$builtInTypes = [
             'ID' => self::ID(),
             'Int' => self::Int(),
             'Float' => self::Float(),
@@ -47,22 +45,14 @@ class SimpleContainer extends \Graphpinator\Container\Container
             '__Directive' => $this->introspectionDirective(),
             '__DirectiveLocation' => $this->introspectionDirectiveLocation(),
         ];
-
-        $this->builtInDirectives = [
+        self::$builtInDirectives = [
             'skip' => self::directiveSkip(),
             'include' => self::directiveInclude(),
             'deprecated' => self::directiveDeprecated(),
         ];
 
-        $this->types['ListConstraintInput'] = self::listConstraintInput();
-        $this->directives['intConstraint'] = self::directiveIntConstraint();
-        $this->directives['floatConstraint'] = self::directiveFloatConstraint();
-        $this->directives['stringConstraint'] = self::directiveStringConstraint();
-        $this->directives['listConstraint'] = self::directiveListConstraint();
-        $this->directives['objectConstraint'] = self::directiveObjectConstraint();
-
-        $this->combinedTypes = \array_merge($this->types, $this->builtInTypes);
-        $this->combinedDirectives = \array_merge($this->directives, $this->builtInDirectives);
+        $this->combinedTypes = \array_merge($this->types, self::$builtInTypes);
+        $this->combinedDirectives = \array_merge($this->directives, self::$builtInDirectives);
     }
 
     public function getType(string $name) : ?\Graphpinator\Type\Contract\NamedDefinition

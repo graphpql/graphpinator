@@ -8,8 +8,8 @@ class Field implements \Graphpinator\Printable\Printable
 {
     use \Nette\SmartObject;
     use \Graphpinator\Utils\TOptionalDescription;
-    use \Graphpinator\Utils\TDeprecatable;
-    use \Graphpinator\Utils\TFieldConstraint;
+    use \Graphpinator\Directive\THasDirectives;
+    use \Graphpinator\Directive\TDeprecatable;
     use \Graphpinator\Printable\TRepeatablePrint;
 
     protected string $name;
@@ -21,6 +21,8 @@ class Field implements \Graphpinator\Printable\Printable
         $this->name = $name;
         $this->type = $type;
         $this->arguments = new \Graphpinator\Argument\ArgumentSet([]);
+        $this->directiveUsages = new \Graphpinator\Directive\DirectiveUsageSet([]);
+        $this->directiveLocation = \Graphpinator\Directive\TypeSystemDirectiveLocation::FIELD_DEFINITION;
     }
 
     public static function create(string $name, \Graphpinator\Type\Contract\Outputable $type) : self
@@ -53,8 +55,23 @@ class Field implements \Graphpinator\Printable\Printable
     public function printSchema(int $indentLevel) : string
     {
         return $this->printDescription($indentLevel)
-            . $this->getName() . $this->printArguments() . ': ' . $this->getType()->printName() . $this->printDeprecated()
-            . $this->printConstraints();
+            . $this->getName() . $this->printArguments() . ': ' . $this->getType()->printName() . $this->printDirectives();
+    }
+
+    public function addDirective(
+        \Graphpinator\Directive\Contract\FieldDefinitionLocation $directive,
+        array $arguments,
+    ) : self
+    {
+        $usage = new \Graphpinator\Directive\DirectiveUsage($directive, $arguments);
+
+        if (!$directive->validateType($this->getType(), $usage->getArgumentValues())) {
+            throw new \Graphpinator\Exception\Directive\InvalidConstraintType();
+        }
+
+        $this->directiveUsages[] = $usage;
+
+        return $this;
     }
 
     private function printArguments() : string

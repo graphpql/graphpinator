@@ -9,30 +9,46 @@ class HslType extends \Graphpinator\Type\Type
     protected const NAME = 'Hsl';
     protected const DESCRIPTION = 'Hsl type - type representing the HSL color model.';
 
+    public function __construct(
+        protected \Graphpinator\Directive\Constraint\ConstraintDirectiveAccessor $constraintDirectiveAccessor,
+    )
+    {
+        parent::__construct();
+    }
+
     protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
     {
         return new \Graphpinator\Field\ResolvableFieldSet([
-            (new \Graphpinator\Field\ResolvableField(
+            \Graphpinator\Field\ResolvableField::create(
                 'hue',
                 \Graphpinator\Container\Container::Int()->notNull(),
                 static function (\stdClass $hsl) : int {
                     return $hsl->hue;
                 },
-            ))->addConstraint(new \Graphpinator\Constraint\IntConstraint(0, 360)),
-            (new \Graphpinator\Field\ResolvableField(
+            )->addDirective(
+                $this->constraintDirectiveAccessor->getInt(),
+                ['min' => 0, 'max' => 360],
+            ),
+            \Graphpinator\Field\ResolvableField::create(
                 'saturation',
                 \Graphpinator\Container\Container::Int()->notNull(),
                 static function (\stdClass $hsl) : int {
                     return $hsl->saturation;
                 },
-            ))->addConstraint(new \Graphpinator\Constraint\IntConstraint(0, 100)),
-            (new \Graphpinator\Field\ResolvableField(
+            )->addDirective(
+                $this->constraintDirectiveAccessor->getInt(),
+                ['min' => 0, 'max' => 100],
+            ),
+            \Graphpinator\Field\ResolvableField::create(
                 'lightness',
                 \Graphpinator\Container\Container::Int()->notNull(),
                 static function (\stdClass $hsl) : int {
                     return $hsl->lightness;
                 },
-            ))->addConstraint(new \Graphpinator\Constraint\IntConstraint(0, 100)),
+            )->addDirective(
+                $this->constraintDirectiveAccessor->getInt(),
+                ['min' => 0, 'max' => 100],
+            ),
         ]);
     }
 

@@ -9,30 +9,46 @@ class RgbType extends \Graphpinator\Type\Type
     protected const NAME = 'Rgb';
     protected const DESCRIPTION = 'Rgb type - type representing the RGB color model.';
 
+    public function __construct(
+        protected \Graphpinator\Directive\Constraint\ConstraintDirectiveAccessor $constraintDirectiveAccessor,
+    )
+    {
+        parent::__construct();
+    }
+
     protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
     {
         return new \Graphpinator\Field\ResolvableFieldSet([
-            (new \Graphpinator\Field\ResolvableField(
+            \Graphpinator\Field\ResolvableField::create(
                 'red',
                 \Graphpinator\Container\Container::Int()->notNull(),
                 static function (\stdClass $rgb) : int {
                     return $rgb->red;
                 },
-            ))->addConstraint(new \Graphpinator\Constraint\IntConstraint(0, 255)),
-            (new \Graphpinator\Field\ResolvableField(
+            )->addDirective(
+                $this->constraintDirectiveAccessor->getInt(),
+                ['min' => 0, 'max' => 255],
+            ),
+            \Graphpinator\Field\ResolvableField::create(
                 'green',
                 \Graphpinator\Container\Container::Int()->notNull(),
                 static function (\stdClass $rgb) : int {
                     return $rgb->green;
                 },
-            ))->addConstraint(new \Graphpinator\Constraint\IntConstraint(0, 255)),
-            (new \Graphpinator\Field\ResolvableField(
+            )->addDirective(
+                $this->constraintDirectiveAccessor->getInt(),
+                ['min' => 0, 'max' => 255],
+            ),
+            \Graphpinator\Field\ResolvableField::create(
                 'blue',
                 \Graphpinator\Container\Container::Int()->notNull(),
                 static function (\stdClass $rgb) : int {
                     return $rgb->blue;
                 },
-            ))->addConstraint(new \Graphpinator\Constraint\IntConstraint(0, 255)),
+            )->addDirective(
+                $this->constraintDirectiveAccessor->getInt(),
+                ['min' => 0, 'max' => 255],
+            ),
         ]);
     }
 

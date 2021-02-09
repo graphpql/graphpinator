@@ -8,7 +8,8 @@ final class EnumItem implements \Graphpinator\Printable\Printable
 {
     use \Nette\SmartObject;
     use \Graphpinator\Utils\TOptionalDescription;
-    use \Graphpinator\Utils\TDeprecatable;
+    use \Graphpinator\Directive\THasDirectives;
+    use \Graphpinator\Directive\TDeprecatable;
 
     private string $name;
 
@@ -16,6 +17,8 @@ final class EnumItem implements \Graphpinator\Printable\Printable
     {
         $this->name = $name;
         $this->description = $description;
+        $this->directiveUsages = new \Graphpinator\Directive\DirectiveUsageSet();
+        $this->directiveLocation = \Graphpinator\Directive\TypeSystemDirectiveLocation::ENUM_VALUE;
     }
 
     public function getName() : string
@@ -25,6 +28,16 @@ final class EnumItem implements \Graphpinator\Printable\Printable
 
     public function printSchema(int $indentLevel) : string
     {
-        return $this->printDescription($indentLevel) . $this->getName() . $this->printDeprecated();
+        return $this->printDescription($indentLevel) . $this->getName() . $this->printDirectives();
+    }
+
+    public function addDirective(
+        \Graphpinator\Directive\Contract\EnumItemLocation $directive,
+        array $arguments,
+    ) : self
+    {
+        $this->directiveUsages[] = new \Graphpinator\Directive\DirectiveUsage($directive, $arguments);
+
+        return $this;
     }
 }

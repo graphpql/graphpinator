@@ -8,7 +8,7 @@ final class Argument implements \Graphpinator\Printable\Printable
 {
     use \Nette\SmartObject;
     use \Graphpinator\Utils\TOptionalDescription;
-    use \Graphpinator\Utils\TFieldConstraint;
+    use \Graphpinator\Directive\THasDirectives;
 
     private ?\Graphpinator\Value\InputedValue $defaultValue = null;
 
@@ -17,7 +17,8 @@ final class Argument implements \Graphpinator\Printable\Printable
         private \Graphpinator\Type\Contract\Inputable $type,
     )
     {
-        $this->constraints = new \Graphpinator\Constraint\ArgumentFieldConstraintSet([]);
+        $this->directiveUsages = new \Graphpinator\Directive\DirectiveUsageSet();
+        $this->directiveLocation = \Graphpinator\Directive\TypeSystemDirectiveLocation::ARGUMENT_DEFINITION;
     }
 
     public static function create(string $name, \Graphpinator\Type\Contract\Inputable $type) : self
@@ -55,8 +56,24 @@ final class Argument implements \Graphpinator\Printable\Printable
             $schema .= ' = ' . $this->defaultValue->prettyPrint($indentLevel);
         }
 
-        $schema .= $this->printConstraints();
+        $schema .= $this->printDirectives();
 
         return $schema;
+    }
+
+    public function addDirective(
+        \Graphpinator\Directive\Contract\ArgumentDefinitionLocation $directive,
+        array $arguments,
+    ) : self
+    {
+        $usage = new \Graphpinator\Directive\DirectiveUsage($directive, $arguments);
+
+        if (!$directive->validateType($this->getType(), $usage->getArgumentValues())) {
+            throw new \Graphpinator\Exception\Directive\InvalidConstraintType();
+        }
+
+        $this->directiveUsages[] = $usage;
+
+        return $this;
     }
 }

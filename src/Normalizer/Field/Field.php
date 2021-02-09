@@ -32,7 +32,7 @@ final class Field
         $field = $parentType->getField($this->name);
         $fieldType = $field->getType()->getNamedType();
 
-        $this->arguments = new \Graphpinator\Value\ArgumentValueSet(
+        $this->arguments = \Graphpinator\Value\ArgumentValueSet::fromParsed(
             $parsed->getArguments() instanceof \Graphpinator\Parser\Value\ArgumentValueSet
                 ? $parsed->getArguments()
                 : new \Graphpinator\Parser\Value\ArgumentValueSet([]),

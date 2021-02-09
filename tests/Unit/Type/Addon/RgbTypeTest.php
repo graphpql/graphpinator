@@ -48,7 +48,7 @@ final class RgbTypeTest extends \PHPUnit\Framework\TestCase
      */
     public function testValidateValue($rawValue) : void
     {
-        $rgb = new \Graphpinator\Type\Addon\RgbType();
+        $rgb = \Graphpinator\Tests\Spec\TestSchema::getType('Rgb');
         $value = $rgb->createResolvedValue($rawValue);
 
         self::assertSame($rgb, $value->getType());
@@ -63,17 +63,7 @@ final class RgbTypeTest extends \PHPUnit\Framework\TestCase
     {
         $this->expectException(\Graphpinator\Exception\Value\InvalidValue::class);
 
-        $rgb = new \Graphpinator\Type\Addon\RgbType();
+        $rgb = \Graphpinator\Tests\Spec\TestSchema::getType('Rgb');
         $rgb->createResolvedValue($rawValue);
-    }
-
-    public function testInputConstraintDefaultValue() : void
-    {
-        $rgb = new \Graphpinator\Type\Addon\RgbInput();
-        $args = $rgb->getArguments()->toArray();
-
-        self::assertSame(' @intConstraint(min: 0, max: 255)', $args['red']->printConstraints());
-        self::assertSame(' @intConstraint(min: 0, max: 255)', $args['green']->printConstraints());
-        self::assertSame(' @intConstraint(min: 0, max: 255)', $args['blue']->printConstraints());
     }
 }

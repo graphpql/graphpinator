@@ -7,7 +7,7 @@ namespace Graphpinator\Directive\Spec;
 final class SkipDirective extends \Graphpinator\Directive\Directive
     implements \Graphpinator\Directive\Contract\ExecutableDefinition
 {
-    use \Graphpinator\Directive\Contract\TExecutableDirective;
+    use \Graphpinator\Directive\Contract\TExecutableDefinition;
 
     protected const NAME = 'skip';
     protected const DESCRIPTION = 'Built-in skip directive.';
@@ -21,9 +21,6 @@ final class SkipDirective extends \Graphpinator\Directive\Directive
                 \Graphpinator\Directive\ExecutableDirectiveLocation::INLINE_FRAGMENT,
             ],
             false,
-            new \Graphpinator\Argument\ArgumentSet([
-                new \Graphpinator\Argument\Argument('if', \Graphpinator\Container\Container::Boolean()->notNull()),
-            ]),
         );
 
         $this->fieldBeforeFn = static function (bool $if) : string {
@@ -33,8 +30,18 @@ final class SkipDirective extends \Graphpinator\Directive\Directive
         };
     }
 
-    public function validateType(\Graphpinator\Type\Contract\Definition $type) : bool
+    public function validateType(
+        ?\Graphpinator\Type\Contract\Definition $definition,
+        \Graphpinator\Value\ArgumentValueSet $arguments,
+    ) : bool
     {
         return true;
+    }
+
+    protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
+    {
+        return new \Graphpinator\Argument\ArgumentSet([
+            new \Graphpinator\Argument\Argument('if', \Graphpinator\Container\Container::Boolean()->notNull()),
+        ]);
     }
 }

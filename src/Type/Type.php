@@ -11,13 +11,15 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
 {
     use \Graphpinator\Type\Contract\TInterfaceImplementor;
     use \Graphpinator\Type\Contract\TMetaFields;
-    use \Graphpinator\Utils\TObjectConstraint;
     use \Graphpinator\Printable\TRepeatablePrint;
+    use \Graphpinator\Directive\THasDirectives;
 
     public function __construct(?\Graphpinator\Utils\InterfaceSet $implements = null)
     {
         $this->implements = $implements
             ?? new \Graphpinator\Utils\InterfaceSet([]);
+        $this->directiveUsages = new \Graphpinator\Directive\DirectiveUsageSet();
+        $this->directiveLocation = \Graphpinator\Directive\TypeSystemDirectiveLocation::OBJECT;
     }
 
     abstract public function validateNonNullValue(mixed $rawValue) : bool;
@@ -115,9 +117,25 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
     final public function printSchema() : string
     {
         return $this->printDescription()
-            . 'type ' . $this->getName() . $this->printImplements() . $this->printConstraints() . ' {' . \PHP_EOL
+            . 'type ' . $this->getName() . $this->printImplements() . $this->printDirectives() . ' {' . \PHP_EOL
             . $this->printItems($this->getFields(), 1)
             . '}';
+    }
+
+    final public function addDirective(
+        \Graphpinator\Directive\Contract\ObjectLocation $directive,
+        array $arguments,
+    ) : static
+    {
+        $usage = new \Graphpinator\Directive\DirectiveUsage($directive, $arguments);
+
+        if (!$directive->validateType($this, $usage->getArgumentValues())) {
+            throw new \Graphpinator\Exception\Directive\InvalidConstraintType();
+        }
+
+        $this->directiveUsages[] = $usage;
+
+        return $this;
     }
 
     abstract protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet;

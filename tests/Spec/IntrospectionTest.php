@@ -240,6 +240,18 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                                     'isRepeatable' => true,
                                 ],
                                 [
+                                    'name' => 'stringConstraint',
+                                    'description' => 'Graphpinator stringConstraint directive.',
+                                    'args' => [
+                                        ['name' => 'minLength'],
+                                        ['name' => 'maxLength'],
+                                        ['name' => 'regex'],
+                                        ['name' => 'oneOf'],
+                                    ],
+                                    'locations' => ['FIELD_DEFINITION', 'ARGUMENT_DEFINITION', 'INPUT_FIELD_DEFINITION'],
+                                    'isRepeatable' => false,
+                                ],
+                                [
                                     'name' => 'intConstraint',
                                     'description' => 'Graphpinator intConstraint directive.',
                                     'args' => [
@@ -247,7 +259,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                                         ['name' => 'max'],
                                         ['name' => 'oneOf'],
                                     ],
-                                    'locations' => ['ARGUMENT_DEFINITION', 'INPUT_FIELD_DEFINITION', 'FIELD_DEFINITION'],
+                                    'locations' => ['FIELD_DEFINITION', 'ARGUMENT_DEFINITION', 'INPUT_FIELD_DEFINITION'],
                                     'isRepeatable' => false,
                                 ],
                                 [
@@ -258,19 +270,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                                         ['name' => 'max'],
                                         ['name' => 'oneOf'],
                                     ],
-                                    'locations' => ['ARGUMENT_DEFINITION', 'INPUT_FIELD_DEFINITION', 'FIELD_DEFINITION'],
-                                    'isRepeatable' => false,
-                                ],
-                                [
-                                    'name' => 'stringConstraint',
-                                    'description' => 'Graphpinator stringConstraint directive.',
-                                    'args' => [
-                                        ['name' => 'minLength'],
-                                        ['name' => 'maxLength'],
-                                        ['name' => 'regex'],
-                                        ['name' => 'oneOf'],
-                                    ],
-                                    'locations' => ['ARGUMENT_DEFINITION', 'INPUT_FIELD_DEFINITION', 'FIELD_DEFINITION'],
+                                    'locations' => ['FIELD_DEFINITION', 'ARGUMENT_DEFINITION', 'INPUT_FIELD_DEFINITION'],
                                     'isRepeatable' => false,
                                 ],
                                 [
@@ -282,7 +282,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                                         ['name' => 'unique'],
                                         ['name' => 'innerList'],
                                     ],
-                                    'locations' => ['ARGUMENT_DEFINITION', 'INPUT_FIELD_DEFINITION', 'FIELD_DEFINITION'],
+                                    'locations' => ['FIELD_DEFINITION', 'ARGUMENT_DEFINITION', 'INPUT_FIELD_DEFINITION'],
                                     'isRepeatable' => false,
                                 ],
                                 [
@@ -292,8 +292,8 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                                         ['name' => 'atLeastOne'],
                                         ['name' => 'exactlyOne'],
                                     ],
-                                    'locations' => ['INPUT_OBJECT', 'INTERFACE', 'OBJECT'],
-                                    'isRepeatable' => false,
+                                    'locations' => ['OBJECT', 'INTERFACE', 'INPUT_OBJECT'],
+                                    'isRepeatable' => true,
                                 ],
                                 [
                                     'name' => 'skip',
@@ -978,27 +978,5 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
         $result = $graphpinator->run(new \Graphpinator\Request\JsonRequestFactory($request));
 
         self::assertSame($expected->toString(), $result->toString());
-    }
-
-    public function testConstraintDirectivesSync() : void
-    {
-        $array = [
-            \Graphpinator\Constraint\IntConstraint::class => \Graphpinator\Container\Container::directiveIntConstraint(),
-            \Graphpinator\Constraint\FloatConstraint::class => \Graphpinator\Container\Container::directiveFloatConstraint(),
-            \Graphpinator\Constraint\StringConstraint::class => \Graphpinator\Container\Container::directiveStringConstraint(),
-            \Graphpinator\Constraint\ListConstraint::class => \Graphpinator\Container\Container::directiveListConstraint(),
-            \Graphpinator\Constraint\ObjectConstraint::class => \Graphpinator\Container\Container::directiveObjectConstraint(),
-        ];
-
-        foreach ($array as $constraintClass => $directive) {
-            \assert($directive instanceof \Graphpinator\Directive\Directive);
-
-            $reflection = new \ReflectionClass($constraintClass);
-            $constructorArgs = $reflection->getConstructor()->getParameters();
-
-            foreach ($constructorArgs as $arg) {
-                self::assertTrue(isset($directive->getArguments()[$arg->getName()]));
-            }
-        }
     }
 }
