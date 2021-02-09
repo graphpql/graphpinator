@@ -4,6 +4,6 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Directive\Contract;
 
-interface TypeSystemDefinition extends Definition
+interface EnumItemLocation extends TypeSystemDefinition
 {
 }

@@ -48,9 +48,7 @@ trait TInterfaceImplementor
     protected function validateInterfaces() : void
     {
         foreach ($this->implements as $interface) {
-            /*if (!$interface->getConstraints()->validateObjectConstraint($this->getConstraints())) {
-                throw new \Graphpinator\Exception\Type\ObjectConstraintsNotPreserved();
-            }*/
+            $interface->getDirectiveUsages()->validateInvariance($this->getDirectiveUsages());
 
             foreach ($interface->getFields() as $fieldContract) {
                 if (!$this->getFields()->offsetExists($fieldContract->getName())) {
@@ -71,13 +69,16 @@ trait TInterfaceImplementor
                     );
                 }
 
-                /*if (!$fieldContract->getConstraints()->isCovariant($field->getConstraints())) {
-                    throw new \Graphpinator\Exception\Type\FieldConstraintNotCovariant(
+                try {
+                    $fieldContract->getDirectiveUsages()->validateCovariance($field->getDirectiveUsages());
+                } catch (\Throwable) {
+                    // TODO: print information from received exception
+                    throw new \Graphpinator\Exception\Type\FieldDirectiveNotCovariant(
                         $this->getName(),
                         $interface->getName(),
                         $fieldContract->getName(),
                     );
-                }*/
+                }
 
                 foreach ($fieldContract->getArguments() as $argumentContract) {
                     if (!$field->getArguments()->offsetExists($argumentContract->getName())) {
@@ -100,14 +101,17 @@ trait TInterfaceImplementor
                         );
                     }
 
-                    /*if (!$argumentContract->getConstraints()->isContravariant($argument->getConstraints())) {
-                        throw new \Graphpinator\Exception\Type\ArgumentConstraintNotContravariant(
+                    try {
+                        $argumentContract->getDirectiveUsages()->validateContravariance($argument->getDirectiveUsages());
+                    } catch (\Throwable) {
+                        // TODO: print information from received exception
+                        throw new \Graphpinator\Exception\Type\ArgumentDirectiveNotContravariant(
                             $this->getName(),
                             $interface->getName(),
                             $fieldContract->getName(),
                             $argumentContract->getName(),
                         );
-                    }*/
+                    }
                 }
                 
                 if ($field->getArguments()->count() !== $fieldContract->getArguments()->count()) {

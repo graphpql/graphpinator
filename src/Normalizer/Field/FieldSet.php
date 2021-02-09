@@ -89,31 +89,7 @@ final class FieldSet extends \Infinityloop\Utils\ObjectSet
              * -> possible when type implementing some interface adds new optional argument
              * -> in this case the argument value must be the default one
              */
-            foreach ($conflictArguments as $lhs) {
-                if ($fieldArguments->offsetExists($lhs->getArgument()->getName())) {
-                    if ($lhs->getValue()->isSame($fieldArguments[$lhs->getArgument()->getName()]->getValue())) {
-                        continue;
-                    }
-
-                    throw new \Graphpinator\Exception\Normalizer\ConflictingFieldArguments();
-                }
-
-                if ($lhs->getValue()->isSame($lhs->getArgument()->getDefaultValue())) {
-                    continue;
-                }
-
-                throw new \Graphpinator\Exception\Normalizer\ConflictingFieldArguments();
-            }
-
-            foreach ($fieldArguments as $lhs) {
-                if ($conflictArguments->offsetExists($lhs->getArgument()->getName())) {
-                    continue;
-                }
-
-                if ($lhs->getValue()->isSame($lhs->getArgument()->getDefaultValue())) {
-                    continue;
-                }
-
+            if (!$fieldArguments->isSame($conflictArguments)) {
                 throw new \Graphpinator\Exception\Normalizer\ConflictingFieldArguments();
             }
 

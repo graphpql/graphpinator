@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace Graphpinator\Directive\Constraint;
 
 final class ObjectConstraintDirective extends \Graphpinator\Directive\Directive
-    implements \Graphpinator\Directive\Contract\TypeSystemDefinition
+    implements \Graphpinator\Directive\Contract\ObjectLocation, \Graphpinator\Directive\Contract\InputObjectLocation
 {
     protected const NAME = 'objectConstraint';
     protected const DESCRIPTION = 'Graphpinator objectConstraint directive.';
@@ -23,7 +23,7 @@ final class ObjectConstraintDirective extends \Graphpinator\Directive\Directive
     }
 
     public function validateType(
-        ?\Graphpinator\Type\Contract\Definition $definition,
+        \Graphpinator\Type\Contract\Definition $definition,
         \Graphpinator\Value\ArgumentValueSet $arguments,
     ) : bool
     {
@@ -57,21 +57,6 @@ final class ObjectConstraintDirective extends \Graphpinator\Directive\Directive
         return true;
     }
 
-    public function resolveFieldDefinitionBefore(
-        \Graphpinator\Value\ArgumentValueSet $arguments,
-    ) : void
-    {
-        // nothing here
-    }
-
-    public function resolveFieldDefinitionAfter(
-        \Graphpinator\Value\FieldValue $fieldValue,
-        \Graphpinator\Value\ArgumentValueSet $arguments,
-    ) : void
-    {
-        // nothing here
-    }
-
     public function resolveObject(
         \Graphpinator\Value\TypeValue $typeValue,
         \Graphpinator\Value\ArgumentValueSet $arguments,
@@ -86,14 +71,6 @@ final class ObjectConstraintDirective extends \Graphpinator\Directive\Directive
     ) : void
     {
         $this->validate($inputValue, $arguments);
-    }
-
-    public function resolveArgumentDefinition(
-        \Graphpinator\Value\ArgumentValue $argumentValue,
-        \Graphpinator\Value\ArgumentValueSet $arguments,
-    ) : void
-    {
-        // nothing here
     }
 
     protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet

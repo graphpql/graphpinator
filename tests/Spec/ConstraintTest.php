@@ -324,8 +324,8 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
 
     public function testInvalidConstraintTypeString() : void
     {
-        $this->expectException(\Graphpinator\Exception\Constraint\InvalidConstraintType::class);
-        $this->expectExceptionMessage(\Graphpinator\Exception\Constraint\InvalidConstraintType::MESSAGE);
+        $this->expectException(\Graphpinator\Exception\Directive\InvalidConstraintType::class);
+        $this->expectExceptionMessage(\Graphpinator\Exception\Directive\InvalidConstraintType::MESSAGE);
 
         $type = new class extends \Graphpinator\Type\InputType {
             protected const NAME = 'ConstraintInput';
@@ -346,8 +346,8 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
 
     public function testInvalidConstraintTypeInt() : void
     {
-        $this->expectException(\Graphpinator\Exception\Constraint\InvalidConstraintType::class);
-        $this->expectExceptionMessage(\Graphpinator\Exception\Constraint\InvalidConstraintType::MESSAGE);
+        $this->expectException(\Graphpinator\Exception\Directive\InvalidConstraintType::class);
+        $this->expectExceptionMessage(\Graphpinator\Exception\Directive\InvalidConstraintType::MESSAGE);
 
         $type = new class extends \Graphpinator\Type\InputType {
             protected const NAME = 'ConstraintInput';
@@ -368,8 +368,8 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
 
     public function testInvalidConstraintTypeFloat() : void
     {
-        $this->expectException(\Graphpinator\Exception\Constraint\InvalidConstraintType::class);
-        $this->expectExceptionMessage(\Graphpinator\Exception\Constraint\InvalidConstraintType::MESSAGE);
+        $this->expectException(\Graphpinator\Exception\Directive\InvalidConstraintType::class);
+        $this->expectExceptionMessage(\Graphpinator\Exception\Directive\InvalidConstraintType::MESSAGE);
 
         $type = new class extends \Graphpinator\Type\InputType {
             protected const NAME = 'ConstraintInput';
@@ -390,8 +390,8 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
 
     public function testInvalidConstraintTypeList() : void
     {
-        $this->expectException(\Graphpinator\Exception\Constraint\InvalidConstraintType::class);
-        $this->expectExceptionMessage(\Graphpinator\Exception\Constraint\InvalidConstraintType::MESSAGE);
+        $this->expectException(\Graphpinator\Exception\Directive\InvalidConstraintType::class);
+        $this->expectExceptionMessage(\Graphpinator\Exception\Directive\InvalidConstraintType::MESSAGE);
 
         $type = new class extends \Graphpinator\Type\InputType {
             protected const NAME = 'ConstraintInput';
@@ -731,8 +731,8 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
 
     public function testInvalidConstraintTypeMissingFieldAtLeastOne() : void
     {
-        $this->expectException(\Graphpinator\Exception\Constraint\InvalidConstraintType::class);
-        $this->expectExceptionMessage(\Graphpinator\Exception\Constraint\InvalidConstraintType::MESSAGE);
+        $this->expectException(\Graphpinator\Exception\Directive\InvalidConstraintType::class);
+        $this->expectExceptionMessage(\Graphpinator\Exception\Directive\InvalidConstraintType::MESSAGE);
 
         new class extends \Graphpinator\Type\InputType {
             protected const NAME = 'ConstraintInput';
@@ -765,8 +765,8 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
 
     public function testInvalidConstraintTypeMissingFieldExactlyOne() : void
     {
-        $this->expectException(\Graphpinator\Exception\Constraint\InvalidConstraintType::class);
-        $this->expectExceptionMessage(\Graphpinator\Exception\Constraint\InvalidConstraintType::MESSAGE);
+        $this->expectException(\Graphpinator\Exception\Directive\InvalidConstraintType::class);
+        $this->expectExceptionMessage(\Graphpinator\Exception\Directive\InvalidConstraintType::MESSAGE);
 
         new class extends \Graphpinator\Type\InputType {
             protected const NAME = 'ConstraintInput';

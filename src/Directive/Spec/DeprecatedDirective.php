@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace Graphpinator\Directive\Spec;
 
 final class DeprecatedDirective extends \Graphpinator\Directive\Directive
-    implements \Graphpinator\Directive\Contract\TypeSystemDefinition
+    implements \Graphpinator\Directive\Contract\FieldDefinitionLocation, \Graphpinator\Directive\Contract\EnumItemLocation
 {
     protected const NAME = 'deprecated';
     protected const DESCRIPTION = 'Built-in deprecated directive.';
@@ -22,11 +22,19 @@ final class DeprecatedDirective extends \Graphpinator\Directive\Directive
     }
 
     public function validateType(
-        ?\Graphpinator\Type\Contract\Definition $definition,
+        \Graphpinator\Type\Contract\Definition $definition,
         \Graphpinator\Value\ArgumentValueSet $arguments,
     ) : bool
     {
         return true;
+    }
+
+    public function validateVariance(
+        ?\Graphpinator\Value\ArgumentValueSet $biggerSet,
+        ?\Graphpinator\Value\ArgumentValueSet $smallerSet,
+    ) : void
+    {
+        // nothing here
     }
 
     public function resolveFieldDefinitionBefore(
@@ -38,30 +46,6 @@ final class DeprecatedDirective extends \Graphpinator\Directive\Directive
 
     public function resolveFieldDefinitionAfter(
         \Graphpinator\Value\FieldValue $fieldValue,
-        \Graphpinator\Value\ArgumentValueSet $arguments,
-    ) : void
-    {
-        // nothing here
-    }
-
-    public function resolveObject(
-        \Graphpinator\Value\TypeValue $typeValue,
-        \Graphpinator\Value\ArgumentValueSet $arguments,
-    ) : void
-    {
-        // nothing here
-    }
-
-    public function resolveInputObject(
-        \Graphpinator\Value\InputValue $inputValue,
-        \Graphpinator\Value\ArgumentValueSet $arguments,
-    ) : void
-    {
-        // nothing here
-    }
-
-    public function resolveArgumentDefinition(
-        \Graphpinator\Value\ArgumentValue $argumentValue,
         \Graphpinator\Value\ArgumentValueSet $arguments,
     ) : void
     {

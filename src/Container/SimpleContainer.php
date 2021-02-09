@@ -11,7 +11,6 @@ class SimpleContainer extends \Graphpinator\Container\Container
 {
     protected array $types = [];
     protected array $directives = [];
-    protected array $builtInDirectives = [];
     protected array $combinedTypes = [];
     protected array $combinedDirectives = [];
 
@@ -46,8 +45,7 @@ class SimpleContainer extends \Graphpinator\Container\Container
             '__Directive' => $this->introspectionDirective(),
             '__DirectiveLocation' => $this->introspectionDirectiveLocation(),
         ];
-
-        $this->builtInDirectives = [
+        self::$builtInDirectives = [
             'skip' => self::directiveSkip(),
             'include' => self::directiveInclude(),
             'deprecated' => self::directiveDeprecated(),
@@ -61,7 +59,7 @@ class SimpleContainer extends \Graphpinator\Container\Container
         $this->directives['objectConstraint'] = self::directiveObjectConstraint();
 
         $this->combinedTypes = \array_merge($this->types, self::$builtInTypes);
-        $this->combinedDirectives = \array_merge($this->directives, $this->builtInDirectives);
+        $this->combinedDirectives = \array_merge($this->directives, self::$builtInDirectives);
     }
 
     public function getType(string $name) : ?\Graphpinator\Type\Contract\NamedDefinition

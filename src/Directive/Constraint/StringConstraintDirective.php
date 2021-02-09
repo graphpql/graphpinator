@@ -10,11 +10,11 @@ final class StringConstraintDirective extends LeafConstraintDirective
     protected const DESCRIPTION = 'Graphpinator stringConstraint directive.';
 
     public function validateType(
-        ?\Graphpinator\Type\Contract\Definition $definition,
+        \Graphpinator\Type\Contract\Definition $definition,
         \Graphpinator\Value\ArgumentValueSet $arguments,
     ) : bool
     {
-        $namedType = $definition?->getNamedType();
+        $namedType = $definition->getNamedType();
 
         return $namedType instanceof \Graphpinator\Type\Scalar\StringType
             || $namedType instanceof \Graphpinator\Type\Scalar\IdType;
@@ -46,23 +46,11 @@ final class StringConstraintDirective extends LeafConstraintDirective
         );
     }
 
-    protected function validate(
+    protected function specificValidateValue(
         \Graphpinator\Value\Value $value,
         \Graphpinator\Value\ArgumentValueSet $arguments,
     ) : void
     {
-        if ($value instanceof \Graphpinator\Value\NullValue) {
-            return;
-        }
-
-        if ($value instanceof \Graphpinator\Value\ListValue) {
-            foreach ($value as $item) {
-                $this->validate($item, $arguments);
-            }
-
-            return;
-        }
-
         $rawValue = $value->getRawValue();
         $minLength = $arguments->offsetGet('minLength')->getValue()->getRawValue();
         $maxLength = $arguments->offsetGet('maxLength')->getValue()->getRawValue();
@@ -83,6 +71,31 @@ final class StringConstraintDirective extends LeafConstraintDirective
 
         if (\is_array($oneOf) && !\in_array($rawValue, $oneOf, true)) {
             throw new \Graphpinator\Exception\Constraint\OneOfConstraintNotSatisfied();
+        }
+    }
+
+    protected function specificValidateVariance(
+        \Graphpinator\Value\ArgumentValueSet $biggerSet,
+        \Graphpinator\Value\ArgumentValueSet $smallerSet,
+    ) : void
+    {
+        $lhs = $biggerSet->getRawValues();
+        $rhs = $smallerSet->getRawValues();
+
+        if (\is_int($lhs->minLength) && ($rhs->minLength === null || $rhs->minLength < $lhs->minLength)) {
+            throw new \Exception();
+        }
+
+        if (\is_int($lhs->maxLength) && ($rhs->maxLength === null || $rhs->maxLength > $lhs->maxLength)) {
+            throw new \Exception();
+        }
+
+        if (\is_string($lhs->regex) && ($rhs->regex === null || $rhs->regex !== $lhs->regex)) {
+            throw new \Exception();
+        }
+
+        if (\is_array($lhs->oneOf) && ($rhs->oneOf !== null || self::validateOneOf($lhs->oneOf, $rhs->oneOf))) {
+            throw new \Exception();
         }
     }
 }

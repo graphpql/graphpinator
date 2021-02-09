@@ -14,35 +14,6 @@ trait THasDirectives
         return $this->directiveUsages;
     }
 
-    public function addDirective(
-        \Graphpinator\Directive\Contract\TypeSystemDefinition $directive,
-        array $arguments,
-    ) : static
-    {
-        if (!\in_array($this->directiveLocation, $directive->getLocations(), true)) {
-            throw new \Graphpinator\Exception\Normalizer\DirectiveIncorrectLocation();
-        }
-
-        $type = match ($this->directiveLocation) {
-            TypeSystemDirectiveLocation::OBJECT,
-            TypeSystemDirectiveLocation::INTERFACE,
-            TypeSystemDirectiveLocation::INPUT_OBJECT => $this,
-            TypeSystemDirectiveLocation::FIELD_DEFINITION,
-            TypeSystemDirectiveLocation::ARGUMENT_DEFINITION => $this->getType(),
-            TypeSystemDirectiveLocation::ENUM_VALUE => null,
-        };
-
-        $usage = new DirectiveUsage($directive, $arguments);
-
-        if (!$directive->validateType($type, $usage->getArgumentValues())) {
-            throw new \Graphpinator\Exception\Constraint\InvalidConstraintType();
-        }
-
-        $this->directiveUsages[] = $usage;
-
-        return $this;
-    }
-
     public function printDirectives() : string
     {
         $return = '';

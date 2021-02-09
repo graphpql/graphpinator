@@ -30,4 +30,14 @@ final class EnumItem implements \Graphpinator\Printable\Printable
     {
         return $this->printDescription($indentLevel) . $this->getName() . $this->printDirectives();
     }
+
+    public function addDirective(
+        \Graphpinator\Directive\Contract\EnumItemLocation $directive,
+        array $arguments,
+    ) : self
+    {
+        $this->directiveUsages[] = new \Graphpinator\Directive\DirectiveUsage($directive, $arguments);
+
+        return $this;
+    }
 }

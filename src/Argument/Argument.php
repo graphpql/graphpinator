@@ -60,4 +60,20 @@ final class Argument implements \Graphpinator\Printable\Printable
 
         return $schema;
     }
+
+    public function addDirective(
+        \Graphpinator\Directive\Contract\ArgumentDefinitionLocation $directive,
+        array $arguments,
+    ) : self
+    {
+        $usage = new \Graphpinator\Directive\DirectiveUsage($directive, $arguments);
+
+        if (!$directive->validateType($this->getType(), $usage->getArgumentValues())) {
+            throw new \Graphpinator\Exception\Directive\InvalidConstraintType();
+        }
+
+        $this->directiveUsages[] = $usage;
+
+        return $this;
+    }
 }

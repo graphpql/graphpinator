@@ -62,6 +62,22 @@ abstract class InputType extends \Graphpinator\Type\Contract\ConcreteDefinition 
         return static::DATA_CLASS;
     }
 
+    final public function addDirective(
+        \Graphpinator\Directive\Contract\InputObjectLocation $directive,
+        array $arguments,
+    ) : static
+    {
+        $usage = new \Graphpinator\Directive\DirectiveUsage($directive, $arguments);
+
+        if (!$directive->validateType($this, $usage->getArgumentValues())) {
+            throw new \Graphpinator\Exception\Directive\InvalidConstraintType();
+        }
+
+        $this->directiveUsages[] = $usage;
+
+        return $this;
+    }
+
     abstract protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet;
 
     private function validateCycles(array $stack) : void

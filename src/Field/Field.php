@@ -58,6 +58,22 @@ class Field implements \Graphpinator\Printable\Printable
             . $this->getName() . $this->printArguments() . ': ' . $this->getType()->printName() . $this->printDirectives();
     }
 
+    public function addDirective(
+        \Graphpinator\Directive\Contract\FieldDefinitionLocation $directive,
+        array $arguments,
+    ) : self
+    {
+        $usage = new \Graphpinator\Directive\DirectiveUsage($directive, $arguments);
+
+        if (!$directive->validateType($this->getType(), $usage->getArgumentValues())) {
+            throw new \Graphpinator\Exception\Directive\InvalidConstraintType();
+        }
+
+        $this->directiveUsages[] = $usage;
+
+        return $this;
+    }
+
     private function printArguments() : string
     {
         if (\count($this->arguments) === 0) {

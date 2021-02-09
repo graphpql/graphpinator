@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Exception\Constraint;
+namespace Graphpinator\Exception\Directive;
 
 final class InvalidConstraintType extends \Graphpinator\Exception\Constraint\ConstraintSettingsError
 {
-    public const MESSAGE = 'Invalid constraint type.';
+    public const MESSAGE = 'Directive is used on incompatible type.';
 }

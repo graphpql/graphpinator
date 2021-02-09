@@ -4,19 +4,17 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Directive\Constraint;
 
-final class ListConstraintDirective extends LeafConstraintDirective
+final class ListConstraintDirective extends FieldConstraintDirective
 {
     protected const NAME = 'listConstraint';
     protected const DESCRIPTION = 'Graphpinator listConstraint directive.';
 
     public function validateType(
-        ?\Graphpinator\Type\Contract\Definition $definition,
+        \Graphpinator\Type\Contract\Definition $definition,
         \Graphpinator\Value\ArgumentValueSet $arguments,
     ) : bool
     {
-        return $definition instanceof \Graphpinator\Type\Contract\Definition
-            ? self::recursiveValidateType($definition, (object) $arguments->getValuesForResolver())
-            : false;
+        return self::recursiveValidateType($definition, (object) $arguments->getValuesForResolver());
     }
 
     protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
@@ -24,7 +22,7 @@ final class ListConstraintDirective extends LeafConstraintDirective
         return \Graphpinator\Container\Container::listConstraintInput()->getArguments();
     }
 
-    protected function validate(
+    protected function validateValue(
         \Graphpinator\Value\Value $value,
         \Graphpinator\Value\ArgumentValueSet $arguments,
     ) : void
@@ -36,6 +34,17 @@ final class ListConstraintDirective extends LeafConstraintDirective
         \assert($value instanceof \Graphpinator\Value\ListValue);
 
         self::recursiveValidate($value->getRawValue(), (object) $arguments->getValuesForResolver());
+    }
+
+    protected function specificValidateVariance(
+        \Graphpinator\Value\ArgumentValueSet $biggerSet,
+        \Graphpinator\Value\ArgumentValueSet $smallerSet,
+    ) : void
+    {
+        self::recursiveSpecificValidateVariance(
+            $biggerSet->getRawValues(),
+            $smallerSet->getRawValues(),
+        );
     }
 
     private static function recursiveValidateType(
@@ -96,6 +105,32 @@ final class ListConstraintDirective extends LeafConstraintDirective
             }
 
             self::recursiveValidate($innerValue, $options->innerList);
+        }
+    }
+
+    private static function recursiveSpecificValidateVariance(
+        \stdClass $greater,
+        \stdClass $smaller,
+    ) : void
+    {
+        if (\is_int($greater->minItems) && ($smaller->minItems === null || $smaller->minItems < $greater->minItems)) {
+            throw new \Exception();
+        }
+
+        if (\is_int($greater->maxItems) && ($smaller->maxItems === null || $smaller->maxItems > $greater->maxItems)) {
+            throw new \Exception();
+        }
+
+        if ($greater->unique === true && ($smaller->unique === null || $smaller->unique === false)) {
+            throw new \Exception();
+        }
+
+        if ($greater->innerList instanceof \stdClass) {
+            if ($smaller->innerList === null) {
+                throw new \Exception();
+            }
+
+            self::recursiveSpecificValidateVariance($greater->innerList, $smaller->innerList);
         }
     }
 }

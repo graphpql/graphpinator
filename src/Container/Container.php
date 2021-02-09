@@ -11,6 +11,7 @@ namespace Graphpinator\Container;
 abstract class Container
 {
     protected static array $builtInTypes = [];
+    protected static array $builtInDirectives = [];
     protected static array $constraintDirectives = [];
 
     /**

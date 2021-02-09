@@ -10,11 +10,11 @@ final class IntConstraintDirective extends LeafConstraintDirective
     protected const DESCRIPTION = 'Graphpinator intConstraint directive.';
 
     public function validateType(
-        ?\Graphpinator\Type\Contract\Definition $definition,
+        \Graphpinator\Type\Contract\Definition $definition,
         \Graphpinator\Value\ArgumentValueSet $arguments,
     ) : bool
     {
-        return $definition?->getNamedType() instanceof \Graphpinator\Type\Scalar\IntType;
+        return $definition->getNamedType() instanceof \Graphpinator\Type\Scalar\IntType;
     }
 
     protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
@@ -34,7 +34,7 @@ final class IntConstraintDirective extends LeafConstraintDirective
         );
     }
 
-    protected function validate(
+    protected function specificValidateValue(
         \Graphpinator\Value\Value $value,
         \Graphpinator\Value\ArgumentValueSet $arguments,
     ) : void
@@ -45,7 +45,7 @@ final class IntConstraintDirective extends LeafConstraintDirective
 
         if ($value instanceof \Graphpinator\Value\ListValue) {
             foreach ($value as $item) {
-                $this->validate($item, $arguments);
+                $this->validateValue($item, $arguments);
             }
 
             return;
@@ -66,6 +66,27 @@ final class IntConstraintDirective extends LeafConstraintDirective
 
         if (\is_array($oneOf) && !\in_array($rawValue, $oneOf, true)) {
             throw new \Graphpinator\Exception\Constraint\OneOfConstraintNotSatisfied();
+        }
+    }
+
+    protected function specificValidateVariance(
+        \Graphpinator\Value\ArgumentValueSet $biggerSet,
+        \Graphpinator\Value\ArgumentValueSet $smallerSet,
+    ) : void
+    {
+        $lhs = $biggerSet->getRawValues();
+        $rhs = $smallerSet->getRawValues();
+
+        if (\is_int($lhs->min) && ($rhs->min === null || $rhs->min < $lhs->min)) {
+            throw new \Exception();
+        }
+
+        if (\is_int($lhs->max) && ($rhs->max === null || $rhs->max > $lhs->max)) {
+            throw new \Exception();
+        }
+
+        if (\is_array($lhs->oneOf) && ($rhs->oneOf === null || self::validateOneOf($lhs->oneOf, $rhs->oneOf))) {
+            throw new \Exception();
         }
     }
 }
