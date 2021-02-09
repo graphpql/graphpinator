@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Directive;
+namespace Graphpinator\Directive\Where;
 
-final class BooleanWhereDirective extends \Graphpinator\Directive\BaseWhereDirective
+final class BooleanWhereDirective extends \Graphpinator\Directive\Where\BaseWhereDirective
 {
     protected const NAME = 'booleanWhere';
     protected const DESCRIPTION = 'Graphpinator booleanWhere directive.';
@@ -15,7 +15,7 @@ final class BooleanWhereDirective extends \Graphpinator\Directive\BaseWhereDirec
     {
         parent::__construct(
             [
-                ExecutableDirectiveLocation::FIELD,
+                \Graphpinator\Directive\ExecutableDirectiveLocation::FIELD,
             ],
             true,
         );
@@ -35,7 +35,7 @@ final class BooleanWhereDirective extends \Graphpinator\Directive\BaseWhereDirec
                 }
             }
 
-            return FieldDirectiveResult::NONE;
+            return \Graphpinator\Directive\FieldDirectiveResult::NONE;
         };
     }
 

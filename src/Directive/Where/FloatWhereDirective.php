@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Directive;
+namespace Graphpinator\Directive\Where;
 
-final class FloatWhereDirective extends \Graphpinator\Directive\BaseWhereDirective
+final class FloatWhereDirective extends \Graphpinator\Directive\Where\BaseWhereDirective
 {
     protected const NAME = 'floatWhere';
     protected const DESCRIPTION = 'Graphpinator floatWhere directive.';
@@ -15,7 +15,7 @@ final class FloatWhereDirective extends \Graphpinator\Directive\BaseWhereDirecti
     {
         parent::__construct(
             [
-                ExecutableDirectiveLocation::FIELD,
+                \Graphpinator\Directive\ExecutableDirectiveLocation::FIELD,
             ],
             true,
         );
@@ -38,7 +38,7 @@ final class FloatWhereDirective extends \Graphpinator\Directive\BaseWhereDirecti
                 }
             }
 
-            return FieldDirectiveResult::NONE;
+            return \Graphpinator\Directive\FieldDirectiveResult::NONE;
         };
     }
 

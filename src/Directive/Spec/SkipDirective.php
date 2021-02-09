@@ -7,7 +7,7 @@ namespace Graphpinator\Directive\Spec;
 final class SkipDirective extends \Graphpinator\Directive\Directive
     implements \Graphpinator\Directive\Contract\ExecutableDefinition
 {
-    use \Graphpinator\Directive\Contract\TExecutableDirective;
+    use \Graphpinator\Directive\Contract\TExecutableDefinition;
 
     protected const NAME = 'skip';
     protected const DESCRIPTION = 'Built-in skip directive.';

@@ -180,9 +180,9 @@ abstract class Container
     /**
      * Graphpinator ListConstraint input.
      */
-    public static function listConstraintInput() : \Graphpinator\Constraint\ListConstraintInput
+    public static function listConstraintInput() : \Graphpinator\Directive\Constraint\ListConstraintInput
     {
-        return new \Graphpinator\Constraint\ListConstraintInput();
+        return new \Graphpinator\Directive\Constraint\ListConstraintInput();
     }
 
     /**

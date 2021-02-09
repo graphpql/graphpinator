@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Directive;
+namespace Graphpinator\Directive\Where;
 
-final class StringWhereDirective extends \Graphpinator\Directive\BaseWhereDirective
+final class StringWhereDirective extends \Graphpinator\Directive\Where\BaseWhereDirective
 {
     protected const NAME = 'stringWhere';
     protected const DESCRIPTION = 'Graphpinator stringWhere directive.';
@@ -15,7 +15,7 @@ final class StringWhereDirective extends \Graphpinator\Directive\BaseWhereDirect
     {
         parent::__construct(
             [
-                ExecutableDirectiveLocation::FIELD,
+                \Graphpinator\Directive\ExecutableDirectiveLocation::FIELD,
             ],
             true,
         );
@@ -39,7 +39,7 @@ final class StringWhereDirective extends \Graphpinator\Directive\BaseWhereDirect
                 }
             }
 
-            return FieldDirectiveResult::NONE;
+            return \Graphpinator\Directive\FieldDirectiveResult::NONE;
         };
     }
 

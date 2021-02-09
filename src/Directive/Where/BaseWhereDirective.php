@@ -2,12 +2,12 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Directive;
+namespace Graphpinator\Directive\Where;
 
 abstract class BaseWhereDirective extends \Graphpinator\Directive\Directive
     implements \Graphpinator\Directive\Contract\ExecutableDefinition
 {
-    use \Graphpinator\Directive\Contract\TExecutableDirective;
+    use \Graphpinator\Directive\Contract\TExecutableDefinition;
 
     protected const TYPE = '';
     protected const TYPE_NAME = '';

@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Directive\Contract;
 
-trait TExecutableDirective
+trait TExecutableDefinition
 {
     protected ?\Closure $fieldBeforeFn = null;
     protected ?\Closure $fieldAfterFn = null;

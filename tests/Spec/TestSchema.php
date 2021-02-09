@@ -83,11 +83,11 @@ final class TestSchema
             'testDirective' => self::getTestDirective(),
             'invalidDirectiveResult' => self::getInvalidDirectiveResult(),
             'invalidDirectiveType' => self::getInvalidDirectiveType(),
-            'stringFilter' => new \Graphpinator\Directive\StringWhereDirective(),
-            'intFilter' => new \Graphpinator\Directive\IntWhereDirective(),
-            'floatFilter' => new \Graphpinator\Directive\FloatWhereDirective(),
-            'listFilter' => new \Graphpinator\Directive\ListWhereDirective(),
-            'booleanFilter' => new \Graphpinator\Directive\BooleanWhereDirective(),
+            'stringFilter' => new \Graphpinator\Directive\Where\StringWhereDirective(),
+            'intFilter' => new \Graphpinator\Directive\Where\IntWhereDirective(),
+            'floatFilter' => new \Graphpinator\Directive\Where\FloatWhereDirective(),
+            'listFilter' => new \Graphpinator\Directive\Where\ListWhereDirective(),
+            'booleanFilter' => new \Graphpinator\Directive\Where\BooleanWhereDirective(),
         ]);
     }
 
@@ -1358,7 +1358,7 @@ final class TestSchema
     {
         return new class extends \Graphpinator\Directive\Directive implements \Graphpinator\Directive\Contract\ExecutableDefinition
         {
-            use \Graphpinator\Directive\Contract\TExecutableDirective;
+            use \Graphpinator\Directive\Contract\TExecutableDefinition;
 
             protected const NAME = 'testDirective';
             public static $count = 0;
@@ -1396,7 +1396,7 @@ final class TestSchema
     {
         return new class extends \Graphpinator\Directive\Directive implements \Graphpinator\Directive\Contract\ExecutableDefinition
         {
-            use \Graphpinator\Directive\Contract\TExecutableDirective;
+            use \Graphpinator\Directive\Contract\TExecutableDefinition;
 
             protected const NAME = 'invalidDirectiveResult';
 
@@ -1431,7 +1431,7 @@ final class TestSchema
     {
         return new class extends \Graphpinator\Directive\Directive implements \Graphpinator\Directive\Contract\ExecutableDefinition
         {
-            use \Graphpinator\Directive\Contract\TExecutableDirective;
+            use \Graphpinator\Directive\Contract\TExecutableDefinition;
 
             protected const NAME = 'invalidDirectiveType';
 
