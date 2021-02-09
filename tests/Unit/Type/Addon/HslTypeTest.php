@@ -47,7 +47,7 @@ final class HslTypeTest extends \PHPUnit\Framework\TestCase
      */
     public function testValidateValue($rawValue) : void
     {
-        $hsl = new \Graphpinator\Type\Addon\HslType();
+        $hsl = \Graphpinator\Tests\Spec\TestSchema::getType('Hsl');
         $value = $hsl->createResolvedValue($rawValue);
 
         self::assertSame($hsl, $value->getType());
@@ -62,7 +62,7 @@ final class HslTypeTest extends \PHPUnit\Framework\TestCase
     {
         $this->expectException(\Graphpinator\Exception\Value\InvalidValue::class);
 
-        $hsl = new \Graphpinator\Type\Addon\HslType();
+        $hsl = \Graphpinator\Tests\Spec\TestSchema::getType('Hsl');
         $hsl->createResolvedValue($rawValue);
     }
 }

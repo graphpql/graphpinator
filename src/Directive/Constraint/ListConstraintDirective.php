@@ -19,7 +19,7 @@ final class ListConstraintDirective extends FieldConstraintDirective
 
     protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
     {
-        return \Graphpinator\Container\Container::listConstraintInput()->getArguments();
+        return $this->constraintDirectiveAccessor->getListInput()->getArguments();
     }
 
     protected function validateValue(

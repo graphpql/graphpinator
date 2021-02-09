@@ -29,7 +29,7 @@ final class IntConstraintDirective extends LeafConstraintDirective
     protected function appendDirectives(): void
     {
         $this->arguments['oneOf']->addDirective(
-            \Graphpinator\Container\Container::directiveListConstraint(),
+            $this->constraintDirectiveAccessor->getList(),
             ['minItems' => 1],
         );
     }

@@ -20,7 +20,7 @@ final class RgbaType extends \Graphpinator\Type\Addon\RgbType
                         return $rgba->alpha;
                     },
                 )->addDirective(
-                    \Graphpinator\Container\Container::directiveFloatConstraint(),
+                    $this->constraintDirectiveAccessor->getFloat(),
                     ['min' => 0.0, 'max' => 1.0],
                 ),
             ]),

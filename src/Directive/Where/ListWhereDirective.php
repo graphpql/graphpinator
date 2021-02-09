@@ -11,7 +11,9 @@ final class ListWhereDirective extends \Graphpinator\Directive\Where\BaseWhereDi
     protected const TYPE = \Graphpinator\Type\ListType::class;
     protected const TYPE_NAME = 'List';
 
-    public function __construct()
+    public function __construct(
+        private \Graphpinator\Directive\Constraint\IntConstraintDirective $intConstraintDirective,
+    )
     {
         parent::__construct(
             [
@@ -49,12 +51,12 @@ final class ListWhereDirective extends \Graphpinator\Directive\Where\BaseWhereDi
                 ->setDefaultValue(false),
             \Graphpinator\Argument\Argument::create('minItems', \Graphpinator\Container\Container::Int())
                 ->addDirective(
-                    \Graphpinator\Container\Container::directiveIntConstraint(),
+                    $this->intConstraintDirective,
                     ['min' => 0],
                 ),
             \Graphpinator\Argument\Argument::create('maxItems', \Graphpinator\Container\Container::Int())
                 ->addDirective(
-                    \Graphpinator\Container\Container::directiveIntConstraint(),
+                    $this->intConstraintDirective,
                     ['min' => 0],
                 ),
             \Graphpinator\Argument\Argument::create('orNull', \Graphpinator\Container\Container::Boolean()->notNull())

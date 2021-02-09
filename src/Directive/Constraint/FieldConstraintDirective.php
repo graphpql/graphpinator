@@ -7,7 +7,9 @@ namespace Graphpinator\Directive\Constraint;
 abstract class FieldConstraintDirective extends \Graphpinator\Directive\Directive
     implements \Graphpinator\Directive\Contract\FieldDefinitionLocation, \Graphpinator\Directive\Contract\ArgumentDefinitionLocation
 {
-    public function __construct()
+    public function __construct(
+        protected ConstraintDirectiveAccessor $constraintDirectiveAccessor,
+    )
     {
         parent::__construct(
             [

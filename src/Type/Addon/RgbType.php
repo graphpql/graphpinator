@@ -9,6 +9,13 @@ class RgbType extends \Graphpinator\Type\Type
     protected const NAME = 'Rgb';
     protected const DESCRIPTION = 'Rgb type - type representing the RGB color model.';
 
+    public function __construct(
+        protected \Graphpinator\Directive\Constraint\ConstraintDirectiveAccessor $constraintDirectiveAccessor,
+    )
+    {
+        parent::__construct();
+    }
+
     protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
     {
         return new \Graphpinator\Field\ResolvableFieldSet([
@@ -19,7 +26,7 @@ class RgbType extends \Graphpinator\Type\Type
                     return $rgb->red;
                 },
             )->addDirective(
-                \Graphpinator\Container\Container::directiveIntConstraint(),
+                $this->constraintDirectiveAccessor->getInt(),
                 ['min' => 0, 'max' => 255],
             ),
             \Graphpinator\Field\ResolvableField::create(
@@ -29,7 +36,7 @@ class RgbType extends \Graphpinator\Type\Type
                     return $rgb->green;
                 },
             )->addDirective(
-                \Graphpinator\Container\Container::directiveIntConstraint(),
+                $this->constraintDirectiveAccessor->getInt(),
                 ['min' => 0, 'max' => 255],
             ),
             \Graphpinator\Field\ResolvableField::create(
@@ -39,7 +46,7 @@ class RgbType extends \Graphpinator\Type\Type
                     return $rgb->blue;
                 },
             )->addDirective(
-                \Graphpinator\Container\Container::directiveIntConstraint(),
+                $this->constraintDirectiveAccessor->getInt(),
                 ['min' => 0, 'max' => 255],
             ),
         ]);

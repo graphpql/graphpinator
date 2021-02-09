@@ -52,7 +52,7 @@ final class HslaTypeTest extends \PHPUnit\Framework\TestCase
      */
     public function testValidateValue($rawValue) : void
     {
-        $hsla = new \Graphpinator\Type\Addon\HslaType();
+        $hsla = \Graphpinator\Tests\Spec\TestSchema::getType('Hsla');
         $value = $hsla->createResolvedValue($rawValue);
 
         self::assertSame($hsla, $value->getType());
@@ -67,7 +67,7 @@ final class HslaTypeTest extends \PHPUnit\Framework\TestCase
     {
         $this->expectException(\Graphpinator\Exception\Value\InvalidValue::class);
 
-        $hsla = new \Graphpinator\Type\Addon\HslaType();
+        $hsla = \Graphpinator\Tests\Spec\TestSchema::getType('Hsla');
         $hsla->createResolvedValue($rawValue);
     }
 }

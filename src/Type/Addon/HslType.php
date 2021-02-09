@@ -9,6 +9,13 @@ class HslType extends \Graphpinator\Type\Type
     protected const NAME = 'Hsl';
     protected const DESCRIPTION = 'Hsl type - type representing the HSL color model.';
 
+    public function __construct(
+        protected \Graphpinator\Directive\Constraint\ConstraintDirectiveAccessor $constraintDirectiveAccessor,
+    )
+    {
+        parent::__construct();
+    }
+
     protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
     {
         return new \Graphpinator\Field\ResolvableFieldSet([
@@ -19,7 +26,7 @@ class HslType extends \Graphpinator\Type\Type
                     return $hsl->hue;
                 },
             )->addDirective(
-                \Graphpinator\Container\Container::directiveIntConstraint(),
+                $this->constraintDirectiveAccessor->getInt(),
                 ['min' => 0, 'max' => 360],
             ),
             \Graphpinator\Field\ResolvableField::create(
@@ -29,7 +36,7 @@ class HslType extends \Graphpinator\Type\Type
                     return $hsl->saturation;
                 },
             )->addDirective(
-                \Graphpinator\Container\Container::directiveIntConstraint(),
+                $this->constraintDirectiveAccessor->getInt(),
                 ['min' => 0, 'max' => 100],
             ),
             \Graphpinator\Field\ResolvableField::create(
@@ -39,7 +46,7 @@ class HslType extends \Graphpinator\Type\Type
                     return $hsl->lightness;
                 },
             )->addDirective(
-                \Graphpinator\Container\Container::directiveIntConstraint(),
+                $this->constraintDirectiveAccessor->getInt(),
                 ['min' => 0, 'max' => 100],
             ),
         ]);

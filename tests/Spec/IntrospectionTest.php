@@ -240,6 +240,18 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                                     'isRepeatable' => true,
                                 ],
                                 [
+                                    'name' => 'stringConstraint',
+                                    'description' => 'Graphpinator stringConstraint directive.',
+                                    'args' => [
+                                        ['name' => 'minLength'],
+                                        ['name' => 'maxLength'],
+                                        ['name' => 'regex'],
+                                        ['name' => 'oneOf'],
+                                    ],
+                                    'locations' => ['FIELD_DEFINITION', 'ARGUMENT_DEFINITION', 'INPUT_FIELD_DEFINITION'],
+                                    'isRepeatable' => false,
+                                ],
+                                [
                                     'name' => 'intConstraint',
                                     'description' => 'Graphpinator intConstraint directive.',
                                     'args' => [
@@ -256,18 +268,6 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                                     'args' => [
                                         ['name' => 'min'],
                                         ['name' => 'max'],
-                                        ['name' => 'oneOf'],
-                                    ],
-                                    'locations' => ['FIELD_DEFINITION', 'ARGUMENT_DEFINITION', 'INPUT_FIELD_DEFINITION'],
-                                    'isRepeatable' => false,
-                                ],
-                                [
-                                    'name' => 'stringConstraint',
-                                    'description' => 'Graphpinator stringConstraint directive.',
-                                    'args' => [
-                                        ['name' => 'minLength'],
-                                        ['name' => 'maxLength'],
-                                        ['name' => 'regex'],
                                         ['name' => 'oneOf'],
                                     ],
                                     'locations' => ['FIELD_DEFINITION', 'ARGUMENT_DEFINITION', 'INPUT_FIELD_DEFINITION'],

@@ -10,7 +10,9 @@ final class ObjectConstraintDirective extends \Graphpinator\Directive\Directive
     protected const NAME = 'objectConstraint';
     protected const DESCRIPTION = 'Graphpinator objectConstraint directive.';
 
-    public function __construct()
+    public function __construct(
+        private ConstraintDirectiveAccessor $constraintDirectiveAccessor,
+    )
     {
         parent::__construct(
             [
@@ -78,12 +80,12 @@ final class ObjectConstraintDirective extends \Graphpinator\Directive\Directive
         return new \Graphpinator\Argument\ArgumentSet([
             \Graphpinator\Argument\Argument::create('atLeastOne', \Graphpinator\Container\Container::String()->notNull()->list())
                 ->addDirective(
-                    \Graphpinator\Container\Container::directiveListConstraint(),
+                    $this->constraintDirectiveAccessor->getList(),
                     ['minItems' => 1],
                 ),
             \Graphpinator\Argument\Argument::create('exactlyOne', \Graphpinator\Container\Container::String()->notNull()->list())
                 ->addDirective(
-                    \Graphpinator\Container\Container::directiveListConstraint(),
+                    $this->constraintDirectiveAccessor->getList(),
                     ['minItems' => 1],
                 ),
         ]);

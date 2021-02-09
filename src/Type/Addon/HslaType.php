@@ -20,7 +20,7 @@ final class HslaType extends \Graphpinator\Type\Addon\HslType
                         return $hsla->alpha;
                     },
                 )->addDirective(
-                    \Graphpinator\Container\Container::directiveFloatConstraint(),
+                    $this->constraintDirectiveAccessor->getFloat(),
                     ['min' => 0.0, 'max' => 1.0],
                 ),
             ]),

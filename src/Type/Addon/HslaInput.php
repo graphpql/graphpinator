@@ -17,7 +17,7 @@ final class HslaInput extends \Graphpinator\Type\Addon\HslInput
                     'alpha',
                     \Graphpinator\Container\Container::Float()->notNull(),
                 )->addDirective(
-                    \Graphpinator\Container\Container::directiveFloatConstraint(),
+                    $this->constraintDirectiveAccessor->getFloat(),
                     ['min' => 0.0, 'max' => 1.0],
                 ),
             ]),

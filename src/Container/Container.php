@@ -12,7 +12,6 @@ abstract class Container
 {
     protected static array $builtInTypes = [];
     protected static array $builtInDirectives = [];
-    protected static array $constraintDirectives = [];
 
     /**
      * Core function to find type by its name.
@@ -103,7 +102,11 @@ abstract class Container
      */
     public static function directiveSkip() : \Graphpinator\Directive\Spec\SkipDirective
     {
-        return new \Graphpinator\Directive\Spec\SkipDirective();
+        if (!\array_key_exists('skip', self::$builtInDirectives)) {
+            self::$builtInDirectives['skip'] = new \Graphpinator\Directive\Spec\SkipDirective();
+        }
+
+        return self::$builtInDirectives['skip'];
     }
 
     /**
@@ -111,7 +114,11 @@ abstract class Container
      */
     public static function directiveInclude() : \Graphpinator\Directive\Spec\IncludeDirective
     {
-        return new \Graphpinator\Directive\Spec\IncludeDirective();
+        if (!\array_key_exists('include', self::$builtInDirectives)) {
+            self::$builtInDirectives['include'] = new \Graphpinator\Directive\Spec\IncludeDirective();
+        }
+
+        return self::$builtInDirectives['include'];
     }
 
     /**
@@ -119,71 +126,11 @@ abstract class Container
      */
     public static function directiveDeprecated() : \Graphpinator\Directive\Spec\DeprecatedDirective
     {
-        return new \Graphpinator\Directive\Spec\DeprecatedDirective();
-    }
-
-    /**
-     * Graphpinator IntConstraint directive.
-     */
-    public static function directiveIntConstraint() : \Graphpinator\Directive\Constraint\IntConstraintDirective
-    {
-        if (!\array_key_exists('IntConstraint', self::$constraintDirectives)) {
-            self::$constraintDirectives['IntConstraint'] = new \Graphpinator\Directive\Constraint\IntConstraintDirective();
+        if (!\array_key_exists('deprecated', self::$builtInDirectives)) {
+            self::$builtInDirectives['deprecated'] = new \Graphpinator\Directive\Spec\DeprecatedDirective();
         }
 
-        return self::$constraintDirectives['IntConstraint'];
-    }
-
-    /**
-     * Graphpinator FloatConstraint directive.
-     */
-    public static function directiveFloatConstraint() : \Graphpinator\Directive\Constraint\FloatConstraintDirective
-    {
-        if (!\array_key_exists('FloatConstraint', self::$constraintDirectives)) {
-            self::$constraintDirectives['FloatConstraint'] = new \Graphpinator\Directive\Constraint\FloatConstraintDirective();
-        }
-
-        return self::$constraintDirectives['FloatConstraint'];
-    }
-
-    /**
-     * Graphpinator StringConstraint directive.
-     */
-    public static function directiveStringConstraint() : \Graphpinator\Directive\Constraint\StringConstraintDirective
-    {
-        if (!\array_key_exists('StringConstraint', self::$constraintDirectives)) {
-            self::$constraintDirectives['StringConstraint'] = new \Graphpinator\Directive\Constraint\StringConstraintDirective();
-        }
-
-        return self::$constraintDirectives['StringConstraint'];
-    }
-
-    /**
-     * Graphpinator ListConstraint directive.
-     */
-    public static function directiveListConstraint() : \Graphpinator\Directive\Constraint\ListConstraintDirective
-    {
-        if (!\array_key_exists('ListConstraint', self::$constraintDirectives)) {
-            self::$constraintDirectives['ListConstraint'] = new \Graphpinator\Directive\Constraint\ListConstraintDirective();
-        }
-
-        return self::$constraintDirectives['ListConstraint'];
-    }
-
-    /**
-     * Graphpinator ObjectConstraint directive.
-     */
-    public static function directiveObjectConstraint() : \Graphpinator\Directive\Constraint\ObjectConstraintDirective
-    {
-        return new \Graphpinator\Directive\Constraint\ObjectConstraintDirective();
-    }
-
-    /**
-     * Graphpinator ListConstraint input.
-     */
-    public static function listConstraintInput() : \Graphpinator\Directive\Constraint\ListConstraintInput
-    {
-        return new \Graphpinator\Directive\Constraint\ListConstraintInput();
+        return self::$builtInDirectives['deprecated'];
     }
 
     /**

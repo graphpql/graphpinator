@@ -33,15 +33,15 @@ final class StringConstraintDirective extends LeafConstraintDirective
     protected function appendDirectives(): void
     {
         $this->arguments['minLength']->addDirective(
-            \Graphpinator\Container\Container::directiveIntConstraint(),
+            $this->constraintDirectiveAccessor->getInt(),
             ['min' => 0],
         );
         $this->arguments['maxLength']->addDirective(
-            \Graphpinator\Container\Container::directiveIntConstraint(),
+            $this->constraintDirectiveAccessor->getInt(),
             ['min' => 0],
         );
         $this->arguments['oneOf']->addDirective(
-            \Graphpinator\Container\Container::directiveListConstraint(),
+            $this->constraintDirectiveAccessor->getList(),
             ['minItems' => 1],
         );
     }

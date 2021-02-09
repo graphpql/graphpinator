@@ -52,7 +52,7 @@ final class RgbaTypeTest extends \PHPUnit\Framework\TestCase
      */
     public function testValidateValue($rawValue) : void
     {
-        $rgba = new \Graphpinator\Type\Addon\RgbaType();
+        $rgba = \Graphpinator\Tests\Spec\TestSchema::getType('Rgba');
         $value = $rgba->createResolvedValue($rawValue);
 
         self::assertSame($rgba, $value->getType());
@@ -67,7 +67,7 @@ final class RgbaTypeTest extends \PHPUnit\Framework\TestCase
     {
         $this->expectException(\Graphpinator\Exception\Value\InvalidValue::class);
 
-        $rgba = new \Graphpinator\Type\Addon\RgbaType();
+        $rgba = \Graphpinator\Tests\Spec\TestSchema::getType('Rgba');
         $rgba->createResolvedValue($rawValue);
     }
 }
