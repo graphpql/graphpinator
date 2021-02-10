@@ -73,7 +73,7 @@ final class NormalizerTest extends \PHPUnit\Framework\TestCase
                     ], new \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet([
                         new \Graphpinator\Parser\FragmentSpread\InlineFragmentSpread(
                             new \Graphpinator\Parser\Field\FieldSet([
-                                new \Graphpinator\Parser\Field\Field('fieldExactlyOne'),
+                                new \Graphpinator\Parser\Field\Field('fieldListInt'),
                             ], new \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet()),
                             new \Graphpinator\Parser\Directive\DirectiveSet([
                                 new \Graphpinator\Parser\Directive\Directive(
@@ -107,7 +107,7 @@ final class NormalizerTest extends \PHPUnit\Framework\TestCase
                     'fragmentName',
                     new \Graphpinator\Parser\TypeRef\NamedTypeRef('Query'),
                     new \Graphpinator\Parser\Field\FieldSet([
-                        new \Graphpinator\Parser\Field\Field('fieldExactlyOne'),
+                        new \Graphpinator\Parser\Field\Field('fieldListInt'),
                     ], new \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet()),
                 ),
             ]),
@@ -128,7 +128,7 @@ final class NormalizerTest extends \PHPUnit\Framework\TestCase
         );
 
         self::assertArrayHasKey(1, $operation->getFields());
-        self::assertSame('fieldExactlyOne', $operation->getFields()->offsetGet(1)->getName());
+        self::assertSame('fieldListInt', $operation->getFields()->offsetGet(1)->getName());
         self::assertCount(1, $operation->getFields()->offsetGet(1)->getDirectives());
         self::assertArrayHasKey(0, $operation->getFields()->offsetGet(1)->getDirectives());
         self::assertInstanceOf(

@@ -9,7 +9,6 @@ final class TestSchema
     use \Nette\StaticClass;
 
     private static array $types = [];
-    private static ?\Graphpinator\Directive\Constraint\ConstraintDirectiveAccessor $accessor = null;
     private static ?\Graphpinator\Container\Container $container = null;
 
     public static function getSchema() : \Graphpinator\Type\Schema
@@ -47,63 +46,14 @@ final class TestSchema
             'CompositeInput' => self::getCompositeInput(),
             'SimpleInput' => self::getSimpleInput(),
             'DefaultsInput' => self::getDefaultsInput(),
-            'ConstraintInput' => self::getConstraintInput(),
-            'ExactlyOneInput' => self::getExactlyOneInput(),
-            'ConstraintType' => self::getConstraintType(),
             'SimpleEnum' => self::getSimpleEnum(),
             'ArrayEnum' => self::getArrayEnum(),
             'DescriptionEnum' => self::getDescriptionEnum(),
             'TestScalar' => self::getTestScalar(),
-            'AddonType' => self::getAddonType(),
             'UploadType' => self::getUploadType(),
             'UploadInput' => self::getUploadInput(),
-            'ComplexDefaultsInput' => self::getComplexDefaultsInput(),
-            'DateTime' => new \Graphpinator\Type\Addon\DateTimeType(),
-            'Date' => new \Graphpinator\Type\Addon\DateType(),
-            'EmailAddress' => new \Graphpinator\Type\Addon\EmailAddressType(),
-            'Hsla' => new \Graphpinator\Type\Addon\HslaType(
-                self::getAccessor(),
-            ),
-            'HslaInput' => new \Graphpinator\Type\Addon\HslaInput(
-                self::getAccessor(),
-            ),
-            'Hsl' => new \Graphpinator\Type\Addon\HslType(
-                self::getAccessor(),
-            ),
-            'HslInput' => new \Graphpinator\Type\Addon\HslInput(
-                self::getAccessor(),
-            ),
-            'Ipv4' => new \Graphpinator\Type\Addon\IPv4Type(),
-            'Ipv6' => new \Graphpinator\Type\Addon\IPv6Type(),
-            'Json' => new \Graphpinator\Type\Addon\JsonType(),
-            'Mac' => new \Graphpinator\Type\Addon\MacType(),
-            'PhoneNumber' => new \Graphpinator\Type\Addon\PhoneNumberType(),
-            'PostalCode' => new \Graphpinator\Type\Addon\PostalCodeType(),
-            'Rgba' => new \Graphpinator\Type\Addon\RgbaType(
-                self::getAccessor(),
-            ),
-            'RgbaInput' => new \Graphpinator\Type\Addon\RgbaInput(
-                self::getAccessor(),
-            ),
-            'Rgb' => new \Graphpinator\Type\Addon\RgbType(
-                self::getAccessor(),
-            ),
-            'RgbInput' => new \Graphpinator\Type\Addon\RgbInput(
-                self::getAccessor(),
-            ),
-            'Time' => new \Graphpinator\Type\Addon\TimeType(),
-            'Url' => new \Graphpinator\Type\Addon\UrlType(),
-            'Void' => new \Graphpinator\Type\Addon\VoidType(),
             'Upload' => new \Graphpinator\Module\Upload\UploadType(),
-            'Gps' => new \Graphpinator\Type\Addon\GpsType(
-                self::getAccessor(),
-            ),
-            'GpsInput' => new \Graphpinator\Type\Addon\GpsInput(
-                self::getAccessor(),
-            ),
-            'Point' => new \Graphpinator\Type\Addon\PointType(),
-            'PointInput' => new \Graphpinator\Type\Addon\PointInput(),
-            'BigInt' => new \Graphpinator\Type\Addon\BigIntType(),
+            'ComplexDefaultsInput' => self::getComplexDefaultsInput(),
             'NullFieldResolution' => self::getNullFieldResolution(),
             'NullListResolution' => self::getNullListResolution(),
             'SimpleType' => self::getSimpleType(),
@@ -113,77 +63,12 @@ final class TestSchema
             'FragmentTypeB' => self::getFragmentTypeB(),
             'SimpleEmptyTestInput' => self::getSimpleEmptyTestInput(),
             'InterfaceChildType' => self::getInterfaceChildType(),
-            'ListConstraintInput' => new \Graphpinator\Directive\Constraint\ListConstraintInput(
-                self::getAccessor(),
-            ),
             'testDirective' => self::getTestDirective(),
             'invalidDirectiveResult' => self::getInvalidDirectiveResult(),
             'invalidDirectiveType' => self::getInvalidDirectiveType(),
-            'stringFilter' => new \Graphpinator\Directive\Where\StringWhereDirective(),
-            'intFilter' => new \Graphpinator\Directive\Where\IntWhereDirective(),
-            'floatFilter' => new \Graphpinator\Directive\Where\FloatWhereDirective(),
-            'listFilter' => new \Graphpinator\Directive\Where\ListWhereDirective(
-                self::getType('intConstraint'),
-            ),
-            'booleanFilter' => new \Graphpinator\Directive\Where\BooleanWhereDirective(),
-            'stringConstraint' => new \Graphpinator\Directive\Constraint\StringConstraintDirective(
-                self::getAccessor(),
-            ),
-            'intConstraint' => new \Graphpinator\Directive\Constraint\IntConstraintDirective(
-                self::getAccessor(),
-            ),
-            'floatConstraint' => new \Graphpinator\Directive\Constraint\FloatConstraintDirective(
-                self::getAccessor(),
-            ),
-            'listConstraint' => new \Graphpinator\Directive\Constraint\ListConstraintDirective(
-                self::getAccessor(),
-            ),
-            'objectConstraint' => new \Graphpinator\Directive\Constraint\ObjectConstraintDirective(
-                self::getAccessor(),
-            ),
         };
 
         return self::$types[$name];
-    }
-
-    public static function getAccessor() : \Graphpinator\Directive\Constraint\ConstraintDirectiveAccessor
-    {
-        if (self::$accessor === null) {
-            self::$accessor = new class implements \Graphpinator\Directive\Constraint\ConstraintDirectiveAccessor
-            {
-                public function getString(): \Graphpinator\Directive\Constraint\StringConstraintDirective
-                {
-                    return TestSchema::getType('stringConstraint');
-                }
-
-                public function getInt(): \Graphpinator\Directive\Constraint\IntConstraintDirective
-                {
-                    return TestSchema::getType('intConstraint');
-                }
-
-                public function getFloat(): \Graphpinator\Directive\Constraint\FloatConstraintDirective
-                {
-                    return TestSchema::getType('floatConstraint');
-                }
-
-                public function getList(): \Graphpinator\Directive\Constraint\ListConstraintDirective
-                {
-                    return TestSchema::getType('listConstraint');
-                }
-
-                public function getListInput(): \Graphpinator\Directive\Constraint\ListConstraintInput
-                {
-                    return TestSchema::getType('ListConstraintInput');
-                }
-
-                public function getObject(): \Graphpinator\Directive\Constraint\ObjectConstraintDirective
-                {
-                    return TestSchema::getType('objectConstraint');
-                }
-            };
-        }
-
-        return self::$accessor;
     }
 
     public static function getContainer() : \Graphpinator\Container\Container
@@ -203,37 +88,14 @@ final class TestSchema
             'CompositeInput' => self::getType('CompositeInput'),
             'SimpleInput' => self::getType('SimpleInput'),
             'DefaultsInput' => self::getType('DefaultsInput'),
-            'ConstraintInput' => self::getType('ConstraintInput'),
-            'ExactlyOneInput' => self::getType('ExactlyOneInput'),
-            'ConstraintType' => self::getType('ConstraintType'),
             'SimpleEnum' => self::getType('SimpleEnum'),
             'ArrayEnum' => self::getType('ArrayEnum'),
             'DescriptionEnum' => self::getType('DescriptionEnum'),
             'TestScalar' => self::getType('TestScalar'),
-            'AddonType' => self::getType('AddonType'),
             'UploadType' => self::getType('UploadType'),
             'UploadInput' => self::getType('UploadInput'),
-            'ComplexDefaultsInput' => self::getType('ComplexDefaultsInput'),
-            'DateTime' => self::getType('DateTime'),
-            'Date' => self::getType('Date'),
-            'EmailAddress' => self::getType('EmailAddress'),
-            'Hsla' => self::getType('Hsla'),
-            'Hsl' => self::getType('Hsl'),
-            'Ipv4' => self::getType('Ipv4'),
-            'Ipv6' => self::getType('Ipv6'),
-            'Json' => self::getType('Json'),
-            'Mac' => self::getType('Mac'),
-            'PhoneNumber' => self::getType('PhoneNumber'),
-            'PostalCode' => self::getType('PostalCode'),
-            'Rgba' => self::getType('Rgba'),
-            'Rgb' => self::getType('Rgb'),
-            'Time' => self::getType('Time'),
-            'Url' => self::getType('Url'),
-            'Void' => self::getType('Void'),
             'Upload' => self::getType('Upload'),
-            'Gps' => self::getType('Gps'),
-            'Point' => self::getType('Point'),
-            'BigInt' => self::getType('BigInt'),
+            'ComplexDefaultsInput' => self::getType('ComplexDefaultsInput'),
             'NullFieldResolution' => self::getType('NullFieldResolution'),
             'NullListResolution' => self::getType('NullListResolution'),
             'SimpleType' => self::getType('SimpleType'),
@@ -243,21 +105,10 @@ final class TestSchema
             'FragmentTypeB' => self::getType('FragmentTypeB'),
             'SimpleEmptyTestInput' => self::getType('SimpleEmptyTestInput'),
             'InterfaceChildType' => self::getType('InterfaceChildType'),
-            'ListConstraintInput' => self::getType('ListConstraintInput'),
         ], [
             'testDirective' => self::getType('testDirective'),
             'invalidDirectiveResult' => self::getType('invalidDirectiveResult'),
             'invalidDirectiveType' => self::getType('invalidDirectiveType'),
-            'stringFilter' => self::getType('stringFilter'),
-            'intFilter' => self::getType('intFilter'),
-            'floatFilter' => self::getType('floatFilter'),
-            'listFilter' => self::getType('listFilter'),
-            'booleanFilter' => self::getType('booleanFilter'),
-            'stringConstraint' => self::getType('stringConstraint'),
-            'intConstraint' => self::getType('intConstraint'),
-            'floatConstraint' => self::getType('floatConstraint'),
-            'listConstraint' => self::getType('listConstraint'),
-            'objectConstraint' => self::getType('objectConstraint'),
         ]);
 
         return self::$container;
@@ -293,42 +144,11 @@ final class TestSchema
                             return 'invalidType';
                         },
                     ),
-                    \Graphpinator\Field\ResolvableField::create(
-                        'fieldConstraint',
-                        \Graphpinator\Container\Container::Int(),
-                        static function ($parent, \stdClass $arg) : int {
-                            return 1;
-                        },
-                    )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        new \Graphpinator\Argument\Argument(
-                            'arg',
-                            TestSchema::getConstraintInput(),
-                        ),
-                    ])),
-                    \Graphpinator\Field\ResolvableField::create(
-                        'fieldExactlyOne',
-                        \Graphpinator\Container\Container::Int(),
-                        static function ($parent, \stdClass $arg) : int {
-                            return 1;
-                        },
-                    )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        new \Graphpinator\Argument\Argument(
-                            'arg',
-                            TestSchema::getExactlyOneInput(),
-                        ),
-                    ])),
                     new \Graphpinator\Field\ResolvableField(
                         'fieldThrow',
                         TestSchema::getTypeAbc(),
                         static function () : void {
                             throw new \Exception('Random exception');
-                        },
-                    ),
-                    new \Graphpinator\Field\ResolvableField(
-                        'fieldAddonType',
-                        TestSchema::getAddonType(),
-                        static function () {
-                            return 1;
                         },
                     ),
                     \Graphpinator\Field\ResolvableField::create(
@@ -550,24 +370,6 @@ final class TestSchema
                             return new \stdClass();
                         },
                     ),
-                    (new \Graphpinator\Field\ResolvableField(
-                        'fieldListConstraint',
-                        TestSchema::getSimpleType()->list(),
-                        static function ($parent, array $arg) : array {
-                            return $arg;
-                        },
-                    ))
-                    ->addDirective(
-                        TestSchema::getType('listConstraint'),
-                        ['minItems' => 3, 'maxItems' => 5],
-                    )
-                    ->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        new \Graphpinator\Argument\Argument(
-                            'arg',
-                            TestSchema::getSimpleInput()->list(),
-                        ),
-                    ]),
-                    ),
                     new \Graphpinator\Field\ResolvableField(
                         'fieldFragment',
                         TestSchema::getInterfaceAbc(),
@@ -615,13 +417,6 @@ final class TestSchema
                             \Graphpinator\Container\Container::String()->notNull(),
                         ),
                     ])),
-                    new \Graphpinator\Field\ResolvableField(
-                        'fieldAOrB',
-                        TestSchema::getAOrBType()->notNull(),
-                        static function ($parent) : int {
-                            return 0;
-                        },
-                    ),
                     \Graphpinator\Field\ResolvableField::create(
                         'fieldEnumArg',
                         TestSchema::getSimpleEnum()->notNull(),
@@ -940,250 +735,6 @@ final class TestSchema
                         'listObjects',
                         TestSchema::getSimpleInput()->notNullList(),
                     )->setDefaultValue([(object) ['name' => 'string', 'number' => [1]], (object) ['name' => 'string', 'number' => []]]),
-                ]);
-            }
-        };
-    }
-
-    public static function getConstraintType() : \Graphpinator\Type\Type
-    {
-        return new class extends \Graphpinator\Type\Type
-        {
-            protected const NAME = 'ConstraintType';
-
-            public function __construct()
-            {
-                parent::__construct();
-
-                $this->addDirective(
-                    TestSchema::getType('objectConstraint'),
-                    ['atLeastOne' => [
-                        'intMinField',
-                        'intMaxField',
-                        'intOneOfField',
-                        'floatMinField',
-                        'floatMaxField',
-                        'floatOneOfField',
-                        'stringMinField',
-                        'stringMaxField',
-                        'listMinField',
-                        'listMaxField',
-                    ]],
-                );
-            }
-
-            public function validateNonNullValue($rawValue) : bool
-            {
-                return true;
-            }
-
-            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
-            {
-                return new \Graphpinator\Field\ResolvableFieldSet([
-                    (new \Graphpinator\Field\ResolvableField(
-                        'intMinField',
-                        \Graphpinator\Container\Container::Int(),
-                        static function () : int {
-                            return 1;
-                        },
-                    ))->addDirective(TestSchema::getType('intConstraint'), ['min' => -20]),
-                    (new \Graphpinator\Field\ResolvableField(
-                        'intMaxField',
-                        \Graphpinator\Container\Container::Int(),
-                        static function () : int {
-                            return 1;
-                        },
-                    ))->addDirective(TestSchema::getType('intConstraint'), ['max' => 20]),
-                    (new \Graphpinator\Field\ResolvableField(
-                        'intOneOfField',
-                        \Graphpinator\Container\Container::Int(),
-                        static function () : int {
-                            return 1;
-                        },
-                    ))->addDirective(TestSchema::getType('intConstraint'), ['oneOf' => [1, 2 , 3]]),
-                    (new \Graphpinator\Field\ResolvableField(
-                        'floatMinField',
-                        \Graphpinator\Container\Container::Float(),
-                        static function () {
-                            return 4.02;
-                        },
-                    ))->addDirective(TestSchema::getType('floatConstraint'), ['min' => 4.01]),
-                    (new \Graphpinator\Field\ResolvableField(
-                        'floatMaxField',
-                        \Graphpinator\Container\Container::Float(),
-                        static function () {
-                            return 1.1;
-                        },
-                    ))->addDirective(TestSchema::getType('floatConstraint'), ['max' => 20.101]),
-                    (new \Graphpinator\Field\ResolvableField(
-                        'floatOneOfField',
-                        \Graphpinator\Container\Container::Float(),
-                        static function () {
-                            return 1.01;
-                        },
-                    ))->addDirective(TestSchema::getType('floatConstraint'), ['oneOf' => [1.01, 2.02, 3.0]]),
-                    (new \Graphpinator\Field\ResolvableField(
-                        'stringMinField',
-                        \Graphpinator\Container\Container::String(),
-                        static function () {
-                            return 1;
-                        },
-                    ))->addDirective(TestSchema::getType('stringConstraint'), ['minLength' => 4]),
-                    (new \Graphpinator\Field\ResolvableField(
-                        'stringMaxField',
-                        \Graphpinator\Container\Container::String(),
-                        static function () {
-                            return 1;
-                        },
-                    ))->addDirective(TestSchema::getType('stringConstraint'), ['maxLength' => 10]),
-                    (new \Graphpinator\Field\ResolvableField(
-                        'listMinField',
-                        \Graphpinator\Container\Container::Int()->list(),
-                        static function () : array {
-                            return [1];
-                        },
-                    ))->addDirective(TestSchema::getType('listConstraint'), ['minItems' => 1]),
-                    (new \Graphpinator\Field\ResolvableField(
-                        'listMaxField',
-                        \Graphpinator\Container\Container::Int()->list(),
-                        static function () : array {
-                            return [1, 2];
-                        },
-                    ))->addDirective(TestSchema::getType('listConstraint'), ['maxItems' => 3]),
-                ]);
-            }
-        };
-    }
-
-    public static function getConstraintInput() : \Graphpinator\Type\InputType
-    {
-        return new class extends \Graphpinator\Type\InputType
-        {
-            protected const NAME = 'ConstraintInput';
-
-            public function __construct()
-            {
-                parent::__construct();
-
-                $this->addDirective(
-                    TestSchema::getType('objectConstraint'),
-                    ['atLeastOne' => [
-                        'intMinArg',
-                        'intMaxArg',
-                        'intOneOfArg',
-                        'floatMinArg',
-                        'floatMaxArg',
-                        'floatOneOfArg',
-                        'stringMinArg',
-                        'stringMaxArg',
-                        'stringRegexArg',
-                        'stringOneOfArg',
-                        'listMinArg',
-                        'listMaxArg',
-                        'listUniqueArg',
-                        'listInnerListArg',
-                        'listMinIntMinArg',
-                    ]],
-                );
-            }
-
-            protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
-            {
-                return new \Graphpinator\Argument\ArgumentSet([
-                    (new \Graphpinator\Argument\Argument(
-                        'intMinArg',
-                        \Graphpinator\Container\Container::Int(),
-                    ))->addDirective(TestSchema::getType('intConstraint'), ['min' => -20]),
-                    (new \Graphpinator\Argument\Argument(
-                        'intMaxArg',
-                        \Graphpinator\Container\Container::Int(),
-                    ))->addDirective(TestSchema::getType('intConstraint'), ['max' => 20]),
-                    (new \Graphpinator\Argument\Argument(
-                        'intOneOfArg',
-                        \Graphpinator\Container\Container::Int(),
-                    ))->addDirective(TestSchema::getType('intConstraint'), ['oneOf' => [1, 2, 3]]),
-                    (new \Graphpinator\Argument\Argument(
-                        'floatMinArg',
-                        \Graphpinator\Container\Container::Float(),
-                    ))->addDirective(TestSchema::getType('floatConstraint'), ['min' => 4.01]),
-                    (new \Graphpinator\Argument\Argument(
-                        'floatMaxArg',
-                        \Graphpinator\Container\Container::Float(),
-                    ))->addDirective(TestSchema::getType('floatConstraint'), ['max' => 20.101]),
-                    (new \Graphpinator\Argument\Argument(
-                        'floatOneOfArg',
-                        \Graphpinator\Container\Container::Float(),
-                    ))->addDirective(TestSchema::getType('floatConstraint'), ['oneOf' => [1.01, 2.02, 3.0]]),
-                    (new \Graphpinator\Argument\Argument(
-                        'stringMinArg',
-                        \Graphpinator\Container\Container::String(),
-                    ))->addDirective(TestSchema::getType('stringConstraint'), ['minLength' => 4]),
-                    (new \Graphpinator\Argument\Argument(
-                        'stringMaxArg',
-                        \Graphpinator\Container\Container::String(),
-                    ))->addDirective(TestSchema::getType('stringConstraint'), ['maxLength' => 10]),
-                    (new \Graphpinator\Argument\Argument(
-                        'stringRegexArg',
-                        \Graphpinator\Container\Container::String(),
-                    ))->addDirective(TestSchema::getType('stringConstraint'), ['regex' => '/^(abc)|(foo)$/']),
-                    (new \Graphpinator\Argument\Argument(
-                        'stringOneOfArg',
-                        \Graphpinator\Container\Container::String(),
-                    ))->addDirective(TestSchema::getType('stringConstraint'), ['oneOf' => ['abc', 'foo']]),
-                    (new \Graphpinator\Argument\Argument(
-                        'listMinArg',
-                        \Graphpinator\Container\Container::Int()->list(),
-                    ))->addDirective(TestSchema::getType('listConstraint'), ['minItems' => 1]),
-                    (new \Graphpinator\Argument\Argument(
-                        'listMaxArg',
-                        \Graphpinator\Container\Container::Int()->list(),
-                    ))->addDirective(TestSchema::getType('listConstraint'), ['maxItems' => 3]),
-                    (new \Graphpinator\Argument\Argument(
-                        'listUniqueArg',
-                        \Graphpinator\Container\Container::Int()->list(),
-                    ))->addDirective(TestSchema::getType('listConstraint'), ['unique' => true]),
-                    (new \Graphpinator\Argument\Argument(
-                        'listInnerListArg',
-                        \Graphpinator\Container\Container::Int()->list()->list(),
-                    ))->addDirective(TestSchema::getType('listConstraint'), ['innerList' => (object) [
-                        'minItems' => 1,
-                        'maxItems' => 3,
-                    ]]),
-                    \Graphpinator\Argument\Argument::create('listMinIntMinArg', \Graphpinator\Container\Container::Int()->list())
-                        ->addDirective(TestSchema::getType('listConstraint'), ['minItems' => 3])
-                        ->addDirective(TestSchema::getType('intConstraint'), ['min' => 3]),
-                ]);
-            }
-        };
-    }
-
-    public static function getExactlyOneInput() : \Graphpinator\Type\InputType
-    {
-        return new class extends \Graphpinator\Type\InputType
-        {
-            protected const NAME = 'ExactlyOneInput';
-
-            public function __construct()
-            {
-                parent::__construct();
-
-                $this->addDirective(
-                    TestSchema::getType('objectConstraint'),
-                    ['exactlyOne' => ['int1', 'int2']],
-                );
-            }
-
-            protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
-            {
-                return new \Graphpinator\Argument\ArgumentSet([
-                    new \Graphpinator\Argument\Argument(
-                        'int1',
-                        \Graphpinator\Container\Container::Int(),
-                    ),
-                    new \Graphpinator\Argument\Argument(
-                        'int2',
-                        \Graphpinator\Container\Container::Int(),
-                    ),
                 ]);
             }
         };
@@ -1675,301 +1226,6 @@ final class TestSchema
                         ],
                     ]),
                 ]);
-            }
-        };
-    }
-
-    public static function getAOrBType() : \Graphpinator\Type\Type
-    {
-        return new class extends \Graphpinator\Type\Type
-        {
-            protected const NAME = 'AOrB';
-            protected const DESCRIPTION = 'Graphpinator Constraints: AOrB type';
-
-            public function __construct()
-            {
-                parent::__construct();
-
-                $this->addDirective(
-                    TestSchema::getType('objectConstraint'),
-                    ['exactlyOne' => ['fieldA', 'fieldB']],
-                );
-            }
-
-            public function validateNonNullValue($rawValue) : bool
-            {
-                return \is_int($rawValue) && \in_array($rawValue, [0, 1], true);
-            }
-
-            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
-            {
-                return new \Graphpinator\Field\ResolvableFieldSet([
-                    new \Graphpinator\Field\ResolvableField(
-                        'fieldA',
-                        \Graphpinator\Container\Container::Int(),
-                        static function (?int $parent) : ?int {
-                            return $parent === 1
-                                ? 1
-                                : null;
-                        },
-                    ),
-                    new \Graphpinator\Field\ResolvableField(
-                        'fieldB',
-                        \Graphpinator\Container\Container::Int(),
-                        static function (int $parent) : ?int {
-                            return $parent === 0
-                                ? 1
-                                : null;
-                        },
-                    ),
-                ]);
-            }
-        };
-    }
-
-    public static function getAddonType() : \Graphpinator\Type\Type
-    {
-        return new class extends \Graphpinator\Type\Type
-        {
-            protected const NAME = 'AddonType';
-
-            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
-            {
-                return new \Graphpinator\Field\ResolvableFieldSet([
-                    \Graphpinator\Field\ResolvableField::create(
-                        'dateTime',
-                        TestSchema::getType('DateTime'),
-                        static function ($parent, string $dateTime) : string {
-                            return $dateTime;
-                        },
-                    )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        \Graphpinator\Argument\Argument::create(
-                            'dateTime',
-                            TestSchema::getType('DateTime'),
-                        )->setDefaultValue('2010-01-01 12:12:50'),
-                    ])),
-                    \Graphpinator\Field\ResolvableField::create(
-                        'date',
-                        TestSchema::getType('Date'),
-                        static function ($parent, string $date) : string {
-                            return $date;
-                        },
-                    )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        \Graphpinator\Argument\Argument::create(
-                            'date',
-                            TestSchema::getType('Date'),
-                        )->setDefaultValue('2010-01-01'),
-                    ])),
-                    \Graphpinator\Field\ResolvableField::create(
-                        'emailAddress',
-                        TestSchema::getType('EmailAddress'),
-                        static function ($parent, string $emailAddress) : string {
-                            return $emailAddress;
-                        },
-                    )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        \Graphpinator\Argument\Argument::create(
-                            'emailAddress',
-                            TestSchema::getType('EmailAddress'),
-                        )->setDefaultValue('test@test.com'),
-                    ])),
-                    \Graphpinator\Field\ResolvableField::create(
-                        'hsla',
-                        TestSchema::getType('Hsla'),
-                        static function ($parent, \stdClass $hsla) : \stdClass {
-                            return $hsla;
-                        },
-                    )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        \Graphpinator\Argument\Argument::create(
-                            'hsla',
-                            TestSchema::getType('HslaInput'),
-                        )->setDefaultValue((object) ['hue' => 180, 'saturation' => 50, 'lightness' => 50, 'alpha' => 0.5]),
-                    ])),
-                    \Graphpinator\Field\ResolvableField::create(
-                        'hsl',
-                        TestSchema::getType('Hsl'),
-                        static function ($parent, \stdClass $hsl) : \stdClass {
-                            return $hsl;
-                        },
-                    )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        \Graphpinator\Argument\Argument::create(
-                            'hsl',
-                            TestSchema::getType('HslInput'),
-                        )->setDefaultValue((object) ['hue' => 180, 'saturation' => 50, 'lightness' => 50]),
-                    ])),
-                    \Graphpinator\Field\ResolvableField::create(
-                        'ipv4',
-                        TestSchema::getType('Ipv4'),
-                        static function ($parent, string $ipv4) : string {
-                            return $ipv4;
-                        },
-                    )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        \Graphpinator\Argument\Argument::create(
-                            'ipv4',
-                            TestSchema::getType('Ipv4'),
-                        )->setDefaultValue('128.0.1.1'),
-                    ])),
-                    \Graphpinator\Field\ResolvableField::create(
-                        'ipv6',
-                        TestSchema::getType('Ipv6'),
-                        static function ($parent, string $ipv6) : string {
-                            return $ipv6;
-                        },
-                    )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        \Graphpinator\Argument\Argument::create(
-                            'ipv6',
-                            TestSchema::getType('Ipv6'),
-                        )->setDefaultValue('AAAA:1111:FFFF:9999:1111:AAAA:9999:FFFF'),
-                    ])),
-                    \Graphpinator\Field\ResolvableField::create(
-                        'json',
-                        TestSchema::getType('Json'),
-                        static function ($parent, string $json) : string {
-                            return $json;
-                        },
-                    )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        \Graphpinator\Argument\Argument::create(
-                            'json',
-                            TestSchema::getType('Json'),
-                        )->setDefaultValue('{"testName":"testValue"}'),
-                    ])),
-                    \Graphpinator\Field\ResolvableField::create(
-                        'mac',
-                        TestSchema::getType('Mac'),
-                        static function ($parent, string $mac) : string {
-                            return $mac;
-                        },
-                    )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        \Graphpinator\Argument\Argument::create(
-                            'mac',
-                            TestSchema::getType('Mac'),
-                        )->setDefaultValue('AA:11:FF:99:11:AA'),
-                    ])),
-                    \Graphpinator\Field\ResolvableField::create(
-                        'phoneNumber',
-                        TestSchema::getType('PhoneNumber'),
-                        static function ($parent, string $phoneNumber) : string {
-                            return $phoneNumber;
-                        },
-                    )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        \Graphpinator\Argument\Argument::create(
-                            'phoneNumber',
-                            TestSchema::getType('PhoneNumber'),
-                        )->setDefaultValue('+999123456789'),
-                    ])),
-                    \Graphpinator\Field\ResolvableField::create(
-                        'postalCode',
-                        TestSchema::getType('PostalCode'),
-                        static function ($parent, string $postalCode) : string {
-                            return $postalCode;
-                        },
-                    )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        \Graphpinator\Argument\Argument::create(
-                            'postalCode',
-                            TestSchema::getType('PostalCode'),
-                        )->setDefaultValue('111 22'),
-                    ])),
-                    \Graphpinator\Field\ResolvableField::create(
-                        'rgba',
-                        TestSchema::getType('Rgba'),
-                        static function ($parent, \stdClass $rgba) : \stdClass {
-                            return $rgba;
-                        },
-                    )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        \Graphpinator\Argument\Argument::create(
-                            'rgba',
-                            TestSchema::getType('RgbaInput'),
-                        )->setDefaultValue((object) ['red' => 150, 'green' => 150, 'blue' => 150, 'alpha' => 0.5]),
-                    ])),
-                    \Graphpinator\Field\ResolvableField::create(
-                        'rgb',
-                        TestSchema::getType('Rgb'),
-                        static function ($parent, \stdClass $rgb) : \stdClass {
-                            return $rgb;
-                        },
-                    )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        \Graphpinator\Argument\Argument::create(
-                            'rgb',
-                            TestSchema::getType('RgbInput'),
-                        )->setDefaultValue((object) ['red' => 150, 'green' => 150, 'blue' => 150]),
-                    ])),
-                    \Graphpinator\Field\ResolvableField::create(
-                        'time',
-                        TestSchema::getType('Time'),
-                        static function ($parent, string $time) : string {
-                            return $time;
-                        },
-                    )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        \Graphpinator\Argument\Argument::create(
-                            'time',
-                            TestSchema::getType('Time'),
-                        )->setDefaultValue('12:12:50'),
-                    ])),
-                    \Graphpinator\Field\ResolvableField::create(
-                        'url',
-                        TestSchema::getType('Url'),
-                        static function ($parent, string $url) : string {
-                            return $url;
-                        },
-                    )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        \Graphpinator\Argument\Argument::create(
-                            'url',
-                            TestSchema::getType('Url'),
-                        )->setDefaultValue('https://test.com/boo/blah.php?testValue=test&testName=name'),
-                    ])),
-                    \Graphpinator\Field\ResolvableField::create(
-                        'void',
-                        TestSchema::getType('Void'),
-                        static function ($parent, $void) {
-                            return $void;
-                        },
-                    )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        \Graphpinator\Argument\Argument::create(
-                            'void',
-                            TestSchema::getType('Void'),
-                        )->setDefaultValue(null),
-                    ])),
-                    \Graphpinator\Field\ResolvableField::create(
-                        'gps',
-                        TestSchema::getType('Gps'),
-                        static function ($parent, \stdClass $gps) : \stdClass {
-                            return $gps;
-                        },
-                    )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        \Graphpinator\Argument\Argument::create(
-                            'gps',
-                            TestSchema::getType('GpsInput'),
-                        )->setDefaultValue((object) ['lat' => 45.0, 'lng' => 90.0]),
-                    ])),
-                    \Graphpinator\Field\ResolvableField::create(
-                        'point',
-                        TestSchema::getType('Point'),
-                        static function ($parent, \stdClass $point) : \stdClass {
-                            return $point;
-                        },
-                    )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        \Graphpinator\Argument\Argument::create(
-                            'point',
-                            TestSchema::getType('PointInput'),
-                        )->setDefaultValue((object) ['x' => 420.42, 'y' => 420.42]),
-                    ])),
-                    \Graphpinator\Field\ResolvableField::create(
-                        'bigInt',
-                        TestSchema::getType('BigInt'),
-                        static function ($parent, int $bigInt) : int {
-                            return $bigInt;
-                        },
-                    )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        \Graphpinator\Argument\Argument::create(
-                            'bigInt',
-                            TestSchema::getType('BigInt'),
-                        )->setDefaultValue(\PHP_INT_MAX),
-                    ])),
-                ]);
-            }
-
-            public function validateNonNullValue($rawValue) : bool
-            {
-                return true;
             }
         };
     }
