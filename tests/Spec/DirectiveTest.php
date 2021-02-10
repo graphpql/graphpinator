@@ -169,7 +169,7 @@ final class DirectiveTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 Json::fromNative((object) [
-                    'query' => 'query queryName { fieldList @listConstraint(minItems: 3, maxItems: 5) { name } }',
+                    'query' => 'query queryName { fieldList @deprecated { name } }',
                 ]),
                 \Graphpinator\Exception\Normalizer\DirectiveNotExecutable::class,
             ],
