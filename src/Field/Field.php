@@ -66,7 +66,7 @@ class Field implements \Graphpinator\Printable\Printable
         $usage = new \Graphpinator\Directive\DirectiveUsage($directive, $arguments);
 
         if (!$directive->validateType($this->getType(), $usage->getArgumentValues())) {
-            throw new \Graphpinator\Exception\Directive\InvalidDirectiveType();
+            throw new \Graphpinator\Exception\Type\DirectiveIncorrectType();
         }
 
         $this->directiveUsages[] = $usage;
