@@ -28,7 +28,8 @@
     "infinityloop-dev/coding-standard": "^0.1"
   },
   "suggest": {
-    "infinityloop-dev/graphpinator-nette": "Adapters for Nette framework",
+    "infinityloop-dev/graphpinator-nette": "Adapters for Nette framework.",
+    "infinityloop-dev/graphpinator-printer": "Schema printing in GraphQL language.",
     "infinityloop-dev/graphpinator-constraint-directives": "Directives for additional value validation.",
     "infinityloop-dev/graphpinator-where-directives": "Directives for filtering list values.",
     "infinityloop-dev/graphpinator-extra-types": "Commonly used types, both scalar or composite."
