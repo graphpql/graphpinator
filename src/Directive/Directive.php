@@ -4,11 +4,11 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Directive;
 
-abstract class Directive implements \Graphpinator\Directive\Contract\Definition
+abstract class Directive implements
+    \Graphpinator\Typesystem\Entity,
+    \Graphpinator\Directive\Contract\Definition
 {
     use \Nette\SmartObject;
-    use \Graphpinator\Printable\TRepeatablePrint;
-    use \Graphpinator\Utils\TTypeSystemElement;
 
     protected const NAME = '';
     protected const DESCRIPTION = null;
@@ -53,23 +53,19 @@ abstract class Directive implements \Graphpinator\Directive\Contract\Definition
         return $this->arguments;
     }
 
-    final public function printSchema() : string
+    final public function accept(\Graphpinator\Typesystem\EntityVisitor $visitor) : mixed
     {
-        $schema = $this->printDescription() . 'directive @' . $this->getName();
-
-        if ($this->getArguments()->count() > 0) {
-            $schema .= '(' . \PHP_EOL . $this->printItems($this->getArguments(), 1) . ')';
-        }
-
-        if ($this->repeatable) {
-            $schema .= ' repeatable';
-        }
-
-        return $schema . ' on ' . \implode(' | ', $this->locations);
+        return $visitor->visitDirective($this);
     }
 
     abstract protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet;
 
+    /**
+     * This function serves to prevent infinite cycles.
+     *
+     * It doesn't have to be used at all, unless directive have arguments with directive cycles.
+     * Eg. IntConstraintDirective::oneOf -> ListConstraintDirective::minItems -> IntConstraintDirective::oneOf.
+     */
     protected function appendDirectives() : void
     {
     }

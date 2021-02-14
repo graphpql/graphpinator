@@ -9,10 +9,6 @@ abstract class NamedDefinition implements \Graphpinator\Type\Contract\Definition
     protected const NAME = '';
     protected const DESCRIPTION = null;
 
-    use \Graphpinator\Utils\TTypeSystemElement;
-
-    abstract public function printSchema() : string;
-
     abstract public function isInstanceOf(\Graphpinator\Type\Contract\Definition $type) : bool;
 
     final public function getName() : string

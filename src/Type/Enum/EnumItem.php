@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Type\Enum;
 
-final class EnumItem implements \Graphpinator\Printable\Printable
+final class EnumItem implements \Graphpinator\Typesystem\Component
 {
     use \Nette\SmartObject;
     use \Graphpinator\Utils\TOptionalDescription;
@@ -26,9 +26,9 @@ final class EnumItem implements \Graphpinator\Printable\Printable
         return $this->name;
     }
 
-    public function printSchema(int $indentLevel) : string
+    public function accept(\Graphpinator\Typesystem\ComponentVisitor $visitor) : mixed
     {
-        return $this->printDescription($indentLevel) . $this->getName() . $this->printDirectives();
+        return $visitor->visitEnumItem($this);
     }
 
     public function addDirective(

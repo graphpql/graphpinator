@@ -8,7 +8,7 @@ namespace Graphpinator\Type\Enum;
  * @method \Graphpinator\Type\Enum\EnumItem current() : object
  * @method \Graphpinator\Type\Enum\EnumItem offsetGet($offset) : object
  */
-final class EnumItemSet extends \Infinityloop\Utils\ImplicitObjectMap implements \Graphpinator\Printable\PrintableSet
+final class EnumItemSet extends \Infinityloop\Utils\ImplicitObjectMap
 {
     protected const INNER_CLASS = EnumItem::class;
 

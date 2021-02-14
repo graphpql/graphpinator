@@ -4,13 +4,12 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Field;
 
-class Field implements \Graphpinator\Printable\Printable
+class Field implements \Graphpinator\Typesystem\Component
 {
     use \Nette\SmartObject;
     use \Graphpinator\Utils\TOptionalDescription;
     use \Graphpinator\Directive\THasDirectives;
     use \Graphpinator\Directive\TDeprecatable;
-    use \Graphpinator\Printable\TRepeatablePrint;
 
     protected string $name;
     protected \Graphpinator\Type\Contract\Outputable $type;
@@ -30,35 +29,34 @@ class Field implements \Graphpinator\Printable\Printable
         return new self($name, $type);
     }
 
-    public function getName() : string
+    final public function getName() : string
     {
         return $this->name;
     }
 
-    public function getType() : \Graphpinator\Type\Contract\Outputable
+    final public function getType() : \Graphpinator\Type\Contract\Outputable
     {
         return $this->type;
     }
 
-    public function getArguments() : \Graphpinator\Argument\ArgumentSet
+    final public function getArguments() : \Graphpinator\Argument\ArgumentSet
     {
         return $this->arguments;
     }
 
-    public function setArguments(\Graphpinator\Argument\ArgumentSet $arguments) : static
+    final public function setArguments(\Graphpinator\Argument\ArgumentSet $arguments) : static
     {
         $this->arguments = $arguments;
 
         return $this;
     }
 
-    public function printSchema(int $indentLevel) : string
+    final public function accept(\Graphpinator\Typesystem\ComponentVisitor $visitor) : mixed
     {
-        return $this->printDescription($indentLevel)
-            . $this->getName() . $this->printArguments() . ': ' . $this->getType()->printName() . $this->printDirectives();
+        return $visitor->visitField($this);
     }
 
-    public function addDirective(
+    final public function addDirective(
         \Graphpinator\Directive\Contract\FieldDefinitionLocation $directive,
         array $arguments,
     ) : self
@@ -72,14 +70,5 @@ class Field implements \Graphpinator\Printable\Printable
         $this->directiveUsages[] = $usage;
 
         return $this;
-    }
-
-    private function printArguments() : string
-    {
-        if (\count($this->arguments) === 0) {
-            return '';
-        }
-
-        return '(' . \PHP_EOL . $this->printItems($this->getArguments(), 2) . '  )';
     }
 }

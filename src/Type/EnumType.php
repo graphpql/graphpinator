@@ -4,10 +4,9 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Type;
 
-abstract class EnumType extends \Graphpinator\Type\Contract\LeafDefinition
+abstract class EnumType extends \Graphpinator\Type\Contract\LeafDefinition implements
+    \Graphpinator\Typesystem\Entity
 {
-    use \Graphpinator\Printable\TRepeatablePrint;
-
     protected Enum\EnumItemSet $options;
 
     public function __construct(Enum\EnumItemSet $options)
@@ -44,12 +43,9 @@ abstract class EnumType extends \Graphpinator\Type\Contract\LeafDefinition
         return \Graphpinator\Type\Introspection\TypeKind::ENUM;
     }
 
-    final public function printSchema() : string
+    final public function accept(\Graphpinator\Typesystem\EntityVisitor $visitor) : mixed
     {
-        return $this->printDescription()
-            . 'enum ' . $this->getName() . ' {' . \PHP_EOL
-            . $this->printItems($this->getItems(), 1)
-            . '}';
+        return $visitor->visitEnum($this);
     }
 
     final public function validateNonNullValue(mixed $rawValue) : bool

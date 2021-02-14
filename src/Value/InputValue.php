@@ -108,25 +108,6 @@ final class InputValue implements \Graphpinator\Value\InputedValue
         return '{' . \implode(',', $component) . '}';
     }
 
-    public function prettyPrint(int $indentLevel) : string
-    {
-        if (\count((array) $this->value) === 0) {
-            return '{}';
-        }
-
-        $component = [];
-        $indent = \str_repeat('  ', $indentLevel);
-        $innerIndent = $indent . '  ';
-
-        foreach ((array) $this->value as $key => $value) {
-            \assert($value instanceof \Graphpinator\Value\ArgumentValue);
-
-            $component[] = $key . ': ' . $value->getValue()->prettyPrint($indentLevel + 1);
-        }
-
-        return '{' . \PHP_EOL . $innerIndent . \implode(',' . \PHP_EOL . $innerIndent, $component) . \PHP_EOL . $indent . '}';
-    }
-
     public function applyVariables(\Graphpinator\Normalizer\VariableValueSet $variables) : void
     {
         foreach ($this->value as $key => $value) {

@@ -8,7 +8,7 @@ namespace Graphpinator\Argument;
  * @method \Graphpinator\Argument\Argument current() : object
  * @method \Graphpinator\Argument\Argument offsetGet($offset) : object
  */
-final class ArgumentSet extends \Infinityloop\Utils\ImplicitObjectMap implements \Graphpinator\Printable\PrintableSet
+final class ArgumentSet extends \Infinityloop\Utils\ImplicitObjectMap
 {
     protected const INNER_CLASS = Argument::class;
 

@@ -27,21 +27,4 @@ trait TOptionalDescription
     {
         return $this->getDescription() !== null;
     }
-
-    private function printDescription(int $indentLevel = 0) : string
-    {
-        $indentation = \str_repeat('  ', $indentLevel);
-
-        if ($this->getDescription() === null) {
-            return $indentation;
-        }
-
-        if (!\str_contains($this->getDescription(), \PHP_EOL)) {
-            return $indentation . '"' . $this->getDescription() . '"' . \PHP_EOL . $indentation;
-        }
-
-        $description = \str_replace(\PHP_EOL, \PHP_EOL . $indentation, $this->getDescription());
-
-        return $indentation . '"""' . \PHP_EOL . $indentation . $description . \PHP_EOL . $indentation . '"""' . \PHP_EOL . $indentation;
-    }
 }

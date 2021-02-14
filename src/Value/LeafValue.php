@@ -36,11 +36,6 @@ abstract class LeafValue implements \Graphpinator\Value\InputedValue, \Graphpina
         return $this->rawValue;
     }
 
-    public function prettyPrint(int $indentLevel) : string
-    {
-        return $this->printValue();
-    }
-
     public function applyVariables(\Graphpinator\Normalizer\VariableValueSet $variables) : void
     {
         // nothing here

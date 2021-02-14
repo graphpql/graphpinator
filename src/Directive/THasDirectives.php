@@ -13,15 +13,4 @@ trait THasDirectives
     {
         return $this->directiveUsages;
     }
-
-    public function printDirectives() : string
-    {
-        $return = '';
-
-        foreach ($this->directiveUsages as $directiveUsage) {
-            $return .= ' ' . $directiveUsage->printSchema();
-        }
-
-        return $return;
-    }
 }

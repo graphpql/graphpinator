@@ -4,7 +4,8 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Type;
 
-abstract class UnionType extends \Graphpinator\Type\Contract\AbstractDefinition
+abstract class UnionType extends \Graphpinator\Type\Contract\AbstractDefinition implements
+    \Graphpinator\Typesystem\Entity
 {
     use \Graphpinator\Type\Contract\TMetaFields;
 
@@ -51,15 +52,8 @@ abstract class UnionType extends \Graphpinator\Type\Contract\AbstractDefinition
         return \Graphpinator\Type\Introspection\TypeKind::UNION;
     }
 
-    final public function printSchema() : string
+    final public function accept(\Graphpinator\Typesystem\EntityVisitor $visitor) : mixed
     {
-        $typeNames = [];
-
-        foreach ($this->getTypes() as $type) {
-            $typeNames[] = $type->printName();
-        }
-
-        return $this->printDescription()
-            . 'union ' . $this->getName() . ' = ' . \implode(' | ', $typeNames);
+        return $visitor->visitUnion($this);
     }
 }

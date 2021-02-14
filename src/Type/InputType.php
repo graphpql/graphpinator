@@ -4,9 +4,10 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Type;
 
-abstract class InputType extends \Graphpinator\Type\Contract\ConcreteDefinition implements \Graphpinator\Type\Contract\Inputable
+abstract class InputType extends \Graphpinator\Type\Contract\ConcreteDefinition implements
+    \Graphpinator\Typesystem\Entity,
+    \Graphpinator\Type\Contract\Inputable
 {
-    use \Graphpinator\Printable\TRepeatablePrint;
     use \Graphpinator\Directive\THasDirectives;
 
     protected const DATA_CLASS = \stdClass::class;
@@ -49,12 +50,9 @@ abstract class InputType extends \Graphpinator\Type\Contract\ConcreteDefinition 
         return \Graphpinator\Type\Introspection\TypeKind::INPUT_OBJECT;
     }
 
-    final public function printSchema() : string
+    final public function accept(\Graphpinator\Typesystem\EntityVisitor $visitor) : mixed
     {
-        return $this->printDescription()
-            . 'input ' . $this->getName() . $this->printDirectives() . ' {' . \PHP_EOL
-            . $this->printItems($this->getArguments(), 1)
-            . '}';
+        return $visitor->visitInput($this);
     }
 
     final public function getDataClass() : string

@@ -5,13 +5,13 @@ declare(strict_types = 1);
 namespace Graphpinator\Type;
 
 abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition implements
+    \Graphpinator\Typesystem\Entity,
     \Graphpinator\Type\Contract\Resolvable,
     \Graphpinator\Type\Contract\TypeConditionable,
     \Graphpinator\Type\Contract\InterfaceImplementor
 {
     use \Graphpinator\Type\Contract\TInterfaceImplementor;
     use \Graphpinator\Type\Contract\TMetaFields;
-    use \Graphpinator\Printable\TRepeatablePrint;
     use \Graphpinator\Directive\THasDirectives;
 
     public function __construct(?\Graphpinator\Utils\InterfaceSet $implements = null)
@@ -114,12 +114,9 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
         return \Graphpinator\Type\Introspection\TypeKind::OBJECT;
     }
 
-    final public function printSchema() : string
+    final public function accept(\Graphpinator\Typesystem\EntityVisitor $visitor) : mixed
     {
-        return $this->printDescription()
-            . 'type ' . $this->getName() . $this->printImplements() . $this->printDirectives() . ' {' . \PHP_EOL
-            . $this->printItems($this->getFields(), 1)
-            . '}';
+        return $visitor->visitType($this);
     }
 
     final public function addDirective(

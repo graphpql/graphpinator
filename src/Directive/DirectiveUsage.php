@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Directive;
 
-final class DirectiveUsage
+final class DirectiveUsage implements \Graphpinator\Typesystem\Component
 {
     use \Nette\SmartObject;
 
@@ -30,24 +30,8 @@ final class DirectiveUsage
         return $this->argumentValues;
     }
 
-    public function printSchema() : string
+    public function accept(\Graphpinator\Typesystem\ComponentVisitor $visitor) : mixed
     {
-        $return = '@' . $this->directive->getName();
-        $printableArguments = [];
-
-        foreach ($this->getArgumentValues() as $argument) {
-            // do not print default value
-            if ($argument->getValue()->getRawValue() === $argument->getArgument()->getDefaultValue()?->getRawValue()) {
-                continue;
-            }
-
-            $printableArguments[] = $argument->getArgument()->getName() . ': ' . $argument->getValue()->printValue();
-        }
-
-        if (\count($printableArguments)) {
-            $return .= '(' . \implode(', ', $printableArguments) . ')';
-        }
-
-        return $return;
+        return $visitor->visitDirectiveUsage($this);
     }
 }

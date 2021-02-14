@@ -77,25 +77,6 @@ final class ListInputedValue extends \Graphpinator\Value\ListValue implements \G
         return '[' . \implode(',', $component) . ']';
     }
 
-    public function prettyPrint(int $indentLevel) : string
-    {
-        if (\count($this->value) === 0) {
-            return '[]';
-        }
-
-        $component = [];
-        $indent = \str_repeat('  ', $indentLevel);
-        $innerIndent = $indent . '  ';
-
-        foreach ($this->value as $value) {
-            \assert($value instanceof InputedValue);
-
-            $component[] = $value->prettyPrint($indentLevel + 1);
-        }
-
-        return '[' . \PHP_EOL . $innerIndent . \implode(',' . \PHP_EOL . $innerIndent, $component) . \PHP_EOL . $indent . ']';
-    }
-
     public function applyVariables(\Graphpinator\Normalizer\VariableValueSet $variables) : void
     {
         foreach ($this->value as $value) {
