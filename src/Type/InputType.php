@@ -78,6 +78,15 @@ abstract class InputType extends \Graphpinator\Type\Contract\ConcreteDefinition 
 
     abstract protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet;
 
+    /**
+     * This function serves to prevent infinite cycles.
+     *
+     * It doesn't have to be used at all, unless inpu have arguments self referencing fields and wish to put default value for them.
+     */
+    protected function afterGetFieldDefinition() : void
+    {
+    }
+
     private function validateCycles(array $stack) : void
     {
         if ($this->cycleValidated) {
