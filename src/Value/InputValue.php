@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Value;
 
-final class InputValue implements \Graphpinator\Value\InputedValue
+final class InputValue implements \Graphpinator\Value\InputedValue, \IteratorAggregate
 {
     use \Nette\SmartObject;
 
@@ -142,6 +142,11 @@ final class InputValue implements \Graphpinator\Value\InputedValue
         }
 
         return true;
+    }
+    
+    public function getIterator() : \ArrayIterator
+    {
+        return new \ArrayIterator($this->value);
     }
 
     public function __isset(string $name) : bool
