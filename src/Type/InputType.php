@@ -38,6 +38,7 @@ abstract class InputType extends \Graphpinator\Type\Contract\ConcreteDefinition 
     {
         if (!$this->arguments instanceof \Graphpinator\Argument\ArgumentSet) {
             $this->arguments = $this->getFieldDefinition();
+            $this->afterGetFieldDefinition();
 
             $this->validateCycles([]);
         }
