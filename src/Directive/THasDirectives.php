@@ -7,7 +7,6 @@ namespace Graphpinator\Directive;
 trait THasDirectives
 {
     protected \Graphpinator\Directive\DirectiveUsageSet $directiveUsages;
-    protected string $directiveLocation;
 
     public function getDirectiveUsages() : \Graphpinator\Directive\DirectiveUsageSet
     {

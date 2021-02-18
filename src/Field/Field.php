@@ -21,7 +21,6 @@ class Field implements \Graphpinator\Typesystem\Component
         $this->type = $type;
         $this->arguments = new \Graphpinator\Argument\ArgumentSet([]);
         $this->directiveUsages = new \Graphpinator\Directive\DirectiveUsageSet([]);
-        $this->directiveLocation = \Graphpinator\Directive\TypeSystemDirectiveLocation::FIELD_DEFINITION;
     }
 
     public static function create(string $name, \Graphpinator\Type\Contract\Outputable $type) : self

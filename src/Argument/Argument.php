@@ -18,7 +18,6 @@ final class Argument implements \Graphpinator\Typesystem\Component
     )
     {
         $this->directiveUsages = new \Graphpinator\Directive\DirectiveUsageSet();
-        $this->directiveLocation = \Graphpinator\Directive\TypeSystemDirectiveLocation::ARGUMENT_DEFINITION;
     }
 
     public static function create(string $name, \Graphpinator\Type\Contract\Inputable $type) : self

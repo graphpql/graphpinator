@@ -18,7 +18,6 @@ final class EnumItem implements \Graphpinator\Typesystem\Component
         $this->name = $name;
         $this->description = $description;
         $this->directiveUsages = new \Graphpinator\Directive\DirectiveUsageSet();
-        $this->directiveLocation = \Graphpinator\Directive\TypeSystemDirectiveLocation::ENUM_VALUE;
     }
 
     public function getName() : string
