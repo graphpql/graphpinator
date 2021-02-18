@@ -121,7 +121,7 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
 
     final public function addDirective(
         \Graphpinator\Directive\Contract\ObjectLocation $directive,
-        array $arguments,
+        array $arguments = [],
     ) : static
     {
         $usage = new \Graphpinator\Directive\DirectiveUsage($directive, $arguments);

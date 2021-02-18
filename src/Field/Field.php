@@ -58,7 +58,7 @@ class Field implements \Graphpinator\Typesystem\Component
 
     final public function addDirective(
         \Graphpinator\Directive\Contract\FieldDefinitionLocation $directive,
-        array $arguments,
+        array $arguments = [],
     ) : self
     {
         $usage = new \Graphpinator\Directive\DirectiveUsage($directive, $arguments);

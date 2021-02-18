@@ -33,7 +33,7 @@ final class EnumItem implements \Graphpinator\Typesystem\Component
 
     public function addDirective(
         \Graphpinator\Directive\Contract\EnumItemLocation $directive,
-        array $arguments,
+        array $arguments = [],
     ) : self
     {
         $this->directiveUsages[] = new \Graphpinator\Directive\DirectiveUsage($directive, $arguments);

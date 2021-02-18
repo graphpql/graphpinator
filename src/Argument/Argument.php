@@ -55,7 +55,7 @@ final class Argument implements \Graphpinator\Typesystem\Component
 
     public function addDirective(
         \Graphpinator\Directive\Contract\ArgumentDefinitionLocation $directive,
-        array $arguments,
+        array $arguments = [],
     ) : self
     {
         $usage = new \Graphpinator\Directive\DirectiveUsage($directive, $arguments);

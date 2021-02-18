@@ -76,7 +76,7 @@ abstract class InterfaceType extends \Graphpinator\Type\Contract\AbstractDefinit
 
     final public function addDirective(
         \Graphpinator\Directive\Contract\ObjectLocation $directive,
-        array $arguments,
+        array $arguments = [],
     ) : static
     {
         $usage = new \Graphpinator\Directive\DirectiveUsage($directive, $arguments);

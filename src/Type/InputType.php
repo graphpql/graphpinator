@@ -63,7 +63,7 @@ abstract class InputType extends \Graphpinator\Type\Contract\ConcreteDefinition 
 
     final public function addDirective(
         \Graphpinator\Directive\Contract\InputObjectLocation $directive,
-        array $arguments,
+        array $arguments = [],
     ) : static
     {
         $usage = new \Graphpinator\Directive\DirectiveUsage($directive, $arguments);
