@@ -11,9 +11,9 @@ Feature complete PHP implementation of GraphQL server. Its job is transformation
 - Sacrafices a tiny bit of convenience for huge amount of clarity and safety - no random configuration `array`s, no mixed types, no variable function arguments ... - this library doesnt try to save you from verbosity, but makes sure you always know what you've got.
 - Includes some opt-in extensions which are out of scope of official specs:
     - [Printer](https://github.com/infinityloop-dev/graphpinator-printer) - Schema printing for GraPHPinator typesystem.
-    - [Extra types](https://github.com/infinityloop-dev/graphpinator-extra-types) - some useful and commonly used types, both scalar or composite
-    - [Constraint directives](https://github.com/infinityloop-dev/graphpinator-constraint-directives) - typesystem directives to declare additional validation on top of GraphQL type system
-    - [Where directives](https://github.com/infinityloop-dev/graphpinator-where-directives) - executable directive to filter values in lists
+    - [Extra types](https://github.com/infinityloop-dev/graphpinator-extra-types) - Some useful and commonly used types, both scalar or composite
+    - [Constraint directives](https://github.com/infinityloop-dev/graphpinator-constraint-directives) - Typesystem directives to declare additional validation on top of GraphQL type system
+    - [Where directives](https://github.com/infinityloop-dev/graphpinator-where-directives) - Executable directives to filter values in lists
     - File upload using [multipart-formdata](https://github.com/jaydenseric/graphql-multipart-request-spec) specs (currently bundled)
 
 ## Installation
