@@ -19,7 +19,7 @@ final class FinalizedRequest
         $operation = $operationName === null
             ? $operationSet->current()
             : $operationSet->offsetGet($operationName);
-        $variableSet = new \Graphpinator\Normalizer\VariableValueSet($this->operation->getVariables(), $variables);
+        $variableSet = new \Graphpinator\Normalizer\VariableValueSet($operation->getVariables(), $variables);
         $operation->getFields()->applyVariables($variableSet);
 
         $this->operation = $operation;
