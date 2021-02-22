@@ -75,10 +75,6 @@ final class Graphpinator implements \Psr\Log\LoggerAwareInterface
 
                 foreach ($this->modules as $module) {
                     $result = $module->processFinalized($result);
-
-                    if (!$result instanceof \Graphpinator\Normalizer\FinalizedRequest) {
-                        break;
-                    }
                 }
             }
 
