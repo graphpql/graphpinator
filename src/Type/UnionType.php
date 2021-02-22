@@ -4,8 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Type;
 
-abstract class UnionType extends \Graphpinator\Type\Contract\AbstractDefinition implements
-    \Graphpinator\Typesystem\Entity
+abstract class UnionType extends \Graphpinator\Type\Contract\AbstractDefinition
 {
     use \Graphpinator\Type\Contract\TMetaFields;
 
@@ -52,7 +51,7 @@ abstract class UnionType extends \Graphpinator\Type\Contract\AbstractDefinition 
         return \Graphpinator\Type\Introspection\TypeKind::UNION;
     }
 
-    final public function accept(\Graphpinator\Typesystem\EntityVisitor $visitor) : mixed
+    final public function accept(\Graphpinator\Typesystem\NamedTypeVisitor $visitor) : mixed
     {
         return $visitor->visitUnion($this);
     }

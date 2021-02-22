@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace Graphpinator\Type;
 
 abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition implements
-    \Graphpinator\Typesystem\Entity,
     \Graphpinator\Type\Contract\Resolvable,
     \Graphpinator\Type\Contract\TypeConditionable,
     \Graphpinator\Type\Contract\InterfaceImplementor
@@ -113,7 +112,7 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
         return \Graphpinator\Type\Introspection\TypeKind::OBJECT;
     }
 
-    final public function accept(\Graphpinator\Typesystem\EntityVisitor $visitor) : mixed
+    final public function accept(\Graphpinator\Typesystem\NamedTypeVisitor $visitor) : mixed
     {
         return $visitor->visitType($this);
     }

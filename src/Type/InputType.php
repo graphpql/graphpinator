@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace Graphpinator\Type;
 
 abstract class InputType extends \Graphpinator\Type\Contract\ConcreteDefinition implements
-    \Graphpinator\Typesystem\Entity,
     \Graphpinator\Type\Contract\Inputable
 {
     use \Graphpinator\Directive\THasDirectives;
@@ -50,7 +49,7 @@ abstract class InputType extends \Graphpinator\Type\Contract\ConcreteDefinition 
         return \Graphpinator\Type\Introspection\TypeKind::INPUT_OBJECT;
     }
 
-    final public function accept(\Graphpinator\Typesystem\EntityVisitor $visitor) : mixed
+    final public function accept(\Graphpinator\Typesystem\NamedTypeVisitor $visitor) : mixed
     {
         return $visitor->visitInput($this);
     }

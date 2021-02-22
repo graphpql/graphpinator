@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Directive\Contract;
 
-interface Definition
+interface Definition extends \Graphpinator\Typesystem\Entity
 {
     public function getName() : string;
 

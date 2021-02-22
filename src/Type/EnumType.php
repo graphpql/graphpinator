@@ -4,8 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Type;
 
-abstract class EnumType extends \Graphpinator\Type\Contract\LeafDefinition implements
-    \Graphpinator\Typesystem\Entity
+abstract class EnumType extends \Graphpinator\Type\Contract\LeafDefinition
 {
     protected Enum\EnumItemSet $options;
 
@@ -43,7 +42,7 @@ abstract class EnumType extends \Graphpinator\Type\Contract\LeafDefinition imple
         return \Graphpinator\Type\Introspection\TypeKind::ENUM;
     }
 
-    final public function accept(\Graphpinator\Typesystem\EntityVisitor $visitor) : mixed
+    final public function accept(\Graphpinator\Typesystem\NamedTypeVisitor $visitor) : mixed
     {
         return $visitor->visitEnum($this);
     }

@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Type;
 
-final class NotNullType extends \Graphpinator\Type\Contract\ModifierDefinition
+final class NotNullType extends \Graphpinator\Type\Contract\ModifierDefinition implements \Graphpinator\Typesystem\Type
 {
     public function createInputedValue($rawValue) : \Graphpinator\Value\InputedValue
     {
@@ -62,5 +62,10 @@ final class NotNullType extends \Graphpinator\Type\Contract\ModifierDefinition
     public function getShapingType() : \Graphpinator\Type\Contract\Definition
     {
         return $this->getInnerType();
+    }
+
+    public function accept(\Graphpinator\Typesystem\TypeVisitor $visitor) : mixed
+    {
+        return $visitor->visitNotNull($this);
     }
 }

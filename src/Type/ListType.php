@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Type;
 
-final class ListType extends \Graphpinator\Type\Contract\ModifierDefinition
+final class ListType extends \Graphpinator\Type\Contract\ModifierDefinition implements \Graphpinator\Typesystem\Type
 {
     public function createInputedValue($rawValue) : \Graphpinator\Value\InputedValue
     {
@@ -76,5 +76,10 @@ final class ListType extends \Graphpinator\Type\Contract\ModifierDefinition
     public function getShapingType() : \Graphpinator\Type\Contract\Definition
     {
         return $this;
+    }
+
+    public function accept(\Graphpinator\Typesystem\TypeVisitor $visitor) : mixed
+    {
+        return $visitor->visitList($this);
     }
 }
