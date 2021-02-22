@@ -6,7 +6,7 @@ namespace Graphpinator\Type\Contract;
 
 abstract class ModifierDefinition implements
     \Graphpinator\Type\Contract\Inputable,
-    \Graphpinator\Type\Contract\Resolvable
+    \Graphpinator\Type\Contract\Outputable
 {
     protected \Graphpinator\Type\Contract\Definition $innerType;
 

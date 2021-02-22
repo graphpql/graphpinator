@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Type\Contract;
 
-abstract class NamedDefinition implements \Graphpinator\Type\Contract\Definition, \Graphpinator\Typesystem\NamedType
+abstract class NamedDefinition implements \Graphpinator\Typesystem\NamedType, \Graphpinator\Type\Contract\Definition
 {
     protected const NAME = '';
     protected const DESCRIPTION = null;

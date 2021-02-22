@@ -46,12 +46,14 @@ final class Operation
         return $this->name;
     }
 
-    public function resolve(\Graphpinator\Normalizer\VariableValueSet $variables) : \Graphpinator\Result
+    public function resolve() : \Graphpinator\Result
     {
-        $data = $this->operation->resolve(
+        $resolver = new \Graphpinator\Resolver\ResolveVisitor(
             $this->children,
             new \Graphpinator\Value\TypeIntermediateValue($this->operation, null),
         );
+
+        $data = $this->operation->accept($resolver);
 
         return new \Graphpinator\Result($data);
     }

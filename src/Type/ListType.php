@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Type;
 
-final class ListType extends \Graphpinator\Type\Contract\ModifierDefinition implements \Graphpinator\Typesystem\Type
+final class ListType extends \Graphpinator\Type\Contract\ModifierDefinition
 {
     public function createInputedValue($rawValue) : \Graphpinator\Value\InputedValue
     {
@@ -22,27 +22,6 @@ final class ListType extends \Graphpinator\Type\Contract\ModifierDefinition impl
         }
 
         return new \Graphpinator\Value\NullResolvedValue($this);
-    }
-
-    public function resolve(
-        ?\Graphpinator\Normalizer\Field\FieldSet $requestedFields,
-        \Graphpinator\Value\ResolvedValue $parentResult
-    ) : \Graphpinator\Value\ListResolvedValue
-    {
-        \assert($parentResult instanceof \Graphpinator\Value\ListIntermediateValue);
-        \assert($this->innerType instanceof \Graphpinator\Type\Contract\Outputable);
-
-        $return = [];
-
-        foreach ($parentResult->getRawValue() as $rawValue) {
-            $value = $this->innerType->createResolvedValue($rawValue);
-
-            $return[] = $value instanceof \Graphpinator\Value\NullValue
-                ? $value
-                : $value->getType()->resolve($requestedFields, $value);
-        }
-
-        return new \Graphpinator\Value\ListResolvedValue($this, $return);
     }
 
     public function isInstanceOf(\Graphpinator\Type\Contract\Definition $type) : bool

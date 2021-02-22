@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Type;
 
-final class NotNullType extends \Graphpinator\Type\Contract\ModifierDefinition implements \Graphpinator\Typesystem\Type
+final class NotNullType extends \Graphpinator\Type\Contract\ModifierDefinition
 {
     public function createInputedValue($rawValue) : \Graphpinator\Value\InputedValue
     {
@@ -28,16 +28,6 @@ final class NotNullType extends \Graphpinator\Type\Contract\ModifierDefinition i
         }
 
         return $value;
-    }
-
-    public function resolve(
-        ?\Graphpinator\Normalizer\Field\FieldSet $requestedFields,
-        \Graphpinator\Value\ResolvedValue $parentResult
-    ) : \Graphpinator\Value\ResolvedValue
-    {
-        \assert($this->innerType instanceof \Graphpinator\Type\Contract\Resolvable);
-
-        return $this->innerType->resolve($requestedFields, $parentResult);
     }
 
     public function isInstanceOf(\Graphpinator\Type\Contract\Definition $type) : bool

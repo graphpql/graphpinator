@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Type\Contract;
 
-interface Definition
+interface Definition extends \Graphpinator\Typesystem\Type
 {
     public function getTypeKind() : string;
 

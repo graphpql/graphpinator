@@ -6,17 +6,8 @@ namespace Graphpinator\Type\Contract;
 
 abstract class LeafDefinition extends \Graphpinator\Type\Contract\ConcreteDefinition implements
     \Graphpinator\Type\Contract\Inputable,
-    \Graphpinator\Type\Contract\Resolvable,
     \Graphpinator\Type\Contract\Scopable
 {
-    final public function resolve(
-        ?\Graphpinator\Normalizer\Field\FieldSet $requestedFields,
-        \Graphpinator\Value\ResolvedValue $parentResult
-    ) : \Graphpinator\Value\LeafValue
-    {
-        return $parentResult;
-    }
-
     abstract public function validateNonNullValue(mixed $rawValue) : bool;
 
     public function createInputedValue(string|int|float|bool|null|array|\stdClass|\Psr\Http\Message\UploadedFileInterface $rawValue) : \Graphpinator\Value\InputedValue
