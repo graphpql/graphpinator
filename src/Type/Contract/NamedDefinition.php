@@ -41,11 +41,6 @@ abstract class NamedDefinition implements \Graphpinator\Type\Contract\Definition
         return $this instanceof Inputable;
     }
 
-    final public function isOutputable() : bool
-    {
-        return $this instanceof Outputable;
-    }
-
     final public function notNull() : \Graphpinator\Type\NotNullType
     {
         return new \Graphpinator\Type\NotNullType($this);

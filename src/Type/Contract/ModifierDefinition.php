@@ -30,11 +30,6 @@ abstract class ModifierDefinition implements
         return $this->innerType->isInputable();
     }
 
-    public function isOutputable() : bool
-    {
-        return $this->innerType->isOutputable();
-    }
-
     public function list() : \Graphpinator\Type\ListType
     {
         return new \Graphpinator\Type\ListType($this);

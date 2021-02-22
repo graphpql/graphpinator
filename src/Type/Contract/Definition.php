@@ -17,6 +17,4 @@ interface Definition
     public function isInstanceOf(\Graphpinator\Type\Contract\Definition $type) : bool;
 
     public function isInputable() : bool;
-
-    public function isOutputable() : bool;
 }
