@@ -139,7 +139,7 @@ final class ResolveVisitor implements \Graphpinator\Typesystem\TypeVisitor
         return new \Graphpinator\Value\FieldValue($field, $fieldValue);
     }
 
-    private function getResolvedValue(mixed $rawValue, \Graphpinator\Type\Contract\Outputable $type) : \Graphpinator\Value\ResolvedValue
+    private function getResolvedValue(mixed $rawValue, \Graphpinator\Type\Contract\Definition $type) : \Graphpinator\Value\ResolvedValue
     {
         $visitor = new CreateResolvedValueVisitor($rawValue);
 
