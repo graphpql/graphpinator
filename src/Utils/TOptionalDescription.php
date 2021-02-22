@@ -22,9 +22,4 @@ trait TOptionalDescription
 
         return $this;
     }
-
-    public function hasDescription() : bool
-    {
-        return $this->getDescription() !== null;
-    }
 }
