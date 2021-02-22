@@ -89,7 +89,7 @@ final class ResolveVisitor implements \Graphpinator\Typesystem\TypeVisitor
         $return = [];
 
         foreach ($this->parentResult->getRawValue() as $rawValue) {
-            $value = $list->getInnerType()->createResolvedValue($rawValue);
+            $value = $this->getResolvedValue($rawValue, $list->getInnerType());
 
             if ($value instanceof \Graphpinator\Value\NullValue) {
                 $return[] = $value;
@@ -119,7 +119,7 @@ final class ResolveVisitor implements \Graphpinator\Typesystem\TypeVisitor
         $rawArguments = $arguments->getValuesForResolver();
         \array_unshift($rawArguments, $this->parentResult->getRawValue());
         $result = \call_user_func_array($field->getResolveFunction(), $rawArguments);
-        $value = $field->getType()->createResolvedValue($result);
+        $value = $this->getResolvedValue($result, $field->getType());
 
         if (!$value->getType()->isInstanceOf($field->getType())) {
             throw new \Graphpinator\Exception\Resolver\FieldResultTypeMismatch();
@@ -137,5 +137,12 @@ final class ResolveVisitor implements \Graphpinator\Typesystem\TypeVisitor
         }
 
         return new \Graphpinator\Value\FieldValue($field, $fieldValue);
+    }
+
+    private function getResolvedValue(mixed $rawValue, \Graphpinator\Type\Contract\Outputable $type) : \Graphpinator\Value\ResolvedValue
+    {
+        $visitor = new CreateResolvedValueVisitor($rawValue);
+
+        return $type->accept($visitor);
     }
 }

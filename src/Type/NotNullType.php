@@ -18,18 +18,6 @@ final class NotNullType extends \Graphpinator\Type\Contract\ModifierDefinition
         return $value;
     }
 
-    public function createResolvedValue(mixed $rawValue) : \Graphpinator\Value\ResolvedValue
-    {
-        \assert($this->innerType instanceof \Graphpinator\Type\Contract\Outputable);
-        $value = $this->innerType->createResolvedValue($rawValue);
-
-        if ($value instanceof \Graphpinator\Value\NullValue) {
-            throw new \Graphpinator\Exception\Value\ValueCannotBeNull(false);
-        }
-
-        return $value;
-    }
-
     public function isInstanceOf(\Graphpinator\Type\Contract\Definition $type) : bool
     {
         if ($type instanceof self) {

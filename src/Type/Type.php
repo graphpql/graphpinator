@@ -21,15 +21,6 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
 
     abstract public function validateNonNullValue(mixed $rawValue) : bool;
 
-    final public function createResolvedValue(mixed $rawValue) : \Graphpinator\Value\ResolvedValue
-    {
-        if ($rawValue === null) {
-            return new \Graphpinator\Value\NullResolvedValue($this);
-        }
-
-        return new \Graphpinator\Value\TypeIntermediateValue($this, $rawValue);
-    }
-
     final public function addMetaField(\Graphpinator\Field\ResolvableField $field) : void
     {
         $this->getMetaFields()->offsetSet($field->getName(), $field);

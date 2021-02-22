@@ -15,15 +15,6 @@ final class ListType extends \Graphpinator\Type\Contract\ModifierDefinition
         return new \Graphpinator\Value\NullInputedValue($this);
     }
 
-    public function createResolvedValue(mixed $rawValue) : \Graphpinator\Value\ResolvedValue
-    {
-        if (\is_iterable($rawValue)) {
-            return new \Graphpinator\Value\ListIntermediateValue($this, $rawValue);
-        }
-
-        return new \Graphpinator\Value\NullResolvedValue($this);
-    }
-
     public function isInstanceOf(\Graphpinator\Type\Contract\Definition $type) : bool
     {
         if ($type instanceof self) {
