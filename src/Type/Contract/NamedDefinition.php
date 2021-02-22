@@ -46,11 +46,6 @@ abstract class NamedDefinition implements \Graphpinator\Type\Contract\Definition
         return $this instanceof Outputable;
     }
 
-    final public function isResolvable() : bool
-    {
-        return $this instanceof Resolvable;
-    }
-
     final public function notNull() : \Graphpinator\Type\NotNullType
     {
         return new \Graphpinator\Type\NotNullType($this);

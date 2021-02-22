@@ -19,6 +19,4 @@ interface Definition
     public function isInputable() : bool;
 
     public function isOutputable() : bool;
-
-    public function isResolvable() : bool;
 }

@@ -35,11 +35,6 @@ abstract class ModifierDefinition implements
         return $this->innerType->isOutputable();
     }
 
-    public function isResolvable() : bool
-    {
-        return $this->innerType->isResolvable();
-    }
-
     public function list() : \Graphpinator\Type\ListType
     {
         return new \Graphpinator\Type\ListType($this);

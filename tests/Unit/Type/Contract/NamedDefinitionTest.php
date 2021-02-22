@@ -21,9 +21,7 @@ final class NamedDefinitionTest extends \PHPUnit\Framework\TestCase
 
         self::assertTrue($base->isInputable());
         self::assertTrue($base->isOutputable());
-        self::assertTrue($base->isResolvable());
         self::assertTrue($base->notNull()->isInputable());
         self::assertTrue($base->notNull()->isOutputable());
-        self::assertTrue($base->notNull()->isResolvable());
     }
 }
