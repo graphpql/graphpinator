@@ -4,15 +4,15 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Normalizer\Operation;
 
-final class Operation
+abstract class Operation
 {
     use \Nette\SmartObject;
 
-    private \Graphpinator\Type\Type $operation;
-    private \Graphpinator\Normalizer\Field\FieldSet $children;
-    private \Graphpinator\Normalizer\Variable\VariableSet $variables;
-    private \Graphpinator\Normalizer\Directive\DirectiveSet $directives;
-    private ?string $name;
+    protected \Graphpinator\Type\Type $operation;
+    protected \Graphpinator\Normalizer\Field\FieldSet $children;
+    protected \Graphpinator\Normalizer\Variable\VariableSet $variables;
+    protected \Graphpinator\Normalizer\Directive\DirectiveSet $directives;
+    protected ?string $name;
 
     public function __construct(
         \Graphpinator\Type\Type $operation,
@@ -54,15 +54,5 @@ final class Operation
         return $this->name;
     }
 
-    public function resolve() : \Graphpinator\Result
-    {
-        $resolver = new \Graphpinator\Resolver\ResolveVisitor(
-            $this->children,
-            new \Graphpinator\Value\TypeIntermediateValue($this->operation, null),
-        );
-
-        $data = $this->operation->accept($resolver);
-
-        return new \Graphpinator\Result($data);
-    }
+    abstract public function resolve() : \Graphpinator\Result;
 }

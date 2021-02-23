@@ -61,24 +61,25 @@ final class Operation
         \Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions,
     ) : \Graphpinator\Normalizer\Operation\Operation
     {
-        $operation = match ($this->type) {
+        $operationType = match ($this->type) {
             \Graphpinator\Tokenizer\OperationType::QUERY => $schema->getQuery(),
             \Graphpinator\Tokenizer\OperationType::MUTATION => $schema->getMutation(),
             \Graphpinator\Tokenizer\OperationType::SUBSCRIPTION => $schema->getSubscription(),
         };
 
-        if (!$operation instanceof \Graphpinator\Type\Type) {
+        if (!$operationType instanceof \Graphpinator\Type\Type) {
             throw new \Graphpinator\Exception\Normalizer\OperationNotSupported();
         }
 
         $variables = $this->variables->normalize($schema->getContainer());
+        $children = $this->children->normalize($operationType, $schema->getContainer(), $fragmentDefinitions, $variables);
+        $directives = $this->directives->normalize($operationType, $schema->getContainer(), $variables);
+        $args = [$operationType, $children, $variables, $directives, $this->getName()];
 
-        return new \Graphpinator\Normalizer\Operation\Operation(
-            $operation,
-            $this->children->normalize($operation, $schema->getContainer(), $fragmentDefinitions, $variables),
-            $variables,
-            $this->directives->normalize($operation, $schema->getContainer(), $variables),
-            $this->getName(),
-        );
+        return match ($this->type) {
+            \Graphpinator\Tokenizer\OperationType::QUERY => new \Graphpinator\Normalizer\Operation\Query(...$args),
+            \Graphpinator\Tokenizer\OperationType::MUTATION => new \Graphpinator\Normalizer\Operation\Mutation(...$args),
+            \Graphpinator\Tokenizer\OperationType::SUBSCRIPTION => new \Graphpinator\Normalizer\Operation\Subscription(...$args),
+        };
     }
 }

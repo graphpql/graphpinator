@@ -30,35 +30,8 @@ abstract class Directive implements \Graphpinator\Directive\Contract\Definition
         $reflection = new \ReflectionClass($this);
 
         foreach ($reflection->getInterfaces() as $interface) {
-            switch ($interface->getName()) {
-                case \Graphpinator\Directive\Contract\ObjectLocation::class:
-                    $locations[] = TypeSystemDirectiveLocation::OBJECT;
-                    $locations[] = TypeSystemDirectiveLocation::INTERFACE;
-
-                    break;
-                case \Graphpinator\Directive\Contract\InputObjectLocation::class:
-                    $locations[] = TypeSystemDirectiveLocation::INPUT_OBJECT;
-
-                    break;
-                case \Graphpinator\Directive\Contract\ArgumentDefinitionLocation::class:
-                    $locations[] = TypeSystemDirectiveLocation::ARGUMENT_DEFINITION;
-                    $locations[] = TypeSystemDirectiveLocation::INPUT_FIELD_DEFINITION;
-
-                    break;
-                case \Graphpinator\Directive\Contract\FieldDefinitionLocation::class:
-                    $locations[] = TypeSystemDirectiveLocation::FIELD_DEFINITION;
-
-                    break;
-                case \Graphpinator\Directive\Contract\EnumItemLocation::class:
-                    $locations[] = TypeSystemDirectiveLocation::ENUM_VALUE;
-
-                    break;
-                case \Graphpinator\Directive\Contract\FieldLocation::class:
-                    $locations[] = ExecutableDirectiveLocation::FIELD;
-                    $locations[] = ExecutableDirectiveLocation::INLINE_FRAGMENT;
-                    $locations[] = ExecutableDirectiveLocation::FRAGMENT_SPREAD;
-
-                    break;
+            if (\array_key_exists($interface->getName(), self::INTERFACE_TO_LOCATION)) {
+                $locations = \array_merge($locations, self::INTERFACE_TO_LOCATION[$interface->getName()]);
             }
         }
 
