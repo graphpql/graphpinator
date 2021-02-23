@@ -112,28 +112,32 @@ final class ResolveVisitor implements \Graphpinator\Typesystem\TypeVisitor
     ) : \Graphpinator\Value\FieldValue
     {
         foreach ($field->getDirectiveUsages() as $directive) {
-            $directive->getDirective()->resolveFieldDefinitionBefore($directive->getArgumentValues());
+            $directive->getDirective()->resolveFieldDefinitionBefore($this->parentResult, $directive->getArgumentValues());
         }
 
         $arguments = $requestedField->getArguments();
         $rawArguments = $arguments->getValuesForResolver();
         \array_unshift($rawArguments, $this->parentResult->getRawValue());
-        $result = \call_user_func_array($field->getResolveFunction(), $rawArguments);
-        $value = $this->getResolvedValue($result, $field->getType());
+        $rawValue = \call_user_func_array($field->getResolveFunction(), $rawArguments);
+        $resolvedValue = $this->getResolvedValue($rawValue, $field->getType());
 
-        if (!$value->getType()->isInstanceOf($field->getType())) {
+        if (!$resolvedValue->getType()->isInstanceOf($field->getType())) {
             throw new \Graphpinator\Exception\Resolver\FieldResultTypeMismatch();
         }
 
-        if ($value instanceof \Graphpinator\Value\NullValue) {
-            $fieldValue = $value;
+        foreach ($field->getDirectiveUsages() as $directive) {
+            $directive->getDirective()->resolveFieldDefinitionAfter($resolvedValue, $directive->getArgumentValues(),);
+        }
+
+        if ($resolvedValue instanceof \Graphpinator\Value\NullValue) {
+            $fieldValue = $resolvedValue;
         } else {
             $resolver = new ResolveVisitor(
                 $requestedField->getFields(),
-                $value,
+                $resolvedValue,
             );
 
-            $fieldValue = $value->getType()->accept($resolver);
+            $fieldValue = $resolvedValue->getType()->accept($resolver);
         }
 
         return new \Graphpinator\Value\FieldValue($field, $fieldValue);

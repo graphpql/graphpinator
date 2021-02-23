@@ -12,10 +12,16 @@ interface FieldDefinitionLocation extends TypeSystemDefinition, TypeDependantDef
     ) : void;
 
     public function resolveFieldDefinitionBefore(
+        \Graphpinator\Value\ResolvedValue $parentValue,
         \Graphpinator\Value\ArgumentValueSet $arguments,
     ) : void;
 
     public function resolveFieldDefinitionAfter(
+        \Graphpinator\Value\ResolvedValue $resolvedValue,
+        \Graphpinator\Value\ArgumentValueSet $arguments,
+    ) : void;
+
+    public function resolveFieldDefinitionValue(
         \Graphpinator\Value\FieldValue $fieldValue,
         \Graphpinator\Value\ArgumentValueSet $arguments,
     ) : void;
