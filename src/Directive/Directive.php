@@ -47,7 +47,7 @@ abstract class Directive implements \Graphpinator\Directive\Contract\Definition
     {
         if (!$this->arguments instanceof \Graphpinator\Argument\ArgumentSet) {
             $this->arguments = $this->getFieldDefinition();
-            $this->appendDirectives();
+            $this->afterGetFieldDefinition();
         }
 
         return $this->arguments;
@@ -66,7 +66,7 @@ abstract class Directive implements \Graphpinator\Directive\Contract\Definition
      * It doesn't have to be used at all, unless directive have arguments with directive cycles.
      * Eg. IntConstraintDirective::oneOf -> ListConstraintDirective::minItems -> IntConstraintDirective::oneOf.
      */
-    protected function appendDirectives() : void
+    protected function afterGetFieldDefinition() : void
     {
     }
 }
