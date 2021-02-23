@@ -10,17 +10,6 @@ final class DeprecatedDirective extends \Graphpinator\Directive\Directive
     protected const NAME = 'deprecated';
     protected const DESCRIPTION = 'Built-in deprecated directive.';
 
-    public function __construct()
-    {
-        parent::__construct(
-            [
-                \Graphpinator\Directive\TypeSystemDirectiveLocation::FIELD_DEFINITION,
-                \Graphpinator\Directive\TypeSystemDirectiveLocation::ENUM_VALUE,
-            ],
-            false,
-        );
-    }
-
     public function validateType(
         \Graphpinator\Type\Contract\Definition $definition,
         \Graphpinator\Value\ArgumentValueSet $arguments,

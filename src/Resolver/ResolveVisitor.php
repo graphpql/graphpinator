@@ -27,6 +27,10 @@ final class ResolveVisitor implements \Graphpinator\Typesystem\TypeVisitor
                 $arguments = $directive->getArguments();
                 $directiveResult = $directiveDef->resolveFieldBefore($arguments);
 
+                if (!\array_key_exists($directiveResult, \Graphpinator\Directive\FieldDirectiveResult::ENUM)) {
+                    throw new \Graphpinator\Exception\Resolver\InvalidDirectiveResult();
+                }
+
                 if ($directiveResult === \Graphpinator\Directive\FieldDirectiveResult::SKIP) {
                     continue 2;
                 }
@@ -40,6 +44,10 @@ final class ResolveVisitor implements \Graphpinator\Typesystem\TypeVisitor
                 $directiveDef = $directive->getDirective();
                 $arguments = $directive->getArguments();
                 $directiveResult = $directiveDef->resolveFieldAfter($fieldResult, $arguments);
+
+                if (!\array_key_exists($directiveResult, \Graphpinator\Directive\FieldDirectiveResult::ENUM)) {
+                    throw new \Graphpinator\Exception\Resolver\InvalidDirectiveResult();
+                }
 
                 if ($directiveResult === \Graphpinator\Directive\FieldDirectiveResult::SKIP) {
                     continue 2;

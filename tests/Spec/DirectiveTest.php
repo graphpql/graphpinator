@@ -151,7 +151,7 @@ final class DirectiveTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 Json::fromNative((object) [
-                    'query' => 'query queryName { fieldAbc { ... on Abc @testDirective { fieldXyz { name } } } }',
+                    'query' => 'query @testDirective { fieldAbc { fieldXyz { name } } }',
                 ]),
                 \Graphpinator\Exception\Normalizer\DirectiveIncorrectLocation::class,
             ],

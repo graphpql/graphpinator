@@ -10,16 +10,9 @@ abstract class Directive implements \Graphpinator\Directive\Contract\Definition
 
     protected const NAME = '';
     protected const DESCRIPTION = null;
+    protected const REPEATABLE = false;
 
-    protected array $locations;
-    protected bool $repeatable;
     protected ?\Graphpinator\Argument\ArgumentSet $arguments = null;
-
-    public function __construct(array $locations, bool $repeatable)
-    {
-        $this->locations = $locations;
-        $this->repeatable = $repeatable;
-    }
 
     final public function getName() : string
     {
@@ -33,12 +26,48 @@ abstract class Directive implements \Graphpinator\Directive\Contract\Definition
 
     final public function getLocations() : array
     {
-        return $this->locations;
+        $locations = [];
+        $reflection = new \ReflectionClass($this);
+
+        foreach ($reflection->getInterfaces() as $interface) {
+            switch ($interface->getName()) {
+                case \Graphpinator\Directive\Contract\ObjectLocation::class:
+                    $locations[] = TypeSystemDirectiveLocation::OBJECT;
+                    $locations[] = TypeSystemDirectiveLocation::INTERFACE;
+
+                    break;
+                case \Graphpinator\Directive\Contract\InputObjectLocation::class:
+                    $locations[] = TypeSystemDirectiveLocation::INPUT_OBJECT;
+
+                    break;
+                case \Graphpinator\Directive\Contract\ArgumentDefinitionLocation::class:
+                    $locations[] = TypeSystemDirectiveLocation::ARGUMENT_DEFINITION;
+                    $locations[] = TypeSystemDirectiveLocation::INPUT_FIELD_DEFINITION;
+
+                    break;
+                case \Graphpinator\Directive\Contract\FieldDefinitionLocation::class:
+                    $locations[] = TypeSystemDirectiveLocation::FIELD_DEFINITION;
+
+                    break;
+                case \Graphpinator\Directive\Contract\EnumItemLocation::class:
+                    $locations[] = TypeSystemDirectiveLocation::ENUM_VALUE;
+
+                    break;
+                case \Graphpinator\Directive\Contract\FieldLocation::class:
+                    $locations[] = ExecutableDirectiveLocation::FIELD;
+                    $locations[] = ExecutableDirectiveLocation::INLINE_FRAGMENT;
+                    $locations[] = ExecutableDirectiveLocation::FRAGMENT_SPREAD;
+
+                    break;
+            }
+        }
+
+        return $locations;
     }
 
     final public function isRepeatable() : bool
     {
-        return $this->repeatable;
+        return static::REPEATABLE;
     }
 
     final public function getArguments() : \Graphpinator\Argument\ArgumentSet

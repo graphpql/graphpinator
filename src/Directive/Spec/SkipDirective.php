@@ -5,30 +5,10 @@ declare(strict_types = 1);
 namespace Graphpinator\Directive\Spec;
 
 final class SkipDirective extends \Graphpinator\Directive\Directive
-    implements \Graphpinator\Directive\Contract\ExecutableDefinition
+    implements \Graphpinator\Directive\Contract\FieldLocation
 {
-    use \Graphpinator\Directive\Contract\TExecutableDefinition;
-
     protected const NAME = 'skip';
     protected const DESCRIPTION = 'Built-in skip directive.';
-
-    public function __construct()
-    {
-        parent::__construct(
-            [
-                \Graphpinator\Directive\ExecutableDirectiveLocation::FIELD,
-                \Graphpinator\Directive\ExecutableDirectiveLocation::FRAGMENT_SPREAD,
-                \Graphpinator\Directive\ExecutableDirectiveLocation::INLINE_FRAGMENT,
-            ],
-            false,
-        );
-
-        $this->fieldBeforeFn = static function (bool $if) : string {
-            return $if
-                ? \Graphpinator\Directive\FieldDirectiveResult::SKIP
-                : \Graphpinator\Directive\FieldDirectiveResult::NONE;
-        };
-    }
 
     public function validateType(
         ?\Graphpinator\Type\Contract\Definition $definition,
@@ -36,6 +16,23 @@ final class SkipDirective extends \Graphpinator\Directive\Directive
     ) : bool
     {
         return true;
+    }
+
+    public function resolveFieldBefore(
+        \Graphpinator\Value\ArgumentValueSet $arguments,
+    ) : string
+    {
+        return $arguments->offsetGet('if')->getValue()->getRawValue()
+            ? \Graphpinator\Directive\FieldDirectiveResult::SKIP
+            : \Graphpinator\Directive\FieldDirectiveResult::NONE;
+    }
+
+    public function resolveFieldAfter(
+        \Graphpinator\Value\FieldValue $fieldValue,
+        \Graphpinator\Value\ArgumentValueSet $arguments,
+    ) : string
+    {
+        return \Graphpinator\Directive\FieldDirectiveResult::NONE;
     }
 
     protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet

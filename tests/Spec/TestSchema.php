@@ -1079,26 +1079,11 @@ final class TestSchema
 
     public static function getTestDirective() : \Graphpinator\Directive\Directive
     {
-        return new class extends \Graphpinator\Directive\Directive implements \Graphpinator\Directive\Contract\ExecutableDefinition
+        return new class extends \Graphpinator\Directive\Directive implements \Graphpinator\Directive\Contract\FieldLocation
         {
-            use \Graphpinator\Directive\Contract\TExecutableDefinition;
-
             protected const NAME = 'testDirective';
-            public static $count = 0;
-
-            public function __construct()
-            {
-                parent::__construct(
-                    [\Graphpinator\Directive\ExecutableDirectiveLocation::FIELD],
-                    true,
-                );
-
-                $this->fieldBeforeFn = static function() {
-                    ++self::$count;
-
-                    return \Graphpinator\Directive\FieldDirectiveResult::NONE;
-                };
-            }
+            protected const REPEATABLE = true;
+            public static int $count = 0;
 
             public function validateType(
                 ?\Graphpinator\Type\Contract\Definition $definition,
@@ -1106,6 +1091,18 @@ final class TestSchema
             ) : bool
             {
                 return true;
+            }
+
+            public function resolveFieldBefore(\Graphpinator\Value\ArgumentValueSet $arguments) : string
+            {
+                ++self::$count;
+
+                return \Graphpinator\Directive\FieldDirectiveResult::NONE;
+            }
+
+            public function resolveFieldAfter(\Graphpinator\Value\FieldValue $fieldValue, \Graphpinator\Value\ArgumentValueSet $arguments) : string
+            {
+                return \Graphpinator\Directive\FieldDirectiveResult::NONE;
             }
 
             protected function getFieldDefinition(): \Graphpinator\Argument\ArgumentSet
@@ -1117,23 +1114,10 @@ final class TestSchema
 
     public static function getInvalidDirectiveResult() : \Graphpinator\Directive\Directive
     {
-        return new class extends \Graphpinator\Directive\Directive implements \Graphpinator\Directive\Contract\ExecutableDefinition
+        return new class extends \Graphpinator\Directive\Directive implements \Graphpinator\Directive\Contract\FieldLocation
         {
-            use \Graphpinator\Directive\Contract\TExecutableDefinition;
-
             protected const NAME = 'invalidDirectiveResult';
-
-            public function __construct()
-            {
-                parent::__construct(
-                    [\Graphpinator\Directive\ExecutableDirectiveLocation::FIELD],
-                    true,
-                );
-
-                $this->fieldBeforeFn = static function() : string {
-                    return 'random';
-                };
-            }
+            protected const REPEATABLE = true;
 
             public function validateType(
                 ?\Graphpinator\Type\Contract\Definition $definition,
@@ -1141,6 +1125,16 @@ final class TestSchema
             ) : bool
             {
                 return true;
+            }
+
+            public function resolveFieldBefore(\Graphpinator\Value\ArgumentValueSet $arguments) : string
+            {
+                return 'random';
+            }
+
+            public function resolveFieldAfter(\Graphpinator\Value\FieldValue $fieldValue, \Graphpinator\Value\ArgumentValueSet $arguments) : string
+            {
+                return \Graphpinator\Directive\FieldDirectiveResult::NONE;
             }
 
             protected function getFieldDefinition(): \Graphpinator\Argument\ArgumentSet
@@ -1152,19 +1146,9 @@ final class TestSchema
 
     public static function getInvalidDirectiveType() : \Graphpinator\Directive\Directive
     {
-        return new class extends \Graphpinator\Directive\Directive implements \Graphpinator\Directive\Contract\ExecutableDefinition
+        return new class extends \Graphpinator\Directive\Directive implements \Graphpinator\Directive\Contract\FieldLocation
         {
-            use \Graphpinator\Directive\Contract\TExecutableDefinition;
-
             protected const NAME = 'invalidDirectiveType';
-
-            public function __construct()
-            {
-                parent::__construct(
-                    [\Graphpinator\Directive\ExecutableDirectiveLocation::FIELD],
-                    false,
-                );
-            }
 
             public function validateType(
                 ?\Graphpinator\Type\Contract\Definition $definition,
@@ -1172,6 +1156,16 @@ final class TestSchema
             ) : bool
             {
                 return false;
+            }
+
+            public function resolveFieldBefore(\Graphpinator\Value\ArgumentValueSet $arguments) : string
+            {
+                return \Graphpinator\Directive\FieldDirectiveResult::NONE;
+            }
+
+            public function resolveFieldAfter(\Graphpinator\Value\FieldValue $fieldValue, \Graphpinator\Value\ArgumentValueSet $arguments) : string
+            {
+                return \Graphpinator\Directive\FieldDirectiveResult::NONE;
             }
 
             protected function getFieldDefinition(): \Graphpinator\Argument\ArgumentSet
