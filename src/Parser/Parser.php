@@ -110,59 +110,86 @@ final class Parser
     private function parseOperation() : \Graphpinator\Parser\Operation\Operation
     {
         switch ($this->tokenizer->getCurrent()->getType()) {
+            // query shorthand
             case TokenType::CUR_O:
-                return new \Graphpinator\Parser\Operation\Operation($this->parseSelectionSet());
+                return new \Graphpinator\Parser\Operation\Operation(
+                    \Graphpinator\Tokenizer\OperationType::QUERY,
+                    null,
+                    new \Graphpinator\Parser\Variable\VariableSet(),
+                    new \Graphpinator\Parser\Directive\DirectiveSet(),
+                    $this->parseSelectionSet(),
+                );
             case TokenType::NAME:
                 throw new \Graphpinator\Exception\Parser\UnknownOperationType($this->tokenizer->getCurrent()->getLocation());
             case TokenType::QUERY:
             case TokenType::MUTATION:
             case TokenType::SUBSCRIPTION:
                 $operationType = $this->tokenizer->getCurrent()->getType();
+                $this->tokenizer->getNext();
 
-                switch ($this->tokenizer->getNext()->getType()) {
-                    case TokenType::CUR_O:
-                        return new \Graphpinator\Parser\Operation\Operation($this->parseSelectionSet(), $operationType);
-                    case TokenType::NAME:
-                        $operationName = $this->tokenizer->getCurrent()->getValue();
-
-                        switch ($this->tokenizer->getNext()->getType()) {
-                            case TokenType::CUR_O:
-                                return new \Graphpinator\Parser\Operation\Operation($this->parseSelectionSet(), $operationType, $operationName);
-                            case TokenType::PAR_O:
-                                $variables = $this->parseVariables();
-                                $this->tokenizer->assertNext(
-                                    TokenType::CUR_O,
-                                    \Graphpinator\Exception\Parser\ExpectedSelectionSet::class,
-                                );
-
-                                return new \Graphpinator\Parser\Operation\Operation(
-                                    $this->parseSelectionSet(),
-                                    $operationType,
-                                    $operationName,
-                                    $variables,
-                                );
-                            default:
-                                throw new \Graphpinator\Exception\Parser\ExpectedAfterOperationName(
-                                    $this->tokenizer->getCurrent()->getLocation(),
-                                    $this->tokenizer->getCurrent()->getType(),
-                                );
-                        }
-
-                        break;
-                    default:
-                        throw new \Graphpinator\Exception\Parser\ExpectedAfterOperationType(
-                            $this->tokenizer->getCurrent()->getLocation(),
-                            $this->tokenizer->getCurrent()->getType(),
-                        );
-                }
-
-                break;
+                return new \Graphpinator\Parser\Operation\Operation(
+                    $operationType,
+                    ...$this->parseAfterOperationType($operationType),
+                );
             default:
                 throw new \Graphpinator\Exception\Parser\ExpectedRoot(
                     $this->tokenizer->getCurrent()->getLocation(),
                     $this->tokenizer->getCurrent()->getType(),
                 );
         }
+    }
+
+    private function parseAfterOperationType(string $operationType) : array
+    {
+        $operationName = null;
+
+        if ($this->tokenizer->getCurrent()->getType() === TokenType::NAME) {
+            $operationName = $this->tokenizer->getCurrent()->getValue();
+            $this->tokenizer->getNext();
+        }
+
+        return [
+            $operationName,
+            ...$this->parseAfterOperationName($operationType),
+        ];
+    }
+
+    private function parseAfterOperationName(string $operationType) : array
+    {
+        $variables = null;
+
+        if ($this->tokenizer->getCurrent()->getType() === TokenType::PAR_O) {
+            $variables = $this->parseVariables();
+            $this->tokenizer->getNext();
+        }
+
+        return [
+            $variables,
+            ...$this->parseAfterOperationVariables($operationType),
+        ];
+    }
+
+    private function parseAfterOperationVariables(string $operationType) : array
+    {
+        $directives = null;
+
+        if ($this->tokenizer->getCurrent()->getType() === TokenType::DIRECTIVE) {
+            $this->tokenizer->getPrev();
+            $directives = $this->parseDirectives($operationType);
+            $this->tokenizer->getNext();
+        }
+
+        if ($this->tokenizer->getCurrent()->getType() === TokenType::CUR_O) {
+            return [
+                $directives,
+                $this->parseSelectionSet(),
+            ];
+        }
+
+        throw new \Graphpinator\Exception\Parser\ExpectedSelectionSet(
+            $this->tokenizer->getCurrent()->getLocation(),
+            $this->tokenizer->getCurrent()->getType(),
+        );
     }
 
     /**

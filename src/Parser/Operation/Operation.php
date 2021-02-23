@@ -10,21 +10,25 @@ final class Operation
 
     private string $type;
     private ?string $name;
+    private ?\Graphpinator\Parser\Variable\VariableSet $variables;
+    private ?\Graphpinator\Parser\Directive\DirectiveSet $directives;
     private \Graphpinator\Parser\Field\FieldSet $children;
-    private \Graphpinator\Parser\Variable\VariableSet $variables;
 
     public function __construct(
+        string $type,
+        ?string $name,
+        ?\Graphpinator\Parser\Variable\VariableSet $variables,
+        ?\Graphpinator\Parser\Directive\DirectiveSet $directives,
         \Graphpinator\Parser\Field\FieldSet $children,
-        string $type = \Graphpinator\Tokenizer\OperationType::QUERY,
-        ?string $name = null,
-        ?\Graphpinator\Parser\Variable\VariableSet $variables = null,
     )
     {
-        $this->children = $children;
         $this->type = $type;
         $this->name = $name;
         $this->variables = $variables
-            ?? new \Graphpinator\Parser\Variable\VariableSet([]);
+            ?? new \Graphpinator\Parser\Variable\VariableSet();
+        $this->directives = $directives
+            ?? new \Graphpinator\Parser\Directive\DirectiveSet();
+        $this->children = $children;
     }
 
     public function getType() : string
@@ -45,6 +49,11 @@ final class Operation
     public function getVariables() : \Graphpinator\Parser\Variable\VariableSet
     {
         return $this->variables;
+    }
+
+    public function getDirectives() : \Graphpinator\Parser\Directive\DirectiveSet
+    {
+        return $this->directives;
     }
 
     public function normalize(
@@ -68,6 +77,7 @@ final class Operation
             $operation,
             $this->children->normalize($operation, $schema->getContainer(), $fragmentDefinitions, $variables),
             $variables,
+            $this->directives->normalize($operation, $schema->getContainer(), $variables),
             $this->getName(),
         );
     }

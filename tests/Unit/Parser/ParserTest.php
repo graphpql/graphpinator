@@ -246,8 +246,10 @@ final class ParserTest extends \PHPUnit\Framework\TestCase
 
         $operation = $result->getOperations()->current();
 
+        self::assertSame('queryName', $operation->getName());
         self::assertCount(0, $operation->getFields());
         self::assertCount(1, $operation->getVariables());
+        self::assertCount(0, $operation->getDirectives());
         self::assertArrayHasKey('varName', $operation->getVariables());
         self::assertSame('varName', $operation->getVariables()->offsetGet('varName')->getName());
         self::assertInstanceOf(
@@ -256,6 +258,48 @@ final class ParserTest extends \PHPUnit\Framework\TestCase
         );
         self::assertSame('Int', $operation->getVariables()->offsetGet('varName')->getType()->getName());
         self::assertNull($operation->getVariables()->offsetGet('varName')->getDefault());
+    }
+
+    public function testVariableNoName() : void
+    {
+        $result = \Graphpinator\Parser\Parser::parseString('query ($varName: Int) {}');
+
+        self::assertCount(0, $result->getFragments());
+        self::assertCount(1, $result->getOperations());
+
+        $operation = $result->getOperations()->current();
+
+        self::assertNull($operation->getName());
+        self::assertCount(0, $operation->getFields());
+        self::assertCount(1, $operation->getVariables());
+        self::assertCount(0, $operation->getDirectives());
+        self::assertArrayHasKey('varName', $operation->getVariables());
+        self::assertSame('varName', $operation->getVariables()->offsetGet('varName')->getName());
+        self::assertInstanceOf(
+            \Graphpinator\Parser\TypeRef\NamedTypeRef::class,
+            $operation->getVariables()->offsetGet('varName')->getType(),
+        );
+        self::assertSame('Int', $operation->getVariables()->offsetGet('varName')->getType()->getName());
+        self::assertNull($operation->getVariables()->offsetGet('varName')->getDefault());
+    }
+
+    public function testDirectiveNoName() : void
+    {
+        $result = \Graphpinator\Parser\Parser::parseString('query @directive {}');
+
+        self::assertCount(0, $result->getFragments());
+        self::assertCount(1, $result->getOperations());
+
+        $operation = $result->getOperations()->current();
+
+        self::assertNull($operation->getName());
+        self::assertCount(0, $operation->getFields());
+        self::assertCount(0, $operation->getVariables());
+        self::assertCount(1, $operation->getDirectives());
+        self::assertArrayHasKey(0, $operation->getDirectives());
+        self::assertSame('directive', $operation->getDirectives()->offsetGet(0)->getName());
+        self::assertSame(\Graphpinator\Tokenizer\OperationType::QUERY, $operation->getDirectives()->offsetGet(0)->getLocation());
+        self::assertNull($operation->getDirectives()->offsetGet(0)->getArguments());
     }
 
     public function testVariableDefault() : void
@@ -556,6 +600,7 @@ final class ParserTest extends \PHPUnit\Framework\TestCase
     {
         return [
             ['', \Graphpinator\Exception\Parser\EmptyRequest::class],
+            ['query', \Graphpinator\Exception\Parser\UnexpectedEnd::class],
             [
                 '$var',
                 \Graphpinator\Exception\Parser\ExpectedRoot::class,
@@ -585,19 +630,14 @@ final class ParserTest extends \PHPUnit\Framework\TestCase
             ['queryName {}', \Graphpinator\Exception\Parser\UnknownOperationType::class],
             ['queary queryName {}', \Graphpinator\Exception\Parser\UnknownOperationType::class],
             [
-                'query ($var: Int) {}',
-                \Graphpinator\Exception\Parser\ExpectedAfterOperationType::class,
-                'Expected operation name or selection set, got "(".',
-            ],
-            [
                 'query queryName field',
-                \Graphpinator\Exception\Parser\ExpectedAfterOperationName::class,
-                'Expected variable definition or selection set, got "name".',
+                \Graphpinator\Exception\Parser\ExpectedSelectionSet::class,
+                'Expected selection set, got "name".',
             ],
             [
                 'query queryName [$var: Int] {}',
-                \Graphpinator\Exception\Parser\ExpectedAfterOperationName::class,
-                'Expected variable definition or selection set, got "[".',
+                \Graphpinator\Exception\Parser\ExpectedSelectionSet::class,
+                'Expected selection set, got "[".',
             ],
             [
                 'query queryName ($var: Int) field',

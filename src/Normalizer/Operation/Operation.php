@@ -11,18 +11,21 @@ final class Operation
     private \Graphpinator\Type\Type $operation;
     private \Graphpinator\Normalizer\Field\FieldSet $children;
     private \Graphpinator\Normalizer\Variable\VariableSet $variables;
+    private \Graphpinator\Normalizer\Directive\DirectiveSet $directives;
     private ?string $name;
 
     public function __construct(
         \Graphpinator\Type\Type $operation,
         \Graphpinator\Normalizer\Field\FieldSet $children,
         \Graphpinator\Normalizer\Variable\VariableSet $variables,
+        \Graphpinator\Normalizer\Directive\DirectiveSet $directives,
         ?string $name
     )
     {
         $this->operation = $operation;
         $this->children = $children;
         $this->variables = $variables;
+        $this->directives = $directives;
         $this->name = $name;
     }
 
@@ -39,6 +42,11 @@ final class Operation
     public function getVariables() : \Graphpinator\Normalizer\Variable\VariableSet
     {
         return $this->variables;
+    }
+
+    public function getDirectives() : \Graphpinator\Normalizer\Directive\DirectiveSet
+    {
+        return $this->directives;
     }
 
     public function getName() : ?string
