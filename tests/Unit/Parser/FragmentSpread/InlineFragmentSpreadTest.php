@@ -12,7 +12,6 @@ final class InlineFragmentSpreadTest extends \PHPUnit\Framework\TestCase
             new \Graphpinator\Parser\Field\FieldSet([], new \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet()),
         );
         self::assertCount(0, $val->getFields());
-        self::assertSame(\Graphpinator\Type\Introspection\DirectiveLocation::INLINE_FRAGMENT, $val->getDirectives()->getLocation());
         self::assertCount(0, $val->getDirectives());
     }
 }
