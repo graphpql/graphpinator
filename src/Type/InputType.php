@@ -80,7 +80,7 @@ abstract class InputType extends \Graphpinator\Type\Contract\ConcreteDefinition 
     /**
      * This function serves to prevent infinite cycles.
      *
-     * It doesn't have to be used at all, unless inpu have arguments self referencing fields and wish to put default value for them.
+     * It doesn't have to be used at all, unless input have arguments self referencing fields and wish to put default value for them.
      */
     protected function afterGetFieldDefinition() : void
     {
