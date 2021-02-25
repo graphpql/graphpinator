@@ -11,7 +11,7 @@ interface QueryLocation extends ExecutableDefinition
     ) : string;
 
     public function resolveQueryAfter(
-        \Graphpinator\Value\TypeValue $typeValue,
         \Graphpinator\Value\ArgumentValueSet $arguments,
+        \Graphpinator\Value\TypeValue $typeValue,
     ) : string;
 }

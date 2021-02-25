@@ -82,7 +82,7 @@ final class ArgumentValue
     private function resolveDirectives() : void
     {
         foreach ($this->argument->getDirectiveUsages() as $directiveUsage) {
-            $directiveUsage->getDirective()->resolveArgumentDefinition($this, $directiveUsage->getArgumentValues());
+            $directiveUsage->getDirective()->resolveArgumentDefinition($directiveUsage->getArgumentValues(), $this);
         }
     }
 }

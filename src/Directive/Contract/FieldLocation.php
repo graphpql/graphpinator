@@ -11,7 +11,7 @@ interface FieldLocation extends ExecutableDefinition, TypeDependantDefinition
     ) : string;
 
     public function resolveFieldAfter(
-        \Graphpinator\Value\FieldValue $fieldValue,
         \Graphpinator\Value\ArgumentValueSet $arguments,
+        \Graphpinator\Value\FieldValue $fieldValue,
     ) : string;
 }

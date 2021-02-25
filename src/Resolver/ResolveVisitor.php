@@ -24,8 +24,7 @@ final class ResolveVisitor implements \Graphpinator\Typesystem\TypeVisitor
 
             foreach ($field->getDirectives() as $directive) {
                 $directiveDef = $directive->getDirective();
-                $arguments = $directive->getArguments();
-                $directiveResult = $directiveDef->resolveFieldBefore($arguments);
+                $directiveResult = $directiveDef->resolveFieldBefore($directive->getArguments());
 
                 if (!\array_key_exists($directiveResult, \Graphpinator\Directive\FieldDirectiveResult::ENUM)) {
                     throw new \Graphpinator\Exception\Resolver\InvalidDirectiveResult();
@@ -42,8 +41,7 @@ final class ResolveVisitor implements \Graphpinator\Typesystem\TypeVisitor
 
             foreach ($field->getDirectives() as $directive) {
                 $directiveDef = $directive->getDirective();
-                $arguments = $directive->getArguments();
-                $directiveResult = $directiveDef->resolveFieldAfter($fieldResult, $arguments);
+                $directiveResult = $directiveDef->resolveFieldAfter($directive->getArguments(), $fieldResult);
 
                 if (!\array_key_exists($directiveResult, \Graphpinator\Directive\FieldDirectiveResult::ENUM)) {
                     throw new \Graphpinator\Exception\Resolver\InvalidDirectiveResult();
@@ -119,11 +117,12 @@ final class ResolveVisitor implements \Graphpinator\Typesystem\TypeVisitor
         \Graphpinator\Normalizer\Field\Field $requestedField,
     ) : \Graphpinator\Value\FieldValue
     {
+        $arguments = $requestedField->getArguments();
+
         foreach ($field->getDirectiveUsages() as $directive) {
-            $directive->getDirective()->resolveFieldDefinitionBefore($this->parentResult, $directive->getArgumentValues());
+            $directive->getDirective()->resolveFieldDefinitionBefore($directive->getArgumentValues(), $this->parentResult, $arguments);
         }
 
-        $arguments = $requestedField->getArguments();
         $rawArguments = $arguments->getValuesForResolver();
         \array_unshift($rawArguments, $this->parentResult->getRawValue());
         $rawValue = \call_user_func_array($field->getResolveFunction(), $rawArguments);
@@ -134,7 +133,7 @@ final class ResolveVisitor implements \Graphpinator\Typesystem\TypeVisitor
         }
 
         foreach ($field->getDirectiveUsages() as $directive) {
-            $directive->getDirective()->resolveFieldDefinitionAfter($resolvedValue, $directive->getArgumentValues(),);
+            $directive->getDirective()->resolveFieldDefinitionAfter($directive->getArgumentValues(), $resolvedValue, $arguments);
         }
 
         if ($resolvedValue instanceof \Graphpinator\Value\NullValue) {

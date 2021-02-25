@@ -11,7 +11,7 @@ interface SubscriptionLocation extends ExecutableDefinition
     ) : string;
 
     public function resolveSubscriptionAfter(
-        \Graphpinator\Value\TypeValue $typeValue,
         \Graphpinator\Value\ArgumentValueSet $arguments,
+        \Graphpinator\Value\TypeValue $typeValue,
     ) : string;
 }

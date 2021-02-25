@@ -27,24 +27,26 @@ final class DeprecatedDirective extends \Graphpinator\Directive\Directive
     }
 
     public function resolveFieldDefinitionBefore(
-        \Graphpinator\Value\ResolvedValue $parentValue,
         \Graphpinator\Value\ArgumentValueSet $arguments,
+        \Graphpinator\Value\ResolvedValue $parentValue,
+        \Graphpinator\Value\ArgumentValueSet $fieldArguments,
     ) : void
     {
         // nothing here
     }
 
     public function resolveFieldDefinitionAfter(
-        \Graphpinator\Value\ResolvedValue $resolvedValue,
         \Graphpinator\Value\ArgumentValueSet $arguments,
+        \Graphpinator\Value\ResolvedValue $resolvedValue,
+        \Graphpinator\Value\ArgumentValueSet $fieldArguments,
     ) : void
     {
         // nothing here
     }
 
     public function resolveFieldDefinitionValue(
-        \Graphpinator\Value\FieldValue $fieldValue,
         \Graphpinator\Value\ArgumentValueSet $arguments,
+        \Graphpinator\Value\FieldValue $fieldValue,
     ) : void
     {
         // nothing here

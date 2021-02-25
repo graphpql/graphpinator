@@ -28,8 +28,8 @@ final class SkipDirective extends \Graphpinator\Directive\Directive
     }
 
     public function resolveFieldAfter(
-        \Graphpinator\Value\FieldValue $fieldValue,
         \Graphpinator\Value\ArgumentValueSet $arguments,
+        \Graphpinator\Value\FieldValue $fieldValue,
     ) : string
     {
         return \Graphpinator\Directive\FieldDirectiveResult::NONE;

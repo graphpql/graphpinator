@@ -11,7 +11,7 @@ interface MutationLocation extends ExecutableDefinition
     ) : string;
 
     public function resolveMutationAfter(
-        \Graphpinator\Value\TypeValue $typeValue,
         \Graphpinator\Value\ArgumentValueSet $arguments,
+        \Graphpinator\Value\TypeValue $typeValue,
     ) : string;
 }

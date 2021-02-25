@@ -12,7 +12,7 @@ interface ArgumentDefinitionLocation extends TypeSystemDefinition, TypeDependant
     ) : void;
 
     public function resolveArgumentDefinition(
-        \Graphpinator\Value\ArgumentValue $argumentValue,
         \Graphpinator\Value\ArgumentValueSet $arguments,
+        \Graphpinator\Value\ArgumentValue $argumentValue,
     ) : void;
 }

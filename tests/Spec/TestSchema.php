@@ -1100,7 +1100,10 @@ final class TestSchema
                 return \Graphpinator\Directive\FieldDirectiveResult::NONE;
             }
 
-            public function resolveFieldAfter(\Graphpinator\Value\FieldValue $fieldValue, \Graphpinator\Value\ArgumentValueSet $arguments) : string
+            public function resolveFieldAfter(
+                \Graphpinator\Value\ArgumentValueSet $arguments,
+                \Graphpinator\Value\FieldValue $fieldValue,
+            ) : string
             {
                 return \Graphpinator\Directive\FieldDirectiveResult::NONE;
             }
@@ -1132,7 +1135,10 @@ final class TestSchema
                 return 'random';
             }
 
-            public function resolveFieldAfter(\Graphpinator\Value\FieldValue $fieldValue, \Graphpinator\Value\ArgumentValueSet $arguments) : string
+            public function resolveFieldAfter(
+                \Graphpinator\Value\ArgumentValueSet $arguments,
+                \Graphpinator\Value\FieldValue $fieldValue,
+            ) : string
             {
                 return \Graphpinator\Directive\FieldDirectiveResult::NONE;
             }
@@ -1163,7 +1169,10 @@ final class TestSchema
                 return \Graphpinator\Directive\FieldDirectiveResult::NONE;
             }
 
-            public function resolveFieldAfter(\Graphpinator\Value\FieldValue $fieldValue, \Graphpinator\Value\ArgumentValueSet $arguments) : string
+            public function resolveFieldAfter(
+                \Graphpinator\Value\ArgumentValueSet $arguments,
+                \Graphpinator\Value\FieldValue $fieldValue,
+            ) : string
             {
                 return \Graphpinator\Directive\FieldDirectiveResult::NONE;
             }
