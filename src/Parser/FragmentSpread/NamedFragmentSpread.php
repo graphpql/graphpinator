@@ -49,10 +49,17 @@ final class NamedFragmentSpread implements \Graphpinator\Parser\FragmentSpread\F
             throw new \Graphpinator\Exception\Normalizer\TypeConditionOutputable();
         }
 
-        return new \Graphpinator\Normalizer\FragmentSpread\FragmentSpread(
-            $fragment->getFields()->normalize($typeCond, $typeContainer, $fragmentDefinitions, $variableSet),
-            $this->directives->normalize($typeCond, $typeContainer, $variableSet),
-            $typeCond,
-        );
+        $fields = $fragment->getFields()->normalize($typeCond, $typeContainer, $fragmentDefinitions, $variableSet);
+
+        foreach ($fields as $field) {
+            $directives = new \Graphpinator\Normalizer\Directive\DirectiveSet(
+                $this->directives, $field->getField(), $typeContainer, $variableSet
+            );
+
+            $field->getDirectives()->merge($directives);
+            $field->applyFragmentTypeCondition($typeCond);
+        }
+
+        return new \Graphpinator\Normalizer\FragmentSpread\FragmentSpread($fields);
     }
 }

@@ -13,7 +13,7 @@ final class Directive
 
     public function __construct(
         \Graphpinator\Parser\Directive\Directive $parsed,
-        \Graphpinator\Type\Contract\Definition $scopeType,
+        ?\Graphpinator\Field\Field $usage,
         \Graphpinator\Container\Container $typeContainer,
         \Graphpinator\Normalizer\Variable\VariableSet $variableSet,
     )
@@ -40,7 +40,13 @@ final class Directive
             $variableSet,
         );
 
-        if (!$directive->validateType($scopeType, $this->arguments)) {
+        $typeIsValid = match ($parsed->getLocation()) {
+            \Graphpinator\Directive\ExecutableDirectiveLocation::FIELD =>
+                $directive->validateFieldUsage($usage, $this->arguments),
+            default => true,
+        };
+
+        if (!$typeIsValid) {
             throw new \Graphpinator\Exception\Normalizer\DirectiveIncorrectType();
         }
     }

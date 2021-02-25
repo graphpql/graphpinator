@@ -4,8 +4,13 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Directive\Contract;
 
-interface FieldDefinitionLocation extends TypeSystemDefinition, TypeDependantDefinition
+interface FieldDefinitionLocation extends TypeSystemDefinition
 {
+    public function validateFieldUsage(
+        \Graphpinator\Field\Field $field,
+        \Graphpinator\Value\ArgumentValueSet $arguments,
+    ) : bool;
+
     public function validateVariance(
         ?\Graphpinator\Value\ArgumentValueSet $biggerSet,
         ?\Graphpinator\Value\ArgumentValueSet $smallerSet,

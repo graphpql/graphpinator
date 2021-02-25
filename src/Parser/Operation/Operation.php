@@ -73,7 +73,7 @@ final class Operation
 
         $variables = $this->variables->normalize($schema->getContainer());
         $children = $this->children->normalize($operationType, $schema->getContainer(), $fragmentDefinitions, $variables);
-        $directives = $this->directives->normalize($operationType, $schema->getContainer(), $variables);
+        $directives = $this->directives->normalize($schema->getContainer(), $variables);
         $args = [$operationType, $children, $variables, $directives, $this->getName()];
 
         return match ($this->type) {

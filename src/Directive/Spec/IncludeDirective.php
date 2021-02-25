@@ -10,8 +10,8 @@ final class IncludeDirective extends \Graphpinator\Directive\Directive
     protected const NAME = 'include';
     protected const DESCRIPTION = 'Built-in include directive.';
 
-    public function validateType(
-        ?\Graphpinator\Type\Contract\Definition $definition,
+    public function validateFieldUsage(
+        \Graphpinator\Field\Field $field,
         \Graphpinator\Value\ArgumentValueSet $arguments,
     ) : bool
     {

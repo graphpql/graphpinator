@@ -58,10 +58,17 @@ final class InlineFragmentSpread implements \Graphpinator\Parser\FragmentSpread\
         $scopeType = $typeCond
             ?? $parentType;
 
-        return new \Graphpinator\Normalizer\FragmentSpread\FragmentSpread(
-            $this->fields->normalize($scopeType, $typeContainer, $fragmentDefinitions, $variableSet),
-            $this->directives->normalize($scopeType, $typeContainer, $variableSet),
-            $typeCond,
-        );
+        $fields = $this->fields->normalize($scopeType, $typeContainer, $fragmentDefinitions, $variableSet);
+
+        foreach ($fields as $field) {
+            $directives = new \Graphpinator\Normalizer\Directive\DirectiveSet(
+                $this->directives, $field->getField(), $typeContainer, $variableSet
+            );
+
+            $field->getDirectives()->merge($directives);
+            $field->applyFragmentTypeCondition($typeCond);
+        }
+
+        return new \Graphpinator\Normalizer\FragmentSpread\FragmentSpread($fields);
     }
 }

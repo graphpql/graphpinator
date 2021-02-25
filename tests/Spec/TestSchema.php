@@ -1085,8 +1085,8 @@ final class TestSchema
             protected const REPEATABLE = true;
             public static int $count = 0;
 
-            public function validateType(
-                ?\Graphpinator\Type\Contract\Definition $definition,
+            public function validateFieldUsage(
+                \Graphpinator\Field\Field $field,
                 \Graphpinator\Value\ArgumentValueSet $arguments,
             ) : bool
             {
@@ -1122,8 +1122,8 @@ final class TestSchema
             protected const NAME = 'invalidDirectiveResult';
             protected const REPEATABLE = true;
 
-            public function validateType(
-                ?\Graphpinator\Type\Contract\Definition $definition,
+            public function validateFieldUsage(
+                \Graphpinator\Field\Field $field,
                 \Graphpinator\Value\ArgumentValueSet $arguments,
             ) : bool
             {
@@ -1156,8 +1156,8 @@ final class TestSchema
         {
             protected const NAME = 'invalidDirectiveType';
 
-            public function validateType(
-                ?\Graphpinator\Type\Contract\Definition $definition,
+            public function validateFieldUsage(
+                \Graphpinator\Field\Field $field,
                 \Graphpinator\Value\ArgumentValueSet $arguments,
             ) : bool
             {

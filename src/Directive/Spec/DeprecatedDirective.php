@@ -10,8 +10,8 @@ final class DeprecatedDirective extends \Graphpinator\Directive\Directive
     protected const NAME = 'deprecated';
     protected const DESCRIPTION = 'Built-in deprecated directive.';
 
-    public function validateType(
-        \Graphpinator\Type\Contract\Definition $definition,
+    public function validateFieldUsage(
+        \Graphpinator\Field\Field $field,
         \Graphpinator\Value\ArgumentValueSet $arguments,
     ) : bool
     {
