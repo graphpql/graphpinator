@@ -20,7 +20,7 @@ final class InlineFragmentSpread implements \Graphpinator\Parser\FragmentSpread\
     {
         $this->fields = $fields;
         $this->directives = $directives
-            ?? new \Graphpinator\Parser\Directive\DirectiveSet([], \Graphpinator\Directive\ExecutableDirectiveLocation::INLINE_FRAGMENT);
+            ?? new \Graphpinator\Parser\Directive\DirectiveSet();
         $this->typeCond = $typeCond;
     }
 

@@ -18,7 +18,7 @@ final class NamedFragmentSpread implements \Graphpinator\Parser\FragmentSpread\F
     {
         $this->name = $name;
         $this->directives = $directives
-            ?? new \Graphpinator\Parser\Directive\DirectiveSet([], \Graphpinator\Directive\ExecutableDirectiveLocation::FRAGMENT_SPREAD);
+            ?? new \Graphpinator\Parser\Directive\DirectiveSet();
     }
 
     public function getName() : string

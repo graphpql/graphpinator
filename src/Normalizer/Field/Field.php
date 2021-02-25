@@ -43,7 +43,7 @@ final class Field
         $this->directives = new \Graphpinator\Normalizer\Directive\DirectiveSet(
             $parsed->getDirectives() instanceof \Graphpinator\Parser\Directive\DirectiveSet
                 ? $parsed->getDirectives()
-                : new \Graphpinator\Parser\Directive\DirectiveSet([], \Graphpinator\Directive\ExecutableDirectiveLocation::FIELD),
+                : new \Graphpinator\Parser\Directive\DirectiveSet(),
             $field,
             $typeContainer,
             $variableSet,
