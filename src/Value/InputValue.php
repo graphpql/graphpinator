@@ -117,7 +117,7 @@ final class InputValue implements \Graphpinator\Value\InputedValue, \IteratorAgg
         }
 
         foreach ($this->type->getDirectiveUsages() as $directive) {
-            $directive->getDirective()->resolveInputObject($this, $directive->getArgumentValues());
+            $directive->getDirective()->resolveInputObject($directive->getArgumentValues(), $this);
         }
     }
 
