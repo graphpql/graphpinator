@@ -12,7 +12,7 @@ interface InputObjectLocation extends TypeSystemDefinition
     ) : bool;
 
     public function resolveInputObject(
-        \Graphpinator\Value\InputValue $inputValue,
         \Graphpinator\Value\ArgumentValueSet $arguments,
+        \Graphpinator\Value\InputValue $inputValue,
     ) : void;
 }
