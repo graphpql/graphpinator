@@ -307,7 +307,6 @@ final class FragmentTest extends \PHPUnit\Framework\TestCase
     public function testInvalid(Json $request, string $exception) : void
     {
         $this->expectException($exception);
-        $this->expectExceptionMessage(\constant($exception . '::MESSAGE'));
 
         $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
         $graphpinator->run(new \Graphpinator\Request\JsonRequestFactory($request));

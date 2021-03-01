@@ -39,7 +39,7 @@ final class NamedFragmentSpread implements \Graphpinator\Parser\FragmentSpread\F
     ) : \Graphpinator\Normalizer\FragmentSpread\FragmentSpread
     {
         if (!$fragmentDefinitions->offsetExists($this->name)) {
-            throw new \Graphpinator\Exception\Normalizer\UnknownFragment();
+            throw new \Graphpinator\Exception\Normalizer\UnknownFragment($this->name);
         }
 
         $fragment = $fragmentDefinitions->offsetGet($this->name);

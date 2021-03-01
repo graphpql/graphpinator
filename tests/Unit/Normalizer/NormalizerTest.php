@@ -326,7 +326,6 @@ final class NormalizerTest extends \PHPUnit\Framework\TestCase
     public function testInvalid(\Graphpinator\Parser\ParsedRequest $parseResult, string $exception) : void
     {
         $this->expectException($exception);
-        $this->expectExceptionMessage(\constant($exception . '::MESSAGE'));
 
         $parseResult->normalize(\Graphpinator\Tests\Spec\TestSchema::getSchema());
     }
