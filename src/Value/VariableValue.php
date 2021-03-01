@@ -27,6 +27,11 @@ final class VariableValue implements \Graphpinator\Value\InputedValue
     {
         return $this->value->getRawValue($forResolvers);
     }
+    
+    public function getConcreteValue() : ?\Graphpinator\Value\InputedValue
+    {
+        return $this->value;
+    }
 
     public function getType() : \Graphpinator\Type\Contract\Inputable
     {
