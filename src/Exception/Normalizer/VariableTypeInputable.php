@@ -6,5 +6,12 @@ namespace Graphpinator\Exception\Normalizer;
 
 final class VariableTypeInputable extends \Graphpinator\Exception\Normalizer\NormalizerError
 {
-    public const MESSAGE = 'Variable type must be inputable type.';
+    public const MESSAGE = 'Variable "%s" does not have inputable type.';
+
+    public function __construct(string $name)
+    {
+        $this->messageArgs = [$name];
+
+        parent::__construct();
+    }
 }

@@ -27,9 +27,15 @@ final class Normalizer
         $this->scopeStack = new \SplStack();
         $this->fragmentDefinitions = $parsedRequest->getFragments();
 
-        return new \Graphpinator\Normalizer\NormalizedRequest(
-            $this->normalizeOperationSet($parsedRequest->getOperations())
-        );
+        try {
+            return new \Graphpinator\Normalizer\NormalizedRequest(
+                $this->normalizeOperationSet($parsedRequest->getOperations())
+            );
+        } catch (\Graphpinator\Exception\GraphpinatorBase $e) {
+            $e->setPath($this->path);
+
+            throw $e;
+        }
     }
 
     private function normalizeOperationSet(
@@ -97,7 +103,7 @@ final class Normalizer
         $type = $this->normalizeTypeRef($variable->getType());
 
         if (!$type->isInputable()) {
-            throw new \Graphpinator\Exception\Normalizer\VariableTypeInputable();
+            throw new \Graphpinator\Exception\Normalizer\VariableTypeInputable($variable->getName());
         }
 
         \assert($type instanceof \Graphpinator\Type\Contract\Inputable);
@@ -181,7 +187,7 @@ final class Normalizer
 
             if (!$directiveDef->isRepeatable()) {
                 if (\array_key_exists($directiveDef->getName(), $directiveTypes)) {
-                    throw new \Graphpinator\Exception\Normalizer\DuplicatedDirective();
+                    throw new \Graphpinator\Exception\Normalizer\DuplicatedDirective($directiveDef->getName());
                 }
 
                 $directiveTypes[$directiveDef->getName()] = true;
@@ -207,11 +213,11 @@ final class Normalizer
         $this->path->add($directiveDef->getName() . ' <directive>');
 
         if (!$directiveDef instanceof \Graphpinator\Directive\Contract\ExecutableDefinition) {
-            throw new \Graphpinator\Exception\Normalizer\DirectiveNotExecutable();
+            throw new \Graphpinator\Exception\Normalizer\DirectiveNotExecutable($directive->getName());
         }
 
         if (!\in_array($directive->getLocation(), $directiveDef->getLocations(), true)) {
-            throw new \Graphpinator\Exception\Normalizer\DirectiveIncorrectLocation();
+            throw new \Graphpinator\Exception\Normalizer\DirectiveIncorrectLocation($directive->getName());
         }
 
         $arguments = $this->normalizeArgumentValueSet($directive->getArguments(), $directiveDef->getArguments());
@@ -224,7 +230,7 @@ final class Normalizer
         };
 
         if (!$usageIsValid) {
-            throw new \Graphpinator\Exception\Normalizer\DirectiveIncorrectType();
+            throw new \Graphpinator\Exception\Normalizer\DirectiveIncorrectUsage($directive->getName());
         }
 
         $this->path->pop();
@@ -237,18 +243,12 @@ final class Normalizer
         \Graphpinator\Argument\ArgumentSet $argumentDef,
     ) : \Graphpinator\Value\ArgumentValueSet
     {
-        try {
-            return \Graphpinator\Value\ArgumentValueSet::fromParsed(
-                $argumentValueSet
-                    ?? new \Graphpinator\Parser\Value\ArgumentValueSet([]),
-                $argumentDef,
-                $this->variableSet,
-            );
-        } catch (\Graphpinator\Exception\GraphpinatorBase $e) {
-            $e->setPath($this->path);
-
-            throw $e;
-        }
+        return \Graphpinator\Value\ArgumentValueSet::fromParsed(
+            $argumentValueSet
+                ?? new \Graphpinator\Parser\Value\ArgumentValueSet([]),
+            $argumentDef,
+            $this->variableSet,
+        );
     }
 
     private function normalizeFragmentSpreadSet(

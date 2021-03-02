@@ -126,22 +126,29 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
                 Json::fromNative((object) [
                     'query' => '{ fieldAbc @blaDirective() { fieldXyz { name } } }',
                 ]),
-                Json::fromNative((object) ['errors' => [['message' => 'Unknown directive "blaDirective".']]]),
+                Json::fromNative((object) ['errors' => [[
+                    'message' => 'Unknown directive "blaDirective".',
+                    'path' => [' <query>', 'fieldAbc <field>'],
+                ]]]),
             ],
             [
                 Json::fromNative((object) [
                     'query' => '{ fieldAbc { ... on BlaType { fieldXyz { name } } } }',
                 ]),
-                Json::fromNative((object) ['errors' => [['message' => 'Unknown type "BlaType".']]]),
+                Json::fromNative((object) ['errors' => [[
+                    'message' => 'Unknown type "BlaType".',
+                    'path' => [' <query>', 'fieldAbc <field>'],
+                ]]]),
             ],
             [
                 Json::fromNative((object) [
                     'query' => '{ fieldAbc { ... on String { fieldXyz { name } } } }',
                 ]),
                 Json::fromNative((object) [
-                    'errors' => [
-                        ['message' => 'Fragment type condition must be outputable composite type.'],
-                    ],
+                    'errors' => [[
+                        'message' => 'Fragment type condition must be outputable composite type.',
+                        'path' => [' <query>', 'fieldAbc <field>'],
+                    ]],
                 ]),
             ],
             [
@@ -149,9 +156,10 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
                     'query' => '{ fieldAbc { ... fragmentName } } fragment fragmentName on String { fieldXyz { name } }',
                 ]),
                 Json::fromNative((object) [
-                    'errors' => [
-                        ['message' => 'Fragment type condition must be outputable composite type.'],
-                    ],
+                    'errors' => [[
+                        'message' => 'Fragment type condition must be outputable composite type.',
+                        'path' => [' <query>', 'fieldAbc <field>'],
+                    ]],
                 ]),
             ],
             [
@@ -159,9 +167,10 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
                     'query' => '{ fieldAbc { ... on SimpleInput { fieldXyz { name } } } }',
                 ]),
                 Json::fromNative((object) [
-                    'errors' => [
-                        ['message' => 'Fragment type condition must be outputable composite type.'],
-                    ],
+                    'errors' => [[
+                        'message' => 'Fragment type condition must be outputable composite type.',
+                        'path' => [' <query>', 'fieldAbc <field>'],
+                    ]],
                 ]),
             ],
             [
@@ -169,12 +178,10 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
                     'query' => '{ fieldAbc { fieldXyz @testDirective(if: true) { name } } }',
                 ]),
                 Json::fromNative((object) [
-                    'errors' => [
-                        [
-                            'message' => 'Unknown argument "if" provided.',
-                            'path' => [' <query>', 'fieldAbc <field>', 'fieldXyz <field>', 'testDirective <directive>'],
-                        ],
-                    ],
+                    'errors' => [[
+                        'message' => 'Unknown argument "if" provided.',
+                        'path' => [' <query>', 'fieldAbc <field>', 'fieldXyz <field>', 'testDirective <directive>'],
+                    ]],
                 ]),
             ],
             [
@@ -182,9 +189,10 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
                     'query' => '{ fieldInvalidInput { fieldName fieldNumber fieldBool notDefinedField } }',
                 ]),
                 Json::fromNative((object) [
-                    'errors' => [
-                        ['message' => 'Unknown field "notDefinedField" requested for type "SimpleType".'],
-                    ],
+                    'errors' => [[
+                        'message' => 'Unknown field "notDefinedField" requested for type "SimpleType".',
+                        'path' => [' <query>', 'fieldInvalidInput <field>'],
+                    ]],
                 ]),
             ],
             [
@@ -195,9 +203,10 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
                     }',
                 ]),
                 Json::fromNative((object) [
-                    'errors' => [
-                        ['message' => 'Invalid fragment type condition. ("InterfaceAbc" is not instance of "InterfaceEfg").'],
-                    ],
+                    'errors' => [[
+                        'message' => 'Invalid fragment type condition. ("InterfaceAbc" is not instance of "InterfaceEfg").',
+                        'path' => ['queryName <query>', 'fieldFragment <field>', 'interfaceEfgFragment <fragment>'],
+                    ]],
                 ]),
             ],
             [
@@ -206,9 +215,10 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
                     'variables' => (object) [],
                 ]),
                 Json::fromNative((object) [
-                    'errors' => [
-                        ['message' => 'Invalid value resolved for type "Int" - got "123".'],
-                    ],
+                    'errors' => [[
+                        'message' => 'Invalid value resolved for type "Int" - got "123".',
+                        'path' => ['queryName <query>'],
+                    ]],
                 ]),
             ],
             [
@@ -251,6 +261,17 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
                 ]),
                 Json::fromNative((object) ['errors' => [['message' => 'Server responded with unknown error.']]]),
             ],
+            [
+                Json::fromNative((object) [
+                    'query' => 'query queryName { fieldAbc { fieldXyz @skip(if: false) @skip(if: false) { name } } }',
+                ]),
+                Json::fromNative((object) [
+                    'errors' => [[
+                        'message' => 'Duplicated directive "skip" which is not repeatable.',
+                        'path' => ['queryName <query>', 'fieldAbc <field>', 'fieldXyz <field>'],
+                    ]],
+                ]),
+            ]
         ];
     }
 

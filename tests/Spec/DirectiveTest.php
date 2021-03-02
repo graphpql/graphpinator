@@ -133,12 +133,6 @@ final class DirectiveTest extends \PHPUnit\Framework\TestCase
         return [
             [
                 Json::fromNative((object) [
-                    'query' => 'query queryName { fieldAbc { fieldXyz @skip(if: false) @skip(if: false) { name } } }',
-                ]),
-                \Graphpinator\Exception\Normalizer\DuplicatedDirective::class,
-            ],
-            [
-                Json::fromNative((object) [
                     'query' => 'query queryName { fieldAbc { fieldXyz @include(if: false) @include(if: false) { name } } }',
                 ]),
                 \Graphpinator\Exception\Normalizer\DuplicatedDirective::class,
@@ -165,7 +159,7 @@ final class DirectiveTest extends \PHPUnit\Framework\TestCase
                 Json::fromNative((object) [
                     'query' => 'query queryName { fieldAbc @invalidDirectiveType() { fieldXyz { name } } }',
                 ]),
-                \Graphpinator\Exception\Normalizer\DirectiveIncorrectType::class,
+                \Graphpinator\Exception\Normalizer\DirectiveIncorrectUsage::class,
             ],
             [
                 Json::fromNative((object) [
@@ -184,7 +178,6 @@ final class DirectiveTest extends \PHPUnit\Framework\TestCase
     public function testInvalid(Json $request, string $exception) : void
     {
         $this->expectException($exception);
-        $this->expectExceptionMessage(\constant($exception . '::MESSAGE'));
 
         $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
         $graphpinator->run(new \Graphpinator\Request\JsonRequestFactory($request));

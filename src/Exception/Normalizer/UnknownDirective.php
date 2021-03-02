@@ -8,9 +8,9 @@ final class UnknownDirective extends \Graphpinator\Exception\Resolver\ResolverEr
 {
     public const MESSAGE = 'Unknown directive "%s".';
 
-    public function __construct(string $directive)
+    public function __construct(string $name)
     {
-        $this->messageArgs = [$directive];
+        $this->messageArgs = [$name];
 
         parent::__construct();
     }
