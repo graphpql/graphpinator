@@ -262,6 +262,28 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
                         'path' => ['queryName <operation>', 'fieldAbc <field>', 'fieldXyz <field>', 'skip <directive>'],
                     ]],
                 ]),
+            ],
+            [
+                Json::fromNative((object) [
+                    'query' => 'query queryName { fieldArgumentDefaults(inputNumberList: [123, "invalid"]) { number } }',
+                ]),
+                Json::fromNative((object) [
+                    'errors' => [[
+                        'message' => 'Invalid value resolved for type "Int" - got "invalid".',
+                        'path' => ['queryName <operation>', 'fieldArgumentDefaults <field>', 'inputNumberList <argument>', '1 <list index>'],
+                    ]],
+                ]),
+            ],
+            [
+                Json::fromNative((object) [
+                    'query' => 'query queryName { fieldEnumArg(val: 123) }',
+                ]),
+                Json::fromNative((object) [
+                    'errors' => [[
+                        'message' => 'Invalid value resolved for type "SimpleEnum" - got 123.',
+                        'path' => ['queryName <operation>', 'fieldEnumArg <field>', 'val <argument>'],
+                    ]],
+                ]),
             ]
         ];
     }
