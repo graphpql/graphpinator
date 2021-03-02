@@ -6,16 +6,13 @@ namespace Graphpinator\Value;
 
 final class ListInputedValue extends \Graphpinator\Value\ListValue implements \Graphpinator\Value\InputedValue
 {
-    private function __construct(\Graphpinator\Type\ListType $type, array $value)
+    public function __construct(\Graphpinator\Type\ListType $type, array $value)
     {
         $this->type = $type;
         $this->value = $value;
     }
 
-    public static function fromRaw(
-        \Graphpinator\Type\ListType $type,
-        array $rawValue
-    ) : self
+    public static function fromRaw(\Graphpinator\Type\ListType $type, array $rawValue) : self
     {
         $innerType = $type->getInnerType();
         \assert($innerType instanceof \Graphpinator\Type\Contract\Inputable);
@@ -24,23 +21,6 @@ final class ListInputedValue extends \Graphpinator\Value\ListValue implements \G
 
         foreach ($rawValue as $item) {
             $inner[] = $innerType->createInputedValue($item);
-        }
-
-        return new self($type, $inner);
-    }
-
-    public static function fromParsed(
-        \Graphpinator\Type\ListType $type,
-        \Graphpinator\Parser\Value\ListVal $parsed,
-        \Graphpinator\Normalizer\Variable\VariableSet $variableSet,
-    ) : self
-    {
-        $inner = [];
-
-        foreach ($parsed->getValue() as $parserValue) {
-            \assert($parserValue instanceof \Graphpinator\Parser\Value\Value);
-
-            $inner[] = $parserValue->createInputedValue($type->getInnerType(), $variableSet);
         }
 
         return new self($type, $inner);

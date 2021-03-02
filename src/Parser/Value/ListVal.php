@@ -30,19 +30,8 @@ final class ListVal implements \Graphpinator\Parser\Value\Value
         return $return;
     }
 
-    public function createInputedValue(
-        \Graphpinator\Type\Contract\Inputable $type,
-        \Graphpinator\Normalizer\Variable\VariableSet $variableSet,
-    ) : \Graphpinator\Value\ListInputedValue
+    public function accept(ValueVisitor $valueVisitor) : mixed
     {
-        if ($type instanceof \Graphpinator\Type\NotNullType) {
-            return $this->createInputedValue($type->getInnerType(), $variableSet);
-        }
-
-        if ($type instanceof \Graphpinator\Type\ListType) {
-            return \Graphpinator\Value\ListInputedValue::fromParsed($type, $this, $variableSet);
-        }
-
-        throw new \Graphpinator\Exception\Value\InvalidValue($type->printName(), [], true);
+        return $valueVisitor->visitListVal($this);
     }
 }

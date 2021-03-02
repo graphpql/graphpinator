@@ -45,22 +45,6 @@ final class ArgumentValue
         throw new \Exception();
     }
 
-    public static function fromParsed(
-        \Graphpinator\Argument\Argument $argument,
-        \Graphpinator\Parser\Value\Value $parsedValue,
-        \Graphpinator\Normalizer\Variable\VariableSet $variableSet,
-    ) : self
-    {
-        $value = $parsedValue->createInputedValue($argument->getType(), $variableSet);
-        $default = $argument->getDefaultValue();
-
-        if ($value instanceof \Graphpinator\Value\NullInputedValue && $default instanceof \Graphpinator\Value\InputedValue) {
-            return new self($argument, $default, false);
-        }
-
-        return new self($argument, $value, true);
-    }
-
     public function getValue() : \Graphpinator\Value\InputedValue
     {
         return $this->value;

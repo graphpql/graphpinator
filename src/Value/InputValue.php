@@ -8,14 +8,10 @@ final class InputValue implements \Graphpinator\Value\InputedValue, \IteratorAgg
 {
     use \Nette\SmartObject;
 
-    private \Graphpinator\Type\InputType $type;
-    private \stdClass $value;
-
-    private function __construct(\Graphpinator\Type\InputType $type, \stdClass $value)
-    {
-        $this->type = $type;
-        $this->value = $value;
-    }
+    public function __construct(
+        private \Graphpinator\Type\InputType $type,
+        private \stdClass $value,
+    ) {}
 
     public static function fromRaw(\Graphpinator\Type\InputType $type, \stdClass $rawValue) : self
     {
@@ -36,39 +32,6 @@ final class InputValue implements \Graphpinator\Value\InputedValue, \IteratorAgg
                 $argument,
                 $rawValue->{$argument->getName()}
                     ?? null,
-            );
-        }
-
-        return new self($type, $inner);
-    }
-
-    public static function fromParsed(
-        \Graphpinator\Type\InputType $type,
-        \Graphpinator\Parser\Value\ObjectVal $parsed,
-        \Graphpinator\Normalizer\Variable\VariableSet $variableSet,
-    ) : self
-    {
-        foreach ($parsed->getValue() as $name => $temp) {
-            if ($type->getArguments()->offsetExists($name)) {
-                continue;
-            }
-
-            throw new \Graphpinator\Exception\Normalizer\UnknownInputField($name, $type->getName());
-        }
-
-        $inner = new \stdClass();
-
-        foreach ($type->getArguments() as $argument) {
-            if (!\property_exists($parsed->getValue(), $argument->getName())) {
-                $inner->{$argument->getName()} = \Graphpinator\Value\ArgumentValue::fromRaw($argument, null);
-
-                continue;
-            }
-
-            $inner->{$argument->getName()} = \Graphpinator\Value\ArgumentValue::fromParsed(
-                $argument,
-                $parsed->getValue()->{$argument->getName()},
-                $variableSet,
             );
         }
 

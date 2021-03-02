@@ -241,15 +241,42 @@ final class Normalizer
 
     private function normalizeArgumentValueSet(
         ?\Graphpinator\Parser\Value\ArgumentValueSet $argumentValueSet,
-        \Graphpinator\Argument\ArgumentSet $argumentDef,
+        \Graphpinator\Argument\ArgumentSet $argumentSet,
     ) : \Graphpinator\Value\ArgumentValueSet
     {
-        return \Graphpinator\Value\ArgumentValueSet::fromParsed(
-            $argumentValueSet
-                ?? new \Graphpinator\Parser\Value\ArgumentValueSet([]),
-            $argumentDef,
-            $this->variableSet,
-        );
+        $argumentValueSet ??= new \Graphpinator\Parser\Value\ArgumentValueSet();
+        $items = [];
+
+        foreach ($argumentSet as $argument) {
+            if (!$argumentValueSet->offsetExists($argument->getName())) {
+                $items[] = \Graphpinator\Value\ArgumentValue::fromRaw($argument, null);
+
+                continue;
+            }
+
+            $parsedArg = $argumentValueSet->offsetGet($argument->getName());
+            $items[] = $this->normalizeArgumentValue($parsedArg, $argument);
+        }
+
+        foreach ($argumentValueSet as $value) {
+            if (!$argumentSet->offsetExists($value->getName())) {
+                throw new \Graphpinator\Exception\Normalizer\UnknownArgument($value->getName());
+            }
+        }
+
+        return new \Graphpinator\Value\ArgumentValueSet($items);
+    }
+
+    private function normalizeArgumentValue(
+        \Graphpinator\Parser\Value\ArgumentValue $argumentValue,
+        \Graphpinator\Argument\Argument $argument,
+    ) : \Graphpinator\Value\ArgumentValue
+    {
+        $this->path->add($argument->getName() . ' <argument>');
+        $value = ConvertParserValueVisitor::convertArgumentValue($argumentValue->getValue(), $argument, $this->variableSet, $this->path);
+        $this->path->pop();
+
+        return $value;
     }
 
     private function normalizeFragmentSpreadSet(

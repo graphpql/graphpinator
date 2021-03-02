@@ -17,19 +17,8 @@ final class EnumLiteral implements \Graphpinator\Parser\Value\Value
         return $this->value;
     }
 
-    public function createInputedValue(
-        \Graphpinator\Type\Contract\Inputable $type,
-        \Graphpinator\Normalizer\Variable\VariableSet $variableSet,
-    ) : \Graphpinator\Value\InputedValue
+    public function accept(ValueVisitor $valueVisitor) : mixed
     {
-        if ($type instanceof \Graphpinator\Type\NotNullType) {
-            return $this->createInputedValue($type->getInnerType(), $variableSet);
-        }
-
-        if ($type instanceof \Graphpinator\Type\EnumType) {
-            return $type->createInputedValue($this->value);
-        }
-
-        throw new \Graphpinator\Exception\Value\InvalidValue($type->printName(), $this->value, true);
+        return $valueVisitor->visitEnumLiteral($this);
     }
 }

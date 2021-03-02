@@ -17,11 +17,8 @@ final class Literal implements \Graphpinator\Parser\Value\Value
         return $this->value;
     }
 
-    public function createInputedValue(
-        \Graphpinator\Type\Contract\Inputable $type,
-        \Graphpinator\Normalizer\Variable\VariableSet $variableSet,
-    ) : \Graphpinator\Value\InputedValue
+    public function accept(ValueVisitor $valueVisitor) : mixed
     {
-        return $type->createInputedValue($this->value);
+        return $valueVisitor->visitLiteral($this);
     }
 }

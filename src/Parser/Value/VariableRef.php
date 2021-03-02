@@ -17,15 +17,13 @@ final class VariableRef implements \Graphpinator\Parser\Value\Value
         throw new \Graphpinator\Exception\OperationNotSupported();
     }
 
-    public function createInputedValue(
-        \Graphpinator\Type\Contract\Inputable $type,
-        \Graphpinator\Normalizer\Variable\VariableSet $variableSet,
-    ) : \Graphpinator\Value\InputedValue
+    public function getVarName() : string
     {
-        if (!$variableSet->offsetExists($this->varName)) {
-            throw new \Graphpinator\Exception\Normalizer\UnknownVariable($this->varName);
-        }
+        return $this->varName;
+    }
 
-        return new \Graphpinator\Value\VariableValue($type, $variableSet->offsetGet($this->varName));
+    public function accept(ValueVisitor $valueVisitor) : mixed
+    {
+        return $valueVisitor->visitVariableRef($this);
     }
 }

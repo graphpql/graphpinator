@@ -12,43 +12,7 @@ final class ArgumentValueSet extends \Infinityloop\Utils\ImplicitObjectMap
 {
     protected const INNER_CLASS = \Graphpinator\Value\ArgumentValue::class;
 
-    private function __construct(array $data)
-    {
-        parent::__construct($data);
-    }
-
-    public static function fromParsed(
-        \Graphpinator\Parser\Value\ArgumentValueSet $parsed,
-        \Graphpinator\Argument\ArgumentSet $argumentSet,
-        \Graphpinator\Normalizer\Variable\VariableSet $variableSet,
-    ) : self
-    {
-        $items = [];
-
-        foreach ($argumentSet as $argument) {
-            if (!$parsed->offsetExists($argument->getName())) {
-                $items[] = \Graphpinator\Value\ArgumentValue::fromRaw($argument, null);
-
-                continue;
-            }
-
-            $parsedArg = $parsed->offsetGet($argument->getName());
-            $items[] = \Graphpinator\Value\ArgumentValue::fromParsed($argument, $parsedArg->getValue(), $variableSet);
-        }
-
-        foreach ($parsed as $value) {
-            if (!$argumentSet->offsetExists($value->getName())) {
-                throw new \Graphpinator\Exception\Normalizer\UnknownArgument($value->getName());
-            }
-        }
-
-        return new self($items);
-    }
-
-    public static function fromRaw(
-        array $rawValues,
-        \Graphpinator\Argument\ArgumentSet $argumentSet,
-    ) : self
+    public static function fromRaw(array $rawValues, \Graphpinator\Argument\ArgumentSet $argumentSet) : self
     {
         $items = [];
 

@@ -8,8 +8,5 @@ interface Value
 {
     public function getRawValue() : \stdClass|array|string|int|float|bool|null;
 
-    public function createInputedValue(
-        \Graphpinator\Type\Contract\Inputable $type,
-        \Graphpinator\Normalizer\Variable\VariableSet $variableSet,
-    ) : \Graphpinator\Value\InputedValue;
+    public function accept(ValueVisitor $valueVisitor) : mixed;
 }
