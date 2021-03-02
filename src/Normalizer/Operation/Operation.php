@@ -8,26 +8,13 @@ abstract class Operation
 {
     use \Nette\SmartObject;
 
-    protected \Graphpinator\Type\Type $operation;
-    protected \Graphpinator\Normalizer\Field\FieldSet $children;
-    protected \Graphpinator\Normalizer\Variable\VariableSet $variables;
-    protected \Graphpinator\Normalizer\Directive\DirectiveSet $directives;
-    protected ?string $name;
-
     public function __construct(
-        \Graphpinator\Type\Type $operation,
-        \Graphpinator\Normalizer\Field\FieldSet $children,
-        \Graphpinator\Normalizer\Variable\VariableSet $variables,
-        \Graphpinator\Normalizer\Directive\DirectiveSet $directives,
-        ?string $name
-    )
-    {
-        $this->operation = $operation;
-        $this->children = $children;
-        $this->variables = $variables;
-        $this->directives = $directives;
-        $this->name = $name;
-    }
+        protected \Graphpinator\Type\Type $operation,
+        protected \Graphpinator\Normalizer\Field\FieldSet $children,
+        protected \Graphpinator\Normalizer\Variable\VariableSet $variables,
+        protected \Graphpinator\Normalizer\Directive\DirectiveSet $directives,
+        protected ?string $name,
+    ) {}
 
     public function getType() : \Graphpinator\Type\Type
     {

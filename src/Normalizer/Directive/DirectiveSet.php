@@ -12,33 +12,6 @@ final class DirectiveSet extends \Infinityloop\Utils\ObjectSet
 {
     protected const INNER_CLASS = Directive::class;
 
-    public function __construct(
-        \Graphpinator\Parser\Directive\DirectiveSet $parsed,
-        ?\Graphpinator\Field\Field $usage,
-        \Graphpinator\Container\Container $typeContainer,
-        \Graphpinator\Normalizer\Variable\VariableSet $variableSet,
-    )
-    {
-        parent::__construct();
-
-        $directiveTypes = [];
-
-        foreach ($parsed as $parsedDirective) {
-            $normalizedDirective = new Directive($parsedDirective, $usage, $typeContainer, $variableSet);
-            $directive = $normalizedDirective->getDirective();
-
-            if (!$directive->isRepeatable()) {
-                if (\array_key_exists($directive->getName(), $directiveTypes)) {
-                    throw new \Graphpinator\Exception\Normalizer\DuplicatedDirective();
-                }
-
-                $directiveTypes[$directive->getName()] = true;
-            }
-
-            $this[] = $normalizedDirective;
-        }
-    }
-
     public function applyVariables(\Graphpinator\Normalizer\VariableValueSet $variables) : void
     {
         foreach ($this as $directive) {

@@ -6,11 +6,11 @@ namespace Graphpinator\Exception\Normalizer;
 
 final class UnknownArgument extends \Graphpinator\Exception\Resolver\ResolverError
 {
-    public const MESSAGE = 'Unknown argument "%s" provided for field/directive "%s".';
+    public const MESSAGE = 'Unknown argument "%s" provided.';
 
-    public function __construct(string $argument, string $name)
+    public function __construct(string $argument)
     {
-        $this->messageArgs = [$argument, $name];
+        $this->messageArgs = [$argument];
 
         parent::__construct();
     }

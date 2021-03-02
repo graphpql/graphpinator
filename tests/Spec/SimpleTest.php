@@ -164,13 +164,14 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
     {
         $source = new \Graphpinator\Source\StringSource($request['query']);
         $parser = new \Graphpinator\Parser\Parser($source);
+        $normalizer = new \Graphpinator\Normalizer\Normalizer(TestSchema::getSchema());
 
         $operationName = $request['operationName']
             ?? null;
         $variables = $request['variables']
             ?? new \stdClass();
 
-        $result = $parser->parse()->normalize(TestSchema::getSchema())->finalize($variables, $operationName)->execute();
+        $result = $normalizer->normalize($parser->parse())->finalize($variables, $operationName)->execute();
 
         self::assertSame($expected->toString(), $result->toString());
     }
@@ -284,7 +285,7 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
                 Json::fromNative((object) [
                     'query' => 'query queryName { fieldAbc { fieldXyz } }',
                 ]),
-                \Graphpinator\Exception\Resolver\SelectionOnComposite::class,
+                \Graphpinator\Exception\Normalizer\SelectionOnComposite::class,
             ],
             [
                 Json::fromNative((object) [

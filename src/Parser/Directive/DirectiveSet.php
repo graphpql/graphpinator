@@ -11,12 +11,4 @@ namespace Graphpinator\Parser\Directive;
 final class DirectiveSet extends \Infinityloop\Utils\ObjectSet
 {
     protected const INNER_CLASS = Directive::class;
-
-    public function normalize(
-        \Graphpinator\Container\Container $typeContainer,
-        \Graphpinator\Normalizer\Variable\VariableSet $variableSet,
-    ) : \Graphpinator\Normalizer\Directive\DirectiveSet
-    {
-        return new \Graphpinator\Normalizer\Directive\DirectiveSet($this, null, $typeContainer, $variableSet);
-    }
 }

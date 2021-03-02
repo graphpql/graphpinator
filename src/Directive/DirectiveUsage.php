@@ -17,7 +17,7 @@ final class DirectiveUsage implements \Graphpinator\Typesystem\Component
     )
     {
         $this->directive = $directive;
-        $this->argumentValues = \Graphpinator\Value\ArgumentValueSet::fromRaw($arguments, $this->directive);
+        $this->argumentValues = \Graphpinator\Value\ArgumentValueSet::fromRaw($arguments, $directive->getArguments());
     }
 
     public function getDirective() : \Graphpinator\Directive\Contract\TypeSystemDefinition

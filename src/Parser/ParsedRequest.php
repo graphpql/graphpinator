@@ -22,13 +22,4 @@ final class ParsedRequest
     {
         return $this->fragments;
     }
-
-    public function normalize(\Graphpinator\Type\Schema $schema) : \Graphpinator\Normalizer\NormalizedRequest
-    {
-        foreach ($this->fragments as $fragment) {
-            $fragment->validateCycles($this->fragments, []);
-        }
-
-        return new \Graphpinator\Normalizer\NormalizedRequest($this->operations->normalize($schema, $this->fragments));
-    }
 }

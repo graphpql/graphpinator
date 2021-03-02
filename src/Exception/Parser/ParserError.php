@@ -8,7 +8,9 @@ abstract class ParserError extends \Graphpinator\Exception\GraphpinatorBase
 {
     public function __construct(\Graphpinator\Common\Location $location)
     {
-        parent::__construct($location);
+        parent::__construct();
+
+        $this->location = $location;
     }
 
     final protected function isOutputable() : bool

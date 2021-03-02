@@ -19,12 +19,11 @@ final class ArgumentValueSet extends \Infinityloop\Utils\ImplicitObjectMap
 
     public static function fromParsed(
         \Graphpinator\Parser\Value\ArgumentValueSet $parsed,
-        \Graphpinator\Field\Field|\Graphpinator\Directive\Directive $element,
+        \Graphpinator\Argument\ArgumentSet $argumentSet,
         \Graphpinator\Normalizer\Variable\VariableSet $variableSet,
     ) : self
     {
         $items = [];
-        $argumentSet = $element->getArguments();
 
         foreach ($argumentSet as $argument) {
             if (!$parsed->offsetExists($argument->getName())) {
@@ -39,7 +38,7 @@ final class ArgumentValueSet extends \Infinityloop\Utils\ImplicitObjectMap
 
         foreach ($parsed as $value) {
             if (!$argumentSet->offsetExists($value->getName())) {
-                throw new \Graphpinator\Exception\Normalizer\UnknownArgument($value->getName(), $element->getName());
+                throw new \Graphpinator\Exception\Normalizer\UnknownArgument($value->getName());
             }
         }
 
@@ -48,11 +47,10 @@ final class ArgumentValueSet extends \Infinityloop\Utils\ImplicitObjectMap
 
     public static function fromRaw(
         array $rawValues,
-        \Graphpinator\Field\Field|\Graphpinator\Directive\Contract\Definition $element,
+        \Graphpinator\Argument\ArgumentSet $argumentSet,
     ) : self
     {
         $items = [];
-        $argumentSet = $element->getArguments();
 
         foreach ($argumentSet as $argument) {
             if (!\array_key_exists($argument->getName(), $rawValues)) {
@@ -66,7 +64,7 @@ final class ArgumentValueSet extends \Infinityloop\Utils\ImplicitObjectMap
 
         foreach ($rawValues as $key => $value) {
             if (!$argumentSet->offsetExists($key)) {
-                throw new \Graphpinator\Exception\Normalizer\UnknownArgument($key, $element->getName());
+                throw new \Graphpinator\Exception\Normalizer\UnknownArgument($key);
             }
         }
 

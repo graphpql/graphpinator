@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Exception\Resolver;
+namespace Graphpinator\Exception\Normalizer;
 
 final class SelectionOnComposite extends \Graphpinator\Exception\Resolver\ResolverError
 {

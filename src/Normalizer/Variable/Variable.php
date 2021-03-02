@@ -8,26 +8,11 @@ final class Variable
 {
     use \Nette\SmartObject;
 
-    private string $name;
-    private \Graphpinator\Type\Contract\Inputable $type;
-    private ?\Graphpinator\Value\InputedValue $defaultValue;
-
     public function __construct(
-        string $name,
-        \Graphpinator\Type\Contract\Definition $type,
-        ?\Graphpinator\Parser\Value\Value $default = null
-    )
-    {
-        if (!$type instanceof \Graphpinator\Type\Contract\Inputable || !$type->isInputable()) {
-            throw new \Graphpinator\Exception\Normalizer\VariableTypeInputable();
-        }
-
-        $this->name = $name;
-        $this->type = $type;
-        $this->defaultValue = $default instanceof \Graphpinator\Parser\Value\Value
-            ? $type->createInputedValue($default->getRawValue())
-            : null;
-    }
+        private string $name,
+        private \Graphpinator\Type\Contract\Inputable $type,
+        private ?\Graphpinator\Value\InputedValue $defaultValue,
+    ) {}
 
     public function getName() : string
     {

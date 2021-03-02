@@ -28,15 +28,4 @@ final class Variable
     {
         return $this->default;
     }
-
-    public function normalize(
-        \Graphpinator\Container\Container $typeContainer,
-    ) : \Graphpinator\Normalizer\Variable\Variable
-    {
-        return new \Graphpinator\Normalizer\Variable\Variable(
-            $this->name,
-            $this->type->normalize($typeContainer),
-            $this->default,
-        );
-    }
 }

@@ -12,22 +12,22 @@ final class IsSameTest extends \PHPUnit\Framework\TestCase
             [
                 new \Graphpinator\Value\VariableValue(
                     new \Graphpinator\Type\Scalar\StringType(),
-                    new \Graphpinator\Normalizer\Variable\Variable('var1', new \Graphpinator\Type\Scalar\StringType()),
+                    new \Graphpinator\Normalizer\Variable\Variable('var1', new \Graphpinator\Type\Scalar\StringType(), null),
                 ),
                 new \Graphpinator\Value\VariableValue(
                     new \Graphpinator\Type\Scalar\StringType(),
-                    new \Graphpinator\Normalizer\Variable\Variable('var1', new \Graphpinator\Type\Scalar\StringType()),
+                    new \Graphpinator\Normalizer\Variable\Variable('var1', new \Graphpinator\Type\Scalar\StringType(), null),
                 ),
                 true,
             ],
             [
                 new \Graphpinator\Value\VariableValue(
                     new \Graphpinator\Type\Scalar\StringType(),
-                    new \Graphpinator\Normalizer\Variable\Variable('var1', new \Graphpinator\Type\Scalar\StringType()),
+                    new \Graphpinator\Normalizer\Variable\Variable('var1', new \Graphpinator\Type\Scalar\StringType(), null),
                 ),
                 new \Graphpinator\Value\VariableValue(
                     new \Graphpinator\Type\Scalar\StringType(),
-                    new \Graphpinator\Normalizer\Variable\Variable('var2', new \Graphpinator\Type\Scalar\StringType()),
+                    new \Graphpinator\Normalizer\Variable\Variable('var2', new \Graphpinator\Type\Scalar\StringType(), null),
                 ),
                 false,
             ],
@@ -58,7 +58,7 @@ final class IsSameTest extends \PHPUnit\Framework\TestCase
                 ),
                 new \Graphpinator\Value\VariableValue(
                     new \Graphpinator\Type\Scalar\StringType(),
-                    new \Graphpinator\Normalizer\Variable\Variable('var2', new \Graphpinator\Type\Scalar\StringType()),
+                    new \Graphpinator\Normalizer\Variable\Variable('var2', new \Graphpinator\Type\Scalar\StringType(), null),
                 ),
                 false,
             ],

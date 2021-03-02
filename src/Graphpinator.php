@@ -59,7 +59,8 @@ final class Graphpinator implements \Psr\Log\LoggerAwareInterface
             }
 
             if ($result instanceof \Graphpinator\Parser\ParsedRequest) {
-                $result = $result->normalize($this->schema);
+                $normalizer = new \Graphpinator\Normalizer\Normalizer($this->schema);
+                $result = $normalizer->normalize($result);
 
                 foreach ($this->modules as $module) {
                     $result = $module->processNormalized($result);
