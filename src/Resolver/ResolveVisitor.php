@@ -100,7 +100,7 @@ final class ResolveVisitor implements \Graphpinator\Typesystem\TypeVisitor
             if ($value instanceof \Graphpinator\Value\NullValue) {
                 $return[] = $value;
             } else {
-                $resolver = new ResolveVisitor(
+                $resolver = new self(
                     $this->requestedFields,
                     $value,
                 );
@@ -139,7 +139,7 @@ final class ResolveVisitor implements \Graphpinator\Typesystem\TypeVisitor
         if ($resolvedValue instanceof \Graphpinator\Value\NullValue) {
             $fieldValue = $resolvedValue;
         } else {
-            $resolver = new ResolveVisitor(
+            $resolver = new self(
                 $requestedField->getFields(),
                 $resolvedValue,
             );
