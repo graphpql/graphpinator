@@ -8,8 +8,6 @@ final class Fragment
 {
     use \Nette\SmartObject;
 
-    private bool $cycleValidated = false;
-
     public function __construct(
         private string $name,
         private \Graphpinator\Parser\TypeRef\NamedTypeRef $typeCond,
@@ -29,21 +27,5 @@ final class Fragment
     public function getTypeCond() : \Graphpinator\Parser\TypeRef\NamedTypeRef
     {
         return $this->typeCond;
-    }
-
-    public function validateCycles(FragmentSet $fragmentDefinitions, array $stack) : void
-    {
-        if ($this->cycleValidated) {
-            return;
-        }
-
-        if (\array_key_exists($this->name, $stack)) {
-            throw new \Graphpinator\Exception\Normalizer\FragmentCycle();
-        }
-
-        $stack[$this->name] = true;
-        $this->fields->validateCycles($fragmentDefinitions, $stack);
-        unset($stack[$this->name]);
-        $this->cycleValidated = true;
     }
 }

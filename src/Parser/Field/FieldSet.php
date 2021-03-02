@@ -25,21 +25,4 @@ final class FieldSet extends \Infinityloop\Utils\ObjectSet
     {
         return $this->fragments;
     }
-
-    public function validateCycles(\Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions, array $stack) : void
-    {
-        foreach ($this as $field) {
-            if ($field->getFields() instanceof self) {
-                $field->getFields()->validateCycles($fragmentDefinitions, $stack);
-            }
-        }
-
-        foreach ($this->getFragmentSpreads() as $spread) {
-            if (!$spread instanceof \Graphpinator\Parser\FragmentSpread\NamedFragmentSpread) {
-                continue;
-            }
-
-            $fragmentDefinitions[$spread->getName()]->validateCycles($fragmentDefinitions, $stack);
-        }
-    }
 }

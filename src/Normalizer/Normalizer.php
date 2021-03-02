@@ -12,17 +12,18 @@ final class Normalizer
     private \SplStack $scopeStack;
     private \Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions;
     private \Graphpinator\Normalizer\Variable\VariableSet $variableSet;
+    private FragmentCycleValidator $fragmentCycleValidator;
 
     public function __construct(
         private \Graphpinator\Type\Schema $schema,
-    ) {}
+    )
+    {
+        $this->fragmentCycleValidator = new FragmentCycleValidator();
+    }
 
     public function normalize(\Graphpinator\Parser\ParsedRequest $parsedRequest) : NormalizedRequest
     {
-        foreach ($parsedRequest->getFragments() as $fragment) {
-            $fragment->validateCycles($parsedRequest->getFragments(), []);
-        }
-
+        $this->fragmentCycleValidator->validate($parsedRequest->getFragments());
         $this->path = new \Graphpinator\Common\Path();
         $this->scopeStack = new \SplStack();
         $this->fragmentDefinitions = $parsedRequest->getFragments();
