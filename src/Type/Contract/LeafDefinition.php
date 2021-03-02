@@ -6,7 +6,7 @@ namespace Graphpinator\Type\Contract;
 
 abstract class LeafDefinition extends \Graphpinator\Type\Contract\ConcreteDefinition implements
     \Graphpinator\Type\Contract\Inputable,
-    \Graphpinator\Type\Contract\Scopable
+    \Graphpinator\Type\Contract\Outputable
 {
     abstract public function validateNonNullValue(mixed $rawValue) : bool;
 
@@ -17,10 +17,5 @@ abstract class LeafDefinition extends \Graphpinator\Type\Contract\ConcreteDefini
         }
 
         return new \Graphpinator\Value\ScalarValue($this, $rawValue, true);
-    }
-
-    final public function getField(string $name) : \Graphpinator\Field\Field
-    {
-        throw new \Graphpinator\Exception\Normalizer\SelectionOnLeaf();
     }
 }

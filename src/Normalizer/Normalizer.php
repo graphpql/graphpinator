@@ -135,9 +135,8 @@ final class Normalizer
     ) : \Graphpinator\Normalizer\Field\Field
     {
         $parentType = $this->scopeStack->top();
-        \assert($parentType instanceof \Graphpinator\Type\Contract\Scopable);
 
-        $fieldDef = $parentType->getField($field->getName());
+        $fieldDef = $parentType->accept(new GetFieldVisitor($field->getName()));
         $fieldType = $fieldDef->getType()->getNamedType();
 
         $this->path->add($field->getName() . ' <field>');

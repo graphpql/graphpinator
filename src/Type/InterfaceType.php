@@ -55,13 +55,6 @@ abstract class InterfaceType extends \Graphpinator\Type\Contract\AbstractDefinit
         return $this->fields;
     }
 
-    final public function getField(string $name) : \Graphpinator\Field\Field
-    {
-        return $this->getMetaFields()[$name]
-            ?? $this->getFields()[$name]
-            ?? throw new \Graphpinator\Exception\Normalizer\UnknownField($name, $this->getName());
-    }
-
     final public function getTypeKind() : string
     {
         return \Graphpinator\Type\Introspection\TypeKind::INTERFACE;

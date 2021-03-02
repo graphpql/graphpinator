@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Normalizer\Field;
 
+use Graphpinator\Normalizer\GetFieldVisitor;
+
 /**
  * @method \Graphpinator\Normalizer\Field\Field current() : object
  * @method \Graphpinator\Normalizer\Field\Field offsetGet($offset) : object
@@ -58,7 +60,7 @@ final class FieldSet extends \Infinityloop\Utils\ObjectSet
         $fieldArguments = $field->getArguments();
         $scopeType = $field->getTypeCondition()
             ?? $parentType;
-        $fieldReturnType = $scopeType->getField($field->getName())->getType();
+        $fieldReturnType = $scopeType->accept(new GetFieldVisitor($field->getName()))->getType();
 
         foreach ($this->fieldsForName[$field->getAlias()] as $conflict) {
             \assert($conflict instanceof \Graphpinator\Normalizer\Field\Field);
@@ -66,7 +68,7 @@ final class FieldSet extends \Infinityloop\Utils\ObjectSet
             $conflictArguments = $conflict->getArguments();
             $conflictParentType = $conflict->getTypeCondition()
                 ?? $parentType;
-            $conflictReturnType = $conflictParentType->getField($conflict->getName())->getType();
+            $conflictReturnType = $conflictParentType->accept(new GetFieldVisitor($conflict->getName()))->getType();
 
             /** Fields must have same response shape (type) */
             if (!$fieldReturnType->isInstanceOf($conflictReturnType) ||

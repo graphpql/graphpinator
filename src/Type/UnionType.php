@@ -40,12 +40,6 @@ abstract class UnionType extends \Graphpinator\Type\Contract\AbstractDefinition
         return false;
     }
 
-    final public function getField(string $name) : \Graphpinator\Field\Field
-    {
-        return $this->getMetaFields()[$name]
-            ?? throw new \Graphpinator\Exception\Normalizer\SelectionOnUnion();
-    }
-
     final public function getTypeKind() : string
     {
         return \Graphpinator\Type\Introspection\TypeKind::UNION;
