@@ -52,7 +52,7 @@ final class FragmentCycleValidator
                 continue;
             }
 
-            if (!$this->fragmentSet->offsetGet($spread->getName())) {
+            if (!$this->fragmentSet->offsetExists($spread->getName())) {
                 throw new \Graphpinator\Exception\Normalizer\UnknownFragment($spread->getName());
             }
 
