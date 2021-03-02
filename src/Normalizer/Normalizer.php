@@ -12,7 +12,7 @@ final class Normalizer
     private \SplStack $scopeStack;
     private \Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions;
     private \Graphpinator\Normalizer\Variable\VariableSet $variableSet;
-    private FragmentCycleValidator $fragmentCycleValidator;
+    private \Graphpinator\Normalizer\FragmentCycleValidator $fragmentCycleValidator;
 
     public function __construct(
         private \Graphpinator\Type\Schema $schema,

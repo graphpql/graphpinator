@@ -163,7 +163,7 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
     public function testComponents(Json $request, Json $expected) : void
     {
         $source = new \Graphpinator\Source\StringSource($request['query']);
-        $parser = new \Graphpinator\Parser\Parser($source);
+        $parser = new \Graphpinator\Parser\Parser();
         $normalizer = new \Graphpinator\Normalizer\Normalizer(TestSchema::getSchema());
 
         $operationName = $request['operationName']
@@ -171,7 +171,7 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
         $variables = $request['variables']
             ?? new \stdClass();
 
-        $result = $normalizer->normalize($parser->parse())->finalize($variables, $operationName)->execute();
+        $result = $normalizer->normalize($parser->parse($source))->finalize($variables, $operationName)->execute();
 
         self::assertSame($expected->toString(), $result->toString());
     }

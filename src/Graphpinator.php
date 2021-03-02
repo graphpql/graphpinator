@@ -8,10 +8,11 @@ final class Graphpinator implements \Psr\Log\LoggerAwareInterface
 {
     use \Nette\SmartObject;
 
-    private \Graphpinator\Type\Schema $schema;
     private bool $catchExceptions;
     private \Graphpinator\Module\ModuleSet $modules;
     private \Psr\Log\LoggerInterface $logger;
+    private \Graphpinator\Parser\Parser $parser;
+    private \Graphpinator\Normalizer\Normalizer $normalizer;
 
     public function __construct(
         \Graphpinator\Type\Schema $schema,
@@ -20,7 +21,6 @@ final class Graphpinator implements \Psr\Log\LoggerAwareInterface
         ?\Psr\Log\LoggerInterface $logger = null
     )
     {
-        $this->schema = $schema;
         $this->catchExceptions = $catchExceptions;
         $this->modules = $modules instanceof \Graphpinator\Module\ModuleSet
             ? $modules
@@ -28,6 +28,8 @@ final class Graphpinator implements \Psr\Log\LoggerAwareInterface
         $this->logger = $logger instanceof \Psr\Log\LoggerInterface
             ? $logger
             : new \Psr\Log\NullLogger();
+        $this->parser = new \Graphpinator\Parser\Parser();
+        $this->normalizer = new \Graphpinator\Normalizer\Normalizer($schema);
     }
 
     public function run(\Graphpinator\Request\RequestFactory $requestFactory) : \Graphpinator\Result
@@ -47,7 +49,7 @@ final class Graphpinator implements \Psr\Log\LoggerAwareInterface
             }
 
             if ($result instanceof \Graphpinator\Request\Request) {
-                $result = \Graphpinator\Parser\Parser::parseString($request->getQuery());
+                $result = $this->parser->parse(new \Graphpinator\Source\StringSource($request->getQuery()));
 
                 foreach ($this->modules as $module) {
                     $result = $module->processParsed($result);
@@ -59,8 +61,7 @@ final class Graphpinator implements \Psr\Log\LoggerAwareInterface
             }
 
             if ($result instanceof \Graphpinator\Parser\ParsedRequest) {
-                $normalizer = new \Graphpinator\Normalizer\Normalizer($this->schema);
-                $result = $normalizer->normalize($result);
+                $result = $this->normalizer->normalize($result);
 
                 foreach ($this->modules as $module) {
                     $result = $module->processNormalized($result);

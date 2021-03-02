@@ -12,25 +12,22 @@ final class Parser
 
     private \Graphpinator\Parser\TokenContainer $tokenizer;
 
-    public function __construct(\Graphpinator\Source\Source $source)
-    {
-        $this->tokenizer = new \Graphpinator\Parser\TokenContainer($source);
-    }
-
     /**
      * Static shortcut.
      * @param string $source
      */
     public static function parseString(string $source) : ParsedRequest
     {
-        return (new self(new \Graphpinator\Source\StringSource($source)))->parse();
+        return (new self())->parse(new \Graphpinator\Source\StringSource($source));
     }
 
     /**
      * Parses document and produces ParseResult object.
      */
-    public function parse() : ParsedRequest
+    public function parse(\Graphpinator\Source\Source $source) : ParsedRequest
     {
+        $this->tokenizer = new \Graphpinator\Parser\TokenContainer($source);
+
         if ($this->tokenizer->isEmpty()) {
             throw new \Graphpinator\Exception\Parser\EmptyRequest(new \Graphpinator\Common\Location(1, 1));
         }
