@@ -14,8 +14,8 @@
   "require": {
     "php": ">=8.0.1",
     "ext-json": "*",
-    "infinityloop-dev/graphpinator-tokenizer": "^1.0",
-    "infinityloop-dev/graphpinator-common": "^1.0",
+    "infinityloop-dev/graphpinator-tokenizer": "^1.0.1",
+    "infinityloop-dev/graphpinator-common": "^1.1",
     "infinityloop-dev/utils": "^2.1.2",
     "nette/utils": "^3.2",
     "psr/http-message": "^1.0.1",
