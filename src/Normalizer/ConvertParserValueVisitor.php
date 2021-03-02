@@ -76,6 +76,8 @@ final class ConvertParserValueVisitor implements \Graphpinator\Parser\Value\Valu
             $this->path->pop();
         }
 
+        $this->type = $listType;
+
         return new \Graphpinator\Value\ListInputedValue($listType, $inner);
     }
 
