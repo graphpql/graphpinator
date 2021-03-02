@@ -116,11 +116,9 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
         return [
             [
                 Json::fromNative((object) []),
-                Json::fromNative((object) [
-                    'errors' => [
-                        ['message' => 'Invalid request - "query" key not found in request body JSON.'],
-                    ],
-                ]),
+                Json::fromNative((object) ['errors' => [[
+                    'message' => 'Invalid request - "query" key not found in request body JSON.'
+                ]]]),
             ],
             [
                 Json::fromNative((object) [
@@ -128,7 +126,7 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
                 ]),
                 Json::fromNative((object) ['errors' => [[
                     'message' => 'Unknown directive "blaDirective".',
-                    'path' => [' <query>', 'fieldAbc <field>'],
+                    'path' => [' <operation>', 'fieldAbc <field>', 'blaDirective <directive>'],
                 ]]]),
             ],
             [
@@ -137,63 +135,53 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
                 ]),
                 Json::fromNative((object) ['errors' => [[
                     'message' => 'Unknown type "BlaType".',
-                    'path' => [' <query>', 'fieldAbc <field>'],
+                    'path' => [' <operation>', 'fieldAbc <field>', '<inline fragment>'],
                 ]]]),
             ],
             [
                 Json::fromNative((object) [
                     'query' => '{ fieldAbc { ... on String { fieldXyz { name } } } }',
                 ]),
-                Json::fromNative((object) [
-                    'errors' => [[
-                        'message' => 'Fragment type condition must be outputable composite type.',
-                        'path' => [' <query>', 'fieldAbc <field>'],
-                    ]],
-                ]),
+                Json::fromNative((object) ['errors' => [[
+                    'message' => 'Fragment type condition must be outputable composite type.',
+                    'path' => [' <operation>', 'fieldAbc <field>', '<inline fragment>'],
+                ]]]),
             ],
             [
                 Json::fromNative((object) [
                     'query' => '{ fieldAbc { ... fragmentName } } fragment fragmentName on String { fieldXyz { name } }',
                 ]),
-                Json::fromNative((object) [
-                    'errors' => [[
-                        'message' => 'Fragment type condition must be outputable composite type.',
-                        'path' => [' <query>', 'fieldAbc <field>'],
-                    ]],
-                ]),
+                Json::fromNative((object) ['errors' => [[
+                    'message' => 'Fragment type condition must be outputable composite type.',
+                    'path' => [' <operation>', 'fieldAbc <field>', 'fragmentName <fragment spread>'],
+                ]]]),
             ],
             [
                 Json::fromNative((object) [
                     'query' => '{ fieldAbc { ... on SimpleInput { fieldXyz { name } } } }',
                 ]),
-                Json::fromNative((object) [
-                    'errors' => [[
-                        'message' => 'Fragment type condition must be outputable composite type.',
-                        'path' => [' <query>', 'fieldAbc <field>'],
-                    ]],
-                ]),
+                Json::fromNative((object) ['errors' => [[
+                    'message' => 'Fragment type condition must be outputable composite type.',
+                    'path' => [' <operation>', 'fieldAbc <field>', '<inline fragment>'],
+                ]]]),
             ],
             [
                 Json::fromNative((object) [
                     'query' => '{ fieldAbc { fieldXyz @testDirective(if: true) { name } } }',
                 ]),
-                Json::fromNative((object) [
-                    'errors' => [[
-                        'message' => 'Unknown argument "if" provided.',
-                        'path' => [' <query>', 'fieldAbc <field>', 'fieldXyz <field>', 'testDirective <directive>'],
-                    ]],
-                ]),
+                Json::fromNative((object) ['errors' => [[
+                    'message' => 'Unknown argument "if" provided.',
+                    'path' => [' <operation>', 'fieldAbc <field>', 'fieldXyz <field>', 'testDirective <directive>'],
+                ]]]),
             ],
             [
                 Json::fromNative((object) [
                     'query' => '{ fieldInvalidInput { fieldName fieldNumber fieldBool notDefinedField } }',
                 ]),
-                Json::fromNative((object) [
-                    'errors' => [[
-                        'message' => 'Unknown field "notDefinedField" requested for type "SimpleType".',
-                        'path' => [' <query>', 'fieldInvalidInput <field>'],
-                    ]],
-                ]),
+                Json::fromNative((object) ['errors' => [[
+                    'message' => 'Unknown field "notDefinedField" requested for type "SimpleType".',
+                    'path' => [' <operation>', 'fieldInvalidInput <field>', 'notDefinedField <field>'],
+                ]]]),
             ],
             [
                 Json::fromNative((object) [
@@ -202,35 +190,30 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
                         ... on InterfaceAbc { name }
                     }',
                 ]),
-                Json::fromNative((object) [
-                    'errors' => [[
-                        'message' => 'Invalid fragment type condition. ("InterfaceAbc" is not instance of "InterfaceEfg").',
-                        'path' => ['queryName <query>', 'fieldFragment <field>', 'interfaceEfgFragment <fragment>'],
-                    ]],
-                ]),
+                Json::fromNative((object) ['errors' => [[
+                    'message' => 'Invalid fragment type condition. ("InterfaceAbc" is not instance of "InterfaceEfg").',
+                    'path' => ['queryName <operation>', 'fieldFragment <field>', 'interfaceEfgFragment <fragment spread>'],
+                ]]]),
             ],
             [
                 Json::fromNative((object) [
                     'query' => 'query queryName ($var1: Int = "123") { fieldAbc { fieldXyz { name } } }',
                     'variables' => (object) [],
                 ]),
-                Json::fromNative((object) [
-                    'errors' => [[
-                        'message' => 'Invalid value resolved for type "Int" - got "123".',
-                        'path' => ['queryName <query>'],
-                    ]],
-                ]),
+                Json::fromNative((object) ['errors' => [[
+                    'message' => 'Invalid value resolved for type "Int" - got "123".',
+                    'path' => ['queryName <operation>', 'var1 <variable>'],
+                ]]]),
             ],
             [
                 Json::fromNative((object) [
                     'query' => 'query queryName ($var1: Int!) { fieldAbc { fieldXyz { name } } }',
                     'variables' => (object) [],
                 ]),
-                Json::fromNative((object) [
-                    'errors' => [
-                        ['message' => 'Not-null type with null value.'],
-                    ],
-                ]),
+                Json::fromNative((object) ['errors' => [[
+                    'message' => 'Not-null type with null value.',
+                    'path' => ['queryName <operation>', 'var1 <variable>'],
+                ]]]),
             ],
             [
                 Json::fromNative((object) [
@@ -241,25 +224,33 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
                         } 
                     }',
                 ]),
-                Json::fromNative((object) ['errors' => [['message' => 'Server responded with unknown error.']]]),
+                Json::fromNative((object) ['errors' => [[
+                    'message' => 'Server responded with unknown error.',
+                ]]]),
             ],
             [
                 Json::fromNative((object) [
                     'query' => '{ fieldUnion @invalidDirectiveResult() { ... on Abc { fieldXyz { name } } } }',
                 ]),
-                Json::fromNative((object) ['errors' => [['message' => 'Server responded with unknown error.']]]),
+                Json::fromNative((object) ['errors' => [[
+                    'message' => 'Server responded with unknown error.',
+                ]]]),
             ],
             [
                 Json::fromNative((object) [
                     'query' => '{ fieldThrow { fieldXyz { name } } }',
                 ]),
-                Json::fromNative((object) ['errors' => [['message' => 'Server responded with unknown error.']]]),
+                Json::fromNative((object) ['errors' => [[
+                    'message' => 'Server responded with unknown error.',
+                ]]]),
             ],
             [
                 Json::fromNative((object) [
                     'query' => '{ fieldInvalidType { } }',
                 ]),
-                Json::fromNative((object) ['errors' => [['message' => 'Server responded with unknown error.']]]),
+                Json::fromNative((object) ['errors' => [[
+                    'message' => 'Server responded with unknown error.',
+                ]]]),
             ],
             [
                 Json::fromNative((object) [
@@ -268,7 +259,7 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
                 Json::fromNative((object) [
                     'errors' => [[
                         'message' => 'Duplicated directive "skip" which is not repeatable.',
-                        'path' => ['queryName <query>', 'fieldAbc <field>', 'fieldXyz <field>'],
+                        'path' => ['queryName <operation>', 'fieldAbc <field>', 'fieldXyz <field>', 'skip <directive>'],
                     ]],
                 ]),
             ]

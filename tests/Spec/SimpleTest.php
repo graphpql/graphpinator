@@ -165,13 +165,14 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
         $source = new \Graphpinator\Source\StringSource($request['query']);
         $parser = new \Graphpinator\Parser\Parser();
         $normalizer = new \Graphpinator\Normalizer\Normalizer(TestSchema::getSchema());
+        $finalizer = new \Graphpinator\Normalizer\Finalizer();
 
         $operationName = $request['operationName']
             ?? null;
         $variables = $request['variables']
             ?? new \stdClass();
 
-        $result = $normalizer->normalize($parser->parse($source))->finalize($variables, $operationName)->execute();
+        $result = $finalizer->finalize($normalizer->normalize($parser->parse($source)), $variables, $operationName)->execute();
 
         self::assertSame($expected->toString(), $result->toString());
     }

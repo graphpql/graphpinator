@@ -28,17 +28,4 @@ final class Variable
     {
         return $this->defaultValue;
     }
-
-    public function createInputedValue(\stdClass $variables) : \Graphpinator\Value\InputedValue
-    {
-        if (isset($variables->{$this->name})) {
-            return $this->type->createInputedValue($variables->{$this->name});
-        }
-
-        if ($this->defaultValue instanceof \Graphpinator\Value\InputedValue) {
-            return $this->defaultValue;
-        }
-
-        return $this->type->createInputedValue(null);
-    }
 }

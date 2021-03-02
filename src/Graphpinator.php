@@ -13,6 +13,7 @@ final class Graphpinator implements \Psr\Log\LoggerAwareInterface
     private \Psr\Log\LoggerInterface $logger;
     private \Graphpinator\Parser\Parser $parser;
     private \Graphpinator\Normalizer\Normalizer $normalizer;
+    private \Graphpinator\Normalizer\Finalizer $finalizer;
 
     public function __construct(
         \Graphpinator\Type\Schema $schema,
@@ -30,6 +31,7 @@ final class Graphpinator implements \Psr\Log\LoggerAwareInterface
             : new \Psr\Log\NullLogger();
         $this->parser = new \Graphpinator\Parser\Parser();
         $this->normalizer = new \Graphpinator\Normalizer\Normalizer($schema);
+        $this->finalizer = new \Graphpinator\Normalizer\Finalizer();
     }
 
     public function run(\Graphpinator\Request\RequestFactory $requestFactory) : \Graphpinator\Result
@@ -73,7 +75,7 @@ final class Graphpinator implements \Psr\Log\LoggerAwareInterface
             }
 
             if ($result instanceof \Graphpinator\Normalizer\NormalizedRequest) {
-                $result = $result->finalize($request->getVariables(), $request->getOperationName());
+                $result = $this->finalizer->finalize($result, $request->getVariables(), $request->getOperationName());
 
                 foreach ($this->modules as $module) {
                     $result = $module->processFinalized($result);
