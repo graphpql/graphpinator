@@ -50,7 +50,7 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
                 Json::fromNative((object) [
                     'errors' => [
                         [
-                            'message' => \Graphpinator\Exception\Parser\EmptyRequest::MESSAGE,
+                            'message' => \Graphpinator\Parser\Exception\EmptyRequest::MESSAGE,
                             'locations' => [['line' => 1, 'column' => 1]],
                         ],
                     ],
@@ -63,7 +63,7 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
                 Json::fromNative((object) [
                     'errors' => [
                         [
-                            'message' => \Graphpinator\Exception\Parser\MissingOperation::MESSAGE,
+                            'message' => \Graphpinator\Parser\Exception\MissingOperation::MESSAGE,
                             'locations' => [['line' => 1, 'column' => 29]],
                         ],
                     ],
@@ -76,7 +76,7 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
                 Json::fromNative((object) [
                     'errors' => [
                         [
-                            'message' => \Graphpinator\Exception\Parser\UnexpectedEnd::MESSAGE,
+                            'message' => \Graphpinator\Parser\Exception\UnexpectedEnd::MESSAGE,
                             'locations' => [['line' => 1, 'column' => 30]],
                         ],
                     ],
@@ -89,7 +89,7 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
                 Json::fromNative((object) [
                     'errors' => [
                         [
-                            'message' => \Graphpinator\Exception\Parser\DuplicateOperation::MESSAGE,
+                            'message' => \Graphpinator\Parser\Exception\DuplicateOperation::MESSAGE,
                             'locations' => [['line' => 1, 'column' => 27]],
                         ],
                     ],
@@ -102,7 +102,7 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
                 Json::fromNative((object) [
                     'errors' => [
                         [
-                            'message' => \Graphpinator\Exception\Parser\DuplicateOperation::MESSAGE,
+                            'message' => \Graphpinator\Parser\Exception\DuplicateOperation::MESSAGE,
                             'locations' => [['line' => 1, 'column' => 27]],
                         ],
                     ],
