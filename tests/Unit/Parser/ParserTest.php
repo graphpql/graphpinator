@@ -298,7 +298,6 @@ final class ParserTest extends \PHPUnit\Framework\TestCase
         self::assertCount(1, $operation->getDirectives());
         self::assertArrayHasKey(0, $operation->getDirectives());
         self::assertSame('directive', $operation->getDirectives()->offsetGet(0)->getName());
-        self::assertSame(\Graphpinator\Tokenizer\OperationType::QUERY, $operation->getDirectives()->offsetGet(0)->getLocation());
         self::assertNull($operation->getDirectives()->offsetGet(0)->getArguments());
     }
 

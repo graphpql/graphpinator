@@ -11,7 +11,8 @@ final class Variable
     public function __construct(
         private string $name,
         private \Graphpinator\Parser\TypeRef\TypeRef $type,
-        private ?\Graphpinator\Parser\Value\Value $default = null,
+        private ?\Graphpinator\Parser\Value\Value $default,
+        private \Graphpinator\Parser\Directive\DirectiveSet $directives,
     ) {}
 
     public function getName() : string
@@ -27,5 +28,10 @@ final class Variable
     public function getDefault() : ?\Graphpinator\Parser\Value\Value
     {
         return $this->default;
+    }
+
+    public function getDirectives() : \Graphpinator\Parser\Directive\DirectiveSet
+    {
+        return $this->directives;
     }
 }

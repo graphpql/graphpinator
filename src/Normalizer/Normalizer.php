@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Normalizer;
 
+use Graphpinator\Directive\ExecutableDirectiveLocation;
+
 final class Normalizer
 {
     use \Nette\SmartObject;
@@ -71,7 +73,7 @@ final class Normalizer
 
         $this->variableSet = $this->normalizeVariables($operation->getVariables());
         $children = $this->normalizeFieldSet($operation->getFields());
-        $directives = $this->normalizeDirectiveSet($operation->getDirectives());
+        $directives = $this->normalizeDirectiveSet($operation->getDirectives(), \strtoupper($operation->getType()));
         $args = [$operationType, $children, $this->variableSet, $directives, $operation->getName()];
 
         $this->scopeStack->pop();
@@ -153,7 +155,7 @@ final class Normalizer
 
         $arguments = $this->normalizeArgumentValueSet($field->getArguments(), $fieldDef->getArguments());
         $directives = $field->getDirectives() instanceof \Graphpinator\Parser\Directive\DirectiveSet
-            ? $this->normalizeDirectiveSet($field->getDirectives(), $fieldDef)
+            ? $this->normalizeDirectiveSet($field->getDirectives(), ExecutableDirectiveLocation::FIELD, $fieldDef)
             : new \Graphpinator\Normalizer\Directive\DirectiveSet();
         $children = $field->getFields() instanceof \Graphpinator\Parser\Field\FieldSet
             ? $this->normalizeFieldSet($field->getFields())
@@ -177,6 +179,7 @@ final class Normalizer
 
     private function normalizeDirectiveSet(
         \Graphpinator\Parser\Directive\DirectiveSet $directiveSet,
+        string $location,
         \Graphpinator\Field\Field|null $usage = null,
     ) : \Graphpinator\Normalizer\Directive\DirectiveSet
     {
@@ -185,7 +188,7 @@ final class Normalizer
 
         foreach ($directiveSet as $directive) {
             $this->path->add($directive->getName() . ' <directive>');
-            $normalizedDirective = $this->normalizeDirective($directive, $usage);
+            $normalizedDirective = $this->normalizeDirective($directive, $usage, $location);
             $directiveDef = $normalizedDirective->getDirective();
 
             if (!$directiveDef->isRepeatable()) {
@@ -206,6 +209,7 @@ final class Normalizer
     private function normalizeDirective(
         \Graphpinator\Parser\Directive\Directive $directive,
         \Graphpinator\Field\Field|null $usage,
+        string $location,
     ) : \Graphpinator\Normalizer\Directive\Directive
     {
         $directiveDef = $this->schema->getContainer()->getDirective($directive->getName());
@@ -218,12 +222,12 @@ final class Normalizer
             throw new \Graphpinator\Exception\Normalizer\DirectiveNotExecutable($directive->getName());
         }
 
-        if (!\in_array($directive->getLocation(), $directiveDef->getLocations(), true)) {
+        if (!\in_array($location, $directiveDef->getLocations(), true)) {
             throw new \Graphpinator\Exception\Normalizer\DirectiveIncorrectLocation($directive->getName());
         }
 
         $arguments = $this->normalizeArgumentValueSet($directive->getArguments(), $directiveDef->getArguments());
-        $usageIsValid = match ($directive->getLocation()) {
+        $usageIsValid = match ($location) {
             \Graphpinator\Directive\ExecutableDirectiveLocation::FIELD,
             \Graphpinator\Directive\ExecutableDirectiveLocation::INLINE_FRAGMENT,
             \Graphpinator\Directive\ExecutableDirectiveLocation::FRAGMENT_SPREAD =>
@@ -326,7 +330,11 @@ final class Normalizer
         $fields = $this->normalizeFieldSet($fragment->getFields());
 
         foreach ($fields as $field) {
-            $directives = $this->normalizeDirectiveSet($fragmentSpread->getDirectives(), $field->getField());
+            $directives = $this->normalizeDirectiveSet(
+                $fragmentSpread->getDirectives(),
+                ExecutableDirectiveLocation::FRAGMENT_SPREAD,
+                $field->getField(),
+            );
 
             $field->getDirectives()->merge($directives);
             $field->applyFragmentTypeCondition($typeCond);
@@ -356,7 +364,11 @@ final class Normalizer
         $fields = $this->normalizeFieldSet($fragmentSpread->getFields());
 
         foreach ($fields as $field) {
-            $directives = $this->normalizeDirectiveSet($fragmentSpread->getDirectives(), $field->getField());
+            $directives = $this->normalizeDirectiveSet(
+                $fragmentSpread->getDirectives(),
+                ExecutableDirectiveLocation::INLINE_FRAGMENT,
+                $field->getField(),
+            );
 
             $field->getDirectives()->merge($directives);
             $field->applyFragmentTypeCondition($typeCond);

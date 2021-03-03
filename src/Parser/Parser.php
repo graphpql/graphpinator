@@ -89,11 +89,13 @@ final class Parser
         $fragmentName = $this->tokenizer->assertNext(TokenType::NAME, \Graphpinator\Exception\Parser\ExpectedFragmentName::class)->getValue();
         $this->tokenizer->assertNext(TokenType::ON, \Graphpinator\Exception\Parser\ExpectedTypeCondition::class);
         $typeCond = $this->parseType(true);
+        $directives = $this->parseDirectives();
         $this->tokenizer->assertNext(TokenType::CUR_O, \Graphpinator\Exception\Parser\ExpectedSelectionSet::class);
 
         return new \Graphpinator\Parser\Fragment\Fragment(
             $fragmentName,
             $typeCond,
+            $directives,
             $this->parseSelectionSet(),
         );
     }
@@ -126,7 +128,7 @@ final class Parser
 
                 return new \Graphpinator\Parser\Operation\Operation(
                     $operationType,
-                    ...$this->parseAfterOperationType($operationType),
+                    ...$this->parseAfterOperationType(),
                 );
             default:
                 throw new \Graphpinator\Exception\Parser\ExpectedRoot(
@@ -136,7 +138,7 @@ final class Parser
         }
     }
 
-    private function parseAfterOperationType(string $operationType) : array
+    private function parseAfterOperationType() : array
     {
         $operationName = null;
 
@@ -147,11 +149,11 @@ final class Parser
 
         return [
             $operationName,
-            ...$this->parseAfterOperationName($operationType),
+            ...$this->parseAfterOperationName(),
         ];
     }
 
-    private function parseAfterOperationName(string $operationType) : array
+    private function parseAfterOperationName() : array
     {
         $variables = null;
 
@@ -162,17 +164,17 @@ final class Parser
 
         return [
             $variables,
-            ...$this->parseAfterOperationVariables($operationType),
+            ...$this->parseAfterOperationVariables(),
         ];
     }
 
-    private function parseAfterOperationVariables(string $operationType) : array
+    private function parseAfterOperationVariables() : array
     {
         $directives = null;
 
         if ($this->tokenizer->getCurrent()->getType() === TokenType::DIRECTIVE) {
             $this->tokenizer->getPrev();
-            $directives = $this->parseDirectives($operationType);
+            $directives = $this->parseDirectives();
             $this->tokenizer->getNext();
         }
 
@@ -250,7 +252,7 @@ final class Parser
             $arguments = $this->parseArguments();
         }
 
-        $directives = $this->parseDirectives(\Graphpinator\Directive\ExecutableDirectiveLocation::FIELD);
+        $directives = $this->parseDirectives();
 
         if ($this->tokenizer->peekNext()->getType() === TokenType::CUR_O) {
             $this->tokenizer->getNext();
@@ -272,11 +274,11 @@ final class Parser
             case TokenType::NAME:
                 return new \Graphpinator\Parser\FragmentSpread\NamedFragmentSpread(
                     $this->tokenizer->getCurrent()->getValue(),
-                    $this->parseDirectives(\Graphpinator\Directive\ExecutableDirectiveLocation::FRAGMENT_SPREAD),
+                    $this->parseDirectives(),
                 );
             case TokenType::ON:
                 $typeCond = $this->parseType(true);
-                $directives = $this->parseDirectives(\Graphpinator\Directive\ExecutableDirectiveLocation::INLINE_FRAGMENT);
+                $directives = $this->parseDirectives();
                 $this->tokenizer->assertNext(TokenType::CUR_O, \Graphpinator\Exception\Parser\ExpectedSelectionSet::class);
 
                 return new \Graphpinator\Parser\FragmentSpread\InlineFragmentSpread(
@@ -286,7 +288,7 @@ final class Parser
                 );
             case TokenType::DIRECTIVE:
                 $this->tokenizer->getPrev();
-                $directives = $this->parseDirectives(\Graphpinator\Directive\ExecutableDirectiveLocation::INLINE_FRAGMENT);
+                $directives = $this->parseDirectives();
                 $this->tokenizer->assertNext(TokenType::CUR_O, \Graphpinator\Exception\Parser\ExpectedSelectionSet::class);
 
                 return new \Graphpinator\Parser\FragmentSpread\InlineFragmentSpread(
@@ -330,7 +332,12 @@ final class Parser
                 $default = $this->parseValue(true);
             }
 
-            $variables[] = new \Graphpinator\Parser\Variable\Variable($name, $type, $default);
+            $variables[] = new \Graphpinator\Parser\Variable\Variable(
+                $name,
+                $type,
+                $default,
+                $this->parseDirectives(),
+            );
         }
 
         $this->tokenizer->getNext();
@@ -346,7 +353,7 @@ final class Parser
      *
      * @param string $location
      */
-    private function parseDirectives(string $location) : \Graphpinator\Parser\Directive\DirectiveSet
+    private function parseDirectives() : \Graphpinator\Parser\Directive\DirectiveSet
     {
         $directives = [];
 
@@ -361,7 +368,7 @@ final class Parser
                 $dirArguments = $this->parseArguments();
             }
 
-            $directives[] = new \Graphpinator\Parser\Directive\Directive($dirName, $location, $dirArguments);
+            $directives[] = new \Graphpinator\Parser\Directive\Directive($dirName, $dirArguments);
         }
 
         return new \Graphpinator\Parser\Directive\DirectiveSet($directives);
