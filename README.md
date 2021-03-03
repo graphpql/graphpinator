@@ -15,7 +15,7 @@ Feature complete PHP implementation of GraphQL server. Its job is transformation
     - [Constraint directives](https://github.com/infinityloop-dev/graphpinator-constraint-directives) - Typesystem directives to declare additional validation on top of GraphQL type system.
     - [Where directives](https://github.com/infinityloop-dev/graphpinator-where-directives) - Executable directives to filter values in lists.
     - File upload using [multipart-formdata](https://github.com/jaydenseric/graphql-multipart-request-spec) specs (currently bundled).
-- Project is composed from multiple smaller packages, which may be used stanalone:
+- Project is composed from multiple smaller packages, which may be used standalone:
     - [Tokenizer](https://github.com/infinityloop-dev/graphpinator-tokenizer) - Lexical analyzer of request document.
     - [Parser](https://github.com/infinityloop-dev/graphpinator-parser) - Syntaxtic analyzer of request document.
 
