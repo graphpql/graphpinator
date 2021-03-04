@@ -9,13 +9,13 @@ abstract class InterfaceType extends \Graphpinator\Type\Contract\AbstractDefinit
 {
     use \Graphpinator\Type\Contract\TInterfaceImplementor;
     use \Graphpinator\Type\Contract\TMetaFields;
-    use \Graphpinator\Directive\THasDirectives;
+    use \Graphpinator\Utils\THasDirectives;
 
-    public function __construct(?\Graphpinator\Utils\InterfaceSet $implements = null)
+    public function __construct(?\Graphpinator\Type\InterfaceSet $implements = null)
     {
         $this->implements = $implements
-            ?? new \Graphpinator\Utils\InterfaceSet([]);
-        $this->directiveUsages = new \Graphpinator\Directive\DirectiveUsageSet();
+            ?? new \Graphpinator\Type\InterfaceSet([]);
+        $this->directiveUsages = new \Graphpinator\DirectiveUsage\DirectiveUsageSet();
     }
 
     final public function isInstanceOf(\Graphpinator\Type\Contract\Definition $type) : bool
@@ -70,7 +70,7 @@ abstract class InterfaceType extends \Graphpinator\Type\Contract\AbstractDefinit
         array $arguments = [],
     ) : static
     {
-        $usage = new \Graphpinator\Directive\DirectiveUsage($directive, $arguments);
+        $usage = new \Graphpinator\DirectiveUsage\DirectiveUsage($directive, $arguments);
 
         if (!$directive->validateObjectUsage($this, $usage->getArgumentValues())) {
             throw new \Graphpinator\Exception\Type\DirectiveIncorrectType();

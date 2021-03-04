@@ -14,20 +14,20 @@ final class GetFieldVisitor implements \Graphpinator\Typesystem\NamedTypeVisitor
     {
         return $type->getMetaFields()[$this->name]
             ?? $type->getFields()[$this->name]
-            ?? throw new \Graphpinator\Exception\Normalizer\UnknownField($this->name, $type->getName());
+            ?? throw new \Graphpinator\Normalizer\Exception\UnknownField($this->name, $type->getName());
     }
 
     public function visitInterface(\Graphpinator\Type\InterfaceType $interface) : \Graphpinator\Field\Field
     {
         return $interface->getMetaFields()[$this->name]
             ?? $interface->getFields()[$this->name]
-            ?? throw new \Graphpinator\Exception\Normalizer\UnknownField($this->name, $interface->getName());
+            ?? throw new \Graphpinator\Normalizer\Exception\UnknownField($this->name, $interface->getName());
     }
 
     public function visitUnion(\Graphpinator\Type\UnionType $union) : \Graphpinator\Field\Field
     {
         return $union->getMetaFields()[$this->name]
-            ?? throw new \Graphpinator\Exception\Normalizer\SelectionOnUnion();
+            ?? throw new \Graphpinator\Normalizer\Exception\SelectionOnUnion();
     }
 
     public function visitInput(\Graphpinator\Type\InputType $input) : mixed
@@ -37,11 +37,11 @@ final class GetFieldVisitor implements \Graphpinator\Typesystem\NamedTypeVisitor
 
     public function visitScalar(\Graphpinator\Type\Scalar\ScalarType $scalar) : \Graphpinator\Field\Field
     {
-        throw new \Graphpinator\Exception\Normalizer\SelectionOnLeaf();
+        throw new \Graphpinator\Normalizer\Exception\SelectionOnLeaf();
     }
 
     public function visitEnum(\Graphpinator\Type\EnumType $enum) : \Graphpinator\Field\Field
     {
-        throw new \Graphpinator\Exception\Normalizer\SelectionOnLeaf();
+        throw new \Graphpinator\Normalizer\Exception\SelectionOnLeaf();
     }
 }

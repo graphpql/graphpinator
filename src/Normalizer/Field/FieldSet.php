@@ -73,7 +73,7 @@ final class FieldSet extends \Infinityloop\Utils\ObjectSet
             /** Fields must have same response shape (type) */
             if (!$fieldReturnType->isInstanceOf($conflictReturnType) ||
                 !$conflictReturnType->isInstanceOf($fieldReturnType)) {
-                throw new \Graphpinator\Exception\Normalizer\ConflictingFieldType();
+                throw new \Graphpinator\Normalizer\Exception\ConflictingFieldType();
             }
 
             /** Fields have type conditions which can never occur together */
@@ -84,7 +84,7 @@ final class FieldSet extends \Infinityloop\Utils\ObjectSet
 
             /** Fields have same alias, but refer to different field */
             if ($field->getName() !== $conflict->getName()) {
-                throw new \Graphpinator\Exception\Normalizer\ConflictingFieldAlias();
+                throw new \Graphpinator\Normalizer\Exception\ConflictingFieldAlias();
             }
 
             /** Fields have different arguments,
@@ -92,7 +92,7 @@ final class FieldSet extends \Infinityloop\Utils\ObjectSet
              * -> in this case the argument value must be the default one
              */
             if (!$fieldArguments->isSame($conflictArguments)) {
-                throw new \Graphpinator\Exception\Normalizer\ConflictingFieldArguments();
+                throw new \Graphpinator\Normalizer\Exception\ConflictingFieldArguments();
             }
 
             /** Fields are composite -> continue to children */

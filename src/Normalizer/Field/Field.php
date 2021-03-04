@@ -68,7 +68,7 @@ final class Field
             return;
         }
 
-        throw new \Graphpinator\Exception\Normalizer\InvalidFragmentType($this->typeCond->getName(), $typeCond->getName());
+        throw new \Graphpinator\Normalizer\Exception\InvalidFragmentType($this->typeCond->getName(), $typeCond->getName());
     }
 
     public function applyVariables(\Graphpinator\Normalizer\VariableValueSet $variables) : void

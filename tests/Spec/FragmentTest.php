@@ -249,7 +249,7 @@ final class FragmentTest extends \PHPUnit\Framework\TestCase
                 Json::fromNative((object) [
                     'query' => 'query queryName { ...namedFragment }',
                 ]),
-                \Graphpinator\Exception\Normalizer\UnknownFragment::class,
+                \Graphpinator\Normalizer\Exception\UnknownFragment::class,
             ],
             [
                 Json::fromNative((object) [
@@ -262,7 +262,7 @@ final class FragmentTest extends \PHPUnit\Framework\TestCase
                         ...namedFragment 
                     }',
                 ]),
-                \Graphpinator\Exception\Normalizer\FragmentCycle::class,
+                \Graphpinator\Normalizer\Exception\FragmentCycle::class,
             ],
             [
                 Json::fromNative((object) [
@@ -270,7 +270,7 @@ final class FragmentTest extends \PHPUnit\Framework\TestCase
                     fieldXyz { name: __typename ... on Xyz { name } } 
                     } } }',
                 ]),
-                \Graphpinator\Exception\Normalizer\ConflictingFieldAlias::class,
+                \Graphpinator\Normalizer\Exception\ConflictingFieldAlias::class,
             ],
             [
                 Json::fromNative((object) [
@@ -278,7 +278,7 @@ final class FragmentTest extends \PHPUnit\Framework\TestCase
                     fieldXyz { typename: __typename ... on Xyz { typename: name } } 
                     } } }',
                 ]),
-                \Graphpinator\Exception\Normalizer\ConflictingFieldAlias::class,
+                \Graphpinator\Normalizer\Exception\ConflictingFieldAlias::class,
             ],
             [
                 Json::fromNative((object) [
@@ -286,7 +286,7 @@ final class FragmentTest extends \PHPUnit\Framework\TestCase
                     fieldXyz(arg1: 456) { name } ... on Abc { fieldXyz(arg1: 123) { name } } 
                     } } }',
                 ]),
-                \Graphpinator\Exception\Normalizer\ConflictingFieldArguments::class,
+                \Graphpinator\Normalizer\Exception\ConflictingFieldArguments::class,
             ],
             [
                 Json::fromNative((object) [
@@ -294,7 +294,7 @@ final class FragmentTest extends \PHPUnit\Framework\TestCase
                     fieldXyz(arg1: 456) { name } ... on Abc { fieldXyz { name } } 
                     } } }',
                 ]),
-                \Graphpinator\Exception\Normalizer\ConflictingFieldArguments::class,
+                \Graphpinator\Normalizer\Exception\ConflictingFieldArguments::class,
             ],
         ];
     }

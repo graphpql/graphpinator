@@ -508,7 +508,7 @@ final class TestSchema
 
             public function __construct()
             {
-                parent::__construct(new \Graphpinator\Utils\InterfaceSet([TestSchema::getInterface()]));
+                parent::__construct(new \Graphpinator\Type\InterfaceSet([TestSchema::getInterface()]));
             }
 
             protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
@@ -567,7 +567,7 @@ final class TestSchema
 
             public function __construct()
             {
-                parent::__construct(new \Graphpinator\Utils\InterfaceSet([TestSchema::getInterface()]));
+                parent::__construct(new \Graphpinator\Type\InterfaceSet([TestSchema::getInterface()]));
             }
 
             protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
@@ -794,7 +794,7 @@ final class TestSchema
 
             public function __construct()
             {
-                parent::__construct(new \Graphpinator\Utils\InterfaceSet([
+                parent::__construct(new \Graphpinator\Type\InterfaceSet([
                     TestSchema::getInterfaceAbc(),
                 ]));
             }
@@ -825,7 +825,7 @@ final class TestSchema
 
             public function __construct()
             {
-                parent::__construct(new \Graphpinator\Utils\InterfaceSet([
+                parent::__construct(new \Graphpinator\Type\InterfaceSet([
                     TestSchema::getInterfaceAbc(),
                 ]));
             }
@@ -864,7 +864,7 @@ final class TestSchema
 
             public function __construct()
             {
-                parent::__construct(new \Graphpinator\Utils\InterfaceSet([
+                parent::__construct(new \Graphpinator\Type\InterfaceSet([
                     TestSchema::getInterfaceAbc(),
                 ]));
             }
@@ -904,7 +904,7 @@ final class TestSchema
 
             public function __construct()
             {
-                parent::__construct(new \Graphpinator\Utils\InterfaceSet([
+                parent::__construct(new \Graphpinator\Type\InterfaceSet([
                     TestSchema::getInterfaceEfg(),
                 ]));
             }
@@ -969,7 +969,7 @@ final class TestSchema
 
             public function __construct()
             {
-                parent::__construct(new \Graphpinator\Utils\ConcreteSet([
+                parent::__construct(new \Graphpinator\Type\ConcreteSet([
                     TestSchema::getTypeAbc(),
                 ]));
             }
@@ -989,7 +989,7 @@ final class TestSchema
 
             public function __construct()
             {
-                parent::__construct(new \Graphpinator\Utils\ConcreteSet([
+                parent::__construct(new \Graphpinator\Type\ConcreteSet([
                     TestSchema::getTypeAbc(),
                     TestSchema::getTypeXyz(),
                 ]));

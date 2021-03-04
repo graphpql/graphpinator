@@ -286,19 +286,19 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
                 Json::fromNative((object) [
                     'query' => 'query queryName { fieldAbc { fieldXyz } }',
                 ]),
-                \Graphpinator\Exception\Normalizer\SelectionOnComposite::class,
+                \Graphpinator\Normalizer\Exception\SelectionOnComposite::class,
             ],
             [
                 Json::fromNative((object) [
                     'query' => 'query queryName { fieldAbc { fieldXyz { nonExisting } } }',
                 ]),
-                \Graphpinator\Exception\Normalizer\UnknownField::class,
+                \Graphpinator\Normalizer\Exception\UnknownField::class,
             ],
             [
                 Json::fromNative((object) [
                     'query' => 'query queryName { fieldAbc { fieldXyz { name { nonExisting } } } }',
                 ]),
-                \Graphpinator\Exception\Normalizer\SelectionOnLeaf::class,
+                \Graphpinator\Normalizer\Exception\SelectionOnLeaf::class,
             ],
             [
                 Json::fromNative((object) [
@@ -308,27 +308,27 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 Json::fromNative((object) []),
-                \Graphpinator\Exception\Request\QueryMissing::class,
+                \Graphpinator\Request\Exception\QueryMissing::class,
             ],
             [
                 Json::fromNative((object) [
                     'query' => 123,
                 ]),
-                \Graphpinator\Exception\Request\QueryNotString::class,
+                \Graphpinator\Request\Exception\QueryNotString::class,
             ],
             [
                 Json::fromNative((object) [
                     'query' => '',
                     'variables' => 'abc',
                 ]),
-                \Graphpinator\Exception\Request\VariablesNotObject::class,
+                \Graphpinator\Request\Exception\VariablesNotObject::class,
             ],
             [
                 Json::fromNative((object) [
                     'query' => '',
                     'operationName' => 123,
                 ]),
-                \Graphpinator\Exception\Request\OperationNameNotString::class,
+                \Graphpinator\Request\Exception\OperationNameNotString::class,
             ],
             [
                 Json::fromNative((object) [
@@ -336,7 +336,7 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
                     'operationName' => '',
                     'randomKey' => 'randomVal',
                 ]),
-                \Graphpinator\Exception\Request\UnknownKey::class,
+                \Graphpinator\Request\Exception\UnknownKey::class,
             ],
             [
                 Json::fromNative((object) [

@@ -28,7 +28,7 @@ final class ArgumentValueSet extends \Infinityloop\Utils\ImplicitObjectMap
 
         foreach ($rawValues as $key => $value) {
             if (!$argumentSet->offsetExists($key)) {
-                throw new \Graphpinator\Exception\Normalizer\UnknownArgument($key);
+                throw new \Graphpinator\Normalizer\Exception\UnknownArgument($key);
             }
         }
 

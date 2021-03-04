@@ -8,8 +8,8 @@ final class EnumItem implements \Graphpinator\Typesystem\Component
 {
     use \Nette\SmartObject;
     use \Graphpinator\Utils\TOptionalDescription;
-    use \Graphpinator\Directive\THasDirectives;
-    use \Graphpinator\Directive\TDeprecatable;
+    use \Graphpinator\Utils\THasDirectives;
+    use \Graphpinator\Utils\TDeprecatable;
 
     private string $name;
 
@@ -17,7 +17,7 @@ final class EnumItem implements \Graphpinator\Typesystem\Component
     {
         $this->name = $name;
         $this->description = $description;
-        $this->directiveUsages = new \Graphpinator\Directive\DirectiveUsageSet();
+        $this->directiveUsages = new \Graphpinator\DirectiveUsage\DirectiveUsageSet();
     }
 
     public function getName() : string
@@ -35,7 +35,7 @@ final class EnumItem implements \Graphpinator\Typesystem\Component
         array $arguments = [],
     ) : self
     {
-        $this->directiveUsages[] = new \Graphpinator\Directive\DirectiveUsage($directive, $arguments);
+        $this->directiveUsages[] = new \Graphpinator\DirectiveUsage\DirectiveUsage($directive, $arguments);
 
         return $this;
     }

@@ -160,7 +160,7 @@ final class NormalizerTest extends \PHPUnit\Framework\TestCase
                     ]),
                     new \Graphpinator\Parser\Fragment\FragmentSet(),
                 ),
-                \Graphpinator\Exception\Normalizer\OperationNotSupported::class,
+                \Graphpinator\Normalizer\Exception\OperationNotSupported::class,
             ],
             [
                 new \Graphpinator\Parser\ParsedRequest(
@@ -175,7 +175,7 @@ final class NormalizerTest extends \PHPUnit\Framework\TestCase
                     ]),
                     new \Graphpinator\Parser\Fragment\FragmentSet(),
                 ),
-                \Graphpinator\Exception\Normalizer\OperationNotSupported::class,
+                \Graphpinator\Normalizer\Exception\OperationNotSupported::class,
             ],
             [
                 new \Graphpinator\Parser\ParsedRequest(
@@ -192,7 +192,7 @@ final class NormalizerTest extends \PHPUnit\Framework\TestCase
                     ]),
                     new \Graphpinator\Parser\Fragment\FragmentSet(),
                 ),
-                \Graphpinator\Exception\Normalizer\UnknownFragment::class,
+                \Graphpinator\Normalizer\Exception\UnknownFragment::class,
             ],
             [
                 new \Graphpinator\Parser\ParsedRequest(
@@ -248,7 +248,7 @@ final class NormalizerTest extends \PHPUnit\Framework\TestCase
                         ),
                     ]),
                 ),
-                \Graphpinator\Exception\Normalizer\FragmentCycle::class,
+                \Graphpinator\Normalizer\Exception\FragmentCycle::class,
             ],
             [
                 new \Graphpinator\Parser\ParsedRequest(
@@ -288,7 +288,7 @@ final class NormalizerTest extends \PHPUnit\Framework\TestCase
                         ),
                     ]),
                 ),
-                \Graphpinator\Exception\Normalizer\FragmentCycle::class,
+                \Graphpinator\Normalizer\Exception\FragmentCycle::class,
             ],
             [
                 new \Graphpinator\Parser\ParsedRequest(
@@ -326,7 +326,7 @@ final class NormalizerTest extends \PHPUnit\Framework\TestCase
                         ),
                     ]),
                 ),
-                \Graphpinator\Exception\Normalizer\FragmentCycle::class,
+                \Graphpinator\Normalizer\Exception\FragmentCycle::class,
             ],
         ];
     }

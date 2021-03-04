@@ -83,7 +83,7 @@ final class ArgumentTest extends \PHPUnit\Framework\TestCase
                 Json::fromNative((object) [
                     'query' => 'query queryName { fieldAbc { fieldXyz(argNonExistent: 123) { name } } }',
                 ]),
-                \Graphpinator\Exception\Normalizer\UnknownArgument::class,
+                \Graphpinator\Normalizer\Exception\UnknownArgument::class,
             ],
             [
                 Json::fromNative((object) [

@@ -22,7 +22,7 @@ final class PsrRequestFactory implements \Graphpinator\Request\RequestFactory
         $method = $this->request->getMethod();
 
         if (!\in_array($method, ['GET', 'POST'], true)) {
-            throw new \Graphpinator\Exception\Request\InvalidMethod();
+            throw new \Graphpinator\Request\Exception\InvalidMethod();
         }
 
         $contentTypes = $this->request->getHeader('Content-Type');
@@ -33,7 +33,7 @@ final class PsrRequestFactory implements \Graphpinator\Request\RequestFactory
                 return $this->applyJsonFactory(\Infinityloop\Utils\Json\MapJson::fromString($this->request->getParsedBody()['operations']));
             }
 
-            throw new \Graphpinator\Exception\Request\InvalidMultipartRequest();
+            throw new \Graphpinator\Request\Exception\InvalidMultipartRequest();
         }
 
         switch ($contentType) {

@@ -30,7 +30,7 @@ final class FragmentCycleValidator
         }
 
         if (\array_key_exists($fragment->getName(), $this->stack)) {
-            throw new \Graphpinator\Exception\Normalizer\FragmentCycle();
+            throw new \Graphpinator\Normalizer\Exception\FragmentCycle();
         }
 
         $this->stack[$fragment->getName()] = true;
@@ -53,7 +53,7 @@ final class FragmentCycleValidator
             }
 
             if (!$this->fragmentSet->offsetExists($spread->getName())) {
-                throw new \Graphpinator\Exception\Normalizer\UnknownFragment($spread->getName());
+                throw new \Graphpinator\Normalizer\Exception\UnknownFragment($spread->getName());
             }
 
             $this->validateFragment($this->fragmentSet->offsetGet($spread->getName()));

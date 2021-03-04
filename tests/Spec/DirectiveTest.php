@@ -135,19 +135,19 @@ final class DirectiveTest extends \PHPUnit\Framework\TestCase
                 Json::fromNative((object) [
                     'query' => 'query queryName { fieldAbc { fieldXyz @include(if: false) @include(if: false) { name } } }',
                 ]),
-                \Graphpinator\Exception\Normalizer\DuplicatedDirective::class,
+                \Graphpinator\Normalizer\Exception\DuplicatedDirective::class,
             ],
             [
                 Json::fromNative((object) [
                     'query' => 'query queryName { fieldAbc { fieldXyz @include(if: false) @testDirective @include(if: false) { name } } }',
                 ]),
-                \Graphpinator\Exception\Normalizer\DuplicatedDirective::class,
+                \Graphpinator\Normalizer\Exception\DuplicatedDirective::class,
             ],
             [
                 Json::fromNative((object) [
                     'query' => 'query @testDirective { fieldAbc { fieldXyz { name } } }',
                 ]),
-                \Graphpinator\Exception\Normalizer\DirectiveIncorrectLocation::class,
+                \Graphpinator\Normalizer\Exception\DirectiveIncorrectLocation::class,
             ],
             [
                 Json::fromNative((object) [
@@ -159,13 +159,13 @@ final class DirectiveTest extends \PHPUnit\Framework\TestCase
                 Json::fromNative((object) [
                     'query' => 'query queryName { fieldAbc @invalidDirectiveType() { fieldXyz { name } } }',
                 ]),
-                \Graphpinator\Exception\Normalizer\DirectiveIncorrectUsage::class,
+                \Graphpinator\Normalizer\Exception\DirectiveIncorrectUsage::class,
             ],
             [
                 Json::fromNative((object) [
                     'query' => 'query queryName { fieldList @deprecated { name } }',
                 ]),
-                \Graphpinator\Exception\Normalizer\DirectiveNotExecutable::class,
+                \Graphpinator\Normalizer\Exception\DirectiveNotExecutable::class,
             ],
         ];
     }

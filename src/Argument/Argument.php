@@ -8,7 +8,7 @@ final class Argument implements \Graphpinator\Typesystem\Component
 {
     use \Nette\SmartObject;
     use \Graphpinator\Utils\TOptionalDescription;
-    use \Graphpinator\Directive\THasDirectives;
+    use \Graphpinator\Utils\THasDirectives;
 
     private ?\Graphpinator\Value\InputedValue $defaultValue = null;
 
@@ -17,7 +17,7 @@ final class Argument implements \Graphpinator\Typesystem\Component
         private \Graphpinator\Type\Contract\Inputable $type,
     )
     {
-        $this->directiveUsages = new \Graphpinator\Directive\DirectiveUsageSet();
+        $this->directiveUsages = new \Graphpinator\DirectiveUsage\DirectiveUsageSet();
     }
 
     public static function create(string $name, \Graphpinator\Type\Contract\Inputable $type) : self
@@ -57,7 +57,7 @@ final class Argument implements \Graphpinator\Typesystem\Component
         array $arguments = [],
     ) : self
     {
-        $usage = new \Graphpinator\Directive\DirectiveUsage($directive, $arguments);
+        $usage = new \Graphpinator\DirectiveUsage\DirectiveUsage($directive, $arguments);
 
         if (!$directive->validateArgumentUsage($this, $usage->getArgumentValues())) {
             throw new \Graphpinator\Exception\Type\DirectiveIncorrectType();

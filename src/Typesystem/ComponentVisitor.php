@@ -10,7 +10,7 @@ interface ComponentVisitor extends \Graphpinator\Typesystem\EntityVisitor
 
     public function visitArgument(\Graphpinator\Argument\Argument $argument) : mixed;
 
-    public function visitDirectiveUsage(\Graphpinator\Directive\DirectiveUsage $directiveUsage) : mixed;
+    public function visitDirectiveUsage(\Graphpinator\DirectiveUsage\DirectiveUsage $directiveUsage) : mixed;
 
     public function visitEnumItem(\Graphpinator\Type\Enum\EnumItem $enumItem) : mixed;
 }

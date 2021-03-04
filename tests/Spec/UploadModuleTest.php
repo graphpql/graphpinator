@@ -222,7 +222,7 @@ final class UploadModuleTest extends \PHPUnit\Framework\TestCase
                     'query' => 'query queryName($var1: UploadInput) { fieldInputUpload(fileInput: $var1) { fileName } }',
                     'variables' => (object) ['var1' => null],
                 ]),
-                \Graphpinator\Exception\Normalizer\VariableTypeMismatch::class,
+                \Graphpinator\Normalizer\Exception\VariableTypeMismatch::class,
             ],
             [
                 '{ "0": ["variables.var1"] }',
@@ -230,7 +230,7 @@ final class UploadModuleTest extends \PHPUnit\Framework\TestCase
                     'query' => 'query queryName($var1: Int) { fieldInputUpload(fileInput: $var1) { fileName } }',
                     'variables' => (object) ['var1' => null],
                 ]),
-                \Graphpinator\Exception\Normalizer\VariableTypeMismatch::class,
+                \Graphpinator\Normalizer\Exception\VariableTypeMismatch::class,
             ],
         ];
     }

@@ -98,7 +98,7 @@ final class ConvertParserValueVisitor implements \Graphpinator\Parser\Value\Valu
                 continue;
             }
 
-            throw new \Graphpinator\Exception\Normalizer\UnknownInputField($name, $this->type->getName());
+            throw new \Graphpinator\Normalizer\Exception\UnknownInputField($name, $this->type->getName());
         }
 
         $inner = new \stdClass();
@@ -118,6 +118,6 @@ final class ConvertParserValueVisitor implements \Graphpinator\Parser\Value\Valu
     {
         return $this->variableSet->offsetExists($variableRef->getVarName())
             ? new \Graphpinator\Value\VariableValue($this->type, $this->variableSet->offsetGet($variableRef->getVarName()))
-            : throw new \Graphpinator\Exception\Normalizer\UnknownVariable($variableRef->getVarName());
+            : throw new \Graphpinator\Normalizer\Exception\UnknownVariable($variableRef->getVarName());
     }
 }

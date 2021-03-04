@@ -10,12 +10,12 @@ namespace Graphpinator\Type\Contract;
 trait TInterfaceImplementor
 {
     protected ?\Graphpinator\Field\FieldSet $fields = null;
-    protected \Graphpinator\Utils\InterfaceSet $implements;
+    protected \Graphpinator\Type\InterfaceSet $implements;
 
     /**
      * Returns interfaces, which this type implements.
      */
-    public function getInterfaces() : \Graphpinator\Utils\InterfaceSet
+    public function getInterfaces() : \Graphpinator\Type\InterfaceSet
     {
         return $this->implements;
     }

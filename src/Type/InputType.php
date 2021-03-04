@@ -7,7 +7,7 @@ namespace Graphpinator\Type;
 abstract class InputType extends \Graphpinator\Type\Contract\ConcreteDefinition implements
     \Graphpinator\Type\Contract\Inputable
 {
-    use \Graphpinator\Directive\THasDirectives;
+    use \Graphpinator\Utils\THasDirectives;
 
     protected const DATA_CLASS = \stdClass::class;
 
@@ -16,7 +16,7 @@ abstract class InputType extends \Graphpinator\Type\Contract\ConcreteDefinition 
 
     public function __construct()
     {
-        $this->directiveUsages = new \Graphpinator\Directive\DirectiveUsageSet();
+        $this->directiveUsages = new \Graphpinator\DirectiveUsage\DirectiveUsageSet();
     }
 
     final public function createInputedValue(mixed $rawValue) : \Graphpinator\Value\InputedValue
@@ -64,7 +64,7 @@ abstract class InputType extends \Graphpinator\Type\Contract\ConcreteDefinition 
         array $arguments = [],
     ) : static
     {
-        $usage = new \Graphpinator\Directive\DirectiveUsage($directive, $arguments);
+        $usage = new \Graphpinator\DirectiveUsage\DirectiveUsage($directive, $arguments);
 
         if (!$directive->validateInputUsage($this, $usage->getArgumentValues())) {
             throw new \Graphpinator\Exception\Type\DirectiveIncorrectType();

@@ -8,8 +8,8 @@ class Field implements \Graphpinator\Typesystem\Component
 {
     use \Nette\SmartObject;
     use \Graphpinator\Utils\TOptionalDescription;
-    use \Graphpinator\Directive\THasDirectives;
-    use \Graphpinator\Directive\TDeprecatable;
+    use \Graphpinator\Utils\THasDirectives;
+    use \Graphpinator\Utils\TDeprecatable;
 
     protected string $name;
     protected \Graphpinator\Type\Contract\Outputable $type;
@@ -20,7 +20,7 @@ class Field implements \Graphpinator\Typesystem\Component
         $this->name = $name;
         $this->type = $type;
         $this->arguments = new \Graphpinator\Argument\ArgumentSet([]);
-        $this->directiveUsages = new \Graphpinator\Directive\DirectiveUsageSet([]);
+        $this->directiveUsages = new \Graphpinator\DirectiveUsage\DirectiveUsageSet([]);
     }
 
     public static function create(string $name, \Graphpinator\Type\Contract\Outputable $type) : self
@@ -60,7 +60,7 @@ class Field implements \Graphpinator\Typesystem\Component
         array $arguments = [],
     ) : self
     {
-        $usage = new \Graphpinator\Directive\DirectiveUsage($directive, $arguments);
+        $usage = new \Graphpinator\DirectiveUsage\DirectiveUsage($directive, $arguments);
 
         if (!$directive->validateFieldUsage($this, $usage->getArgumentValues())) {
             throw new \Graphpinator\Exception\Type\DirectiveIncorrectType();
