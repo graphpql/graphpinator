@@ -14,6 +14,7 @@ final class Graphpinator implements \Psr\Log\LoggerAwareInterface
     private \Graphpinator\Parser\Parser $parser;
     private \Graphpinator\Normalizer\Normalizer $normalizer;
     private \Graphpinator\Normalizer\Finalizer $finalizer;
+    private \Graphpinator\Resolver\Resolver $resolver;
 
     public function __construct(
         \Graphpinator\Type\Schema $schema,
@@ -32,6 +33,7 @@ final class Graphpinator implements \Psr\Log\LoggerAwareInterface
         $this->parser = new \Graphpinator\Parser\Parser();
         $this->normalizer = new \Graphpinator\Normalizer\Normalizer($schema);
         $this->finalizer = new \Graphpinator\Normalizer\Finalizer();
+        $this->resolver = new \Graphpinator\Resolver\Resolver();
     }
 
     public function run(\Graphpinator\Request\RequestFactory $requestFactory) : \Graphpinator\Result
@@ -82,7 +84,7 @@ final class Graphpinator implements \Psr\Log\LoggerAwareInterface
                 }
             }
 
-            return $result->execute();
+            return $this->resolver->resolve($result);
         } catch (\Throwable $exception) {
             if (!$this->catchExceptions) {
                 throw $exception;

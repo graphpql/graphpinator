@@ -59,30 +59,32 @@ final class Normalizer
         \Graphpinator\Parser\Operation\Operation $operation,
     ) : \Graphpinator\Normalizer\Operation\Operation
     {
-        $operationType = match ($operation->getType()) {
+        $rootObject = match ($operation->getType()) {
             \Graphpinator\Tokenizer\OperationType::QUERY => $this->schema->getQuery(),
             \Graphpinator\Tokenizer\OperationType::MUTATION => $this->schema->getMutation(),
             \Graphpinator\Tokenizer\OperationType::SUBSCRIPTION => $this->schema->getSubscription(),
         };
 
-        if (!$operationType instanceof \Graphpinator\Type\Type) {
+        if (!$rootObject instanceof \Graphpinator\Type\Type) {
             throw new \Graphpinator\Normalizer\Exception\OperationNotSupported($operation->getType());
         }
 
-        $this->scopeStack->push($operationType);
+        $this->scopeStack->push($rootObject);
 
         $this->variableSet = $this->normalizeVariables($operation->getVariables());
         $children = $this->normalizeFieldSet($operation->getFields());
         $directives = $this->normalizeDirectiveSet($operation->getDirectives(), \strtoupper($operation->getType()));
-        $args = [$operationType, $children, $this->variableSet, $directives, $operation->getName()];
 
         $this->scopeStack->pop();
 
-        return match ($operation->getType()) {
-            \Graphpinator\Tokenizer\OperationType::QUERY => new \Graphpinator\Normalizer\Operation\Query(...$args),
-            \Graphpinator\Tokenizer\OperationType::MUTATION => new \Graphpinator\Normalizer\Operation\Mutation(...$args),
-            \Graphpinator\Tokenizer\OperationType::SUBSCRIPTION => new \Graphpinator\Normalizer\Operation\Subscription(...$args),
-        };
+        return new \Graphpinator\Normalizer\Operation\Operation(
+            $operation->getType(),
+            $operation->getName(),
+            $rootObject,
+            $children,
+            $this->variableSet,
+            $directives,
+        );
     }
 
     private function normalizeVariables(

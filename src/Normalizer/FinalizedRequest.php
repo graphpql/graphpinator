@@ -16,9 +16,4 @@ final class FinalizedRequest
     {
         return $this->operation;
     }
-
-    public function execute() : \Graphpinator\Result
-    {
-        return $this->operation->resolve();
-    }
 }
