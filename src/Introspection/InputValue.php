@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Type\Introspection;
+namespace Graphpinator\Introspection;
 
 final class InputValue extends \Graphpinator\Type\Type
 {

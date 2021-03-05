@@ -37,11 +37,6 @@ abstract class EnumType extends \Graphpinator\Type\Contract\LeafDefinition
         return $this->options;
     }
 
-    final public function getTypeKind() : string
-    {
-        return \Graphpinator\Type\Introspection\TypeKind::ENUM;
-    }
-
     final public function accept(\Graphpinator\Typesystem\NamedTypeVisitor $visitor) : mixed
     {
         return $visitor->visitEnum($this);

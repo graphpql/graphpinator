@@ -55,11 +55,6 @@ abstract class InterfaceType extends \Graphpinator\Type\Contract\AbstractDefinit
         return $this->fields;
     }
 
-    final public function getTypeKind() : string
-    {
-        return \Graphpinator\Type\Introspection\TypeKind::INTERFACE;
-    }
-
     final public function accept(\Graphpinator\Typesystem\NamedTypeVisitor $visitor) : mixed
     {
         return $visitor->visitInterface($this);

@@ -6,8 +6,6 @@ namespace Graphpinator\Type\Contract;
 
 interface Definition extends \Graphpinator\Typesystem\Type
 {
-    public function getTypeKind() : string;
-
     public function getNamedType() : \Graphpinator\Type\Contract\NamedDefinition;
 
     public function getShapingType() : \Graphpinator\Type\Contract\Definition;

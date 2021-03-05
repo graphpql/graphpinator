@@ -28,11 +28,6 @@ final class ListType extends \Graphpinator\Type\Contract\ModifierDefinition
         return false;
     }
 
-    public function getTypeKind() : string
-    {
-        return \Graphpinator\Type\Introspection\TypeKind::LIST;
-    }
-
     public function printName() : string
     {
         return '[' . $this->innerType->printName() . ']';

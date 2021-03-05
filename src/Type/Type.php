@@ -46,11 +46,6 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
         return $this->fields;
     }
 
-    final public function getTypeKind() : string
-    {
-        return \Graphpinator\Type\Introspection\TypeKind::OBJECT;
-    }
-
     final public function accept(\Graphpinator\Typesystem\NamedTypeVisitor $visitor) : mixed
     {
         return $visitor->visitType($this);

@@ -44,11 +44,6 @@ abstract class InputType extends \Graphpinator\Type\Contract\ConcreteDefinition 
         return $this->arguments;
     }
 
-    final public function getTypeKind() : string
-    {
-        return \Graphpinator\Type\Introspection\TypeKind::INPUT_OBJECT;
-    }
-
     final public function accept(\Graphpinator\Typesystem\NamedTypeVisitor $visitor) : mixed
     {
         return $visitor->visitInput($this);

@@ -27,11 +27,6 @@ final class NotNullType extends \Graphpinator\Type\Contract\ModifierDefinition
         return false;
     }
 
-    public function getTypeKind() : string
-    {
-        return \Graphpinator\Type\Introspection\TypeKind::NON_NULL;
-    }
-
     public function printName() : string
     {
         return $this->innerType->printName() . '!';

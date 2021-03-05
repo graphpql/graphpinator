@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Type\Introspection;
+namespace Graphpinator\Introspection;
 
 use \Graphpinator\Type\Contract\Definition;
 
@@ -30,7 +30,7 @@ final class Type extends \Graphpinator\Type\Type
                 'kind',
                 $this->container->getType('__TypeKind')->notNull(),
                 static function (Definition $definition) : string {
-                    return $definition->getTypeKind();
+                    return $definition->accept(new TypeKindVisitor());
                 },
             ),
             \Graphpinator\Field\ResolvableField::create(

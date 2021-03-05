@@ -40,11 +40,6 @@ abstract class UnionType extends \Graphpinator\Type\Contract\AbstractDefinition
         return false;
     }
 
-    final public function getTypeKind() : string
-    {
-        return \Graphpinator\Type\Introspection\TypeKind::UNION;
-    }
-
     final public function accept(\Graphpinator\Typesystem\NamedTypeVisitor $visitor) : mixed
     {
         return $visitor->visitUnion($this);
