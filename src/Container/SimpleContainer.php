@@ -22,6 +22,27 @@ class SimpleContainer extends \Graphpinator\Container\Container
      */
     public function __construct(array $types, array $directives)
     {
+        self::$builtInTypes = [
+            'ID' => self::ID(),
+            'Int' => self::Int(),
+            'Float' => self::Float(),
+            'String' => self::String(),
+            'Boolean' => self::Boolean(),
+            '__Schema' => new \Graphpinator\Type\Introspection\Schema($this),
+            '__Type' => new \Graphpinator\Type\Introspection\Type($this),
+            '__TypeKind' => new \Graphpinator\Type\Introspection\TypeKind(),
+            '__Field' => new \Graphpinator\Type\Introspection\Field($this),
+            '__EnumValue' => new \Graphpinator\Type\Introspection\EnumValue(),
+            '__InputValue' => new \Graphpinator\Type\Introspection\InputValue($this),
+            '__Directive' => new \Graphpinator\Type\Introspection\Directive($this),
+            '__DirectiveLocation' => new \Graphpinator\Type\Introspection\DirectiveLocation(),
+        ];
+        self::$builtInDirectives = [
+            'skip' => self::directiveSkip(),
+            'include' => self::directiveInclude(),
+            'deprecated' => self::directiveDeprecated(),
+        ];
+
         foreach ($types as $type) {
             $this->types[$type->getName()] = $type;
         }
@@ -29,27 +50,6 @@ class SimpleContainer extends \Graphpinator\Container\Container
         foreach ($directives as $directive) {
             $this->directives[$directive->getName()] = $directive;
         }
-
-        self::$builtInTypes = [
-            'ID' => self::ID(),
-            'Int' => self::Int(),
-            'Float' => self::Float(),
-            'String' => self::String(),
-            'Boolean' => self::Boolean(),
-            '__Schema' => $this->introspectionSchema(),
-            '__Type' => $this->introspectionType(),
-            '__TypeKind' => $this->introspectionTypeKind(),
-            '__Field' => $this->introspectionField(),
-            '__EnumValue' => $this->introspectionEnumValue(),
-            '__InputValue' => $this->introspectionInputValue(),
-            '__Directive' => $this->introspectionDirective(),
-            '__DirectiveLocation' => $this->introspectionDirectiveLocation(),
-        ];
-        self::$builtInDirectives = [
-            'skip' => self::directiveSkip(),
-            'include' => self::directiveInclude(),
-            'deprecated' => self::directiveDeprecated(),
-        ];
 
         $this->combinedTypes = \array_merge($this->types, self::$builtInTypes);
         $this->combinedDirectives = \array_merge($this->directives, self::$builtInDirectives);

@@ -9,13 +9,11 @@ final class Directive extends \Graphpinator\Type\Type
     protected const NAME = '__Directive';
     protected const DESCRIPTION = 'Built-in introspection type.';
 
-    private \Graphpinator\Container\Container $container;
-
-    public function __construct(\Graphpinator\Container\Container $container)
+    public function __construct(
+        private \Graphpinator\Container\Container $container,
+    )
     {
         parent::__construct();
-
-        $this->container = $container;
     }
 
     public function validateNonNullValue(mixed $rawValue) : bool
@@ -42,14 +40,14 @@ final class Directive extends \Graphpinator\Type\Type
             ),
             new \Graphpinator\Field\ResolvableField(
                 'locations',
-                $this->container->introspectionDirectiveLocation()->notNullList(),
+                $this->container->getType('__DirectiveLocation')->notNullList(),
                 static function (\Graphpinator\Directive\Directive $directive) : array {
                     return $directive->getLocations();
                 },
             ),
             new \Graphpinator\Field\ResolvableField(
                 'args',
-                $this->container->introspectionInputValue()->notNullList(),
+                $this->container->getType('__InputValue')->notNullList(),
                 static function (\Graphpinator\Directive\Directive $directive) : \Graphpinator\Argument\ArgumentSet {
                     return $directive->getArguments();
                 },

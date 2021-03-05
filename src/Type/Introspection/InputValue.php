@@ -9,13 +9,11 @@ final class InputValue extends \Graphpinator\Type\Type
     protected const NAME = '__InputValue';
     protected const DESCRIPTION = 'Built-in introspection type.';
 
-    private \Graphpinator\Container\Container $container;
-
-    public function __construct(\Graphpinator\Container\Container $container)
+    public function __construct(
+        private \Graphpinator\Container\Container $container,
+    )
     {
         parent::__construct();
-
-        $this->container = $container;
     }
 
     public function validateNonNullValue(mixed $rawValue) : bool
@@ -42,7 +40,7 @@ final class InputValue extends \Graphpinator\Type\Type
             ),
             new \Graphpinator\Field\ResolvableField(
                 'type',
-                $this->container->introspectionType()->notNull(),
+                $this->container->getType('__Type')->notNull(),
                 static function (\Graphpinator\Argument\Argument $argument) : \Graphpinator\Type\Contract\Definition {
                     return $argument->getType();
                 },

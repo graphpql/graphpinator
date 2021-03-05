@@ -11,13 +11,11 @@ final class Type extends \Graphpinator\Type\Type
     protected const NAME = '__Type';
     protected const DESCRIPTION = 'Built-in introspection type.';
 
-    private \Graphpinator\Container\Container $container;
-
-    public function __construct(\Graphpinator\Container\Container $container)
+    public function __construct(
+        private \Graphpinator\Container\Container $container,
+    )
     {
         parent::__construct();
-
-        $this->container = $container;
     }
 
     public function validateNonNullValue(mixed $rawValue) : bool
@@ -28,14 +26,14 @@ final class Type extends \Graphpinator\Type\Type
     protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
     {
         return new \Graphpinator\Field\ResolvableFieldSet([
-            new \Graphpinator\Field\ResolvableField(
+            \Graphpinator\Field\ResolvableField::create(
                 'kind',
-                $this->container->introspectionTypeKind()->notNull(),
+                $this->container->getType('__TypeKind')->notNull(),
                 static function (Definition $definition) : string {
                     return $definition->getTypeKind();
                 },
             ),
-            new \Graphpinator\Field\ResolvableField(
+            \Graphpinator\Field\ResolvableField::create(
                 'name',
                 \Graphpinator\Container\Container::String(),
                 static function (Definition $definition) : ?string {
@@ -44,7 +42,7 @@ final class Type extends \Graphpinator\Type\Type
                         : null;
                 },
             ),
-            new \Graphpinator\Field\ResolvableField(
+            \Graphpinator\Field\ResolvableField::create(
                 'description',
                 \Graphpinator\Container\Container::String(),
                 static function (Definition $definition) : ?string {
@@ -55,7 +53,7 @@ final class Type extends \Graphpinator\Type\Type
             ),
             \Graphpinator\Field\ResolvableField::create(
                 'fields',
-                $this->container->introspectionField()->notNull()->list(),
+                $this->container->getType('__Field')->notNull()->list(),
                 static function (Definition $definition, bool $includeDeprecated) : ?\Graphpinator\Field\FieldSet {
                     if (!$definition instanceof \Graphpinator\Type\Contract\InterfaceImplementor) {
                         return null;
@@ -81,7 +79,7 @@ final class Type extends \Graphpinator\Type\Type
                 \Graphpinator\Argument\Argument::create('includeDeprecated', \Graphpinator\Container\Container::Boolean()->notNull())
                     ->setDefaultValue(false),
             ])),
-            new \Graphpinator\Field\ResolvableField(
+            \Graphpinator\Field\ResolvableField::create(
                 'interfaces',
                 $this->notNull()->list(),
                 static function (Definition $definition) : ?\Graphpinator\Type\InterfaceSet {
@@ -90,7 +88,7 @@ final class Type extends \Graphpinator\Type\Type
                         : null;
                 },
             ),
-            new \Graphpinator\Field\ResolvableField(
+            \Graphpinator\Field\ResolvableField::create(
                 'possibleTypes',
                 $this->notNull()->list(),
                 function (Definition $definition) : ?\Graphpinator\Type\ConcreteSet {
@@ -116,7 +114,7 @@ final class Type extends \Graphpinator\Type\Type
             ),
             \Graphpinator\Field\ResolvableField::create(
                 'enumValues',
-                $this->container->introspectionEnumValue()->notNull()->list(),
+                $this->container->getType('__EnumValue')->notNull()->list(),
                 static function (Definition $definition, bool $includeDeprecated) : ?\Graphpinator\Type\Enum\EnumItemSet {
                     if (!$definition instanceof \Graphpinator\Type\EnumType) {
                         return null;
@@ -142,16 +140,16 @@ final class Type extends \Graphpinator\Type\Type
                 \Graphpinator\Argument\Argument::create('includeDeprecated', \Graphpinator\Container\Container::Boolean()->notNull())
                     ->setDefaultValue(false),
             ])),
-            new \Graphpinator\Field\ResolvableField(
+            \Graphpinator\Field\ResolvableField::create(
                 'inputFields',
-                $this->container->introspectionInputValue()->notNull()->list(),
+                $this->container->getType('__InputValue')->notNull()->list(),
                 static function (Definition $definition) : ?\Graphpinator\Argument\ArgumentSet {
                     return $definition instanceof \Graphpinator\Type\InputType
                         ? $definition->getArguments()
                         : null;
                 },
             ),
-            new \Graphpinator\Field\ResolvableField(
+            \Graphpinator\Field\ResolvableField::create(
                 'ofType',
                 $this,
                 static function (Definition $definition) : ?Definition {
