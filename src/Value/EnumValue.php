@@ -10,4 +10,9 @@ final class EnumValue extends LeafValue
     {
         return $this->rawValue;
     }
+
+    public function getRawValue(bool $forResolvers = false) : string
+    {
+        return $this->rawValue;
+    }
 }
