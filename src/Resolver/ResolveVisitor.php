@@ -27,7 +27,7 @@ final class ResolveVisitor implements \Graphpinator\Typesystem\TypeVisitor
                 $directiveResult = $directiveDef->resolveFieldBefore($directive->getArguments());
 
                 if (!\array_key_exists($directiveResult, \Graphpinator\Directive\FieldDirectiveResult::ENUM)) {
-                    throw new \Graphpinator\Exception\Resolver\InvalidDirectiveResult();
+                    throw new \Graphpinator\Resolver\Exception\InvalidDirectiveResult();
                 }
 
                 if ($directiveResult === \Graphpinator\Directive\FieldDirectiveResult::SKIP) {
@@ -44,7 +44,7 @@ final class ResolveVisitor implements \Graphpinator\Typesystem\TypeVisitor
                 $directiveResult = $directiveDef->resolveFieldAfter($directive->getArguments(), $fieldResult);
 
                 if (!\array_key_exists($directiveResult, \Graphpinator\Directive\FieldDirectiveResult::ENUM)) {
-                    throw new \Graphpinator\Exception\Resolver\InvalidDirectiveResult();
+                    throw new \Graphpinator\Resolver\Exception\InvalidDirectiveResult();
                 }
 
                 if ($directiveResult === \Graphpinator\Directive\FieldDirectiveResult::SKIP) {
@@ -129,7 +129,7 @@ final class ResolveVisitor implements \Graphpinator\Typesystem\TypeVisitor
         $resolvedValue = $this->getResolvedValue($rawValue, $field->getType());
 
         if (!$resolvedValue->getType()->isInstanceOf($field->getType())) {
-            throw new \Graphpinator\Exception\Resolver\FieldResultTypeMismatch();
+            throw new \Graphpinator\Resolver\Exception\FieldResultTypeMismatch();
         }
 
         foreach ($field->getDirectiveUsages() as $directive) {

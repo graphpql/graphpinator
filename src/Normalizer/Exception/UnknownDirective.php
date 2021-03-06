@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Normalizer\Exception;
 
-final class UnknownDirective extends \Graphpinator\Exception\Resolver\ResolverError
+final class UnknownDirective extends \Graphpinator\Normalizer\Exception\NormalizerError
 {
     public const MESSAGE = 'Unknown directive "%s".';
 

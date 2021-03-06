@@ -313,7 +313,7 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
                 Json::fromNative((object) [
                     'query' => 'query queryName { fieldInvalidType { } }',
                 ]),
-                \Graphpinator\Exception\Resolver\FieldResultTypeMismatch::class,
+                \Graphpinator\Resolver\Exception\FieldResultTypeMismatch::class,
             ],
             [
                 Json::fromNative((object) []),
