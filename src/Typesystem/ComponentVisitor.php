@@ -12,5 +12,5 @@ interface ComponentVisitor extends \Graphpinator\Typesystem\EntityVisitor
 
     public function visitDirectiveUsage(\Graphpinator\DirectiveUsage\DirectiveUsage $directiveUsage) : mixed;
 
-    public function visitEnumItem(\Graphpinator\Type\Enum\EnumItem $enumItem) : mixed;
+    public function visitEnumItem(\Graphpinator\EnumItem\EnumItem $enumItem) : mixed;
 }

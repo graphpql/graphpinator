@@ -1052,21 +1052,21 @@ final class TestSchema
 
             public function __construct()
             {
-                parent::__construct(new \Graphpinator\Type\Enum\EnumItemSet([
-                    new \Graphpinator\Type\Enum\EnumItem('A', 'single line description'),
-                    (new \Graphpinator\Type\Enum\EnumItem('B'))
+                parent::__construct(new \Graphpinator\EnumItem\EnumItemSet([
+                    new \Graphpinator\EnumItem\EnumItem('A', 'single line description'),
+                    (new \Graphpinator\EnumItem\EnumItem('B'))
                         ->setDeprecated(),
-                    new \Graphpinator\Type\Enum\EnumItem('C', 'multi line' . \PHP_EOL . 'description'),
-                    (new \Graphpinator\Type\Enum\EnumItem('D', 'single line description'))
+                    new \Graphpinator\EnumItem\EnumItem('C', 'multi line' . \PHP_EOL . 'description'),
+                    (new \Graphpinator\EnumItem\EnumItem('D', 'single line description'))
                         ->setDeprecated('reason'),
                 ]));
             }
         };
     }
 
-    public static function getTestScalar() : \Graphpinator\Type\Scalar\ScalarType
+    public static function getTestScalar() : \Graphpinator\Type\ScalarType
     {
-        return new class extends \Graphpinator\Type\Scalar\ScalarType
+        return new class extends \Graphpinator\Type\ScalarType
         {
             protected const NAME = 'TestScalar';
 

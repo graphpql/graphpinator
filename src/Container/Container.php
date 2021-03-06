@@ -42,10 +42,10 @@ abstract class Container
     /**
      * Built-in Int type.
      */
-    public static function Int() : \Graphpinator\Type\Scalar\IntType
+    public static function Int() : \Graphpinator\Type\Spec\IntType
     {
         if (!\array_key_exists('Int', self::$builtInTypes)) {
-            self::$builtInTypes['Int'] = new \Graphpinator\Type\Scalar\IntType();
+            self::$builtInTypes['Int'] = new \Graphpinator\Type\Spec\IntType();
         }
 
         return self::$builtInTypes['Int'];
@@ -54,10 +54,10 @@ abstract class Container
     /**
      * Built-in Float type.
      */
-    public static function Float() : \Graphpinator\Type\Scalar\FloatType
+    public static function Float() : \Graphpinator\Type\Spec\FloatType
     {
         if (!\array_key_exists('Float', self::$builtInTypes)) {
-            self::$builtInTypes['Float'] = new \Graphpinator\Type\Scalar\FloatType();
+            self::$builtInTypes['Float'] = new \Graphpinator\Type\Spec\FloatType();
         }
 
         return self::$builtInTypes['Float'];
@@ -66,10 +66,10 @@ abstract class Container
     /**
      * Built-in String type.
      */
-    public static function String() : \Graphpinator\Type\Scalar\StringType
+    public static function String() : \Graphpinator\Type\Spec\StringType
     {
         if (!\array_key_exists('String', self::$builtInTypes)) {
-            self::$builtInTypes['String'] = new \Graphpinator\Type\Scalar\StringType();
+            self::$builtInTypes['String'] = new \Graphpinator\Type\Spec\StringType();
         }
 
         return self::$builtInTypes['String'];
@@ -78,10 +78,10 @@ abstract class Container
     /**
      * Built-in Boolean type.
      */
-    public static function Boolean() : \Graphpinator\Type\Scalar\BooleanType
+    public static function Boolean() : \Graphpinator\Type\Spec\BooleanType
     {
         if (!\array_key_exists('Boolean', self::$builtInTypes)) {
-            self::$builtInTypes['Boolean'] = new \Graphpinator\Type\Scalar\BooleanType();
+            self::$builtInTypes['Boolean'] = new \Graphpinator\Type\Spec\BooleanType();
         }
 
         return self::$builtInTypes['Boolean'];
@@ -90,10 +90,10 @@ abstract class Container
     /**
      * Built-in ID type.
      */
-    public static function ID() : \Graphpinator\Type\Scalar\IdType
+    public static function ID() : \Graphpinator\Type\Spec\IdType
     {
         if (!\array_key_exists('ID', self::$builtInTypes)) {
-            self::$builtInTypes['ID'] = new \Graphpinator\Type\Scalar\IdType();
+            self::$builtInTypes['ID'] = new \Graphpinator\Type\Spec\IdType();
         }
 
         return self::$builtInTypes['ID'];

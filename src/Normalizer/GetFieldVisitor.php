@@ -35,7 +35,7 @@ final class GetFieldVisitor implements \Graphpinator\Typesystem\NamedTypeVisitor
         // nothing here
     }
 
-    public function visitScalar(\Graphpinator\Type\Scalar\ScalarType $scalar) : \Graphpinator\Field\Field
+    public function visitScalar(\Graphpinator\Type\ScalarType $scalar) : \Graphpinator\Field\Field
     {
         throw new \Graphpinator\Normalizer\Exception\SelectionOnLeaf();
     }

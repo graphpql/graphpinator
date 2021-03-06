@@ -73,7 +73,7 @@ final class ResolveVisitor implements \Graphpinator\Typesystem\TypeVisitor
         // nothing here
     }
 
-    public function visitScalar(\Graphpinator\Type\Scalar\ScalarType $scalar) : \Graphpinator\Value\ResolvedValue
+    public function visitScalar(\Graphpinator\Type\ScalarType $scalar) : \Graphpinator\Value\ResolvedValue
     {
         return $this->parentResult;
     }

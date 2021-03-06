@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Type\Enum;
+namespace Graphpinator\EnumItem;
 
 final class EnumItem implements \Graphpinator\Typesystem\Component
 {

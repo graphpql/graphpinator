@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Type\Scalar;
+namespace Graphpinator\Type;
 
 abstract class ScalarType extends \Graphpinator\Type\Contract\LeafDefinition
 {

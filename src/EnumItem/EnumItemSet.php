@@ -2,11 +2,11 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Type\Enum;
+namespace Graphpinator\EnumItem;
 
 /**
- * @method \Graphpinator\Type\Enum\EnumItem current() : object
- * @method \Graphpinator\Type\Enum\EnumItem offsetGet($offset) : object
+ * @method \Graphpinator\EnumItem\EnumItem current() : object
+ * @method \Graphpinator\EnumItem\EnumItem offsetGet($offset) : object
  */
 final class EnumItemSet extends \Infinityloop\Utils\ImplicitObjectMap
 {

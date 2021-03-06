@@ -31,7 +31,7 @@ final class BooleanTypeTest extends \PHPUnit\Framework\TestCase
      */
     public function testValidateValue($rawValue) : void
     {
-        $bool = new \Graphpinator\Type\Scalar\BooleanType();
+        $bool = new \Graphpinator\Type\Spec\BooleanType();
         $value = $bool->createInputedValue($rawValue);
 
         self::assertSame($bool, $value->getType());
@@ -46,7 +46,7 @@ final class BooleanTypeTest extends \PHPUnit\Framework\TestCase
     {
         $this->expectException(\Graphpinator\Exception\Value\InvalidValue::class);
 
-        $bool = new \Graphpinator\Type\Scalar\BooleanType();
+        $bool = new \Graphpinator\Type\Spec\BooleanType();
         $bool->createInputedValue($rawValue);
     }
 }

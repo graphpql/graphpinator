@@ -42,7 +42,7 @@ final class CreateResolvedValueVisitor implements \Graphpinator\Typesystem\TypeV
         // nothing here
     }
 
-    public function visitScalar(\Graphpinator\Type\Scalar\ScalarType $scalar) : \Graphpinator\Value\ResolvedValue
+    public function visitScalar(\Graphpinator\Type\ScalarType $scalar) : \Graphpinator\Value\ResolvedValue
     {
         if ($this->rawValue === null) {
             return new \Graphpinator\Value\NullResolvedValue($scalar);

@@ -16,7 +16,7 @@ final class EnumValue extends \Graphpinator\Type\Type
 
     public function validateNonNullValue(mixed $rawValue) : bool
     {
-        return $rawValue instanceof \Graphpinator\Type\Enum\EnumItem;
+        return $rawValue instanceof \Graphpinator\EnumItem\EnumItem;
     }
 
     protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
@@ -25,28 +25,28 @@ final class EnumValue extends \Graphpinator\Type\Type
             new \Graphpinator\Field\ResolvableField(
                 'name',
                 \Graphpinator\Container\Container::String()->notNull(),
-                static function (\Graphpinator\Type\Enum\EnumItem $item) : string {
+                static function (\Graphpinator\EnumItem\EnumItem $item) : string {
                     return $item->getName();
                 },
             ),
             new \Graphpinator\Field\ResolvableField(
                 'description',
                 \Graphpinator\Container\Container::String(),
-                static function (\Graphpinator\Type\Enum\EnumItem $item) : ?string {
+                static function (\Graphpinator\EnumItem\EnumItem $item) : ?string {
                     return $item->getDescription();
                 },
             ),
             new \Graphpinator\Field\ResolvableField(
                 'isDeprecated',
                 \Graphpinator\Container\Container::Boolean()->notNull(),
-                static function (\Graphpinator\Type\Enum\EnumItem $item) : bool {
+                static function (\Graphpinator\EnumItem\EnumItem $item) : bool {
                     return $item->isDeprecated();
                 },
             ),
             new \Graphpinator\Field\ResolvableField(
                 'deprecationReason',
                 \Graphpinator\Container\Container::String(),
-                static function (\Graphpinator\Type\Enum\EnumItem $item) : ?string {
+                static function (\Graphpinator\EnumItem\EnumItem $item) : ?string {
                     return $item->getDeprecationReason();
                 },
             ),

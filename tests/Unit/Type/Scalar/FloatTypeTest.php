@@ -33,7 +33,7 @@ final class FloatTypeTest extends \PHPUnit\Framework\TestCase
      */
     public function testValidateValue($rawValue, $resultValue) : void
     {
-        $float = new \Graphpinator\Type\Scalar\FloatType();
+        $float = new \Graphpinator\Type\Spec\FloatType();
         $value = $float->createInputedValue($rawValue);
 
         self::assertSame($float, $value->getType());
@@ -48,7 +48,7 @@ final class FloatTypeTest extends \PHPUnit\Framework\TestCase
     {
         $this->expectException(\Graphpinator\Exception\Value\InvalidValue::class);
 
-        $float = new \Graphpinator\Type\Scalar\FloatType();
+        $float = new \Graphpinator\Type\Spec\FloatType();
         $float->createInputedValue($rawValue);
     }
 }

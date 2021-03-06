@@ -6,14 +6,11 @@ namespace Graphpinator\Type;
 
 abstract class EnumType extends \Graphpinator\Type\Contract\LeafDefinition
 {
-    protected Enum\EnumItemSet $options;
+    public function __construct(
+        protected \Graphpinator\EnumItem\EnumItemSet $options,
+    ) {}
 
-    public function __construct(Enum\EnumItemSet $options)
-    {
-        $this->options = $options;
-    }
-
-    final public static function fromConstants() : Enum\EnumItemSet
+    final public static function fromConstants() : \Graphpinator\EnumItem\EnumItemSet
     {
         $values = [];
 
@@ -24,15 +21,15 @@ abstract class EnumType extends \Graphpinator\Type\Contract\LeafDefinition
                 continue;
             }
 
-            $values[] = new \Graphpinator\Type\Enum\EnumItem($value, $constant->getDocComment()
+            $values[] = new \Graphpinator\EnumItem\EnumItem($value, $constant->getDocComment()
                 ? \trim($constant->getDocComment(), '/* ')
                 : null);
         }
 
-        return new \Graphpinator\Type\Enum\EnumItemSet($values);
+        return new \Graphpinator\EnumItem\EnumItemSet($values);
     }
 
-    final public function getItems() : Enum\EnumItemSet
+    final public function getItems() : \Graphpinator\EnumItem\EnumItemSet
     {
         return $this->options;
     }

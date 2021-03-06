@@ -14,7 +14,7 @@ interface NamedTypeVisitor
 
     public function visitInput(\Graphpinator\Type\InputType $input) : mixed;
 
-    public function visitScalar(\Graphpinator\Type\Scalar\ScalarType $scalar) : mixed;
+    public function visitScalar(\Graphpinator\Type\ScalarType $scalar) : mixed;
 
     public function visitEnum(\Graphpinator\Type\EnumType $enum) : mixed;
 }

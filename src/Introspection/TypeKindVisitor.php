@@ -28,7 +28,7 @@ final class TypeKindVisitor implements \Graphpinator\Typesystem\TypeVisitor
         return TypeKind::INPUT_OBJECT;
     }
 
-    public function visitScalar(\Graphpinator\Type\Scalar\ScalarType $scalar) : string
+    public function visitScalar(\Graphpinator\Type\ScalarType $scalar) : string
     {
         return TypeKind::SCALAR;
     }
