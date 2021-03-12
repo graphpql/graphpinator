@@ -38,7 +38,8 @@ final class IsSameTest extends \PHPUnit\Framework\TestCase
                             'name' => 'test',
                             'number' => [],
                         ],
-                    )
+                        new \Graphpinator\Common\Path(),
+                    ),
                 ),
                 \Graphpinator\Tests\Spec\TestSchema::getSimpleInput()->accept(
                     new \Graphpinator\Value\ConvertRawValueVisitor(
@@ -46,7 +47,8 @@ final class IsSameTest extends \PHPUnit\Framework\TestCase
                             'name' => 'test',
                             'number' => [],
                         ],
-                    )
+                        new \Graphpinator\Common\Path(),
+                    ),
                 ),
                 true,
             ],
@@ -57,7 +59,8 @@ final class IsSameTest extends \PHPUnit\Framework\TestCase
                             'name' => 'test',
                             'number' => [],
                         ],
-                    )
+                        new \Graphpinator\Common\Path(),
+                    ),
                 ),
                 new \Graphpinator\Value\VariableValue(
                     new \Graphpinator\Type\Spec\StringType(),
@@ -72,7 +75,8 @@ final class IsSameTest extends \PHPUnit\Framework\TestCase
                             'name' => 'test',
                             'number' => [],
                         ],
-                    )
+                        new \Graphpinator\Common\Path(),
+                    ),
                 ),
                 \Graphpinator\Tests\Spec\TestSchema::getSimpleInput()->accept(
                     new \Graphpinator\Value\ConvertRawValueVisitor(
@@ -81,7 +85,8 @@ final class IsSameTest extends \PHPUnit\Framework\TestCase
                             'number' => [],
                             'bool' => true,
                         ],
-                    )
+                        new \Graphpinator\Common\Path(),
+                    ),
                 ),
                 false,
             ],
@@ -92,7 +97,8 @@ final class IsSameTest extends \PHPUnit\Framework\TestCase
                             'name' => 'test',
                             'number' => [],
                         ],
-                    )
+                        new \Graphpinator\Common\Path(),
+                    ),
                 ),
                 \Graphpinator\Tests\Spec\TestSchema::getSimpleInput()->accept(
                     new \Graphpinator\Value\ConvertRawValueVisitor(
@@ -100,7 +106,8 @@ final class IsSameTest extends \PHPUnit\Framework\TestCase
                             'name' => 'test',
                             'number' => [1],
                         ],
-                    )
+                        new \Graphpinator\Common\Path(),
+                    ),
                 ),
                 false,
             ],
@@ -111,7 +118,8 @@ final class IsSameTest extends \PHPUnit\Framework\TestCase
                             'name' => 'test',
                             'number' => [1],
                         ],
-                    )
+                        new \Graphpinator\Common\Path(),
+                    ),
                 ),
                 \Graphpinator\Tests\Spec\TestSchema::getSimpleInput()->accept(
                     new \Graphpinator\Value\ConvertRawValueVisitor(
@@ -119,7 +127,8 @@ final class IsSameTest extends \PHPUnit\Framework\TestCase
                             'name' => 'test',
                             'number' => [1, 2],
                         ],
-                    )
+                        new \Graphpinator\Common\Path(),
+                    ),
                 ),
                 false,
             ],
@@ -130,7 +139,8 @@ final class IsSameTest extends \PHPUnit\Framework\TestCase
                             'name' => 'test',
                             'number' => [1, 2],
                         ],
-                    )
+                        new \Graphpinator\Common\Path(),
+                    ),
                 ),
                 \Graphpinator\Tests\Spec\TestSchema::getSimpleInput()->accept(
                     new \Graphpinator\Value\ConvertRawValueVisitor(
@@ -138,7 +148,8 @@ final class IsSameTest extends \PHPUnit\Framework\TestCase
                             'name' => 'test',
                             'number' => [2, 1],
                         ],
-                    )
+                        new \Graphpinator\Common\Path(),
+                    ),
                 ),
                 false,
             ],
