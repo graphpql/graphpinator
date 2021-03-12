@@ -107,6 +107,7 @@ final class Normalizer
     ) : \Graphpinator\Normalizer\Variable\Variable
     {
         $type = $this->normalizeTypeRef($variable->getType());
+        $defaultValue = $variable->getDefault();
 
         if (!$type->isInputable()) {
             throw new \Graphpinator\Normalizer\Exception\VariableTypeInputable($variable->getName());
@@ -117,8 +118,8 @@ final class Normalizer
         return new \Graphpinator\Normalizer\Variable\Variable(
             $variable->getName(),
             $type,
-            $variable->getDefault() instanceof \Graphpinator\Parser\Value\Value
-                ? $type->createInputedValue($variable->getDefault()->getRawValue())
+            $defaultValue instanceof \Graphpinator\Parser\Value\Value
+                ? $defaultValue->accept(new \Graphpinator\Value\ConvertParserValueVisitor($type, $this->path, null))
                 : null,
         );
     }
@@ -254,15 +255,21 @@ final class Normalizer
 
         foreach ($argumentSet as $argument) {
             $this->path->add($argument->getName() . ' <argument>');
+
             if (!$argumentValueSet->offsetExists($argument->getName())) {
-                $items[] = \Graphpinator\Value\ArgumentValue::fromRaw($argument, null);
+                $items[] = \Graphpinator\Value\ConvertRawValueVisitor::convertArgument($argument, null);
                 $this->path->pop();
 
                 continue;
             }
 
             $parsedArg = $argumentValueSet->offsetGet($argument->getName());
-            $items[] = $this->normalizeArgumentValue($parsedArg, $argument);
+            $items[] = \Graphpinator\Value\ConvertParserValueVisitor::convertArgumentValue(
+                $parsedArg->getValue(),
+                $argument,
+                $this->path,
+                $this->variableSet,
+            );
             $this->path->pop();
         }
 
@@ -273,14 +280,6 @@ final class Normalizer
         }
 
         return new \Graphpinator\Value\ArgumentValueSet($items);
-    }
-
-    private function normalizeArgumentValue(
-        \Graphpinator\Parser\Value\ArgumentValue $argumentValue,
-        \Graphpinator\Argument\Argument $argument,
-    ) : \Graphpinator\Value\ArgumentValue
-    {
-        return ConvertParserValueVisitor::convertArgumentValue($argumentValue->getValue(), $argument, $this->variableSet, $this->path);
     }
 
     private function normalizeFragmentSpreadSet(

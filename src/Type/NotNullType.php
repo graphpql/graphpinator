@@ -6,18 +6,6 @@ namespace Graphpinator\Type;
 
 final class NotNullType extends \Graphpinator\Type\Contract\ModifierDefinition
 {
-    public function createInputedValue($rawValue) : \Graphpinator\Value\InputedValue
-    {
-        \assert($this->innerType instanceof \Graphpinator\Type\Contract\Inputable);
-        $value = $this->innerType->createInputedValue($rawValue);
-
-        if ($value instanceof \Graphpinator\Value\NullValue) {
-            throw new \Graphpinator\Exception\Value\ValueCannotBeNull(true);
-        }
-
-        return $value;
-    }
-
     public function isInstanceOf(\Graphpinator\Type\Contract\Definition $type) : bool
     {
         if ($type instanceof self) {

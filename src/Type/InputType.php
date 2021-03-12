@@ -19,19 +19,6 @@ abstract class InputType extends \Graphpinator\Type\Contract\ConcreteDefinition 
         $this->directiveUsages = new \Graphpinator\DirectiveUsage\DirectiveUsageSet();
     }
 
-    final public function createInputedValue(mixed $rawValue) : \Graphpinator\Value\InputedValue
-    {
-        if ($rawValue instanceof \stdClass) {
-            return \Graphpinator\Value\InputValue::fromRaw($this, $rawValue);
-        }
-
-        if ($rawValue === null) {
-            return new \Graphpinator\Value\NullInputedValue($this);
-        }
-
-        throw new \Graphpinator\Exception\Value\InvalidValue($this->getName(), $rawValue, true);
-    }
-
     final public function getArguments() : \Graphpinator\Argument\ArgumentSet
     {
         if (!$this->arguments instanceof \Graphpinator\Argument\ArgumentSet) {

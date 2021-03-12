@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Normalizer;
+namespace Graphpinator\Value;
 
 final class ConvertParserValueVisitor implements \Graphpinator\Parser\Value\ValueVisitor
 {
@@ -10,32 +10,13 @@ final class ConvertParserValueVisitor implements \Graphpinator\Parser\Value\Valu
 
     public function __construct(
         private \Graphpinator\Type\Contract\Inputable $type,
-        private \Graphpinator\Normalizer\Variable\VariableSet $variableSet,
         private \Graphpinator\Common\Path $path,
+        private ?\Graphpinator\Normalizer\Variable\VariableSet $variableSet,
     ) {}
-
-    public static function convertArgumentValue(
-        \Graphpinator\Parser\Value\Value $value,
-        \Graphpinator\Argument\Argument $argument,
-        \Graphpinator\Normalizer\Variable\VariableSet $variableSet,
-        \Graphpinator\Common\Path $path,
-    ) : \Graphpinator\Value\ArgumentValue
-    {
-        $default = $argument->getDefaultValue();
-        $result = $value->accept(
-            new ConvertParserValueVisitor($argument->getType(), $variableSet, $path),
-        );
-
-        if ($result instanceof \Graphpinator\Value\NullInputedValue && $default instanceof \Graphpinator\Value\InputedValue) {
-            return \Graphpinator\Value\ArgumentValue::fromInputed($argument, $default);
-        }
-
-        return \Graphpinator\Value\ArgumentValue::fromInputed($argument, $result);
-    }
 
     public function visitLiteral(\Graphpinator\Parser\Value\Literal $literal) : \Graphpinator\Value\InputedValue
     {
-        return $this->type->createInputedValue($literal->getRawValue());
+        return $this->type->accept(new ConvertRawValueVisitor($literal->getRawValue()));
     }
 
     public function visitEnumLiteral(\Graphpinator\Parser\Value\EnumLiteral $enumLiteral) : \Graphpinator\Value\InputedValue
@@ -47,7 +28,7 @@ final class ConvertParserValueVisitor implements \Graphpinator\Parser\Value\Valu
         }
 
         if ($this->type instanceof \Graphpinator\Type\EnumType) {
-            return $this->type->createInputedValue($enumLiteral->getRawValue());
+            return $this->type->accept(new ConvertRawValueVisitor($enumLiteral->getRawValue()));
         }
 
         throw new \Graphpinator\Exception\Value\InvalidValue($this->type->printName(), $enumLiteral->getRawValue(), true);
@@ -98,7 +79,7 @@ final class ConvertParserValueVisitor implements \Graphpinator\Parser\Value\Valu
                 continue;
             }
 
-            throw new \Graphpinator\Normalizer\Exception\UnknownInputField($name, $this->type->getName());
+            throw new \Graphpinator\Normalizer\Exception\UnknownArgument($name);
         }
 
         $inner = new \stdClass();
@@ -106,8 +87,8 @@ final class ConvertParserValueVisitor implements \Graphpinator\Parser\Value\Valu
         foreach ($this->type->getArguments() as $argument) {
             $this->path->add($argument->getName() . ' <input field>');
             $inner->{$argument->getName()} = \property_exists($objectVal->getValue(), $argument->getName())
-                ? self::convertArgumentValue($objectVal->getValue()->{$argument->getName()}, $argument, $this->variableSet, $this->path)
-                : \Graphpinator\Value\ArgumentValue::fromRaw($argument, null);
+                ? self::convertArgumentValue($objectVal->getValue()->{$argument->getName()}, $argument, $this->path, $this->variableSet)
+                : \Graphpinator\Value\ConvertRawValueVisitor::convertArgument($argument, null);
             $this->path->pop();
         }
 
@@ -116,8 +97,31 @@ final class ConvertParserValueVisitor implements \Graphpinator\Parser\Value\Valu
 
     public function visitVariableRef(\Graphpinator\Parser\Value\VariableRef $variableRef) : \Graphpinator\Value\VariableValue
     {
-        return $this->variableSet->offsetExists($variableRef->getVarName())
-            ? new \Graphpinator\Value\VariableValue($this->type, $this->variableSet->offsetGet($variableRef->getVarName()))
-            : throw new \Graphpinator\Normalizer\Exception\UnknownVariable($variableRef->getVarName());
+        if ($this->variableSet instanceof \Graphpinator\Normalizer\Variable\VariableSet) {
+            return $this->variableSet->offsetExists($variableRef->getVarName())
+                ? new \Graphpinator\Value\VariableValue($this->type, $this->variableSet->offsetGet($variableRef->getVarName()))
+                : throw new \Graphpinator\Normalizer\Exception\UnknownVariable($variableRef->getVarName());
+        }
+
+        throw new \Graphpinator\Normalizer\Exception\VariableInConstContext();
+    }
+
+    public static function convertArgumentValue(
+        \Graphpinator\Parser\Value\Value $value,
+        \Graphpinator\Argument\Argument $argument,
+        \Graphpinator\Common\Path $path,
+        ?\Graphpinator\Normalizer\Variable\VariableSet $variableSet,
+    ) : \Graphpinator\Value\ArgumentValue
+    {
+        $default = $argument->getDefaultValue();
+        $result = $value->accept(
+            new ConvertParserValueVisitor($argument->getType(), $path, $variableSet),
+        );
+
+        if ($result instanceof \Graphpinator\Value\NullInputedValue && $default instanceof \Graphpinator\Value\ArgumentValue) {
+            return $default;
+        }
+
+        return new \Graphpinator\Value\ArgumentValue($argument, $result, true);
     }
 }

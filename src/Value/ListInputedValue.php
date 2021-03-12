@@ -12,20 +12,6 @@ final class ListInputedValue extends \Graphpinator\Value\ListValue implements \G
         $this->value = $value;
     }
 
-    public static function fromRaw(\Graphpinator\Type\ListType $type, array $rawValue) : self
-    {
-        $innerType = $type->getInnerType();
-        \assert($innerType instanceof \Graphpinator\Type\Contract\Inputable);
-
-        $inner = [];
-
-        foreach ($rawValue as $item) {
-            $inner[] = $innerType->createInputedValue($item);
-        }
-
-        return new self($type, $inner);
-    }
-
     public function getRawValue(bool $forResolvers = false) : array
     {
         $return = [];

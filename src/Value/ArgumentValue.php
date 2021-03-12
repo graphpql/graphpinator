@@ -8,7 +8,7 @@ final class ArgumentValue
 {
     use \Nette\SmartObject;
 
-    private function __construct(
+    public function __construct(
         private \Graphpinator\Argument\Argument $argument,
         private \Graphpinator\Value\InputedValue $value,
         private bool $hasVariables,
@@ -17,32 +17,6 @@ final class ArgumentValue
         if (!$this->hasVariables) {
             $this->resolveDirectives();
         }
-    }
-
-    public static function fromRaw(
-        \Graphpinator\Argument\Argument $argument,
-        string|int|float|bool|null|array|\stdClass|\Psr\Http\Message\UploadedFileInterface $rawValue,
-    ) : self
-    {
-        $default = $argument->getDefaultValue();
-
-        $value = $rawValue === null && $default instanceof \Graphpinator\Value\InputedValue
-            ? $default
-            : $argument->getType()->createInputedValue($rawValue);
-
-        return new self($argument, $value, false);
-    }
-
-    public static function fromInputed(
-        \Graphpinator\Argument\Argument $argument,
-        \Graphpinator\Value\InputedValue $value,
-    ) : self
-    {
-        if ($value->getType()->isInstanceOf($argument->getType())) {
-            return new self($argument, $value, true);
-        }
-
-        throw new \Exception();
     }
 
     public function getValue() : \Graphpinator\Value\InputedValue

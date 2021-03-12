@@ -10,7 +10,7 @@ final class Argument implements \Graphpinator\Typesystem\Component
     use \Graphpinator\Utils\TOptionalDescription;
     use \Graphpinator\Utils\THasDirectives;
 
-    private ?\Graphpinator\Value\InputedValue $defaultValue = null;
+    private ?\Graphpinator\Value\ArgumentValue $defaultValue = null;
 
     public function __construct(
         private string $name,
@@ -35,14 +35,14 @@ final class Argument implements \Graphpinator\Typesystem\Component
         return $this->type;
     }
 
-    public function getDefaultValue() : ?\Graphpinator\Value\InputedValue
+    public function getDefaultValue() : ?\Graphpinator\Value\ArgumentValue
     {
         return $this->defaultValue;
     }
 
     public function setDefaultValue(\stdClass|array|string|int|float|bool|null $defaultValue) : self
     {
-        $this->defaultValue = $this->type->createInputedValue($defaultValue);
+        $this->defaultValue = \Graphpinator\Value\ConvertRawValueVisitor::convertArgument($this, $defaultValue);
 
         return $this;
     }

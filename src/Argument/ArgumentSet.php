@@ -27,8 +27,8 @@ final class ArgumentSet extends \Infinityloop\Utils\ImplicitObjectMap
 
         $defaultValue = $value->getDefaultValue();
 
-        if ($defaultValue instanceof \Graphpinator\Value\InputedValue) {
-            $this->defaults[$value->getName()] = $defaultValue->getRawValue();
+        if ($defaultValue instanceof \Graphpinator\Value\ArgumentValue) {
+            $this->defaults[$value->getName()] = $defaultValue->getValue()->getRawValue();
         }
     }
 

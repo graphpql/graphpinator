@@ -51,13 +51,13 @@ final class Finalizer
     ) : \Graphpinator\Value\InputedValue
     {
         if (isset($variables->{$variable->getName()})) {
-            return $variable->getType()->createInputedValue($variables->{$variable->getName()});
+            return $variable->getType()->accept(new \Graphpinator\Value\ConvertRawValueVisitor($variables->{$variable->getName()}));
         }
 
         if ($variable->getDefaultValue() instanceof \Graphpinator\Value\InputedValue) {
             return $variable->getDefaultValue();
         }
 
-        return $variable->getType()->createInputedValue(null);
+        return $variable->getType()->accept(new \Graphpinator\Value\ConvertRawValueVisitor(null));
     }
 }

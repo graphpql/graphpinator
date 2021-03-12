@@ -6,15 +6,6 @@ namespace Graphpinator\Type;
 
 final class ListType extends \Graphpinator\Type\Contract\ModifierDefinition
 {
-    public function createInputedValue($rawValue) : \Graphpinator\Value\InputedValue
-    {
-        if (\is_array($rawValue)) {
-            return \Graphpinator\Value\ListInputedValue::fromRaw($this, $rawValue);
-        }
-
-        return new \Graphpinator\Value\NullInputedValue($this);
-    }
-
     public function isInstanceOf(\Graphpinator\Type\Contract\Definition $type) : bool
     {
         if ($type instanceof self) {

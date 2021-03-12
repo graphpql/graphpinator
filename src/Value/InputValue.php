@@ -13,31 +13,6 @@ final class InputValue implements \Graphpinator\Value\InputedValue, \IteratorAgg
         private \stdClass $value,
     ) {}
 
-    public static function fromRaw(\Graphpinator\Type\InputType $type, \stdClass $rawValue) : self
-    {
-        $rawValue = self::mergeRaw($rawValue, (object) $type->getArguments()->getRawDefaults());
-
-        foreach ((array) $rawValue as $name => $temp) {
-            if ($type->getArguments()->offsetExists($name)) {
-                continue;
-            }
-
-            throw new \Graphpinator\Normalizer\Exception\UnknownInputField($name, $type->getName());
-        }
-
-        $inner = new \stdClass();
-
-        foreach ($type->getArguments() as $argument) {
-            $inner->{$argument->getName()} = \Graphpinator\Value\ArgumentValue::fromRaw(
-                $argument,
-                $rawValue->{$argument->getName()}
-                    ?? null,
-            );
-        }
-
-        return new self($type, $inner);
-    }
-
     public function getRawValue(bool $forResolvers = false) : object
     {
         $return = $forResolvers === true
@@ -129,23 +104,5 @@ final class InputValue implements \Graphpinator\Value\InputedValue, \IteratorAgg
         }
 
         $this->value->{$name} = $value;
-    }
-
-    private static function mergeRaw(\stdClass $core, \stdClass $supplement) : \stdClass
-    {
-        foreach ((array) $supplement as $key => $value) {
-            if (\property_exists($core, $key)) {
-                if ($core->{$key} instanceof \stdClass &&
-                    $supplement->{$key} instanceof \stdClass) {
-                    $core->{$key} = self::mergeRaw($core->{$key}, $supplement->{$key});
-                }
-
-                continue;
-            }
-
-            $core->{$key} = $value;
-        }
-
-        return $core;
     }
 }

@@ -12,40 +12,6 @@ final class ArgumentValueSet extends \Infinityloop\Utils\ImplicitObjectMap
 {
     protected const INNER_CLASS = \Graphpinator\Value\ArgumentValue::class;
 
-    public static function fromRaw(array $rawValues, \Graphpinator\Argument\ArgumentSet $argumentSet) : self
-    {
-        $items = [];
-
-        foreach ($argumentSet as $argument) {
-            if (!\array_key_exists($argument->getName(), $rawValues)) {
-                $items[] = \Graphpinator\Value\ArgumentValue::fromRaw($argument, null);
-
-                continue;
-            }
-
-            $items[] = \Graphpinator\Value\ArgumentValue::fromRaw($argument, $rawValues[$argument->getName()]);
-        }
-
-        foreach ($rawValues as $key => $value) {
-            if (!$argumentSet->offsetExists($key)) {
-                throw new \Graphpinator\Normalizer\Exception\UnknownArgument($key);
-            }
-        }
-
-        return new self($items);
-    }
-
-    public function getRawValues() : \stdClass
-    {
-        $return = new \stdClass();
-
-        foreach ($this as $name => $argumentValue) {
-            $return->{$name} = $argumentValue->getValue()->getRawValue();
-        }
-
-        return $return;
-    }
-
     public function getValuesForResolver() : array
     {
         $return = [];
@@ -75,7 +41,7 @@ final class ArgumentValueSet extends \Infinityloop\Utils\ImplicitObjectMap
                 return false;
             }
 
-            if ($lhs->getValue()->isSame($lhs->getArgument()->getDefaultValue())) {
+            if ($lhs->getValue()->isSame($lhs->getArgument()->getDefaultValue()->getValue())) {
                 continue;
             }
 
@@ -87,7 +53,7 @@ final class ArgumentValueSet extends \Infinityloop\Utils\ImplicitObjectMap
                 continue;
             }
 
-            if ($lhs->getValue()->isSame($lhs->getArgument()->getDefaultValue())) {
+            if ($lhs->getValue()->isSame($lhs->getArgument()->getDefaultValue()->getValue())) {
                 continue;
             }
 
