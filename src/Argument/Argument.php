@@ -42,7 +42,11 @@ final class Argument implements \Graphpinator\Typesystem\Component
 
     public function setDefaultValue(\stdClass|array|string|int|float|bool|null $defaultValue) : self
     {
-        $this->defaultValue = \Graphpinator\Value\ConvertRawValueVisitor::convertArgument($this, $defaultValue);
+        $this->defaultValue = \Graphpinator\Value\ConvertRawValueVisitor::convertArgument(
+            $this,
+            $defaultValue,
+            new \Graphpinator\Common\Path(),
+        );
 
         return $this;
     }

@@ -119,7 +119,7 @@ final class Normalizer
             $variable->getName(),
             $type,
             $defaultValue instanceof \Graphpinator\Parser\Value\Value
-                ? $defaultValue->accept(new \Graphpinator\Value\ConvertParserValueVisitor($type, $this->path, null))
+                ? $defaultValue->accept(new \Graphpinator\Value\ConvertParserValueVisitor($type, null, $this->path))
                 : null,
         );
     }
@@ -253,11 +253,17 @@ final class Normalizer
         $argumentValueSet ??= new \Graphpinator\Parser\Value\ArgumentValueSet();
         $items = [];
 
+        foreach ($argumentValueSet as $value) {
+            if (!$argumentSet->offsetExists($value->getName())) {
+                throw new \Graphpinator\Normalizer\Exception\UnknownArgument($value->getName());
+            }
+        }
+
         foreach ($argumentSet as $argument) {
             $this->path->add($argument->getName() . ' <argument>');
 
             if (!$argumentValueSet->offsetExists($argument->getName())) {
-                $items[] = \Graphpinator\Value\ConvertRawValueVisitor::convertArgument($argument, null);
+                $items[] = \Graphpinator\Value\ConvertRawValueVisitor::convertArgument($argument, null, $this->path);
                 $this->path->pop();
 
                 continue;
@@ -267,16 +273,10 @@ final class Normalizer
             $items[] = \Graphpinator\Value\ConvertParserValueVisitor::convertArgumentValue(
                 $parsedArg->getValue(),
                 $argument,
-                $this->path,
                 $this->variableSet,
+                $this->path,
             );
             $this->path->pop();
-        }
-
-        foreach ($argumentValueSet as $value) {
-            if (!$argumentSet->offsetExists($value->getName())) {
-                throw new \Graphpinator\Normalizer\Exception\UnknownArgument($value->getName());
-            }
         }
 
         return new \Graphpinator\Value\ArgumentValueSet($items);

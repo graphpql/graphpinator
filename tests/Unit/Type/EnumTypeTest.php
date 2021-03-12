@@ -22,7 +22,7 @@ final class EnumTypeTest extends \PHPUnit\Framework\TestCase
     public function testValidateValue($rawValue) : void
     {
         $enum = $this->createTestEnum();
-        $value = $enum->accept(new \Graphpinator\Value\ConvertRawValueVisitor($rawValue));
+        $value = $enum->accept(new \Graphpinator\Value\ConvertRawValueVisitor($rawValue, new \Graphpinator\Common\Path()));
 
         self::assertSame($enum, $value->getType());
         self::assertSame($rawValue, $value->getRawValue());
@@ -50,7 +50,7 @@ final class EnumTypeTest extends \PHPUnit\Framework\TestCase
         $this->expectException(\Graphpinator\Exception\Value\InvalidValue::class);
 
         $enum = $this->createTestEnum();
-        $enum->accept(new \Graphpinator\Value\ConvertRawValueVisitor($rawValue));
+        $enum->accept(new \Graphpinator\Value\ConvertRawValueVisitor($rawValue, new \Graphpinator\Common\Path()));
     }
 
     public function testGetItems() : void

@@ -18,7 +18,11 @@ final class DirectiveUsage implements \Graphpinator\Typesystem\Component
     {
         $this->directive = $directive;
         $this->argumentValues = new \Graphpinator\Value\ArgumentValueSet(
-            (array) \Graphpinator\Value\ConvertRawValueVisitor::convertArgumentSet($directive->getArguments(), (object) $arguments),
+            (array) \Graphpinator\Value\ConvertRawValueVisitor::convertArgumentSet(
+                $directive->getArguments(),
+                (object) $arguments,
+                new \Graphpinator\Common\Path(),
+            ),
         );
     }
 

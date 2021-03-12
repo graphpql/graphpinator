@@ -10,7 +10,7 @@ final class ConvertRawValueVisitor implements \Graphpinator\Typesystem\TypeVisit
 
     public function __construct(
         private mixed $rawValue,
-        private ?\Graphpinator\Common\Path $path = null,
+        private \Graphpinator\Common\Path $path,
     ) {}
 
     public function visitType(\Graphpinator\Type\Type $type) : mixed
@@ -38,7 +38,7 @@ final class ConvertRawValueVisitor implements \Graphpinator\Typesystem\TypeVisit
             throw new \Graphpinator\Exception\Value\InvalidValue($input->getName(), $this->rawValue, true);
         }
 
-        return new InputValue($input, self::convertArgumentSet($input->getArguments(), $this->rawValue));
+        return new InputValue($input, self::convertArgumentSet($input->getArguments(), $this->rawValue, $this->path));
     }
 
     public function visitScalar(\Graphpinator\Type\ScalarType $scalar) : InputedValue
@@ -88,9 +88,11 @@ final class ConvertRawValueVisitor implements \Graphpinator\Typesystem\TypeVisit
         $inner = [];
         $listValue = $this->rawValue;
 
-        foreach ($listValue as $item) {
-            $this->rawValue = $item;
+        foreach ($listValue as $index => $rawValue) {
+            $this->path->add($index . ' <list index>');
+            $this->rawValue = $rawValue;
             $inner[] = $innerType->accept($this);
+            $this->path->pop();
         }
 
         $this->rawValue = $listValue;
@@ -98,7 +100,11 @@ final class ConvertRawValueVisitor implements \Graphpinator\Typesystem\TypeVisit
         return new ListInputedValue($list, $inner);
     }
 
-    public static function convertArgumentSet(\Graphpinator\Argument\ArgumentSet $arguments, \stdClass $rawValue) : \stdClass
+    public static function convertArgumentSet(
+        \Graphpinator\Argument\ArgumentSet $arguments,
+        \stdClass $rawValue,
+        \Graphpinator\Common\Path $path,
+    ) : \stdClass
     {
         $rawValue = self::mergeRaw($rawValue, (object) $arguments->getRawDefaults());
 
@@ -113,13 +119,19 @@ final class ConvertRawValueVisitor implements \Graphpinator\Typesystem\TypeVisit
         $inner = new \stdClass();
 
         foreach ($arguments as $argument) {
-            $inner->{$argument->getName()} = self::convertArgument($argument, $rawValue->{$argument->getName()} ?? null);
+            $path->add($argument->getName() . ' <argument>');
+            $inner->{$argument->getName()} = self::convertArgument($argument, $rawValue->{$argument->getName()} ?? null, $path);
+            $path->pop();
         }
 
         return $inner;
     }
 
-    public static function convertArgument(\Graphpinator\Argument\Argument $argument, mixed $rawValue) : ArgumentValue
+    public static function convertArgument(
+        \Graphpinator\Argument\Argument $argument,
+        mixed $rawValue,
+        \Graphpinator\Common\Path $path,
+    ) : ArgumentValue
     {
         $default = $argument->getDefaultValue();
 
@@ -127,9 +139,7 @@ final class ConvertRawValueVisitor implements \Graphpinator\Typesystem\TypeVisit
             return $default;
         }
 
-        $value = $argument->getType()->accept(new ConvertRawValueVisitor($rawValue));
-
-        return new ArgumentValue($argument, $value, false);
+        return new ArgumentValue($argument, $argument->getType()->accept(new ConvertRawValueVisitor($rawValue, $path)), false);
     }
 
     private static function mergeRaw(\stdClass $core, \stdClass $supplement) : \stdClass
