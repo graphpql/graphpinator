@@ -265,7 +265,7 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 Json::fromNative((object) [
-                    'query' => 'query queryName { fieldArgumentDefaults(inputNumberList: [123, "invalid"]) { number } }',
+                    'query' => 'query queryName { fieldArgumentDefaults(inputNumberList: [123, "invalid"]) { fieldBool } }',
                 ]),
                 Json::fromNative((object) [
                     'errors' => [[
@@ -284,7 +284,19 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
                         'path' => ['queryName <operation>', 'fieldEnumArg <field>', 'val <argument>'],
                     ]],
                 ]),
-            ]
+            ],
+            [
+                Json::fromNative((object) [
+                    'query' => 'query queryName ($var1: [Int!]!) { fieldArgumentDefaults(inputNumberList: $var1) { fieldBool } }',
+                    'variables' => (object) ['var1' => [123, "invalid"]]
+                ]),
+                Json::fromNative((object) [
+                    'errors' => [[
+                        'message' => 'Invalid value resolved for type "Int" - got "invalid".',
+                        'path' => ['queryName <operation>', 'var1 <variable>', '1 <list index>'],
+                    ]],
+                ]),
+            ],
         ];
     }
 
