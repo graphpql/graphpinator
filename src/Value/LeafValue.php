@@ -9,7 +9,7 @@ abstract class LeafValue implements \Graphpinator\Value\InputedValue, \Graphpina
     use \Nette\SmartObject;
 
     protected \Graphpinator\Type\Contract\LeafDefinition $type;
-    protected string|int|float|bool|\Psr\Http\Message\UploadedFileInterface $rawValue;
+    protected string|int|float|bool|object $rawValue;
 
     public function __construct(\Graphpinator\Type\Contract\LeafDefinition $type, mixed $rawValue, bool $inputed)
     {

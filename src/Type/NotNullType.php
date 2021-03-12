@@ -22,7 +22,7 @@ final class NotNullType extends \Graphpinator\Type\Contract\ModifierDefinition
 
     public function getShapingType() : \Graphpinator\Type\Contract\Definition
     {
-        return $this->getInnerType();
+        return $this->getInnerType()->getShapingType();
     }
 
     public function accept(\Graphpinator\Typesystem\TypeVisitor $visitor) : mixed
