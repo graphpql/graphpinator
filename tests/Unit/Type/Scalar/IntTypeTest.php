@@ -32,7 +32,7 @@ final class IntTypeTest extends \PHPUnit\Framework\TestCase
     public function testValidateValue($rawValue) : void
     {
         $int = new \Graphpinator\Type\Spec\IntType();
-        $value = $int->createInputedValue($rawValue);
+        $value = $int->accept(new \Graphpinator\Value\ConvertRawValueVisitor($rawValue));
 
         self::assertSame($int, $value->getType());
         self::assertSame($rawValue, $value->getRawValue());
@@ -47,6 +47,6 @@ final class IntTypeTest extends \PHPUnit\Framework\TestCase
         $this->expectException(\Graphpinator\Exception\Value\InvalidValue::class);
 
         $int = new \Graphpinator\Type\Spec\IntType();
-        $int->createInputedValue($rawValue);
+        $int->accept(new \Graphpinator\Value\ConvertRawValueVisitor($rawValue));
     }
 }

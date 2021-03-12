@@ -32,7 +32,7 @@ final class IDTypeTest extends \PHPUnit\Framework\TestCase
     public function testValidateValue(string|int|null $rawValue, ?string $resultValue) : void
     {
         $id = new \Graphpinator\Type\Spec\IdType();
-        $value = $id->createInputedValue($rawValue);
+        $value = $id->accept(new \Graphpinator\Value\ConvertRawValueVisitor($rawValue));
 
         self::assertSame($id, $value->getType());
         self::assertSame($resultValue, $value->getRawValue());
@@ -47,6 +47,6 @@ final class IDTypeTest extends \PHPUnit\Framework\TestCase
         $this->expectException(\Graphpinator\Exception\Value\InvalidValue::class);
 
         $id = new \Graphpinator\Type\Spec\IdType();
-        $id->createInputedValue($rawValue);
+        $id->accept(new \Graphpinator\Value\ConvertRawValueVisitor($rawValue));
     }
 }

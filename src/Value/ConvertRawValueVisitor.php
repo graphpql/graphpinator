@@ -47,6 +47,8 @@ final class ConvertRawValueVisitor implements \Graphpinator\Typesystem\TypeVisit
             return new \Graphpinator\Value\NullInputedValue($scalar);
         }
 
+        $this->rawValue = $scalar->coerceValue($this->rawValue);
+
         return new \Graphpinator\Value\ScalarValue($scalar, $this->rawValue, true);
     }
 

@@ -10,4 +10,9 @@ abstract class ScalarType extends \Graphpinator\Type\Contract\LeafDefinition
     {
         return $visitor->visitScalar($this);
     }
+
+    public function coerceValue(mixed $rawValue) : mixed
+    {
+        return $rawValue;
+    }
 }

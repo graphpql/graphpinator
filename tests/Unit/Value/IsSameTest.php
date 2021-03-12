@@ -32,29 +32,32 @@ final class IsSameTest extends \PHPUnit\Framework\TestCase
                 false,
             ],
             [
-                \Graphpinator\Value\InputValue::fromRaw(
-                    \Graphpinator\Tests\Spec\TestSchema::getSimpleInput(),
-                    (object) [
-                        'name' => 'test',
-                        'number' => [],
-                    ],
+                \Graphpinator\Tests\Spec\TestSchema::getSimpleInput()->accept(
+                    new \Graphpinator\Value\ConvertRawValueVisitor(
+                        (object) [
+                            'name' => 'test',
+                            'number' => [],
+                        ],
+                    )
                 ),
-                \Graphpinator\Value\InputValue::fromRaw(
-                    \Graphpinator\Tests\Spec\TestSchema::getSimpleInput(),
-                    (object) [
-                        'name' => 'test',
-                        'number' => [],
-                    ],
+                \Graphpinator\Tests\Spec\TestSchema::getSimpleInput()->accept(
+                    new \Graphpinator\Value\ConvertRawValueVisitor(
+                        (object) [
+                            'name' => 'test',
+                            'number' => [],
+                        ],
+                    )
                 ),
                 true,
             ],
             [
-                \Graphpinator\Value\InputValue::fromRaw(
-                    \Graphpinator\Tests\Spec\TestSchema::getSimpleInput(),
-                    (object) [
-                        'name' => 'test',
-                        'number' => [],
-                    ],
+                \Graphpinator\Tests\Spec\TestSchema::getSimpleInput()->accept(
+                    new \Graphpinator\Value\ConvertRawValueVisitor(
+                        (object) [
+                            'name' => 'test',
+                            'number' => [],
+                        ],
+                    )
                 ),
                 new \Graphpinator\Value\VariableValue(
                     new \Graphpinator\Type\Spec\StringType(),
@@ -63,71 +66,79 @@ final class IsSameTest extends \PHPUnit\Framework\TestCase
                 false,
             ],
             [
-                \Graphpinator\Value\InputValue::fromRaw(
-                    \Graphpinator\Tests\Spec\TestSchema::getSimpleInput(),
-                    (object) [
-                        'name' => 'test',
-                        'number' => [],
-                    ],
+                \Graphpinator\Tests\Spec\TestSchema::getSimpleInput()->accept(
+                    new \Graphpinator\Value\ConvertRawValueVisitor(
+                        (object) [
+                            'name' => 'test',
+                            'number' => [],
+                        ],
+                    )
                 ),
-                \Graphpinator\Value\InputValue::fromRaw(
-                    \Graphpinator\Tests\Spec\TestSchema::getSimpleInput(),
-                    (object) [
-                        'name' => 'test',
-                        'number' => [],
-                        'bool' => true,
-                    ],
-                ),
-                false,
-            ],
-            [
-                \Graphpinator\Value\InputValue::fromRaw(
-                    \Graphpinator\Tests\Spec\TestSchema::getSimpleInput(),
-                    (object) [
-                        'name' => 'test',
-                        'number' => [],
-                    ],
-                ),
-                \Graphpinator\Value\InputValue::fromRaw(
-                    \Graphpinator\Tests\Spec\TestSchema::getSimpleInput(),
-                    (object) [
-                        'name' => 'test',
-                        'number' => [1],
-                    ],
+                \Graphpinator\Tests\Spec\TestSchema::getSimpleInput()->accept(
+                    new \Graphpinator\Value\ConvertRawValueVisitor(
+                        (object) [
+                            'name' => 'test',
+                            'number' => [],
+                            'bool' => true,
+                        ],
+                    )
                 ),
                 false,
             ],
             [
-                \Graphpinator\Value\InputValue::fromRaw(
-                    \Graphpinator\Tests\Spec\TestSchema::getSimpleInput(),
-                    (object) [
-                        'name' => 'test',
-                        'number' => [1],
-                    ],
+                \Graphpinator\Tests\Spec\TestSchema::getSimpleInput()->accept(
+                    new \Graphpinator\Value\ConvertRawValueVisitor(
+                        (object) [
+                            'name' => 'test',
+                            'number' => [],
+                        ],
+                    )
                 ),
-                \Graphpinator\Value\InputValue::fromRaw(
-                    \Graphpinator\Tests\Spec\TestSchema::getSimpleInput(),
-                    (object) [
-                        'name' => 'test',
-                        'number' => [1,2],
-                    ],
+                \Graphpinator\Tests\Spec\TestSchema::getSimpleInput()->accept(
+                    new \Graphpinator\Value\ConvertRawValueVisitor(
+                        (object) [
+                            'name' => 'test',
+                            'number' => [1],
+                        ],
+                    )
                 ),
                 false,
             ],
             [
-                \Graphpinator\Value\InputValue::fromRaw(
-                    \Graphpinator\Tests\Spec\TestSchema::getSimpleInput(),
-                    (object) [
-                        'name' => 'test',
-                        'number' => [1,2],
-                    ],
+                \Graphpinator\Tests\Spec\TestSchema::getSimpleInput()->accept(
+                    new \Graphpinator\Value\ConvertRawValueVisitor(
+                        (object) [
+                            'name' => 'test',
+                            'number' => [1],
+                        ],
+                    )
                 ),
-                \Graphpinator\Value\InputValue::fromRaw(
-                    \Graphpinator\Tests\Spec\TestSchema::getSimpleInput(),
-                    (object) [
-                        'name' => 'test',
-                        'number' => [2,1],
-                    ],
+                \Graphpinator\Tests\Spec\TestSchema::getSimpleInput()->accept(
+                    new \Graphpinator\Value\ConvertRawValueVisitor(
+                        (object) [
+                            'name' => 'test',
+                            'number' => [1, 2],
+                        ],
+                    )
+                ),
+                false,
+            ],
+            [
+                \Graphpinator\Tests\Spec\TestSchema::getSimpleInput()->accept(
+                    new \Graphpinator\Value\ConvertRawValueVisitor(
+                        (object) [
+                            'name' => 'test',
+                            'number' => [1, 2],
+                        ],
+                    )
+                ),
+                \Graphpinator\Tests\Spec\TestSchema::getSimpleInput()->accept(
+                    new \Graphpinator\Value\ConvertRawValueVisitor(
+                        (object) [
+                            'name' => 'test',
+                            'number' => [2, 1],
+                        ],
+                    )
                 ),
                 false,
             ],
