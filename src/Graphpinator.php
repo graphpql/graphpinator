@@ -90,20 +90,35 @@ final class Graphpinator implements \Psr\Log\LoggerAwareInterface
                 throw $exception;
             }
 
-            if ($exception instanceof \Graphpinator\Exception\GraphpinatorBase) {
-                $this->logger->info($exception->getMessage());
+            $this->logger->log(self::getLogLevel($exception), self::getLogMessage($exception));
 
-                return new \Graphpinator\Result(null, [$exception]);
-            }
-
-            $this->logger->emergency($exception->getMessage());
-
-            return new \Graphpinator\Result(null, [\Graphpinator\Exception\GraphpinatorBase::notOutputableResponse()]);
+            return new \Graphpinator\Result(null, [
+                $exception instanceof \Graphpinator\Exception\GraphpinatorBase
+                    ? $exception
+                    : \Graphpinator\Exception\GraphpinatorBase::notOutputableResponse(),
+            ]);
         }
     }
 
     public function setLogger(\Psr\Log\LoggerInterface $logger) : void
     {
         $this->logger = $logger;
+    }
+
+    private static function getLogMessage(\Throwable $exception) : string
+    {
+        return $exception->getMessage() . ' in ' . $exception->getFile() . ':' . $exception->getLine();
+    }
+
+    private static function getLogLevel(\Throwable $exception) : string
+    {
+        if ($exception instanceof \Graphpinator\Exception\GraphpinatorBase) {
+            return $exception->isOutputable()
+                ? \Psr\Log\LogLevel::INFO
+                : \Psr\Log\LogLevel::ERROR;
+
+        }
+
+        return \Psr\Log\LogLevel::EMERGENCY;
     }
 }

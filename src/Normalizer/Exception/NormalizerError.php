@@ -6,7 +6,7 @@ namespace Graphpinator\Normalizer\Exception;
 
 abstract class NormalizerError extends \Graphpinator\Exception\GraphpinatorBase
 {
-    protected function isOutputable() : bool
+    public function isOutputable() : bool
     {
         return true;
     }

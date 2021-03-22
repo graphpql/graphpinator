@@ -6,7 +6,7 @@ namespace Graphpinator\Request\Exception;
 
 abstract class RequestError extends \Graphpinator\Exception\GraphpinatorBase
 {
-    protected function isOutputable() : bool
+    public function isOutputable() : bool
     {
         return true;
     }

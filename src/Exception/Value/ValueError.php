@@ -15,7 +15,7 @@ abstract class ValueError extends \Graphpinator\Exception\GraphpinatorBase
         $this->outputable = $outputable;
     }
 
-    protected function isOutputable() : bool
+    public function isOutputable() : bool
     {
         return $this->outputable;
     }
