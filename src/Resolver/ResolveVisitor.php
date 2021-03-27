@@ -117,7 +117,15 @@ final class ResolveVisitor implements \Graphpinator\Typesystem\TypeVisitor
         \Graphpinator\Normalizer\Field\Field $requestedField,
     ) : \Graphpinator\Value\FieldValue
     {
+        foreach ($field->getDirectiveUsages() as $directive) {
+            $directive->getDirective()->resolveFieldDefinitionStart($directive->getArgumentValues(), $this->parentResult);
+        }
+
         $arguments = $requestedField->getArguments();
+
+        foreach ($arguments as $argumentValue) {
+            $argumentValue->resolveRemainingDirectives();
+        }
 
         foreach ($field->getDirectiveUsages() as $directive) {
             $directive->getDirective()->resolveFieldDefinitionBefore($directive->getArgumentValues(), $this->parentResult, $arguments);

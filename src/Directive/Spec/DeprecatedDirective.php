@@ -26,6 +26,14 @@ final class DeprecatedDirective extends \Graphpinator\Directive\Directive
         // nothing here
     }
 
+    public function resolveFieldDefinitionStart(
+        \Graphpinator\Value\ArgumentValueSet $arguments,
+        \Graphpinator\Value\ResolvedValue $parentValue,
+    ) : void
+    {
+        // nothing here
+    }
+
     public function resolveFieldDefinitionBefore(
         \Graphpinator\Value\ArgumentValueSet $arguments,
         \Graphpinator\Value\ResolvedValue $parentValue,

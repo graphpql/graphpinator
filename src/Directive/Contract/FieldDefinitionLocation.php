@@ -16,6 +16,11 @@ interface FieldDefinitionLocation extends TypeSystemDefinition
         ?\Graphpinator\Value\ArgumentValueSet $smallerSet,
     ) : void;
 
+    public function resolveFieldDefinitionStart(
+        \Graphpinator\Value\ArgumentValueSet $arguments,
+        \Graphpinator\Value\ResolvedValue $parentValue,
+    ) : void;
+
     public function resolveFieldDefinitionBefore(
         \Graphpinator\Value\ArgumentValueSet $arguments,
         \Graphpinator\Value\ResolvedValue $parentValue,

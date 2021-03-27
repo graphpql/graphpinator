@@ -6,6 +6,8 @@ namespace Graphpinator\Directive\Contract;
 
 interface ArgumentDefinitionLocation extends TypeSystemDefinition
 {
+    public const PURE = true;
+    
     public function validateArgumentUsage(
         \Graphpinator\Argument\Argument $argument,
         \Graphpinator\Value\ArgumentValueSet $arguments,

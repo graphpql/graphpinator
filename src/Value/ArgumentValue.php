@@ -15,7 +15,7 @@ final class ArgumentValue
     )
     {
         if (!$this->hasVariables) {
-            $this->resolveDirectives();
+            $this->resolvePureDirectives();
         }
     }
 
@@ -33,14 +33,31 @@ final class ArgumentValue
     {
         if ($this->hasVariables) {
             $this->value->applyVariables($variables);
-            $this->resolveDirectives();
+            $this->resolvePureDirectives();
         }
     }
 
-    private function resolveDirectives() : void
+    public function resolvePureDirectives() : void
     {
         foreach ($this->argument->getDirectiveUsages() as $directiveUsage) {
-            $directiveUsage->getDirective()->resolveArgumentDefinition($directiveUsage->getArgumentValues(), $this);
+            $directive = $directiveUsage->getDirective();
+            \assert($directive instanceof \Graphpinator\Directive\Contract\ArgumentDefinitionLocation);
+
+            if ($directive::PURE) {
+                $directive->resolveArgumentDefinition($directiveUsage->getArgumentValues(), $this);
+            }
+        }
+    }
+
+    public function resolveRemainingDirectives() : void
+    {
+        foreach ($this->argument->getDirectiveUsages() as $directiveUsage) {
+            $directive = $directiveUsage->getDirective();
+            \assert($directive instanceof \Graphpinator\Directive\Contract\ArgumentDefinitionLocation);
+
+            if (!$directive::PURE) {
+                $directive->resolveArgumentDefinition($directiveUsage->getArgumentValues(), $this);
+            }
         }
     }
 }
