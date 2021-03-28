@@ -43,7 +43,7 @@ final class ArgumentValue
             $directive = $directiveUsage->getDirective();
             \assert($directive instanceof \Graphpinator\Directive\Contract\ArgumentDefinitionLocation);
 
-            if ($directive::PURE) {
+            if ($directive::isPure()) {
                 $directive->resolveArgumentDefinition($directiveUsage->getArgumentValues(), $this);
             }
         }
@@ -55,7 +55,7 @@ final class ArgumentValue
             $directive = $directiveUsage->getDirective();
             \assert($directive instanceof \Graphpinator\Directive\Contract\ArgumentDefinitionLocation);
 
-            if (!$directive::PURE) {
+            if (!$directive::isPure()) {
                 $directive->resolveArgumentDefinition($directiveUsage->getArgumentValues(), $this);
             }
         }
