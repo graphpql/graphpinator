@@ -82,9 +82,9 @@ final class Type extends \Graphpinator\Type\Type
             \Graphpinator\Field\ResolvableField::create(
                 'interfaces',
                 $this->notNull()->list(),
-                static function (Definition $definition) : ?\Graphpinator\Type\InterfaceSet {
+                static function (Definition $definition) : ?array {
                     return $definition instanceof \Graphpinator\Type\Contract\InterfaceImplementor
-                        ? $definition->getInterfaces()
+                        ? self::recursiveGetInterfaces($definition->getInterfaces())
                         : null;
                 },
             ),
@@ -159,5 +159,17 @@ final class Type extends \Graphpinator\Type\Type
                 },
             ),
         ]);
+    }
+
+    private static function recursiveGetInterfaces(\Graphpinator\Type\InterfaceSet $implements) : array
+    {
+        $return = [];
+
+        foreach ($implements as $interface) {
+            $return += self::recursiveGetInterfaces($interface->getInterfaces());
+            $return[] = $interface;
+        }
+
+        return $return;
     }
 }
