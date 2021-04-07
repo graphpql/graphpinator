@@ -49,7 +49,9 @@ abstract class InterfaceType extends \Graphpinator\Type\Contract\AbstractDefinit
 
             $this->fields->merge($this->getFieldDefinition(), true);
 
-            $this->validateInterfaces();
+            if (\Graphpinator\Graphpinator::$validateSchema) {
+                $this->validateInterfaceContract();
+            }
         }
 
         return $this->fields;

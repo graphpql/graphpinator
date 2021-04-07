@@ -40,7 +40,9 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
         if (!$this->fields instanceof \Graphpinator\Field\ResolvableFieldSet) {
             $this->fields = $this->getFieldDefinition();
 
-            $this->validateInterfaces();
+            if (\Graphpinator\Graphpinator::$validateSchema) {
+                $this->validateInterfaceContract();
+            }
         }
 
         return $this->fields;

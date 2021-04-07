@@ -8,6 +8,7 @@ final class Graphpinator implements \Psr\Log\LoggerAwareInterface
 {
     use \Nette\SmartObject;
 
+    public static bool $validateSchema = true;
     private bool $catchExceptions;
     private \Graphpinator\Module\ModuleSet $modules;
     private \Psr\Log\LoggerInterface $logger;

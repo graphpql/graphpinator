@@ -45,7 +45,7 @@ trait TInterfaceImplementor
     /**
      * Method to validate contract defined by interfaces - whether fields and their type match.
      */
-    protected function validateInterfaces() : void
+    protected function validateInterfaceContract() : void
     {
         foreach ($this->implements as $interface) {
             $interface->getDirectiveUsages()->validateInvariance($this->getDirectiveUsages());
