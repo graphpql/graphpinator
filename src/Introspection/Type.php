@@ -163,13 +163,13 @@ final class Type extends \Graphpinator\Type\Type
 
     private static function recursiveGetInterfaces(\Graphpinator\Type\InterfaceSet $implements) : \Graphpinator\Type\InterfaceSet
     {
-        $return = [];
+        $return = new \Graphpinator\Type\InterfaceSet([]);
 
         foreach ($implements as $interface) {
-            $return += self::recursiveGetInterfaces($interface->getInterfaces());
+            $return->merge(self::recursiveGetInterfaces($interface->getInterfaces()));
             $return[] = $interface;
         }
 
-        return new \Graphpinator\Type\InterfaceSet($return);
+        return $return;
     }
 }
