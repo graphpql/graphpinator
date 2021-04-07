@@ -11,7 +11,7 @@ final class FloatType extends \Graphpinator\Type\ScalarType
 
     public function validateNonNullValue(mixed $rawValue) : bool
     {
-        return \is_float($rawValue);
+        return \is_float($rawValue) && \is_finite($rawValue);
     }
 
     public function coerceValue(mixed $rawValue): mixed
