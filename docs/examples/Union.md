@@ -112,7 +112,7 @@ final class ABUnion extends \Graphpinator\Type\UnionType
         \Example\TypeB $typeB
     )
     {
-        parent::__construct(new \Graphpinator\Type\ConcreteSet([
+        parent::__construct(new \Graphpinator\Type\TypeSet([
             $typeA,
             $typeB,
         ]));

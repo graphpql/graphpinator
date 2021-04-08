@@ -969,7 +969,7 @@ final class TestSchema
 
             public function __construct()
             {
-                parent::__construct(new \Graphpinator\Type\ConcreteSet([
+                parent::__construct(new \Graphpinator\Type\TypeSet([
                     TestSchema::getTypeAbc(),
                 ]));
             }
@@ -989,7 +989,7 @@ final class TestSchema
 
             public function __construct()
             {
-                parent::__construct(new \Graphpinator\Type\ConcreteSet([
+                parent::__construct(new \Graphpinator\Type\TypeSet([
                     TestSchema::getTypeAbc(),
                     TestSchema::getTypeXyz(),
                 ]));

@@ -8,14 +8,14 @@ abstract class UnionType extends \Graphpinator\Type\Contract\AbstractDefinition
 {
     use \Graphpinator\Type\Contract\TMetaFields;
 
-    protected \Graphpinator\Type\ConcreteSet $types;
+    protected \Graphpinator\Type\TypeSet $types;
 
-    public function __construct(\Graphpinator\Type\ConcreteSet $types)
+    public function __construct(\Graphpinator\Type\TypeSet $types)
     {
         $this->types = $types;
     }
 
-    final public function getTypes() : \Graphpinator\Type\ConcreteSet
+    final public function getTypes() : \Graphpinator\Type\TypeSet
     {
         return $this->types;
     }

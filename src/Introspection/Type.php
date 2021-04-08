@@ -91,7 +91,7 @@ final class Type extends \Graphpinator\Type\Type
             \Graphpinator\Field\ResolvableField::create(
                 'possibleTypes',
                 $this->notNull()->list(),
-                function (Definition $definition) : ?\Graphpinator\Type\ConcreteSet {
+                function (Definition $definition) : ?\Graphpinator\Type\TypeSet {
                     if ($definition instanceof \Graphpinator\Type\UnionType) {
                         return $definition->getTypes();
                     }
@@ -106,7 +106,7 @@ final class Type extends \Graphpinator\Type\Type
                             }
                         }
 
-                        return new \Graphpinator\Type\ConcreteSet($subTypes);
+                        return new \Graphpinator\Type\TypeSet($subTypes);
                     }
 
                     return null;
