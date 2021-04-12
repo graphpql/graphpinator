@@ -8,6 +8,7 @@ Feature complete PHP implementation of GraphQL server. Its job is transformation
 
 - Aims to be compliant with the latest draft of GraphlQL specification.
 - Fully typesafe, and therefore minimum required PHP version is 8.0.
+- Code first. Schema is generated and printed from source code.
 - Sacrafices a tiny bit of convenience for huge amount of clarity and safety - no random configuration `array`s, no mixed types, no variable function arguments ... - this library doesnt try to save you from verbosity, but makes sure you always know what you've got.
 - Includes some opt-in extensions which are out of scope of official specs:
     - [Printer](https://github.com/infinityloop-dev/graphpinator-printer) - Schema printing for GraPHPinator typesystem.
