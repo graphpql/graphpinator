@@ -124,7 +124,7 @@ final class ResolveVisitor implements \Graphpinator\Typesystem\TypeVisitor
         $arguments = $requestedField->getArguments();
 
         foreach ($arguments as $argumentValue) {
-            $argumentValue->resolveRemainingDirectives();
+            $argumentValue->resolveNonPureDirectives();
         }
 
         foreach ($field->getDirectiveUsages() as $directive) {

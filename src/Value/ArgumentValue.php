@@ -49,7 +49,7 @@ final class ArgumentValue
         }
     }
 
-    public function resolveRemainingDirectives() : void
+    public function resolveNonPureDirectives() : void
     {
         foreach ($this->argument->getDirectiveUsages() as $directiveUsage) {
             $directive = $directiveUsage->getDirective();
