@@ -8,14 +8,14 @@ abstract class UnionType extends \Graphpinator\Type\Contract\AbstractDefinition
 {
     use \Graphpinator\Type\Contract\TMetaFields;
 
-    protected \Graphpinator\Utils\ConcreteSet $types;
+    protected \Graphpinator\Type\TypeSet $types;
 
-    public function __construct(\Graphpinator\Utils\ConcreteSet $types)
+    public function __construct(\Graphpinator\Type\TypeSet $types)
     {
         $this->types = $types;
     }
 
-    final public function getTypes() : \Graphpinator\Utils\ConcreteSet
+    final public function getTypes() : \Graphpinator\Type\TypeSet
     {
         return $this->types;
     }
@@ -40,26 +40,8 @@ abstract class UnionType extends \Graphpinator\Type\Contract\AbstractDefinition
         return false;
     }
 
-    final public function getField(string $name) : \Graphpinator\Field\Field
+    final public function accept(\Graphpinator\Typesystem\NamedTypeVisitor $visitor) : mixed
     {
-        return $this->getMetaFields()[$name]
-            ?? throw new \Graphpinator\Exception\Normalizer\SelectionOnUnion();
-    }
-
-    final public function getTypeKind() : string
-    {
-        return \Graphpinator\Type\Introspection\TypeKind::UNION;
-    }
-
-    final public function printSchema() : string
-    {
-        $typeNames = [];
-
-        foreach ($this->getTypes() as $type) {
-            $typeNames[] = $type->printName();
-        }
-
-        return $this->printDescription()
-            . 'union ' . $this->getName() . ' = ' . \implode(' | ', $typeNames);
+        return $visitor->visitUnion($this);
     }
 }

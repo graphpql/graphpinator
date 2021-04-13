@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Normalizer\Field;
 
+use Graphpinator\Normalizer\GetFieldVisitor;
+
 /**
  * @method \Graphpinator\Normalizer\Field\Field current() : object
  * @method \Graphpinator\Normalizer\Field\Field offsetGet($offset) : object
@@ -58,7 +60,7 @@ final class FieldSet extends \Infinityloop\Utils\ObjectSet
         $fieldArguments = $field->getArguments();
         $scopeType = $field->getTypeCondition()
             ?? $parentType;
-        $fieldReturnType = $scopeType->getField($field->getName())->getType();
+        $fieldReturnType = $scopeType->accept(new GetFieldVisitor($field->getName()))->getType();
 
         foreach ($this->fieldsForName[$field->getAlias()] as $conflict) {
             \assert($conflict instanceof \Graphpinator\Normalizer\Field\Field);
@@ -66,12 +68,12 @@ final class FieldSet extends \Infinityloop\Utils\ObjectSet
             $conflictArguments = $conflict->getArguments();
             $conflictParentType = $conflict->getTypeCondition()
                 ?? $parentType;
-            $conflictReturnType = $conflictParentType->getField($conflict->getName())->getType();
+            $conflictReturnType = $conflictParentType->accept(new GetFieldVisitor($conflict->getName()))->getType();
 
             /** Fields must have same response shape (type) */
             if (!$fieldReturnType->isInstanceOf($conflictReturnType) ||
                 !$conflictReturnType->isInstanceOf($fieldReturnType)) {
-                throw new \Graphpinator\Exception\Normalizer\ConflictingFieldType();
+                throw new \Graphpinator\Normalizer\Exception\ConflictingFieldType();
             }
 
             /** Fields have type conditions which can never occur together */
@@ -82,39 +84,15 @@ final class FieldSet extends \Infinityloop\Utils\ObjectSet
 
             /** Fields have same alias, but refer to different field */
             if ($field->getName() !== $conflict->getName()) {
-                throw new \Graphpinator\Exception\Normalizer\ConflictingFieldAlias();
+                throw new \Graphpinator\Normalizer\Exception\ConflictingFieldAlias();
             }
 
             /** Fields have different arguments,
              * -> possible when type implementing some interface adds new optional argument
              * -> in this case the argument value must be the default one
              */
-            foreach ($conflictArguments as $lhs) {
-                if ($fieldArguments->offsetExists($lhs->getArgument()->getName())) {
-                    if ($lhs->getValue()->isSame($fieldArguments[$lhs->getArgument()->getName()]->getValue())) {
-                        continue;
-                    }
-
-                    throw new \Graphpinator\Exception\Normalizer\ConflictingFieldArguments();
-                }
-
-                if ($lhs->getValue()->isSame($lhs->getArgument()->getDefaultValue())) {
-                    continue;
-                }
-
-                throw new \Graphpinator\Exception\Normalizer\ConflictingFieldArguments();
-            }
-
-            foreach ($fieldArguments as $lhs) {
-                if ($conflictArguments->offsetExists($lhs->getArgument()->getName())) {
-                    continue;
-                }
-
-                if ($lhs->getValue()->isSame($lhs->getArgument()->getDefaultValue())) {
-                    continue;
-                }
-
-                throw new \Graphpinator\Exception\Normalizer\ConflictingFieldArguments();
+            if (!$fieldArguments->isSame($conflictArguments)) {
+                throw new \Graphpinator\Normalizer\Exception\ConflictingFieldArguments();
             }
 
             /** Fields are composite -> continue to children */

@@ -8,7 +8,7 @@ namespace Graphpinator\Argument;
  * @method \Graphpinator\Argument\Argument current() : object
  * @method \Graphpinator\Argument\Argument offsetGet($offset) : object
  */
-final class ArgumentSet extends \Infinityloop\Utils\ImplicitObjectMap implements \Graphpinator\Printable\PrintableSet
+final class ArgumentSet extends \Infinityloop\Utils\ImplicitObjectMap
 {
     protected const INNER_CLASS = Argument::class;
 
@@ -27,8 +27,8 @@ final class ArgumentSet extends \Infinityloop\Utils\ImplicitObjectMap implements
 
         $defaultValue = $value->getDefaultValue();
 
-        if ($defaultValue instanceof \Graphpinator\Value\InputedValue) {
-            $this->defaults[$value->getName()] = $defaultValue->getRawValue();
+        if ($defaultValue instanceof \Graphpinator\Value\ArgumentValue) {
+            $this->defaults[$value->getName()] = $defaultValue->getValue()->getRawValue();
         }
     }
 

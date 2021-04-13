@@ -19,6 +19,5 @@
             "\\\\assert\\(.*\\);"
         ]
     },
-    "testFramework":"phpunit",
-    "testFrameworkOptions": "-vvv"
+    "testFramework":"phpunit"
 }

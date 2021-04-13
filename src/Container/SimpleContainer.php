@@ -11,8 +11,6 @@ class SimpleContainer extends \Graphpinator\Container\Container
 {
     protected array $types = [];
     protected array $directives = [];
-    protected array $builtInTypes = [];
-    protected array $builtInDirectives = [];
     protected array $combinedTypes = [];
     protected array $combinedDirectives = [];
 
@@ -24,6 +22,27 @@ class SimpleContainer extends \Graphpinator\Container\Container
      */
     public function __construct(array $types, array $directives)
     {
+        self::$builtInTypes = [
+            'ID' => self::ID(),
+            'Int' => self::Int(),
+            'Float' => self::Float(),
+            'String' => self::String(),
+            'Boolean' => self::Boolean(),
+            '__Schema' => new \Graphpinator\Introspection\Schema($this),
+            '__Type' => new \Graphpinator\Introspection\Type($this),
+            '__TypeKind' => new \Graphpinator\Introspection\TypeKind(),
+            '__Field' => new \Graphpinator\Introspection\Field($this),
+            '__EnumValue' => new \Graphpinator\Introspection\EnumValue(),
+            '__InputValue' => new \Graphpinator\Introspection\InputValue($this),
+            '__Directive' => new \Graphpinator\Introspection\Directive($this),
+            '__DirectiveLocation' => new \Graphpinator\Introspection\DirectiveLocation(),
+        ];
+        self::$builtInDirectives = [
+            'skip' => self::directiveSkip(),
+            'include' => self::directiveInclude(),
+            'deprecated' => self::directiveDeprecated(),
+        ];
+
         foreach ($types as $type) {
             $this->types[$type->getName()] = $type;
         }
@@ -32,37 +51,8 @@ class SimpleContainer extends \Graphpinator\Container\Container
             $this->directives[$directive->getName()] = $directive;
         }
 
-        $this->builtInTypes = [
-            'ID' => self::ID(),
-            'Int' => self::Int(),
-            'Float' => self::Float(),
-            'String' => self::String(),
-            'Boolean' => self::Boolean(),
-            '__Schema' => $this->introspectionSchema(),
-            '__Type' => $this->introspectionType(),
-            '__TypeKind' => $this->introspectionTypeKind(),
-            '__Field' => $this->introspectionField(),
-            '__EnumValue' => $this->introspectionEnumValue(),
-            '__InputValue' => $this->introspectionInputValue(),
-            '__Directive' => $this->introspectionDirective(),
-            '__DirectiveLocation' => $this->introspectionDirectiveLocation(),
-        ];
-
-        $this->builtInDirectives = [
-            'skip' => self::directiveSkip(),
-            'include' => self::directiveInclude(),
-            'deprecated' => self::directiveDeprecated(),
-        ];
-
-        $this->types['ListConstraintInput'] = self::listConstraintInput();
-        $this->directives['intConstraint'] = self::directiveIntConstraint();
-        $this->directives['floatConstraint'] = self::directiveFloatConstraint();
-        $this->directives['stringConstraint'] = self::directiveStringConstraint();
-        $this->directives['listConstraint'] = self::directiveListConstraint();
-        $this->directives['objectConstraint'] = self::directiveObjectConstraint();
-
-        $this->combinedTypes = \array_merge($this->types, $this->builtInTypes);
-        $this->combinedDirectives = \array_merge($this->directives, $this->builtInDirectives);
+        $this->combinedTypes = \array_merge($this->types, self::$builtInTypes);
+        $this->combinedDirectives = \array_merge($this->directives, self::$builtInDirectives);
     }
 
     public function getType(string $name) : ?\Graphpinator\Type\Contract\NamedDefinition

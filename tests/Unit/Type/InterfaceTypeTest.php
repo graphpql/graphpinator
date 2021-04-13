@@ -14,7 +14,7 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
             public function __construct()
             {
                 parent::__construct(
-                    new \Graphpinator\Utils\InterfaceSet([
+                    new \Graphpinator\Type\InterfaceSet([
                         InterfaceTypeTest::createParentInterface(),
                     ]),
                 );
@@ -89,7 +89,7 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
             public function __construct()
             {
                 parent::__construct(
-                    new \Graphpinator\Utils\InterfaceSet([
+                    new \Graphpinator\Type\InterfaceSet([
                         InterfaceTypeTest::createInterface(),
                     ]),
                 );
@@ -115,7 +115,7 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
             public function __construct()
             {
                 parent::__construct(
-                    new \Graphpinator\Utils\InterfaceSet([
+                    new \Graphpinator\Type\InterfaceSet([
                         InterfaceTypeTest::createInterface(),
                     ]),
                 );
@@ -176,7 +176,7 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
             public function __construct()
             {
                 parent::__construct(
-                    new \Graphpinator\Utils\InterfaceSet([
+                    new \Graphpinator\Type\InterfaceSet([
                         InterfaceTypeTest::createInterface(),
                     ]),
                 );
@@ -237,7 +237,7 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
             public function __construct()
             {
                 parent::__construct(
-                    new \Graphpinator\Utils\InterfaceSet([
+                    new \Graphpinator\Type\InterfaceSet([
                         InterfaceTypeTest::createInterface(),
                     ]),
                 );
@@ -293,7 +293,7 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
             public function __construct()
             {
                 parent::__construct(
-                    new \Graphpinator\Utils\InterfaceSet([
+                    new \Graphpinator\Type\InterfaceSet([
                         InterfaceTypeTest::createInterface(),
                     ]),
                 );
@@ -354,7 +354,7 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
             public function __construct()
             {
                 parent::__construct(
-                    new \Graphpinator\Utils\InterfaceSet([
+                    new \Graphpinator\Type\InterfaceSet([
                         InterfaceTypeTest::createInterface(),
                     ]),
                 );
@@ -432,7 +432,7 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
             public function __construct()
             {
                 parent::__construct(
-                    new \Graphpinator\Utils\InterfaceSet([
+                    new \Graphpinator\Type\InterfaceSet([
                         InterfaceTypeTest::createInterface(),
                     ]),
                 );
@@ -493,7 +493,7 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
             public function __construct()
             {
                 parent::__construct(
-                    new \Graphpinator\Utils\InterfaceSet([
+                    new \Graphpinator\Type\InterfaceSet([
                         InterfaceTypeTest::createParentInterface(),
                     ]),
                 );

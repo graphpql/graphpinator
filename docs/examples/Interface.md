@@ -58,7 +58,7 @@ final class TypeA extends \Graphpinator\Type\Type
 
     public function __construct(\Example\HasString $hasString)
     {
-        parent::__construct(new \Graphpinator\Utils\InterfaceSet([$hasString]));
+        parent::__construct(new \Graphpinator\Type\InterfaceSet([$hasString]));
     }
 
     protected function validateNonNullValue($rawValue) : bool
@@ -94,7 +94,7 @@ final class TypeB extends \Graphpinator\Type\Type
 
     public function __construct(\Example\HasString $hasString)
     {
-        parent::__construct(new \Graphpinator\Utils\InterfaceSet([$hasString]));
+        parent::__construct(new \Graphpinator\Type\InterfaceSet([$hasString]));
     }
 
     protected function validateNonNullValue($rawValue) : bool

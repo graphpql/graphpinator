@@ -30,11 +30,6 @@ final class NullInputedValue implements \Graphpinator\Value\InputedValue, \Graph
         return 'null';
     }
 
-    public function prettyPrint(int $indentLevel) : string
-    {
-        return $this->printValue();
-    }
-
     public function applyVariables(\Graphpinator\Normalizer\VariableValueSet $variables) : void
     {
         // nothing here

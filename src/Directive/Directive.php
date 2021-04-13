@@ -4,63 +4,69 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Directive;
 
-abstract class Directive
+abstract class Directive implements \Graphpinator\Directive\Contract\Definition
 {
     use \Nette\SmartObject;
-    use \Graphpinator\Printable\TRepeatablePrint;
-    use \Graphpinator\Utils\TTypeSystemElement;
 
     protected const NAME = '';
     protected const DESCRIPTION = null;
+    protected const REPEATABLE = false;
 
-    private array $locations;
-    private bool $repeatable;
-    private \Graphpinator\Argument\ArgumentSet $arguments;
+    protected ?\Graphpinator\Argument\ArgumentSet $arguments = null;
 
-    public function __construct(array $locations, bool $repeatable, \Graphpinator\Argument\ArgumentSet $arguments)
-    {
-        $this->locations = $locations;
-        $this->repeatable = $repeatable;
-        $this->arguments = $arguments;
-    }
-
-    public function getName() : string
+    final public function getName() : string
     {
         return static::NAME;
     }
 
-    public function getDescription() : ?string
+    final public function getDescription() : ?string
     {
         return static::DESCRIPTION;
     }
 
-    public function getLocations() : array
+    final public function getLocations() : array
     {
-        return $this->locations;
+        $locations = [];
+        $reflection = new \ReflectionClass($this);
+
+        foreach ($reflection->getInterfaces() as $interface) {
+            if (\array_key_exists($interface->getName(), self::INTERFACE_TO_LOCATION)) {
+                $locations = \array_merge($locations, self::INTERFACE_TO_LOCATION[$interface->getName()]);
+            }
+        }
+
+        return $locations;
     }
 
-    public function isRepeatable() : bool
+    final public function isRepeatable() : bool
     {
-        return $this->repeatable;
+        return static::REPEATABLE;
     }
 
-    public function getArguments() : \Graphpinator\Argument\ArgumentSet
+    final public function getArguments() : \Graphpinator\Argument\ArgumentSet
     {
+        if (!$this->arguments instanceof \Graphpinator\Argument\ArgumentSet) {
+            $this->arguments = $this->getFieldDefinition();
+            $this->afterGetFieldDefinition();
+        }
+
         return $this->arguments;
     }
 
-    public function printSchema() : string
+    final public function accept(\Graphpinator\Typesystem\EntityVisitor $visitor) : mixed
     {
-        $schema = $this->printDescription() . 'directive @' . $this->getName();
+        return $visitor->visitDirective($this);
+    }
 
-        if ($this->arguments->count() > 0) {
-            $schema .= '(' . \PHP_EOL . $this->printItems($this->getArguments(), 1) . ')';
-        }
+    abstract protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet;
 
-        if ($this->repeatable) {
-            $schema .= ' repeatable';
-        }
-
-        return $schema . ' on ' . \implode(' | ', $this->locations);
+    /**
+     * This function serves to prevent infinite cycles.
+     *
+     * It doesn't have to be used at all, unless directive have arguments with directive cycles.
+     * Eg. IntConstraintDirective::oneOf -> ListConstraintDirective::minItems -> IntConstraintDirective::oneOf.
+     */
+    protected function afterGetFieldDefinition() : void
+    {
     }
 }

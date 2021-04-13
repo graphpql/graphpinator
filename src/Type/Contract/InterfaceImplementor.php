@@ -18,7 +18,7 @@ interface InterfaceImplementor extends \Graphpinator\Type\Contract\Definition
     /**
      * Returns interfaces, which this type implements.
      */
-    public function getInterfaces() : \Graphpinator\Utils\InterfaceSet;
+    public function getInterfaces() : \Graphpinator\Type\InterfaceSet;
 
     /**
      * Checks whether this type implements given interface.

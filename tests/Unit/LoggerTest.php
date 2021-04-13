@@ -72,7 +72,7 @@ final class LoggerTest extends \PHPUnit\Framework\TestCase
         self::assertSame(\Psr\Log\LogLevel::DEBUG, $this->logs[0]['level']);
         self::assertSame($request['query'], $this->logs[0]['message']);
         self::assertSame(\Psr\Log\LogLevel::INFO, $this->logs[1]['level']);
-        self::assertSame($expected, $this->logs[1]['message']);
+        self::assertStringStartsWith($expected, $this->logs[1]['message'] . ' in ');
         self::assertCount(2, $this->logs);
     }
 
@@ -102,7 +102,7 @@ final class LoggerTest extends \PHPUnit\Framework\TestCase
         self::assertSame(\Psr\Log\LogLevel::DEBUG, $this->logs[0]['level']);
         self::assertSame($request['query'], $this->logs[0]['message']);
         self::assertSame(\Psr\Log\LogLevel::EMERGENCY, $this->logs[1]['level']);
-        self::assertSame($expected, $this->logs[1]['message']);
+        self::assertStringStartsWith($expected, $this->logs[1]['message'] . ' in ');
         self::assertCount(2, $this->logs);
     }
 

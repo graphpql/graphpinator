@@ -9,13 +9,13 @@ abstract class InterfaceType extends \Graphpinator\Type\Contract\AbstractDefinit
 {
     use \Graphpinator\Type\Contract\TInterfaceImplementor;
     use \Graphpinator\Type\Contract\TMetaFields;
-    use \Graphpinator\Printable\TRepeatablePrint;
-    use \Graphpinator\Utils\TObjectConstraint;
+    use \Graphpinator\Utils\THasDirectives;
 
-    public function __construct(?\Graphpinator\Utils\InterfaceSet $implements = null)
+    public function __construct(?\Graphpinator\Type\InterfaceSet $implements = null)
     {
         $this->implements = $implements
-            ?? new \Graphpinator\Utils\InterfaceSet([]);
+            ?? new \Graphpinator\Type\InterfaceSet([]);
+        $this->directiveUsages = new \Graphpinator\DirectiveUsage\DirectiveUsageSet();
     }
 
     final public function isInstanceOf(\Graphpinator\Type\Contract\Definition $type) : bool
@@ -49,30 +49,33 @@ abstract class InterfaceType extends \Graphpinator\Type\Contract\AbstractDefinit
 
             $this->fields->merge($this->getFieldDefinition(), true);
 
-            $this->validateInterfaces();
+            if (\Graphpinator\Graphpinator::$validateSchema) {
+                $this->validateInterfaceContract();
+            }
         }
 
         return $this->fields;
     }
 
-    final public function getField(string $name) : \Graphpinator\Field\Field
+    final public function accept(\Graphpinator\Typesystem\NamedTypeVisitor $visitor) : mixed
     {
-        return $this->getMetaFields()[$name]
-            ?? $this->getFields()[$name]
-            ?? throw new \Graphpinator\Exception\Normalizer\UnknownField($name, $this->getName());
+        return $visitor->visitInterface($this);
     }
 
-    final public function getTypeKind() : string
+    final public function addDirective(
+        \Graphpinator\Directive\Contract\ObjectLocation $directive,
+        array $arguments = [],
+    ) : static
     {
-        return \Graphpinator\Type\Introspection\TypeKind::INTERFACE;
-    }
+        $usage = new \Graphpinator\DirectiveUsage\DirectiveUsage($directive, $arguments);
 
-    final public function printSchema() : string
-    {
-        return $this->printDescription()
-            . 'interface ' . $this->getName() . $this->printImplements() . $this->printConstraints() . ' {' . \PHP_EOL
-            . $this->printItems($this->getFields(), 1)
-            . '}';
+        if (!$directive->validateObjectUsage($this, $usage->getArgumentValues())) {
+            throw new \Graphpinator\Exception\Type\DirectiveIncorrectType();
+        }
+
+        $this->directiveUsages[] = $usage;
+
+        return $this;
     }
 
     abstract protected function getFieldDefinition() : \Graphpinator\Field\FieldSet;

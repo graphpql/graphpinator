@@ -35,7 +35,7 @@ final class InterfaceNewOptionalArgumentTest extends \PHPUnit\Framework\TestCase
             public function __construct()
             {
                 parent::__construct(
-                    new \Graphpinator\Utils\InterfaceSet([InterfaceNewOptionalArgumentTest::createInterface()]),
+                    new \Graphpinator\Type\InterfaceSet([InterfaceNewOptionalArgumentTest::createInterface()]),
                 );
             }
 

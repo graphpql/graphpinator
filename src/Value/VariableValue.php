@@ -16,7 +16,7 @@ final class VariableValue implements \Graphpinator\Value\InputedValue
     {
         // flipped because of contravariance, isInstanceOf is covariant
         if (!$type->isInstanceOf($variable->getType())) {
-            throw new \Graphpinator\Exception\Normalizer\VariableTypeMismatch();
+            throw new \Graphpinator\Normalizer\Exception\VariableTypeMismatch();
         }
 
         $this->type = $type;
@@ -26,6 +26,11 @@ final class VariableValue implements \Graphpinator\Value\InputedValue
     public function getRawValue(bool $forResolvers = false) : mixed
     {
         return $this->value->getRawValue($forResolvers);
+    }
+    
+    public function getConcreteValue() : \Graphpinator\Value\InputedValue
+    {
+        return $this->value;
     }
 
     public function getType() : \Graphpinator\Type\Contract\Inputable
@@ -38,14 +43,9 @@ final class VariableValue implements \Graphpinator\Value\InputedValue
         throw new \Graphpinator\Exception\OperationNotSupported();
     }
 
-    public function prettyPrint(int $indentLevel) : string
-    {
-        throw new \Graphpinator\Exception\OperationNotSupported();
-    }
-
     public function applyVariables(\Graphpinator\Normalizer\VariableValueSet $variables) : void
     {
-        $this->value = $variables->offsetGet($this->variable->getName());
+        $this->value = $variables->get($this->variable->getName());
     }
 
     public function isSame(Value $compare) : bool

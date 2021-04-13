@@ -10,6 +10,11 @@ namespace Graphpinator\Container;
  */
 abstract class Container
 {
+    use \Nette\SmartObject;
+
+    protected static array $builtInTypes = [];
+    protected static array $builtInDirectives = [];
+
     /**
      * Core function to find type by its name.
      * @param string $name
@@ -37,41 +42,61 @@ abstract class Container
     /**
      * Built-in Int type.
      */
-    public static function Int() : \Graphpinator\Type\Scalar\IntType
+    public static function Int() : \Graphpinator\Type\Spec\IntType
     {
-        return new \Graphpinator\Type\Scalar\IntType();
+        if (!\array_key_exists('Int', self::$builtInTypes)) {
+            self::$builtInTypes['Int'] = new \Graphpinator\Type\Spec\IntType();
+        }
+
+        return self::$builtInTypes['Int'];
     }
 
     /**
      * Built-in Float type.
      */
-    public static function Float() : \Graphpinator\Type\Scalar\FloatType
+    public static function Float() : \Graphpinator\Type\Spec\FloatType
     {
-        return new \Graphpinator\Type\Scalar\FloatType();
+        if (!\array_key_exists('Float', self::$builtInTypes)) {
+            self::$builtInTypes['Float'] = new \Graphpinator\Type\Spec\FloatType();
+        }
+
+        return self::$builtInTypes['Float'];
     }
 
     /**
      * Built-in String type.
      */
-    public static function String() : \Graphpinator\Type\Scalar\StringType
+    public static function String() : \Graphpinator\Type\Spec\StringType
     {
-        return new \Graphpinator\Type\Scalar\StringType();
+        if (!\array_key_exists('String', self::$builtInTypes)) {
+            self::$builtInTypes['String'] = new \Graphpinator\Type\Spec\StringType();
+        }
+
+        return self::$builtInTypes['String'];
     }
 
     /**
      * Built-in Boolean type.
      */
-    public static function Boolean() : \Graphpinator\Type\Scalar\BooleanType
+    public static function Boolean() : \Graphpinator\Type\Spec\BooleanType
     {
-        return new \Graphpinator\Type\Scalar\BooleanType();
+        if (!\array_key_exists('Boolean', self::$builtInTypes)) {
+            self::$builtInTypes['Boolean'] = new \Graphpinator\Type\Spec\BooleanType();
+        }
+
+        return self::$builtInTypes['Boolean'];
     }
 
     /**
      * Built-in ID type.
      */
-    public static function ID() : \Graphpinator\Type\Scalar\IdType
+    public static function ID() : \Graphpinator\Type\Spec\IdType
     {
-        return new \Graphpinator\Type\Scalar\IdType();
+        if (!\array_key_exists('ID', self::$builtInTypes)) {
+            self::$builtInTypes['ID'] = new \Graphpinator\Type\Spec\IdType();
+        }
+
+        return self::$builtInTypes['ID'];
     }
 
     /**
@@ -79,7 +104,11 @@ abstract class Container
      */
     public static function directiveSkip() : \Graphpinator\Directive\Spec\SkipDirective
     {
-        return new \Graphpinator\Directive\Spec\SkipDirective();
+        if (!\array_key_exists('skip', self::$builtInDirectives)) {
+            self::$builtInDirectives['skip'] = new \Graphpinator\Directive\Spec\SkipDirective();
+        }
+
+        return self::$builtInDirectives['skip'];
     }
 
     /**
@@ -87,7 +116,11 @@ abstract class Container
      */
     public static function directiveInclude() : \Graphpinator\Directive\Spec\IncludeDirective
     {
-        return new \Graphpinator\Directive\Spec\IncludeDirective();
+        if (!\array_key_exists('include', self::$builtInDirectives)) {
+            self::$builtInDirectives['include'] = new \Graphpinator\Directive\Spec\IncludeDirective();
+        }
+
+        return self::$builtInDirectives['include'];
     }
 
     /**
@@ -95,119 +128,11 @@ abstract class Container
      */
     public static function directiveDeprecated() : \Graphpinator\Directive\Spec\DeprecatedDirective
     {
-        return new \Graphpinator\Directive\Spec\DeprecatedDirective();
-    }
+        if (!\array_key_exists('deprecated', self::$builtInDirectives)) {
+            self::$builtInDirectives['deprecated'] = new \Graphpinator\Directive\Spec\DeprecatedDirective();
+        }
 
-    /**
-     * Graphpinator IntConstraint directive.
-     */
-    public static function directiveIntConstraint() : \Graphpinator\Directive\Constraint\IntConstraintDirective
-    {
-        return new \Graphpinator\Directive\Constraint\IntConstraintDirective();
-    }
-
-    /**
-     * Graphpinator FloatConstraint directive.
-     */
-    public static function directiveFloatConstraint() : \Graphpinator\Directive\Constraint\FloatConstraintDirective
-    {
-        return new \Graphpinator\Directive\Constraint\FloatConstraintDirective();
-    }
-
-    /**
-     * Graphpinator StringConstraint directive.
-     */
-    public static function directiveStringConstraint() : \Graphpinator\Directive\Constraint\StringConstraintDirective
-    {
-        return new \Graphpinator\Directive\Constraint\StringConstraintDirective();
-    }
-
-    /**
-     * Graphpinator ListConstraint directive.
-     */
-    public static function directiveListConstraint() : \Graphpinator\Directive\Constraint\ListConstraintDirective
-    {
-        return new \Graphpinator\Directive\Constraint\ListConstraintDirective();
-    }
-
-    /**
-     * Graphpinator ObjectConstraint directive.
-     */
-    public static function directiveObjectConstraint() : \Graphpinator\Directive\Constraint\ObjectConstraintDirective
-    {
-        return new \Graphpinator\Directive\Constraint\ObjectConstraintDirective();
-    }
-
-    /**
-     * Graphpinator ListConstraint input.
-     */
-    public static function listConstraintInput() : \Graphpinator\Constraint\ListConstraintInput
-    {
-        return new \Graphpinator\Constraint\ListConstraintInput();
-    }
-
-    /**
-     * Built-in __Schema type.
-     */
-    public function introspectionSchema() : \Graphpinator\Type\Introspection\Schema
-    {
-        return new \Graphpinator\Type\Introspection\Schema($this);
-    }
-
-    /**
-     * Built-in __Type type.
-     */
-    public function introspectionType() : \Graphpinator\Type\Introspection\Type
-    {
-        return new \Graphpinator\Type\Introspection\Type($this);
-    }
-
-    /**
-     * Built-in __TypeKind type.
-     */
-    public function introspectionTypeKind() : \Graphpinator\Type\Introspection\TypeKind
-    {
-        return new \Graphpinator\Type\Introspection\TypeKind();
-    }
-
-    /**
-     * Built-in __Field type.
-     */
-    public function introspectionField() : \Graphpinator\Type\Introspection\Field
-    {
-        return new \Graphpinator\Type\Introspection\Field($this);
-    }
-
-    /**
-     * Built-in __InputValue type.
-     */
-    public function introspectionInputValue() : \Graphpinator\Type\Introspection\InputValue
-    {
-        return new \Graphpinator\Type\Introspection\InputValue($this);
-    }
-
-    /**
-     * Built-in __EnumValue type.
-     */
-    public function introspectionEnumValue() : \Graphpinator\Type\Introspection\EnumValue
-    {
-        return new \Graphpinator\Type\Introspection\EnumValue();
-    }
-
-    /**
-     * Built-in __Directive type.
-     */
-    public function introspectionDirective() : \Graphpinator\Type\Introspection\Directive
-    {
-        return new \Graphpinator\Type\Introspection\Directive($this);
-    }
-
-    /**
-     * Built-in __DirectiveLocation enum.
-     */
-    public function introspectionDirectiveLocation() : \Graphpinator\Type\Introspection\DirectiveLocation
-    {
-        return new \Graphpinator\Type\Introspection\DirectiveLocation();
+        return self::$builtInDirectives['deprecated'];
     }
 }
 //@phpcs:enable PSR1.Methods.CamelCapsMethodName.NotCamelCaps

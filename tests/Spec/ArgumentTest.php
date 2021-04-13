@@ -83,7 +83,7 @@ final class ArgumentTest extends \PHPUnit\Framework\TestCase
                 Json::fromNative((object) [
                     'query' => 'query queryName { fieldAbc { fieldXyz(argNonExistent: 123) { name } } }',
                 ]),
-                \Graphpinator\Exception\Normalizer\UnknownArgument::class,
+                \Graphpinator\Normalizer\Exception\UnknownArgument::class,
             ],
             [
                 Json::fromNative((object) [
@@ -95,7 +95,7 @@ final class ArgumentTest extends \PHPUnit\Framework\TestCase
                 Json::fromNative((object) [
                     'query' => 'query queryName { fieldAbc { fieldXyz(arg1: 123, arg1: 456) { name } } }',
                 ]),
-                \Graphpinator\Exception\Parser\DuplicateArgument::class,
+                \Graphpinator\Parser\Exception\DuplicateArgument::class,
             ],
             [
                 Json::fromNative((object) [

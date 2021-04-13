@@ -84,37 +84,14 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                                 ['name' => 'CompositeInput'],
                                 ['name' => 'SimpleInput'],
                                 ['name' => 'DefaultsInput'],
-                                ['name' => 'ConstraintInput'],
-                                ['name' => 'ExactlyOneInput'],
-                                ['name' => 'ConstraintType'],
                                 ['name' => 'SimpleEnum'],
                                 ['name' => 'ArrayEnum'],
                                 ['name' => 'DescriptionEnum'],
                                 ['name' => 'TestScalar'],
-                                ['name' => 'AddonType'],
                                 ['name' => 'UploadType'],
                                 ['name' => 'UploadInput'],
-                                ['name' => 'ComplexDefaultsInput'],
-                                ['name' => 'DateTime'],
-                                ['name' => 'Date'],
-                                ['name' => 'EmailAddress'],
-                                ['name' => 'Hsla'],
-                                ['name' => 'Hsl'],
-                                ['name' => 'Ipv4'],
-                                ['name' => 'Ipv6'],
-                                ['name' => 'Json'],
-                                ['name' => 'Mac'],
-                                ['name' => 'PhoneNumber'],
-                                ['name' => 'PostalCode'],
-                                ['name' => 'Rgba'],
-                                ['name' => 'Rgb'],
-                                ['name' => 'Time'],
-                                ['name' => 'Url'],
-                                ['name' => 'Void'],
                                 ['name' => 'Upload'],
-                                ['name' => 'Gps'],
-                                ['name' => 'Point'],
-                                ['name' => 'BigInt'],
+                                ['name' => 'ComplexDefaultsInput'],
                                 ['name' => 'NullFieldResolution'],
                                 ['name' => 'NullListResolution'],
                                 ['name' => 'SimpleType'],
@@ -124,7 +101,6 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                                 ['name' => 'FragmentTypeB'],
                                 ['name' => 'SimpleEmptyTestInput'],
                                 ['name' => 'InterfaceChildType'],
-                                ['name' => 'ListConstraintInput'],
                                 ['name' => 'ID'],
                                 ['name' => 'Int'],
                                 ['name' => 'Float'],
@@ -155,144 +131,21 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                                     'name' => 'testDirective',
                                     'description' => null,
                                     'args' => [],
-                                    'locations' => ['FIELD'],
+                                    'locations' => ['FIELD', 'INLINE_FRAGMENT', 'FRAGMENT_SPREAD'],
                                     'isRepeatable' => true,
                                 ],
                                 [
                                     'name' => 'invalidDirectiveResult',
                                     'description' => null,
                                     'args' => [],
-                                    'locations' => ['FIELD'],
+                                    'locations' => ['FIELD', 'INLINE_FRAGMENT', 'FRAGMENT_SPREAD'],
                                     'isRepeatable' => true,
                                 ],
                                 [
                                     'name' => 'invalidDirectiveType',
                                     'description' => null,
                                     'args' => [],
-                                    'locations' => ['FIELD'],
-                                    'isRepeatable' => false,
-                                ],
-                                [
-                                    'name' => 'stringWhere',
-                                    'description' => 'Graphpinator stringWhere directive.',
-                                    'args' => [
-                                        ['name' => 'field'],
-                                        ['name' => 'not'],
-                                        ['name' => 'equals'],
-                                        ['name' => 'contains'],
-                                        ['name' => 'startsWith'],
-                                        ['name' => 'endsWith'],
-                                        ['name' => 'orNull'],
-                                    ],
-                                    'locations' => ['FIELD'],
-                                    'isRepeatable' => true,
-                                ],
-                                [
-                                    'name' => 'intWhere',
-                                    'description' => 'Graphpinator intWhere directive.',
-                                    'args' => [
-                                        ['name' => 'field'],
-                                        ['name' => 'not'],
-                                        ['name' => 'equals'],
-                                        ['name' => 'greaterThan'],
-                                        ['name' => 'lessThan'],
-                                        ['name' => 'orNull'],
-                                    ],
-                                    'locations' => ['FIELD'],
-                                    'isRepeatable' => true,
-                                ],
-                                [
-                                    'name' => 'floatWhere',
-                                    'description' => 'Graphpinator floatWhere directive.',
-                                    'args' => [
-                                        ['name' => 'field'],
-                                        ['name' => 'not'],
-                                        ['name' => 'equals'],
-                                        ['name' => 'greaterThan'],
-                                        ['name' => 'lessThan'],
-                                        ['name' => 'orNull'],
-                                    ],
-                                    'locations' => ['FIELD'],
-                                    'isRepeatable' => true,
-                                ],
-                                [
-                                    'name' => 'listWhere',
-                                    'description' => 'Graphpinator listWhere directive.',
-                                    'args' => [
-                                        ['name' => 'field'],
-                                        ['name' => 'not'],
-                                        ['name' => 'minItems'],
-                                        ['name' => 'maxItems'],
-                                        ['name' => 'orNull'],
-                                    ],
-                                    'locations' => ['FIELD'],
-                                    'isRepeatable' => true,
-                                ],
-                                [
-                                    'name' => 'booleanWhere',
-                                    'description' => 'Graphpinator booleanWhere directive.',
-                                    'args' => [
-                                        ['name' => 'field'],
-                                        ['name' => 'equals'],
-                                        ['name' => 'orNull'],
-                                    ],
-                                    'locations' => ['FIELD'],
-                                    'isRepeatable' => true,
-                                ],
-                                [
-                                    'name' => 'intConstraint',
-                                    'description' => 'Graphpinator intConstraint directive.',
-                                    'args' => [
-                                        ['name' => 'min'],
-                                        ['name' => 'max'],
-                                        ['name' => 'oneOf'],
-                                    ],
-                                    'locations' => ['ARGUMENT_DEFINITION', 'INPUT_FIELD_DEFINITION', 'FIELD_DEFINITION'],
-                                    'isRepeatable' => false,
-                                ],
-                                [
-                                    'name' => 'floatConstraint',
-                                    'description' => 'Graphpinator floatConstraint directive.',
-                                    'args' => [
-                                        ['name' => 'min'],
-                                        ['name' => 'max'],
-                                        ['name' => 'oneOf'],
-                                    ],
-                                    'locations' => ['ARGUMENT_DEFINITION', 'INPUT_FIELD_DEFINITION', 'FIELD_DEFINITION'],
-                                    'isRepeatable' => false,
-                                ],
-                                [
-                                    'name' => 'stringConstraint',
-                                    'description' => 'Graphpinator stringConstraint directive.',
-                                    'args' => [
-                                        ['name' => 'minLength'],
-                                        ['name' => 'maxLength'],
-                                        ['name' => 'regex'],
-                                        ['name' => 'oneOf'],
-                                    ],
-                                    'locations' => ['ARGUMENT_DEFINITION', 'INPUT_FIELD_DEFINITION', 'FIELD_DEFINITION'],
-                                    'isRepeatable' => false,
-                                ],
-                                [
-                                    'name' => 'listConstraint',
-                                    'description' => 'Graphpinator listConstraint directive.',
-                                    'args' => [
-                                        ['name' => 'minItems'],
-                                        ['name' => 'maxItems'],
-                                        ['name' => 'unique'],
-                                        ['name' => 'innerList'],
-                                    ],
-                                    'locations' => ['ARGUMENT_DEFINITION', 'INPUT_FIELD_DEFINITION', 'FIELD_DEFINITION'],
-                                    'isRepeatable' => false,
-                                ],
-                                [
-                                    'name' => 'objectConstraint',
-                                    'description' => 'Graphpinator objectConstraint directive.',
-                                    'args' => [
-                                        ['name' => 'atLeastOne'],
-                                        ['name' => 'exactlyOne'],
-                                    ],
-                                    'locations' => ['INPUT_OBJECT', 'INTERFACE', 'OBJECT'],
+                                    'locations' => ['FIELD', 'INLINE_FRAGMENT', 'FRAGMENT_SPREAD'],
                                     'isRepeatable' => false,
                                 ],
                                 [
@@ -301,7 +154,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                                     'args' => [
                                         ['name' => 'if'],
                                     ],
-                                    'locations' => ['FIELD', 'FRAGMENT_SPREAD', 'INLINE_FRAGMENT'],
+                                    'locations' => ['FIELD', 'INLINE_FRAGMENT', 'FRAGMENT_SPREAD'],
                                     'isRepeatable' => false,
                                 ],
                                 [
@@ -310,7 +163,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                                     'args' => [
                                         ['name' => 'if'],
                                     ],
-                                    'locations' => ['FIELD', 'FRAGMENT_SPREAD', 'INLINE_FRAGMENT'],
+                                    'locations' => ['FIELD', 'INLINE_FRAGMENT', 'FRAGMENT_SPREAD'],
                                     'isRepeatable' => false,
                                 ],
                                 [
@@ -978,27 +831,5 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
         $result = $graphpinator->run(new \Graphpinator\Request\JsonRequestFactory($request));
 
         self::assertSame($expected->toString(), $result->toString());
-    }
-
-    public function testConstraintDirectivesSync() : void
-    {
-        $array = [
-            \Graphpinator\Constraint\IntConstraint::class => \Graphpinator\Container\Container::directiveIntConstraint(),
-            \Graphpinator\Constraint\FloatConstraint::class => \Graphpinator\Container\Container::directiveFloatConstraint(),
-            \Graphpinator\Constraint\StringConstraint::class => \Graphpinator\Container\Container::directiveStringConstraint(),
-            \Graphpinator\Constraint\ListConstraint::class => \Graphpinator\Container\Container::directiveListConstraint(),
-            \Graphpinator\Constraint\ObjectConstraint::class => \Graphpinator\Container\Container::directiveObjectConstraint(),
-        ];
-
-        foreach ($array as $constraintClass => $directive) {
-            \assert($directive instanceof \Graphpinator\Directive\Directive);
-
-            $reflection = new \ReflectionClass($constraintClass);
-            $constructorArgs = $reflection->getConstructor()->getParameters();
-
-            foreach ($constructorArgs as $arg) {
-                self::assertTrue(isset($directive->getArguments()[$arg->getName()]));
-            }
-        }
     }
 }

@@ -10,12 +10,12 @@ namespace Graphpinator\Type\Contract;
 trait TInterfaceImplementor
 {
     protected ?\Graphpinator\Field\FieldSet $fields = null;
-    protected \Graphpinator\Utils\InterfaceSet $implements;
+    protected \Graphpinator\Type\InterfaceSet $implements;
 
     /**
      * Returns interfaces, which this type implements.
      */
-    public function getInterfaces() : \Graphpinator\Utils\InterfaceSet
+    public function getInterfaces() : \Graphpinator\Type\InterfaceSet
     {
         return $this->implements;
     }
@@ -45,12 +45,10 @@ trait TInterfaceImplementor
     /**
      * Method to validate contract defined by interfaces - whether fields and their type match.
      */
-    protected function validateInterfaces() : void
+    protected function validateInterfaceContract() : void
     {
         foreach ($this->implements as $interface) {
-            if (!$interface->getConstraints()->validateObjectConstraint($this->getConstraints())) {
-                throw new \Graphpinator\Exception\Type\ObjectConstraintsNotPreserved();
-            }
+            $interface->getDirectiveUsages()->validateInvariance($this->getDirectiveUsages());
 
             foreach ($interface->getFields() as $fieldContract) {
                 if (!$this->getFields()->offsetExists($fieldContract->getName())) {
@@ -71,8 +69,11 @@ trait TInterfaceImplementor
                     );
                 }
 
-                if (!$fieldContract->getConstraints()->isCovariant($field->getConstraints())) {
-                    throw new \Graphpinator\Exception\Type\FieldConstraintNotCovariant(
+                try {
+                    $fieldContract->getDirectiveUsages()->validateCovariance($field->getDirectiveUsages());
+                } catch (\Throwable) {
+                    // TODO: print information from received exception
+                    throw new \Graphpinator\Exception\Type\FieldDirectiveNotCovariant(
                         $this->getName(),
                         $interface->getName(),
                         $fieldContract->getName(),
@@ -100,8 +101,11 @@ trait TInterfaceImplementor
                         );
                     }
 
-                    if (!$argumentContract->getConstraints()->isContravariant($argument->getConstraints())) {
-                        throw new \Graphpinator\Exception\Type\ArgumentConstraintNotContravariant(
+                    try {
+                        $argumentContract->getDirectiveUsages()->validateContravariance($argument->getDirectiveUsages());
+                    } catch (\Throwable) {
+                        // TODO: print information from received exception
+                        throw new \Graphpinator\Exception\Type\ArgumentDirectiveNotContravariant(
                             $this->getName(),
                             $interface->getName(),
                             $fieldContract->getName(),
@@ -124,20 +128,5 @@ trait TInterfaceImplementor
                 }
             }
         }
-    }
-
-    private function printImplements() : string
-    {
-        if (\count($this->implements) === 0) {
-            return '';
-        }
-
-        $interfaces = [];
-
-        foreach ($this->implements as $interface) {
-            $interfaces[] = $interface->getName();
-        }
-
-        return ' implements ' . \implode(' & ', $interfaces);
     }
 }

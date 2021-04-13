@@ -5,75 +5,21 @@ declare(strict_types = 1);
 namespace Graphpinator\Type;
 
 abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition implements
-    \Graphpinator\Type\Contract\Resolvable,
     \Graphpinator\Type\Contract\TypeConditionable,
     \Graphpinator\Type\Contract\InterfaceImplementor
 {
     use \Graphpinator\Type\Contract\TInterfaceImplementor;
     use \Graphpinator\Type\Contract\TMetaFields;
-    use \Graphpinator\Utils\TObjectConstraint;
-    use \Graphpinator\Printable\TRepeatablePrint;
+    use \Graphpinator\Utils\THasDirectives;
 
-    public function __construct(?\Graphpinator\Utils\InterfaceSet $implements = null)
+    public function __construct(?\Graphpinator\Type\InterfaceSet $implements = null)
     {
         $this->implements = $implements
-            ?? new \Graphpinator\Utils\InterfaceSet([]);
+            ?? new \Graphpinator\Type\InterfaceSet([]);
+        $this->directiveUsages = new \Graphpinator\DirectiveUsage\DirectiveUsageSet();
     }
 
     abstract public function validateNonNullValue(mixed $rawValue) : bool;
-
-    final public function createResolvedValue(mixed $rawValue) : \Graphpinator\Value\ResolvedValue
-    {
-        if ($rawValue === null) {
-            return new \Graphpinator\Value\NullResolvedValue($this);
-        }
-
-        return new \Graphpinator\Value\TypeIntermediateValue($this, $rawValue);
-    }
-
-    final public function resolve(
-        ?\Graphpinator\Normalizer\Field\FieldSet $requestedFields,
-        \Graphpinator\Value\ResolvedValue $parentResult
-    ) : \Graphpinator\Value\TypeValue
-    {
-        \assert($requestedFields instanceof \Graphpinator\Normalizer\Field\FieldSet);
-        $resolved = new \stdClass();
-
-        foreach ($requestedFields as $field) {
-            if ($field->getTypeCondition() instanceof \Graphpinator\Type\Contract\NamedDefinition &&
-                !$parentResult->getType()->isInstanceOf($field->getTypeCondition())) {
-                continue;
-            }
-
-            foreach ($field->getDirectives() as $directive) {
-                $directiveDef = $directive->getDirective();
-                $arguments = $directive->getArguments();
-                $directiveResult = $directiveDef->resolveBefore($arguments);
-
-                if ($directiveResult === \Graphpinator\Directive\DirectiveResult::SKIP) {
-                    continue 2;
-                }
-            }
-
-            $fieldDef = $this->getMetaFields()[$field->getName()]
-                ?? $this->getFields()[$field->getName()];
-            $fieldResult = $fieldDef->resolve($parentResult, $field);
-
-            foreach ($field->getDirectives() as $directive) {
-                $directiveDef = $directive->getDirective();
-                $arguments = $directive->getArguments();
-                $directiveResult = $directiveDef->resolveAfter($fieldResult, $arguments);
-
-                if ($directiveResult === \Graphpinator\Directive\DirectiveResult::SKIP) {
-                    continue 2;
-                }
-            }
-
-            $resolved->{$field->getAlias()} = $fieldResult;
-        }
-
-        return new \Graphpinator\Value\TypeValue($this, $resolved);
-    }
 
     final public function addMetaField(\Graphpinator\Field\ResolvableField $field) : void
     {
@@ -94,30 +40,33 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
         if (!$this->fields instanceof \Graphpinator\Field\ResolvableFieldSet) {
             $this->fields = $this->getFieldDefinition();
 
-            $this->validateInterfaces();
+            if (\Graphpinator\Graphpinator::$validateSchema) {
+                $this->validateInterfaceContract();
+            }
         }
 
         return $this->fields;
     }
 
-    final public function getField(string $name) : \Graphpinator\Field\Field
+    final public function accept(\Graphpinator\Typesystem\NamedTypeVisitor $visitor) : mixed
     {
-        return $this->getMetaFields()[$name]
-            ?? $this->getFields()[$name]
-            ?? throw new \Graphpinator\Exception\Normalizer\UnknownField($name, $this->getName());
+        return $visitor->visitType($this);
     }
 
-    final public function getTypeKind() : string
+    final public function addDirective(
+        \Graphpinator\Directive\Contract\ObjectLocation $directive,
+        array $arguments = [],
+    ) : static
     {
-        return \Graphpinator\Type\Introspection\TypeKind::OBJECT;
-    }
+        $usage = new \Graphpinator\DirectiveUsage\DirectiveUsage($directive, $arguments);
 
-    final public function printSchema() : string
-    {
-        return $this->printDescription()
-            . 'type ' . $this->getName() . $this->printImplements() . $this->printConstraints() . ' {' . \PHP_EOL
-            . $this->printItems($this->getFields(), 1)
-            . '}';
+        if (!$directive->validateObjectUsage($this, $usage->getArgumentValues())) {
+            throw new \Graphpinator\Exception\Type\DirectiveIncorrectType();
+        }
+
+        $this->directiveUsages[] = $usage;
+
+        return $this;
     }
 
     abstract protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet;

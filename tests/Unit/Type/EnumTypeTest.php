@@ -9,8 +9,8 @@ final class EnumTypeTest extends \PHPUnit\Framework\TestCase
     public function simpleDataProvider() : array
     {
         return [
-            ['A'],
-            ['B'],
+            ['a'],
+            ['b'],
             [null],
         ];
     }
@@ -22,7 +22,7 @@ final class EnumTypeTest extends \PHPUnit\Framework\TestCase
     public function testValidateValue($rawValue) : void
     {
         $enum = $this->createTestEnum();
-        $value = $enum->createInputedValue($rawValue);
+        $value = $enum->accept(new \Graphpinator\Value\ConvertRawValueVisitor($rawValue, new \Graphpinator\Common\Path()));
 
         self::assertSame($enum, $value->getType());
         self::assertSame($rawValue, $value->getRawValue());
@@ -50,7 +50,7 @@ final class EnumTypeTest extends \PHPUnit\Framework\TestCase
         $this->expectException(\Graphpinator\Exception\Value\InvalidValue::class);
 
         $enum = $this->createTestEnum();
-        $enum->createInputedValue($rawValue);
+        $enum->accept(new \Graphpinator\Value\ConvertRawValueVisitor($rawValue, new \Graphpinator\Common\Path()));
     }
 
     public function testGetItems() : void
@@ -58,23 +58,23 @@ final class EnumTypeTest extends \PHPUnit\Framework\TestCase
         $enum = $this->createTestEnum();
 
         self::assertCount(2, $enum->getItems());
-        self::assertArrayHasKey('A', $enum->getItems());
-        self::assertArrayHasKey('B', $enum->getItems());
-        self::assertSame('A', $enum->getItems()['A']->getName());
-        self::assertNull($enum->getItems()['A']->getDescription());
-        self::assertFalse($enum->getItems()['A']->isDeprecated());
-        self::assertNull($enum->getItems()['A']->getDeprecationReason());
-        self::assertSame('B', $enum->getItems()['B']->getName());
-        self::assertNull($enum->getItems()['B']->getDescription());
-        self::assertFalse($enum->getItems()['B']->isDeprecated());
-        self::assertNull($enum->getItems()['B']->getDeprecationReason());
+        self::assertArrayHasKey('a', $enum->getItems());
+        self::assertArrayHasKey('b', $enum->getItems());
+        self::assertSame('a', $enum->getItems()['a']->getName());
+        self::assertNull($enum->getItems()['a']->getDescription());
+        self::assertFalse($enum->getItems()['a']->isDeprecated());
+        self::assertNull($enum->getItems()['a']->getDeprecationReason());
+        self::assertSame('b', $enum->getItems()['b']->getName());
+        self::assertNull($enum->getItems()['b']->getDescription());
+        self::assertFalse($enum->getItems()['b']->isDeprecated());
+        self::assertNull($enum->getItems()['b']->getDeprecationReason());
     }
 
     public function testGetArray() : void
     {
         $items = $this->createTestEnum()->getItems()->getArray();
 
-        self::assertSame(['A', 'B'], $items);
+        self::assertSame(['a', 'b'], $items);
     }
 
     //@phpcs:disable SlevomatCodingStandard.Classes.UnusedPrivateElements.UnusedConstant

@@ -9,7 +9,7 @@ abstract class LeafValue implements \Graphpinator\Value\InputedValue, \Graphpina
     use \Nette\SmartObject;
 
     protected \Graphpinator\Type\Contract\LeafDefinition $type;
-    protected string|int|float|bool|\Psr\Http\Message\UploadedFileInterface $rawValue;
+    protected string|int|float|bool|object $rawValue;
 
     public function __construct(\Graphpinator\Type\Contract\LeafDefinition $type, mixed $rawValue, bool $inputed)
     {
@@ -21,11 +21,6 @@ abstract class LeafValue implements \Graphpinator\Value\InputedValue, \Graphpina
         $this->rawValue = $rawValue;
     }
 
-    public function getRawValue(bool $forResolvers = false) : string|int|float|bool|\Psr\Http\Message\UploadedFileInterface
-    {
-        return $this->rawValue;
-    }
-
     public function getType() : \Graphpinator\Type\Contract\LeafDefinition
     {
         return $this->type;
@@ -34,11 +29,6 @@ abstract class LeafValue implements \Graphpinator\Value\InputedValue, \Graphpina
     public function jsonSerialize() : string|int|float|bool
     {
         return $this->rawValue;
-    }
-
-    public function prettyPrint(int $indentLevel) : string
-    {
-        return $this->printValue();
     }
 
     public function applyVariables(\Graphpinator\Normalizer\VariableValueSet $variables) : void

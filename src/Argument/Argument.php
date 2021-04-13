@@ -4,20 +4,20 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Argument;
 
-final class Argument implements \Graphpinator\Printable\Printable
+final class Argument implements \Graphpinator\Typesystem\Component
 {
     use \Nette\SmartObject;
     use \Graphpinator\Utils\TOptionalDescription;
-    use \Graphpinator\Utils\TFieldConstraint;
+    use \Graphpinator\Utils\THasDirectives;
 
-    private ?\Graphpinator\Value\InputedValue $defaultValue = null;
+    private ?\Graphpinator\Value\ArgumentValue $defaultValue = null;
 
     public function __construct(
         private string $name,
         private \Graphpinator\Type\Contract\Inputable $type,
     )
     {
-        $this->constraints = new \Graphpinator\Constraint\ArgumentFieldConstraintSet([]);
+        $this->directiveUsages = new \Graphpinator\DirectiveUsage\DirectiveUsageSet();
     }
 
     public static function create(string $name, \Graphpinator\Type\Contract\Inputable $type) : self
@@ -35,28 +35,40 @@ final class Argument implements \Graphpinator\Printable\Printable
         return $this->type;
     }
 
-    public function getDefaultValue() : ?\Graphpinator\Value\InputedValue
+    public function getDefaultValue() : ?\Graphpinator\Value\ArgumentValue
     {
         return $this->defaultValue;
     }
 
     public function setDefaultValue(\stdClass|array|string|int|float|bool|null $defaultValue) : self
     {
-        $this->defaultValue = $this->type->createInputedValue($defaultValue);
+        $this->defaultValue = \Graphpinator\Value\ConvertRawValueVisitor::convertArgument(
+            $this,
+            $defaultValue,
+            new \Graphpinator\Common\Path(),
+        );
 
         return $this;
     }
 
-    public function printSchema(int $indentLevel) : string
+    public function accept(\Graphpinator\Typesystem\ComponentVisitor $visitor) : mixed
     {
-        $schema = $this->printDescription($indentLevel) . $this->getName() . ': ' . $this->type->printName();
+        return $visitor->visitArgument($this);
+    }
 
-        if ($this->defaultValue instanceof \Graphpinator\Value\InputedValue) {
-            $schema .= ' = ' . $this->defaultValue->prettyPrint($indentLevel);
+    public function addDirective(
+        \Graphpinator\Directive\Contract\ArgumentDefinitionLocation $directive,
+        array $arguments = [],
+    ) : self
+    {
+        $usage = new \Graphpinator\DirectiveUsage\DirectiveUsage($directive, $arguments);
+
+        if (!$directive->validateArgumentUsage($this, $usage->getArgumentValues())) {
+            throw new \Graphpinator\Exception\Type\DirectiveIncorrectType();
         }
 
-        $schema .= $this->printConstraints();
+        $this->directiveUsages[] = $usage;
 
-        return $schema;
+        return $this;
     }
 }

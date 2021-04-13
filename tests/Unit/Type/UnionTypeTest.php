@@ -14,7 +14,7 @@ final class UnionTypeTest extends \PHPUnit\Framework\TestCase
             public function __construct()
             {
                 parent::__construct(
-                    new \Graphpinator\Utils\ConcreteSet([
+                    new \Graphpinator\Type\TypeSet([
                         UnionTypeTest::getTestTypeXyz(),
                         UnionTypeTest::getTestTypeZzz(),
                     ]),

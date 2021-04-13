@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Module\Upload;
 
-final class UploadType extends \Graphpinator\Type\Scalar\ScalarType
+final class UploadType extends \Graphpinator\Type\ScalarType
 {
     protected const NAME = 'Upload';
     protected const DESCRIPTION = 'Upload type - represents file which was send to server.'

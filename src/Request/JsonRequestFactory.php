@@ -29,25 +29,25 @@ final class JsonRequestFactory implements \Graphpinator\Request\RequestFactory
     public function create() : Request
     {
         if (!isset($this->json[self::QUERY])) {
-            throw new \Graphpinator\Exception\Request\QueryMissing();
+            throw new \Graphpinator\Request\Exception\QueryMissing();
         }
 
         if (!\is_string($this->json[self::QUERY])) {
-            throw new \Graphpinator\Exception\Request\QueryNotString();
+            throw new \Graphpinator\Request\Exception\QueryNotString();
         }
 
         if (isset($this->json[self::VARIABLES]) && !$this->json[self::VARIABLES] instanceof \stdClass) {
-            throw new \Graphpinator\Exception\Request\VariablesNotObject();
+            throw new \Graphpinator\Request\Exception\VariablesNotObject();
         }
 
         if (isset($this->json[self::OPERATION_NAME]) && !\is_string($this->json[self::OPERATION_NAME])) {
-            throw new \Graphpinator\Exception\Request\OperationNameNotString();
+            throw new \Graphpinator\Request\Exception\OperationNameNotString();
         }
 
         if ($this->strict) {
             foreach ($this->json as $key => $value) {
                 if (!\in_array($key, [self::QUERY, self::VARIABLES, self::OPERATION_NAME], true)) {
-                    throw new \Graphpinator\Exception\Request\UnknownKey();
+                    throw new \Graphpinator\Request\Exception\UnknownKey();
                 }
             }
         }

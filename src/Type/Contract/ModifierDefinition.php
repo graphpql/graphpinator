@@ -6,7 +6,7 @@ namespace Graphpinator\Type\Contract;
 
 abstract class ModifierDefinition implements
     \Graphpinator\Type\Contract\Inputable,
-    \Graphpinator\Type\Contract\Resolvable
+    \Graphpinator\Type\Contract\Outputable
 {
     protected \Graphpinator\Type\Contract\Definition $innerType;
 
@@ -28,16 +28,6 @@ abstract class ModifierDefinition implements
     public function isInputable() : bool
     {
         return $this->innerType->isInputable();
-    }
-
-    public function isOutputable() : bool
-    {
-        return $this->innerType->isOutputable();
-    }
-
-    public function isResolvable() : bool
-    {
-        return $this->innerType->isResolvable();
     }
 
     public function list() : \Graphpinator\Type\ListType

@@ -6,7 +6,7 @@ namespace Graphpinator\Exception\Upload;
 
 abstract class UploadError extends \Graphpinator\Exception\GraphpinatorBase
 {
-    protected function isOutputable() : bool
+    public function isOutputable() : bool
     {
         return true;
     }

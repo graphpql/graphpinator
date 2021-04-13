@@ -8,56 +8,23 @@ final class Field
 {
     use \Nette\SmartObject;
 
-    private string $name;
-    private string $alias;
-    private \Graphpinator\Value\ArgumentValueSet $arguments;
-    private \Graphpinator\Normalizer\Directive\DirectiveSet $directives;
-    private ?\Graphpinator\Normalizer\Field\FieldSet $children = null;
-    private ?\Graphpinator\Type\Contract\TypeConditionable $typeCond = null;
-
     public function __construct(
-        \Graphpinator\Parser\Field\Field $parsed,
-        \Graphpinator\Type\Contract\NamedDefinition $parentType,
-        \Graphpinator\Container\Container $typeContainer,
-        \Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions,
-        \Graphpinator\Normalizer\Variable\VariableSet $variableSet,
-    )
+        private \Graphpinator\Field\Field $field,
+        private string $alias,
+        private \Graphpinator\Value\ArgumentValueSet $arguments,
+        private \Graphpinator\Normalizer\Directive\DirectiveSet $directives,
+        private ?\Graphpinator\Normalizer\Field\FieldSet $children = null,
+        private ?\Graphpinator\Type\Contract\TypeConditionable $typeCond = null,
+    ) {}
+
+    public function getField() : \Graphpinator\Field\Field
     {
-        \assert($parentType instanceof \Graphpinator\Type\Contract\Scopable);
-
-        $this->name = $parsed->getName();
-        $this->alias = $parsed->getAlias()
-            ?? $this->name;
-
-        $field = $parentType->getField($this->name);
-        $fieldType = $field->getType()->getNamedType();
-
-        $this->arguments = new \Graphpinator\Value\ArgumentValueSet(
-            $parsed->getArguments() instanceof \Graphpinator\Parser\Value\ArgumentValueSet
-                ? $parsed->getArguments()
-                : new \Graphpinator\Parser\Value\ArgumentValueSet([]),
-            $field,
-            $variableSet,
-        );
-        $this->directives = new \Graphpinator\Normalizer\Directive\DirectiveSet(
-            $parsed->getDirectives() instanceof \Graphpinator\Parser\Directive\DirectiveSet
-                ? $parsed->getDirectives()
-                : new \Graphpinator\Parser\Directive\DirectiveSet([], \Graphpinator\Directive\ExecutableDirectiveLocation::FIELD),
-            $field->getType(),
-            $typeContainer,
-            $variableSet,
-        );
-
-        if ($parsed->getFields() instanceof \Graphpinator\Parser\Field\FieldSet) {
-            $this->children = $parsed->getFields()->normalize($fieldType, $typeContainer, $fragmentDefinitions, $variableSet);
-        } elseif (!$fieldType instanceof \Graphpinator\Type\Contract\LeafDefinition) {
-            throw new \Graphpinator\Exception\Resolver\SelectionOnComposite();
-        }
+        return $this->field;
     }
 
     public function getName() : string
     {
-        return $this->name;
+        return $this->field->getName();
     }
 
     public function getAlias() : string
@@ -101,7 +68,7 @@ final class Field
             return;
         }
 
-        throw new \Graphpinator\Exception\Normalizer\InvalidFragmentType($this->typeCond->getName(), $typeCond->getName());
+        throw new \Graphpinator\Normalizer\Exception\InvalidFragmentType($this->typeCond->getName(), $typeCond->getName());
     }
 
     public function applyVariables(\Graphpinator\Normalizer\VariableValueSet $variables) : void

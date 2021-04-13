@@ -77,7 +77,7 @@ final class VariableTest extends \PHPUnit\Framework\TestCase
                     'query' => 'query queryName ($var1: Int = "123") { fieldAbc { fieldXyz { name } } }',
                     'variables' => ['var1' => '123'],
                 ]),
-                \Graphpinator\Exception\Request\VariablesNotObject::class,
+                \Graphpinator\Request\Exception\VariablesNotObject::class,
             ],
             [
                 Json::fromNative((object) [
@@ -91,21 +91,21 @@ final class VariableTest extends \PHPUnit\Framework\TestCase
                     'query' => 'query queryName ($var1: Abc) { fieldAbc { fieldXyz { name } } }',
                     'variables' => (object) [],
                 ]),
-                \Graphpinator\Exception\Normalizer\VariableTypeInputable::class,
+                \Graphpinator\Normalizer\Exception\VariableTypeInputable::class,
             ],
             [
                 Json::fromNative((object) [
                     'query' => 'query queryName ($var1: Abc!) { fieldAbc { fieldXyz { name } } }',
                     'variables' => (object) [],
                 ]),
-                \Graphpinator\Exception\Normalizer\VariableTypeInputable::class,
+                \Graphpinator\Normalizer\Exception\VariableTypeInputable::class,
             ],
             [
                 Json::fromNative((object) [
                     'query' => 'query queryName { fieldAbc { fieldXyz(arg1: $varNonExistent) { name } } }',
                     'variables' => (object) [],
                 ]),
-                \Graphpinator\Exception\Normalizer\UnknownVariable::class,
+                \Graphpinator\Normalizer\Exception\UnknownVariable::class,
             ],
         ];
     }

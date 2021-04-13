@@ -8,7 +8,7 @@ trait TMetaFields
 {
     protected ?\Graphpinator\Field\ResolvableFieldSet $metaFields = null;
 
-    protected function getMetaFields() : \Graphpinator\Field\ResolvableFieldSet
+    public function getMetaFields() : \Graphpinator\Field\ResolvableFieldSet
     {
         if (!$this->metaFields instanceof \Graphpinator\Field\ResolvableFieldSet) {
             $this->metaFields = $this->getMetaFieldDefinition();

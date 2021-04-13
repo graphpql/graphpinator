@@ -4,51 +4,38 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Type;
 
-abstract class InputType extends \Graphpinator\Type\Contract\ConcreteDefinition implements \Graphpinator\Type\Contract\Inputable
+abstract class InputType extends \Graphpinator\Type\Contract\ConcreteDefinition implements
+    \Graphpinator\Type\Contract\Inputable
 {
-    use \Graphpinator\Printable\TRepeatablePrint;
-    use \Graphpinator\Utils\TObjectConstraint;
+    use \Graphpinator\Utils\THasDirectives;
 
     protected const DATA_CLASS = \stdClass::class;
 
     protected ?\Graphpinator\Argument\ArgumentSet $arguments = null;
     private bool $cycleValidated = false;
 
-    final public function createInputedValue(mixed $rawValue) : \Graphpinator\Value\InputedValue
+    public function __construct()
     {
-        if ($rawValue instanceof \stdClass) {
-            return \Graphpinator\Value\InputValue::fromRaw($this, $rawValue);
-        }
-
-        if ($rawValue === null) {
-            return new \Graphpinator\Value\NullInputedValue($this);
-        }
-
-        throw new \Graphpinator\Exception\Value\InvalidValue($this->getName(), $rawValue, true);
+        $this->directiveUsages = new \Graphpinator\DirectiveUsage\DirectiveUsageSet();
     }
 
     final public function getArguments() : \Graphpinator\Argument\ArgumentSet
     {
         if (!$this->arguments instanceof \Graphpinator\Argument\ArgumentSet) {
             $this->arguments = $this->getFieldDefinition();
+            $this->afterGetFieldDefinition();
 
-            $this->validateCycles([]);
+            if (\Graphpinator\Graphpinator::$validateSchema) {
+                $this->validateCycles([]);
+            }
         }
 
         return $this->arguments;
     }
 
-    final public function getTypeKind() : string
+    final public function accept(\Graphpinator\Typesystem\NamedTypeVisitor $visitor) : mixed
     {
-        return \Graphpinator\Type\Introspection\TypeKind::INPUT_OBJECT;
-    }
-
-    final public function printSchema() : string
-    {
-        return $this->printDescription()
-            . 'input ' . $this->getName() . $this->printConstraints() . ' {' . \PHP_EOL
-            . $this->printItems($this->getArguments(), 1)
-            . '}';
+        return $visitor->visitInput($this);
     }
 
     final public function getDataClass() : string
@@ -56,7 +43,32 @@ abstract class InputType extends \Graphpinator\Type\Contract\ConcreteDefinition 
         return static::DATA_CLASS;
     }
 
+    final public function addDirective(
+        \Graphpinator\Directive\Contract\InputObjectLocation $directive,
+        array $arguments = [],
+    ) : static
+    {
+        $usage = new \Graphpinator\DirectiveUsage\DirectiveUsage($directive, $arguments);
+
+        if (!$directive->validateInputUsage($this, $usage->getArgumentValues())) {
+            throw new \Graphpinator\Exception\Type\DirectiveIncorrectType();
+        }
+
+        $this->directiveUsages[] = $usage;
+
+        return $this;
+    }
+
     abstract protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet;
+
+    /**
+     * This function serves to prevent infinite cycles.
+     *
+     * It doesn't have to be used at all, unless input have arguments self referencing fields and wish to put default value for them.
+     */
+    protected function afterGetFieldDefinition() : void
+    {
+    }
 
     private function validateCycles(array $stack) : void
     {
@@ -68,6 +80,8 @@ abstract class InputType extends \Graphpinator\Type\Contract\ConcreteDefinition 
             throw new \Graphpinator\Exception\Type\InputCycle();
         }
 
+        $stack[$this->getName()] = true;
+
         foreach ($this->arguments as $argumentContract) {
             $type = $argumentContract->getType();
 
@@ -77,21 +91,18 @@ abstract class InputType extends \Graphpinator\Type\Contract\ConcreteDefinition 
 
             $type = $type->getInnerType();
 
-            if ($type instanceof ListType || $type instanceof \Graphpinator\Type\Contract\LeafDefinition) {
+            if (!$type instanceof self) {
                 continue;
             }
-
-            \assert($type instanceof self);
 
             if ($type->arguments === null) {
                 $type->arguments = $type->getFieldDefinition();
             }
 
-            $stack[$this->getName()] = true;
             $type->validateCycles($stack);
-            unset($stack[$this->getName()]);
         }
 
+        unset($stack[$this->getName()]);
         $this->cycleValidated = true;
     }
 }

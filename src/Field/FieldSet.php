@@ -8,7 +8,7 @@ namespace Graphpinator\Field;
  * @method \Graphpinator\Field\Field current() : object
  * @method \Graphpinator\Field\Field offsetGet($offset) : object
  */
-class FieldSet extends \Infinityloop\Utils\ImplicitObjectMap implements \Graphpinator\Printable\PrintableSet
+class FieldSet extends \Infinityloop\Utils\ImplicitObjectMap
 {
     protected const INNER_CLASS = Field::class;
 

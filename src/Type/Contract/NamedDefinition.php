@@ -4,14 +4,10 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Type\Contract;
 
-abstract class NamedDefinition implements \Graphpinator\Type\Contract\Definition
+abstract class NamedDefinition implements \Graphpinator\Typesystem\NamedType, \Graphpinator\Type\Contract\Definition
 {
     protected const NAME = '';
     protected const DESCRIPTION = null;
-
-    use \Graphpinator\Utils\TTypeSystemElement;
-
-    abstract public function printSchema() : string;
 
     abstract public function isInstanceOf(\Graphpinator\Type\Contract\Definition $type) : bool;
 
@@ -43,16 +39,6 @@ abstract class NamedDefinition implements \Graphpinator\Type\Contract\Definition
     final public function isInputable() : bool
     {
         return $this instanceof Inputable;
-    }
-
-    final public function isOutputable() : bool
-    {
-        return $this instanceof Outputable;
-    }
-
-    final public function isResolvable() : bool
-    {
-        return $this instanceof Resolvable;
     }
 
     final public function notNull() : \Graphpinator\Type\NotNullType

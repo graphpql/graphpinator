@@ -8,19 +8,16 @@ final class NullResolvedValue implements \Graphpinator\Value\OutputValue, \Graph
 {
     use \Nette\SmartObject;
 
-    private \Graphpinator\Type\Contract\Resolvable $type;
-
-    public function __construct(\Graphpinator\Type\Contract\Resolvable $type)
-    {
-        $this->type = $type;
-    }
+    public function __construct(
+        private \Graphpinator\Type\Contract\Outputable $type,
+    ) {}
 
     public function getRawValue() : ?bool
     {
         return null;
     }
 
-    public function getType() : \Graphpinator\Type\Contract\Resolvable
+    public function getType() : \Graphpinator\Type\Contract\Outputable
     {
         return $this->type;
     }

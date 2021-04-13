@@ -8,27 +8,23 @@ final class Operation
 {
     use \Nette\SmartObject;
 
-    private \Graphpinator\Type\Type $operation;
-    private \Graphpinator\Normalizer\Field\FieldSet $children;
-    private \Graphpinator\Normalizer\Variable\VariableSet $variables;
-    private ?string $name;
-
     public function __construct(
-        \Graphpinator\Type\Type $operation,
-        \Graphpinator\Normalizer\Field\FieldSet $children,
-        \Graphpinator\Normalizer\Variable\VariableSet $variables,
-        ?string $name
-    )
+        protected string $type,
+        protected ?string $name,
+        protected \Graphpinator\Type\Type $rootObject,
+        protected \Graphpinator\Normalizer\Field\FieldSet $children,
+        protected \Graphpinator\Normalizer\Variable\VariableSet $variables,
+        protected \Graphpinator\Normalizer\Directive\DirectiveSet $directives,
+    ) {}
+
+    public function getType() : string
     {
-        $this->operation = $operation;
-        $this->children = $children;
-        $this->variables = $variables;
-        $this->name = $name;
+        return $this->type;
     }
 
-    public function getType() : \Graphpinator\Type\Type
+    public function getRootObject() : \Graphpinator\Type\Type
     {
-        return $this->operation;
+        return $this->rootObject;
     }
 
     public function getFields() : \Graphpinator\Normalizer\Field\FieldSet
@@ -41,20 +37,13 @@ final class Operation
         return $this->variables;
     }
 
+    public function getDirectives() : \Graphpinator\Normalizer\Directive\DirectiveSet
+    {
+        return $this->directives;
+    }
+
     public function getName() : ?string
     {
         return $this->name;
-    }
-
-    public function resolve(\Graphpinator\Normalizer\VariableValueSet $variables) : \Graphpinator\Result
-    {
-        $this->children->applyVariables($variables);
-
-        $data = $this->operation->resolve(
-            $this->children,
-            new \Graphpinator\Value\TypeIntermediateValue($this->operation, null),
-        );
-
-        return new \Graphpinator\Result($data);
     }
 }

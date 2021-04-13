@@ -12,40 +12,12 @@ final class ArgumentValueSet extends \Infinityloop\Utils\ImplicitObjectMap
 {
     protected const INNER_CLASS = \Graphpinator\Value\ArgumentValue::class;
 
-    public function __construct(
-        \Graphpinator\Parser\Value\ArgumentValueSet $parsed,
-        \Graphpinator\Field\Field|\Graphpinator\Directive\Directive $element,
-        \Graphpinator\Normalizer\Variable\VariableSet $variableSet,
-    )
-    {
-        parent::__construct();
-
-        $argumentSet = $element->getArguments();
-
-        foreach ($argumentSet as $argument) {
-            if (!$parsed->offsetExists($argument->getName())) {
-                $this[] = \Graphpinator\Value\ArgumentValue::fromRaw($argument, null);
-
-                continue;
-            }
-
-            $parsedArg = $parsed->offsetGet($argument->getName());
-            $this[] = \Graphpinator\Value\ArgumentValue::fromParsed($argument, $parsedArg->getValue(), $variableSet);
-        }
-
-        foreach ($parsed as $value) {
-            if (!$argumentSet->offsetExists($value->getName())) {
-                throw new \Graphpinator\Exception\Normalizer\UnknownArgument($value->getName(), $element->getName());
-            }
-        }
-    }
-
     public function getValuesForResolver() : array
     {
         $return = [];
 
-        foreach ($this as $argumentValue) {
-            $return[] = $argumentValue->getValue()->getRawValue(true);
+        foreach ($this as $name => $argumentValue) {
+            $return[$name] = $argumentValue->getValue()->getRawValue(true);
         }
 
         return $return;
@@ -56,6 +28,39 @@ final class ArgumentValueSet extends \Infinityloop\Utils\ImplicitObjectMap
         foreach ($this as $value) {
             $value->applyVariables($variables);
         }
+    }
+
+    public function isSame(self $compare) : bool
+    {
+        foreach ($compare as $lhs) {
+            if ($this->offsetExists($lhs->getArgument()->getName())) {
+                if ($lhs->getValue()->isSame($this->offsetGet($lhs->getArgument()->getName())->getValue())) {
+                    continue;
+                }
+
+                return false;
+            }
+
+            if ($lhs->getValue()->isSame($lhs->getArgument()->getDefaultValue()->getValue())) {
+                continue;
+            }
+
+            return false;
+        }
+
+        foreach ($this as $lhs) {
+            if ($compare->offsetExists($lhs->getArgument()->getName())) {
+                continue;
+            }
+
+            if ($lhs->getValue()->isSame($lhs->getArgument()->getDefaultValue()->getValue())) {
+                continue;
+            }
+
+            return false;
+        }
+
+        return true;
     }
 
     protected function getKey(object $object) : string

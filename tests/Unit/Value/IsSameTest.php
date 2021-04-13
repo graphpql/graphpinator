@@ -11,123 +11,145 @@ final class IsSameTest extends \PHPUnit\Framework\TestCase
         return [
             [
                 new \Graphpinator\Value\VariableValue(
-                    new \Graphpinator\Type\Scalar\StringType(),
-                    new \Graphpinator\Normalizer\Variable\Variable('var1', new \Graphpinator\Type\Scalar\StringType()),
+                    new \Graphpinator\Type\Spec\StringType(),
+                    new \Graphpinator\Normalizer\Variable\Variable('var1', new \Graphpinator\Type\Spec\StringType(), null),
                 ),
                 new \Graphpinator\Value\VariableValue(
-                    new \Graphpinator\Type\Scalar\StringType(),
-                    new \Graphpinator\Normalizer\Variable\Variable('var1', new \Graphpinator\Type\Scalar\StringType()),
+                    new \Graphpinator\Type\Spec\StringType(),
+                    new \Graphpinator\Normalizer\Variable\Variable('var1', new \Graphpinator\Type\Spec\StringType(), null),
                 ),
                 true,
             ],
             [
                 new \Graphpinator\Value\VariableValue(
-                    new \Graphpinator\Type\Scalar\StringType(),
-                    new \Graphpinator\Normalizer\Variable\Variable('var1', new \Graphpinator\Type\Scalar\StringType()),
+                    new \Graphpinator\Type\Spec\StringType(),
+                    new \Graphpinator\Normalizer\Variable\Variable('var1', new \Graphpinator\Type\Spec\StringType(), null),
                 ),
                 new \Graphpinator\Value\VariableValue(
-                    new \Graphpinator\Type\Scalar\StringType(),
-                    new \Graphpinator\Normalizer\Variable\Variable('var2', new \Graphpinator\Type\Scalar\StringType()),
+                    new \Graphpinator\Type\Spec\StringType(),
+                    new \Graphpinator\Normalizer\Variable\Variable('var2', new \Graphpinator\Type\Spec\StringType(), null),
                 ),
                 false,
             ],
             [
-                \Graphpinator\Value\InputValue::fromRaw(
-                    \Graphpinator\Tests\Spec\TestSchema::getSimpleInput(),
-                    (object) [
-                        'name' => 'test',
-                        'number' => [],
-                    ],
+                \Graphpinator\Tests\Spec\TestSchema::getSimpleInput()->accept(
+                    new \Graphpinator\Value\ConvertRawValueVisitor(
+                        (object) [
+                            'name' => 'test',
+                            'number' => [],
+                        ],
+                        new \Graphpinator\Common\Path(),
+                    ),
                 ),
-                \Graphpinator\Value\InputValue::fromRaw(
-                    \Graphpinator\Tests\Spec\TestSchema::getSimpleInput(),
-                    (object) [
-                        'name' => 'test',
-                        'number' => [],
-                    ],
+                \Graphpinator\Tests\Spec\TestSchema::getSimpleInput()->accept(
+                    new \Graphpinator\Value\ConvertRawValueVisitor(
+                        (object) [
+                            'name' => 'test',
+                            'number' => [],
+                        ],
+                        new \Graphpinator\Common\Path(),
+                    ),
                 ),
                 true,
             ],
             [
-                \Graphpinator\Value\InputValue::fromRaw(
-                    \Graphpinator\Tests\Spec\TestSchema::getSimpleInput(),
-                    (object) [
-                        'name' => 'test',
-                        'number' => [],
-                    ],
+                \Graphpinator\Tests\Spec\TestSchema::getSimpleInput()->accept(
+                    new \Graphpinator\Value\ConvertRawValueVisitor(
+                        (object) [
+                            'name' => 'test',
+                            'number' => [],
+                        ],
+                        new \Graphpinator\Common\Path(),
+                    ),
                 ),
                 new \Graphpinator\Value\VariableValue(
-                    new \Graphpinator\Type\Scalar\StringType(),
-                    new \Graphpinator\Normalizer\Variable\Variable('var2', new \Graphpinator\Type\Scalar\StringType()),
+                    new \Graphpinator\Type\Spec\StringType(),
+                    new \Graphpinator\Normalizer\Variable\Variable('var2', new \Graphpinator\Type\Spec\StringType(), null),
                 ),
                 false,
             ],
             [
-                \Graphpinator\Value\InputValue::fromRaw(
-                    \Graphpinator\Tests\Spec\TestSchema::getSimpleInput(),
-                    (object) [
-                        'name' => 'test',
-                        'number' => [],
-                    ],
+                \Graphpinator\Tests\Spec\TestSchema::getSimpleInput()->accept(
+                    new \Graphpinator\Value\ConvertRawValueVisitor(
+                        (object) [
+                            'name' => 'test',
+                            'number' => [],
+                        ],
+                        new \Graphpinator\Common\Path(),
+                    ),
                 ),
-                \Graphpinator\Value\InputValue::fromRaw(
-                    \Graphpinator\Tests\Spec\TestSchema::getSimpleInput(),
-                    (object) [
-                        'name' => 'test',
-                        'number' => [],
-                        'bool' => true,
-                    ],
-                ),
-                false,
-            ],
-            [
-                \Graphpinator\Value\InputValue::fromRaw(
-                    \Graphpinator\Tests\Spec\TestSchema::getSimpleInput(),
-                    (object) [
-                        'name' => 'test',
-                        'number' => [],
-                    ],
-                ),
-                \Graphpinator\Value\InputValue::fromRaw(
-                    \Graphpinator\Tests\Spec\TestSchema::getSimpleInput(),
-                    (object) [
-                        'name' => 'test',
-                        'number' => [1],
-                    ],
+                \Graphpinator\Tests\Spec\TestSchema::getSimpleInput()->accept(
+                    new \Graphpinator\Value\ConvertRawValueVisitor(
+                        (object) [
+                            'name' => 'test',
+                            'number' => [],
+                            'bool' => true,
+                        ],
+                        new \Graphpinator\Common\Path(),
+                    ),
                 ),
                 false,
             ],
             [
-                \Graphpinator\Value\InputValue::fromRaw(
-                    \Graphpinator\Tests\Spec\TestSchema::getSimpleInput(),
-                    (object) [
-                        'name' => 'test',
-                        'number' => [1],
-                    ],
+                \Graphpinator\Tests\Spec\TestSchema::getSimpleInput()->accept(
+                    new \Graphpinator\Value\ConvertRawValueVisitor(
+                        (object) [
+                            'name' => 'test',
+                            'number' => [],
+                        ],
+                        new \Graphpinator\Common\Path(),
+                    ),
                 ),
-                \Graphpinator\Value\InputValue::fromRaw(
-                    \Graphpinator\Tests\Spec\TestSchema::getSimpleInput(),
-                    (object) [
-                        'name' => 'test',
-                        'number' => [1,2],
-                    ],
+                \Graphpinator\Tests\Spec\TestSchema::getSimpleInput()->accept(
+                    new \Graphpinator\Value\ConvertRawValueVisitor(
+                        (object) [
+                            'name' => 'test',
+                            'number' => [1],
+                        ],
+                        new \Graphpinator\Common\Path(),
+                    ),
                 ),
                 false,
             ],
             [
-                \Graphpinator\Value\InputValue::fromRaw(
-                    \Graphpinator\Tests\Spec\TestSchema::getSimpleInput(),
-                    (object) [
-                        'name' => 'test',
-                        'number' => [1,2],
-                    ],
+                \Graphpinator\Tests\Spec\TestSchema::getSimpleInput()->accept(
+                    new \Graphpinator\Value\ConvertRawValueVisitor(
+                        (object) [
+                            'name' => 'test',
+                            'number' => [1],
+                        ],
+                        new \Graphpinator\Common\Path(),
+                    ),
                 ),
-                \Graphpinator\Value\InputValue::fromRaw(
-                    \Graphpinator\Tests\Spec\TestSchema::getSimpleInput(),
-                    (object) [
-                        'name' => 'test',
-                        'number' => [2,1],
-                    ],
+                \Graphpinator\Tests\Spec\TestSchema::getSimpleInput()->accept(
+                    new \Graphpinator\Value\ConvertRawValueVisitor(
+                        (object) [
+                            'name' => 'test',
+                            'number' => [1, 2],
+                        ],
+                        new \Graphpinator\Common\Path(),
+                    ),
+                ),
+                false,
+            ],
+            [
+                \Graphpinator\Tests\Spec\TestSchema::getSimpleInput()->accept(
+                    new \Graphpinator\Value\ConvertRawValueVisitor(
+                        (object) [
+                            'name' => 'test',
+                            'number' => [1, 2],
+                        ],
+                        new \Graphpinator\Common\Path(),
+                    ),
+                ),
+                \Graphpinator\Tests\Spec\TestSchema::getSimpleInput()->accept(
+                    new \Graphpinator\Value\ConvertRawValueVisitor(
+                        (object) [
+                            'name' => 'test',
+                            'number' => [2, 1],
+                        ],
+                        new \Graphpinator\Common\Path(),
+                    ),
                 ),
                 false,
             ],

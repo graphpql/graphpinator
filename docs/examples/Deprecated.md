@@ -44,7 +44,7 @@ final class Query extends \Graphpinator\Type\Type
                 function ($parent) : string {
                     return 'Hello world!';
                 },
-            ))->setDeprecated(true)->setDeprecationReason('Use helloWorld instead.'),
+            ))->setDeprecated('Use helloWorld instead.'),
         ]);
     }
 }
@@ -65,7 +65,7 @@ final class Episode extends \Graphpinator\Type\EnumType
     public function __construct() 
     {
         $items = self::fromConstants();
-        $items[self::STRIKE]->setDeprecated(true)->setDeprecationReason('Use EMPIRE instead');
+        $items[self::STRIKE]->setDeprecated('Use EMPIRE instead');
 
         parent::__construct($items);
     }

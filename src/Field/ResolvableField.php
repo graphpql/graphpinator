@@ -19,25 +19,8 @@ final class ResolvableField extends \Graphpinator\Field\Field
         return new self($name, $type, $resolveFn);
     }
 
-    public function resolve(
-        \Graphpinator\Value\ResolvedValue $parentValue,
-        \Graphpinator\Normalizer\Field\Field $field,
-    ) : \Graphpinator\Field\FieldValue
+    public function getResolveFunction() : \Closure
     {
-        $arguments = $field->getArguments();
-        $rawArguments = $arguments->getValuesForResolver();
-        \array_unshift($rawArguments, $parentValue->getRawValue());
-        $result = \call_user_func_array($this->resolveFn, $rawArguments);
-        $value = $this->type->createResolvedValue($result);
-
-        if (!$value->getType()->isInstanceOf($this->type)) {
-            throw new \Graphpinator\Exception\Resolver\FieldResultTypeMismatch();
-        }
-
-        $fieldValue = $value instanceof \Graphpinator\Value\NullValue
-            ? $value
-            : $value->getType()->resolve($field->getFields(), $value);
-
-        return new \Graphpinator\Field\FieldValue($this, $fieldValue);
+        return $this->resolveFn;
     }
 }
