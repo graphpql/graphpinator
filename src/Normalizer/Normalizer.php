@@ -126,28 +126,44 @@ final class Normalizer
 
     private function normalizeFieldSet(
         \Graphpinator\Parser\Field\FieldSet $fieldSet,
-    ) : \Graphpinator\Normalizer\Field\FieldSet
+    ) : \Graphpinator\Normalizer\Selection\SelectionSet
     {
         $normalized = [];
+        $fieldsForName = [];
 
         foreach ($fieldSet as $field) {
             $this->path->add($field->getName() . ' <field>');
-            $normalized[] = $this->normalizeField($field);
+            $result = $this->normalizeField($field);
+
+            $this->recursiveMergeSelections($field, $fieldsForName);
+
+            $normalized[] = $result;
             $this->path->pop();
         }
 
-        $return = new \Graphpinator\Normalizer\Field\FieldSet($normalized);
+        foreach ($fieldSet->getFragmentSpreads() as $fragmentSpread) {
+            $spread = $this->normalizeFragmentSpread($fragmentSpread);
 
-        foreach ($this->normalizeFragmentSpreadSet($fieldSet->getFragmentSpreads()) as $fragmentSpread) {
-            $return->mergeFieldSet($this->scopeStack->top(), $fragmentSpread->getFields());
+            foreach ($spread->getSelections() as $result) {
+                if (\array_key_exists($result->getOutputName(), $fieldsForName)) {
+                    self::mergeConflictingField($field, $fieldsForName);
+                    $fieldsForName[$result->getOutputName()][] = $result;
+                } else {
+                    $fieldsForName[$result->getOutputName()] = [$result];
+                }
+            }
+
+            $normalized[] = $spread;
+            $this->path->pop();
+            $this->scopeStack->pop();
         }
 
-        return $return;
+        return new \Graphpinator\Normalizer\Selection\SelectionSet($normalized);
     }
 
     private function normalizeField(
         \Graphpinator\Parser\Field\Field $field,
-    ) : \Graphpinator\Normalizer\Field\Field
+    ) : \Graphpinator\Normalizer\Selection\Field
     {
         $parentType = $this->scopeStack->top();
 
@@ -170,7 +186,7 @@ final class Normalizer
 
         $this->scopeStack->pop();
 
-        return new \Graphpinator\Normalizer\Field\Field(
+        return new \Graphpinator\Normalizer\Selection\Field(
             $fieldDef,
             $field->getAlias()
                 ?? $fieldDef->getName(),
@@ -230,15 +246,9 @@ final class Normalizer
         }
 
         $arguments = $this->normalizeArgumentValueSet($directive->getArguments(), $directiveDef->getArguments());
-        $usageIsValid = match ($location) {
-            \Graphpinator\Directive\ExecutableDirectiveLocation::FIELD,
-            \Graphpinator\Directive\ExecutableDirectiveLocation::INLINE_FRAGMENT,
-            \Graphpinator\Directive\ExecutableDirectiveLocation::FRAGMENT_SPREAD =>
-                $directiveDef->validateFieldUsage($usage, $arguments),
-            default => true,
-        };
 
-        if (!$usageIsValid) {
+        if ($location === \Graphpinator\Directive\ExecutableDirectiveLocation::FIELD &&
+            !$directiveDef->validateFieldUsage($usage, $arguments)) {
             throw new \Graphpinator\Normalizer\Exception\DirectiveIncorrectUsage($directive->getName());
         }
 
@@ -282,24 +292,9 @@ final class Normalizer
         return new \Graphpinator\Value\ArgumentValueSet($items);
     }
 
-    private function normalizeFragmentSpreadSet(
-        \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet $fragmentSpreadSet,
-    ) : \Graphpinator\Normalizer\FragmentSpread\FragmentSpreadSet
-    {
-        $normalized = [];
-
-        foreach ($fragmentSpreadSet as $fragmentSpread) {
-            $normalized[] = $this->normalizeFragmentSpread($fragmentSpread);
-            $this->path->pop();
-            $this->scopeStack->pop();
-        }
-
-        return new \Graphpinator\Normalizer\FragmentSpread\FragmentSpreadSet($normalized);
-    }
-
     private function normalizeFragmentSpread(
         \Graphpinator\Parser\FragmentSpread\FragmentSpread $fragmentSpread,
-    ) : \Graphpinator\Normalizer\FragmentSpread\FragmentSpread
+    ) : \Graphpinator\Normalizer\Selection\Selection
     {
         return match($fragmentSpread::class) {
             \Graphpinator\Parser\FragmentSpread\NamedFragmentSpread::class =>
@@ -311,7 +306,7 @@ final class Normalizer
 
     private function normalizeNamedFragmentSpread(
         \Graphpinator\Parser\FragmentSpread\NamedFragmentSpread $fragmentSpread,
-    ) : \Graphpinator\Normalizer\FragmentSpread\FragmentSpread
+    ) : \Graphpinator\Normalizer\Selection\FragmentSpread
     {
         $this->path->add($fragmentSpread->getName() . ' <fragment spread>');
 
@@ -326,27 +321,24 @@ final class Normalizer
             throw new \Graphpinator\Normalizer\Exception\TypeConditionOutputable();
         }
 
+        if (!$typeCond->isInstanceOf($this->scopeStack->top())) {
+            throw new \Graphpinator\Normalizer\Exception\InvalidFragmentType($typeCond->getName(), $this->scopeStack->top()->getName());
+        }
+
         $this->scopeStack->push($typeCond);
 
         $fields = $this->normalizeFieldSet($fragment->getFields());
+        $directives = $this->normalizeDirectiveSet(
+            $fragmentSpread->getDirectives(),
+            ExecutableDirectiveLocation::FRAGMENT_SPREAD,
+        );
 
-        foreach ($fields as $field) {
-            $directives = $this->normalizeDirectiveSet(
-                $fragmentSpread->getDirectives(),
-                ExecutableDirectiveLocation::FRAGMENT_SPREAD,
-                $field->getField(),
-            );
-
-            $field->getDirectives()->merge($directives);
-            $field->applyFragmentTypeCondition($typeCond);
-        }
-
-        return new \Graphpinator\Normalizer\FragmentSpread\FragmentSpread($fields);
+        return new \Graphpinator\Normalizer\Selection\FragmentSpread($fragmentSpread->getName(), $fields, $directives, $typeCond);
     }
 
     private function normalizeInlineFragmentSpread(
         \Graphpinator\Parser\FragmentSpread\InlineFragmentSpread $fragmentSpread,
-    ) : \Graphpinator\Normalizer\FragmentSpread\FragmentSpread
+    ) : \Graphpinator\Normalizer\Selection\InlineFragment
     {
         $this->path->add('<inline fragment>');
 
@@ -354,28 +346,27 @@ final class Normalizer
             ? $this->normalizeTypeRef($fragmentSpread->getTypeCond())
             : null;
 
-        if ($typeCond instanceof \Graphpinator\Type\Contract\NamedDefinition &&
-            !$typeCond instanceof \Graphpinator\Type\Contract\TypeConditionable) {
-            throw new \Graphpinator\Normalizer\Exception\TypeConditionOutputable();
-        }
+        if ($typeCond instanceof \Graphpinator\Type\Contract\NamedDefinition) {
+            if (!$typeCond instanceof \Graphpinator\Type\Contract\TypeConditionable) {
+                throw new \Graphpinator\Normalizer\Exception\TypeConditionOutputable();
+            }
 
-        $this->scopeStack->push($typeCond
-            ?? $this->scopeStack->top());
+            if (!$typeCond->isInstanceOf($this->scopeStack->top())) {
+                throw new \Graphpinator\Normalizer\Exception\InvalidFragmentType($typeCond->getName(), $this->scopeStack->top()->getName());
+            }
+
+            $this->scopeStack->push($typeCond);
+        } else {
+            $this->scopeStack->push($this->scopeStack->top());
+        }
 
         $fields = $this->normalizeFieldSet($fragmentSpread->getFields());
+        $directives = $this->normalizeDirectiveSet(
+            $fragmentSpread->getDirectives(),
+            ExecutableDirectiveLocation::INLINE_FRAGMENT,
+        );
 
-        foreach ($fields as $field) {
-            $directives = $this->normalizeDirectiveSet(
-                $fragmentSpread->getDirectives(),
-                ExecutableDirectiveLocation::INLINE_FRAGMENT,
-                $field->getField(),
-            );
-
-            $field->getDirectives()->merge($directives);
-            $field->applyFragmentTypeCondition($typeCond);
-        }
-
-        return new \Graphpinator\Normalizer\FragmentSpread\FragmentSpread($fields);
+        return new \Graphpinator\Normalizer\Selection\InlineFragment($fields, $directives, $typeCond);
     }
 
     private function normalizeTypeRef(
@@ -391,5 +382,87 @@ final class Normalizer
             \Graphpinator\Parser\TypeRef\NotNullRef::class =>
                 new \Graphpinator\Type\NotNullType($this->normalizeTypeRef($typeRef->getInnerRef())),
         };
+    }
+
+    private function recursiveMergeSelections(
+        \Graphpinator\Normalizer\Selection\Selection $selection,
+        \Graphpinator\Type\Contract\TypeConditionable $scope,
+        array& $fieldsForName,
+    ) : void
+    {
+        switch ($selection::class) {
+            case \Graphpinator\Normalizer\Selection\Field::class:
+                $responseName = $selection->getOutputName();
+
+                if (\array_key_exists($responseName, $fieldsForName)) {
+                    $this->mergeConflictingField($selection, $fieldsForName[$responseName]);
+                    $fieldsForName[$responseName][] = $selection;
+                } else {
+                    $fieldsForName[$responseName] = [$selection];
+                }
+
+                return;
+            case \Graphpinator\Normalizer\Selection\FragmentSpread::class:
+            case \Graphpinator\Normalizer\Selection\InlineFragment::class:
+                foreach ($selection->getSelections() as $subSelection) {
+                    $this->recursiveMergeSelections($subSelection, $scope ?? $selection->getTypeCondition(), $fieldsForName);
+                }
+
+                return;
+        }
+    }
+
+    private function mergeConflictingField(
+        \Graphpinator\Normalizer\Selection\Field $field,
+        array $conflicts,
+    ) : void
+    {
+        $fieldArguments = $field->getArguments();
+        $scopeType = $this->scopeStack->top();
+        $fieldReturnType = $scopeType->accept(new GetFieldVisitor($field->getName()))->getType();
+
+        foreach ($conflicts as $conflict) {
+            \assert($conflict instanceof \Graphpinator\Normalizer\Selection\Field);
+
+            $conflictArguments = $conflict->getArguments();
+            $conflictParentType = $conflict->getTypeCondition()
+                ?? $parentType;
+            $conflictReturnType = $conflictParentType->accept(new GetFieldVisitor($conflict->getName()))->getType();
+
+            /** Fields must have same response shape (type) */
+            if (!$fieldReturnType->isInstanceOf($conflictReturnType) ||
+                !$conflictReturnType->isInstanceOf($fieldReturnType)) {
+                throw new \Graphpinator\Normalizer\Exception\ConflictingFieldType();
+            }
+
+            /** Fields have type conditions which can never occur together */
+            if (!$conflictParentType->isInstanceOf($scopeType) &&
+                !$scopeType->isInstanceOf($conflictParentType)) {
+                continue;
+            }
+
+            /** Fields have same alias, but refer to different field */
+            if ($field->getName() !== $conflict->getName()) {
+                throw new \Graphpinator\Normalizer\Exception\ConflictingFieldAlias();
+            }
+
+            /** Fields have different arguments,
+             * -> possible when type implementing some interface adds new optional argument
+             * -> in this case the argument value must be the default one
+             */
+            if (!$fieldArguments->isSame($conflictArguments)) {
+                throw new \Graphpinator\Normalizer\Exception\ConflictingFieldArguments();
+            }
+
+            /** Fields are composite -> continue to children */
+            if ($conflict->getFields() instanceof self) {
+                $conflict->getFields()->mergeFieldSet($conflictReturnType, $field->getFields());
+            }
+
+            return;
+        }
+
+        /** Response shape is satisfied and no conflicting field can occur at the same time */
+        $this->offsetSet(null, $field);
     }
 }

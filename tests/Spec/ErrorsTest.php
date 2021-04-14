@@ -192,7 +192,7 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
                 ]),
                 Json::fromNative((object) ['errors' => [[
                     'message' => 'Invalid fragment type condition. ("InterfaceAbc" is not instance of "InterfaceEfg").',
-                    'path' => ['queryName <operation>', 'fieldFragment <field>', 'interfaceEfgFragment <fragment spread>'],
+                    'path' => ['queryName <operation>', 'fieldFragment <field>', 'interfaceEfgFragment <fragment spread>', '<inline fragment>'],
                 ]]]),
             ],
             [

@@ -9,14 +9,14 @@ final class InlineFragment implements \Graphpinator\Normalizer\Selection\Selecti
     use \Nette\SmartObject;
 
     public function __construct(
-        private \Graphpinator\Normalizer\Selection\SelectionSet $fields,
+        private \Graphpinator\Normalizer\Selection\SelectionSet $children,
         private \Graphpinator\Normalizer\Directive\DirectiveSet $directives,
         private ?\Graphpinator\Type\Contract\TypeConditionable $typeCondition,
     ) {}
 
-    public function getFields() : \Graphpinator\Normalizer\Selection\SelectionSet
+    public function getSelections() : \Graphpinator\Normalizer\Selection\SelectionSet
     {
-        return $this->fields;
+        return $this->children;
     }
 
     public function getTypeCondition() : ?\Graphpinator\Type\Contract\TypeConditionable
@@ -31,7 +31,7 @@ final class InlineFragment implements \Graphpinator\Normalizer\Selection\Selecti
 
     public function applyVariables(\Graphpinator\Normalizer\VariableValueSet $variables): void
     {
-        $this->fields->applyVariables($variables);
+        $this->children->applyVariables($variables);
     }
 
     public function accept(SelectionVisitor $visitor) : mixed

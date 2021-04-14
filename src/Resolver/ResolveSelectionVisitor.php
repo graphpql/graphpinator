@@ -89,7 +89,7 @@ final class ResolveSelectionVisitor implements \Graphpinator\Normalizer\Selectio
 
         $return = [];
 
-        foreach ($fragmentSpread->getFields() as $selection) {
+        foreach ($fragmentSpread->getSelections() as $selection) {
             $return += $selection->accept(new ResolveSelectionVisitor($this->parentResult));
         }
 
@@ -121,7 +121,7 @@ final class ResolveSelectionVisitor implements \Graphpinator\Normalizer\Selectio
 
         $return = [];
 
-        foreach ($inlineFragment->getFields() as $selection) {
+        foreach ($inlineFragment->getSelections() as $selection) {
             $return += $selection->accept(new ResolveSelectionVisitor($this->parentResult));
         }
 
