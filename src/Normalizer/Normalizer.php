@@ -129,36 +129,23 @@ final class Normalizer
     ) : \Graphpinator\Normalizer\Selection\SelectionSet
     {
         $normalized = [];
-        $fieldsForName = [];
 
         foreach ($fieldSet as $field) {
             $this->path->add($field->getName() . ' <field>');
-            $result = $this->normalizeField($field);
-
-            $this->recursiveMergeSelections($field, $fieldsForName);
-
-            $normalized[] = $result;
+            $normalized[] = $this->normalizeField($field);
             $this->path->pop();
         }
 
         foreach ($fieldSet->getFragmentSpreads() as $fragmentSpread) {
-            $spread = $this->normalizeFragmentSpread($fragmentSpread);
-
-            foreach ($spread->getSelections() as $result) {
-                if (\array_key_exists($result->getOutputName(), $fieldsForName)) {
-                    self::mergeConflictingField($field, $fieldsForName);
-                    $fieldsForName[$result->getOutputName()][] = $result;
-                } else {
-                    $fieldsForName[$result->getOutputName()] = [$result];
-                }
-            }
-
-            $normalized[] = $spread;
+            $normalized[] = $this->normalizeFragmentSpread($fragmentSpread);
             $this->path->pop();
             $this->scopeStack->pop();
         }
 
-        return new \Graphpinator\Normalizer\Selection\SelectionSet($normalized);
+        $result = new \Graphpinator\Normalizer\Selection\SelectionSet($normalized);
+        $selectionSetRefiner = new \Graphpinator\Normalizer\SelectionSetRefiner($result);
+
+        return $selectionSetRefiner->refine();
     }
 
     private function normalizeField(
@@ -382,87 +369,5 @@ final class Normalizer
             \Graphpinator\Parser\TypeRef\NotNullRef::class =>
                 new \Graphpinator\Type\NotNullType($this->normalizeTypeRef($typeRef->getInnerRef())),
         };
-    }
-
-    private function recursiveMergeSelections(
-        \Graphpinator\Normalizer\Selection\Selection $selection,
-        \Graphpinator\Type\Contract\TypeConditionable $scope,
-        array& $fieldsForName,
-    ) : void
-    {
-        switch ($selection::class) {
-            case \Graphpinator\Normalizer\Selection\Field::class:
-                $responseName = $selection->getOutputName();
-
-                if (\array_key_exists($responseName, $fieldsForName)) {
-                    $this->mergeConflictingField($selection, $fieldsForName[$responseName]);
-                    $fieldsForName[$responseName][] = $selection;
-                } else {
-                    $fieldsForName[$responseName] = [$selection];
-                }
-
-                return;
-            case \Graphpinator\Normalizer\Selection\FragmentSpread::class:
-            case \Graphpinator\Normalizer\Selection\InlineFragment::class:
-                foreach ($selection->getSelections() as $subSelection) {
-                    $this->recursiveMergeSelections($subSelection, $scope ?? $selection->getTypeCondition(), $fieldsForName);
-                }
-
-                return;
-        }
-    }
-
-    private function mergeConflictingField(
-        \Graphpinator\Normalizer\Selection\Field $field,
-        array $conflicts,
-    ) : void
-    {
-        $fieldArguments = $field->getArguments();
-        $scopeType = $this->scopeStack->top();
-        $fieldReturnType = $scopeType->accept(new GetFieldVisitor($field->getName()))->getType();
-
-        foreach ($conflicts as $conflict) {
-            \assert($conflict instanceof \Graphpinator\Normalizer\Selection\Field);
-
-            $conflictArguments = $conflict->getArguments();
-            $conflictParentType = $conflict->getTypeCondition()
-                ?? $parentType;
-            $conflictReturnType = $conflictParentType->accept(new GetFieldVisitor($conflict->getName()))->getType();
-
-            /** Fields must have same response shape (type) */
-            if (!$fieldReturnType->isInstanceOf($conflictReturnType) ||
-                !$conflictReturnType->isInstanceOf($fieldReturnType)) {
-                throw new \Graphpinator\Normalizer\Exception\ConflictingFieldType();
-            }
-
-            /** Fields have type conditions which can never occur together */
-            if (!$conflictParentType->isInstanceOf($scopeType) &&
-                !$scopeType->isInstanceOf($conflictParentType)) {
-                continue;
-            }
-
-            /** Fields have same alias, but refer to different field */
-            if ($field->getName() !== $conflict->getName()) {
-                throw new \Graphpinator\Normalizer\Exception\ConflictingFieldAlias();
-            }
-
-            /** Fields have different arguments,
-             * -> possible when type implementing some interface adds new optional argument
-             * -> in this case the argument value must be the default one
-             */
-            if (!$fieldArguments->isSame($conflictArguments)) {
-                throw new \Graphpinator\Normalizer\Exception\ConflictingFieldArguments();
-            }
-
-            /** Fields are composite -> continue to children */
-            if ($conflict->getFields() instanceof self) {
-                $conflict->getFields()->mergeFieldSet($conflictReturnType, $field->getFields());
-            }
-
-            return;
-        }
-
-        /** Response shape is satisfied and no conflicting field can occur at the same time */
-        $this->offsetSet(null, $field);
     }
 }
