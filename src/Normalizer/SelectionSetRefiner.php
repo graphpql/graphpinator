@@ -4,37 +4,45 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Normalizer;
 
-final class SelectionSetRefiner implements \Graphpinator\Normalizer\Selection\SelectionVisitor
+final class SelectionSetRefiner
 {
-    private array $refinedSet = [];
+    use \Nette\SmartObject;
+
     private array $fieldsForName = [];
+    private array $visitedFragments = [];
+    private \SplStack $scopeStack;
+    private array $modules;
 
     public function __construct(
         private \Graphpinator\Normalizer\Selection\SelectionSet $selections,
-    ) {}
+        private \Graphpinator\Type\Contract\Outputable $scope,
+    )
+    {
+        $this->modules = [
+            new \Graphpinator\Normalizer\RefinerModule\DuplicateFieldModule($this->selections),
+            new \Graphpinator\Normalizer\RefinerModule\DuplicateFragmentSpreadModule($this->selections),
+        ];
+    }
 
     public function refine() : \Graphpinator\Normalizer\Selection\SelectionSet
     {
-        $this->refinedSet = [];
-        $this->fieldsForName = [];
-
-        foreach ($this->selections as $selection) {
-            $selection->accept($this);
+        foreach ($this->modules as $module) {
+            $module->refine();
         }
 
-        return new \Graphpinator\Normalizer\Selection\SelectionSet($this->refinedSet);
+        return $this->selections;
     }
 
-    public function visitField(\Graphpinator\Normalizer\Selection\Field $field) : mixed
+    public function visitField(\Graphpinator\Normalizer\Selection\Field $field) : ?\Graphpinator\Normalizer\Selection\Field
     {
         if (!\array_key_exists($field->getOutputName(), $this->fieldsForName)) {
-            $this->refinedSet[] = $field;
             $this->fieldsForName[$field->getOutputName()] = [$field];
 
-            return;
+            return $field;
         }
 
         $fieldArguments = $field->getArguments();
+        $fieldDirectives = $field->getDirectives();
         $fieldReturnType = $field->getField()->getType();
 
         foreach ($this->fieldsForName[$field->getOutputName()] as $conflict) {
@@ -49,8 +57,7 @@ final class SelectionSetRefiner implements \Graphpinator\Normalizer\Selection\Se
             }
 
             /** Fields have type conditions which can never occur together */
-            if (!$conflictParentType->isInstanceOf($scopeType) &&
-                !$scopeType->isInstanceOf($conflictParentType)) {
+            if (!self::canOccurTogether($this->scopeStack->top(), $this->scope)) {
                 continue;
             }
 
@@ -64,26 +71,33 @@ final class SelectionSetRefiner implements \Graphpinator\Normalizer\Selection\Se
                 throw new \Graphpinator\Normalizer\Exception\ConflictingFieldArguments();
             }
 
-            /** Fields are composite -> continue to children */
-            if ($conflict->getFields() instanceof \Graphpinator\Normalizer\Selection\SelectionSet) {
-                $conflict->getFields()->mergeFieldSet($conflictReturnType, $field->getFields());
+            /** Fields have different directives */
+            if (!$fieldDirectives->isSame($conflict->getDirectives())) {
+                throw new \Graphpinator\Normalizer\Exception\ConflictingFieldDirectives();
             }
 
-            /** Found identical conflict = we can safely exclude it */
-            return;
+            /** Fields are composite -> combine their fields */
+            if ($field->getSelections() instanceof \Graphpinator\Normalizer\Selection\SelectionSet) {
+                $mergedSet = $field->getSelections()->merge($conflict->getSelections());
+                $refiner = new self($mergedSet, $field->getField()->getType());
+
+                $conflict->setSelections($refiner->refine());
+            }
+
+            /** Found identical conflict, we can safely exclude it */
+            return null;
         }
 
+        $this->fieldsForName[$field->getOutputName()][] = $field;
+
+        return $field;
     }
 
-    public function visitFragmentSpread(\Graphpinator\Normalizer\Selection\FragmentSpread $fragmentSpread) : mixed
+    private static function canOccurTogether(\Graphpinator\Type\Contract\Outputable $typeA, \Graphpinator\Type\Contract\Outputable $typeB) : bool
     {
-        // TODO: Implement visitFragmentSpread() method.
-    }
-
-    public function visitInlineFragment(\Graphpinator\Normalizer\Selection\InlineFragment $inlineFragment) : mixed
-    {
-        if ($inlineFragment->getTypeCondition() instanceof \Graphpinator\Type\Contract\TypeConditionable) {
-
-        }
+        return $typeA->isInstanceOf($typeB) // one is instance of other
+            || $typeB->isInstanceOf($typeA)
+            || !($typeA instanceof \Graphpinator\Type\Type) // one is not object type
+            || !($typeB instanceof \Graphpinator\Type\Type);
     }
 }

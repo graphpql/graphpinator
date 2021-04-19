@@ -41,9 +41,14 @@ final class Field implements Selection
         return $this->directives;
     }
 
-    public function getFields() : ?\Graphpinator\Normalizer\Selection\SelectionSet
+    public function getSelections() : ?\Graphpinator\Normalizer\Selection\SelectionSet
     {
         return $this->children;
+    }
+
+    public function setSelections(\Graphpinator\Normalizer\Selection\SelectionSet $set) : void
+    {
+        $this->children = $set;
     }
 
     public function applyVariables(\Graphpinator\Normalizer\VariableValueSet $variables) : void

@@ -57,7 +57,7 @@ final class ResolveSelectionVisitor implements \Graphpinator\Normalizer\Selectio
 
         $fieldValue = new \Graphpinator\Value\FieldValue($fieldDef, $resolvedValue instanceof \Graphpinator\Value\NullValue
             ? $resolvedValue
-            : $resolvedValue->getType()->accept(new ResolveVisitor($field->getFields(), $resolvedValue))
+            : $resolvedValue->getType()->accept(new ResolveVisitor($field->getSelections(), $resolvedValue))
         );
 
         foreach ($field->getDirectives() as $directive) {
