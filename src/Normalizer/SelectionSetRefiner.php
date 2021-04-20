@@ -8,14 +8,10 @@ final class SelectionSetRefiner
 {
     use \Nette\SmartObject;
 
-    private array $fieldsForName = [];
-    private array $visitedFragments = [];
-    private \SplStack $scopeStack;
     private array $modules;
 
     public function __construct(
         private \Graphpinator\Normalizer\Selection\SelectionSet $selections,
-        private \Graphpinator\Type\Contract\Outputable $scope,
     )
     {
         $this->modules = [
@@ -28,6 +24,8 @@ final class SelectionSetRefiner
     public function refine() : \Graphpinator\Normalizer\Selection\SelectionSet
     {
         foreach ($this->modules as $module) {
+            \assert($module instanceof \Graphpinator\Normalizer\RefinerModule\RefinerModule);
+
             $module->refine();
         }
 

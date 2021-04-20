@@ -140,7 +140,7 @@ final class Normalizer
         }
 
         $result = new \Graphpinator\Normalizer\Selection\SelectionSet($normalized);
-        $selectionSetRefiner = new \Graphpinator\Normalizer\SelectionSetRefiner($result, $this->scopeStack->top());
+        $selectionSetRefiner = new \Graphpinator\Normalizer\SelectionSetRefiner($result);
 
         return $selectionSetRefiner->refine();
     }
