@@ -297,6 +297,17 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
                     ]],
                 ]),
             ],
+            [
+                Json::fromNative((object) [
+                    'query' => 'query { fieldUnion { ... on Abc { fieldXyz { ... on TestInterface { __typename name } } } } }',
+                ]),
+                Json::fromNative((object) [
+                    'errors' => [[
+                        'message' => 'Invalid fragment type condition. ("TestInterface" is not instance of "Xyz").',
+                        'path' => [' <operation>', 'fieldUnion <field>', '<inline fragment>', 'fieldXyz <field>', '<inline fragment>'],
+                    ]],
+                ]),
+            ],
         ];
     }
 

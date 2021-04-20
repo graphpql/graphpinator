@@ -31,7 +31,10 @@ final class DuplicateFieldModule implements RefinerModule, \Graphpinator\Normali
     public function visitField(\Graphpinator\Normalizer\Selection\Field $field) : mixed
     {
         if (!\array_key_exists($field->getOutputName(), $this->fieldForName)) {
-            $this->fieldForName[$field->getOutputName()] = $field;
+            /** Only check for duplicates in outer scope */
+            if ($this->fragmentOptions->count() === 0) {
+                $this->fieldForName[$field->getOutputName()] = $field;
+            }
 
             return null;
         }
