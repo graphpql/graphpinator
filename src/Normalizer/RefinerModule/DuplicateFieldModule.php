@@ -69,7 +69,7 @@ final class DuplicateFieldModule implements RefinerModule, \Graphpinator\Normali
         /** Fields are composite -> combine and refine combined fields */
         if ($field->getSelections() instanceof \Graphpinator\Normalizer\Selection\SelectionSet) {
             $mergedSet = $field->getSelections()->merge($this->getSubSelections($conflict->getSelections()));
-            $refiner = new \Graphpinator\Normalizer\SelectionSetRefiner($mergedSet, $field->getField()->getType());
+            $refiner = new \Graphpinator\Normalizer\SelectionSetRefiner($mergedSet);
 
             $conflict->setSelections($refiner->refine());
         }
