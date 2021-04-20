@@ -21,6 +21,7 @@ final class SelectionSetRefiner
         $this->modules = [
             new \Graphpinator\Normalizer\RefinerModule\DuplicateFieldModule($this->selections),
             new \Graphpinator\Normalizer\RefinerModule\DuplicateFragmentSpreadModule($this->selections),
+            new \Graphpinator\Normalizer\RefinerModule\EmptyFragmentModule($this->selections),
         ];
     }
 

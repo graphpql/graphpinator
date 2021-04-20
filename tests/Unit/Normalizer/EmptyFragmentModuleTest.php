@@ -4,9 +4,9 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Unit\Normalizer;
 
-final class DuplicateFragmentModuleTest extends \PHPUnit\Framework\TestCase
+final class EmptyFragmentModuleTest extends \PHPUnit\Framework\TestCase
 {
-    public function testDuplicateFragmentSpread() : void
+    public function testEmptyFragmentSpread() : void
     {
         $fragmentSpread = new \Graphpinator\Normalizer\Selection\FragmentSpread(
             'someName',
@@ -20,16 +20,31 @@ final class DuplicateFragmentModuleTest extends \PHPUnit\Framework\TestCase
 
         $refiner = new \Graphpinator\Normalizer\SelectionSetRefiner(new \Graphpinator\Normalizer\Selection\SelectionSet([
             $fragmentSpread,
-            $fragmentSpread,
         ]), \Graphpinator\Container\Container::String());
 
         $result = $refiner->refine();
 
-        self::assertCount(1, $result);
-        self::assertInstanceOf(\Graphpinator\Normalizer\Selection\FragmentSpread::class, $result->offsetGet(0));
+        self::assertCount(0, $result);
     }
 
-    public function testDuplicateInnerFragmentSpread() : void
+    public function testEmptyInlineFragment() : void
+    {
+        $inlineFragment = new \Graphpinator\Normalizer\Selection\InlineFragment(
+            new \Graphpinator\Normalizer\Selection\SelectionSet(),
+            new \Graphpinator\Normalizer\Directive\DirectiveSet(),
+            null,
+        );
+
+        $refiner = new \Graphpinator\Normalizer\SelectionSetRefiner(new \Graphpinator\Normalizer\Selection\SelectionSet([
+            $inlineFragment,
+        ]), \Graphpinator\Container\Container::String());
+
+        $result = $refiner->refine();
+
+        self::assertCount(0, $result);
+    }
+
+    public function testEmptyCombined() : void
     {
         $fragmentSpread = new \Graphpinator\Normalizer\Selection\FragmentSpread(
             'someName',
@@ -40,23 +55,20 @@ final class DuplicateFragmentModuleTest extends \PHPUnit\Framework\TestCase
                 protected function getFieldDefinition(): \Graphpinator\Field\ResolvableFieldSet {}
             },
         );
+        $inlineFragment = new \Graphpinator\Normalizer\Selection\InlineFragment(
+            new \Graphpinator\Normalizer\Selection\SelectionSet([
+                $fragmentSpread,
+            ]),
+            new \Graphpinator\Normalizer\Directive\DirectiveSet(),
+            null,
+        );
 
         $refiner = new \Graphpinator\Normalizer\SelectionSetRefiner(new \Graphpinator\Normalizer\Selection\SelectionSet([
-            $fragmentSpread,
-            new \Graphpinator\Normalizer\Selection\InlineFragment(
-                new \Graphpinator\Normalizer\Selection\SelectionSet([
-                    $fragmentSpread,
-                ]),
-                new \Graphpinator\Normalizer\Directive\DirectiveSet(),
-                null,
-            ),
+            $inlineFragment,
         ]), \Graphpinator\Container\Container::String());
 
         $result = $refiner->refine();
 
-        self::assertCount(2, $result);
-        self::assertInstanceOf(\Graphpinator\Normalizer\Selection\FragmentSpread::class, $result->offsetGet(0));
-        self::assertInstanceOf(\Graphpinator\Normalizer\Selection\InlineFragment::class, $result->offsetGet(1));
-        self::assertCount(0, $result->offsetGet(1)->getSelections());
+        self::assertCount(0, $result);
     }
 }
