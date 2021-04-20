@@ -113,7 +113,7 @@ final class NormalizerTest extends \PHPUnit\Framework\TestCase
                     new \Graphpinator\Parser\TypeRef\NamedTypeRef('Query'),
                     new \Graphpinator\Parser\Directive\DirectiveSet(),
                     new \Graphpinator\Parser\Field\FieldSet([
-                        new \Graphpinator\Parser\Field\Field('fieldListInt'),
+                        new \Graphpinator\Parser\Field\Field('fieldList'),
                     ], new \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet()),
                 ),
             ]),
@@ -145,14 +145,14 @@ final class NormalizerTest extends \PHPUnit\Framework\TestCase
             $operation->getSelections()->offsetGet(1)->getDirectives()->offsetGet(0)->getDirective(),
         );
 
-        self::assertArrayHasKey(1, $operation->getSelections());
+        self::assertArrayHasKey(2, $operation->getSelections());
         self::assertInstanceOf(\Graphpinator\Normalizer\Selection\FragmentSpread::class, $operation->getSelections()->offsetGet(2));
-        self::assertSame('fieldListInt', $operation->getSelections()->offsetGet(1)->getSelections()->offsetGet(0)->getName());
-        self::assertCount(1, $operation->getSelections()->offsetGet(1)->getDirectives());
-        self::assertArrayHasKey(0, $operation->getSelections()->offsetGet(1)->getDirectives());
+        self::assertSame('fieldList', $operation->getSelections()->offsetGet(2)->getSelections()->offsetGet(0)->getName());
+        self::assertCount(1, $operation->getSelections()->offsetGet(2)->getDirectives());
+        self::assertArrayHasKey(0, $operation->getSelections()->offsetGet(2)->getDirectives());
         self::assertInstanceOf(
-            \Graphpinator\Directive\Spec\SkipDirective::class,
-            $operation->getSelections()->offsetGet(1)->getDirectives()->offsetGet(0)->getDirective(),
+            \Graphpinator\Directive\Spec\IncludeDirective::class,
+            $operation->getSelections()->offsetGet(2)->getDirectives()->offsetGet(0)->getDirective(),
         );
     }
 

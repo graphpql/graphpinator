@@ -208,7 +208,7 @@ final class DuplicateFieldModuleTest extends \PHPUnit\Framework\TestCase
         $refiner->refine();
     }
 
-    public function testConflictingDirective() : void
+    public function testConflictingDirectives() : void
     {
         $this->expectException(\Graphpinator\Normalizer\Exception\ConflictingFieldDirectives::class);
 
@@ -304,5 +304,96 @@ final class DuplicateFieldModuleTest extends \PHPUnit\Framework\TestCase
         ]), $scopeType);
 
         $refiner->refine();
+    }
+
+    public function testDuplicateFieldInFragment() : void
+    {
+        $field = new \Graphpinator\Field\Field('field1', \Graphpinator\Container\Container::String());
+        $fragmentSpread = new \Graphpinator\Normalizer\Selection\FragmentSpread(
+            'someName',
+            new \Graphpinator\Normalizer\Selection\SelectionSet([
+                new \Graphpinator\Normalizer\Selection\Field(
+                    $field,
+                    'someName',
+                    new \Graphpinator\Value\ArgumentValueSet(),
+                    new \Graphpinator\Normalizer\Directive\DirectiveSet(),
+                ),
+            ]),
+            new \Graphpinator\Normalizer\Directive\DirectiveSet(),
+            new class extends \Graphpinator\Type\Type {
+                public function validateNonNullValue(mixed $rawValue): bool {}
+                protected function getFieldDefinition(): \Graphpinator\Field\ResolvableFieldSet {}
+            },
+        );
+
+        $refiner = new \Graphpinator\Normalizer\SelectionSetRefiner(new \Graphpinator\Normalizer\Selection\SelectionSet([
+            new \Graphpinator\Normalizer\Selection\Field(
+                $field,
+                'someName',
+                new \Graphpinator\Value\ArgumentValueSet(),
+                new \Graphpinator\Normalizer\Directive\DirectiveSet(),
+            ),
+            $fragmentSpread,
+        ]), \Graphpinator\Container\Container::String());
+
+        $result = $refiner->refine();
+
+        self::assertCount(1, $result);
+        self::assertInstanceOf(\Graphpinator\Normalizer\Selection\Field::class, $result->offsetGet(0));
+    }
+
+    public function testDuplicateFieldInFragmentWithSelection() : void
+    {
+        $field = new \Graphpinator\Field\Field('field1', \Graphpinator\Container\Container::String());
+        $fragmentSpread = new \Graphpinator\Normalizer\Selection\FragmentSpread(
+            'someName',
+            new \Graphpinator\Normalizer\Selection\SelectionSet([
+                new \Graphpinator\Normalizer\Selection\Field(
+                    $field,
+                    'someName',
+                    new \Graphpinator\Value\ArgumentValueSet(),
+                    new \Graphpinator\Normalizer\Directive\DirectiveSet(),
+                    new \Graphpinator\Normalizer\Selection\SelectionSet([
+                        new \Graphpinator\Normalizer\Selection\Field(
+                            $field,
+                            'someOtherName',
+                            new \Graphpinator\Value\ArgumentValueSet(),
+                            new \Graphpinator\Normalizer\Directive\DirectiveSet(),
+                        ),
+                    ]),
+                ),
+            ]),
+            new \Graphpinator\Normalizer\Directive\DirectiveSet(),
+            new class extends \Graphpinator\Type\Type {
+                public function validateNonNullValue(mixed $rawValue): bool {}
+                protected function getFieldDefinition(): \Graphpinator\Field\ResolvableFieldSet {}
+            },
+        );
+        $selections = new \Graphpinator\Normalizer\Selection\SelectionSet([
+            new \Graphpinator\Normalizer\Selection\Field(
+                $field,
+                'someName',
+                new \Graphpinator\Value\ArgumentValueSet(),
+                new \Graphpinator\Normalizer\Directive\DirectiveSet(),
+                new \Graphpinator\Normalizer\Selection\SelectionSet([
+                    new \Graphpinator\Normalizer\Selection\Field(
+                        $field,
+                        'someName',
+                        new \Graphpinator\Value\ArgumentValueSet(),
+                        new \Graphpinator\Normalizer\Directive\DirectiveSet(),
+                    ),
+                ]),
+            ),
+            $fragmentSpread,
+        ]);
+
+        $refiner = new \Graphpinator\Normalizer\SelectionSetRefiner($selections, \Graphpinator\Container\Container::String());
+        $result = $refiner->refine();
+
+        self::assertCount(1, $result);
+        self::assertInstanceOf(\Graphpinator\Normalizer\Selection\Field::class, $result->offsetGet(0));
+        self::assertCount(2, $result->offsetGet(0)->getSelections());
+        self::assertInstanceOf(\Graphpinator\Normalizer\Selection\Field::class, $result->offsetGet(0)->getSelections()->offsetGet(0));
+        self::assertInstanceOf(\Graphpinator\Normalizer\Selection\InlineFragment::class, $result->offsetGet(0)->getSelections()->offsetGet(1));
     }
 }

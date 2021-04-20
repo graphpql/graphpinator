@@ -35,7 +35,7 @@ final class DuplicateFragmentSpreadModule implements RefinerModule, \Graphpinato
     ) : mixed
     {
         if (!\array_key_exists($fragmentSpread->getName(), $this->visitedFragments)) {
-            $this->visitedFragments[$fragmentSpread->getName()] = $fragmentSpread;
+            $this->visitedFragments[$fragmentSpread->getName()] = true;
 
             return null;
         }
