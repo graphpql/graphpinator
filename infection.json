@@ -12,7 +12,7 @@
     },
     "tmpDir": "/tmp/infection",
     "minMsi": 72,
-    "minCoveredMsi": 85,
+    "minCoveredMsi": 80,
     "mutators": {
         "@default": true,
         "global-ignoreSourceCodeByRegex": [
