@@ -16,6 +16,11 @@ interface InputedValue extends \Graphpinator\Value\Value
     public function applyVariables(\Graphpinator\Normalizer\VariableValueSet $variables) : void;
 
     /**
+     * Function used to recursively call resolution of nested non-pure argument directives.
+     */
+    public function resolveRemainingDirectives() : void;
+
+    /**
      * Function used to compare argument values in field merging.
      */
     public function isSame(Value $compare) : bool;

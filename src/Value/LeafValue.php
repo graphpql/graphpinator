@@ -36,6 +36,11 @@ abstract class LeafValue implements \Graphpinator\Value\InputedValue, \Graphpina
         // nothing here
     }
 
+    public function resolveRemainingDirectives() : void
+    {
+        // nothing here
+    }
+
     public function isSame(Value $compare) : bool
     {
         return $compare instanceof static

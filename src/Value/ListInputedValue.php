@@ -52,6 +52,15 @@ final class ListInputedValue extends \Graphpinator\Value\ListValue implements \G
         }
     }
 
+    public function resolveRemainingDirectives() : void
+    {
+        foreach ($this->value as $value) {
+            \assert($value instanceof InputedValue);
+
+            $value->resolveRemainingDirectives();
+        }
+    }
+
     public function isSame(Value $compare) : bool
     {
         if (!$compare instanceof self) {

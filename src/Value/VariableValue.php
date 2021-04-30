@@ -48,6 +48,11 @@ final class VariableValue implements \Graphpinator\Value\InputedValue
         $this->value = $variables->get($this->variable->getName());
     }
 
+    public function resolveRemainingDirectives() : void
+    {
+        $this->value->resolveRemainingDirectives();
+    }
+
     public function isSame(Value $compare) : bool
     {
         return $compare instanceof self

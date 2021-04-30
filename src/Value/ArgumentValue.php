@@ -51,6 +51,8 @@ final class ArgumentValue
 
     public function resolveNonPureDirectives() : void
     {
+        $this->value->resolveRemainingDirectives();
+
         foreach ($this->argument->getDirectiveUsages() as $directiveUsage) {
             $directive = $directiveUsage->getDirective();
             \assert($directive instanceof \Graphpinator\Directive\Contract\ArgumentDefinitionLocation);

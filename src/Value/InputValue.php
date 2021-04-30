@@ -19,10 +19,10 @@ final class InputValue implements \Graphpinator\Value\InputedValue, \IteratorAgg
             ? new ($this->getType()->getDataClass())
             : new \stdClass();
 
-        foreach ((array) $this->value as $fieldName => $fieldValue) {
-            \assert($fieldValue instanceof \Graphpinator\Value\ArgumentValue);
+        foreach ((array) $this->value as $argumentName => $argumentValue) {
+            \assert($argumentValue instanceof \Graphpinator\Value\ArgumentValue);
 
-            $return->{$fieldName} = $fieldValue->getValue()->getRawValue($forResolvers);
+            $return->{$argumentName} = $argumentValue->getValue()->getRawValue($forResolvers);
         }
 
         return $return;
@@ -48,7 +48,7 @@ final class InputValue implements \Graphpinator\Value\InputedValue, \IteratorAgg
 
     public function applyVariables(\Graphpinator\Normalizer\VariableValueSet $variables) : void
     {
-        foreach ($this->value as $key => $value) {
+        foreach ($this->value as $value) {
             \assert($value instanceof \Graphpinator\Value\ArgumentValue);
 
             $value->applyVariables($variables);
@@ -56,6 +56,15 @@ final class InputValue implements \Graphpinator\Value\InputedValue, \IteratorAgg
 
         foreach ($this->type->getDirectiveUsages() as $directive) {
             $directive->getDirective()->resolveInputObject($directive->getArgumentValues(), $this);
+        }
+    }
+
+    public function resolveRemainingDirectives() : void
+    {
+        foreach ($this->value as $value) {
+            \assert($value instanceof \Graphpinator\Value\ArgumentValue);
+
+            $value->resolveNonPureDirectives();
         }
     }
 

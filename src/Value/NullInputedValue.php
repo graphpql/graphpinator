@@ -35,6 +35,11 @@ final class NullInputedValue implements \Graphpinator\Value\InputedValue, \Graph
         // nothing here
     }
 
+    public function resolveRemainingDirectives() : void
+    {
+        // nothing here
+    }
+
     public function isSame(Value $compare) : bool
     {
         return $compare instanceof self;
