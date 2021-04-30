@@ -7,6 +7,7 @@ namespace Graphpinator\Value;
 final class ScalarValue extends LeafValue
 {
     private mixed $resolverValue = null;
+    private bool $hasResolverValue = false;
 
     public function printValue() : string
     {
@@ -19,13 +20,14 @@ final class ScalarValue extends LeafValue
 
     public function getRawValue(bool $forResolvers = false) : mixed
     {
-        return ($forResolvers && $this->resolverValue !== null)
+        return ($forResolvers && $this->hasResolverValue)
             ? $this->resolverValue
             : $this->rawValue;
     }
 
     public function setResolverValue(mixed $value) : void
     {
+        $this->hasResolverValue = true;
         $this->resolverValue = $value;
     }
 }
