@@ -8,7 +8,6 @@ final class DuplicateFieldModuleTest extends \PHPUnit\Framework\TestCase
 {
     public function testSingleField() : void
     {
-        $scopeType = \Graphpinator\Container\Container::String();
         $field = new \Graphpinator\Field\Field('fieldName', \Graphpinator\Container\Container::String());
 
         $refiner = new \Graphpinator\Normalizer\SelectionSetRefiner(new \Graphpinator\Normalizer\Selection\SelectionSet([
@@ -26,7 +25,7 @@ final class DuplicateFieldModuleTest extends \PHPUnit\Framework\TestCase
                 new \Graphpinator\Normalizer\Directive\DirectiveSet(),
                 null,
             ),
-        ]), $scopeType);
+        ]));
 
         $result = $refiner->refine();
 
@@ -37,7 +36,6 @@ final class DuplicateFieldModuleTest extends \PHPUnit\Framework\TestCase
 
     public function testDuplicateField() : void
     {
-        $scopeType = \Graphpinator\Container\Container::String();
         $field = new \Graphpinator\Field\Field('fieldName', \Graphpinator\Container\Container::String());
 
         $refiner = new \Graphpinator\Normalizer\SelectionSetRefiner(new \Graphpinator\Normalizer\Selection\SelectionSet([
@@ -55,7 +53,7 @@ final class DuplicateFieldModuleTest extends \PHPUnit\Framework\TestCase
                 new \Graphpinator\Normalizer\Directive\DirectiveSet(),
                 null,
             ),
-        ]), $scopeType);
+        ]));
 
         $result = $refiner->refine();
 
@@ -65,7 +63,6 @@ final class DuplicateFieldModuleTest extends \PHPUnit\Framework\TestCase
 
     public function testInnerField() : void
     {
-        $scopeType = \Graphpinator\Container\Container::String();
         $field = new \Graphpinator\Field\Field('fieldName', \Graphpinator\Container\Container::String());
 
         $refiner = new \Graphpinator\Normalizer\SelectionSetRefiner(new \Graphpinator\Normalizer\Selection\SelectionSet([
@@ -103,7 +100,7 @@ final class DuplicateFieldModuleTest extends \PHPUnit\Framework\TestCase
                     ),
                 ]),
             ),
-        ]), $scopeType);
+        ]));
 
         $result = $refiner->refine();
 
@@ -116,7 +113,6 @@ final class DuplicateFieldModuleTest extends \PHPUnit\Framework\TestCase
     {
         $this->expectException(\Graphpinator\Normalizer\Exception\ConflictingFieldType::class);
 
-        $scopeType = \Graphpinator\Container\Container::String();
         $field1 = new \Graphpinator\Field\Field('field1', \Graphpinator\Container\Container::String());
         $field2 = new \Graphpinator\Field\Field('field2', \Graphpinator\Container\Container::Int());
 
@@ -135,7 +131,7 @@ final class DuplicateFieldModuleTest extends \PHPUnit\Framework\TestCase
                 new \Graphpinator\Normalizer\Directive\DirectiveSet(),
                 null,
             ),
-        ]), $scopeType);
+        ]));
 
         $refiner->refine();
     }
@@ -144,7 +140,6 @@ final class DuplicateFieldModuleTest extends \PHPUnit\Framework\TestCase
     {
         $this->expectException(\Graphpinator\Normalizer\Exception\ConflictingFieldAlias::class);
 
-        $scopeType = \Graphpinator\Container\Container::String();
         $field1 = new \Graphpinator\Field\Field('field1', \Graphpinator\Container\Container::String());
         $field2 = new \Graphpinator\Field\Field('field2', \Graphpinator\Container\Container::String());
 
@@ -163,7 +158,7 @@ final class DuplicateFieldModuleTest extends \PHPUnit\Framework\TestCase
                 new \Graphpinator\Normalizer\Directive\DirectiveSet(),
                 null,
             ),
-        ]), $scopeType);
+        ]));
 
         $refiner->refine();
     }
@@ -172,7 +167,6 @@ final class DuplicateFieldModuleTest extends \PHPUnit\Framework\TestCase
     {
         $this->expectException(\Graphpinator\Normalizer\Exception\ConflictingFieldArguments::class);
 
-        $scopeType = \Graphpinator\Container\Container::String();
         $field = new \Graphpinator\Field\Field('field1', \Graphpinator\Container\Container::String());
         $argument = new \Graphpinator\Argument\Argument('argument', \Graphpinator\Container\Container::String());
 
@@ -203,7 +197,7 @@ final class DuplicateFieldModuleTest extends \PHPUnit\Framework\TestCase
                 new \Graphpinator\Normalizer\Directive\DirectiveSet(),
                 null,
             ),
-        ]), $scopeType);
+        ]));
 
         $refiner->refine();
     }
@@ -212,7 +206,6 @@ final class DuplicateFieldModuleTest extends \PHPUnit\Framework\TestCase
     {
         $this->expectException(\Graphpinator\Normalizer\Exception\ConflictingFieldDirectives::class);
 
-        $scopeType = \Graphpinator\Container\Container::String();
         $field = new \Graphpinator\Field\Field('field1', \Graphpinator\Container\Container::String());
 
         $refiner = new \Graphpinator\Normalizer\SelectionSetRefiner(new \Graphpinator\Normalizer\Selection\SelectionSet([
@@ -252,7 +245,7 @@ final class DuplicateFieldModuleTest extends \PHPUnit\Framework\TestCase
                 ]),
                 null,
             ),
-        ]), $scopeType);
+        ]));
 
         $refiner->refine();
     }
@@ -261,7 +254,6 @@ final class DuplicateFieldModuleTest extends \PHPUnit\Framework\TestCase
     {
         $this->expectException(\Graphpinator\Normalizer\Exception\ConflictingFieldDirectives::class);
 
-        $scopeType = \Graphpinator\Container\Container::String();
         $field = new \Graphpinator\Field\Field('field1', \Graphpinator\Container\Container::String());
 
         $refiner = new \Graphpinator\Normalizer\SelectionSetRefiner(new \Graphpinator\Normalizer\Selection\SelectionSet([
@@ -301,7 +293,7 @@ final class DuplicateFieldModuleTest extends \PHPUnit\Framework\TestCase
                 ]),
                 null,
             ),
-        ]), $scopeType);
+        ]));
 
         $refiner->refine();
     }
@@ -334,7 +326,7 @@ final class DuplicateFieldModuleTest extends \PHPUnit\Framework\TestCase
                 new \Graphpinator\Normalizer\Directive\DirectiveSet(),
             ),
             $fragmentSpread,
-        ]), \Graphpinator\Container\Container::String());
+        ]));
 
         $result = $refiner->refine();
 
@@ -346,7 +338,7 @@ final class DuplicateFieldModuleTest extends \PHPUnit\Framework\TestCase
     {
         $field = new \Graphpinator\Field\Field('field1', \Graphpinator\Container\Container::String());
         $fragmentSpread = new \Graphpinator\Normalizer\Selection\FragmentSpread(
-            'someName',
+            'fragmentName',
             new \Graphpinator\Normalizer\Selection\SelectionSet([
                 new \Graphpinator\Normalizer\Selection\Field(
                     $field,
@@ -387,7 +379,13 @@ final class DuplicateFieldModuleTest extends \PHPUnit\Framework\TestCase
             $fragmentSpread,
         ]);
 
-        $refiner = new \Graphpinator\Normalizer\SelectionSetRefiner($selections, \Graphpinator\Container\Container::String());
+        self::assertCount(2, $selections);
+        self::assertInstanceOf(\Graphpinator\Normalizer\Selection\Field::class, $selections->offsetGet(0));
+        self::assertInstanceOf(\Graphpinator\Normalizer\Selection\FragmentSpread::class, $selections->offsetGet(1));
+        self::assertCount(1, $selections->offsetGet(0)->getSelections());
+        self::assertInstanceOf(\Graphpinator\Normalizer\Selection\Field::class, $selections->offsetGet(0)->getSelections()->offsetGet(0));
+
+        $refiner = new \Graphpinator\Normalizer\SelectionSetRefiner($selections);
         $result = $refiner->refine();
 
         self::assertCount(1, $result);
