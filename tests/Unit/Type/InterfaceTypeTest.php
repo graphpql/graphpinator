@@ -546,13 +546,13 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
         self::assertTrue($parentInterface->isImplementedBy(new \Graphpinator\Type\NotNullType(self::getTypeImplementingParentInterface())));
     }
 
-    public function testMissingField() : void
+    /*public function testMissingField() : void
     {
         $this->expectException(\Graphpinator\Exception\Type\InterfaceContractMissingField::class);
         $this->expectExceptionMessage('Type "Abc" does not satisfy interface "Foo" - missing field "field".');
 
         self::getTypeMissingField()->getFields();
-    }
+    }*/
 
     public function testIncompatibleFieldType() : void
     {
