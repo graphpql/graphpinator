@@ -16,8 +16,10 @@ final class Schema implements \Graphpinator\Typesystem\Entity
         private ?\Graphpinator\Type\Type $subscription = null
     )
     {
-        if (self::isSame($query, $mutation) || self::isSame($query, $subscription) || self::isSame($mutation, $subscription)) {
-            throw new \Graphpinator\Exception\Type\RootOperationTypesMustBeDifferent();
+        if (\Graphpinator\Graphpinator::$validateSchema) {
+            if (self::isSame($query, $mutation) || self::isSame($query, $subscription) || self::isSame($mutation, $subscription)) {
+                throw new \Graphpinator\Exception\Type\RootOperationTypesMustBeDifferent();
+            }
         }
 
         $this->query->addMetaField(new \Graphpinator\Field\ResolvableField(

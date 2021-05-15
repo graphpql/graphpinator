@@ -51,7 +51,7 @@ abstract class InterfaceType extends \Graphpinator\Type\Contract\AbstractDefinit
 
             if (\Graphpinator\Graphpinator::$validateSchema) {
                 if ($this->fields->count() === 0) {
-                    throw new \Graphpinator\Exception\Type\TypeMustDefineOneOrMoreFields();
+                    throw new \Graphpinator\Exception\Type\InterfaceOrTypeMustDefineOneOrMoreFields();
                 }
 
                 $this->validateInterfaceContract();
