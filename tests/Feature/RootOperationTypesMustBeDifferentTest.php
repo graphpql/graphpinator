@@ -21,7 +21,7 @@ final class RootOperationTypesMustBeDifferentTest extends \PHPUnit\Framework\Tes
                 return new \Graphpinator\Field\ResolvableFieldSet([
                     new \Graphpinator\Field\ResolvableField(
                         'field',
-                        RootOperationTypesMustBeDifferentTest::getTypeAbc(),
+                        \Graphpinator\Container\Container::Int(),
                         static function () : int {
                             return 1;
                         },
@@ -32,32 +32,6 @@ final class RootOperationTypesMustBeDifferentTest extends \PHPUnit\Framework\Tes
             public function validateNonNullValue($rawValue) : bool
             {
                 return true;
-            }
-        };
-    }
-
-    public static function getTypeAbc() : \Graphpinator\Type\Type
-    {
-        return new class extends \Graphpinator\Type\Type
-        {
-            protected const NAME = 'Abc';
-            protected const DESCRIPTION = 'Test Abc description';
-
-            public function validateNonNullValue($rawValue) : bool
-            {
-                return true;
-            }
-
-            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
-            {
-                return new \Graphpinator\Field\ResolvableFieldSet([
-                    new \Graphpinator\Field\ResolvableField(
-                        'field',
-                        \Graphpinator\Container\Container::Int(),
-                        static function () : void {
-                        },
-                    ),
-                ]);
             }
         };
     }
