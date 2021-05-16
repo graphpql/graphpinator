@@ -17,6 +17,9 @@
     <testsuite name="integration">
       <directory>tests/Spec</directory>
     </testsuite>
+    <testsuite name="feature">
+      <directory>tests/Feature</directory>
+    </testsuite>
   </testsuites>
   <logging>
     <junit outputFile="./build/logfile.xml"/>
