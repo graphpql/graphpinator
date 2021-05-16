@@ -97,22 +97,13 @@ abstract class InterfaceType extends \Graphpinator\Type\Contract\AbstractDefinit
             throw new \Graphpinator\Exception\Type\InterfaceCycle();
         }
 
+        $stack[$this->getName()] = true;
+
         foreach ($this->implements as $implementedInterface) {
-            $stack[$implementedInterface->getName()] = true;
-
-            if ($implementedInterface->getInterfaces()->count() === 0) {
-                continue;
-            }
-
             $implementedInterface->validateCycles($stack);
         }
 
-        foreach ($this->implements as $implementedInterface) {
-            unset($stack[$implementedInterface->getName()]);
-        }
-
-        if ($this->implements->count() === 0) {
-            $this->cycleValidated = true;
-        }
+        unset($stack[$this->getName()]);
+        $this->cycleValidated = true;
     }
 }

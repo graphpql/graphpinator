@@ -6,47 +6,63 @@ namespace Graphpinator\Tests\Feature;
 
 final class InterfaceCycleTest extends \PHPUnit\Framework\TestCase
 {
-    public function testInvalid() : void
+    private static ?\Graphpinator\Type\InterfaceType $interfaceA = null;
+    private static ?\Graphpinator\Type\InterfaceType $interfaceB = null;
+    private static ?\Graphpinator\Type\InterfaceType $interfaceC = null;
+
+    public function testInvalidA() : void
     {
+        self::$interfaceA = null;
+        self::$interfaceB = null;
+        self::$interfaceC = null;
+
         $this->expectException(\Graphpinator\Exception\Type\InterfaceCycle::class);
         $this->expectDeprecationMessage(\Graphpinator\Exception\Type\InterfaceCycle::MESSAGE);
 
-        self::getChildInterface()->getFields();
+        self::getInterfaceA()->getFields();
     }
 
-    public static function getGrandParentInterface() : \Graphpinator\Type\InterfaceType
+    public function testInvalidB() : void
     {
-        return new class extends \Graphpinator\Type\InterfaceType {
-            protected const NAME = 'GrandParentInterfaceType';
+        self::$interfaceA = null;
+        self::$interfaceB = null;
+        self::$interfaceC = null;
 
-            public function createResolvedValue($rawValue) : \Graphpinator\Value\TypeIntermediateValue
-            {
-            }
+        $this->expectException(\Graphpinator\Exception\Type\InterfaceCycle::class);
+        $this->expectDeprecationMessage(\Graphpinator\Exception\Type\InterfaceCycle::MESSAGE);
 
-            protected function getFieldDefinition() : \Graphpinator\Field\FieldSet
-            {
-                return new \Graphpinator\Field\FieldSet([
-                    \Graphpinator\Field\Field::create(
-                        'fieldInt',
-                        \Graphpinator\Container\Container::Int(),
-                    ),
-                ]);
-            }
-        };
+        self::getInterfaceB()->getFields();
     }
 
-    public static function getParentInterface() : \Graphpinator\Type\InterfaceType
+    public function testInvalidC() : void
     {
-        return new class extends \Graphpinator\Type\InterfaceType {
-            protected const NAME = 'ParentInterfaceType';
+        self::$interfaceA = null;
+        self::$interfaceB = null;
+        self::$interfaceC = null;
+
+        $this->expectException(\Graphpinator\Exception\Type\InterfaceCycle::class);
+        $this->expectDeprecationMessage(\Graphpinator\Exception\Type\InterfaceCycle::MESSAGE);
+
+        self::getInterfaceC()->getFields();
+    }
+
+    public static function getInterfaceB() : \Graphpinator\Type\InterfaceType
+    {
+        if (self::$interfaceB instanceof \Graphpinator\Type\InterfaceType) {
+            return self::$interfaceB;
+        }
+
+        self::$interfaceB = new class extends \Graphpinator\Type\InterfaceType {
+            protected const NAME = 'BInterface';
 
             public function __construct()
             {
-                parent::__construct(
-                    new \Graphpinator\Type\InterfaceSet([
-                        InterfaceCycleTest::getGrandParentInterface(),
-                    ]),
-                );
+                parent::__construct();
+            }
+
+            public function initImplements() : void
+            {
+                $this->implements[] = InterfaceCycleTest::getInterfaceA();
             }
 
             public function createResolvedValue($rawValue) : \Graphpinator\Value\TypeIntermediateValue
@@ -60,28 +76,32 @@ final class InterfaceCycleTest extends \PHPUnit\Framework\TestCase
                         'fieldInt',
                         \Graphpinator\Container\Container::Int(),
                     ),
-                    \Graphpinator\Field\Field::create(
-                        'fieldString',
-                        \Graphpinator\Container\Container::String(),
-                    ),
                 ]);
             }
         };
+
+        self::$interfaceB->initImplements();
+
+        return self::$interfaceB;
     }
 
-    public static function getChildInterface() : \Graphpinator\Type\InterfaceType
+    public static function getInterfaceC() : \Graphpinator\Type\InterfaceType
     {
-        return new class extends \Graphpinator\Type\InterfaceType {
-            protected const NAME = 'ChildInterfaceType';
+        if (self::$interfaceC instanceof \Graphpinator\Type\InterfaceType) {
+            return self::$interfaceC;
+        }
+
+        self::$interfaceC = new class extends \Graphpinator\Type\InterfaceType {
+            protected const NAME = 'CInterface';
 
             public function __construct()
             {
-                parent::__construct(
-                    new \Graphpinator\Type\InterfaceSet([
-                        InterfaceCycleTest::getGrandParentInterface(),
-                        InterfaceCycleTest::getParentInterface(),
-                    ]),
-                );
+                parent::__construct();
+            }
+
+            public function initImplements() : void
+            {
+                $this->implements[] = InterfaceCycleTest::getInterfaceB();
             }
 
             public function createResolvedValue($rawValue) : \Graphpinator\Value\TypeIntermediateValue
@@ -95,12 +115,51 @@ final class InterfaceCycleTest extends \PHPUnit\Framework\TestCase
                         'fieldInt',
                         \Graphpinator\Container\Container::Int(),
                     ),
+                ]);
+            }
+        };
+
+        self::$interfaceC->initImplements();
+
+        return self::$interfaceC;
+    }
+
+    public static function getInterfaceA() : \Graphpinator\Type\InterfaceType
+    {
+        if (self::$interfaceA instanceof \Graphpinator\Type\InterfaceType) {
+            return self::$interfaceA;
+        }
+
+        self::$interfaceA = new class extends \Graphpinator\Type\InterfaceType {
+            protected const NAME = 'InterfaceA';
+
+            public function __construct()
+            {
+                parent::__construct();
+            }
+
+            public function initImplements() : void
+            {
+                $this->implements[] = InterfaceCycleTest::getInterfaceC();
+            }
+
+            public function createResolvedValue($rawValue) : \Graphpinator\Value\TypeIntermediateValue
+            {
+            }
+
+            protected function getFieldDefinition() : \Graphpinator\Field\FieldSet
+            {
+                return new \Graphpinator\Field\FieldSet([
                     \Graphpinator\Field\Field::create(
-                        'fieldString',
-                        \Graphpinator\Container\Container::String(),
+                        'fieldInt',
+                        \Graphpinator\Container\Container::Int(),
                     ),
                 ]);
             }
         };
+
+        self::$interfaceA->initImplements();
+
+        return self::$interfaceA;
     }
 }
