@@ -6,7 +6,7 @@ namespace Graphpinator\Tests\Feature;
 
 final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
 {
-    private static function createNullableType() : \Graphpinator\Type\InputType
+    public static function createNullableType() : \Graphpinator\Type\InputType
     {
         return new class extends \Graphpinator\Type\InputType
         {
@@ -17,14 +17,14 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Argument\ArgumentSet([
                     \Graphpinator\Argument\Argument::create(
                         'cycle',
-                        InputTypeCycleTest::getType('nullableType'),
+                        InputTypeCycleTest::createNullableType(),
                     ),
                 ]);
             }
         };
     }
 
-    private static function createNullableInNullableListType() : \Graphpinator\Type\InputType
+    public static function createNullableInNullableListType() : \Graphpinator\Type\InputType
     {
         return new class extends \Graphpinator\Type\InputType
         {
@@ -35,14 +35,14 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Argument\ArgumentSet([
                     \Graphpinator\Argument\Argument::create(
                         'cycle',
-                        InputTypeCycleTest::getType('nullableInNullableListType')->list(),
+                        InputTypeCycleTest::createNullableInNullableListType()->list(),
                     ),
                 ]);
             }
         };
     }
 
-    private static function createNonNullInNullableListType() : \Graphpinator\Type\InputType
+    public static function createNonNullInNullableListType() : \Graphpinator\Type\InputType
     {
         return new class extends \Graphpinator\Type\InputType
         {
@@ -53,14 +53,14 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Argument\ArgumentSet([
                     \Graphpinator\Argument\Argument::create(
                         'cycle',
-                        InputTypeCycleTest::getType('nonNullInNullableListType')->list()->notNull(),
+                        InputTypeCycleTest::createNonNullInNullableListType()->list()->notNull(),
                     ),
                 ]);
             }
         };
     }
 
-    private static function createNonNullInNonNullListType() : \Graphpinator\Type\InputType
+    public static function createNonNullInNonNullListType() : \Graphpinator\Type\InputType
     {
         return new class extends \Graphpinator\Type\InputType
         {
@@ -71,14 +71,14 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Argument\ArgumentSet([
                     \Graphpinator\Argument\Argument::create(
                         'cycle',
-                        InputTypeCycleTest::getType('nonNullInNonNullListType')->notNullList(),
+                        InputTypeCycleTest::createNonNullInNonNullListType()->notNullList(),
                     ),
                 ]);
             }
         };
     }
 
-    private static function createNullableInNonNullListType() : \Graphpinator\Type\InputType
+    public static function createNullableInNonNullListType() : \Graphpinator\Type\InputType
     {
         return new class extends \Graphpinator\Type\InputType
         {
@@ -89,14 +89,14 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Argument\ArgumentSet([
                     \Graphpinator\Argument\Argument::create(
                         'cycle',
-                        InputTypeCycleTest::getType('nullableInNonNullListType')->notNull()->list(),
+                        InputTypeCycleTest::createNullableInNonNullListType()->notNull()->list(),
                     ),
                 ]);
             }
         };
     }
 
-    private static function createInvalidNonNullType() : \Graphpinator\Type\InputType
+    public static function createInvalidNonNullType() : \Graphpinator\Type\InputType
     {
         return new class extends \Graphpinator\Type\InputType
         {
@@ -107,14 +107,14 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Argument\ArgumentSet([
                     \Graphpinator\Argument\Argument::create(
                         'cycle',
-                        InputTypeCycleTest::getType('invalidNonNullType')->notNull(),
+                        InputTypeCycleTest::createInvalidNonNullType()->notNull(),
                     ),
                 ]);
             }
         };
     }
 
-    private static function createNullableAType() : \Graphpinator\Type\InputType
+    public static function createNullableAType() : \Graphpinator\Type\InputType
     {
         return new class extends \Graphpinator\Type\InputType
         {
@@ -125,14 +125,14 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Argument\ArgumentSet([
                     \Graphpinator\Argument\Argument::create(
                         'cycle',
-                        InputTypeCycleTest::getType('nullableBType'),
+                        InputTypeCycleTest::createNullableBType(),
                     ),
                 ]);
             }
         };
     }
 
-    private static function createNullableBType() : \Graphpinator\Type\InputType
+    public static function createNullableBType() : \Graphpinator\Type\InputType
     {
         return new class extends \Graphpinator\Type\InputType
         {
@@ -143,14 +143,14 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Argument\ArgumentSet([
                     \Graphpinator\Argument\Argument::create(
                         'cycle',
-                        InputTypeCycleTest::getType('nullableAType'),
+                        InputTypeCycleTest::createNullableAType(),
                     ),
                 ]);
             }
         };
     }
 
-    private static function createNullableInNullableListAType() : \Graphpinator\Type\InputType
+    public static function createNullableInNullableListAType() : \Graphpinator\Type\InputType
     {
         return new class extends \Graphpinator\Type\InputType
         {
@@ -161,14 +161,14 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Argument\ArgumentSet([
                     \Graphpinator\Argument\Argument::create(
                         'cycle',
-                        InputTypeCycleTest::getType('nullableInNullableListBType')->list(),
+                        InputTypeCycleTest::createNullableInNullableListBType()->list(),
                     ),
                 ]);
             }
         };
     }
 
-    private static function createNullableInNullableListBType() : \Graphpinator\Type\InputType
+    public static function createNullableInNullableListBType() : \Graphpinator\Type\InputType
     {
         return new class extends \Graphpinator\Type\InputType
         {
@@ -179,14 +179,14 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Argument\ArgumentSet([
                     \Graphpinator\Argument\Argument::create(
                         'cycle',
-                        InputTypeCycleTest::getType('nullableInNullableListAType')->list(),
+                        InputTypeCycleTest::createNullableInNullableListAType()->list(),
                     ),
                 ]);
             }
         };
     }
 
-    private static function createNonNullInNullableListAType() : \Graphpinator\Type\InputType
+    public static function createNonNullInNullableListAType() : \Graphpinator\Type\InputType
     {
         return new class extends \Graphpinator\Type\InputType
         {
@@ -197,14 +197,14 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Argument\ArgumentSet([
                     \Graphpinator\Argument\Argument::create(
                         'cycle',
-                        InputTypeCycleTest::getType('nullableInNullableListCType')->list(),
+                        InputTypeCycleTest::createNullableInNullableListCType()->list(),
                     ),
                 ]);
             }
         };
     }
 
-    private static function createNullableInNullableListCType() : \Graphpinator\Type\InputType
+    public static function createNullableInNullableListCType() : \Graphpinator\Type\InputType
     {
         return new class extends \Graphpinator\Type\InputType
         {
@@ -215,14 +215,14 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Argument\ArgumentSet([
                     \Graphpinator\Argument\Argument::create(
                         'cycle',
-                        InputTypeCycleTest::getType('nonNullInNullableListAType')->notNull()->list(),
+                        InputTypeCycleTest::createNonNullInNullableListAType()->notNull()->list(),
                     ),
                 ]);
             }
         };
     }
 
-    private static function createNonNullInNonNullListAType() : \Graphpinator\Type\InputType
+    public static function createNonNullInNonNullListAType() : \Graphpinator\Type\InputType
     {
         return new class extends \Graphpinator\Type\InputType
         {
@@ -233,14 +233,14 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Argument\ArgumentSet([
                     \Graphpinator\Argument\Argument::create(
                         'cycle',
-                        InputTypeCycleTest::getType('nullableInNullableListDType')->list(),
+                        InputTypeCycleTest::createNullableInNullableListDType()->list(),
                     ),
                 ]);
             }
         };
     }
 
-    private static function createNullableInNullableListDType() : \Graphpinator\Type\InputType
+    public static function createNullableInNullableListDType() : \Graphpinator\Type\InputType
     {
         return new class extends \Graphpinator\Type\InputType
         {
@@ -251,14 +251,14 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Argument\ArgumentSet([
                     \Graphpinator\Argument\Argument::create(
                         'cycle',
-                        InputTypeCycleTest::getType('nonNullInNonNullListAType')->notNullList(),
+                        InputTypeCycleTest::createNonNullInNonNullListAType()->notNullList(),
                     ),
                 ]);
             }
         };
     }
 
-    private static function createNonNullInNonNullListBType() : \Graphpinator\Type\InputType
+    public static function createNonNullInNonNullListBType() : \Graphpinator\Type\InputType
     {
         return new class extends \Graphpinator\Type\InputType
         {
@@ -269,14 +269,14 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Argument\ArgumentSet([
                     \Graphpinator\Argument\Argument::create(
                         'cycle',
-                        InputTypeCycleTest::getType('nonNullInNullableListBType')->notNull()->list(),
+                        InputTypeCycleTest::createNonNullInNullableListBType()->notNull()->list(),
                     ),
                 ]);
             }
         };
     }
 
-    private static function createNonNullInNullableListBType() : \Graphpinator\Type\InputType
+    public static function createNonNullInNullableListBType() : \Graphpinator\Type\InputType
     {
         return new class extends \Graphpinator\Type\InputType
         {
@@ -287,14 +287,14 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Argument\ArgumentSet([
                     \Graphpinator\Argument\Argument::create(
                         'cycle',
-                        InputTypeCycleTest::getType('nonNullInNonNullListBType')->notNullList(),
+                        InputTypeCycleTest::createNonNullInNonNullListBType()->notNullList(),
                     ),
                 ]);
             }
         };
     }
 
-    private static function createNonNullInNonNullListCType() : \Graphpinator\Type\InputType
+    public static function createNonNullInNonNullListCType() : \Graphpinator\Type\InputType
     {
         return new class extends \Graphpinator\Type\InputType
         {
@@ -305,14 +305,14 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Argument\ArgumentSet([
                     \Graphpinator\Argument\Argument::create(
                         'cycle',
-                        InputTypeCycleTest::getType('nonNullInNonNullListDType')->notNullList(),
+                        InputTypeCycleTest::createNonNullInNonNullListDType()->notNullList(),
                     ),
                 ]);
             }
         };
     }
 
-    private static function createNonNullInNonNullListDType() : \Graphpinator\Type\InputType
+    public static function createNonNullInNonNullListDType() : \Graphpinator\Type\InputType
     {
         return new class extends \Graphpinator\Type\InputType
         {
@@ -323,14 +323,14 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Argument\ArgumentSet([
                     \Graphpinator\Argument\Argument::create(
                         'cycle',
-                        InputTypeCycleTest::getType('nonNullInNonNullListCType')->notNullList(),
+                        InputTypeCycleTest::createNonNullInNonNullListCType()->notNullList(),
                     ),
                 ]);
             }
         };
     }
 
-    private static function createNullableCType() : \Graphpinator\Type\InputType
+    public static function createNullableCType() : \Graphpinator\Type\InputType
     {
         return new class extends \Graphpinator\Type\InputType
         {
@@ -341,14 +341,14 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Argument\ArgumentSet([
                     \Graphpinator\Argument\Argument::create(
                         'cycle',
-                        InputTypeCycleTest::getType('nonNullAType'),
+                        InputTypeCycleTest::createNonNullAType(),
                     ),
                 ]);
             }
         };
     }
 
-    private static function createNonNullAType() : \Graphpinator\Type\InputType
+    public static function createNonNullAType() : \Graphpinator\Type\InputType
     {
         return new class extends \Graphpinator\Type\InputType
         {
@@ -359,14 +359,14 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Argument\ArgumentSet([
                     \Graphpinator\Argument\Argument::create(
                         'cycle',
-                        InputTypeCycleTest::getType('nullableCType')->notNull(),
+                        InputTypeCycleTest::createNullableCType()->notNull(),
                     ),
                 ]);
             }
         };
     }
 
-    private static function createNullableInNullableListEType() : \Graphpinator\Type\InputType
+    public static function createNullableInNullableListEType() : \Graphpinator\Type\InputType
     {
         return new class extends \Graphpinator\Type\InputType
         {
@@ -377,14 +377,14 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Argument\ArgumentSet([
                     \Graphpinator\Argument\Argument::create(
                         'cycle',
-                        InputTypeCycleTest::getType('nonNullBType')->list(),
+                        InputTypeCycleTest::createNonNullBType()->list(),
                     ),
                 ]);
             }
         };
     }
 
-    private static function createNonNullBType() : \Graphpinator\Type\InputType
+    public static function createNonNullBType() : \Graphpinator\Type\InputType
     {
         return new class extends \Graphpinator\Type\InputType
         {
@@ -395,14 +395,14 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Argument\ArgumentSet([
                     \Graphpinator\Argument\Argument::create(
                         'cycle',
-                        InputTypeCycleTest::getType('nullableInNullableListEType')->notNull(),
+                        InputTypeCycleTest::createNullableInNullableListEType()->notNull(),
                     ),
                 ]);
             }
         };
     }
 
-    private static function createNonNullInNullableListCType() : \Graphpinator\Type\InputType
+    public static function createNonNullInNullableListCType() : \Graphpinator\Type\InputType
     {
         return new class extends \Graphpinator\Type\InputType
         {
@@ -413,14 +413,14 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Argument\ArgumentSet([
                     \Graphpinator\Argument\Argument::create(
                         'cycle',
-                        InputTypeCycleTest::getType('nonNullCType')->notNull()->list(),
+                        InputTypeCycleTest::createNonNullCType()->notNull()->list(),
                     ),
                 ]);
             }
         };
     }
 
-    private static function createNonNullCType() : \Graphpinator\Type\InputType
+    public static function createNonNullCType() : \Graphpinator\Type\InputType
     {
         return new class extends \Graphpinator\Type\InputType
         {
@@ -431,14 +431,14 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Argument\ArgumentSet([
                     \Graphpinator\Argument\Argument::create(
                         'cycle',
-                        InputTypeCycleTest::getType('nonNullInNullableListCType')->notNull(),
+                        InputTypeCycleTest::createNonNullInNullableListCType()->notNull(),
                     ),
                 ]);
             }
         };
     }
 
-    private static function createNonNullInNonNullListEType() : \Graphpinator\Type\InputType
+    public static function createNonNullInNonNullListEType() : \Graphpinator\Type\InputType
     {
         return new class extends \Graphpinator\Type\InputType
         {
@@ -449,14 +449,14 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Argument\ArgumentSet([
                     \Graphpinator\Argument\Argument::create(
                         'cycle',
-                        InputTypeCycleTest::getType('nonNullDType')->notNullList(),
+                        InputTypeCycleTest::createNonNullDType()->notNullList(),
                     ),
                 ]);
             }
         };
     }
 
-    private static function createNonNullDType() : \Graphpinator\Type\InputType
+    public static function createNonNullDType() : \Graphpinator\Type\InputType
     {
         return new class extends \Graphpinator\Type\InputType
         {
@@ -467,14 +467,14 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Argument\ArgumentSet([
                     \Graphpinator\Argument\Argument::create(
                         'cycle',
-                        InputTypeCycleTest::getType('nonNullInNonNullListEType')->notNull(),
+                        InputTypeCycleTest::createNonNullInNonNullListEType()->notNull(),
                     ),
                 ]);
             }
         };
     }
 
-    private static function createSimpleType() : \Graphpinator\Type\InputType
+    public static function createSimpleType() : \Graphpinator\Type\InputType
     {
         return new class extends \Graphpinator\Type\InputType
         {
@@ -492,7 +492,7 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    private static function createValidationType() : \Graphpinator\Type\InputType
+    public static function createValidationType() : \Graphpinator\Type\InputType
     {
         return new class extends \Graphpinator\Type\InputType
         {
@@ -503,14 +503,14 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Argument\ArgumentSet([
                     \Graphpinator\Argument\Argument::create(
                         'arg',
-                        InputTypeCycleTest::getType('simpleType')->notNull(),
+                        InputTypeCycleTest::createSimpleType()->notNull(),
                     )->setDefaultValue((object) ['value' => 'testValue']),
                 ]);
             }
         };
     }
 
-    private static function createInvalidNonNullAType() : \Graphpinator\Type\InputType
+    public static function createInvalidNonNullAType() : \Graphpinator\Type\InputType
     {
         return new class extends \Graphpinator\Type\InputType
         {
@@ -521,14 +521,14 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Argument\ArgumentSet([
                     \Graphpinator\Argument\Argument::create(
                         'cycle',
-                        InputTypeCycleTest::getType('invalidNonNullBType')->notNull(),
+                        InputTypeCycleTest::createInvalidNonNullBType()->notNull(),
                     ),
                 ]);
             }
         };
     }
 
-    private static function createInvalidNonNullBType() : \Graphpinator\Type\InputType
+    public static function createInvalidNonNullBType() : \Graphpinator\Type\InputType
     {
         return new class extends \Graphpinator\Type\InputType
         {
@@ -539,168 +539,131 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Argument\ArgumentSet([
                     \Graphpinator\Argument\Argument::create(
                         'cycle',
-                        InputTypeCycleTest::getType('invalidNonNullAType')->notNull(),
+                        InputTypeCycleTest::createInvalidNonNullAType()->notNull(),
                     ),
                 ]);
             }
         };
     }
 
-    public static function getType(string $typeName) : \Graphpinator\Type\InputType
-    {
-        return match ($typeName)
-        {
-            'nullableType' => self::createNullableType(),
-            'nullableInNullableListType' => self::createNullableInNullableListType(),
-            'nonNullInNullableListType' => self::createNonNullInNullableListType(),
-            'nonNullInNonNullListType' => self::createNonNullInNonNullListType(),
-            'nullableInNonNullListType' => self::createNullableInNonNullListType(),
-            'nullableAType' => self::createNullableAType(),
-            'nullableBType' => self::createNullableBType(),
-            'nullableInNullableListAType' => self::createNullableInNullableListAType(),
-            'nullableInNullableListBType' => self::createNullableInNullableListBType(),
-            'nonNullInNullableListAType' => self::createNonNullInNullableListAType(),
-            'nullableInNullableListCType' => self::createNullableInNullableListCType(),
-            'nonNullInNonNullListAType' => self::createNonNullInNonNullListAType(),
-            'nullableInNullableListDType' => self::createNullableInNullableListDType(),
-            'nonNullInNullableListBType' => self::createNonNullInNullableListBType(),
-            'nonNullInNonNullListBType' => self::createNonNullInNonNullListBType(),
-            'nonNullInNonNullListCType' => self::createNonNullInNonNullListCType(),
-            'nonNullInNonNullListDType' => self::createNonNullInNonNullListDType(),
-            'nonNullAType' => self::createNonNullAType(),
-            'nullableCType' => self::createNullableCType(),
-            'nonNullBType' => self::createNonNullBType(),
-            'nullableInNullableListEType' => self::createNullableInNullableListEType(),
-            'nonNullCType' => self::createNonNullCType(),
-            'nonNullInNullableListCType' => self::createNonNullInNullableListCType(),
-            'nonNullDType' => self::createNonNullDType(),
-            'nonNullInNonNullListEType' => self::createNonNullInNonNullListEType(),
-            'validationType' => self::createValidationType(),
-            'simpleType' => self::createSimpleType(),
-            'invalidNonNullType' => self::createInvalidNonNullType(),
-            'invalidNonNullAType' => self::createInvalidNonNullAType(),
-            'invalidNonNullBType' => self::createInvalidNonNullBType(),
-        };
-    }
-
     public function testNullable() : void
     {
-        self::getType('nullableType')->getArguments();
+        self::createNullableType()->getArguments();
 
         self::assertTrue(true);
     }
 
     public function testNullableInNullableList() : void
     {
-        self::getType('nullableInNullableListType')->getArguments();
+        self::createNullableInNullableListType()->getArguments();
 
         self::assertTrue(true);
     }
 
     public function testNonNullInNullableList() : void
     {
-        self::getType('nonNullInNullableListType')->getArguments();
+        self::createNonNullInNullableListType()->getArguments();
 
         self::assertTrue(true);
     }
 
     public function testNonNullInNonNullList() : void
     {
-        self::getType('nonNullInNonNullListType')->getArguments();
+        self::createNonNullInNonNullListType()->getArguments();
 
         self::assertTrue(true);
     }
 
     public function testNullableInNonNullList() : void
     {
-        self::getType('nullableInNonNullListType')->getArguments();
+        self::createNullableInNonNullListType()->getArguments();
 
         self::assertTrue(true);
     }
 
     public function testNullableOnNullable() : void
     {
-        self::getType('nullableAType')->getArguments();
-        self::getType('nullableBType')->getArguments();
+        self::createNullableAType()->getArguments();
+        self::createNullableBType()->getArguments();
 
         self::assertTrue(true);
     }
 
     public function testNullableInNullableListOnNullableInNullableList() : void
     {
-        self::getType('nullableInNullableListAType')->getArguments();
-        self::getType('nullableInNullableListBType')->getArguments();
+        self::createNullableInNullableListAType()->getArguments();
+        self::createNullableInNullableListBType()->getArguments();
 
         self::assertTrue(true);
     }
 
     public function testNonNullInNullableListOnNullableInNullableList() : void
     {
-        self::getType('nonNullInNullableListAType')->getArguments();
-        self::getType('nullableInNullableListCType')->getArguments();
+        self::createNonNullInNullableListAType()->getArguments();
+        self::createNullableInNullableListCType()->getArguments();
 
         self::assertTrue(true);
     }
 
     public function testNonNullInNonNullListOnNullableInNullableList() : void
     {
-        self::getType('nonNullInNonNullListAType')->getArguments();
-        self::getType('nullableInNullableListDType')->getArguments();
+        self::createNonNullInNonNullListAType()->getArguments();
+        self::createNullableInNullableListDType()->getArguments();
 
         self::assertTrue(true);
     }
 
     public function testNonNullInNonNullListOnNonNullInNullableList() : void
     {
-        self::getType('nonNullInNullableListBType')->getArguments();
-        self::getType('nonNullInNonNullListBType')->getArguments();
+        self::createNonNullInNullableListBType()->getArguments();
+        self::createNonNullInNonNullListBType()->getArguments();
 
         self::assertTrue(true);
     }
 
     public function testNonNullInNonNullListOnNonNullInNonNullList() : void
     {
-        self::getType('nonNullInNonNullListCType')->getArguments();
-        self::getType('nonNullInNonNullListDType')->getArguments();
+        self::createNonNullInNonNullListCType()->getArguments();
+        self::createNonNullInNonNullListDType()->getArguments();
 
         self::assertTrue(true);
     }
 
     public function testNullableOnNonNull() : void
     {
-        self::getType('nonNullAType')->getArguments();
-        self::getType('nullableCType')->getArguments();
+        self::createNonNullAType()->getArguments();
+        self::createNullableCType()->getArguments();
 
         self::assertTrue(true);
     }
 
     public function testNullableInNullableListOnNonNull() : void
     {
-        self::getType('nonNullBType')->getArguments();
-        self::getType('nullableInNullableListEType')->getArguments();
+        self::createNonNullBType()->getArguments();
+        self::createNullableInNullableListEType()->getArguments();
 
         self::assertTrue(true);
     }
 
     public function testNonNullInNullableListOnNonNull() : void
     {
-        self::getType('nonNullInNullableListCType')->getArguments();
-        self::getType('nonNullCType')->getArguments();
+        self::createNonNullInNullableListCType()->getArguments();
+        self::createNonNullCType()->getArguments();
 
         self::assertTrue(true);
     }
 
     public function testNonNullInNonNullListOnNonNull() : void
     {
-        self::getType('nonNullDType')->getArguments();
-        self::getType('nonNullInNonNullListEType')->getArguments();
+        self::createNonNullDType()->getArguments();
+        self::createNonNullInNonNullListEType()->getArguments();
 
         self::assertTrue(true);
     }
 
     public function testValidation() : void
     {
-        self::getType('validationType')->getArguments();
+        self::createValidationType()->getArguments();
 
         self::assertTrue(true);
     }
@@ -710,7 +673,7 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
         $this->expectException(\Graphpinator\Exception\Type\InputCycle::class);
         $this->expectDeprecationMessage(\Graphpinator\Exception\Type\InputCycle::MESSAGE);
 
-        self::getType('invalidNonNullType')->getArguments();
+        self::createInvalidNonNullType()->getArguments();
     }
 
     public function testInvalidNonNullOnNonNull() : void
@@ -718,7 +681,7 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
         $this->expectException(\Graphpinator\Exception\Type\InputCycle::class);
         $this->expectDeprecationMessage(\Graphpinator\Exception\Type\InputCycle::MESSAGE);
 
-        self::getType('invalidNonNullAType')->getArguments();
-        self::getType('invalidNonNullBType')->getArguments();
+        self::createInvalidNonNullAType()->getArguments();
+        self::createInvalidNonNullBType()->getArguments();
     }
 }
