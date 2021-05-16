@@ -27,36 +27,6 @@ final class InterfaceContractMissingFieldTest extends \PHPUnit\Framework\TestCas
         };
     }
 
-    public static function getInterfaceMissingField() : \Graphpinator\Type\InterfaceType
-    {
-        return new class extends \Graphpinator\Type\InterfaceType {
-            protected const NAME = 'Foo';
-
-            public function __construct()
-            {
-                parent::__construct(
-                    new \Graphpinator\Type\InterfaceSet([
-                        InterfaceContractMissingFieldTest::createMainInterface(),
-                    ]),
-                );
-            }
-
-            public function createResolvedValue($rawValue) : \Graphpinator\Value\TypeIntermediateValue
-            {
-            }
-
-            protected function getFieldDefinition() : \Graphpinator\Field\FieldSet
-            {
-                return new \Graphpinator\Field\FieldSet([
-                    new \Graphpinator\Field\Field(
-                        'differentField',
-                        \Graphpinator\Container\Container::Int(),
-                    ),
-                ]);
-            }
-        };
-    }
-
     public static function getTypeMissingField() : \Graphpinator\Type\Type
     {
         return new class extends \Graphpinator\Type\Type {
@@ -93,16 +63,8 @@ final class InterfaceContractMissingFieldTest extends \PHPUnit\Framework\TestCas
     public function testTypeMissingField() : void
     {
         $this->expectException(\Graphpinator\Exception\Type\InterfaceContractMissingField::class);
-        $this->expectExceptionMessage('Type "Abc" does not satisfy interface "Foo" - missing field "field".');
+        $this->expectExceptionMessage('Type "Abc" does not satisfy interface "Bar" - missing field "field".');
 
         self::getTypeMissingField()->getFields();
-    }
-
-    public function testInterfaceMissingField() : void
-    {
-        $this->expectException(\Graphpinator\Exception\Type\InterfaceContractMissingField::class);
-        $this->expectExceptionMessage('Type "Foo" does not satisfy interface "Bar" - missing field "field".');
-
-        self::getInterfaceMissingField()->getFields();
     }
 }

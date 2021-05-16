@@ -11,6 +11,8 @@ abstract class InterfaceType extends \Graphpinator\Type\Contract\AbstractDefinit
     use \Graphpinator\Type\Contract\TMetaFields;
     use \Graphpinator\Utils\THasDirectives;
 
+    private bool $cycleValidated = false;
+
     public function __construct(?\Graphpinator\Type\InterfaceSet $implements = null)
     {
         $this->implements = $implements
@@ -55,6 +57,7 @@ abstract class InterfaceType extends \Graphpinator\Type\Contract\AbstractDefinit
                 }
 
                 $this->validateInterfaceContract();
+                $this->validateCycles([]);
             }
         }
 
@@ -83,4 +86,33 @@ abstract class InterfaceType extends \Graphpinator\Type\Contract\AbstractDefinit
     }
 
     abstract protected function getFieldDefinition() : \Graphpinator\Field\FieldSet;
+
+    private function validateCycles(array $stack) : void
+    {
+        if ($this->cycleValidated) {
+            return;
+        }
+
+        if (\array_key_exists($this->getName(), $stack)) {
+            throw new \Graphpinator\Exception\Type\InterfaceCycle();
+        }
+
+        foreach ($this->implements as $implementedInterface) {
+            $stack[$implementedInterface->getName()] = true;
+
+            if ($implementedInterface->getInterfaces()->count() === 0) {
+                continue;
+            }
+
+            $implementedInterface->validateCycles($stack);
+        }
+
+        foreach ($this->implements as $implementedInterface) {
+            unset($stack[$implementedInterface->getName()]);
+        }
+
+        if ($this->implements->count() === 0) {
+            $this->cycleValidated = true;
+        }
+    }
 }
