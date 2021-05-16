@@ -39,9 +39,13 @@ final class DirectiveUsageSet extends \Infinityloop\Utils\ObjectSet
     {
         $childIndex = 0;
 
-        foreach ($biggerSet as $index => $usage) {
-            if ($smallerSet->offsetExists($childIndex) && $usage->getDirective() instanceof ($smallerSet->offsetGet($childIndex)->getDirective())) {
-                $usage->getDirective()->validateVariance(
+        foreach ($biggerSet as $usage) {
+            $directive = $usage->getDirective();
+            \assert($directive instanceof \Graphpinator\Directive\Contract\FieldDefinitionLocation
+                || $directive instanceof \Graphpinator\Directive\Contract\ArgumentDefinitionLocation);
+
+            if ($smallerSet->offsetExists($childIndex) && $directive instanceof ($smallerSet->offsetGet($childIndex)->getDirective())) {
+                $directive->validateVariance(
                     $usage->getArgumentValues(),
                     $smallerSet->offsetGet($childIndex)->getArgumentValues(),
                 );
@@ -50,7 +54,7 @@ final class DirectiveUsageSet extends \Infinityloop\Utils\ObjectSet
                 continue;
             }
 
-            $usage->getDirective()->validateVariance(
+            $directive->validateVariance(
                 $usage->getArgumentValues(),
                 null,
             );
