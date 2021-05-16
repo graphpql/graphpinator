@@ -67,6 +67,7 @@ jobs:
 
   phpstan:
     runs-on: ubuntu-latest
+    if: ${{ false }}
 
     steps:
     - uses: actions/checkout@v2
