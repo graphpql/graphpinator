@@ -21,11 +21,13 @@ final class TestSchema
 
     public static function getFullSchema() : \Graphpinator\Type\Schema
     {
+        $query = self::getQuery();
+
         return new \Graphpinator\Type\Schema(
             self::getContainer(),
-            self::getQuery(),
-            self::getQuery(),
-            self::getQuery(),
+            $query,
+            $query,
+            $query,
         );
     }
 

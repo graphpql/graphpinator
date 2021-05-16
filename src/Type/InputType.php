@@ -26,6 +26,10 @@ abstract class InputType extends \Graphpinator\Type\Contract\ConcreteDefinition 
             $this->afterGetFieldDefinition();
 
             if (\Graphpinator\Graphpinator::$validateSchema) {
+                if ($this->arguments->count() === 0) {
+                    throw new \Graphpinator\Exception\Type\InputTypeMustDefineOneOreMoreFields();
+                }
+
                 $this->validateCycles([]);
             }
         }

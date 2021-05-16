@@ -81,32 +81,6 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    public static function getTypeMissingField() : \Graphpinator\Type\Type
-    {
-        return new class extends \Graphpinator\Type\Type {
-            protected const NAME = 'Abc';
-
-            public function __construct()
-            {
-                parent::__construct(
-                    new \Graphpinator\Type\InterfaceSet([
-                        InterfaceTypeTest::createInterface(),
-                    ]),
-                );
-            }
-
-            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
-            {
-                return new \Graphpinator\Field\ResolvableFieldSet();
-            }
-
-            public function validateNonNullValue($rawValue) : bool
-            {
-                return true;
-            }
-        };
-    }
-
     public static function getTypeFieldTypeMismatch() : \Graphpinator\Type\Type
     {
         return new class extends \Graphpinator\Type\Type {
@@ -544,14 +518,6 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
         self::assertFalse($interface->isImplementedBy(new \Graphpinator\Type\NotNullType(self::getTypeImplementingParentInterface())));
         self::assertTrue($parentInterface->isImplementedBy(self::getTypeImplementingParentInterface()));
         self::assertTrue($parentInterface->isImplementedBy(new \Graphpinator\Type\NotNullType(self::getTypeImplementingParentInterface())));
-    }
-
-    public function testMissingField() : void
-    {
-        $this->expectException(\Graphpinator\Exception\Type\InterfaceContractMissingField::class);
-        $this->expectExceptionMessage('Type "Abc" does not satisfy interface "Foo" - missing field "field".');
-
-        self::getTypeMissingField()->getFields();
     }
 
     public function testIncompatibleFieldType() : void

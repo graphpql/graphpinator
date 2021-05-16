@@ -16,6 +16,12 @@ final class Schema implements \Graphpinator\Typesystem\Entity
         private ?\Graphpinator\Type\Type $subscription = null
     )
     {
+        if (\Graphpinator\Graphpinator::$validateSchema) {
+            if (self::isSame($query, $mutation) || self::isSame($query, $subscription) || self::isSame($mutation, $subscription)) {
+                throw new \Graphpinator\Exception\Type\RootOperationTypesMustBeDifferent();
+            }
+        }
+
         $this->query->addMetaField(new \Graphpinator\Field\ResolvableField(
             '__schema',
             $this->container->getType('__Schema')->notNull(),
@@ -32,6 +38,12 @@ final class Schema implements \Graphpinator\Typesystem\Entity
         )->setArguments(new \Graphpinator\Argument\ArgumentSet([
             new \Graphpinator\Argument\Argument('name', \Graphpinator\Container\Container::String()->notNull()),
         ])));
+    }
+
+    private static function isSame(?\Graphpinator\Type\Type $lhs, ?\Graphpinator\Type\Type $rhs) : bool
+    {
+        return $lhs === $rhs
+            && ($lhs !== null || $rhs !== null);
     }
 
     public function getContainer() : \Graphpinator\Container\Container

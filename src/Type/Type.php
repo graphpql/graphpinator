@@ -41,6 +41,10 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
             $this->fields = $this->getFieldDefinition();
 
             if (\Graphpinator\Graphpinator::$validateSchema) {
+                if ($this->fields->count() === 0) {
+                    throw new \Graphpinator\Exception\Type\InterfaceOrTypeMustDefineOneOrMoreFields();
+                }
+
                 $this->validateInterfaceContract();
             }
         }
