@@ -6,15 +6,14 @@
 
 Feature complete PHP implementation of GraphQL server. Its job is transformation of query string into resolved Json result for a given Schema. 
 
-- Aims to be compliant with the latest draft of GraphlQL specification.
-- Fully typesafe, and therefore minimum required PHP version is 8.0.
-- Code first. Schema is generated and printed from source code.
-- Sacrafices a tiny bit of convenience for huge amount of clarity and safety - no random configuration `array`s, no mixed types, no variable function arguments ... - this library doesnt try to save you from verbosity, but makes sure you always know what you've got.
-- Easy to extend with extra functionality using Modules or middleware Directives.
+- Aims to be compliant with the latest draft of GraphQL specification.
+- Fully typesafe, and therefore minimum required PHP version is 8.0. Sacrafices a tiny bit of convenience for huge amount of clarity and safety - no random configuration `array`s, no mixed types, no variable function arguments - this library doesnt try to save you from verbosity, but makes sure you always know what you've got.
+- Code first.
+- Flexible. Easy to extend with extra functionality using Modules or middleware Directives.
 - Includes some opt-in extensions which are out of scope of official specs:
     - [Printer](https://github.com/infinityloop-dev/graphpinator-printer) - Schema printing for GraPHPinator typesystem.
     - [Extra types](https://github.com/infinityloop-dev/graphpinator-extra-types) - Some useful and commonly used types, both scalar or composite.
-    - [Constraint directives](https://github.com/infinityloop-dev/graphpinator-constraint-directives) - Typesystem directives to declare additional validation on top of GraphQL type system.
+    - [Constraint directives](https://github.com/infinityloop-dev/graphpinator-constraint-directives) - Typesystem directives to declare additional validation on top of GraphQL typesystem.
     - [Where directives](https://github.com/infinityloop-dev/graphpinator-where-directives) - Executable directives to filter values in lists.
     - File upload using [multipart-formdata](https://github.com/jaydenseric/graphql-multipart-request-spec) specs (currently bundled).
 - Project is composed from multiple smaller packages, which may be used standalone:
