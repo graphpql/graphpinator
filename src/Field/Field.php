@@ -10,6 +10,7 @@ class Field implements \Graphpinator\Typesystem\Component
     use \Graphpinator\Utils\TOptionalDescription;
     use \Graphpinator\Utils\THasDirectives;
     use \Graphpinator\Utils\TDeprecatable;
+    use \Graphpinator\Utils\TSpecifiable;
 
     protected string $name;
     protected \Graphpinator\Type\Contract\Outputable $type;

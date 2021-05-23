@@ -134,5 +134,17 @@ abstract class Container
 
         return self::$builtInDirectives['deprecated'];
     }
+
+    /**
+     * Built-in Specified By directive.
+     */
+    public static function directiveSpecifiedBy() : \Graphpinator\Directive\Spec\SpecifiedByDirective
+    {
+        if (!\array_key_exists('specified', self::$builtInDirectives)) {
+            self::$builtInDirectives['specified'] = new \Graphpinator\Directive\Spec\SpecifiedByDirective();
+        }
+
+        return self::$builtInDirectives['specified'];
+    }
 }
 //@phpcs:enable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
