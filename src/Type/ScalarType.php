@@ -25,11 +25,11 @@ abstract class ScalarType extends \Graphpinator\Type\Contract\LeafDefinition
     {
         $usage = new \Graphpinator\DirectiveUsage\DirectiveUsage($directive, $arguments);
         $this->directiveUsages[] = $usage;
-        
+
         return $this;
     }
 
-    public function setSpecified(string $url) : self
+    public function setSpecifiedBy(string $url) : self
     {
         $this->addDirective(
             \Graphpinator\Container\Container::directiveSpecifiedBy(),
