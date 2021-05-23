@@ -7,7 +7,7 @@ namespace Graphpinator\Directive\Spec;
 final class SpecifiedByDirective extends \Graphpinator\Directive\Directive
     implements \Graphpinator\Directive\Contract\ScalarLocation
 {
-    protected const NAME = 'specified';
+    protected const NAME = 'specifiedBy';
     protected const DESCRIPTION = 'Built-in specified by directive.';
 
     protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
