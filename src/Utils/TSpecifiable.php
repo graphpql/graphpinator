@@ -6,7 +6,7 @@ namespace Graphpinator\Utils;
 
 trait TSpecifiable
 {
-    public function setSpecification(string $by) : self
+    public function setSpecified(string $by) : self
     {
         $this->addDirective(
             \Graphpinator\Container\Container::directiveSpecifiedBy(),
@@ -27,7 +27,7 @@ trait TSpecifiable
         return false;
     }
 
-    public function getSpecification() : ?string
+    public function getSpecified() : ?string
     {
         foreach ($this->directiveUsages as $directive) {
             if ($directive->getDirective() instanceof \Graphpinator\Directive\Spec\SpecifiedByDirective) {
