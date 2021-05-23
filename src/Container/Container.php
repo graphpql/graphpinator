@@ -140,11 +140,11 @@ abstract class Container
      */
     public static function directiveSpecifiedBy() : \Graphpinator\Directive\Spec\SpecifiedByDirective
     {
-        if (!\array_key_exists('specified', self::$builtInDirectives)) {
-            self::$builtInDirectives['specified'] = new \Graphpinator\Directive\Spec\SpecifiedByDirective();
+        if (!\array_key_exists('specifiedBy', self::$builtInDirectives)) {
+            self::$builtInDirectives['specifiedBy'] = new \Graphpinator\Directive\Spec\SpecifiedByDirective();
         }
 
-        return self::$builtInDirectives['specified'];
+        return self::$builtInDirectives['specifiedBy'];
     }
 }
 //@phpcs:enable PSR1.Methods.CamelCapsMethodName.NotCamelCaps

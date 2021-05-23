@@ -13,7 +13,7 @@ final class SpecifiedByDirective extends \Graphpinator\Directive\Directive
     protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
     {
         return new \Graphpinator\Argument\ArgumentSet([
-            new \Graphpinator\Argument\Argument('by', \Graphpinator\Container\Container::String()),
+            new \Graphpinator\Argument\Argument('url', \Graphpinator\Container\Container::String()),
         ]);
     }
 }

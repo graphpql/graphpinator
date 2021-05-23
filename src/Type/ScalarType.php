@@ -19,15 +19,24 @@ abstract class ScalarType extends \Graphpinator\Type\Contract\LeafDefinition
     }
 
     final public function addDirective(
-        \Graphpinator\Directive\Contract\ObjectLocation $directive,
+        \Graphpinator\Directive\Contract\ScalarLocation $directive,
         array $arguments = [],
     ) : static
     {
         $usage = new \Graphpinator\DirectiveUsage\DirectiveUsage($directive, $arguments);
-        if (!$directive->validateObjectUsage($this, $usage->getArgumentValues())) {
-            throw new \Graphpinator\Exception\Type\DirectiveIncorrectType();
-        }
         $this->directiveUsages[] = $usage;
+        
         return $this;
     }
+
+    public function setSpecified(string $url) : self
+    {
+        $this->addDirective(
+            \Graphpinator\Container\Container::directiveSpecifiedBy(),
+            ['url' => $url],
+        );
+
+        return $this;
+    }
+
 }

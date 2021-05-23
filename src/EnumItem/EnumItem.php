@@ -10,7 +10,6 @@ final class EnumItem implements \Graphpinator\Typesystem\Component
     use \Graphpinator\Utils\TOptionalDescription;
     use \Graphpinator\Utils\THasDirectives;
     use \Graphpinator\Utils\TDeprecatable;
-    use \Graphpinator\Utils\TSpecifiable;
 
     private string $name;
 
