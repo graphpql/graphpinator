@@ -11,14 +11,10 @@ class Field implements \Graphpinator\Typesystem\Component
     use \Graphpinator\Utils\THasDirectives;
     use \Graphpinator\Utils\TDeprecatable;
 
-    protected string $name;
-    protected \Graphpinator\Type\Contract\Outputable $type;
     protected \Graphpinator\Argument\ArgumentSet $arguments;
 
-    public function __construct(string $name, \Graphpinator\Type\Contract\Outputable $type)
+    public function __construct(protected string $name, protected \Graphpinator\Type\Contract\Outputable $type)
     {
-        $this->name = $name;
-        $this->type = $type;
         $this->arguments = new \Graphpinator\Argument\ArgumentSet([]);
         $this->directiveUsages = new \Graphpinator\DirectiveUsage\DirectiveUsageSet([]);
     }

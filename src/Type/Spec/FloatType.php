@@ -14,7 +14,7 @@ final class FloatType extends \Graphpinator\Type\ScalarType
         return \is_float($rawValue) && \is_finite($rawValue);
     }
 
-    public function coerceValue(mixed $rawValue): mixed
+    public function coerceValue(mixed $rawValue) : mixed
     {
         return \is_int($rawValue)
             ? (float) $rawValue

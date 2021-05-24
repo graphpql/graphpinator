@@ -4,8 +4,9 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Directive\Spec;
 
-final class DeprecatedDirective extends \Graphpinator\Directive\Directive
-    implements \Graphpinator\Directive\Contract\FieldDefinitionLocation, \Graphpinator\Directive\Contract\EnumItemLocation
+final class DeprecatedDirective extends \Graphpinator\Directive\Directive implements
+    \Graphpinator\Directive\Contract\FieldDefinitionLocation,
+    \Graphpinator\Directive\Contract\EnumItemLocation
 {
     protected const NAME = 'deprecated';
     protected const DESCRIPTION = 'Built-in deprecated directive.';

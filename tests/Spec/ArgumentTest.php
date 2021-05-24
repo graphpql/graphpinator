@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Spec;
 
-use Infinityloop\Utils\Json;
+use \Infinityloop\Utils\Json;
 
 final class ArgumentTest extends \PHPUnit\Framework\TestCase
 {
@@ -64,8 +64,8 @@ final class ArgumentTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider simpleDataProvider
-     * @param Json $request
-     * @param Json $expected
+     * @param \Infinityloop\Utils\Json $request
+     * @param \Infinityloop\Utils\Json $expected
      */
     public function testSimple(Json $request, Json $expected) : void
     {
@@ -120,7 +120,7 @@ final class ArgumentTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider invalidDataProvider
-     * @param Json $request
+     * @param \Infinityloop\Utils\Json $request
      * @param string $exception
      */
     public function testInvalid(Json $request, string $exception) : void

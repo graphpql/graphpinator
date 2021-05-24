@@ -10,7 +10,9 @@ final class FinalizedRequest
 
     public function __construct(
         private \Graphpinator\Normalizer\Operation\Operation $operation,
-    ) {}
+    )
+    {
+    }
 
     public function getOperation() : \Graphpinator\Normalizer\Operation\Operation
     {

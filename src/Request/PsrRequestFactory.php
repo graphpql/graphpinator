@@ -8,13 +8,8 @@ final class PsrRequestFactory implements \Graphpinator\Request\RequestFactory
 {
     use \Nette\SmartObject;
 
-    private \Psr\Http\Message\ServerRequestInterface $request;
-    private bool $strict;
-
-    public function __construct(\Psr\Http\Message\ServerRequestInterface $request, bool $strict = true)
+    public function __construct(private \Psr\Http\Message\ServerRequestInterface $request, private bool $strict = true)
     {
-        $this->request = $request;
-        $this->strict = $strict;
     }
 
     public function create() : Request

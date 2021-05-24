@@ -9,13 +9,15 @@ final class Operation
     use \Nette\SmartObject;
 
     public function __construct(
-        protected string $type,
-        protected ?string $name,
-        protected \Graphpinator\Type\Type $rootObject,
-        protected \Graphpinator\Normalizer\Field\FieldSet $children,
-        protected \Graphpinator\Normalizer\Variable\VariableSet $variables,
-        protected \Graphpinator\Normalizer\Directive\DirectiveSet $directives,
-    ) {}
+        private string $type,
+        private ?string $name,
+        private \Graphpinator\Type\Type $rootObject,
+        private \Graphpinator\Normalizer\Field\FieldSet $children,
+        private \Graphpinator\Normalizer\Variable\VariableSet $variables,
+        private \Graphpinator\Normalizer\Directive\DirectiveSet $directives,
+    )
+    {
+    }
 
     public function getType() : string
     {

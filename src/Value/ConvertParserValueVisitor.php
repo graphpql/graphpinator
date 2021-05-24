@@ -12,7 +12,28 @@ final class ConvertParserValueVisitor implements \Graphpinator\Parser\Value\Valu
         private \Graphpinator\Type\Contract\Inputable $type,
         private ?\Graphpinator\Normalizer\Variable\VariableSet $variableSet,
         private \Graphpinator\Common\Path $path,
-    ) {}
+    )
+    {
+    }
+
+    public static function convertArgumentValue(
+        \Graphpinator\Parser\Value\Value $value,
+        \Graphpinator\Argument\Argument $argument,
+        ?\Graphpinator\Normalizer\Variable\VariableSet $variableSet,
+        \Graphpinator\Common\Path $path,
+    ) : \Graphpinator\Value\ArgumentValue
+    {
+        $default = $argument->getDefaultValue();
+        $result = $value->accept(
+            new ConvertParserValueVisitor($argument->getType(), $variableSet, $path),
+        );
+
+        if ($result instanceof \Graphpinator\Value\NullInputedValue && $default instanceof \Graphpinator\Value\ArgumentValue) {
+            return $default;
+        }
+
+        return new \Graphpinator\Value\ArgumentValue($argument, $result, true);
+    }
 
     public function visitLiteral(\Graphpinator\Parser\Value\Literal $literal) : \Graphpinator\Value\InputedValue
     {
@@ -104,24 +125,5 @@ final class ConvertParserValueVisitor implements \Graphpinator\Parser\Value\Valu
         }
 
         throw new \Graphpinator\Normalizer\Exception\VariableInConstContext();
-    }
-
-    public static function convertArgumentValue(
-        \Graphpinator\Parser\Value\Value $value,
-        \Graphpinator\Argument\Argument $argument,
-        ?\Graphpinator\Normalizer\Variable\VariableSet $variableSet,
-        \Graphpinator\Common\Path $path,
-    ) : \Graphpinator\Value\ArgumentValue
-    {
-        $default = $argument->getDefaultValue();
-        $result = $value->accept(
-            new ConvertParserValueVisitor($argument->getType(), $variableSet, $path),
-        );
-
-        if ($result instanceof \Graphpinator\Value\NullInputedValue && $default instanceof \Graphpinator\Value\ArgumentValue) {
-            return $default;
-        }
-
-        return new \Graphpinator\Value\ArgumentValue($argument, $result, true);
     }
 }

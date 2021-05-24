@@ -11,7 +11,52 @@ final class ConvertRawValueVisitor implements \Graphpinator\Typesystem\TypeVisit
     public function __construct(
         private mixed $rawValue,
         private \Graphpinator\Common\Path $path,
-    ) {}
+    )
+    {
+    }
+
+    public static function convertArgumentSet(
+        \Graphpinator\Argument\ArgumentSet $arguments,
+        \stdClass $rawValue,
+        \Graphpinator\Common\Path $path,
+    ) : \stdClass
+    {
+        $rawValue = self::mergeRaw($rawValue, (object) $arguments->getRawDefaults());
+
+        foreach ((array) $rawValue as $name => $temp) {
+            if ($arguments->offsetExists($name)) {
+                continue;
+            }
+
+            throw new \Graphpinator\Normalizer\Exception\UnknownArgument($name);
+        }
+
+        $inner = new \stdClass();
+
+        foreach ($arguments as $argument) {
+            $path->add($argument->getName() . ' <argument>');
+            $inner->{$argument->getName()} = self::convertArgument($argument, $rawValue->{$argument->getName()}
+                ?? null, $path);
+            $path->pop();
+        }
+
+        return $inner;
+    }
+
+    public static function convertArgument(
+        \Graphpinator\Argument\Argument $argument,
+        mixed $rawValue,
+        \Graphpinator\Common\Path $path,
+    ) : ArgumentValue
+    {
+        $default = $argument->getDefaultValue();
+
+        if ($rawValue === null && $default instanceof \Graphpinator\Value\ArgumentValue) {
+            return $default;
+        }
+
+        return new ArgumentValue($argument, $argument->getType()->accept(new ConvertRawValueVisitor($rawValue, $path)), false);
+    }
 
     public function visitType(\Graphpinator\Type\Type $type) : mixed
     {
@@ -98,48 +143,6 @@ final class ConvertRawValueVisitor implements \Graphpinator\Typesystem\TypeVisit
         $this->rawValue = $listValue;
 
         return new ListInputedValue($list, $inner);
-    }
-
-    public static function convertArgumentSet(
-        \Graphpinator\Argument\ArgumentSet $arguments,
-        \stdClass $rawValue,
-        \Graphpinator\Common\Path $path,
-    ) : \stdClass
-    {
-        $rawValue = self::mergeRaw($rawValue, (object) $arguments->getRawDefaults());
-
-        foreach ((array) $rawValue as $name => $temp) {
-            if ($arguments->offsetExists($name)) {
-                continue;
-            }
-
-            throw new \Graphpinator\Normalizer\Exception\UnknownArgument($name);
-        }
-
-        $inner = new \stdClass();
-
-        foreach ($arguments as $argument) {
-            $path->add($argument->getName() . ' <argument>');
-            $inner->{$argument->getName()} = self::convertArgument($argument, $rawValue->{$argument->getName()} ?? null, $path);
-            $path->pop();
-        }
-
-        return $inner;
-    }
-
-    public static function convertArgument(
-        \Graphpinator\Argument\Argument $argument,
-        mixed $rawValue,
-        \Graphpinator\Common\Path $path,
-    ) : ArgumentValue
-    {
-        $default = $argument->getDefaultValue();
-
-        if ($rawValue === null && $default instanceof \Graphpinator\Value\ArgumentValue) {
-            return $default;
-        }
-
-        return new ArgumentValue($argument, $argument->getType()->accept(new ConvertRawValueVisitor($rawValue, $path)), false);
     }
 
     private static function mergeRaw(\stdClass $core, \stdClass $supplement) : \stdClass

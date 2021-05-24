@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Unit;
 
-use Infinityloop\Utils\Json;
+use \Infinityloop\Utils\Json;
 
 final class LoggerTest extends \PHPUnit\Framework\TestCase
 {

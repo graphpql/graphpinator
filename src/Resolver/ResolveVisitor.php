@@ -9,7 +9,9 @@ final class ResolveVisitor implements \Graphpinator\Typesystem\TypeVisitor
     public function __construct(
         private ?\Graphpinator\Normalizer\Field\FieldSet $requestedFields,
         private \Graphpinator\Value\ResolvedValue $parentResult,
-    ) {}
+    )
+    {
+    }
 
     public function visitType(\Graphpinator\Type\Type $type) : \Graphpinator\Value\TypeValue
     {
