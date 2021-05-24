@@ -25,7 +25,7 @@
     "phpunit/phpunit": "^9.3",
     "infection/infection": "^0.23",
     "phpstan/phpstan": "^0.12",
-    "infinityloop-dev/coding-standard": "^0.1"
+    "infinityloop-dev/coding-standard": "^0.1 || ^0.2"
   },
   "suggest": {
     "infinityloop-dev/graphpinator-nette": "Adapters for Nette framework.",
