@@ -10,10 +10,8 @@ final class TypeValue implements \Graphpinator\Value\OutputValue
 
     private \stdClass $value;
 
-    public function __construct(private \Graphpinator\Type\Type $type, \stdClass $rawValue)
+    public function __construct(private \Graphpinator\Type\Type $type, private \stdClass $value)
     {
-        $this->value = $rawValue;
-
         foreach ($type->getDirectiveUsages() as $directive) {
             $directive->getDirective()->resolveObject($directive->getArgumentValues(), $this);
         }
