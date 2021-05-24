@@ -72,7 +72,6 @@ trait TInterfaceImplementor
                 try {
                     $fieldContract->getDirectiveUsages()->validateCovariance($field->getDirectiveUsages());
                 } catch (\Throwable) {
-                    // TODO: print information from received exception
                     throw new \Graphpinator\Exception\Type\FieldDirectiveNotCovariant(
                         $this->getName(),
                         $interface->getName(),
@@ -104,7 +103,6 @@ trait TInterfaceImplementor
                     try {
                         $argumentContract->getDirectiveUsages()->validateContravariance($argument->getDirectiveUsages());
                     } catch (\Throwable) {
-                        // TODO: print information from received exception
                         throw new \Graphpinator\Exception\Type\ArgumentDirectiveNotContravariant(
                             $this->getName(),
                             $interface->getName(),
