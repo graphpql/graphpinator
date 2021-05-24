@@ -8,15 +8,13 @@ final class DirectiveUsage implements \Graphpinator\Typesystem\Component
 {
     use \Nette\SmartObject;
 
-    private \Graphpinator\Directive\Contract\TypeSystemDefinition $directive;
     private \Graphpinator\Value\ArgumentValueSet $argumentValues;
 
     public function __construct(
-        \Graphpinator\Directive\Contract\TypeSystemDefinition $directive,
+        private \Graphpinator\Directive\Contract\TypeSystemDefinition $directive,
         array $arguments,
     )
     {
-        $this->directive = $directive;
         $this->argumentValues = new \Graphpinator\Value\ArgumentValueSet(
             (array) \Graphpinator\Value\ConvertRawValueVisitor::convertArgumentSet(
                 $directive->getArguments(),

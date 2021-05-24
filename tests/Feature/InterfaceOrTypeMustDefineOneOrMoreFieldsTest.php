@@ -11,14 +11,14 @@ final class InterfaceOrTypeMustDefineOneOrMoreFieldsTest extends \PHPUnit\Framew
         return new class extends \Graphpinator\Type\Type {
             protected const NAME = 'InvalidType';
 
-            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
-            {
-                return new \Graphpinator\Field\ResolvableFieldSet([]);
-            }
-
             public function validateNonNullValue($rawValue) : bool
             {
                 return true;
+            }
+
+            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+            {
+                return new \Graphpinator\Field\ResolvableFieldSet([]);
             }
         };
     }

@@ -12,7 +12,9 @@ final class Variable
         private string $name,
         private \Graphpinator\Type\Contract\Inputable $type,
         private ?\Graphpinator\Value\InputedValue $defaultValue,
-    ) {}
+    )
+    {
+    }
 
     public function getName() : string
     {

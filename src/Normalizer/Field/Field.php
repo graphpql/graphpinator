@@ -15,7 +15,9 @@ final class Field
         private \Graphpinator\Normalizer\Directive\DirectiveSet $directives,
         private ?\Graphpinator\Normalizer\Field\FieldSet $children = null,
         private ?\Graphpinator\Type\Contract\TypeConditionable $typeCond = null,
-    ) {}
+    )
+    {
+    }
 
     public function getField() : \Graphpinator\Field\Field
     {

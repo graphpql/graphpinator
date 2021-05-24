@@ -7,8 +7,10 @@ namespace Graphpinator\Normalizer;
 final class GetFieldVisitor implements \Graphpinator\Typesystem\NamedTypeVisitor
 {
     public function __construct(
-        private string $name
-    ) {}
+        private string $name,
+    )
+    {
+    }
 
     public function visitType(\Graphpinator\Type\Type $type) : \Graphpinator\Field\Field
     {

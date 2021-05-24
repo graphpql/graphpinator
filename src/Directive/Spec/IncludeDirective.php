@@ -4,8 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Directive\Spec;
 
-final class IncludeDirective extends \Graphpinator\Directive\Directive
-    implements \Graphpinator\Directive\Contract\FieldLocation
+final class IncludeDirective extends \Graphpinator\Directive\Directive implements \Graphpinator\Directive\Contract\FieldLocation
 {
     protected const NAME = 'include';
     protected const DESCRIPTION = 'Built-in include directive.';

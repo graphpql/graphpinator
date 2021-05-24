@@ -8,12 +8,10 @@ final class TypeValue implements \Graphpinator\Value\OutputValue
 {
     use \Nette\SmartObject;
 
-    private \Graphpinator\Type\Type $type;
     private \stdClass $value;
 
-    public function __construct(\Graphpinator\Type\Type $type, \stdClass $rawValue)
+    public function __construct(private \Graphpinator\Type\Type $type, \stdClass $rawValue)
     {
-        $this->type = $type;
         $this->value = $rawValue;
 
         foreach ($type->getDirectiveUsages() as $directive) {

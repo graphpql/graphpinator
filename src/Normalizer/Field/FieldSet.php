@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Normalizer\Field;
 
-use Graphpinator\Normalizer\GetFieldVisitor;
+use \Graphpinator\Normalizer\GetFieldVisitor;
 
 /**
  * @method \Graphpinator\Normalizer\Field\Field current() : object
@@ -25,7 +25,7 @@ final class FieldSet extends \Infinityloop\Utils\ObjectSet
 
     public function mergeFieldSet(
         \Graphpinator\Type\Contract\NamedDefinition $parentType,
-        \Graphpinator\Normalizer\Field\FieldSet $fieldSet
+        \Graphpinator\Normalizer\Field\FieldSet $fieldSet,
     ) : void
     {
         foreach ($fieldSet as $field) {
@@ -54,7 +54,7 @@ final class FieldSet extends \Infinityloop\Utils\ObjectSet
 
     private function mergeConflictingField(
         \Graphpinator\Type\Contract\NamedDefinition $parentType,
-        \Graphpinator\Normalizer\Field\Field $field
+        \Graphpinator\Normalizer\Field\Field $field,
     ) : void
     {
         $fieldArguments = $field->getArguments();

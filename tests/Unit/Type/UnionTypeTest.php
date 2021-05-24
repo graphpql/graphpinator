@@ -33,14 +33,14 @@ final class UnionTypeTest extends \PHPUnit\Framework\TestCase
         return new class extends \Graphpinator\Type\Type {
             protected const NAME = 'Abc';
 
-            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
-            {
-                return new \Graphpinator\Field\ResolvableFieldSet();
-            }
-
             public function validateNonNullValue($rawValue) : bool
             {
                 return true;
+            }
+
+            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+            {
+                return new \Graphpinator\Field\ResolvableFieldSet();
             }
         };
     }
@@ -50,14 +50,14 @@ final class UnionTypeTest extends \PHPUnit\Framework\TestCase
         return new class extends \Graphpinator\Type\Type {
             protected const NAME = 'Xyz';
 
-            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
-            {
-                return new \Graphpinator\Field\ResolvableFieldSet();
-            }
-
             public function validateNonNullValue($rawValue) : bool
             {
                 return true;
+            }
+
+            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+            {
+                return new \Graphpinator\Field\ResolvableFieldSet();
             }
         };
     }
@@ -67,14 +67,14 @@ final class UnionTypeTest extends \PHPUnit\Framework\TestCase
         return new class extends \Graphpinator\Type\Type {
             protected const NAME = 'Zzz';
 
-            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
-            {
-                return new \Graphpinator\Field\ResolvableFieldSet();
-            }
-
             public function validateNonNullValue($rawValue) : bool
             {
                 return true;
+            }
+
+            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+            {
+                return new \Graphpinator\Field\ResolvableFieldSet();
             }
         };
     }

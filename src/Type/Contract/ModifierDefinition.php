@@ -8,11 +8,8 @@ abstract class ModifierDefinition implements
     \Graphpinator\Type\Contract\Inputable,
     \Graphpinator\Type\Contract\Outputable
 {
-    protected \Graphpinator\Type\Contract\Definition $innerType;
-
-    public function __construct(\Graphpinator\Type\Contract\Definition $innerType)
+    public function __construct(protected \Graphpinator\Type\Contract\Definition $innerType)
     {
-        $this->innerType = $innerType;
     }
 
     public function getInnerType() : \Graphpinator\Type\Contract\Definition

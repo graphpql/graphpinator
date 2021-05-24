@@ -10,42 +10,6 @@ final class InterfaceCycleTest extends \PHPUnit\Framework\TestCase
     private static ?\Graphpinator\Type\InterfaceType $interfaceB = null;
     private static ?\Graphpinator\Type\InterfaceType $interfaceC = null;
 
-    public function testInvalidA() : void
-    {
-        self::$interfaceA = null;
-        self::$interfaceB = null;
-        self::$interfaceC = null;
-
-        $this->expectException(\Graphpinator\Exception\Type\InterfaceCycle::class);
-        $this->expectDeprecationMessage(\Graphpinator\Exception\Type\InterfaceCycle::MESSAGE);
-
-        self::getInterfaceA()->getFields();
-    }
-
-    public function testInvalidB() : void
-    {
-        self::$interfaceA = null;
-        self::$interfaceB = null;
-        self::$interfaceC = null;
-
-        $this->expectException(\Graphpinator\Exception\Type\InterfaceCycle::class);
-        $this->expectDeprecationMessage(\Graphpinator\Exception\Type\InterfaceCycle::MESSAGE);
-
-        self::getInterfaceB()->getFields();
-    }
-
-    public function testInvalidC() : void
-    {
-        self::$interfaceA = null;
-        self::$interfaceB = null;
-        self::$interfaceC = null;
-
-        $this->expectException(\Graphpinator\Exception\Type\InterfaceCycle::class);
-        $this->expectDeprecationMessage(\Graphpinator\Exception\Type\InterfaceCycle::MESSAGE);
-
-        self::getInterfaceC()->getFields();
-    }
-
     public static function getInterfaceB() : \Graphpinator\Type\InterfaceType
     {
         if (self::$interfaceB instanceof \Graphpinator\Type\InterfaceType) {
@@ -161,5 +125,41 @@ final class InterfaceCycleTest extends \PHPUnit\Framework\TestCase
         self::$interfaceA->initImplements();
 
         return self::$interfaceA;
+    }
+
+    public function testInvalidA() : void
+    {
+        self::$interfaceA = null;
+        self::$interfaceB = null;
+        self::$interfaceC = null;
+
+        $this->expectException(\Graphpinator\Exception\Type\InterfaceCycle::class);
+        $this->expectDeprecationMessage(\Graphpinator\Exception\Type\InterfaceCycle::MESSAGE);
+
+        self::getInterfaceA()->getFields();
+    }
+
+    public function testInvalidB() : void
+    {
+        self::$interfaceA = null;
+        self::$interfaceB = null;
+        self::$interfaceC = null;
+
+        $this->expectException(\Graphpinator\Exception\Type\InterfaceCycle::class);
+        $this->expectDeprecationMessage(\Graphpinator\Exception\Type\InterfaceCycle::MESSAGE);
+
+        self::getInterfaceB()->getFields();
+    }
+
+    public function testInvalidC() : void
+    {
+        self::$interfaceA = null;
+        self::$interfaceB = null;
+        self::$interfaceC = null;
+
+        $this->expectException(\Graphpinator\Exception\Type\InterfaceCycle::class);
+        $this->expectDeprecationMessage(\Graphpinator\Exception\Type\InterfaceCycle::MESSAGE);
+
+        self::getInterfaceC()->getFields();
     }
 }

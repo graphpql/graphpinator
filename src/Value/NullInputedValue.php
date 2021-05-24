@@ -8,11 +8,8 @@ final class NullInputedValue implements \Graphpinator\Value\InputedValue, \Graph
 {
     use \Nette\SmartObject;
 
-    private \Graphpinator\Type\Contract\Inputable $type;
-
-    public function __construct(\Graphpinator\Type\Contract\Inputable $type)
+    public function __construct(private \Graphpinator\Type\Contract\Inputable $type)
     {
-        $this->type = $type;
     }
 
     public function getRawValue(bool $forResolvers = false) : ?bool

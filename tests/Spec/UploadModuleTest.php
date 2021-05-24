@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Spec;
 
-use Infinityloop\Utils\Json;
+use \Infinityloop\Utils\Json;
 
 final class UploadModuleTest extends \PHPUnit\Framework\TestCase
 {
@@ -120,8 +120,8 @@ final class UploadModuleTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider simpleDataProvider
      * @param string $map
-     * @param Json $request
-     * @param Json $expected
+     * @param \Infinityloop\Utils\Json $request
+     * @param \Infinityloop\Utils\Json $expected
      */
     public function testSimple(string $map, Json $request, Json $expected) : void
     {
@@ -238,13 +238,14 @@ final class UploadModuleTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider invalidDataProvider
      * @param string $map
-     * @param Json $request
+     * @param \Infinityloop\Utils\Json $request
      * @param string $exception
      */
     public function testInvalid(string $map, Json $request, string $exception, ?string $message = null) : void
     {
         $this->expectException($exception);
-        $this->expectExceptionMessage($message ?? \constant($exception . '::MESSAGE'));
+        $this->expectExceptionMessage($message
+            ?? \constant($exception . '::MESSAGE'));
 
         $stream = $this->createStub(\Psr\Http\Message\StreamInterface::class);
         $stream->method('getContents')->willReturn('test file');
