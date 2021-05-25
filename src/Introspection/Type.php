@@ -161,7 +161,7 @@ final class Type extends \Graphpinator\Type\Type
             \Graphpinator\Field\ResolvableField::create(
                 'specifiedByURL',
                 \Graphpinator\Container\Container::String(),
-                static function (Definition $definition) : ?String {
+                static function (Definition $definition) : ?string {
                     return $definition instanceof \Graphpinator\Type\ScalarType
                         ? $definition->getSpecifiedByUrl()
                         : null;
