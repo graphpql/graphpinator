@@ -39,4 +39,14 @@ abstract class ScalarType extends \Graphpinator\Type\Contract\LeafDefinition
         return $this;
     }
 
+    public function getSpecifiedByUrl() : ?string
+    {
+        foreach ($this->getDirectiveUsages() as $directive) {
+            if ($directive->getDirective() instanceof \Graphpinator\Directive\Spec\SpecifiedByDirective) {
+                return $directive->getArgumentValues()->offsetGet('url')->getValue()->getRawValue();
+            }
+        }
+
+        return null;
+    }
 }

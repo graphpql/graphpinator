@@ -8,6 +8,7 @@ final class Schema implements \Graphpinator\Typesystem\Entity
 {
     use \Nette\SmartObject;
     use \Graphpinator\Utils\TOptionalDescription;
+    use \Graphpinator\Utils\THasDirectives;
 
     public function __construct(
         private \Graphpinator\Container\Container $container,
@@ -69,5 +70,16 @@ final class Schema implements \Graphpinator\Typesystem\Entity
     public function accept(\Graphpinator\Typesystem\EntityVisitor $visitor) : mixed
     {
         return $visitor->visitSchema($this);
+    }
+
+    final public function addDirective(
+        \Graphpinator\Directive\Contract\SchemaLocation $directive,
+        array $arguments = [],
+    ) : static
+    {
+        $usage = new \Graphpinator\DirectiveUsage\DirectiveUsage($directive, $arguments);
+        $this->directiveUsages[] = $usage;
+
+        return $this;
     }
 }
