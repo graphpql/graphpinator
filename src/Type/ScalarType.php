@@ -8,6 +8,11 @@ abstract class ScalarType extends \Graphpinator\Type\Contract\LeafDefinition
 {
     use \Graphpinator\Utils\THasDirectives;
 
+    public function __construct()
+    {
+        $this->directiveUsages = new \Graphpinator\DirectiveUsage\DirectiveUsageSet();
+    }
+
     final public function accept(\Graphpinator\Typesystem\NamedTypeVisitor $visitor) : mixed
     {
         return $visitor->visitScalar($this);

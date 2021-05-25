@@ -10,7 +10,10 @@ abstract class EnumType extends \Graphpinator\Type\Contract\LeafDefinition
 
     public function __construct(
         protected \Graphpinator\EnumItem\EnumItemSet $options,
-    ) {}
+    )
+    {
+        $this->directiveUsages = new \Graphpinator\DirectiveUsage\DirectiveUsageSet();
+    }
 
     final public static function fromConstants() : \Graphpinator\EnumItem\EnumItemSet
     {
