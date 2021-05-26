@@ -38,13 +38,30 @@ final class Field extends \Graphpinator\Type\Type
                     return $field->getDescription();
                 },
             ),
-            new \Graphpinator\Field\ResolvableField(
+            \Graphpinator\Field\ResolvableField::create(
                 'args',
                 $this->container->getType('__InputValue')->notNullList(),
-                static function (\Graphpinator\Field\Field $field) : \Graphpinator\Argument\ArgumentSet {
-                    return $field->getArguments();
+                static function (\Graphpinator\Field\Field $field, bool $includeDeprecated) : \Graphpinator\Argument\ArgumentSet {
+                    if ($includeDeprecated === true) {
+                        return $field->getArguments();
+                    }
+
+                    $filtered = [];
+
+                    foreach ($field->getArguments() as $argument) {
+                        if ($argument->isDeprecated()) {
+                            continue;
+                        }
+
+                        $filtered[] = $argument;
+                    }
+
+                    return new \Graphpinator\Argument\ArgumentSet($filtered);
                 },
-            ),
+            )->setArguments(new \Graphpinator\Argument\ArgumentSet([
+                \Graphpinator\Argument\Argument::create('includeDeprecated', \Graphpinator\Container\Container::Boolean()->notNull())
+                    ->setDefaultValue(false),
+            ])),
             new \Graphpinator\Field\ResolvableField(
                 'type',
                 $this->container->getType('__Type')->notNull(),

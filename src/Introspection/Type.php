@@ -143,12 +143,31 @@ final class Type extends \Graphpinator\Type\Type
             \Graphpinator\Field\ResolvableField::create(
                 'inputFields',
                 $this->container->getType('__InputValue')->notNull()->list(),
-                static function (Definition $definition) : ?\Graphpinator\Argument\ArgumentSet {
-                    return $definition instanceof \Graphpinator\Type\InputType
-                        ? $definition->getArguments()
-                        : null;
+                static function (Definition $definition, bool $includeDeprecated) : ?\Graphpinator\Argument\ArgumentSet {
+                    if (!$definition instanceof \Graphpinator\Type\InputType) {
+                        return null;
+                    }
+
+                    if ($includeDeprecated === true) {
+                        return $definition->getArguments();
+                    }
+
+                    $filtered = [];
+
+                    foreach ($definition->getArguments() as $argument) {
+                        if ($argument->isDeprecated()) {
+                            continue;
+                        }
+
+                        $filtered[] = $argument;
+                    }
+
+                    return new \Graphpinator\Argument\ArgumentSet($filtered);
                 },
-            ),
+            )->setArguments(new \Graphpinator\Argument\ArgumentSet([
+                \Graphpinator\Argument\Argument::create('includeDeprecated', \Graphpinator\Container\Container::Boolean()->notNull())
+                    ->setDefaultValue(false),
+            ])),
             \Graphpinator\Field\ResolvableField::create(
                 'ofType',
                 $this,

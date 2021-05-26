@@ -6,10 +6,16 @@ namespace Graphpinator\Directive\Spec;
 
 final class DeprecatedDirective extends \Graphpinator\Directive\Directive implements
     \Graphpinator\Directive\Contract\FieldDefinitionLocation,
-    \Graphpinator\Directive\Contract\EnumItemLocation
+    \Graphpinator\Directive\Contract\EnumItemLocation,
+    \Graphpinator\Directive\Contract\ArgumentDefinitionLocation
 {
     protected const NAME = 'deprecated';
     protected const DESCRIPTION = 'Built-in deprecated directive.';
+
+    public static function isPure() : bool
+    {
+        return true;
+    }
 
     public function validateFieldUsage(
         \Graphpinator\Field\Field $field,
@@ -59,6 +65,18 @@ final class DeprecatedDirective extends \Graphpinator\Directive\Directive implem
     ) : void
     {
         // nothing here
+    }
+
+    public function validateArgumentUsage(\Graphpinator\Argument\Argument $argument, \Graphpinator\Value\ArgumentValueSet $arguments,) : bool
+    {
+        return true;
+    }
+
+    public function resolveArgumentDefinition(
+        \Graphpinator\Value\ArgumentValueSet $arguments,
+        \Graphpinator\Value\ArgumentValue $argumentValue,
+    ) : void
+    {
     }
 
     protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
