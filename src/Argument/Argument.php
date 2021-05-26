@@ -64,7 +64,7 @@ final class Argument implements \Graphpinator\Typesystem\Component
     {
         $usage = new \Graphpinator\DirectiveUsage\DirectiveUsage($directive, $arguments);
 
-        if (!$directive->validateArgumentUsage($this, $usage->getArgumentValues())) {
+        if (\Graphpinator\Graphpinator::$validateSchema && !$directive->validateArgumentUsage($this, $usage->getArgumentValues())) {
             throw new \Graphpinator\Exception\Type\DirectiveIncorrectType();
         }
 

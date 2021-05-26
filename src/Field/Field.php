@@ -58,7 +58,7 @@ class Field implements \Graphpinator\Typesystem\Component
     {
         $usage = new \Graphpinator\DirectiveUsage\DirectiveUsage($directive, $arguments);
 
-        if (!$directive->validateFieldUsage($this, $usage->getArgumentValues())) {
+        if (\Graphpinator\Graphpinator::$validateSchema && !$directive->validateFieldUsage($this, $usage->getArgumentValues())) {
             throw new \Graphpinator\Exception\Type\DirectiveIncorrectType();
         }
 

@@ -28,8 +28,7 @@ abstract class ScalarType extends \Graphpinator\Type\Contract\LeafDefinition
         array $arguments = [],
     ) : static
     {
-        $usage = new \Graphpinator\DirectiveUsage\DirectiveUsage($directive, $arguments);
-        $this->directiveUsages[] = $usage;
+        $this->directiveUsages[] = new \Graphpinator\DirectiveUsage\DirectiveUsage($directive, $arguments);
 
         return $this;
     }

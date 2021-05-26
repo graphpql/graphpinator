@@ -54,7 +54,7 @@ abstract class InputType extends \Graphpinator\Type\Contract\ConcreteDefinition 
     {
         $usage = new \Graphpinator\DirectiveUsage\DirectiveUsage($directive, $arguments);
 
-        if (!$directive->validateInputUsage($this, $usage->getArgumentValues())) {
+        if (\Graphpinator\Graphpinator::$validateSchema && !$directive->validateInputUsage($this, $usage->getArgumentValues())) {
             throw new \Graphpinator\Exception\Type\DirectiveIncorrectType();
         }
 

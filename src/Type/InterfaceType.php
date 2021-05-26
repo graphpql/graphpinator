@@ -76,7 +76,7 @@ abstract class InterfaceType extends \Graphpinator\Type\Contract\AbstractDefinit
     {
         $usage = new \Graphpinator\DirectiveUsage\DirectiveUsage($directive, $arguments);
 
-        if (!$directive->validateObjectUsage($this, $usage->getArgumentValues())) {
+        if (\Graphpinator\Graphpinator::$validateSchema && !$directive->validateObjectUsage($this, $usage->getArgumentValues())) {
             throw new \Graphpinator\Exception\Type\DirectiveIncorrectType();
         }
 
