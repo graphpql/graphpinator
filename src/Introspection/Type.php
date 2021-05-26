@@ -165,8 +165,8 @@ final class Type extends \Graphpinator\Type\Type
                     return new \Graphpinator\Argument\ArgumentSet($filtered);
                 },
             )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                \Graphpinator\Argument\Argument::create('includeDeprecated', \Graphpinator\Container\Container::Boolean()->notNull()
-                )->setDefaultValue(false),
+                \Graphpinator\Argument\Argument::create('includeDeprecated', \Graphpinator\Container\Container::Boolean()->notNull())
+                    ->setDefaultValue(false),
             ])),
             \Graphpinator\Field\ResolvableField::create(
                 'ofType',

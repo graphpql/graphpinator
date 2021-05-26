@@ -12,6 +12,10 @@ final class DeprecatedDirective extends \Graphpinator\Directive\Directive implem
     protected const NAME = 'deprecated';
     protected const DESCRIPTION = 'Built-in deprecated directive.';
 
+    public static function isPure() : bool
+    {
+    }
+
     public function validateFieldUsage(
         \Graphpinator\Field\Field $field,
         \Graphpinator\Value\ArgumentValueSet $arguments,
@@ -62,22 +66,22 @@ final class DeprecatedDirective extends \Graphpinator\Directive\Directive implem
         // nothing here
     }
 
+    public function validateArgumentUsage(\Graphpinator\Argument\Argument $argument, \Graphpinator\Value\ArgumentValueSet $arguments,) : bool
+    {
+        return true;
+    }
+
+    public function resolveArgumentDefinition(
+        \Graphpinator\Value\ArgumentValueSet $arguments,
+        \Graphpinator\Value\ArgumentValue $argumentValue,
+    ) : void
+    {
+    }
+
     protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
     {
         return new \Graphpinator\Argument\ArgumentSet([
             new \Graphpinator\Argument\Argument('reason', \Graphpinator\Container\Container::String()),
         ]);
-    }
-
-    public static function isPure() : bool
-    {
-    }
-
-    public function validateArgumentUsage(\Graphpinator\Argument\Argument $argument, \Graphpinator\Value\ArgumentValueSet $arguments,) : bool
-    {
-    }
-
-    public function resolveArgumentDefinition(\Graphpinator\Value\ArgumentValueSet $arguments, \Graphpinator\Value\ArgumentValue $argumentValue,) : void
-    {
     }
 }
