@@ -71,7 +71,7 @@ final class Schema implements \Graphpinator\Typesystem\Entity
     public function addDirective(
         \Graphpinator\Directive\Contract\SchemaLocation $directive,
         array $arguments = [],
-    ) : static
+    ) : self
     {
         $this->directiveUsages[] = new \Graphpinator\DirectiveUsage\DirectiveUsage($directive, $arguments);
 
