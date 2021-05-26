@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Normalizer;
 
-use Graphpinator\Directive\ExecutableDirectiveLocation;
+use \Graphpinator\Directive\ExecutableDirectiveLocation;
 
 final class Normalizer
 {
@@ -33,7 +33,7 @@ final class Normalizer
 
         try {
             return new \Graphpinator\Normalizer\NormalizedRequest(
-                $this->normalizeOperationSet($parsedRequest->getOperations())
+                $this->normalizeOperationSet($parsedRequest->getOperations()),
             );
         } catch (\Graphpinator\Exception\GraphpinatorBase $e) {
             throw $e->setPath($this->path);
@@ -183,7 +183,7 @@ final class Normalizer
     private function normalizeDirectiveSet(
         \Graphpinator\Parser\Directive\DirectiveSet $directiveSet,
         string $location,
-        \Graphpinator\Field\Field|null $usage = null,
+        ?\Graphpinator\Field\Field $usage = null,
     ) : \Graphpinator\Normalizer\Directive\DirectiveSet
     {
         $normalized = [];
@@ -211,7 +211,7 @@ final class Normalizer
 
     private function normalizeDirective(
         \Graphpinator\Parser\Directive\Directive $directive,
-        \Graphpinator\Field\Field|null $usage,
+        ?\Graphpinator\Field\Field $usage,
         string $location,
     ) : \Graphpinator\Normalizer\Directive\Directive
     {
@@ -301,7 +301,7 @@ final class Normalizer
         \Graphpinator\Parser\FragmentSpread\FragmentSpread $fragmentSpread,
     ) : \Graphpinator\Normalizer\FragmentSpread\FragmentSpread
     {
-        return match($fragmentSpread::class) {
+        return match ($fragmentSpread::class) {
             \Graphpinator\Parser\FragmentSpread\NamedFragmentSpread::class =>
                 $this->normalizeNamedFragmentSpread($fragmentSpread),
             \Graphpinator\Parser\FragmentSpread\InlineFragmentSpread::class =>

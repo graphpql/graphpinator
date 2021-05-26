@@ -11,11 +11,8 @@ final class EnumItem implements \Graphpinator\Typesystem\Component
     use \Graphpinator\Utils\THasDirectives;
     use \Graphpinator\Utils\TDeprecatable;
 
-    private string $name;
-
-    public function __construct(string $name, ?string $description = null)
+    public function __construct(private string $name, ?string $description = null)
     {
-        $this->name = $name;
         $this->description = $description;
         $this->directiveUsages = new \Graphpinator\DirectiveUsage\DirectiveUsageSet();
     }

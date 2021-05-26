@@ -8,13 +8,8 @@ final class Result implements \JsonSerializable
 {
     use \Nette\SmartObject;
 
-    private ?\Graphpinator\Value\TypeValue $data;
-    private ?array $errors;
-
-    public function __construct(?\Graphpinator\Value\TypeValue $data = null, ?array $errors = null)
+    public function __construct(private ?\Graphpinator\Value\TypeValue $data = null, private ?array $errors = null)
     {
-        $this->data = $data;
-        $this->errors = $errors;
     }
 
     public function getData() : ?\Graphpinator\Value\TypeValue

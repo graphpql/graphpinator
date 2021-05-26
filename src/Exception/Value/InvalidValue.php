@@ -29,6 +29,6 @@ final class InvalidValue extends \Graphpinator\Exception\Value\ValueError
             return 'object';
         }
 
-        return \get_class($rawValue);
+        return $rawValue::class;
     }
 }

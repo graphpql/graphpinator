@@ -8,18 +8,16 @@ final class UploadModule implements \Graphpinator\Module\Module
 {
     use \Nette\SmartObject;
 
-    private FileProvider $fileProvider;
-
-    public function __construct(FileProvider $fileProvider)
+    public function __construct(private FileProvider $fileProvider)
     {
-        $this->fileProvider = $fileProvider;
     }
 
     public function processRequest(\Graphpinator\Request\Request $request) : \Graphpinator\Request\Request
     {
         $variables = $request->getVariables();
 
-        foreach ($this->fileProvider->getMap() ?? [] as $fileKey => $locations) {
+        foreach ($this->fileProvider->getMap()
+            ?? [] as $fileKey => $locations) {
             $fileValue = $this->fileProvider->getFile($fileKey);
 
             foreach ($locations as $location) {
@@ -63,7 +61,7 @@ final class UploadModule implements \Graphpinator\Module\Module
 
     private function insertFiles(
         array &$keys,
-        string|int|float|bool|null|array|\stdClass $currentValue,
+        string|int|float|bool|array|\stdClass|null $currentValue,
         \Psr\Http\Message\UploadedFileInterface $fileValue,
     ) : array|\stdClass|\Psr\Http\Message\UploadedFileInterface
     {

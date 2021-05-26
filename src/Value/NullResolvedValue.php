@@ -10,7 +10,9 @@ final class NullResolvedValue implements \Graphpinator\Value\OutputValue, \Graph
 
     public function __construct(
         private \Graphpinator\Type\Contract\Outputable $type,
-    ) {}
+    )
+    {
+    }
 
     public function getRawValue() : ?bool
     {

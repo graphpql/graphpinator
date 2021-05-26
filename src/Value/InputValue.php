@@ -11,7 +11,9 @@ final class InputValue implements \Graphpinator\Value\InputedValue, \IteratorAgg
     public function __construct(
         private \Graphpinator\Type\InputType $type,
         private \stdClass $value,
-    ) {}
+    )
+    {
+    }
 
     public function getRawValue(bool $forResolvers = false) : object
     {
@@ -90,7 +92,7 @@ final class InputValue implements \Graphpinator\Value\InputedValue, \IteratorAgg
 
         return true;
     }
-    
+
     public function getIterator() : \ArrayIterator
     {
         return new \ArrayIterator($this->value);

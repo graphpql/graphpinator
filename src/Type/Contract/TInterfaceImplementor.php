@@ -72,7 +72,6 @@ trait TInterfaceImplementor
                 try {
                     $fieldContract->getDirectiveUsages()->validateCovariance($field->getDirectiveUsages());
                 } catch (\Throwable) {
-                    // TODO: print information from received exception
                     throw new \Graphpinator\Exception\Type\FieldDirectiveNotCovariant(
                         $this->getName(),
                         $interface->getName(),
@@ -104,7 +103,6 @@ trait TInterfaceImplementor
                     try {
                         $argumentContract->getDirectiveUsages()->validateContravariance($argument->getDirectiveUsages());
                     } catch (\Throwable) {
-                        // TODO: print information from received exception
                         throw new \Graphpinator\Exception\Type\ArgumentDirectiveNotContravariant(
                             $this->getName(),
                             $interface->getName(),
@@ -113,17 +111,19 @@ trait TInterfaceImplementor
                         );
                     }
                 }
-                
-                if ($field->getArguments()->count() !== $fieldContract->getArguments()->count()) {
-                    foreach ($field->getArguments() as $argument) {
-                        if (!$fieldContract->getArguments()->offsetExists($argument->getName()) && $argument->getDefaultValue() === null) {
-                            throw new \Graphpinator\Exception\Type\InterfaceContractNewArgumentWithoutDefault(
-                                $this->getName(),
-                                $interface->getName(),
-                                $field->getName(),
-                                $argument->getName(),
-                            );
-                        }
+
+                if ($field->getArguments()->count() === $fieldContract->getArguments()->count()) {
+                    continue;
+                }
+
+                foreach ($field->getArguments() as $argument) {
+                    if (!$fieldContract->getArguments()->offsetExists($argument->getName()) && $argument->getDefaultValue() === null) {
+                        throw new \Graphpinator\Exception\Type\InterfaceContractNewArgumentWithoutDefault(
+                            $this->getName(),
+                            $interface->getName(),
+                            $field->getName(),
+                            $argument->getName(),
+                        );
                     }
                 }
             }

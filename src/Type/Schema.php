@@ -14,7 +14,7 @@ final class Schema implements \Graphpinator\Typesystem\Entity
         private \Graphpinator\Container\Container $container,
         private \Graphpinator\Type\Type $query,
         private ?\Graphpinator\Type\Type $mutation = null,
-        private ?\Graphpinator\Type\Type $subscription = null
+        private ?\Graphpinator\Type\Type $subscription = null,
     )
     {
         if (\Graphpinator\Graphpinator::$validateSchema) {
@@ -43,12 +43,6 @@ final class Schema implements \Graphpinator\Typesystem\Entity
         ])));
     }
 
-    private static function isSame(?\Graphpinator\Type\Type $lhs, ?\Graphpinator\Type\Type $rhs) : bool
-    {
-        return $lhs === $rhs
-            && ($lhs !== null || $rhs !== null);
-    }
-
     public function getContainer() : \Graphpinator\Container\Container
     {
         return $this->container;
@@ -74,14 +68,19 @@ final class Schema implements \Graphpinator\Typesystem\Entity
         return $visitor->visitSchema($this);
     }
 
-    final public function addDirective(
+    public function addDirective(
         \Graphpinator\Directive\Contract\SchemaLocation $directive,
         array $arguments = [],
     ) : static
     {
-        $usage = new \Graphpinator\DirectiveUsage\DirectiveUsage($directive, $arguments);
-        $this->directiveUsages[] = $usage;
+        $this->directiveUsages[] = new \Graphpinator\DirectiveUsage\DirectiveUsage($directive, $arguments);
 
         return $this;
+    }
+
+    private static function isSame(?\Graphpinator\Type\Type $lhs, ?\Graphpinator\Type\Type $rhs) : bool
+    {
+        return $lhs === $rhs
+            && ($lhs !== null || $rhs !== null);
     }
 }

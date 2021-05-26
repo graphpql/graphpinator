@@ -10,7 +10,9 @@ final class FragmentSpread
 
     public function __construct(
         private \Graphpinator\Normalizer\Field\FieldSet $fields,
-    ) {}
+    )
+    {
+    }
 
     public function getFields() : \Graphpinator\Normalizer\Field\FieldSet
     {

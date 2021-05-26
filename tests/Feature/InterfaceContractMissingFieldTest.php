@@ -41,6 +41,11 @@ final class InterfaceContractMissingFieldTest extends \PHPUnit\Framework\TestCas
                 );
             }
 
+            public function validateNonNullValue($rawValue) : bool
+            {
+                return true;
+            }
+
             protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
             {
                 return new \Graphpinator\Field\ResolvableFieldSet([
@@ -51,11 +56,6 @@ final class InterfaceContractMissingFieldTest extends \PHPUnit\Framework\TestCas
                         },
                     ),
                 ]);
-            }
-
-            public function validateNonNullValue($rawValue) : bool
-            {
-                return true;
             }
         };
     }

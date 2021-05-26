@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Spec;
 
-use Infinityloop\Utils\Json;
+use \Infinityloop\Utils\Json;
 
 final class MultipleOperationsTest extends \PHPUnit\Framework\TestCase
 {

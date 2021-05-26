@@ -11,7 +11,9 @@ final class Directive
     public function __construct(
         private \Graphpinator\Directive\Contract\ExecutableDefinition $directive,
         private \Graphpinator\Value\ArgumentValueSet $arguments,
-    ) {}
+    )
+    {
+    }
 
     public function getDirective() : \Graphpinator\Directive\Contract\ExecutableDefinition
     {
@@ -24,7 +26,7 @@ final class Directive
     }
 
     public function applyVariables(
-        \Graphpinator\Normalizer\VariableValueSet $variables
+        \Graphpinator\Normalizer\VariableValueSet $variables,
     ) : void
     {
         $this->arguments->applyVariables($variables);

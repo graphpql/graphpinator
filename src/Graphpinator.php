@@ -9,7 +9,6 @@ final class Graphpinator implements \Psr\Log\LoggerAwareInterface
     use \Nette\SmartObject;
 
     public static bool $validateSchema = true;
-    private bool $catchExceptions;
     private \Graphpinator\Module\ModuleSet $modules;
     private \Psr\Log\LoggerInterface $logger;
     private \Graphpinator\Parser\Parser $parser;
@@ -19,12 +18,11 @@ final class Graphpinator implements \Psr\Log\LoggerAwareInterface
 
     public function __construct(
         \Graphpinator\Type\Schema $schema,
-        bool $catchExceptions = false,
+        private bool $catchExceptions = false,
         ?\Graphpinator\Module\ModuleSet $modules = null,
-        ?\Psr\Log\LoggerInterface $logger = null
+        ?\Psr\Log\LoggerInterface $logger = null,
     )
     {
-        $this->catchExceptions = $catchExceptions;
         $this->modules = $modules instanceof \Graphpinator\Module\ModuleSet
             ? $modules
             : new \Graphpinator\Module\ModuleSet([]);
@@ -117,7 +115,6 @@ final class Graphpinator implements \Psr\Log\LoggerAwareInterface
             return $exception->isOutputable()
                 ? \Psr\Log\LogLevel::INFO
                 : \Psr\Log\LogLevel::ERROR;
-
         }
 
         return \Psr\Log\LogLevel::EMERGENCY;

@@ -37,7 +37,7 @@ final class TestSchema
             return self::$types[$name];
         }
 
-        self::$types[$name] = match($name) {
+        self::$types[$name] = match ($name) {
             'Query' => self::getQuery(),
             'Abc' => self::getTypeAbc(),
             'Xyz' => self::getTypeXyz(),
@@ -121,6 +121,11 @@ final class TestSchema
         return new class extends \Graphpinator\Type\Type
         {
             protected const NAME = 'Query';
+
+            public function validateNonNullValue($rawValue) : bool
+            {
+                return true;
+            }
 
             protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
             {
@@ -268,18 +273,54 @@ final class TestSchema
                         TestSchema::getTypeFilterData()->notNullList(),
                         static function () {
                             return [
-                                (object) ['data' => (object) [
-                                    'name' => 'testValue1', 'rating' => 98, 'coefficient' => 0.99, 'listName' => ['testValue', '1'], 'isReady' => true,
-                                ]],
-                                (object) ['data' => (object) [
-                                    'name' => 'testValue2', 'rating' => 99, 'coefficient' => 1.00, 'listName' => ['testValue', '2', 'test1'], 'isReady' => false,
-                                ]],
-                                (object) ['data' => (object) [
-                                    'name' => 'testValue3', 'rating' => 100, 'coefficient' => 1.01, 'listName' => ['testValue', '3', 'test1', 'test2'], 'isReady' => false,
-                                ]],
-                                (object) ['data' => (object) [
-                                    'name' => 'testValue4', 'rating' => null, 'coefficient' => null, 'listName' => null, 'isReady' => null,
-                                ]],
+                                (object) [
+                                    'data' => (object) [
+                                        'name' => 'testValue1',
+                                        'rating' => 98,
+                                        'coefficient' => 0.99,
+                                        'listName' => [
+                                            'testValue',
+                                            '1',
+                                        ],
+                                        'isReady' => true,
+                                    ],
+                                ],
+                                (object) [
+                                    'data' => (object) [
+                                        'name' => 'testValue2',
+                                        'rating' => 99,
+                                        'coefficient' => 1.00,
+                                        'listName' => [
+                                            'testValue',
+                                            '2',
+                                            'test1',
+                                        ],
+                                        'isReady' => false,
+                                    ],
+                                ],
+                                (object) [
+                                    'data' => (object) [
+                                        'name' => 'testValue3',
+                                        'rating' => 100,
+                                        'coefficient' => 1.01,
+                                        'listName' => [
+                                            'testValue',
+                                            '3',
+                                            'test1',
+                                            'test2',
+                                        ],
+                                        'isReady' => false,
+                                    ],
+                                ],
+                                (object) [
+                                    'data' => (object) [
+                                        'name' => 'testValue4',
+                                        'rating' => null,
+                                        'coefficient' => null,
+                                        'listName' => null,
+                                        'isReady' => null,
+                                    ],
+                                ],
                             ];
                         },
                     ),
@@ -433,11 +474,6 @@ final class TestSchema
                     ])),
                 ]);
             }
-
-            public function validateNonNullValue($rawValue) : bool
-            {
-                return true;
-            }
         };
     }
 
@@ -513,6 +549,11 @@ final class TestSchema
                 parent::__construct(new \Graphpinator\Type\InterfaceSet([TestSchema::getInterface()]));
             }
 
+            public function validateNonNullValue($rawValue) : bool
+            {
+                return true;
+            }
+
             protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
             {
                 return new \Graphpinator\Field\ResolvableFieldSet([
@@ -525,11 +566,6 @@ final class TestSchema
                     ),
                 ]);
             }
-
-            public function validateNonNullValue($rawValue) : bool
-            {
-                return true;
-            }
         };
     }
 
@@ -539,6 +575,11 @@ final class TestSchema
         {
             protected const NAME = 'Zzz';
             protected const DESCRIPTION = null;
+
+            public function validateNonNullValue($rawValue) : bool
+            {
+                return true;
+            }
 
             protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
             {
@@ -551,11 +592,6 @@ final class TestSchema
                         },
                     ),
                 ]);
-            }
-
-            public function validateNonNullValue($rawValue) : bool
-            {
-                return true;
             }
         };
     }
@@ -570,6 +606,11 @@ final class TestSchema
             public function __construct()
             {
                 parent::__construct(new \Graphpinator\Type\InterfaceSet([TestSchema::getInterface()]));
+            }
+
+            public function validateNonNullValue($rawValue) : bool
+            {
+                return true;
             }
 
             protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
@@ -612,11 +653,6 @@ final class TestSchema
                     ),
                 ]);
             }
-
-            public function validateNonNullValue($rawValue) : bool
-            {
-                return true;
-            }
         };
     }
 
@@ -632,6 +668,11 @@ final class TestSchema
                 parent::__construct();
             }
 
+            public function validateNonNullValue($rawValue) : bool
+            {
+                return true;
+            }
+
             protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
             {
                 return new \Graphpinator\Field\ResolvableFieldSet([
@@ -643,11 +684,6 @@ final class TestSchema
                         },
                     ),
                 ]);
-            }
-
-            public function validateNonNullValue($rawValue) : bool
-            {
-                return true;
             }
         };
     }
@@ -832,6 +868,11 @@ final class TestSchema
                 ]));
             }
 
+            public function validateNonNullValue($rawValue) : bool
+            {
+                return true;
+            }
+
             protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
             {
                 return new \Graphpinator\Field\ResolvableFieldSet([
@@ -849,11 +890,6 @@ final class TestSchema
                     ])),
                 ]);
             }
-
-            public function validateNonNullValue($rawValue) : bool
-            {
-                return true;
-            }
         };
     }
 
@@ -869,6 +905,11 @@ final class TestSchema
                 parent::__construct(new \Graphpinator\Type\InterfaceSet([
                     TestSchema::getInterfaceAbc(),
                 ]));
+            }
+
+            public function validateNonNullValue($rawValue) : bool
+            {
+                return true;
             }
 
             protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
@@ -889,11 +930,6 @@ final class TestSchema
                     ])),
                 ]);
             }
-
-            public function validateNonNullValue($rawValue) : bool
-            {
-                return true;
-            }
         };
     }
 
@@ -909,6 +945,11 @@ final class TestSchema
                 parent::__construct(new \Graphpinator\Type\InterfaceSet([
                     TestSchema::getInterfaceEfg(),
                 ]));
+            }
+
+            public function validateNonNullValue($rawValue) : bool
+            {
+                return true;
             }
 
             protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
@@ -954,11 +995,6 @@ final class TestSchema
                         )->setDefaultValue(false),
                     ])),
                 ]);
-            }
-
-            public function validateNonNullValue($rawValue) : bool
-            {
-                return true;
             }
         };
     }
@@ -1110,7 +1146,7 @@ final class TestSchema
                 return \Graphpinator\Directive\FieldDirectiveResult::NONE;
             }
 
-            protected function getFieldDefinition(): \Graphpinator\Argument\ArgumentSet
+            protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
             {
                 return new \Graphpinator\Argument\ArgumentSet();
             }
@@ -1145,7 +1181,7 @@ final class TestSchema
                 return \Graphpinator\Directive\FieldDirectiveResult::NONE;
             }
 
-            protected function getFieldDefinition(): \Graphpinator\Argument\ArgumentSet
+            protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
             {
                 return new \Graphpinator\Argument\ArgumentSet();
             }
@@ -1179,7 +1215,7 @@ final class TestSchema
                 return \Graphpinator\Directive\FieldDirectiveResult::NONE;
             }
 
-            protected function getFieldDefinition(): \Graphpinator\Argument\ArgumentSet
+            protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
             {
                 return new \Graphpinator\Argument\ArgumentSet();
             }
@@ -1241,6 +1277,11 @@ final class TestSchema
         {
             protected const NAME = 'UploadType';
 
+            public function validateNonNullValue($rawValue) : bool
+            {
+                return true;
+            }
+
             protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
             {
                 return new \Graphpinator\Field\ResolvableFieldSet([
@@ -1259,11 +1300,6 @@ final class TestSchema
                         },
                     ),
                 ]);
-            }
-
-            public function validateNonNullValue($rawValue) : bool
-            {
-                return true;
             }
         };
     }
@@ -1296,6 +1332,11 @@ final class TestSchema
         {
             protected const NAME = 'SimpleType';
             protected const DESCRIPTION = 'Simple desc';
+
+            public function validateNonNullValue($rawValue) : bool
+            {
+                return true;
+            }
 
             protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
             {
@@ -1341,11 +1382,6 @@ final class TestSchema
                     ])),
                 ]);
             }
-
-            public function validateNonNullValue($rawValue) : bool
-            {
-                return true;
-            }
         };
     }
 
@@ -1355,6 +1391,11 @@ final class TestSchema
         {
             protected const NAME = 'SimpleEmptyTestInput';
             protected const DESCRIPTION = null;
+
+            public function validateNonNullValue($rawValue) : bool
+            {
+                return true;
+            }
 
             protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
             {
@@ -1369,11 +1410,6 @@ final class TestSchema
                     ),
                 ]);
             }
-
-            public function validateNonNullValue($rawValue) : bool
-            {
-                return true;
-            }
         };
     }
 
@@ -1381,6 +1417,11 @@ final class TestSchema
     {
         return new class extends \Graphpinator\Type\Type {
             protected const NAME = 'NullFieldResolution';
+
+            public function validateNonNullValue($rawValue) : bool
+            {
+                return true;
+            }
 
             protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
             {
@@ -1423,11 +1464,6 @@ final class TestSchema
                     ])),
                 ]);
             }
-
-            public function validateNonNullValue($rawValue) : bool
-            {
-                return true;
-            }
         };
     }
 
@@ -1435,6 +1471,11 @@ final class TestSchema
     {
         return new class extends \Graphpinator\Type\Type {
             protected const NAME = 'NullListResolution';
+
+            public function validateNonNullValue($rawValue) : bool
+            {
+                return true;
+            }
 
             protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
             {
@@ -1476,11 +1517,6 @@ final class TestSchema
                         )->setDefaultValue(null),
                     ])),
                 ]);
-            }
-
-            public function validateNonNullValue($rawValue) : bool
-            {
-                return true;
             }
         };
     }

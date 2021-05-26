@@ -8,7 +8,9 @@ final class CreateResolvedValueVisitor implements \Graphpinator\Typesystem\TypeV
 {
     public function __construct(
         private mixed $rawValue,
-    ) {}
+    )
+    {
+    }
 
     public function visitType(\Graphpinator\Type\Type $type) : \Graphpinator\Value\ResolvedValue
     {

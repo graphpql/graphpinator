@@ -39,6 +39,11 @@ final class InterfaceNewOptionalArgumentTest extends \PHPUnit\Framework\TestCase
                 );
             }
 
+            public function validateNonNullValue($rawValue) : bool
+            {
+                return true;
+            }
+
             protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
             {
                 return new \Graphpinator\Field\ResolvableFieldSet([
@@ -56,11 +61,6 @@ final class InterfaceNewOptionalArgumentTest extends \PHPUnit\Framework\TestCase
                         ]),
                     ),
                 ]);
-            }
-
-            public function validateNonNullValue($rawValue) : bool
-            {
-                return true;
             }
         };
     }

@@ -4,8 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Directive\Spec;
 
-final class SkipDirective extends \Graphpinator\Directive\Directive
-    implements \Graphpinator\Directive\Contract\FieldLocation
+final class SkipDirective extends \Graphpinator\Directive\Directive implements \Graphpinator\Directive\Contract\FieldLocation
 {
     protected const NAME = 'skip';
     protected const DESCRIPTION = 'Built-in skip directive.';
