@@ -6,7 +6,7 @@ namespace Graphpinator\Tests\Feature;
 
 use \Infinityloop\Utils\Json;
 
-final class CheckForDuplicateTest extends \PHPUnit\Framework\TestCase
+final class TypeSystemDirectiveDuplicateTest extends \PHPUnit\Framework\TestCase
 {
     private static ?\Graphpinator\Type\ScalarType $testDuplicateDirective = null;
 

@@ -26,6 +26,16 @@ final class DirectiveUsageSet extends \Infinityloop\Utils\ObjectSet
         }
     }
 
+    public function validateCovariance(self $child) : void
+    {
+        self::compareVariance($this, $child);
+    }
+
+    public function validateContravariance(self $child) : void
+    {
+        self::compareVariance($child, $this);
+    }
+
     protected function offsetSetImpl($offset, object $object) : void
     {
         \assert($object instanceof \Graphpinator\DirectiveUsage\DirectiveUsage);
@@ -35,27 +45,6 @@ final class DirectiveUsageSet extends \Infinityloop\Utils\ObjectSet
         }
 
         parent::offsetSetImpl($offset, $object);
-    }
-
-    private function checkForDuplicate(\Graphpinator\Directive\Contract\TypeSystemDefinition $directive) : void
-    {
-        if (!\in_array($directive->getName(), $this->nonRepeatableDirectives)) {
-            $this->nonRepeatableDirectives[] = $directive->getName();
-
-            return;
-        }
-
-        throw new \Graphpinator\Exception\DuplicateNonRepeatableDirective();
-    }
-
-    public function validateCovariance(self $child) : void
-    {
-        self::compareVariance($this, $child);
-    }
-
-    public function validateContravariance(self $child) : void
-    {
-        self::compareVariance($child, $this);
     }
 
     private static function compareVariance(self $biggerSet, self $smallerSet) : void
@@ -82,5 +71,16 @@ final class DirectiveUsageSet extends \Infinityloop\Utils\ObjectSet
                 null,
             );
         }
+    }
+
+    private function checkForDuplicate(\Graphpinator\Directive\Contract\TypeSystemDefinition $directive) : void
+    {
+        if (!\in_array($directive->getName(), $this->nonRepeatableDirectives)) {
+            $this->nonRepeatableDirectives[] = $directive->getName();
+
+            return;
+        }
+
+        throw new \Graphpinator\Exception\DuplicateNonRepeatableDirective();
     }
 }
