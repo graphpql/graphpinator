@@ -6,10 +6,13 @@ namespace Graphpinator\Type;
 
 abstract class EnumType extends \Graphpinator\Type\Contract\LeafDefinition
 {
+    use \Graphpinator\Utils\THasDirectives;
+
     public function __construct(
         protected \Graphpinator\EnumItem\EnumItemSet $options,
     )
     {
+        $this->directiveUsages = new \Graphpinator\DirectiveUsage\DirectiveUsageSet();
     }
 
     final public static function fromConstants() : \Graphpinator\EnumItem\EnumItemSet
@@ -44,5 +47,15 @@ abstract class EnumType extends \Graphpinator\Type\Contract\LeafDefinition
     final public function validateNonNullValue(mixed $rawValue) : bool
     {
         return \is_string($rawValue) && $this->options->offsetExists($rawValue);
+    }
+
+    final public function addDirective(
+        \Graphpinator\Directive\Contract\EnumLocation $directive,
+        array $arguments = [],
+    ) : static
+    {
+        $this->directiveUsages[] = new \Graphpinator\DirectiveUsage\DirectiveUsage($directive, $arguments);
+
+        return $this;
     }
 }

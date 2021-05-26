@@ -8,6 +8,7 @@ final class Schema implements \Graphpinator\Typesystem\Entity
 {
     use \Nette\SmartObject;
     use \Graphpinator\Utils\TOptionalDescription;
+    use \Graphpinator\Utils\THasDirectives;
 
     public function __construct(
         private \Graphpinator\Container\Container $container,
@@ -20,6 +21,8 @@ final class Schema implements \Graphpinator\Typesystem\Entity
             if (self::isSame($query, $mutation) || self::isSame($query, $subscription) || self::isSame($mutation, $subscription)) {
                 throw new \Graphpinator\Exception\Type\RootOperationTypesMustBeDifferent();
             }
+
+            $this->directiveUsages = new \Graphpinator\DirectiveUsage\DirectiveUsageSet();
         }
 
         $this->query->addMetaField(new \Graphpinator\Field\ResolvableField(
@@ -63,6 +66,16 @@ final class Schema implements \Graphpinator\Typesystem\Entity
     public function accept(\Graphpinator\Typesystem\EntityVisitor $visitor) : mixed
     {
         return $visitor->visitSchema($this);
+    }
+
+    public function addDirective(
+        \Graphpinator\Directive\Contract\SchemaLocation $directive,
+        array $arguments = [],
+    ) : static
+    {
+        $this->directiveUsages[] = new \Graphpinator\DirectiveUsage\DirectiveUsage($directive, $arguments);
+
+        return $this;
     }
 
     private static function isSame(?\Graphpinator\Type\Type $lhs, ?\Graphpinator\Type\Type $rhs) : bool
