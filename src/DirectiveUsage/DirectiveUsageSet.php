@@ -37,7 +37,7 @@ final class DirectiveUsageSet extends \Infinityloop\Utils\ObjectSet
         parent::offsetSetImpl($offset, $object);
     }
 
-    public function checkForDuplicate(\Graphpinator\Directive\Contract\TypeSystemDefinition $directive) : void
+    private function checkForDuplicate(\Graphpinator\Directive\Contract\TypeSystemDefinition $directive) : void
     {
         if (!\in_array($directive->getName(), $this->nonRepeatableDirectives)) {
             $this->nonRepeatableDirectives[] = $directive->getName();
