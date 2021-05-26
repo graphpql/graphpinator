@@ -14,6 +14,7 @@ final class DeprecatedDirective extends \Graphpinator\Directive\Directive implem
 
     public static function isPure() : bool
     {
+        return true;
     }
 
     public function validateFieldUsage(
