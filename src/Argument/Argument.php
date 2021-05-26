@@ -9,6 +9,7 @@ final class Argument implements \Graphpinator\Typesystem\Component
     use \Nette\SmartObject;
     use \Graphpinator\Utils\TOptionalDescription;
     use \Graphpinator\Utils\THasDirectives;
+    use \Graphpinator\Utils\TDeprecatable;
 
     private ?\Graphpinator\Value\ArgumentValue $defaultValue = null;
 

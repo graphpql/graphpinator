@@ -6,7 +6,8 @@ namespace Graphpinator\Directive\Spec;
 
 final class DeprecatedDirective extends \Graphpinator\Directive\Directive implements
     \Graphpinator\Directive\Contract\FieldDefinitionLocation,
-    \Graphpinator\Directive\Contract\EnumItemLocation
+    \Graphpinator\Directive\Contract\EnumItemLocation,
+    \Graphpinator\Directive\Contract\ArgumentDefinitionLocation
 {
     protected const NAME = 'deprecated';
     protected const DESCRIPTION = 'Built-in deprecated directive.';
@@ -66,5 +67,17 @@ final class DeprecatedDirective extends \Graphpinator\Directive\Directive implem
         return new \Graphpinator\Argument\ArgumentSet([
             new \Graphpinator\Argument\Argument('reason', \Graphpinator\Container\Container::String()),
         ]);
+    }
+
+    public static function isPure() : bool
+    {
+    }
+
+    public function validateArgumentUsage(\Graphpinator\Argument\Argument $argument, \Graphpinator\Value\ArgumentValueSet $arguments,) : bool
+    {
+    }
+
+    public function resolveArgumentDefinition(\Graphpinator\Value\ArgumentValueSet $arguments, \Graphpinator\Value\ArgumentValue $argumentValue,) : void
+    {
     }
 }

@@ -172,7 +172,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                                     'args' => [
                                         ['name' => 'reason'],
                                     ],
-                                    'locations' => ['FIELD_DEFINITION', 'ENUM_VALUE'],
+                                    'locations' => ['FIELD_DEFINITION', 'ENUM_VALUE', 'ARGUMENT_DEFINITION', 'INPUT_FIELD_DEFINITION'],
                                     'isRepeatable' => false,
                                 ],
                             ],

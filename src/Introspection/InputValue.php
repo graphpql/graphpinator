@@ -54,6 +54,20 @@ final class InputValue extends \Graphpinator\Type\Type
                         : null;
                 },
             ),
+            new \Graphpinator\Field\ResolvableField(
+                'isDeprecated',
+                \Graphpinator\Container\Container::Boolean()->notNull(),
+                static function (\Graphpinator\Argument\Argument $argument) : bool {
+                    return $argument->isDeprecated();
+                },
+            ),
+            new \Graphpinator\Field\ResolvableField(
+                'deprecationReason',
+                \Graphpinator\Container\Container::String(),
+                static function (\Graphpinator\Argument\Argument $argument) : ?string {
+                    return $argument->getDeprecationReason();
+                },
+            ),
         ]);
     }
 }
