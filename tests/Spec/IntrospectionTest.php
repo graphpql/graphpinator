@@ -224,6 +224,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                             ofType {
                                 name
                             }
+                            specifiedByURL
                         } 
                     }',
                 ]),
@@ -239,6 +240,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                             'inputFields' => null,
                             'enumValues' => null,
                             'ofType' => null,
+                            'specifiedByURL' => null,
                         ],
                     ],
                 ]),
@@ -265,6 +267,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                             ofType {
                                 name
                             } 
+                            specifiedByURL
                         } 
                     }',
                 ]),
@@ -280,6 +283,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                             'inputFields' => null,
                             'enumValues' => null,
                             'ofType' => null,
+                            'specifiedByURL' => null,
                         ],
                     ],
                 ]),
@@ -306,6 +310,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                             ofType {
                                 name
                             } 
+                            specifiedByURL
                         } 
                     }',
                 ]),
@@ -321,6 +326,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                             'inputFields' => null,
                             'enumValues' => null,
                             'ofType' => null,
+                            'specifiedByURL' => null,
                         ],
                     ],
                 ]),
@@ -336,6 +342,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                             inputFields { name }
                             enumValues { name }
                             ofType { name }
+                            specifiedByURL
                         } 
                     }',
                 ]),
@@ -351,6 +358,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                             'inputFields' => null,
                             'enumValues' => null,
                             'ofType' => null,
+                            'specifiedByURL' => null,
                         ],
                     ],
                 ]),
@@ -366,6 +374,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                             inputFields { name }
                             enumValues { name }
                             ofType { name }
+                            specifiedByURL
                         } 
                     }',
                 ]),
@@ -381,6 +390,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                             'inputFields' => [['name' => 'name'], ['name' => 'number'], ['name' => 'bool']],
                             'enumValues' => null,
                             'ofType' => null,
+                            'specifiedByURL' => null,
                         ],
                     ],
                 ]),
@@ -396,6 +406,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                             inputFields { name }
                             enumValues { name description isDeprecated deprecationReason } 
                             ofType { name }
+                            specifiedByURL
                         } 
                     }',
                 ]),
@@ -416,6 +427,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                                 ['name' => 'D', 'description' => null, 'isDeprecated' => false, 'deprecationReason' => null],
                             ],
                             'ofType' => null,
+                            'specifiedByURL' => null,
                         ],
                     ],
                 ]),
@@ -664,13 +676,14 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 Json::fromNative((object) [
-                    'query' => '{ __type(name: "TestScalar") { name kind } }',
+                    'query' => '{ __type(name: "TestScalar") { name kind specifiedByURL } }',
                 ]),
                 Json::fromNative((object) [
                     'data' => [
                         '__type' => [
                             'name' => 'TestScalar',
                             'kind' => 'SCALAR',
+                            'specifiedByURL' => null,
                         ],
                     ],
                 ]),
