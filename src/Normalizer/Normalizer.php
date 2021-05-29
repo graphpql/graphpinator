@@ -115,17 +115,23 @@ final class Normalizer
 
         \assert($type instanceof \Graphpinator\Type\Contract\Inputable);
 
-        return new \Graphpinator\Normalizer\Variable\Variable(
+        $normalized = new \Graphpinator\Normalizer\Variable\Variable(
             $variable->getName(),
             $type,
             $defaultValue instanceof \Graphpinator\Parser\Value\Value
                 ? $defaultValue->accept(new \Graphpinator\Value\ConvertParserValueVisitor($type, null, $this->path))
                 : null,
+        );
+
+        $normalized->setDirectives(
             $this->normalizeDirectiveSet(
                 $variable->getDirectives(),
                 ExecutableDirectiveLocation::VARIABLE_DEFINITION,
+                $normalized,
             ),
         );
+
+        return $normalized;
     }
 
     private function normalizeFieldSet(
@@ -279,7 +285,7 @@ final class Normalizer
             $items[] = \Graphpinator\Value\ConvertParserValueVisitor::convertArgumentValue(
                 $parsedArg->getValue(),
                 $argument,
-                $this->variableSet,
+                isset($this->variableSet) ? $this->variableSet : null,
                 $this->path,
             );
             $this->path->pop();

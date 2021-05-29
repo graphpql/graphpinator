@@ -8,11 +8,12 @@ final class Variable
 {
     use \Nette\SmartObject;
 
+    private \Graphpinator\Normalizer\Directive\DirectiveSet $directives;
+
     public function __construct(
         private string $name,
         private \Graphpinator\Type\Contract\Inputable $type,
         private ?\Graphpinator\Value\InputedValue $defaultValue,
-        private \Graphpinator\Normalizer\Directive\DirectiveSet $directives,
     )
     {
     }
@@ -30,6 +31,11 @@ final class Variable
     public function getDefaultValue() : ?\Graphpinator\Value\InputedValue
     {
         return $this->defaultValue;
+    }
+
+    public function setDirectives(\Graphpinator\Normalizer\Directive\DirectiveSet $directives) : void
+    {
+        $this->directives = $directives;
     }
 
     public function getDirectives() : \Graphpinator\Normalizer\Directive\DirectiveSet
