@@ -12,6 +12,7 @@ final class Variable
         private string $name,
         private \Graphpinator\Type\Contract\Inputable $type,
         private ?\Graphpinator\Value\InputedValue $defaultValue,
+        private \Graphpinator\Normalizer\Directive\DirectiveSet $directives,
     )
     {
     }
@@ -29,5 +30,10 @@ final class Variable
     public function getDefaultValue() : ?\Graphpinator\Value\InputedValue
     {
         return $this->defaultValue;
+    }
+
+    public function getDirectives() : \Graphpinator\Normalizer\Directive\DirectiveSet
+    {
+        return $this->directives;
     }
 }

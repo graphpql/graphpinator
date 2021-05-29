@@ -38,7 +38,14 @@ final class Finalizer
 
         foreach ($operation->getVariables() as $variable) {
             $this->path->add($variable->getName() . ' <variable>');
-            $normalized[$variable->getName()] = $this->normalizeVariableValue($variable, $variables);
+            $value = $this->normalizeVariableValue($variable, $variables);
+
+            foreach ($variable->getDirectives() as $directive) {
+                \assert($directive instanceof \Graphpinator\Directive\Contract\VariableDefinitionLocation);
+                $directive->resolveVariableDefinition($directive->getArguments(), $value);
+            }
+
+            $normalized[$variable->getName()] = $value;
             $this->path->pop();
         }
 

@@ -121,6 +121,10 @@ final class Normalizer
             $defaultValue instanceof \Graphpinator\Parser\Value\Value
                 ? $defaultValue->accept(new \Graphpinator\Value\ConvertParserValueVisitor($type, null, $this->path))
                 : null,
+            $this->normalizeDirectiveSet(
+                $variable->getDirectives(),
+                ExecutableDirectiveLocation::VARIABLE_DEFINITION,
+            ),
         );
     }
 
@@ -183,7 +187,7 @@ final class Normalizer
     private function normalizeDirectiveSet(
         \Graphpinator\Parser\Directive\DirectiveSet $directiveSet,
         string $location,
-        ?\Graphpinator\Field\Field $usage = null,
+        \Graphpinator\Field\Field|\Graphpinator\Normalizer\Variable\Variable|null $usage = null,
     ) : \Graphpinator\Normalizer\Directive\DirectiveSet
     {
         $normalized = [];
@@ -191,7 +195,7 @@ final class Normalizer
 
         foreach ($directiveSet as $directive) {
             $this->path->add($directive->getName() . ' <directive>');
-            $normalizedDirective = $this->normalizeDirective($directive, $usage, $location);
+            $normalizedDirective = $this->normalizeDirective($directive, $location, $usage);
             $directiveDef = $normalizedDirective->getDirective();
 
             if (!$directiveDef->isRepeatable()) {
@@ -211,8 +215,8 @@ final class Normalizer
 
     private function normalizeDirective(
         \Graphpinator\Parser\Directive\Directive $directive,
-        ?\Graphpinator\Field\Field $usage,
         string $location,
+        \Graphpinator\Field\Field|\Graphpinator\Normalizer\Variable\Variable|null $usage = null,
     ) : \Graphpinator\Normalizer\Directive\Directive
     {
         $directiveDef = $this->schema->getContainer()->getDirective($directive->getName());
@@ -235,6 +239,8 @@ final class Normalizer
             \Graphpinator\Directive\ExecutableDirectiveLocation::INLINE_FRAGMENT,
             \Graphpinator\Directive\ExecutableDirectiveLocation::FRAGMENT_SPREAD =>
                 $directiveDef->validateFieldUsage($usage, $arguments),
+            \Graphpinator\Directive\ExecutableDirectiveLocation::VARIABLE_DEFINITION =>
+                $directiveDef->validateVariableUsage($usage, $arguments),
             default => true,
         };
 
