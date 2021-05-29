@@ -1,4 +1,4 @@
-# GraPHPinator 
+# GraPHPinator [![master 8.0](https://github.com/infinityloop-dev/graphpinator/workflows/PHP/badge.svg?branch=master)](https://github.com/infinityloop-dev/graphpinator/actions?query=branch%3Amaster) [![codecov](https://codecov.io/gh/infinityloop-dev/graphpinator/branch/master/graph/badge.svg)](https://codecov.io/gh/infinityloop-dev/graphpinator)
 
 :zap::globe_with_meridians::zap: Easy-to-use & Fast GraphQL server implementation for PHP.
 
@@ -30,11 +30,8 @@ Install package using composer
 
 ## Dependencies
 
-|PHP version|Package version|Build status|
-|-----------|---------------|------------|
-|7.4+|0.25.x|[![stable 7.4](https://github.com/infinityloop-dev/graphpinator/workflows/PHP/badge.svg?branch=php74_bugfixes)](https://github.com/infinityloop-dev/graphpinator/actions?query=branch%3Aphp74_bugfixes) [![codecov](https://codecov.io/gh/infinityloop-dev/graphpinator/branch/php74_bugfixes/graph/badge.svg)](https://codecov.io/gh/infinityloop-dev/graphpinator)|
-|8.0.1+|1.x|[![master 8.0](https://github.com/infinityloop-dev/graphpinator/workflows/PHP/badge.svg?branch=master)](https://github.com/infinityloop-dev/graphpinator/actions?query=branch%3Amaster) [![codecov](https://codecov.io/gh/infinityloop-dev/graphpinator/branch/master/graph/badge.svg)](https://codecov.io/gh/infinityloop-dev/graphpinator)|
-
+- PHP 8.0.1+ 
+    - Latest PHP 7.4+ version is 0.25.x [![stable 7.4](https://github.com/infinityloop-dev/graphpinator/workflows/PHP/badge.svg?branch=php74_bugfixes)](https://github.com/infinityloop-dev/graphpinator/actions?query=branch%3Aphp74_bugfixes) [![codecov](https://codecov.io/gh/infinityloop-dev/graphpinator/branch/php74_bugfixes/graph/badge.svg)](https://codecov.io/gh/infinityloop-dev/graphpinator)
 - [infinityloop-dev/utils](https://github.com/infinityloop-dev/utils)
 
 ## How to use
