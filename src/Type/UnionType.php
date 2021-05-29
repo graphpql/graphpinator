@@ -7,6 +7,7 @@ namespace Graphpinator\Type;
 abstract class UnionType extends \Graphpinator\Type\Contract\AbstractDefinition
 {
     use \Graphpinator\Type\Contract\TMetaFields;
+    use \Graphpinator\Utils\THasDirectives;
 
     public function __construct(protected \Graphpinator\Type\TypeSet $types)
     {
@@ -40,5 +41,15 @@ abstract class UnionType extends \Graphpinator\Type\Contract\AbstractDefinition
     final public function accept(\Graphpinator\Typesystem\NamedTypeVisitor $visitor) : mixed
     {
         return $visitor->visitUnion($this);
+    }
+
+    final public function addDirective(
+        \Graphpinator\Directive\Contract\UnionLocation $directive,
+        array $arguments = [],
+    ) : static
+    {
+        $this->directiveUsages[] = new \Graphpinator\DirectiveUsage\DirectiveUsage($directive, $arguments);
+
+        return $this;
     }
 }
