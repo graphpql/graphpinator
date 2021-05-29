@@ -285,7 +285,8 @@ final class Normalizer
             $items[] = \Graphpinator\Value\ConvertParserValueVisitor::convertArgumentValue(
                 $parsedArg->getValue(),
                 $argument,
-                isset($this->variableSet) ? $this->variableSet : null,
+                $this->variableSet
+                    ?? null,
                 $this->path,
             );
             $this->path->pop();
