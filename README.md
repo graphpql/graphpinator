@@ -18,6 +18,8 @@ Feature complete PHP implementation of GraphQL server. Its job is transformation
     - [Upload](https://github.com/infinityloop-dev/graphpinator-upload) - Module to handle [multipart-formdata](https://github.com/jaydenseric/graphql-multipart-request-spec) requests.
     - [Query cost](https://github.com/infinityloop-dev/graphpinator-query-cost) - Modules to limit query cost by restricting maximum depth or number of nodes.
     - [Persisted queries](https://github.com/infinityloop-dev/graphpinator-persisted-queries) - Module to persist validated query in cache and improve performace of repeating queries.
+- Includes adapters for easy integration into other PHP frameworks:
+    - [Nette](https://github.com/infinityloop-dev/graphpinator-nette) - Adapters for [Nette framework](https://nette.org/).
 - Project is composed of multiple smaller packages, which may be used standalone:
     - [Tokenizer](https://github.com/infinityloop-dev/graphpinator-tokenizer) - Lexical analyzer of GraphQL document.
     - [Parser](https://github.com/infinityloop-dev/graphpinator-parser) - Syntactic analyzer of GraphQL document.
