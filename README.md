@@ -15,7 +15,7 @@ Feature complete PHP implementation of GraphQL server. Its job is transformation
     - [Extra types](https://github.com/infinityloop-dev/graphpinator-extra-types) - Some useful and commonly used types, both scalar or composite.
     - [Constraint directives](https://github.com/infinityloop-dev/graphpinator-constraint-directives) - Typesystem directives to declare additional validation on top of GraphQL typesystem.
     - [Where directives](https://github.com/infinityloop-dev/graphpinator-where-directives) - Executable directives to filter values in lists.
-    - File upload using [multipart-formdata](https://github.com/jaydenseric/graphql-multipart-request-spec) specs (currently bundled).
+    - [Upload](https://github.com/infinityloop-dev/graphpinator-upload) - "Module to handle [multipart-formdata](https://github.com/jaydenseric/graphql-multipart-request-spec) requests.",
     - [Query cost](https://github.com/infinityloop-dev/graphpinator-query-cost) - Modules to limit query cost by restricting maximum depth or number of nodes.
     - [Persisted queries](https://github.com/infinityloop-dev/graphpinator-persisted-queries) - Module to persist validated query in cache and improve performace of repeating queries.
 - Project is composed from multiple smaller packages, which may be used standalone:

@@ -52,9 +52,6 @@ final class TestSchema
             'ArrayEnum' => self::getArrayEnum(),
             'DescriptionEnum' => self::getDescriptionEnum(),
             'TestScalar' => self::getTestScalar(),
-            'UploadType' => self::getUploadType(),
-            'UploadInput' => self::getUploadInput(),
-            'Upload' => new \Graphpinator\Module\Upload\UploadType(),
             'ComplexDefaultsInput' => self::getComplexDefaultsInput(),
             'NullFieldResolution' => self::getNullFieldResolution(),
             'NullListResolution' => self::getNullListResolution(),
@@ -94,9 +91,6 @@ final class TestSchema
             'ArrayEnum' => self::getType('ArrayEnum'),
             'DescriptionEnum' => self::getType('DescriptionEnum'),
             'TestScalar' => self::getType('TestScalar'),
-            'UploadType' => self::getType('UploadType'),
-            'UploadInput' => self::getType('UploadInput'),
-            'Upload' => self::getType('Upload'),
             'ComplexDefaultsInput' => self::getType('ComplexDefaultsInput'),
             'NullFieldResolution' => self::getType('NullFieldResolution'),
             'NullListResolution' => self::getType('NullListResolution'),
@@ -158,90 +152,6 @@ final class TestSchema
                             throw new \Exception('Random exception');
                         },
                     ),
-                    \Graphpinator\Field\ResolvableField::create(
-                        'fieldUpload',
-                        TestSchema::getUploadType()->notNull(),
-                        static function ($parent, ?\Psr\Http\Message\UploadedFileInterface $file) : \Psr\Http\Message\UploadedFileInterface {
-                            return $file;
-                        },
-                    )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        new \Graphpinator\Argument\Argument(
-                            'file',
-                            new \Graphpinator\Module\Upload\UploadType(),
-                        ),
-                    ])),
-                    \Graphpinator\Field\ResolvableField::create(
-                        'fieldMultiUpload',
-                        TestSchema::getUploadType()->notNullList(),
-                        static function ($parent, array $files) : array {
-                            return $files;
-                        },
-                    )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        new \Graphpinator\Argument\Argument(
-                            'files',
-                            (new \Graphpinator\Module\Upload\UploadType())->list(),
-                        ),
-                    ])),
-                    \Graphpinator\Field\ResolvableField::create(
-                        'fieldInputUpload',
-                        TestSchema::getUploadType()->notNull(),
-                        static function ($parent, \stdClass $fileInput) : \Psr\Http\Message\UploadedFileInterface {
-                            return $fileInput->file;
-                        },
-                    )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        new \Graphpinator\Argument\Argument(
-                            'fileInput',
-                            TestSchema::getUploadInput()->notNull(),
-                        ),
-                    ])),
-                    \Graphpinator\Field\ResolvableField::create(
-                        'fieldInputMultiUpload',
-                        TestSchema::getUploadType()->notNullList(),
-                        static function ($parent, \stdClass $fileInput) : array {
-                            return $fileInput->files;
-                        },
-                    )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        new \Graphpinator\Argument\Argument(
-                            'fileInput',
-                            TestSchema::getUploadInput()->notNull(),
-                        ),
-                    ])),
-                    \Graphpinator\Field\ResolvableField::create(
-                        'fieldMultiInputUpload',
-                        TestSchema::getUploadType()->notNullList(),
-                        static function ($parent, array $fileInputs) {
-                            $return = [];
-
-                            foreach ($fileInputs as $fileInput) {
-                                $return[] = $fileInput->file;
-                            }
-
-                            return $return;
-                        },
-                    )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        new \Graphpinator\Argument\Argument(
-                            'fileInputs',
-                            TestSchema::getUploadInput()->notNullList(),
-                        ),
-                    ])),
-                    \Graphpinator\Field\ResolvableField::create(
-                        'fieldMultiInputMultiUpload',
-                        TestSchema::getUploadType()->notNullList(),
-                        static function ($parent, array $fileInputs) {
-                            $return = [];
-
-                            foreach ($fileInputs as $fileInput) {
-                                $return += $fileInput->files;
-                            }
-
-                            return $return;
-                        },
-                    )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        new \Graphpinator\Argument\Argument(
-                            'fileInputs',
-                            TestSchema::getUploadInput()->notNullList(),
-                        ),
-                    ])),
                     new \Graphpinator\Field\ResolvableField(
                         'fieldList',
                         \Graphpinator\Container\Container::String()->notNullList(),
@@ -1266,61 +1176,6 @@ final class TestSchema
                             'innerNotNull' => (object) ['name' => 'string2', 'number' => [11, 22]],
                         ],
                     ]),
-                ]);
-            }
-        };
-    }
-
-    public static function getUploadType() : \Graphpinator\Type\Type
-    {
-        return new class extends \Graphpinator\Type\Type
-        {
-            protected const NAME = 'UploadType';
-
-            public function validateNonNullValue($rawValue) : bool
-            {
-                return true;
-            }
-
-            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
-            {
-                return new \Graphpinator\Field\ResolvableFieldSet([
-                    new \Graphpinator\Field\ResolvableField(
-                        'fileName',
-                        \Graphpinator\Container\Container::String(),
-                        static function (\Psr\Http\Message\UploadedFileInterface $file) : string {
-                            return $file->getClientFilename();
-                        },
-                    ),
-                    new \Graphpinator\Field\ResolvableField(
-                        'fileContent',
-                        \Graphpinator\Container\Container::String(),
-                        static function (\Psr\Http\Message\UploadedFileInterface $file) : string {
-                            return $file->getStream()->getContents();
-                        },
-                    ),
-                ]);
-            }
-        };
-    }
-
-    public static function getUploadInput() : \Graphpinator\Type\InputType
-    {
-        return new class extends \Graphpinator\Type\InputType
-        {
-            protected const NAME = 'UploadInput';
-
-            protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
-            {
-                return new \Graphpinator\Argument\ArgumentSet([
-                    new \Graphpinator\Argument\Argument(
-                        'file',
-                        new \Graphpinator\Module\Upload\UploadType(),
-                    ),
-                    new \Graphpinator\Argument\Argument(
-                        'files',
-                        (new \Graphpinator\Module\Upload\UploadType())->list(),
-                    ),
                 ]);
             }
         };

@@ -32,7 +32,10 @@
     "infinityloop-dev/graphpinator-printer": "Schema printing in GraphQL language.",
     "infinityloop-dev/graphpinator-constraint-directives": "Directives for additional value validation.",
     "infinityloop-dev/graphpinator-where-directives": "Directives for filtering list values.",
-    "infinityloop-dev/graphpinator-extra-types": "Commonly used types, both scalar or composite."
+    "infinityloop-dev/graphpinator-extra-types": "Commonly used types, both scalar or composite.",
+    "infinityloop-dev/graphpinator-upload": "Module to handle multipart formdata requests.",
+    "infinityloop-dev/graphpinator-query-cost": "Modules to limit query cost by restricting maximum depth or number of nodes.",
+    "infinityloop-dev/graphpinator-persisted-queries": "Module to persist validated query in cache and improve performace of repeating queries."
   },
   "scripts": {
     "phpunit": "phpunit tests",
