@@ -7,7 +7,7 @@
 Feature complete PHP implementation of GraphQL server. Its job is transformation of query string into resolved Json result for a given Schema. 
 
 - Aims to be compliant with the latest draft of GraphQL specification.
-- Fully typesafe, and therefore minimum required PHP version is 8.0. Sacrafices a tiny bit of convenience for huge amount of clarity and safety - no random configuration `array`s, no mixed types, no variable function arguments - this library doesnt try to save you from verbosity, but makes sure you always know what you've got.
+- Fully typesafe, and therefore minimum required PHP version is 8.0. Sacrifices a tiny bit of convenience for huge amount of clarity and safety - no random configuration `array`s, no mixed types, no variable function arguments - this library doesnt try to save you from verbosity, but makes sure you always know what you've got.
 - Code first.
 - Flexible. Easy to extend with extra functionality using Modules or middleware Directives.
 - Includes some opt-in extensions which are out of scope of official specs:
@@ -18,7 +18,7 @@ Feature complete PHP implementation of GraphQL server. Its job is transformation
     - [Upload](https://github.com/infinityloop-dev/graphpinator-upload) - "Module to handle [multipart-formdata](https://github.com/jaydenseric/graphql-multipart-request-spec) requests.",
     - [Query cost](https://github.com/infinityloop-dev/graphpinator-query-cost) - Modules to limit query cost by restricting maximum depth or number of nodes.
     - [Persisted queries](https://github.com/infinityloop-dev/graphpinator-persisted-queries) - Module to persist validated query in cache and improve performace of repeating queries.
-- Project is composed from multiple smaller packages, which may be used standalone:
+- Project is composed of multiple smaller packages, which may be used standalone:
     - [Tokenizer](https://github.com/infinityloop-dev/graphpinator-tokenizer) - Lexical analyzer of GraphQL document.
     - [Parser](https://github.com/infinityloop-dev/graphpinator-parser) - Syntactic analyzer of GraphQL document.
 
@@ -41,4 +41,4 @@ Install package using composer
 
 ## Contributing
 
-This package is relatively new so some features might be missing. If you stumble upon something that is not included or is not compliant with the specs, please inform us by creating an issue or discussion. This is not yet another package, where issues and pull-requests lie around for months, so dont hesitate and help us improve the library.
+This package is relatively new, so some features might be missing. If you stumble upon something that is not included or is not compliant with the specs, please inform us by creating an issue or discussion. This is not yet another package, where issues and pull-requests lie around for months, so dont hesitate and help us improve the library.
