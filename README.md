@@ -35,6 +35,14 @@ Install package using composer
 - PHP 8.0.1+ 
     - Latest PHP 7.4+ version is 0.25.x [![stable 7.4](https://github.com/infinityloop-dev/graphpinator/workflows/PHP/badge.svg?branch=php74_bugfixes)](https://github.com/infinityloop-dev/graphpinator/actions?query=branch%3Aphp74_bugfixes) [![codecov](https://codecov.io/gh/infinityloop-dev/graphpinator/branch/php74_bugfixes/graph/badge.svg)](https://codecov.io/gh/infinityloop-dev/graphpinator)
 - [infinityloop-dev/utils](https://github.com/infinityloop-dev/utils)
+- [psr/http-message](https://github.com/php-fig/http-message)
+- [psr/log](https://github.com/php-fig/log)
+
+This list excludes graphpinator sub-packages such as graphpinator-common, graphpinator-tokenizer and others.
+
+### Dependency tree of graphpinator packages and extensions
+
+![Dependency tree](docs/dependency_diagram.svg)
 
 ## How to use
 
