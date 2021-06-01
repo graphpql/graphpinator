@@ -172,6 +172,15 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                                     'locations' => ['FIELD_DEFINITION', 'ENUM_VALUE', 'ARGUMENT_DEFINITION', 'INPUT_FIELD_DEFINITION'],
                                     'isRepeatable' => false,
                                 ],
+                                [
+                                    'name' => 'specifiedBy',
+                                    'description' => 'Built-in specified by directive.',
+                                    'args' => [
+                                        ['name' => 'url'],
+                                    ],
+                                    'locations' => ['SCALAR'],
+                                    'isRepeatable' => false,
+                                ],
                             ],
                         ],
                     ],
