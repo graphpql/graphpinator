@@ -26,14 +26,14 @@ final class Graphpinator implements \Psr\Log\LoggerAwareInterface
         $schema->getQuery()->addMetaField(\Graphpinator\Field\ResolvableField::create(
             '__schema',
             $schema->getContainer()->getType('__Schema')->notNull(),
-            function() use ($schema) : \Graphpinator\Type\Schema {
+            static function() use ($schema) : \Graphpinator\Type\Schema {
                 return $schema;
             },
         ));
         $schema->getQuery()->addMetaField(\Graphpinator\Field\ResolvableField::create(
             '__type',
             $schema->getContainer()->getType('__Type'),
-            function($parent, string $name) use ($schema) : ?\Graphpinator\Type\Contract\Definition {
+            static function($parent, string $name) use ($schema) : ?\Graphpinator\Type\Contract\Definition {
                 return $schema->getContainer()->getType($name);
             },
         )->setArguments(new \Graphpinator\Argument\ArgumentSet([
