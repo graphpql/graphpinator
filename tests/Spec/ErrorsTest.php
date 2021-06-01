@@ -18,7 +18,7 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
                 Json::fromNative((object) [
                     'errors' => [
                         [
-                            'message' => \Graphpinator\Exception\Tokenizer\MissingVariableName::MESSAGE,
+                            'message' => \Graphpinator\Tokenizer\Exception\MissingVariableName::MESSAGE,
                             'locations' => [['line' => 1, 'column' => 18]],
                         ],
                     ],
@@ -31,7 +31,7 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
                 Json::fromNative((object) [
                     'errors' => [
                         [
-                            'message' => \Graphpinator\Exception\Tokenizer\InvalidEllipsis::MESSAGE,
+                            'message' => \Graphpinator\Tokenizer\Exception\InvalidEllipsis::MESSAGE,
                             'locations' => [['line' => 1, 'column' => 19]],
                         ],
                     ],
