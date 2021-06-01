@@ -41,6 +41,7 @@ class SimpleContainer extends \Graphpinator\Container\Container
             'skip' => self::directiveSkip(),
             'include' => self::directiveInclude(),
             'deprecated' => self::directiveDeprecated(),
+            'specifiedBy' => self::directiveSpecifiedBy(),
         ];
 
         foreach ($types as $type) {
