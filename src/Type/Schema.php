@@ -21,8 +21,6 @@ final class Schema implements \Graphpinator\Typesystem\Entity
             if (self::isSame($query, $mutation) || self::isSame($query, $subscription) || self::isSame($mutation, $subscription)) {
                 throw new \Graphpinator\Exception\Type\RootOperationTypesMustBeDifferent();
             }
-
-            $this->directiveUsages = new \Graphpinator\DirectiveUsage\DirectiveUsageSet();
         }
 
         $this->query->addMetaField(new \Graphpinator\Field\ResolvableField(
@@ -41,6 +39,7 @@ final class Schema implements \Graphpinator\Typesystem\Entity
         )->setArguments(new \Graphpinator\Argument\ArgumentSet([
             new \Graphpinator\Argument\Argument('name', \Graphpinator\Container\Container::String()->notNull()),
         ])));
+        $this->directiveUsages = new \Graphpinator\DirectiveUsage\DirectiveUsageSet();
     }
 
     public function getContainer() : \Graphpinator\Container\Container
