@@ -23,22 +23,6 @@ final class Schema implements \Graphpinator\Typesystem\Entity
             }
         }
 
-        $this->query->addMetaField(new \Graphpinator\Field\ResolvableField(
-            '__schema',
-            $this->container->getType('__Schema')->notNull(),
-            function() : self {
-                return $this;
-            },
-        ));
-        $this->query->addMetaField(\Graphpinator\Field\ResolvableField::create(
-            '__type',
-            $this->container->getType('__Type'),
-            function($parent, string $name) : ?\Graphpinator\Type\Contract\Definition {
-                return $this->container->getType($name);
-            },
-        )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-            new \Graphpinator\Argument\Argument('name', \Graphpinator\Container\Container::String()->notNull()),
-        ])));
         $this->directiveUsages = new \Graphpinator\DirectiveUsage\DirectiveUsageSet();
     }
 

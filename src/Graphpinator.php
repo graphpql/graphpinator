@@ -23,6 +23,23 @@ final class Graphpinator implements \Psr\Log\LoggerAwareInterface
         ?\Psr\Log\LoggerInterface $logger = null,
     )
     {
+        $schema->getQuery()->addMetaField(\Graphpinator\Field\ResolvableField::create(
+            '__schema',
+            $schema->getContainer()->getType('__Schema')->notNull(),
+            function() use ($schema) : \Graphpinator\Type\Schema {
+                return $schema;
+            },
+        ));
+        $schema->getQuery()->addMetaField(\Graphpinator\Field\ResolvableField::create(
+            '__type',
+            $schema->getContainer()->getType('__Type'),
+            function($parent, string $name) use ($schema) : ?\Graphpinator\Type\Contract\Definition {
+                return $schema->getContainer()->getType($name);
+            },
+        )->setArguments(new \Graphpinator\Argument\ArgumentSet([
+            \Graphpinator\Argument\Argument::create('name', \Graphpinator\Container\Container::String()->notNull()),
+        ])));
+
         $this->modules = $modules instanceof \Graphpinator\Module\ModuleSet
             ? $modules
             : new \Graphpinator\Module\ModuleSet([]);
