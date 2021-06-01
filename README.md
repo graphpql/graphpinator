@@ -21,6 +21,7 @@ Feature complete PHP implementation of GraphQL server. Its job is transformation
 - Includes adapters for easy integration into other PHP frameworks:
     - [Nette](https://github.com/infinityloop-dev/graphpinator-nette) - Adapters for [Nette framework](https://nette.org/).
 - Project is composed of multiple smaller packages, which may be used standalone:
+    - [Source](https://github.com/infinityloop-dev/graphpinator-source) - Wrapper around source document.
     - [Tokenizer](https://github.com/infinityloop-dev/graphpinator-tokenizer) - Lexical analyzer of GraphQL document.
     - [Parser](https://github.com/infinityloop-dev/graphpinator-parser) - Syntactic analyzer of GraphQL document.
 
