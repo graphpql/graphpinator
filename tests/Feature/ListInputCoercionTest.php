@@ -88,7 +88,7 @@ final class ListInputCoercionTest extends \PHPUnit\Framework\TestCase
 
     public function getQuery(?int $defaultValue = null) : \Graphpinator\Type\Type
     {
-        return new class($defaultValue) extends \Graphpinator\Type\Type
+        return new class ($defaultValue) extends \Graphpinator\Type\Type
         {
             protected const NAME = 'Query';
 
@@ -99,7 +99,12 @@ final class ListInputCoercionTest extends \PHPUnit\Framework\TestCase
                 parent::__construct();
             }
 
-            protected function getFieldDefinition(): \Graphpinator\Field\ResolvableFieldSet
+            public function validateNonNullValue(mixed $rawValue) : bool
+            {
+                return true;
+            }
+
+            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
             {
                 $argument = \Graphpinator\Argument\Argument::create(
                     'listArg',
@@ -116,16 +121,11 @@ final class ListInputCoercionTest extends \PHPUnit\Framework\TestCase
                         \Graphpinator\Container\Container::Int()->notNullList(),
                         static function ($parent, array $listArg) : array {
                             return $listArg;
-                        }
+                        },
                     )->setArguments(new \Graphpinator\Argument\ArgumentSet([
                         $argument,
-                    ]))
+                    ])),
                 ]);
-            }
-
-            public function validateNonNullValue(mixed $rawValue) : bool
-            {
-                return true;
             }
         };
     }
