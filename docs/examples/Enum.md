@@ -125,7 +125,7 @@ type Query {
 ## Execute Request
 
 ```php
-$json = \Graphpinator\Json::fromString(
+$json = \Graphpinator\Utils\Json::fromString(
     '{"query":"query { randomEpisode }"}'
 );
 $requestFactory = new \Graphpinator\Request\JsonRequestFactory($json);

@@ -31,7 +31,7 @@ final class Query extends \Graphpinator\Type\Type
     protected const NAME = 'Query';
     protected const DESCRIPTION = 'Graphpinator HelloWorld: Query type';
 
-    protected function validateNonNullValue($rawValue) : bool
+    public function validateNonNullValue($rawValue) : bool
     {
         // validation of resolved value from parent, Query is the initial type in the schema = has no parent ($rawValue is null so this function is never called)
         return true;
@@ -63,7 +63,7 @@ but this step can (and is recommended to) be achieved automatically when using s
 
 ```php
 $query = new \Example\Query(); // our Query class which we defined above
-$container = new \Graphpinator\Container\SimpleContainer([$query]);
+$container = new \Graphpinator\Container\SimpleContainer([$query], []);
 ```
 
 ## Step three - create Schema
@@ -81,10 +81,14 @@ $schema = new \Graphpinator\Type\Schema($container, $query);
 
 ## Optional step - print schema definition
 
+> This step requires `infinityloop-dev/graphpinator-printer` package.
+
 We can use our `Schema` class to print its definition in the type language syntax, which describes the capabilities of our GraphQL service.
 
 ```php
-echo $schema->printSchema();
+$printer = new \Graphpinator\Printer\Printer();
+
+echo $printer->printSchema($schema);
 ```
 
 produces the following
@@ -127,8 +131,8 @@ GraPHPinator has multiple `RequestFactory` implementations ready, from which you
 All depends on how your low-level request looks like and what middleware you use.
 
 - `\Graphpinator\Request\JsonRequestFactory` 
-  - Simplest form of request - json with keys `query`, `variables` and `operationName`.
-  - Its constructor argument is `\Graphpinator\Json`.
+  - The Simplest form of request - json with keys `query`, `variables` and `operationName`.
+  - Its constructor argument is `\Graphpinator\Utils\Json`.
 - `\Graphpinator\Request\PsrRequestFactory` 
   - When using Psr compatible middleware.
   - The factory extracts all the information from http request itself.
@@ -137,7 +141,7 @@ All depends on how your low-level request looks like and what middleware you use
 In this simple example, we choose the `JsonRequestFactory`.
 
 ```php
-$json = \Graphpinator\Json::fromString(
+$json = \Graphpinator\Utils\Json::fromString(
     '{"query":"query { helloWorld }"}'
 );
 $requestFactory = new \Graphpinator\Request\JsonRequestFactory($json);

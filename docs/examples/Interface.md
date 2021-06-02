@@ -215,7 +215,7 @@ type TypeB implements HasString {
 ## Execute Request
 
 ```php
-$json = \Graphpinator\Json::fromString(
+$json = \Graphpinator\Utils\Json::fromString(
     '{"query":"query { interfaceField { __typename fieldString ... on TypeA { fieldInt } } }"}'
 );
 $requestFactory = new \Graphpinator\Request\JsonRequestFactory($json);

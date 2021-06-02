@@ -118,7 +118,7 @@ type Query {
 ## Execute Request
 
 ```php
-$json = \Graphpinator\Json::fromString(
+$json = \Graphpinator\Utils\Json::fromString(
     '{"query":"query { print(arg: {name: "peldax", age: 26}) }"}'
 );
 $requestFactory = new \Graphpinator\Request\JsonRequestFactory($json);

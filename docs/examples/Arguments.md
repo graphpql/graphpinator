@@ -100,7 +100,7 @@ type Query {
 ## Execute Request
 
 ```php
-$json = \Graphpinator\Json::fromString(
+$json = \Graphpinator\Utils\Json::fromString(
     '{"query":"query { print(arg: "Hello world!") }"}'
 );
 $requestFactory = new \Graphpinator\Request\JsonRequestFactory($json);
@@ -116,7 +116,7 @@ This is it, we have our response in `$response` variable. The query above will p
 Example using the sum endpoint:
 
 ```php
-$json = \Graphpinator\Json::fromString(
+$json = \Graphpinator\Utils\Json::fromString(
     '{"query":"query { sum(arg1: 10) }"}'
 );
 $requestFactory = new \Graphpinator\Request\JsonRequestFactory($json);

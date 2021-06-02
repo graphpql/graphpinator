@@ -185,7 +185,7 @@ type TypeB {
 ## Execute Request
 
 ```php
-$json = \Graphpinator\Json::fromString(
+$json = \Graphpinator\Utils\Json::fromString(
     '{"query":"query { simpleUnion { __typename ... on TypeA { fieldInt } ... on TypeB { fieldString } } }"}'
 );
 $requestFactory = new \Graphpinator\Request\JsonRequestFactory($json);
