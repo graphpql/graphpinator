@@ -124,7 +124,7 @@ final class ConvertRawValueVisitor implements \Graphpinator\Typesystem\TypeVisit
         }
 
         if (!\is_array($this->rawValue)) {
-            throw new \Graphpinator\Exception\Value\InvalidValue($list->printName(), $this->rawValue, true);
+            $this->rawValue = [$this->rawValue];
         }
 
         $innerType = $list->getInnerType();
