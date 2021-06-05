@@ -11,6 +11,7 @@ abstract class UnionType extends \Graphpinator\Type\Contract\AbstractDefinition
 
     public function __construct(protected \Graphpinator\Type\TypeSet $types)
     {
+        $this->directiveUsages = new \Graphpinator\DirectiveUsage\DirectiveUsageSet();
     }
 
     final public function getTypes() : \Graphpinator\Type\TypeSet
