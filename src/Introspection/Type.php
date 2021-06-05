@@ -52,7 +52,10 @@ final class Type extends \Graphpinator\Typesystem\Type
             \Graphpinator\Typesystem\Field\ResolvableField::create(
                 'fields',
                 $this->container->getType('__Field')->notNull()->list(),
-                static function (\Graphpinator\Typesystem\Contract\Type $definition, bool $includeDeprecated) : ?\Graphpinator\Typesystem\Field\FieldSet {
+                static function (
+                    \Graphpinator\Typesystem\Contract\Type $definition,
+                    bool $includeDeprecated,
+                ) : ?\Graphpinator\Typesystem\Field\FieldSet {
                     if (!$definition instanceof \Graphpinator\Typesystem\Contract\InterfaceImplementor) {
                         return null;
                     }
@@ -74,8 +77,10 @@ final class Type extends \Graphpinator\Typesystem\Type
                     return new \Graphpinator\Typesystem\Field\FieldSet($filtered);
                 },
             )->setArguments(new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                \Graphpinator\Typesystem\Argument\Argument::create('includeDeprecated', \Graphpinator\Typesystem\Container::Boolean()->notNull())
-                    ->setDefaultValue(false),
+                \Graphpinator\Typesystem\Argument\Argument::create(
+                    'includeDeprecated',
+                    \Graphpinator\Typesystem\Container::Boolean()->notNull(),
+                )->setDefaultValue(false),
             ])),
             \Graphpinator\Typesystem\Field\ResolvableField::create(
                 'interfaces',
@@ -113,7 +118,10 @@ final class Type extends \Graphpinator\Typesystem\Type
             \Graphpinator\Typesystem\Field\ResolvableField::create(
                 'enumValues',
                 $this->container->getType('__EnumValue')->notNull()->list(),
-                static function (\Graphpinator\Typesystem\Contract\Type $definition, bool $includeDeprecated) : ?\Graphpinator\Typesystem\EnumItem\EnumItemSet {
+                static function (
+                    \Graphpinator\Typesystem\Contract\Type $definition,
+                    bool $includeDeprecated,
+                ) : ?\Graphpinator\Typesystem\EnumItem\EnumItemSet {
                     if (!$definition instanceof \Graphpinator\Typesystem\EnumType) {
                         return null;
                     }
@@ -135,13 +143,18 @@ final class Type extends \Graphpinator\Typesystem\Type
                     return new \Graphpinator\Typesystem\EnumItem\EnumItemSet($filtered);
                 },
             )->setArguments(new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                \Graphpinator\Typesystem\Argument\Argument::create('includeDeprecated', \Graphpinator\Typesystem\Container::Boolean()->notNull())
-                    ->setDefaultValue(false),
+                \Graphpinator\Typesystem\Argument\Argument::create(
+                    'includeDeprecated',
+                    \Graphpinator\Typesystem\Container::Boolean()->notNull(),
+                )->setDefaultValue(false),
             ])),
             \Graphpinator\Typesystem\Field\ResolvableField::create(
                 'inputFields',
                 $this->container->getType('__InputValue')->notNull()->list(),
-                static function (\Graphpinator\Typesystem\Contract\Type $definition, bool $includeDeprecated) : ?\Graphpinator\Typesystem\Argument\ArgumentSet {
+                static function (
+                    \Graphpinator\Typesystem\Contract\Type $definition,
+                    bool $includeDeprecated,
+                ) : ?\Graphpinator\Typesystem\Argument\ArgumentSet {
                     if (!$definition instanceof \Graphpinator\Typesystem\InputType) {
                         return null;
                     }
@@ -163,8 +176,10 @@ final class Type extends \Graphpinator\Typesystem\Type
                     return new \Graphpinator\Typesystem\Argument\ArgumentSet($filtered);
                 },
             )->setArguments(new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                \Graphpinator\Typesystem\Argument\Argument::create('includeDeprecated', \Graphpinator\Typesystem\Container::Boolean()->notNull())
-                    ->setDefaultValue(false),
+                \Graphpinator\Typesystem\Argument\Argument::create(
+                    'includeDeprecated',
+                    \Graphpinator\Typesystem\Container::Boolean()->notNull(),
+                )->setDefaultValue(false),
             ])),
             \Graphpinator\Typesystem\Field\ResolvableField::create(
                 'ofType',

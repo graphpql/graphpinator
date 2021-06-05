@@ -41,7 +41,10 @@ final class Field extends \Graphpinator\Typesystem\Type
             \Graphpinator\Typesystem\Field\ResolvableField::create(
                 'args',
                 $this->container->getType('__InputValue')->notNullList(),
-                static function (\Graphpinator\Typesystem\Field\Field $field, bool $includeDeprecated) : \Graphpinator\Typesystem\Argument\ArgumentSet {
+                static function (
+                    \Graphpinator\Typesystem\Field\Field $field,
+                    bool $includeDeprecated,
+                ) : \Graphpinator\Typesystem\Argument\ArgumentSet {
                     if ($includeDeprecated === true) {
                         return $field->getArguments();
                     }
@@ -59,8 +62,10 @@ final class Field extends \Graphpinator\Typesystem\Type
                     return new \Graphpinator\Typesystem\Argument\ArgumentSet($filtered);
                 },
             )->setArguments(new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                \Graphpinator\Typesystem\Argument\Argument::create('includeDeprecated', \Graphpinator\Typesystem\Container::Boolean()->notNull())
-                    ->setDefaultValue(false),
+                \Graphpinator\Typesystem\Argument\Argument::create(
+                    'includeDeprecated',
+                    \Graphpinator\Typesystem\Container::Boolean()->notNull(),
+                )->setDefaultValue(false),
             ])),
             new \Graphpinator\Typesystem\Field\ResolvableField(
                 'type',

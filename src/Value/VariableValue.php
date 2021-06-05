@@ -10,7 +10,10 @@ final class VariableValue implements \Graphpinator\Value\InputedValue
 
     private ?\Graphpinator\Value\InputedValue $value = null;
 
-    public function __construct(private \Graphpinator\Typesystem\Contract\Inputable $type, private \Graphpinator\Normalizer\Variable\Variable $variable)
+    public function __construct(
+        private \Graphpinator\Typesystem\Contract\Inputable $type,
+        private \Graphpinator\Normalizer\Variable\Variable $variable,
+    )
     {
         // flipped because of contravariance, isInstanceOf is covariant
         if (!$type->isInstanceOf($variable->getType())) {

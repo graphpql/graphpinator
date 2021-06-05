@@ -67,7 +67,10 @@ final class DeprecatedDirective extends \Graphpinator\Typesystem\Directive imple
         // nothing here
     }
 
-    public function validateArgumentUsage(\Graphpinator\Typesystem\Argument\Argument $argument, \Graphpinator\Value\ArgumentValueSet $arguments,) : bool
+    public function validateArgumentUsage(
+        \Graphpinator\Typesystem\Argument\Argument $argument,
+        \Graphpinator\Value\ArgumentValueSet $arguments,
+    ) : bool
     {
         return true;
     }
