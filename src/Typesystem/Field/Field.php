@@ -2,20 +2,20 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Field;
+namespace Graphpinator\Typesystem\Field;
 
-class Field implements \Graphpinator\Typesystem\Component
+class Field implements \Graphpinator\Typesystem\Contract\Component
 {
     use \Nette\SmartObject;
-    use \Graphpinator\Utils\TOptionalDescription;
-    use \Graphpinator\Utils\THasDirectives;
-    use \Graphpinator\Utils\TDeprecatable;
+    use \Graphpinator\Typesystem\Utils\TOptionalDescription;
+    use \Graphpinator\Typesystem\Utils\THasDirectives;
+    use \Graphpinator\Typesystem\Utils\TDeprecatable;
 
-    protected \Graphpinator\Argument\ArgumentSet $arguments;
+    protected \Graphpinator\Typesystem\Argument\ArgumentSet $arguments;
 
     public function __construct(protected string $name, protected \Graphpinator\Type\Contract\Outputable $type)
     {
-        $this->arguments = new \Graphpinator\Argument\ArgumentSet([]);
+        $this->arguments = new \Graphpinator\Typesystem\Argument\ArgumentSet([]);
         $this->directiveUsages = new \Graphpinator\DirectiveUsage\DirectiveUsageSet([]);
     }
 
@@ -34,19 +34,19 @@ class Field implements \Graphpinator\Typesystem\Component
         return $this->type;
     }
 
-    final public function getArguments() : \Graphpinator\Argument\ArgumentSet
+    final public function getArguments() : \Graphpinator\Typesystem\Argument\ArgumentSet
     {
         return $this->arguments;
     }
 
-    final public function setArguments(\Graphpinator\Argument\ArgumentSet $arguments) : static
+    final public function setArguments(\Graphpinator\Typesystem\Argument\ArgumentSet $arguments) : static
     {
         $this->arguments = $arguments;
 
         return $this;
     }
 
-    final public function accept(\Graphpinator\Typesystem\ComponentVisitor $visitor) : mixed
+    final public function accept(\Graphpinator\Typesystem\Contract\ComponentVisitor $visitor) : mixed
     {
         return $visitor->visitField($this);
     }
@@ -56,7 +56,7 @@ class Field implements \Graphpinator\Typesystem\Component
         array $arguments = [],
     ) : self
     {
-        $usage = new \Graphpinator\DirectiveUsage\DirectiveUsage($directive, $arguments);
+        $usage = new \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsage($directive, $arguments);
 
         if (\Graphpinator\Graphpinator::$validateSchema && !$directive->validateFieldUsage($this, $usage->getArgumentValues())) {
             throw new \Graphpinator\Exception\Type\DirectiveIncorrectType();
