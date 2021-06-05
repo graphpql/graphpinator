@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Normalizer;
 
-use \Graphpinator\Directive\ExecutableDirectiveLocation;
+use Graphpinator\Typesystem\Location\ExecutableDirectiveLocation;
 
 final class Normalizer
 {
@@ -241,11 +241,11 @@ final class Normalizer
 
         $arguments = $this->normalizeArgumentValueSet($directive->getArguments(), $directiveDef->getArguments());
         $usageIsValid = match ($location) {
-            \Graphpinator\Directive\ExecutableDirectiveLocation::FIELD,
-            \Graphpinator\Directive\ExecutableDirectiveLocation::INLINE_FRAGMENT,
-            \Graphpinator\Directive\ExecutableDirectiveLocation::FRAGMENT_SPREAD =>
+            ExecutableDirectiveLocation::FIELD,
+            ExecutableDirectiveLocation::INLINE_FRAGMENT,
+            ExecutableDirectiveLocation::FRAGMENT_SPREAD =>
                 $directiveDef->validateFieldUsage($usage, $arguments),
-            \Graphpinator\Directive\ExecutableDirectiveLocation::VARIABLE_DEFINITION =>
+            ExecutableDirectiveLocation::VARIABLE_DEFINITION =>
                 $directiveDef->validateVariableUsage($usage, $arguments),
             default => true,
         };

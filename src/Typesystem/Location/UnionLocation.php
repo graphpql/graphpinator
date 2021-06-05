@@ -4,6 +4,6 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem\Location;
 
-interface UnionLocation extends \Graphpinator\Typesystem\Contract\TypesystemDirective
+interface UnionLocation extends \Graphpinator\Typesystem\Contract\TypeSystemDirective
 {
 }

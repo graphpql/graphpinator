@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem\Location;
 
-interface ObjectLocation extends \Graphpinator\Typesystem\Contract\TypesystemDirective
+interface ObjectLocation extends \Graphpinator\Typesystem\Contract\TypeSystemDirective
 {
     public function validateObjectUsage(
         \Graphpinator\Typesystem\Type|\Graphpinator\Typesystem\InterfaceType $type,

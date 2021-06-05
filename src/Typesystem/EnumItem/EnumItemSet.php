@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\EnumItem;
+namespace Graphpinator\Typesystem\EnumItem;
 
 /**
  * @method \Graphpinator\Typesystem\EnumItem\EnumItem current() : object

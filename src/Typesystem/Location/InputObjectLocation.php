@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem\Location;
 
-interface InputObjectLocation extends \Graphpinator\Typesystem\Contract\TypesystemDirective
+interface InputObjectLocation extends \Graphpinator\Typesystem\Contract\TypeSystemDirective
 {
     public function validateInputUsage(
         \Graphpinator\Typesystem\InputType $inputType,
