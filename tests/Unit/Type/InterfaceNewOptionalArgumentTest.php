@@ -67,15 +67,7 @@ final class InterfaceNewOptionalArgumentTest extends \PHPUnit\Framework\TestCase
 
     public function testAdditionalChildArgumentCannotBeNull() : void
     {
-        $this->expectException(\Graphpinator\Exception\Type\InterfaceContractNewArgumentWithoutDefault::class);
-        $this->expectExceptionMessage(
-            (new \Graphpinator\Exception\Type\InterfaceContractNewArgumentWithoutDefault(
-                'ChildType',
-                'SomeInterface',
-                'field',
-                'argument',
-            ))->getMessage(),
-        );
+        $this->expectException(\Graphpinator\Typesystem\Exception\InterfaceContractNewArgumentWithoutDefault::class);
 
         self::createChildType()->getFields();
     }

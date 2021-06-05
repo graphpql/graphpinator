@@ -48,7 +48,7 @@ final class InterfaceOrTypeMustDefineOneOrMoreFieldsTest extends \PHPUnit\Framew
 
     public function testTypeMustDefineOneOrMoreFields() : void
     {
-        $this->expectException(\Graphpinator\Exception\Type\InterfaceOrTypeMustDefineOneOrMoreFields::class);
+        $this->expectException(\Graphpinator\Typesystem\Exception\InterfaceOrTypeMustDefineOneOrMoreFields::class);
         $this->expectExceptionMessage('An Object type or interface must define one or more fields.');
 
         self::getTypeMustDefineOneOrMoreFieldsType()->getFields();
@@ -56,7 +56,7 @@ final class InterfaceOrTypeMustDefineOneOrMoreFieldsTest extends \PHPUnit\Framew
 
     public function testInterfaceMustDefineOneOrMoreFields() : void
     {
-        $this->expectException(\Graphpinator\Exception\Type\InterfaceOrTypeMustDefineOneOrMoreFields::class);
+        $this->expectException(\Graphpinator\Typesystem\Exception\InterfaceOrTypeMustDefineOneOrMoreFields::class);
         $this->expectExceptionMessage('An Object type or interface must define one or more fields.');
 
         self::getInterfaceMustDefineOneOrMoreFieldsType()->getFields();

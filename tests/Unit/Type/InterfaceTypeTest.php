@@ -522,7 +522,7 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
 
     public function testIncompatibleFieldType() : void
     {
-        $this->expectException(\Graphpinator\Exception\Type\InterfaceContractFieldTypeMismatch::class);
+        $this->expectException(\Graphpinator\Typesystem\Exception\InterfaceContractFieldTypeMismatch::class);
         $this->expectExceptionMessage('Type "Abc" does not satisfy interface "Foo" - field "fieldNotNull" does not have a compatible type.');
 
         self::getTypeFieldTypeMismatch()->getFields();
@@ -530,7 +530,7 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
 
     public function testIncompatibleFieldTypeContravariance() : void
     {
-        $this->expectException(\Graphpinator\Exception\Type\InterfaceContractFieldTypeMismatch::class);
+        $this->expectException(\Graphpinator\Typesystem\Exception\InterfaceContractFieldTypeMismatch::class);
         $this->expectExceptionMessage('Type "Abc" does not satisfy interface "Foo" - field "fieldNotNull" does not have a compatible type.');
 
         self::getTypeFieldTypeMismatchCovariance()->getFields();
@@ -538,7 +538,7 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
 
     public function testMissingArgument() : void
     {
-        $this->expectException(\Graphpinator\Exception\Type\InterfaceContractMissingArgument::class);
+        $this->expectException(\Graphpinator\Typesystem\Exception\InterfaceContractMissingArgument::class);
         $this->expectExceptionMessage('Type "Abc" does not satisfy interface "Foo" - argument "argName" on field "fieldArg" is missing.');
 
         self::getTypeMissingArgument()->getFields();
@@ -546,7 +546,7 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
 
     public function testIncompatibleArgumentType() : void
     {
-        $this->expectException(\Graphpinator\Exception\Type\InterfaceContractArgumentTypeMismatch::class);
+        $this->expectException(\Graphpinator\Typesystem\Exception\InterfaceContractArgumentTypeMismatch::class);
         $this->expectExceptionMessage('Type "Abc" does not satisfy interface "Foo" - '
             . 'argument "argName" on field "fieldArgNotNull" does not have a compatible type.');
 
@@ -555,7 +555,7 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
 
     public function testIncompatibleArgumentTypeContravariance() : void
     {
-        $this->expectException(\Graphpinator\Exception\Type\InterfaceContractArgumentTypeMismatch::class);
+        $this->expectException(\Graphpinator\Typesystem\Exception\InterfaceContractArgumentTypeMismatch::class);
         $this->expectExceptionMessage('Type "Abc" does not satisfy interface "Foo" - '
             . 'argument "argName" on field "fieldArg" does not have a compatible type.');
 

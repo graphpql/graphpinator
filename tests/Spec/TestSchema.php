@@ -1045,7 +1045,7 @@ final class TestSchema
             {
                 ++self::$count;
 
-                return \Graphpinator\Directive\FieldDirectiveResult::NONE;
+                return \Graphpinator\Typesystem\Location\FieldLocation::NONE;
             }
 
             public function resolveFieldAfter(
@@ -1053,7 +1053,7 @@ final class TestSchema
                 \Graphpinator\Value\FieldValue $fieldValue,
             ) : string
             {
-                return \Graphpinator\Directive\FieldDirectiveResult::NONE;
+                return \Graphpinator\Typesystem\Location\FieldLocation::NONE;
             }
 
             protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
