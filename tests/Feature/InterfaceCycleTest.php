@@ -133,8 +133,8 @@ final class InterfaceCycleTest extends \PHPUnit\Framework\TestCase
         self::$interfaceB = null;
         self::$interfaceC = null;
 
-        $this->expectException(\Graphpinator\Exception\Type\InterfaceCycle::class);
-        $this->expectDeprecationMessage(\Graphpinator\Exception\Type\InterfaceCycle::MESSAGE);
+        $this->expectException(\Graphpinator\Typesystem\Exception\InterfaceCycle::class);
+        $this->expectDeprecationMessage(\Graphpinator\Typesystem\Exception\InterfaceCycle::MESSAGE);
 
         self::getInterfaceA()->getFields();
     }
@@ -145,8 +145,8 @@ final class InterfaceCycleTest extends \PHPUnit\Framework\TestCase
         self::$interfaceB = null;
         self::$interfaceC = null;
 
-        $this->expectException(\Graphpinator\Exception\Type\InterfaceCycle::class);
-        $this->expectDeprecationMessage(\Graphpinator\Exception\Type\InterfaceCycle::MESSAGE);
+        $this->expectException(\Graphpinator\Typesystem\Exception\InterfaceCycle::class);
+        $this->expectDeprecationMessage(\Graphpinator\Typesystem\Exception\InterfaceCycle::MESSAGE);
 
         self::getInterfaceB()->getFields();
     }
@@ -157,8 +157,8 @@ final class InterfaceCycleTest extends \PHPUnit\Framework\TestCase
         self::$interfaceB = null;
         self::$interfaceC = null;
 
-        $this->expectException(\Graphpinator\Exception\Type\InterfaceCycle::class);
-        $this->expectDeprecationMessage(\Graphpinator\Exception\Type\InterfaceCycle::MESSAGE);
+        $this->expectException(\Graphpinator\Typesystem\Exception\InterfaceCycle::class);
+        $this->expectDeprecationMessage(\Graphpinator\Typesystem\Exception\InterfaceCycle::MESSAGE);
 
         self::getInterfaceC()->getFields();
     }

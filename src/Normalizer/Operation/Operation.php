@@ -11,7 +11,7 @@ final class Operation
     public function __construct(
         private string $type,
         private ?string $name,
-        private \Graphpinator\Type\Type $rootObject,
+        private \Graphpinator\Typesystem\Type $rootObject,
         private \Graphpinator\Normalizer\Field\FieldSet $children,
         private \Graphpinator\Normalizer\Variable\VariableSet $variables,
         private \Graphpinator\Normalizer\Directive\DirectiveSet $directives,
@@ -24,7 +24,7 @@ final class Operation
         return $this->type;
     }
 
-    public function getRootObject() : \Graphpinator\Type\Type
+    public function getRootObject() : \Graphpinator\Typesystem\Type
     {
         return $this->rootObject;
     }

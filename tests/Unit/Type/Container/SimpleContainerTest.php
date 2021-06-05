@@ -28,11 +28,11 @@ final class SimpleContainerTest extends \PHPUnit\Framework\TestCase
              '__Directive',
             '__DirectiveLocation',
                  ] as $typeName) {
-            self::assertInstanceOf(\Graphpinator\Type\Contract\NamedDefinition::class, $container->getType($typeName));
+            self::assertInstanceOf(\Graphpinator\Typesystem\Contract\NamedType::class, $container->getType($typeName));
         }
 
         foreach (['skip', 'include'] as $directiveName) {
-            self::assertInstanceOf(\Graphpinator\Directive\Directive::class, $container->getDirective($directiveName));
+            self::assertInstanceOf(\Graphpinator\Typesystem\Directive::class, $container->getDirective($directiveName));
         }
     }
 }

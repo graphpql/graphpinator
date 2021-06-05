@@ -21,7 +21,7 @@ final class InputTypeMustDefineOneOreMoreFieldsTest extends \PHPUnit\Framework\T
 
     public function testInputTypeMustDefineOneOreMoreFields() : void
     {
-        $this->expectException(\Graphpinator\Exception\Type\InputTypeMustDefineOneOreMoreFields::class);
+        $this->expectException(\Graphpinator\Typesystem\Exception\InputTypeMustDefineOneOreMoreFields::class);
         $this->expectExceptionMessage('An Input Object type must define one or more input fields.');
 
         self::getInputTypeMustDefineOneOreMoreFieldsInputType()->getArguments();

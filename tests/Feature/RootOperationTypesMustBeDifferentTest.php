@@ -8,7 +8,7 @@ final class RootOperationTypesMustBeDifferentTest extends \PHPUnit\Framework\Tes
 {
     public function testAllSame() : void
     {
-        $this->expectException(\Graphpinator\Exception\Type\RootOperationTypesMustBeDifferent::class);
+        $this->expectException(\Graphpinator\Typesystem\Exception\RootOperationTypesMustBeDifferent::class);
         $this->expectExceptionMessage('The query, mutation, and subscription root types must all be different types if provided.');
 
         $query = $this->getQuery();
@@ -23,7 +23,7 @@ final class RootOperationTypesMustBeDifferentTest extends \PHPUnit\Framework\Tes
 
     public function testQueryMutation() : void
     {
-        $this->expectException(\Graphpinator\Exception\Type\RootOperationTypesMustBeDifferent::class);
+        $this->expectException(\Graphpinator\Typesystem\Exception\RootOperationTypesMustBeDifferent::class);
         $query = $this->getQuery();
 
         new \Graphpinator\Type\Schema(
@@ -36,7 +36,7 @@ final class RootOperationTypesMustBeDifferentTest extends \PHPUnit\Framework\Tes
 
     public function testQuerySubscription() : void
     {
-        $this->expectException(\Graphpinator\Exception\Type\RootOperationTypesMustBeDifferent::class);
+        $this->expectException(\Graphpinator\Typesystem\Exception\RootOperationTypesMustBeDifferent::class);
         $query = $this->getQuery();
 
         new \Graphpinator\Type\Schema(
@@ -49,7 +49,7 @@ final class RootOperationTypesMustBeDifferentTest extends \PHPUnit\Framework\Tes
 
     public function testMutationSubscription() : void
     {
-        $this->expectException(\Graphpinator\Exception\Type\RootOperationTypesMustBeDifferent::class);
+        $this->expectException(\Graphpinator\Typesystem\Exception\RootOperationTypesMustBeDifferent::class);
         $query = $this->getQuery();
         $secondQuery = $this->getQuery();
 

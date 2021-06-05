@@ -9,7 +9,7 @@ final class InputValue implements \Graphpinator\Value\InputedValue, \IteratorAgg
     use \Nette\SmartObject;
 
     public function __construct(
-        private \Graphpinator\Type\InputType $type,
+        private \Graphpinator\Typesystem\InputType $type,
         private \stdClass $value,
     )
     {
@@ -30,7 +30,7 @@ final class InputValue implements \Graphpinator\Value\InputedValue, \IteratorAgg
         return $return;
     }
 
-    public function getType() : \Graphpinator\Type\InputType
+    public function getType() : \Graphpinator\Typesystem\InputType
     {
         return $this->type;
     }

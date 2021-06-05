@@ -8,7 +8,7 @@ interface InputedValue extends \Graphpinator\Value\Value
 {
     public function getRawValue(bool $forResolvers = false) : mixed;
 
-    public function getType() : \Graphpinator\Type\Contract\Inputable;
+    public function getType() : \Graphpinator\Typesystem\Contract\Inputable;
 
     /**
      * Function used to replace variable references with concrete values before query execution.

@@ -6,7 +6,7 @@ namespace Graphpinator\Value;
 
 final class ListInputedValue extends \Graphpinator\Value\ListValue implements \Graphpinator\Value\InputedValue
 {
-    public function __construct(\Graphpinator\Type\ListType $type, array $value)
+    public function __construct(\Graphpinator\Typesystem\ListType $type, array $value)
     {
         $this->type = $type;
         $this->value = $value;
@@ -25,7 +25,7 @@ final class ListInputedValue extends \Graphpinator\Value\ListValue implements \G
         return $return;
     }
 
-    public function getType() : \Graphpinator\Type\ListType
+    public function getType() : \Graphpinator\Typesystem\ListType
     {
         return $this->type;
     }

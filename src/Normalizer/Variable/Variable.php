@@ -12,7 +12,7 @@ final class Variable
 
     public function __construct(
         private string $name,
-        private \Graphpinator\Type\Contract\Inputable $type,
+        private \Graphpinator\Typesystem\Contract\Inputable $type,
         private ?\Graphpinator\Value\InputedValue $defaultValue,
     )
     {
@@ -23,7 +23,7 @@ final class Variable
         return $this->name;
     }
 
-    public function getType() : \Graphpinator\Type\Contract\Inputable
+    public function getType() : \Graphpinator\Typesystem\Contract\Inputable
     {
         return $this->type;
     }

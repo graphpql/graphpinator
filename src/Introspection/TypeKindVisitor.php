@@ -4,46 +4,46 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Introspection;
 
-final class TypeKindVisitor implements \Graphpinator\Typesystem\TypeVisitor
+final class TypeKindVisitor implements \Graphpinator\Typesystem\Contract\TypeVisitor
 {
     use \Nette\SmartObject;
 
-    public function visitType(\Graphpinator\Type\Type $type) : string
+    public function visitType(\Graphpinator\Typesystem\Type $type) : string
     {
         return TypeKind::OBJECT;
     }
 
-    public function visitInterface(\Graphpinator\Type\InterfaceType $interface) : string
+    public function visitInterface(\Graphpinator\Typesystem\InterfaceType $interface) : string
     {
         return TypeKind::INTERFACE;
     }
 
-    public function visitUnion(\Graphpinator\Type\UnionType $union) : string
+    public function visitUnion(\Graphpinator\Typesystem\UnionType $union) : string
     {
         return TypeKind::UNION;
     }
 
-    public function visitInput(\Graphpinator\Type\InputType $input) : string
+    public function visitInput(\Graphpinator\Typesystem\InputType $input) : string
     {
         return TypeKind::INPUT_OBJECT;
     }
 
-    public function visitScalar(\Graphpinator\Type\ScalarType $scalar) : string
+    public function visitScalar(\Graphpinator\Typesystem\ScalarType $scalar) : string
     {
         return TypeKind::SCALAR;
     }
 
-    public function visitEnum(\Graphpinator\Type\EnumType $enum) : string
+    public function visitEnum(\Graphpinator\Typesystem\EnumType $enum) : string
     {
         return TypeKind::ENUM;
     }
 
-    public function visitNotNull(\Graphpinator\Type\NotNullType $notNull) : string
+    public function visitNotNull(\Graphpinator\Typesystem\NotNullType $notNull) : string
     {
         return TypeKind::NON_NULL;
     }
 
-    public function visitList(\Graphpinator\Type\ListType $list) : string
+    public function visitList(\Graphpinator\Typesystem\ListType $list) : string
     {
         return TypeKind::LIST;
     }

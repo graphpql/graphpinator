@@ -9,17 +9,17 @@ final class Field
     use \Nette\SmartObject;
 
     public function __construct(
-        private \Graphpinator\Field\Field $field,
+        private \Graphpinator\Typesystem\Field\Field $field,
         private string $alias,
         private \Graphpinator\Value\ArgumentValueSet $arguments,
         private \Graphpinator\Normalizer\Directive\DirectiveSet $directives,
         private ?\Graphpinator\Normalizer\Field\FieldSet $children = null,
-        private ?\Graphpinator\Type\Contract\TypeConditionable $typeCond = null,
+        private ?\Graphpinator\Typesystem\Contract\TypeConditionable $typeCond = null,
     )
     {
     }
 
-    public function getField() : \Graphpinator\Field\Field
+    public function getField() : \Graphpinator\Typesystem\Field\Field
     {
         return $this->field;
     }
@@ -49,18 +49,18 @@ final class Field
         return $this->children;
     }
 
-    public function getTypeCondition() : ?\Graphpinator\Type\Contract\TypeConditionable
+    public function getTypeCondition() : ?\Graphpinator\Typesystem\Contract\TypeConditionable
     {
         return $this->typeCond;
     }
 
-    public function applyFragmentTypeCondition(?\Graphpinator\Type\Contract\TypeConditionable $typeCond) : void
+    public function applyFragmentTypeCondition(?\Graphpinator\Typesystem\Contract\TypeConditionable $typeCond) : void
     {
-        if (!$typeCond instanceof \Graphpinator\Type\Contract\TypeConditionable) {
+        if (!$typeCond instanceof \Graphpinator\Typesystem\Contract\TypeConditionable) {
             return;
         }
 
-        if (!$this->typeCond instanceof \Graphpinator\Type\Contract\TypeConditionable) {
+        if (!$this->typeCond instanceof \Graphpinator\Typesystem\Contract\TypeConditionable) {
             $this->typeCond = $typeCond;
 
             return;

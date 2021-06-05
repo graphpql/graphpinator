@@ -8,5 +8,5 @@ interface Value
 {
     public function getRawValue() : mixed;
 
-    public function getType() : \Graphpinator\Type\Contract\Definition;
+    public function getType() : \Graphpinator\Typesystem\Contract\Type;
 }

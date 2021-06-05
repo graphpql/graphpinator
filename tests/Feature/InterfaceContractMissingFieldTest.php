@@ -62,7 +62,7 @@ final class InterfaceContractMissingFieldTest extends \PHPUnit\Framework\TestCas
 
     public function testTypeMissingField() : void
     {
-        $this->expectException(\Graphpinator\Exception\Type\InterfaceContractMissingField::class);
+        $this->expectException(\Graphpinator\Typesystem\Exception\InterfaceContractMissingField::class);
         $this->expectExceptionMessage('Type "Abc" does not satisfy interface "Bar" - missing field "field".');
 
         self::getTypeMissingField()->getFields();

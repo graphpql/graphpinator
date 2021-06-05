@@ -24,7 +24,7 @@ final class Resolver
         foreach ($operation->getDirectives() as $directive) {
             $directiveDef = $directive->getDirective();
 
-            \assert($directiveDef instanceof \Graphpinator\Directive\Contract\QueryLocation);
+            \assert($directiveDef instanceof \Graphpinator\Typesystem\Location\QueryLocation);
 
             $directiveDef->resolveQueryBefore($directive->getArguments());
         }
@@ -39,7 +39,7 @@ final class Resolver
         foreach ($operation->getDirectives() as $directive) {
             $directiveDef = $directive->getDirective();
 
-            \assert($directiveDef instanceof \Graphpinator\Directive\Contract\QueryLocation);
+            \assert($directiveDef instanceof \Graphpinator\Typesystem\Location\QueryLocation);
 
             $directiveDef->resolveQueryAfter($directive->getArguments(), $operationValue);
         }
@@ -52,7 +52,7 @@ final class Resolver
         foreach ($operation->getDirectives() as $directive) {
             $directiveDef = $directive->getDirective();
 
-            \assert($directiveDef instanceof \Graphpinator\Directive\Contract\MutationLocation);
+            \assert($directiveDef instanceof \Graphpinator\Typesystem\Location\MutationLocation);
 
             $directiveDef->resolveMutationBefore($directive->getArguments());
         }
@@ -67,7 +67,7 @@ final class Resolver
         foreach ($operation->getDirectives() as $directive) {
             $directiveDef = $directive->getDirective();
 
-            \assert($directiveDef instanceof \Graphpinator\Directive\Contract\MutationLocation);
+            \assert($directiveDef instanceof \Graphpinator\Typesystem\Location\MutationLocation);
 
             $directiveDef->resolveMutationAfter($directive->getArguments(), $operationValue);
         }
@@ -80,7 +80,7 @@ final class Resolver
         foreach ($operation->getDirectives() as $directive) {
             $directiveDef = $directive->getDirective();
 
-            \assert($directiveDef instanceof \Graphpinator\Directive\Contract\SubscriptionLocation);
+            \assert($directiveDef instanceof \Graphpinator\Typesystem\Location\SubscriptionLocation);
 
             $directiveDef->resolveSubscriptionBefore($directive->getArguments());
         }
@@ -95,7 +95,7 @@ final class Resolver
         foreach ($operation->getDirectives() as $directive) {
             $directiveDef = $directive->getDirective();
 
-            \assert($directiveDef instanceof \Graphpinator\Directive\Contract\SubscriptionLocation);
+            \assert($directiveDef instanceof \Graphpinator\Typesystem\Location\SubscriptionLocation);
 
             $directiveDef->resolveSubscriptionAfter($directive->getArguments(), $operationValue);
         }

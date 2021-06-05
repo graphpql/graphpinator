@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Resolver;
 
-final class ResolveVisitor implements \Graphpinator\Typesystem\TypeVisitor
+final class ResolveVisitor implements \Graphpinator\Typesystem\Contract\TypeVisitor
 {
     public function __construct(
         private ?\Graphpinator\Normalizer\Field\FieldSet $requestedFields,
@@ -13,13 +13,13 @@ final class ResolveVisitor implements \Graphpinator\Typesystem\TypeVisitor
     {
     }
 
-    public function visitType(\Graphpinator\Type\Type $type) : \Graphpinator\Value\TypeValue
+    public function visitType(\Graphpinator\Typesystem\Type $type) : \Graphpinator\Value\TypeValue
     {
         \assert($this->requestedFields instanceof \Graphpinator\Normalizer\Field\FieldSet);
         $resolved = new \stdClass();
 
         foreach ($this->requestedFields as $field) {
-            if ($field->getTypeCondition() instanceof \Graphpinator\Type\Contract\NamedDefinition &&
+            if ($field->getTypeCondition() instanceof \Graphpinator\Typesystem\Contract\NamedType &&
                 !$this->parentResult->getType()->isInstanceOf($field->getTypeCondition())) {
                 continue;
             }
@@ -28,11 +28,11 @@ final class ResolveVisitor implements \Graphpinator\Typesystem\TypeVisitor
                 $directiveDef = $directive->getDirective();
                 $directiveResult = $directiveDef->resolveFieldBefore($directive->getArguments());
 
-                if (!\array_key_exists($directiveResult, \Graphpinator\Directive\FieldDirectiveResult::ENUM)) {
+                if (!\array_key_exists($directiveResult, \Graphpinator\Typesystem\Location\FieldLocation::ENUM)) {
                     throw new \Graphpinator\Resolver\Exception\InvalidDirectiveResult();
                 }
 
-                if ($directiveResult === \Graphpinator\Directive\FieldDirectiveResult::SKIP) {
+                if ($directiveResult === \Graphpinator\Typesystem\Location\FieldLocation::SKIP) {
                     continue 2;
                 }
             }
@@ -45,11 +45,11 @@ final class ResolveVisitor implements \Graphpinator\Typesystem\TypeVisitor
                 $directiveDef = $directive->getDirective();
                 $directiveResult = $directiveDef->resolveFieldAfter($directive->getArguments(), $fieldResult);
 
-                if (!\array_key_exists($directiveResult, \Graphpinator\Directive\FieldDirectiveResult::ENUM)) {
+                if (!\array_key_exists($directiveResult, \Graphpinator\Typesystem\Location\FieldLocation::ENUM)) {
                     throw new \Graphpinator\Resolver\Exception\InvalidDirectiveResult();
                 }
 
-                if ($directiveResult === \Graphpinator\Directive\FieldDirectiveResult::SKIP) {
+                if ($directiveResult === \Graphpinator\Typesystem\Location\FieldLocation::SKIP) {
                     continue 2;
                 }
             }
@@ -60,37 +60,37 @@ final class ResolveVisitor implements \Graphpinator\Typesystem\TypeVisitor
         return new \Graphpinator\Value\TypeValue($type, $resolved);
     }
 
-    public function visitInterface(\Graphpinator\Type\InterfaceType $interface) : mixed
+    public function visitInterface(\Graphpinator\Typesystem\InterfaceType $interface) : mixed
     {
         // nothing here
     }
 
-    public function visitUnion(\Graphpinator\Type\UnionType $union) : mixed
+    public function visitUnion(\Graphpinator\Typesystem\UnionType $union) : mixed
     {
         // nothing here
     }
 
-    public function visitInput(\Graphpinator\Type\InputType $input) : mixed
+    public function visitInput(\Graphpinator\Typesystem\InputType $input) : mixed
     {
         // nothing here
     }
 
-    public function visitScalar(\Graphpinator\Type\ScalarType $scalar) : \Graphpinator\Value\ResolvedValue
+    public function visitScalar(\Graphpinator\Typesystem\ScalarType $scalar) : \Graphpinator\Value\ResolvedValue
     {
         return $this->parentResult;
     }
 
-    public function visitEnum(\Graphpinator\Type\EnumType $enum) : \Graphpinator\Value\ResolvedValue
+    public function visitEnum(\Graphpinator\Typesystem\EnumType $enum) : \Graphpinator\Value\ResolvedValue
     {
         return $this->parentResult;
     }
 
-    public function visitNotNull(\Graphpinator\Type\NotNullType $notNull) : \Graphpinator\Value\ResolvedValue
+    public function visitNotNull(\Graphpinator\Typesystem\NotNullType $notNull) : \Graphpinator\Value\ResolvedValue
     {
         return $notNull->getInnerType()->accept($this);
     }
 
-    public function visitList(\Graphpinator\Type\ListType $list) : \Graphpinator\Value\ListResolvedValue
+    public function visitList(\Graphpinator\Typesystem\ListType $list) : \Graphpinator\Value\ListResolvedValue
     {
         \assert($this->parentResult instanceof \Graphpinator\Value\ListIntermediateValue);
 
@@ -115,7 +115,7 @@ final class ResolveVisitor implements \Graphpinator\Typesystem\TypeVisitor
     }
 
     private function resolveField(
-        \Graphpinator\Field\ResolvableField $field,
+        \Graphpinator\Typesystem\Field\ResolvableField $field,
         \Graphpinator\Normalizer\Field\Field $requestedField,
     ) : \Graphpinator\Value\FieldValue
     {
@@ -160,7 +160,7 @@ final class ResolveVisitor implements \Graphpinator\Typesystem\TypeVisitor
         return new \Graphpinator\Value\FieldValue($field, $fieldValue);
     }
 
-    private function getResolvedValue(mixed $rawValue, \Graphpinator\Type\Contract\Definition $type) : \Graphpinator\Value\ResolvedValue
+    private function getResolvedValue(mixed $rawValue, \Graphpinator\Typesystem\Contract\Type $type) : \Graphpinator\Value\ResolvedValue
     {
         $visitor = new CreateResolvedValueVisitor($rawValue);
 

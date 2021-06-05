@@ -8,7 +8,7 @@ final class FieldValue implements \JsonSerializable
 {
     use \Nette\SmartObject;
 
-    public function __construct(private \Graphpinator\Field\Field $field, private \Graphpinator\Value\ResolvedValue $value)
+    public function __construct(private \Graphpinator\Typesystem\Field\Field $field, private \Graphpinator\Value\ResolvedValue $value)
     {
         foreach ($field->getDirectiveUsages() as $directive) {
             $directive->getDirective()->resolveFieldDefinitionValue($directive->getArgumentValues(), $this);
@@ -20,7 +20,7 @@ final class FieldValue implements \JsonSerializable
         return $this->value;
     }
 
-    public function getField() : \Graphpinator\Field\Field
+    public function getField() : \Graphpinator\Typesystem\Field\Field
     {
         return $this->field;
     }
