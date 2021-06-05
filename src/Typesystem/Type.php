@@ -2,47 +2,47 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Type;
+namespace Graphpinator\Typesystem;
 
-abstract class Type extends \Graphpinator\Type\Contract\ConcreteType implements
-    \Graphpinator\Type\Contract\TypeConditionable,
-    \Graphpinator\Type\Contract\InterfaceImplementor
+abstract class Type extends \Graphpinator\Typesystem\Contract\ConcreteType implements
+    \Graphpinator\Typesystem\Contract\TypeConditionable,
+    \Graphpinator\Typesystem\Contract\InterfaceImplementor
 {
-    use \Graphpinator\Type\Contract\TInterfaceImplementor;
-    use \Graphpinator\Type\Contract\TMetaFields;
-    use Graphpinator\Typesystem\Utils\THasDirectives;
+    use \Graphpinator\Typesystem\Utils\TInterfaceImplementor;
+    use \Graphpinator\Typesystem\Utils\TMetaFields;
+    use \Graphpinator\Typesystem\Utils\THasDirectives;
 
-    public function __construct(?\Graphpinator\Type\InterfaceSet $implements = null)
+    public function __construct(?\Graphpinator\Typesystem\InterfaceSet $implements = null)
     {
         $this->implements = $implements
-            ?? new \Graphpinator\Type\InterfaceSet([]);
-        $this->directiveUsages = new \Graphpinator\DirectiveUsage\DirectiveUsageSet();
+            ?? new \Graphpinator\Typesystem\InterfaceSet([]);
+        $this->directiveUsages = new \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet();
     }
 
     abstract public function validateNonNullValue(mixed $rawValue) : bool;
 
-    final public function addMetaField(\Graphpinator\Field\ResolvableField $field) : void
+    final public function addMetaField(\Graphpinator\Typesystem\Field\ResolvableField $field) : void
     {
         $this->getMetaFields()->offsetSet($field->getName(), $field);
     }
 
-    final public function isInstanceOf(\Graphpinator\Type\Contract\Definition $type) : bool
+    final public function isInstanceOf(\Graphpinator\Typesystem\Contract\Type $type) : bool
     {
-        if ($type instanceof \Graphpinator\Type\Contract\AbstractType) {
+        if ($type instanceof \Graphpinator\Typesystem\Contract\AbstractType) {
             return $type->isImplementedBy($this);
         }
 
         return parent::isInstanceOf($type);
     }
 
-    final public function getFields() : \Graphpinator\Field\ResolvableFieldSet
+    final public function getFields() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
     {
-        if (!$this->fields instanceof \Graphpinator\Field\ResolvableFieldSet) {
+        if (!$this->fields instanceof \Graphpinator\Typesystem\Field\ResolvableFieldSet) {
             $this->fields = $this->getFieldDefinition();
 
             if (\Graphpinator\Graphpinator::$validateSchema) {
                 if ($this->fields->count() === 0) {
-                    throw new \Graphpinator\Exception\Type\InterfaceOrTypeMustDefineOneOrMoreFields();
+                    throw new \Graphpinator\Typesystem\Exception\InterfaceOrTypeMustDefineOneOrMoreFields();
                 }
 
                 $this->validateInterfaceContract();
@@ -52,20 +52,20 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteType implements
         return $this->fields;
     }
 
-    final public function accept(\Graphpinator\Typesystem\NamedTypeVisitor $visitor) : mixed
+    final public function accept(\Graphpinator\Typesystem\Contract\NamedTypeVisitor $visitor) : mixed
     {
         return $visitor->visitType($this);
     }
 
     final public function addDirective(
-        \Graphpinator\Directive\Contract\ObjectLocation $directive,
+        \Graphpinator\Typesystem\Location\ObjectLocation $directive,
         array $arguments = [],
     ) : static
     {
-        $usage = new \Graphpinator\DirectiveUsage\DirectiveUsage($directive, $arguments);
+        $usage = new \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsage($directive, $arguments);
 
         if (\Graphpinator\Graphpinator::$validateSchema && !$directive->validateObjectUsage($this, $usage->getArgumentValues())) {
-            throw new \Graphpinator\Exception\Type\DirectiveIncorrectType();
+            throw new \Graphpinator\Typesystem\Exception\DirectiveIncorrectType();
         }
 
         $this->directiveUsages[] = $usage;
@@ -73,5 +73,5 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteType implements
         return $this;
     }
 
-    abstract protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet;
+    abstract protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet;
 }

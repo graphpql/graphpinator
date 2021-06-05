@@ -8,7 +8,7 @@ final class NullInputedValue implements \Graphpinator\Value\InputedValue, \Graph
 {
     use \Nette\SmartObject;
 
-    public function __construct(private \Graphpinator\Type\Contract\Inputable $type)
+    public function __construct(private \Graphpinator\Typesystem\Contract\Inputable $type)
     {
     }
 
@@ -17,7 +17,7 @@ final class NullInputedValue implements \Graphpinator\Value\InputedValue, \Graph
         return null;
     }
 
-    public function getType() : \Graphpinator\Type\Contract\Inputable
+    public function getType() : \Graphpinator\Typesystem\Contract\Inputable
     {
         return $this->type;
     }

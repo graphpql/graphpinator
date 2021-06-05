@@ -2,11 +2,11 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Type;
+namespace Graphpinator\Typesystem;
 
-final class NotNullType extends \Graphpinator\Type\Contract\ModifierType
+final class NotNullType extends \Graphpinator\Typesystem\Contract\ModifierType
 {
-    public function isInstanceOf(\Graphpinator\Type\Contract\Definition $type) : bool
+    public function isInstanceOf(\Graphpinator\Typesystem\Contract\Type $type) : bool
     {
         if ($type instanceof self) {
             return $this->innerType->isInstanceOf($type->getInnerType());
@@ -20,12 +20,12 @@ final class NotNullType extends \Graphpinator\Type\Contract\ModifierType
         return $this->innerType->printName() . '!';
     }
 
-    public function getShapingType() : \Graphpinator\Type\Contract\Definition
+    public function getShapingType() : \Graphpinator\Typesystem\Contract\Type
     {
         return $this->getInnerType()->getShapingType();
     }
 
-    public function accept(\Graphpinator\Typesystem\TypeVisitor $visitor) : mixed
+    public function accept(\Graphpinator\Typesystem\Contract\TypeVisitor $visitor) : mixed
     {
         return $visitor->visitNotNull($this);
     }

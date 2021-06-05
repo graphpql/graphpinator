@@ -6,7 +6,7 @@ namespace Graphpinator\Typesystem\Contract;
 
 interface EntityVisitor extends \Graphpinator\Typesystem\Contract\NamedTypeVisitor
 {
-    public function visitSchema(\Graphpinator\Type\Schema $schema) : mixed;
+    public function visitSchema(\Graphpinator\Typesystem\Schema $schema) : mixed;
 
-    public function visitDirective(\Graphpinator\Directive\Directive $directive) : mixed;
+    public function visitDirective(\Graphpinator\Typesystem\Directive $directive) : mixed;
 }

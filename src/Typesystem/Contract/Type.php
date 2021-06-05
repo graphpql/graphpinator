@@ -8,7 +8,7 @@ interface Type
 {
     public function accept(\Graphpinator\Typesystem\Contract\TypeVisitor $visitor) : mixed;
 
-    public function getNamedType() : \Graphpinator\Type\Contract\NamedType;
+    public function getNamedType() : \Graphpinator\Typesystem\Contract\NamedType;
 
     public function getShapingType() : self;
 

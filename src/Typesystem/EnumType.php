@@ -2,20 +2,20 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Type;
+namespace Graphpinator\Typesystem;
 
-abstract class EnumType extends \Graphpinator\Type\Contract\LeafType
+abstract class EnumType extends \Graphpinator\Typesystem\Contract\LeafType
 {
-    use Graphpinator\Typesystem\Utils\THasDirectives;
+    use \Graphpinator\Typesystem\Utils\THasDirectives;
 
     public function __construct(
-        protected \Graphpinator\EnumItem\EnumItemSet $options,
+        protected \Graphpinator\Typesystem\EnumItem\EnumItemSet $options,
     )
     {
-        $this->directiveUsages = new \Graphpinator\DirectiveUsage\DirectiveUsageSet();
+        $this->directiveUsages = new \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet();
     }
 
-    final public static function fromConstants() : \Graphpinator\EnumItem\EnumItemSet
+    final public static function fromConstants() : \Graphpinator\Typesystem\EnumItem\EnumItemSet
     {
         $values = [];
 
@@ -26,20 +26,20 @@ abstract class EnumType extends \Graphpinator\Type\Contract\LeafType
                 continue;
             }
 
-            $values[] = new \Graphpinator\EnumItem\EnumItem($value, $constant->getDocComment()
+            $values[] = new \Graphpinator\Typesystem\EnumItem\EnumItem($value, $constant->getDocComment()
                 ? \trim($constant->getDocComment(), '/* ')
                 : null);
         }
 
-        return new \Graphpinator\EnumItem\EnumItemSet($values);
+        return new \Graphpinator\Typesystem\EnumItem\EnumItemSet($values);
     }
 
-    final public function getItems() : \Graphpinator\EnumItem\EnumItemSet
+    final public function getItems() : \Graphpinator\Typesystem\EnumItem\EnumItemSet
     {
         return $this->options;
     }
 
-    final public function accept(\Graphpinator\Typesystem\NamedTypeVisitor $visitor) : mixed
+    final public function accept(\Graphpinator\Typesystem\Contract\NamedTypeVisitor $visitor) : mixed
     {
         return $visitor->visitEnum($this);
     }
@@ -50,11 +50,11 @@ abstract class EnumType extends \Graphpinator\Type\Contract\LeafType
     }
 
     final public function addDirective(
-        \Graphpinator\Directive\Contract\EnumLocation $directive,
+        \Graphpinator\Typesystem\Location\EnumLocation $directive,
         array $arguments = [],
     ) : static
     {
-        $this->directiveUsages[] = new \Graphpinator\DirectiveUsage\DirectiveUsage($directive, $arguments);
+        $this->directiveUsages[] = new \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsage($directive, $arguments);
 
         return $this;
     }

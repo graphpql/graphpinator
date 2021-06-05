@@ -7,7 +7,7 @@ namespace Graphpinator\Typesystem\Location;
 interface InputObjectLocation extends \Graphpinator\Typesystem\Contract\TypesystemDirective
 {
     public function validateInputUsage(
-        \Graphpinator\Type\InputType $inputType,
+        \Graphpinator\Typesystem\InputType $inputType,
         \Graphpinator\Value\ArgumentValueSet $arguments,
     ) : bool;
 

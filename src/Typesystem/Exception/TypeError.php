@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Exception\Type;
+namespace Graphpinator\Typesystem\Exception;
 
 abstract class TypeError extends \Graphpinator\Exception\GraphpinatorBase
 {

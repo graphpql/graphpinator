@@ -2,22 +2,22 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Type\Contract;
+namespace Graphpinator\Typesystem\Contract;
 
 abstract class ModifierType implements
-    \Graphpinator\Type\Contract\Inputable,
-    \Graphpinator\Type\Contract\Outputable
+    \Graphpinator\Typesystem\Contract\Inputable,
+    \Graphpinator\Typesystem\Contract\Outputable
 {
-    public function __construct(protected \Graphpinator\Type\Contract\Definition $innerType)
+    public function __construct(protected \Graphpinator\Typesystem\Contract\Type $innerType)
     {
     }
 
-    public function getInnerType() : \Graphpinator\Type\Contract\Definition
+    public function getInnerType() : \Graphpinator\Typesystem\Contract\Type
     {
         return $this->innerType;
     }
 
-    public function getNamedType() : \Graphpinator\Type\Contract\NamedType
+    public function getNamedType() : \Graphpinator\Typesystem\Contract\NamedType
     {
         return $this->innerType->getNamedType();
     }
@@ -27,8 +27,8 @@ abstract class ModifierType implements
         return $this->innerType->isInputable();
     }
 
-    public function list() : \Graphpinator\Type\ListType
+    public function list() : \Graphpinator\Typesystem\ListType
     {
-        return new \Graphpinator\Type\ListType($this);
+        return new \Graphpinator\Typesystem\ListType($this);
     }
 }

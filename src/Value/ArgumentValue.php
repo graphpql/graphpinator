@@ -9,7 +9,7 @@ final class ArgumentValue
     use \Nette\SmartObject;
 
     public function __construct(
-        private \Graphpinator\Argument\Argument $argument,
+        private \Graphpinator\Typesystem\Argument\Argument $argument,
         private \Graphpinator\Value\InputedValue $value,
         private bool $hasVariables,
     )
@@ -24,7 +24,7 @@ final class ArgumentValue
         return $this->value;
     }
 
-    public function getArgument() : \Graphpinator\Argument\Argument
+    public function getArgument() : \Graphpinator\Typesystem\Argument\Argument
     {
         return $this->argument;
     }
@@ -41,7 +41,7 @@ final class ArgumentValue
     {
         foreach ($this->argument->getDirectiveUsages() as $directiveUsage) {
             $directive = $directiveUsage->getDirective();
-            \assert($directive instanceof \Graphpinator\Directive\Contract\ArgumentDefinitionLocation);
+            \assert($directive instanceof \Graphpinator\Typesystem\Location\ArgumentDefinitionLocation);
 
             if ($directive::isPure()) {
                 $directive->resolveArgumentDefinition($directiveUsage->getArgumentValues(), $this);
@@ -55,7 +55,7 @@ final class ArgumentValue
 
         foreach ($this->argument->getDirectiveUsages() as $directiveUsage) {
             $directive = $directiveUsage->getDirective();
-            \assert($directive instanceof \Graphpinator\Directive\Contract\ArgumentDefinitionLocation);
+            \assert($directive instanceof \Graphpinator\Typesystem\Location\ArgumentDefinitionLocation);
 
             if (!$directive::isPure()) {
                 $directive->resolveArgumentDefinition($directiveUsage->getArgumentValues(), $this);

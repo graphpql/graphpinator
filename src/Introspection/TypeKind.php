@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Introspection;
 
-final class TypeKind extends \Graphpinator\Type\EnumType
+final class TypeKind extends \Graphpinator\Typesystem\EnumType
 {
     public const SCALAR = 'SCALAR';
     public const OBJECT = 'OBJECT';

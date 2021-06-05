@@ -2,18 +2,18 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Type;
+namespace Graphpinator\Typesystem;
 
-abstract class ScalarType extends \Graphpinator\Type\Contract\LeafType
+abstract class ScalarType extends \Graphpinator\Typesystem\Contract\LeafType
 {
-    use Graphpinator\Typesystem\Utils\THasDirectives;
+    use \Graphpinator\Typesystem\Utils\THasDirectives;
 
     public function __construct()
     {
-        $this->directiveUsages = new \Graphpinator\DirectiveUsage\DirectiveUsageSet();
+        $this->directiveUsages = new \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet();
     }
 
-    final public function accept(\Graphpinator\Typesystem\NamedTypeVisitor $visitor) : mixed
+    final public function accept(\Graphpinator\Typesystem\Contract\NamedTypeVisitor $visitor) : mixed
     {
         return $visitor->visitScalar($this);
     }
@@ -24,11 +24,11 @@ abstract class ScalarType extends \Graphpinator\Type\Contract\LeafType
     }
 
     final public function addDirective(
-        \Graphpinator\Directive\Contract\ScalarLocation $directive,
+        \Graphpinator\Typesystem\Location\ScalarLocation $directive,
         array $arguments = [],
     ) : static
     {
-        $this->directiveUsages[] = new \Graphpinator\DirectiveUsage\DirectiveUsage($directive, $arguments);
+        $this->directiveUsages[] = new \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsage($directive, $arguments);
 
         return $this;
     }
@@ -36,7 +36,7 @@ abstract class ScalarType extends \Graphpinator\Type\Contract\LeafType
     public function setSpecifiedBy(string $url) : self
     {
         $this->addDirective(
-            \Graphpinator\Container\Container::directiveSpecifiedBy(),
+            \Graphpinator\Typesystem\Container::directiveSpecifiedBy(),
             ['url' => $url],
         );
 
@@ -46,7 +46,7 @@ abstract class ScalarType extends \Graphpinator\Type\Contract\LeafType
     public function getSpecifiedByUrl() : ?string
     {
         foreach ($this->getDirectiveUsages() as $directive) {
-            if ($directive->getDirective() instanceof \Graphpinator\Directive\Spec\SpecifiedByDirective) {
+            if ($directive->getDirective() instanceof \Graphpinator\Typesystem\Spec\SpecifiedByDirective) {
                 return $directive->getArgumentValues()->offsetGet('url')->getValue()->getRawValue();
             }
         }

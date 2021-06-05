@@ -13,13 +13,13 @@ class Field implements \Graphpinator\Typesystem\Contract\Component
 
     protected \Graphpinator\Typesystem\Argument\ArgumentSet $arguments;
 
-    public function __construct(protected string $name, protected \Graphpinator\Type\Contract\Outputable $type)
+    public function __construct(protected string $name, protected \Graphpinator\Typesystem\Contract\Outputable $type)
     {
         $this->arguments = new \Graphpinator\Typesystem\Argument\ArgumentSet([]);
-        $this->directiveUsages = new \Graphpinator\DirectiveUsage\DirectiveUsageSet([]);
+        $this->directiveUsages = new \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet();
     }
 
-    public static function create(string $name, \Graphpinator\Type\Contract\Outputable $type) : self
+    public static function create(string $name, \Graphpinator\Typesystem\Contract\Outputable $type) : self
     {
         return new self($name, $type);
     }
@@ -29,7 +29,7 @@ class Field implements \Graphpinator\Typesystem\Contract\Component
         return $this->name;
     }
 
-    final public function getType() : \Graphpinator\Type\Contract\Outputable
+    final public function getType() : \Graphpinator\Typesystem\Contract\Outputable
     {
         return $this->type;
     }
@@ -52,14 +52,14 @@ class Field implements \Graphpinator\Typesystem\Contract\Component
     }
 
     final public function addDirective(
-        \Graphpinator\Directive\Contract\FieldDefinitionLocation $directive,
+        \Graphpinator\Typesystem\Location\FieldDefinitionLocation $directive,
         array $arguments = [],
     ) : self
     {
         $usage = new \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsage($directive, $arguments);
 
         if (\Graphpinator\Graphpinator::$validateSchema && !$directive->validateFieldUsage($this, $usage->getArgumentValues())) {
-            throw new \Graphpinator\Exception\Type\DirectiveIncorrectType();
+            throw new \Graphpinator\Typesystem\Exception\DirectiveIncorrectType();
         }
 
         $this->directiveUsages[] = $usage;

@@ -22,7 +22,7 @@ final class DirectiveUsageSet extends \Infinityloop\Utils\ObjectSet
                 continue;
             }
 
-            throw new \Graphpinator\Exception\Type\InterfaceDirectivesNotPreserved();
+            throw new \Graphpinator\Typesystem\Exception\InterfaceDirectivesNotPreserved();
         }
     }
 

@@ -2,17 +2,17 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Directive\Spec;
+namespace Graphpinator\Typesystem\Spec;
 
-final class SpecifiedByDirective extends \Graphpinator\Directive\Directive implements \Graphpinator\Directive\Contract\ScalarLocation
+final class SpecifiedByDirective extends \Graphpinator\Typesystem\Directive implements \Graphpinator\Typesystem\Location\ScalarLocation
 {
     protected const NAME = 'specifiedBy';
     protected const DESCRIPTION = 'Built-in specified by directive.';
 
-    protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
+    protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
     {
-        return new \Graphpinator\Argument\ArgumentSet([
-            new \Graphpinator\Argument\Argument('url', \Graphpinator\Container\Container::String()),
+        return new \Graphpinator\Typesystem\Argument\ArgumentSet([
+            new \Graphpinator\Typesystem\Argument\Argument('url', \Graphpinator\Typesystem\Container::String()),
         ]);
     }
 }

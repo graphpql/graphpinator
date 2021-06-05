@@ -2,8 +2,8 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Type\Contract;
+namespace Graphpinator\Typesystem\Contract;
 
-interface Outputable extends \Graphpinator\Type\Contract\Definition
+interface Outputable extends \Graphpinator\Typesystem\Contract\Type
 {
 }

@@ -17,27 +17,27 @@ final class Graphpinator implements \Psr\Log\LoggerAwareInterface
     private \Graphpinator\Resolver\Resolver $resolver;
 
     public function __construct(
-        \Graphpinator\Type\Schema $schema,
+        \Graphpinator\Typesystem\Schema $schema,
         private bool $catchExceptions = false,
         ?\Graphpinator\Module\ModuleSet $modules = null,
         ?\Psr\Log\LoggerInterface $logger = null,
     )
     {
-        $schema->getQuery()->addMetaField(\Graphpinator\Field\ResolvableField::create(
+        $schema->getQuery()->addMetaField(\Graphpinator\Typesystem\Field\ResolvableField::create(
             '__schema',
             $schema->getContainer()->getType('__Schema')->notNull(),
-            static function() use ($schema) : \Graphpinator\Type\Schema {
+            static function() use ($schema) : \Graphpinator\Typesystem\Schema {
                 return $schema;
             },
         ));
-        $schema->getQuery()->addMetaField(\Graphpinator\Field\ResolvableField::create(
+        $schema->getQuery()->addMetaField(\Graphpinator\Typesystem\Field\ResolvableField::create(
             '__type',
             $schema->getContainer()->getType('__Type'),
-            static function($parent, string $name) use ($schema) : ?\Graphpinator\Type\Contract\Definition {
+            static function($parent, string $name) use ($schema) : ?\Graphpinator\Typesystem\Contract\Type {
                 return $schema->getContainer()->getType($name);
             },
-        )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-            \Graphpinator\Argument\Argument::create('name', \Graphpinator\Container\Container::String()->notNull()),
+        )->setArguments(new \Graphpinator\Typesystem\Argument\ArgumentSet([
+            \Graphpinator\Typesystem\Argument\Argument::create('name', \Graphpinator\Typesystem\Container::String()->notNull()),
         ])));
 
         $this->modules = $modules instanceof \Graphpinator\Module\ModuleSet

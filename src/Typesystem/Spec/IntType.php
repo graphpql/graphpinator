@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Type\Spec;
+namespace Graphpinator\Typesystem\Spec;
 
-final class IntType extends \Graphpinator\Type\ScalarType
+final class IntType extends \Graphpinator\Typesystem\ScalarType
 {
     protected const NAME = 'Int';
     protected const DESCRIPTION = 'Int built-in type (32 bit)';

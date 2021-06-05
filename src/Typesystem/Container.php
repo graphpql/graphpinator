@@ -31,7 +31,7 @@ abstract class Container
      * Core function to find directive by its name.
      * @param string $name
      */
-    abstract public function getDirective(string $name) : ?\Graphpinator\Directive\Directive;
+    abstract public function getDirective(string $name) : ?\Graphpinator\Typesystem\Directive;
 
     /**
      * Function to return all user-defined directives.
@@ -42,10 +42,10 @@ abstract class Container
     /**
      * Built-in Int type.
      */
-    public static function Int() : \Graphpinator\Type\Spec\IntType
+    public static function Int() : \Graphpinator\Typesystem\Spec\IntType
     {
         if (!\array_key_exists('Int', self::$builtInTypes)) {
-            self::$builtInTypes['Int'] = new \Graphpinator\Type\Spec\IntType();
+            self::$builtInTypes['Int'] = new \Graphpinator\Typesystem\Spec\IntType();
         }
 
         return self::$builtInTypes['Int'];
@@ -54,10 +54,10 @@ abstract class Container
     /**
      * Built-in Float type.
      */
-    public static function Float() : \Graphpinator\Type\Spec\FloatType
+    public static function Float() : \Graphpinator\Typesystem\Spec\FloatType
     {
         if (!\array_key_exists('Float', self::$builtInTypes)) {
-            self::$builtInTypes['Float'] = new \Graphpinator\Type\Spec\FloatType();
+            self::$builtInTypes['Float'] = new \Graphpinator\Typesystem\Spec\FloatType();
         }
 
         return self::$builtInTypes['Float'];
@@ -66,10 +66,10 @@ abstract class Container
     /**
      * Built-in String type.
      */
-    public static function String() : \Graphpinator\Type\Spec\StringType
+    public static function String() : \Graphpinator\Typesystem\Spec\StringType
     {
         if (!\array_key_exists('String', self::$builtInTypes)) {
-            self::$builtInTypes['String'] = new \Graphpinator\Type\Spec\StringType();
+            self::$builtInTypes['String'] = new \Graphpinator\Typesystem\Spec\StringType();
         }
 
         return self::$builtInTypes['String'];
@@ -78,10 +78,10 @@ abstract class Container
     /**
      * Built-in Boolean type.
      */
-    public static function Boolean() : \Graphpinator\Type\Spec\BooleanType
+    public static function Boolean() : \Graphpinator\Typesystem\Spec\BooleanType
     {
         if (!\array_key_exists('Boolean', self::$builtInTypes)) {
-            self::$builtInTypes['Boolean'] = new \Graphpinator\Type\Spec\BooleanType();
+            self::$builtInTypes['Boolean'] = new \Graphpinator\Typesystem\Spec\BooleanType();
         }
 
         return self::$builtInTypes['Boolean'];
@@ -90,10 +90,10 @@ abstract class Container
     /**
      * Built-in ID type.
      */
-    public static function ID() : \Graphpinator\Type\Spec\IdType
+    public static function ID() : \Graphpinator\Typesystem\Spec\IdType
     {
         if (!\array_key_exists('ID', self::$builtInTypes)) {
-            self::$builtInTypes['ID'] = new \Graphpinator\Type\Spec\IdType();
+            self::$builtInTypes['ID'] = new \Graphpinator\Typesystem\Spec\IdType();
         }
 
         return self::$builtInTypes['ID'];
@@ -102,10 +102,10 @@ abstract class Container
     /**
      * Built-in Skip directive.
      */
-    public static function directiveSkip() : \Graphpinator\Directive\Spec\SkipDirective
+    public static function directiveSkip() : \Graphpinator\Typesystem\Spec\SkipDirective
     {
         if (!\array_key_exists('skip', self::$builtInDirectives)) {
-            self::$builtInDirectives['skip'] = new \Graphpinator\Directive\Spec\SkipDirective();
+            self::$builtInDirectives['skip'] = new \Graphpinator\Typesystem\Spec\SkipDirective();
         }
 
         return self::$builtInDirectives['skip'];
@@ -114,10 +114,10 @@ abstract class Container
     /**
      * Built-in Include directive.
      */
-    public static function directiveInclude() : \Graphpinator\Directive\Spec\IncludeDirective
+    public static function directiveInclude() : \Graphpinator\Typesystem\Spec\IncludeDirective
     {
         if (!\array_key_exists('include', self::$builtInDirectives)) {
-            self::$builtInDirectives['include'] = new \Graphpinator\Directive\Spec\IncludeDirective();
+            self::$builtInDirectives['include'] = new \Graphpinator\Typesystem\Spec\IncludeDirective();
         }
 
         return self::$builtInDirectives['include'];
@@ -126,10 +126,10 @@ abstract class Container
     /**
      * Built-in Deprecated directive.
      */
-    public static function directiveDeprecated() : \Graphpinator\Directive\Spec\DeprecatedDirective
+    public static function directiveDeprecated() : \Graphpinator\Typesystem\Spec\DeprecatedDirective
     {
         if (!\array_key_exists('deprecated', self::$builtInDirectives)) {
-            self::$builtInDirectives['deprecated'] = new \Graphpinator\Directive\Spec\DeprecatedDirective();
+            self::$builtInDirectives['deprecated'] = new \Graphpinator\Typesystem\Spec\DeprecatedDirective();
         }
 
         return self::$builtInDirectives['deprecated'];
@@ -138,10 +138,10 @@ abstract class Container
     /**
      * Built-in Specified By directive.
      */
-    public static function directiveSpecifiedBy() : \Graphpinator\Directive\Spec\SpecifiedByDirective
+    public static function directiveSpecifiedBy() : \Graphpinator\Typesystem\Spec\SpecifiedByDirective
     {
         if (!\array_key_exists('specifiedBy', self::$builtInDirectives)) {
-            self::$builtInDirectives['specifiedBy'] = new \Graphpinator\Directive\Spec\SpecifiedByDirective();
+            self::$builtInDirectives['specifiedBy'] = new \Graphpinator\Typesystem\Spec\SpecifiedByDirective();
         }
 
         return self::$builtInDirectives['specifiedBy'];

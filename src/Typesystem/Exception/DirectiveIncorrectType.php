@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Exception\Type;
+namespace Graphpinator\Typesystem\Exception;
 
-final class DirectiveIncorrectType extends \Graphpinator\Exception\Type\TypeError
+final class DirectiveIncorrectType extends \Graphpinator\Typesystem\Exception\TypeError
 {
     public const MESSAGE = 'Directive cannot be used on this type or has incompatible settings.';
 }

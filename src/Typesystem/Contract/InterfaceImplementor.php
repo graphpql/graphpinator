@@ -2,27 +2,27 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Type\Contract;
+namespace Graphpinator\Typesystem\Contract;
 
 /**
  * Interface InterfaceImplementor which marks types which can implement interface - currently Type and Interface.
  */
 //@phpcs:ignore SlevomatCodingStandard.Classes.SuperfluousInterfaceNaming.SuperfluousPrefix
-interface InterfaceImplementor extends \Graphpinator\Type\Contract\Definition
+interface InterfaceImplementor extends \Graphpinator\Typesystem\Contract\Type
 {
     /**
      * Returns fields defined for this type.
      */
-    public function getFields() : \Graphpinator\Field\FieldSet;
+    public function getFields() : \Graphpinator\Typesystem\Field\FieldSet;
 
     /**
      * Returns interfaces, which this type implements.
      */
-    public function getInterfaces() : \Graphpinator\Type\InterfaceSet;
+    public function getInterfaces() : \Graphpinator\Typesystem\InterfaceSet;
 
     /**
      * Checks whether this type implements given interface.
-     * @param \Graphpinator\Type\InterfaceType $interface
+     * @param \Graphpinator\Typesystem\InterfaceType $interface
      */
-    public function implements(\Graphpinator\Type\InterfaceType $interface) : bool;
+    public function implements(\Graphpinator\Typesystem\InterfaceType $interface) : bool;
 }

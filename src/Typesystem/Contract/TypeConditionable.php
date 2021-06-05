@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Type\Contract;
+namespace Graphpinator\Typesystem\Contract;
 
-interface TypeConditionable extends \Graphpinator\Type\Contract\Outputable
+interface TypeConditionable extends \Graphpinator\Typesystem\Contract\Outputable
 {
     public function getName() : string;
 }

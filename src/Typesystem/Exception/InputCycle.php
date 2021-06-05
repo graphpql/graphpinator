@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Exception\Type;
+namespace Graphpinator\Typesystem\Exception;
 
-final class InputCycle extends \Graphpinator\Exception\Type\TypeError
+final class InputCycle extends \Graphpinator\Typesystem\Exception\TypeError
 {
     public const MESSAGE = 'Input cycle detected.';
 }

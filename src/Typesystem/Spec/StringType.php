@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Type\Spec;
+namespace Graphpinator\Typesystem\Spec;
 
-final class StringType extends \Graphpinator\Type\ScalarType
+final class StringType extends \Graphpinator\Typesystem\ScalarType
 {
     protected const NAME = 'String';
     protected const DESCRIPTION = 'String built-in type';

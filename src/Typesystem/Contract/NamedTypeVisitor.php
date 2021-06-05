@@ -6,15 +6,15 @@ namespace Graphpinator\Typesystem\Contract;
 
 interface NamedTypeVisitor
 {
-    public function visitType(\Graphpinator\Type\Type $type) : mixed;
+    public function visitType(\Graphpinator\Typesystem\Type $type) : mixed;
 
-    public function visitInterface(\Graphpinator\Type\InterfaceType $interface) : mixed;
+    public function visitInterface(\Graphpinator\Typesystem\InterfaceType $interface) : mixed;
 
-    public function visitUnion(\Graphpinator\Type\UnionType $union) : mixed;
+    public function visitUnion(\Graphpinator\Typesystem\UnionType $union) : mixed;
 
-    public function visitInput(\Graphpinator\Type\InputType $input) : mixed;
+    public function visitInput(\Graphpinator\Typesystem\InputType $input) : mixed;
 
-    public function visitScalar(\Graphpinator\Type\ScalarType $scalar) : mixed;
+    public function visitScalar(\Graphpinator\Typesystem\ScalarType $scalar) : mixed;
 
-    public function visitEnum(\Graphpinator\Type\EnumType $enum) : mixed;
+    public function visitEnum(\Graphpinator\Typesystem\EnumType $enum) : mixed;
 }

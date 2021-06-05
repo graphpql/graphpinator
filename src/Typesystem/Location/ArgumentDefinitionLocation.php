@@ -9,7 +9,7 @@ interface ArgumentDefinitionLocation extends \Graphpinator\Typesystem\Contract\T
     public static function isPure() : bool;
 
     public function validateArgumentUsage(
-        \Graphpinator\Argument\Argument $argument,
+        \Graphpinator\Typesystem\Argument\Argument $argument,
         \Graphpinator\Value\ArgumentValueSet $arguments,
     ) : bool;
 

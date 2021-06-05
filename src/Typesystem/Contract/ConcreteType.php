@@ -2,13 +2,13 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Type\Contract;
+namespace Graphpinator\Typesystem\Contract;
 
-abstract class ConcreteType extends \Graphpinator\Type\Contract\NamedType
+abstract class ConcreteType extends \Graphpinator\Typesystem\Contract\NamedType
 {
-    public function isInstanceOf(\Graphpinator\Type\Contract\Definition $type) : bool
+    public function isInstanceOf(\Graphpinator\Typesystem\Contract\Type $type) : bool
     {
-        if ($type instanceof \Graphpinator\Type\NotNullType) {
+        if ($type instanceof \Graphpinator\Typesystem\NotNullType) {
             return $this->isInstanceOf($type->getInnerType());
         }
 

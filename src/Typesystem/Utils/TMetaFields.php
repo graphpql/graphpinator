@@ -2,27 +2,27 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Type\Contract;
+namespace Graphpinator\Typesystem\Utils;
 
 trait TMetaFields
 {
-    protected ?\Graphpinator\Field\ResolvableFieldSet $metaFields = null;
+    protected ?\Graphpinator\Typesystem\Field\ResolvableFieldSet $metaFields = null;
 
-    public function getMetaFields() : \Graphpinator\Field\ResolvableFieldSet
+    public function getMetaFields() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
     {
-        if (!$this->metaFields instanceof \Graphpinator\Field\ResolvableFieldSet) {
+        if (!$this->metaFields instanceof \Graphpinator\Typesystem\Field\ResolvableFieldSet) {
             $this->metaFields = $this->getMetaFieldDefinition();
         }
 
         return $this->metaFields;
     }
 
-    private function getMetaFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+    private function getMetaFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
     {
-        return new \Graphpinator\Field\ResolvableFieldSet([
-            new \Graphpinator\Field\ResolvableField(
+        return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
+            new \Graphpinator\Typesystem\Field\ResolvableField(
                 '__typename',
-                \Graphpinator\Container\Container::String()->notNull(),
+                \Graphpinator\Typesystem\Container::String()->notNull(),
                 function() : string {
                     return $this->getName();
                 },

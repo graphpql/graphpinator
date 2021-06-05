@@ -7,7 +7,7 @@ namespace Graphpinator\Typesystem\Location;
 interface FieldDefinitionLocation extends \Graphpinator\Typesystem\Contract\TypesystemDirective
 {
     public function validateFieldUsage(
-        \Graphpinator\Field\Field $field,
+        \Graphpinator\Typesystem\Field\Field $field,
         \Graphpinator\Value\ArgumentValueSet $arguments,
     ) : bool;
 

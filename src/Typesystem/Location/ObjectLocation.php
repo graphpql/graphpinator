@@ -7,7 +7,7 @@ namespace Graphpinator\Typesystem\Location;
 interface ObjectLocation extends \Graphpinator\Typesystem\Contract\TypesystemDirective
 {
     public function validateObjectUsage(
-        \Graphpinator\Type\Type|\Graphpinator\Type\InterfaceType $type,
+        \Graphpinator\Typesystem\Type|\Graphpinator\Typesystem\InterfaceType $type,
         \Graphpinator\Value\ArgumentValueSet $arguments,
     ) : bool;
 

@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Exception\Type;
+namespace Graphpinator\Typesystem\Exception;
 
-final class FieldDirectiveNotCovariant extends \Graphpinator\Exception\Type\TypeError
+final class FieldDirectiveNotCovariant extends \Graphpinator\Typesystem\Exception\TypeError
 {
     public const MESSAGE = 'Type "%s" does not satisfy interface "%s" - field "%s" has directive which is not covariant.';
 

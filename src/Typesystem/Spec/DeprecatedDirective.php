@@ -2,12 +2,12 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Directive\Spec;
+namespace Graphpinator\Typesystem\Spec;
 
-final class DeprecatedDirective extends \Graphpinator\Directive\Directive implements
-    \Graphpinator\Directive\Contract\FieldDefinitionLocation,
-    \Graphpinator\Directive\Contract\EnumItemLocation,
-    \Graphpinator\Directive\Contract\ArgumentDefinitionLocation
+final class DeprecatedDirective extends \Graphpinator\Typesystem\Directive implements
+    \Graphpinator\Typesystem\Location\FieldDefinitionLocation,
+    \Graphpinator\Typesystem\Location\EnumItemLocation,
+    \Graphpinator\Typesystem\Location\ArgumentDefinitionLocation
 {
     protected const NAME = 'deprecated';
     protected const DESCRIPTION = 'Built-in deprecated directive.';
@@ -18,7 +18,7 @@ final class DeprecatedDirective extends \Graphpinator\Directive\Directive implem
     }
 
     public function validateFieldUsage(
-        \Graphpinator\Field\Field $field,
+        \Graphpinator\Typesystem\Field\Field $field,
         \Graphpinator\Value\ArgumentValueSet $arguments,
     ) : bool
     {
@@ -67,7 +67,7 @@ final class DeprecatedDirective extends \Graphpinator\Directive\Directive implem
         // nothing here
     }
 
-    public function validateArgumentUsage(\Graphpinator\Argument\Argument $argument, \Graphpinator\Value\ArgumentValueSet $arguments,) : bool
+    public function validateArgumentUsage(\Graphpinator\Typesystem\Argument\Argument $argument, \Graphpinator\Value\ArgumentValueSet $arguments,) : bool
     {
         return true;
     }
@@ -79,10 +79,10 @@ final class DeprecatedDirective extends \Graphpinator\Directive\Directive implem
     {
     }
 
-    protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
+    protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
     {
-        return new \Graphpinator\Argument\ArgumentSet([
-            new \Graphpinator\Argument\Argument('reason', \Graphpinator\Container\Container::String()),
+        return new \Graphpinator\Typesystem\Argument\ArgumentSet([
+            new \Graphpinator\Typesystem\Argument\Argument('reason', \Graphpinator\Typesystem\Container::String()),
         ]);
     }
 }

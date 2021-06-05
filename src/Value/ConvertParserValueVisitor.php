@@ -9,7 +9,7 @@ final class ConvertParserValueVisitor implements \Graphpinator\Parser\Value\Valu
     use \Nette\SmartObject;
 
     public function __construct(
-        private \Graphpinator\Type\Contract\Inputable $type,
+        private \Graphpinator\Typesystem\Contract\Inputable $type,
         private ?\Graphpinator\Normalizer\Variable\VariableSet $variableSet,
         private \Graphpinator\Common\Path $path,
     )
@@ -18,7 +18,7 @@ final class ConvertParserValueVisitor implements \Graphpinator\Parser\Value\Valu
 
     public static function convertArgumentValue(
         \Graphpinator\Parser\Value\Value $value,
-        \Graphpinator\Argument\Argument $argument,
+        \Graphpinator\Typesystem\Argument\Argument $argument,
         ?\Graphpinator\Normalizer\Variable\VariableSet $variableSet,
         \Graphpinator\Common\Path $path,
     ) : \Graphpinator\Value\ArgumentValue
@@ -42,13 +42,13 @@ final class ConvertParserValueVisitor implements \Graphpinator\Parser\Value\Valu
 
     public function visitEnumLiteral(\Graphpinator\Parser\Value\EnumLiteral $enumLiteral) : \Graphpinator\Value\InputedValue
     {
-        if ($this->type instanceof \Graphpinator\Type\NotNullType) {
+        if ($this->type instanceof \Graphpinator\Typesystem\NotNullType) {
             $this->type = $this->type->getInnerType();
 
             return $enumLiteral->accept($this);
         }
 
-        if ($this->type instanceof \Graphpinator\Type\EnumType) {
+        if ($this->type instanceof \Graphpinator\Typesystem\EnumType) {
             return $this->type->accept(new ConvertRawValueVisitor($enumLiteral->getRawValue(), $this->path));
         }
 
@@ -57,13 +57,13 @@ final class ConvertParserValueVisitor implements \Graphpinator\Parser\Value\Valu
 
     public function visitListVal(\Graphpinator\Parser\Value\ListVal $listVal) : \Graphpinator\Value\ListInputedValue
     {
-        if ($this->type instanceof \Graphpinator\Type\NotNullType) {
+        if ($this->type instanceof \Graphpinator\Typesystem\NotNullType) {
             $this->type = $this->type->getInnerType();
 
             return $listVal->accept($this);
         }
 
-        if (!$this->type instanceof \Graphpinator\Type\ListType) {
+        if (!$this->type instanceof \Graphpinator\Typesystem\ListType) {
             throw new \Graphpinator\Exception\Value\InvalidValue($this->type->printName(), [], true);
         }
 
@@ -85,13 +85,13 @@ final class ConvertParserValueVisitor implements \Graphpinator\Parser\Value\Valu
 
     public function visitObjectVal(\Graphpinator\Parser\Value\ObjectVal $objectVal) : \Graphpinator\Value\InputValue
     {
-        if ($this->type instanceof \Graphpinator\Type\NotNullType) {
+        if ($this->type instanceof \Graphpinator\Typesystem\NotNullType) {
             $this->type = $this->type->getInnerType();
 
             return $objectVal->accept($this);
         }
 
-        if (!$this->type instanceof \Graphpinator\Type\InputType) {
+        if (!$this->type instanceof \Graphpinator\Typesystem\InputType) {
             throw new \Graphpinator\Exception\Value\InvalidValue($this->type->printName(), new \stdClass(), true);
         }
 

@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Type\Spec;
+namespace Graphpinator\Typesystem\Spec;
 
-final class FloatType extends \Graphpinator\Type\ScalarType
+final class FloatType extends \Graphpinator\Typesystem\ScalarType
 {
     protected const NAME = 'Float';
     protected const DESCRIPTION = 'Float built-in type';

@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Type\Spec;
+namespace Graphpinator\Typesystem\Spec;
 
-final class BooleanType extends \Graphpinator\Type\ScalarType
+final class BooleanType extends \Graphpinator\Typesystem\ScalarType
 {
     protected const NAME = 'Boolean';
     protected const DESCRIPTION = 'Boolean built-in type';

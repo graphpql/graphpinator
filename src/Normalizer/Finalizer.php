@@ -42,7 +42,7 @@ final class Finalizer
 
             foreach ($variable->getDirectives() as $directive) {
                 $directiveDef = $directive->getDirective();
-                \assert($directiveDef instanceof \Graphpinator\Directive\Contract\VariableDefinitionLocation);
+                \assert($directiveDef instanceof \Graphpinator\Typesystem\Location\VariableDefinitionLocation);
                 $directiveDef->resolveVariableDefinition($directive->getArguments(), $value);
             }
 

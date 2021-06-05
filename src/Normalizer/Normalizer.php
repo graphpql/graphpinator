@@ -17,7 +17,7 @@ final class Normalizer
     private \Graphpinator\Normalizer\FragmentCycleValidator $fragmentCycleValidator;
 
     public function __construct(
-        private \Graphpinator\Type\Schema $schema,
+        private \Graphpinator\Typesystem\Schema $schema,
     )
     {
         $this->fragmentCycleValidator = new FragmentCycleValidator();
@@ -65,7 +65,7 @@ final class Normalizer
             \Graphpinator\Tokenizer\OperationType::SUBSCRIPTION => $this->schema->getSubscription(),
         };
 
-        if (!$rootObject instanceof \Graphpinator\Type\Type) {
+        if (!$rootObject instanceof \Graphpinator\Typesystem\Type) {
             throw new \Graphpinator\Normalizer\Exception\OperationNotSupported($operation->getType());
         }
 
@@ -113,7 +113,7 @@ final class Normalizer
             throw new \Graphpinator\Normalizer\Exception\VariableTypeInputable($variable->getName());
         }
 
-        \assert($type instanceof \Graphpinator\Type\Contract\Inputable);
+        \assert($type instanceof \Graphpinator\Typesystem\Contract\Inputable);
 
         $normalized = new \Graphpinator\Normalizer\Variable\Variable(
             $variable->getName(),
@@ -174,7 +174,7 @@ final class Normalizer
             ? $this->normalizeFieldSet($field->getFields())
             : null;
 
-        if ($children === null && !$fieldType instanceof \Graphpinator\Type\Contract\LeafType) {
+        if ($children === null && !$fieldType instanceof \Graphpinator\Typesystem\Contract\LeafType) {
             throw new \Graphpinator\Normalizer\Exception\SelectionOnComposite();
         }
 
@@ -193,7 +193,7 @@ final class Normalizer
     private function normalizeDirectiveSet(
         \Graphpinator\Parser\Directive\DirectiveSet $directiveSet,
         string $location,
-        \Graphpinator\Field\Field|\Graphpinator\Normalizer\Variable\Variable|null $usage = null,
+        \Graphpinator\Typesystem\Field\Field|\Graphpinator\Normalizer\Variable\Variable|null $usage = null,
     ) : \Graphpinator\Normalizer\Directive\DirectiveSet
     {
         $normalized = [];
@@ -222,16 +222,16 @@ final class Normalizer
     private function normalizeDirective(
         \Graphpinator\Parser\Directive\Directive $directive,
         string $location,
-        \Graphpinator\Field\Field|\Graphpinator\Normalizer\Variable\Variable|null $usage = null,
+        \Graphpinator\Typesystem\Field\Field|\Graphpinator\Normalizer\Variable\Variable|null $usage = null,
     ) : \Graphpinator\Normalizer\Directive\Directive
     {
         $directiveDef = $this->schema->getContainer()->getDirective($directive->getName());
 
-        if (!$directiveDef instanceof \Graphpinator\Directive\Directive) {
+        if (!$directiveDef instanceof \Graphpinator\Typesystem\Directive) {
             throw new \Graphpinator\Normalizer\Exception\UnknownDirective($directive->getName());
         }
 
-        if (!$directiveDef instanceof \Graphpinator\Directive\Contract\ExecutableDirective) {
+        if (!$directiveDef instanceof \Graphpinator\Typesystem\Contract\ExecutableDirective) {
             throw new \Graphpinator\Normalizer\Exception\DirectiveNotExecutable($directive->getName());
         }
 
@@ -259,7 +259,7 @@ final class Normalizer
 
     private function normalizeArgumentValueSet(
         ?\Graphpinator\Parser\Value\ArgumentValueSet $argumentValueSet,
-        \Graphpinator\Argument\ArgumentSet $argumentSet,
+        \Graphpinator\Typesystem\Argument\ArgumentSet $argumentSet,
     ) : \Graphpinator\Value\ArgumentValueSet
     {
         $argumentValueSet ??= new \Graphpinator\Parser\Value\ArgumentValueSet();
@@ -335,7 +335,7 @@ final class Normalizer
         $fragment = $this->fragmentDefinitions->offsetGet($fragmentSpread->getName());
         $typeCond = $this->normalizeTypeRef($fragment->getTypeCond());
 
-        if (!$typeCond instanceof \Graphpinator\Type\Contract\TypeConditionable) {
+        if (!$typeCond instanceof \Graphpinator\Typesystem\Contract\TypeConditionable) {
             throw new \Graphpinator\Normalizer\Exception\TypeConditionOutputable();
         }
 
@@ -367,8 +367,8 @@ final class Normalizer
             ? $this->normalizeTypeRef($fragmentSpread->getTypeCond())
             : null;
 
-        if ($typeCond instanceof \Graphpinator\Type\Contract\NamedType &&
-            !$typeCond instanceof \Graphpinator\Type\Contract\TypeConditionable) {
+        if ($typeCond instanceof \Graphpinator\Typesystem\Contract\NamedType &&
+            !$typeCond instanceof \Graphpinator\Typesystem\Contract\TypeConditionable) {
             throw new \Graphpinator\Normalizer\Exception\TypeConditionOutputable();
         }
 
@@ -393,16 +393,16 @@ final class Normalizer
 
     private function normalizeTypeRef(
         \Graphpinator\Parser\TypeRef\TypeRef $typeRef,
-    ) : \Graphpinator\Type\Contract\Definition
+    ) : \Graphpinator\Typesystem\Contract\Type
     {
         return match ($typeRef::class) {
             \Graphpinator\Parser\TypeRef\NamedTypeRef::class =>
                 $this->schema->getContainer()->getType($typeRef->getName())
                     ?? throw new \Graphpinator\Normalizer\Exception\UnknownType($typeRef->getName()),
             \Graphpinator\Parser\TypeRef\ListTypeRef::class =>
-                new \Graphpinator\Type\ListType($this->normalizeTypeRef($typeRef->getInnerRef())),
+                new \Graphpinator\Typesystem\ListType($this->normalizeTypeRef($typeRef->getInnerRef())),
             \Graphpinator\Parser\TypeRef\NotNullRef::class =>
-                new \Graphpinator\Type\NotNullType($this->normalizeTypeRef($typeRef->getInnerRef())),
+                new \Graphpinator\Typesystem\NotNullType($this->normalizeTypeRef($typeRef->getInnerRef())),
         };
     }
 }

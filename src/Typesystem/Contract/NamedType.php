@@ -26,7 +26,7 @@ abstract class NamedType implements \Graphpinator\Typesystem\Contract\Type, \Gra
         return static::DESCRIPTION;
     }
 
-    final public function getNamedType() : \Graphpinator\Type\Contract\NamedType
+    final public function getNamedType() : \Graphpinator\Typesystem\Contract\NamedType
     {
         return $this;
     }
@@ -43,17 +43,17 @@ abstract class NamedType implements \Graphpinator\Typesystem\Contract\Type, \Gra
 
     final public function notNull() : \Graphpinator\Typesystem\NotNullType
     {
-        return new \Graphpinator\Type\NotNullType($this);
+        return new \Graphpinator\Typesystem\NotNullType($this);
     }
 
     final public function notNullList() : \Graphpinator\Typesystem\NotNullType
     {
-        return new \Graphpinator\Type\NotNullType(new \Graphpinator\Typesystem\ListType(new \Graphpinator\Typesystem\NotNullType($this)));
+        return new \Graphpinator\Typesystem\NotNullType(new \Graphpinator\Typesystem\ListType(new \Graphpinator\Typesystem\NotNullType($this)));
     }
 
-    final public function list() : \Graphpinator\Type\ListType
+    final public function list() : \Graphpinator\Typesystem\ListType
     {
-        return new \Graphpinator\Type\ListType($this);
+        return new \Graphpinator\Typesystem\ListType($this);
     }
 
     abstract public function accept(\Graphpinator\Typesystem\Contract\NamedTypeVisitor $visitor) : mixed;

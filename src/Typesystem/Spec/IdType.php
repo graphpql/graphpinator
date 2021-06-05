@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Type\Spec;
+namespace Graphpinator\Typesystem\Spec;
 
-final class IdType extends \Graphpinator\Type\ScalarType
+final class IdType extends \Graphpinator\Typesystem\ScalarType
 {
     protected const NAME = 'ID';
     protected const DESCRIPTION = 'ID built-in type';

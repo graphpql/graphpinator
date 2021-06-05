@@ -9,7 +9,7 @@ final class NullResolvedValue implements \Graphpinator\Value\OutputValue, \Graph
     use \Nette\SmartObject;
 
     public function __construct(
-        private \Graphpinator\Type\Contract\Outputable $type,
+        private \Graphpinator\Typesystem\Contract\Outputable $type,
     )
     {
     }
@@ -19,7 +19,7 @@ final class NullResolvedValue implements \Graphpinator\Value\OutputValue, \Graph
         return null;
     }
 
-    public function getType() : \Graphpinator\Type\Contract\Outputable
+    public function getType() : \Graphpinator\Typesystem\Contract\Outputable
     {
         return $this->type;
     }

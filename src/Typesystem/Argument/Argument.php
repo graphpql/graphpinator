@@ -15,13 +15,13 @@ final class Argument implements \Graphpinator\Typesystem\Contract\Component
 
     public function __construct(
         private string $name,
-        private \Graphpinator\Type\Contract\Inputable $type,
+        private \Graphpinator\Typesystem\Contract\Inputable $type,
     )
     {
-        $this->directiveUsages = new \Graphpinator\DirectiveUsage\DirectiveUsageSet();
+        $this->directiveUsages = new \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet();
     }
 
-    public static function create(string $name, \Graphpinator\Type\Contract\Inputable $type) : self
+    public static function create(string $name, \Graphpinator\Typesystem\Contract\Inputable $type) : self
     {
         return new self($name, $type);
     }
@@ -31,7 +31,7 @@ final class Argument implements \Graphpinator\Typesystem\Contract\Component
         return $this->name;
     }
 
-    public function getType() : \Graphpinator\Type\Contract\Inputable
+    public function getType() : \Graphpinator\Typesystem\Contract\Inputable
     {
         return $this->type;
     }
@@ -58,14 +58,14 @@ final class Argument implements \Graphpinator\Typesystem\Contract\Component
     }
 
     public function addDirective(
-        \Graphpinator\Directive\Contract\ArgumentDefinitionLocation $directive,
+        \Graphpinator\Typesystem\Location\ArgumentDefinitionLocation $directive,
         array $arguments = [],
     ) : self
     {
-        $usage = new \Graphpinator\DirectiveUsage\DirectiveUsage($directive, $arguments);
+        $usage = new \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsage($directive, $arguments);
 
         if (\Graphpinator\Graphpinator::$validateSchema && !$directive->validateArgumentUsage($this, $usage->getArgumentValues())) {
-            throw new \Graphpinator\Exception\Type\DirectiveIncorrectType();
+            throw new \Graphpinator\Typesystem\Exception\DirectiveIncorrectType();
         }
 
         $this->directiveUsages[] = $usage;

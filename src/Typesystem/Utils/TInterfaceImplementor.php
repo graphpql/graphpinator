@@ -2,29 +2,29 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Type\Contract;
+namespace Graphpinator\Typesystem\Utils;
 
 /**
  * Trait TInterfaceImplementor which is implementation of InterfaceImplementor interface.
  */
 trait TInterfaceImplementor
 {
-    protected ?\Graphpinator\Field\FieldSet $fields = null;
-    protected \Graphpinator\Type\InterfaceSet $implements;
+    protected ?\Graphpinator\Typesystem\Field\FieldSet $fields = null;
+    protected \Graphpinator\Typesystem\InterfaceSet $implements;
 
     /**
      * Returns interfaces, which this type implements.
      */
-    public function getInterfaces() : \Graphpinator\Type\InterfaceSet
+    public function getInterfaces() : \Graphpinator\Typesystem\InterfaceSet
     {
         return $this->implements;
     }
 
     /**
      * Checks whether this type implements given interface.
-     * @param \Graphpinator\Type\InterfaceType $interface
+     * @param \Graphpinator\Typesystem\InterfaceType $interface
      */
-    public function implements(\Graphpinator\Type\InterfaceType $interface) : bool
+    public function implements(\Graphpinator\Typesystem\InterfaceType $interface) : bool
     {
         foreach ($this->implements as $temp) {
             if ($temp::class === $interface::class || $temp->implements($interface)) {
@@ -40,7 +40,7 @@ trait TInterfaceImplementor
      * This is (apart from performance considerations) done because of a possible cyclic dependency across fields.
      * Fields are therefore defined by implementing this method, instead of passing FieldSet to constructor.
      */
-    abstract protected function getFieldDefinition() : \Graphpinator\Field\FieldSet;
+    abstract protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\FieldSet;
 
     /**
      * Method to validate contract defined by interfaces - whether fields and their type match.
@@ -52,7 +52,7 @@ trait TInterfaceImplementor
 
             foreach ($interface->getFields() as $fieldContract) {
                 if (!$this->getFields()->offsetExists($fieldContract->getName())) {
-                    throw new \Graphpinator\Exception\Type\InterfaceContractMissingField(
+                    throw new \Graphpinator\Typesystem\Exception\InterfaceContractMissingField(
                         $this->getName(),
                         $interface->getName(),
                         $fieldContract->getName(),
@@ -62,7 +62,7 @@ trait TInterfaceImplementor
                 $field = $this->getFields()->offsetGet($fieldContract->getName());
 
                 if (!$fieldContract->getType()->isInstanceOf($field->getType())) {
-                    throw new \Graphpinator\Exception\Type\InterfaceContractFieldTypeMismatch(
+                    throw new \Graphpinator\Typesystem\Exception\InterfaceContractFieldTypeMismatch(
                         $this->getName(),
                         $interface->getName(),
                         $fieldContract->getName(),
@@ -72,7 +72,7 @@ trait TInterfaceImplementor
                 try {
                     $fieldContract->getDirectiveUsages()->validateCovariance($field->getDirectiveUsages());
                 } catch (\Throwable) {
-                    throw new \Graphpinator\Exception\Type\FieldDirectiveNotCovariant(
+                    throw new \Graphpinator\Typesystem\Exception\FieldDirectiveNotCovariant(
                         $this->getName(),
                         $interface->getName(),
                         $fieldContract->getName(),
@@ -81,7 +81,7 @@ trait TInterfaceImplementor
 
                 foreach ($fieldContract->getArguments() as $argumentContract) {
                     if (!$field->getArguments()->offsetExists($argumentContract->getName())) {
-                        throw new \Graphpinator\Exception\Type\InterfaceContractMissingArgument(
+                        throw new \Graphpinator\Typesystem\Exception\InterfaceContractMissingArgument(
                             $this->getName(),
                             $interface->getName(),
                             $fieldContract->getName(),
@@ -92,7 +92,7 @@ trait TInterfaceImplementor
                     $argument = $field->getArguments()->offsetGet($argumentContract->getName());
 
                     if (!$argument->getType()->isInstanceOf($argumentContract->getType())) {
-                        throw new \Graphpinator\Exception\Type\InterfaceContractArgumentTypeMismatch(
+                        throw new \Graphpinator\Typesystem\Exception\InterfaceContractArgumentTypeMismatch(
                             $this->getName(),
                             $interface->getName(),
                             $fieldContract->getName(),
@@ -103,7 +103,7 @@ trait TInterfaceImplementor
                     try {
                         $argumentContract->getDirectiveUsages()->validateContravariance($argument->getDirectiveUsages());
                     } catch (\Throwable) {
-                        throw new \Graphpinator\Exception\Type\ArgumentDirectiveNotContravariant(
+                        throw new \Graphpinator\Typesystem\Exception\ArgumentDirectiveNotContravariant(
                             $this->getName(),
                             $interface->getName(),
                             $fieldContract->getName(),
@@ -118,7 +118,7 @@ trait TInterfaceImplementor
 
                 foreach ($field->getArguments() as $argument) {
                     if (!$fieldContract->getArguments()->offsetExists($argument->getName()) && $argument->getDefaultValue() === null) {
-                        throw new \Graphpinator\Exception\Type\InterfaceContractNewArgumentWithoutDefault(
+                        throw new \Graphpinator\Typesystem\Exception\InterfaceContractNewArgumentWithoutDefault(
                             $this->getName(),
                             $interface->getName(),
                             $field->getName(),

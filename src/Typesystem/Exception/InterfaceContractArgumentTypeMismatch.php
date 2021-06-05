@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Exception\Type;
+namespace Graphpinator\Typesystem\Exception;
 
-final class InterfaceContractArgumentTypeMismatch extends \Graphpinator\Exception\Type\TypeError
+final class InterfaceContractArgumentTypeMismatch extends \Graphpinator\Typesystem\Exception\TypeError
 {
     public const MESSAGE = 'Type "%s" does not satisfy interface "%s" - argument "%s" on field "%s" does not have a compatible type.';
 
