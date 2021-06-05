@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Normalizer;
 
-use Graphpinator\Typesystem\Location\ExecutableDirectiveLocation;
+use \Graphpinator\Typesystem\Location\ExecutableDirectiveLocation;
 
 final class Normalizer
 {

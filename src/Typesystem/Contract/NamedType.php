@@ -11,6 +11,8 @@ abstract class NamedType implements \Graphpinator\Typesystem\Contract\Type, \Gra
 
     abstract public function isInstanceOf(\Graphpinator\Typesystem\Contract\Type $type) : bool;
 
+    abstract public function accept(\Graphpinator\Typesystem\Contract\NamedTypeVisitor $visitor) : mixed;
+
     final public function getName() : string
     {
         return static::NAME;
@@ -55,6 +57,4 @@ abstract class NamedType implements \Graphpinator\Typesystem\Contract\Type, \Gra
     {
         return new \Graphpinator\Typesystem\ListType($this);
     }
-
-    abstract public function accept(\Graphpinator\Typesystem\Contract\NamedTypeVisitor $visitor) : mixed;
 }
