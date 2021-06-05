@@ -174,7 +174,7 @@ final class Normalizer
             ? $this->normalizeFieldSet($field->getFields())
             : null;
 
-        if ($children === null && !$fieldType instanceof \Graphpinator\Type\Contract\LeafDefinition) {
+        if ($children === null && !$fieldType instanceof \Graphpinator\Type\Contract\LeafType) {
             throw new \Graphpinator\Normalizer\Exception\SelectionOnComposite();
         }
 
@@ -231,7 +231,7 @@ final class Normalizer
             throw new \Graphpinator\Normalizer\Exception\UnknownDirective($directive->getName());
         }
 
-        if (!$directiveDef instanceof \Graphpinator\Directive\Contract\ExecutableDefinition) {
+        if (!$directiveDef instanceof \Graphpinator\Directive\Contract\ExecutableDirective) {
             throw new \Graphpinator\Normalizer\Exception\DirectiveNotExecutable($directive->getName());
         }
 
@@ -367,7 +367,7 @@ final class Normalizer
             ? $this->normalizeTypeRef($fragmentSpread->getTypeCond())
             : null;
 
-        if ($typeCond instanceof \Graphpinator\Type\Contract\NamedDefinition &&
+        if ($typeCond instanceof \Graphpinator\Type\Contract\NamedType &&
             !$typeCond instanceof \Graphpinator\Type\Contract\TypeConditionable) {
             throw new \Graphpinator\Normalizer\Exception\TypeConditionOutputable();
         }

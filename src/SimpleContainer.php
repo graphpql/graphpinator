@@ -2,12 +2,12 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Container;
+namespace Graphpinator;
 
 /**
  * Simple Container implementation
  */
-class SimpleContainer extends \Graphpinator\Container\Container
+class SimpleContainer extends \Graphpinator\Typesystem\Container
 {
     protected array $types = [];
     protected array $directives = [];
@@ -16,7 +16,7 @@ class SimpleContainer extends \Graphpinator\Container\Container
 
     /**
      * @phpcs:ignore SlevomatCodingStandard.TypeHints.DisallowArrayTypeHintSyntax.DisallowedArrayTypeHintSyntax
-     * @param \Graphpinator\Type\Contract\NamedDefinition[] $types
+     * @param \Graphpinator\Type\Contract\NamedType[] $types
      * @phpcs:ignore SlevomatCodingStandard.TypeHints.DisallowArrayTypeHintSyntax.DisallowedArrayTypeHintSyntax
      * @param \Graphpinator\Directive\Directive[] $directives
      */
@@ -56,7 +56,7 @@ class SimpleContainer extends \Graphpinator\Container\Container
         $this->combinedDirectives = \array_merge($this->directives, self::$builtInDirectives);
     }
 
-    public function getType(string $name) : ?\Graphpinator\Type\Contract\NamedDefinition
+    public function getType(string $name) : ?\Graphpinator\Type\Contract\NamedType
     {
         return $this->combinedTypes[$name]
             ?? null;

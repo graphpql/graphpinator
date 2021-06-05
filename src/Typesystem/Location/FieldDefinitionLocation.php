@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Directive\Contract;
+namespace Graphpinator\Typesystem\Location;
 
-interface FieldDefinitionLocation extends TypeSystemDefinition
+interface FieldDefinitionLocation extends \Graphpinator\Typesystem\Contract\TypesystemDirective
 {
     public function validateFieldUsage(
         \Graphpinator\Field\Field $field,

@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Directive\Contract;
+namespace Graphpinator\Typesystem\Location;
 
-interface MutationLocation extends ExecutableDefinition
+interface MutationLocation extends \Graphpinator\Typesystem\Contract\ExecutableDirective
 {
     public function resolveMutationBefore(
         \Graphpinator\Value\ArgumentValueSet $arguments,

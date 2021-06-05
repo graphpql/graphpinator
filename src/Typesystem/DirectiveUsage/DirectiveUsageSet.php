@@ -2,11 +2,11 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\DirectiveUsage;
+namespace Graphpinator\Typesystem\DirectiveUsage;
 
 /**
- * @method \Graphpinator\DirectiveUsage\DirectiveUsage current() : object
- * @method \Graphpinator\DirectiveUsage\DirectiveUsage offsetGet($offset) : object
+ * @method \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsage current() : object
+ * @method \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsage offsetGet($offset) : object
  */
 final class DirectiveUsageSet extends \Infinityloop\Utils\ObjectSet
 {
@@ -38,7 +38,7 @@ final class DirectiveUsageSet extends \Infinityloop\Utils\ObjectSet
 
     protected function offsetSetImpl($offset, object $object) : void
     {
-        \assert($object instanceof \Graphpinator\DirectiveUsage\DirectiveUsage);
+        \assert($object instanceof \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsage);
 
         if (\Graphpinator\Graphpinator::$validateSchema && !$object->getDirective()->isRepeatable()) {
             $this->checkForDuplicate($object->getDirective());
@@ -53,8 +53,8 @@ final class DirectiveUsageSet extends \Infinityloop\Utils\ObjectSet
 
         foreach ($biggerSet as $usage) {
             $directive = $usage->getDirective();
-            \assert($directive instanceof \Graphpinator\Directive\Contract\FieldDefinitionLocation
-                || $directive instanceof \Graphpinator\Directive\Contract\ArgumentDefinitionLocation);
+            \assert($directive instanceof \Graphpinator\Typesystem\Location\FieldDefinitionLocation
+                || $directive instanceof \Graphpinator\Typesystem\Location\ArgumentDefinitionLocation);
 
             if ($smallerSet->offsetExists($childIndex) && $directive instanceof ($smallerSet->offsetGet($childIndex)->getDirective())) {
                 $directive->validateVariance(
@@ -73,7 +73,7 @@ final class DirectiveUsageSet extends \Infinityloop\Utils\ObjectSet
         }
     }
 
-    private function checkForDuplicate(\Graphpinator\Directive\Contract\TypeSystemDefinition $directive) : void
+    private function checkForDuplicate(\Graphpinator\Typesystem\Contract\TypeSystemDirective $directive) : void
     {
         if (!\in_array($directive->getName(), $this->nonRepeatableDirectives)) {
             $this->nonRepeatableDirectives[] = $directive->getName();

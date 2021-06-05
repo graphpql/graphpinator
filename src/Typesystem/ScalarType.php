@@ -4,9 +4,9 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Type;
 
-abstract class ScalarType extends \Graphpinator\Type\Contract\LeafDefinition
+abstract class ScalarType extends \Graphpinator\Type\Contract\LeafType
 {
-    use \Graphpinator\Utils\THasDirectives;
+    use Graphpinator\Typesystem\Utils\THasDirectives;
 
     public function __construct()
     {

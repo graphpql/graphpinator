@@ -6,9 +6,9 @@ namespace Graphpinator\Typesystem\Utils;
 
 trait THasDirectives
 {
-    protected \Graphpinator\DirectiveUsage\DirectiveUsageSet $directiveUsages;
+    protected \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet $directiveUsages;
 
-    public function getDirectiveUsages() : \Graphpinator\DirectiveUsage\DirectiveUsageSet
+    public function getDirectiveUsages() : \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet
     {
         return $this->directiveUsages;
     }

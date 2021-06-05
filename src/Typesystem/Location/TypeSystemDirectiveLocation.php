@@ -2,16 +2,16 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Directive;
+namespace Graphpinator\Typesystem\Location;
 
 final class TypeSystemDirectiveLocation
 {
     use \Nette\StaticClass;
 
-    public const SCHEMA = 'SCHEMA'; // currently not supported
-    public const SCALAR = 'SCALAR'; // currently not supported
-    public const UNION = 'UNION'; // currently not supported
-    public const ENUM = 'ENUM'; // currently not supported
+    public const SCHEMA = 'SCHEMA';
+    public const SCALAR = 'SCALAR';
+    public const UNION = 'UNION';
+    public const ENUM = 'ENUM';
     public const OBJECT = 'OBJECT';
     public const INTERFACE = 'INTERFACE';
     public const INPUT_OBJECT = 'INPUT_OBJECT';

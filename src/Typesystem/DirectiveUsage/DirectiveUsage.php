@@ -11,7 +11,7 @@ final class DirectiveUsage implements \Graphpinator\Typesystem\Contract\Componen
     private \Graphpinator\Value\ArgumentValueSet $argumentValues;
 
     public function __construct(
-        private \Graphpinator\Directive\Contract\TypeSystemDefinition $directive,
+        private \Graphpinator\Typesystem\Contract\TypeSystemDirective $directive,
         array $arguments,
     )
     {
@@ -24,7 +24,7 @@ final class DirectiveUsage implements \Graphpinator\Typesystem\Contract\Componen
         );
     }
 
-    public function getDirective() : \Graphpinator\Directive\Contract\TypeSystemDefinition
+    public function getDirective() : \Graphpinator\Typesystem\Contract\TypeSystemDirective
     {
         return $this->directive;
     }

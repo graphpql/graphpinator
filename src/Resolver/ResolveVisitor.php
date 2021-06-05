@@ -19,7 +19,7 @@ final class ResolveVisitor implements \Graphpinator\Typesystem\TypeVisitor
         $resolved = new \stdClass();
 
         foreach ($this->requestedFields as $field) {
-            if ($field->getTypeCondition() instanceof \Graphpinator\Type\Contract\NamedDefinition &&
+            if ($field->getTypeCondition() instanceof \Graphpinator\Type\Contract\NamedType &&
                 !$this->parentResult->getType()->isInstanceOf($field->getTypeCondition())) {
                 continue;
             }

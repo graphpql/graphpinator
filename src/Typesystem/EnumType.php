@@ -4,9 +4,9 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Type;
 
-abstract class EnumType extends \Graphpinator\Type\Contract\LeafDefinition
+abstract class EnumType extends \Graphpinator\Type\Contract\LeafType
 {
-    use \Graphpinator\Utils\THasDirectives;
+    use Graphpinator\Typesystem\Utils\THasDirectives;
 
     public function __construct(
         protected \Graphpinator\EnumItem\EnumItemSet $options,

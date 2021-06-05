@@ -7,8 +7,8 @@ namespace Graphpinator\Type;
 final class Schema implements \Graphpinator\Typesystem\Entity
 {
     use \Nette\SmartObject;
-    use \Graphpinator\Utils\TOptionalDescription;
-    use \Graphpinator\Utils\THasDirectives;
+    use Graphpinator\Typesystem\Utils\TOptionalDescription;
+    use Graphpinator\Typesystem\Utils\THasDirectives;
 
     public function __construct(
         private \Graphpinator\Container\Container $container,

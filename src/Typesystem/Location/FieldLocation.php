@@ -2,10 +2,18 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Directive\Contract;
+namespace Graphpinator\Typesystem\Location;
 
-interface FieldLocation extends ExecutableDefinition
+interface FieldLocation extends \Graphpinator\Typesystem\Contract\ExecutableDirective
 {
+    public const NONE = 'none';
+    public const SKIP = 'skip';
+
+    public const ENUM = [
+        self::NONE => self::NONE,
+        self::SKIP => self::SKIP,
+    ];
+
     public function validateFieldUsage(
         \Graphpinator\Field\Field $field,
         \Graphpinator\Value\ArgumentValueSet $arguments,

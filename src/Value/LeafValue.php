@@ -8,14 +8,14 @@ abstract class LeafValue implements \Graphpinator\Value\InputedValue, \Graphpina
 {
     use \Nette\SmartObject;
 
-    public function __construct(protected \Graphpinator\Type\Contract\LeafDefinition $type, protected mixed $rawValue, bool $inputed)
+    public function __construct(protected \Graphpinator\Type\Contract\LeafType $type, protected mixed $rawValue, bool $inputed)
     {
         if (!$type->validateNonNullValue($rawValue)) {
             throw new \Graphpinator\Exception\Value\InvalidValue($type->getName(), $rawValue, $inputed);
         }
     }
 
-    public function getType() : \Graphpinator\Type\Contract\LeafDefinition
+    public function getType() : \Graphpinator\Type\Contract\LeafType
     {
         return $this->type;
     }

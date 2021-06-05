@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Type;
 
-final class NotNullType extends \Graphpinator\Type\Contract\ModifierDefinition
+final class ListType extends \Graphpinator\Type\Contract\ModifierType
 {
     public function isInstanceOf(\Graphpinator\Type\Contract\Definition $type) : bool
     {
@@ -12,21 +12,30 @@ final class NotNullType extends \Graphpinator\Type\Contract\ModifierDefinition
             return $this->innerType->isInstanceOf($type->getInnerType());
         }
 
+        if ($type instanceof NotNullType) {
+            return $this->isInstanceOf($type->getInnerType());
+        }
+
         return false;
     }
 
     public function printName() : string
     {
-        return $this->innerType->printName() . '!';
+        return '[' . $this->innerType->printName() . ']';
+    }
+
+    public function notNull() : \Graphpinator\Type\NotNullType
+    {
+        return new \Graphpinator\Type\NotNullType($this);
     }
 
     public function getShapingType() : \Graphpinator\Type\Contract\Definition
     {
-        return $this->getInnerType()->getShapingType();
+        return $this;
     }
 
     public function accept(\Graphpinator\Typesystem\TypeVisitor $visitor) : mixed
     {
-        return $visitor->visitNotNull($this);
+        return $visitor->visitList($this);
     }
 }

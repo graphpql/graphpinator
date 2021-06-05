@@ -4,10 +4,10 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Type;
 
-abstract class UnionType extends \Graphpinator\Type\Contract\AbstractDefinition
+abstract class UnionType extends \Graphpinator\Type\Contract\AbstractType
 {
     use \Graphpinator\Type\Contract\TMetaFields;
-    use \Graphpinator\Utils\THasDirectives;
+    use Graphpinator\Typesystem\Utils\THasDirectives;
 
     public function __construct(protected \Graphpinator\Type\TypeSet $types)
     {

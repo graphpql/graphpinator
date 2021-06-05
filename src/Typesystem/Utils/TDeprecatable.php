@@ -12,7 +12,7 @@ trait TDeprecatable
     public function setDeprecated(?string $reason = null) : self
     {
         $this->addDirective(
-            \Graphpinator\Container\Container::directiveDeprecated(),
+            \Graphpinator\Typesystem\Container::directiveDeprecated(),
             ['reason' => $reason],
         );
 
@@ -22,7 +22,7 @@ trait TDeprecatable
     public function isDeprecated() : bool
     {
         foreach ($this->directiveUsages as $directive) {
-            if ($directive->getDirective() instanceof \Graphpinator\Directive\Spec\DeprecatedDirective) {
+            if ($directive->getDirective() instanceof \Graphpinator\Typesystem\Spec\DeprecatedDirective) {
                 return true;
             }
         }
@@ -33,7 +33,7 @@ trait TDeprecatable
     public function getDeprecationReason() : ?string
     {
         foreach ($this->directiveUsages as $directive) {
-            if ($directive->getDirective() instanceof \Graphpinator\Directive\Spec\DeprecatedDirective) {
+            if ($directive->getDirective() instanceof \Graphpinator\Typesystem\Spec\DeprecatedDirective) {
                 return $directive->getArgumentValues()->offsetGet('reason')->getValue()->getRawValue();
             }
         }

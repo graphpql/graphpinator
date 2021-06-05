@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Type\Contract;
 
-abstract class ModifierDefinition implements
+abstract class ModifierType implements
     \Graphpinator\Type\Contract\Inputable,
     \Graphpinator\Type\Contract\Outputable
 {
@@ -17,7 +17,7 @@ abstract class ModifierDefinition implements
         return $this->innerType;
     }
 
-    public function getNamedType() : \Graphpinator\Type\Contract\NamedDefinition
+    public function getNamedType() : \Graphpinator\Type\Contract\NamedType
     {
         return $this->innerType->getNamedType();
     }

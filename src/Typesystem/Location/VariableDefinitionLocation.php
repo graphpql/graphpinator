@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Directive\Contract;
+namespace Graphpinator\Typesystem\Location;
 
-interface VariableDefinitionLocation extends ExecutableDefinition
+interface VariableDefinitionLocation extends \Graphpinator\Typesystem\Contract\ExecutableDirective
 {
     public function validateVariableUsage(
         \Graphpinator\Normalizer\Variable\Variable $variable,

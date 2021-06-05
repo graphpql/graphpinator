@@ -4,13 +4,13 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Type;
 
-abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition implements
+abstract class Type extends \Graphpinator\Type\Contract\ConcreteType implements
     \Graphpinator\Type\Contract\TypeConditionable,
     \Graphpinator\Type\Contract\InterfaceImplementor
 {
     use \Graphpinator\Type\Contract\TInterfaceImplementor;
     use \Graphpinator\Type\Contract\TMetaFields;
-    use \Graphpinator\Utils\THasDirectives;
+    use Graphpinator\Typesystem\Utils\THasDirectives;
 
     public function __construct(?\Graphpinator\Type\InterfaceSet $implements = null)
     {
@@ -28,7 +28,7 @@ abstract class Type extends \Graphpinator\Type\Contract\ConcreteDefinition imple
 
     final public function isInstanceOf(\Graphpinator\Type\Contract\Definition $type) : bool
     {
-        if ($type instanceof \Graphpinator\Type\Contract\AbstractDefinition) {
+        if ($type instanceof \Graphpinator\Type\Contract\AbstractType) {
             return $type->isImplementedBy($this);
         }
 

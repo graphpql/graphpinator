@@ -37,7 +37,7 @@ final class Type extends \Graphpinator\Type\Type
                 'name',
                 \Graphpinator\Container\Container::String(),
                 static function (Definition $definition) : ?string {
-                    return $definition instanceof \Graphpinator\Type\Contract\NamedDefinition
+                    return $definition instanceof \Graphpinator\Type\Contract\NamedType
                         ? $definition->getName()
                         : null;
                 },
@@ -46,7 +46,7 @@ final class Type extends \Graphpinator\Type\Type
                 'description',
                 \Graphpinator\Container\Container::String(),
                 static function (Definition $definition) : ?string {
-                    return $definition instanceof \Graphpinator\Type\Contract\NamedDefinition
+                    return $definition instanceof \Graphpinator\Type\Contract\NamedType
                         ? $definition->getDescription()
                         : null;
                 },
@@ -172,7 +172,7 @@ final class Type extends \Graphpinator\Type\Type
                 'ofType',
                 $this,
                 static function (Definition $definition) : ?Definition {
-                    return $definition instanceof \Graphpinator\Type\Contract\ModifierDefinition
+                    return $definition instanceof \Graphpinator\Type\Contract\ModifierType
                         ? $definition->getInnerType()
                         : null;
                 },

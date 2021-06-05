@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Directive;
+namespace Graphpinator\Typesystem\Location;
 
 final class ExecutableDirectiveLocation
 {

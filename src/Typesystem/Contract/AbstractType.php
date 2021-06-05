@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace Graphpinator\Type\Contract;
 
 //@phpcs:ignore SlevomatCodingStandard.Classes.SuperfluousAbstractClassNaming.SuperfluousPrefix
-abstract class AbstractDefinition extends \Graphpinator\Type\Contract\NamedDefinition implements
+abstract class AbstractType extends \Graphpinator\Type\Contract\NamedType implements
     \Graphpinator\Type\Contract\Outputable,
     \Graphpinator\Type\Contract\TypeConditionable
 {

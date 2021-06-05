@@ -24,7 +24,7 @@ final class FieldSet extends \Infinityloop\Utils\ObjectSet
     }
 
     public function mergeFieldSet(
-        \Graphpinator\Type\Contract\NamedDefinition $parentType,
+        \Graphpinator\Type\Contract\NamedType $parentType,
         \Graphpinator\Normalizer\Field\FieldSet $fieldSet,
     ) : void
     {
@@ -53,7 +53,7 @@ final class FieldSet extends \Infinityloop\Utils\ObjectSet
     }
 
     private function mergeConflictingField(
-        \Graphpinator\Type\Contract\NamedDefinition $parentType,
+        \Graphpinator\Type\Contract\NamedType $parentType,
         \Graphpinator\Normalizer\Field\Field $field,
     ) : void
     {

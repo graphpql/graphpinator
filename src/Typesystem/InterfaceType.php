@@ -4,12 +4,12 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Type;
 
-abstract class InterfaceType extends \Graphpinator\Type\Contract\AbstractDefinition implements
+abstract class InterfaceType extends \Graphpinator\Type\Contract\AbstractType implements
     \Graphpinator\Type\Contract\InterfaceImplementor
 {
     use \Graphpinator\Type\Contract\TInterfaceImplementor;
     use \Graphpinator\Type\Contract\TMetaFields;
-    use \Graphpinator\Utils\THasDirectives;
+    use Graphpinator\Typesystem\Utils\THasDirectives;
 
     private bool $cycleValidated = false;
 

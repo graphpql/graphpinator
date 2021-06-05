@@ -28,7 +28,7 @@ final class SimpleContainerTest extends \PHPUnit\Framework\TestCase
              '__Directive',
             '__DirectiveLocation',
                  ] as $typeName) {
-            self::assertInstanceOf(\Graphpinator\Type\Contract\NamedDefinition::class, $container->getType($typeName));
+            self::assertInstanceOf(\Graphpinator\Type\Contract\NamedType::class, $container->getType($typeName));
         }
 
         foreach (['skip', 'include'] as $directiveName) {

@@ -2,8 +2,8 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Directive\Contract;
+namespace Graphpinator\Typesystem\Location;
 
-interface FragmentDefinitionLocation extends ExecutableDefinition
+interface FragmentDefinitionLocation extends \Graphpinator\Typesystem\Contract\ExecutableDirective
 {
 }

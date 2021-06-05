@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Directive\Contract;
+namespace Graphpinator\Typesystem\Location;
 
-interface InputObjectLocation extends TypeSystemDefinition
+interface InputObjectLocation extends \Graphpinator\Typesystem\Contract\TypesystemDirective
 {
     public function validateInputUsage(
         \Graphpinator\Type\InputType $inputType,

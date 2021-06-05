@@ -4,10 +4,10 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Type;
 
-abstract class InputType extends \Graphpinator\Type\Contract\ConcreteDefinition implements
+abstract class InputType extends \Graphpinator\Type\Contract\ConcreteType implements
     \Graphpinator\Type\Contract\Inputable
 {
-    use \Graphpinator\Utils\THasDirectives;
+    use Graphpinator\Typesystem\Utils\THasDirectives;
 
     protected const DATA_CLASS = \stdClass::class;
 

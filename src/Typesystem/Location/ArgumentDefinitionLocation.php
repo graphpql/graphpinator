@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Directive\Contract;
+namespace Graphpinator\Typesystem\Location;
 
-interface ArgumentDefinitionLocation extends TypeSystemDefinition
+interface ArgumentDefinitionLocation extends \Graphpinator\Typesystem\Contract\TypesystemDirective
 {
     public static function isPure() : bool;
 

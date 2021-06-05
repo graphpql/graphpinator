@@ -9,13 +9,13 @@ final class Directive
     use \Nette\SmartObject;
 
     public function __construct(
-        private \Graphpinator\Directive\Contract\ExecutableDefinition $directive,
+        private \Graphpinator\Directive\Contract\ExecutableDirective $directive,
         private \Graphpinator\Value\ArgumentValueSet $arguments,
     )
     {
     }
 
-    public function getDirective() : \Graphpinator\Directive\Contract\ExecutableDefinition
+    public function getDirective() : \Graphpinator\Directive\Contract\ExecutableDirective
     {
         return $this->directive;
     }

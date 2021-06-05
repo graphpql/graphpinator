@@ -2,19 +2,19 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\EnumItem;
+namespace Graphpinator\Typesystem\EnumItem;
 
-final class EnumItem implements \Graphpinator\Typesystem\Component
+final class EnumItem implements \Graphpinator\Typesystem\Contract\Component
 {
     use \Nette\SmartObject;
-    use Graphpinator\Typesystem\Utils\TOptionalDescription;
-    use Graphpinator\Typesystem\Utils\THasDirectives;
-    use Graphpinator\Typesystem\Utils\TDeprecatable;
+    use \Graphpinator\Typesystem\Utils\TOptionalDescription;
+    use \Graphpinator\Typesystem\Utils\THasDirectives;
+    use \Graphpinator\Typesystem\Utils\TDeprecatable;
 
     public function __construct(private string $name, ?string $description = null)
     {
         $this->description = $description;
-        $this->directiveUsages = new \Graphpinator\DirectiveUsage\DirectiveUsageSet();
+        $this->directiveUsages = new \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet();
     }
 
     public function getName() : string
@@ -22,17 +22,17 @@ final class EnumItem implements \Graphpinator\Typesystem\Component
         return $this->name;
     }
 
-    public function accept(\Graphpinator\Typesystem\ComponentVisitor $visitor) : mixed
+    public function accept(\Graphpinator\Typesystem\Contract\ComponentVisitor $visitor) : mixed
     {
         return $visitor->visitEnumItem($this);
     }
 
     public function addDirective(
-        \Graphpinator\Directive\Contract\EnumItemLocation $directive,
+        \Graphpinator\Typesystem\Location\EnumItemLocation $directive,
         array $arguments = [],
     ) : self
     {
-        $this->directiveUsages[] = new \Graphpinator\DirectiveUsage\DirectiveUsage($directive, $arguments);
+        $this->directiveUsages[] = new \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsage($directive, $arguments);
 
         return $this;
     }
