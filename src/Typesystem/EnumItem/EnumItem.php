@@ -7,9 +7,9 @@ namespace Graphpinator\EnumItem;
 final class EnumItem implements \Graphpinator\Typesystem\Component
 {
     use \Nette\SmartObject;
-    use \Graphpinator\Utils\TOptionalDescription;
-    use \Graphpinator\Utils\THasDirectives;
-    use \Graphpinator\Utils\TDeprecatable;
+    use Graphpinator\Typesystem\Utils\TOptionalDescription;
+    use Graphpinator\Typesystem\Utils\THasDirectives;
+    use Graphpinator\Typesystem\Utils\TDeprecatable;
 
     public function __construct(private string $name, ?string $description = null)
     {

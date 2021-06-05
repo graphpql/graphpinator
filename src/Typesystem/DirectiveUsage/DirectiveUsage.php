@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\DirectiveUsage;
+namespace Graphpinator\Typesystem\DirectiveUsage;
 
-final class DirectiveUsage implements \Graphpinator\Typesystem\Component
+final class DirectiveUsage implements \Graphpinator\Typesystem\Contract\Component
 {
     use \Nette\SmartObject;
 
@@ -34,7 +34,7 @@ final class DirectiveUsage implements \Graphpinator\Typesystem\Component
         return $this->argumentValues;
     }
 
-    public function accept(\Graphpinator\Typesystem\ComponentVisitor $visitor) : mixed
+    public function accept(\Graphpinator\Typesystem\Contract\ComponentVisitor $visitor) : mixed
     {
         return $visitor->visitDirectiveUsage($this);
     }
