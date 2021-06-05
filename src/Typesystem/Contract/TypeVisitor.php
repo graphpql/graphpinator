@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Typesystem;
+namespace Graphpinator\Typesystem\Contract;
 
 interface TypeVisitor extends \Graphpinator\Typesystem\NamedTypeVisitor
 {

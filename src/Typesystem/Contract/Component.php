@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Typesystem;
+namespace Graphpinator\Typesystem\Contract;
 
 /**
  * Interface Component
@@ -13,5 +13,5 @@ namespace Graphpinator\Typesystem;
  */
 interface Component
 {
-    public function accept(\Graphpinator\Typesystem\ComponentVisitor $visitor) : mixed;
+    public function accept(\Graphpinator\Typesystem\Contract\ComponentVisitor $visitor) : mixed;
 }

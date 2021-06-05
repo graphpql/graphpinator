@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Typesystem;
+namespace Graphpinator\Typesystem\Contract;
 
-interface ComponentVisitor extends \Graphpinator\Typesystem\EntityVisitor
+interface ComponentVisitor extends \Graphpinator\Typesystem\Contract\EntityVisitor
 {
     public function visitField(\Graphpinator\Field\Field $field) : mixed;
 

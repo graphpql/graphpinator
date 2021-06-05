@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Typesystem;
+namespace Graphpinator\Typesystem\Contract;
 
-interface EntityVisitor extends \Graphpinator\Typesystem\NamedTypeVisitor
+interface EntityVisitor extends \Graphpinator\Typesystem\Contract\NamedTypeVisitor
 {
     public function visitSchema(\Graphpinator\Type\Schema $schema) : mixed;
 
