@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Utils;
+namespace Graphpinator\Typesystem\Utils;
 
 trait THasDirectives
 {

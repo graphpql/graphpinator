@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Utils;
+namespace Graphpinator\Typesystem\Utils;
 
 /**
  * Trait TDeprecatable which manages deprecated info for classes which support it.

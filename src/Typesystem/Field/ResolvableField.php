@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Field;
+namespace Graphpinator\Typesystem\Field;
 
-final class ResolvableField extends \Graphpinator\Field\Field
+final class ResolvableField extends \Graphpinator\Typesystem\Field\Field
 {
     private \Closure $resolveFn;
 

@@ -2,14 +2,14 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Argument;
+namespace Graphpinator\Typesystem\Argument;
 
-final class Argument implements \Graphpinator\Typesystem\Component
+final class Argument implements \Graphpinator\Typesystem\Contract\Component
 {
     use \Nette\SmartObject;
-    use \Graphpinator\Utils\TOptionalDescription;
-    use \Graphpinator\Utils\THasDirectives;
-    use \Graphpinator\Utils\TDeprecatable;
+    use \Graphpinator\Typesystem\Utils\TOptionalDescription;
+    use \Graphpinator\Typesystem\Utils\THasDirectives;
+    use \Graphpinator\Typesystem\Utils\TDeprecatable;
 
     private ?\Graphpinator\Value\ArgumentValue $defaultValue = null;
 
@@ -52,7 +52,7 @@ final class Argument implements \Graphpinator\Typesystem\Component
         return $this;
     }
 
-    public function accept(\Graphpinator\Typesystem\ComponentVisitor $visitor) : mixed
+    public function accept(\Graphpinator\Typesystem\Contract\ComponentVisitor $visitor) : mixed
     {
         return $visitor->visitArgument($this);
     }
