@@ -6,7 +6,9 @@ namespace Graphpinator\Exception\Value;
 
 abstract class ValueError extends \Graphpinator\Exception\GraphpinatorBase
 {
-    public function __construct(protected bool $outputable)
+    public function __construct(
+        protected bool $outputable,
+    )
     {
         parent::__construct();
     }

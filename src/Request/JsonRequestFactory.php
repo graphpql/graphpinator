@@ -12,7 +12,10 @@ final class JsonRequestFactory implements \Graphpinator\Request\RequestFactory
     public const VARIABLES = 'variables';
     public const OPERATION_NAME = 'operationName';
 
-    public function __construct(private \Infinityloop\Utils\Json\JsonContract $json, private bool $strict = true)
+    public function __construct(
+        private \Infinityloop\Utils\Json\JsonContract $json,
+        private bool $strict = true,
+    )
     {
     }
 

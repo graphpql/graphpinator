@@ -13,7 +13,10 @@ class Field implements \Graphpinator\Typesystem\Contract\Component
 
     protected \Graphpinator\Typesystem\Argument\ArgumentSet $arguments;
 
-    public function __construct(protected string $name, protected \Graphpinator\Typesystem\Contract\Outputable $type)
+    public function __construct(
+        protected string $name,
+        protected \Graphpinator\Typesystem\Contract\Outputable $type,
+    )
     {
         $this->arguments = new \Graphpinator\Typesystem\Argument\ArgumentSet([]);
         $this->directiveUsages = new \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet();

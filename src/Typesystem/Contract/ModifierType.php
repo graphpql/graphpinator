@@ -8,7 +8,9 @@ abstract class ModifierType implements
     \Graphpinator\Typesystem\Contract\Inputable,
     \Graphpinator\Typesystem\Contract\Outputable
 {
-    public function __construct(protected \Graphpinator\Typesystem\Contract\Type $innerType)
+    public function __construct(
+        protected \Graphpinator\Typesystem\Contract\Type $innerType,
+    )
     {
     }
 

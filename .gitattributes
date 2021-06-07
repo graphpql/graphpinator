@@ -1,5 +1,4 @@
 /.github        export-ignore
-/bench          export-ignore
 /build          export-ignore
 /docs           export-ignore
 /tests          export-ignore

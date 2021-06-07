@@ -8,7 +8,10 @@ final class ListIntermediateValue implements \Graphpinator\Value\ResolvedValue
 {
     use \Nette\SmartObject;
 
-    public function __construct(private \Graphpinator\Typesystem\ListType $type, private iterable $rawValue)
+    public function __construct(
+        private \Graphpinator\Typesystem\ListType $type,
+        private iterable $rawValue,
+    )
     {
     }
 

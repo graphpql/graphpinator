@@ -8,7 +8,9 @@ final class NullInputedValue implements \Graphpinator\Value\InputedValue, \Graph
 {
     use \Nette\SmartObject;
 
-    public function __construct(private \Graphpinator\Typesystem\Contract\Inputable $type)
+    public function __construct(
+        private \Graphpinator\Typesystem\Contract\Inputable $type,
+    )
     {
     }
 

@@ -10,7 +10,11 @@ final class Request
 
     private \stdClass $variables;
 
-    public function __construct(private string $query, ?\stdClass $variables = null, private ?string $operationName = null)
+    public function __construct(
+        private string $query,
+        ?\stdClass $variables = null,
+        private ?string $operationName = null,
+    )
     {
         $this->variables = $variables
             ?? new \stdClass();

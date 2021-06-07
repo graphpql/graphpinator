@@ -9,7 +9,9 @@ abstract class UnionType extends \Graphpinator\Typesystem\Contract\AbstractType
     use \Graphpinator\Typesystem\Utils\TMetaFields;
     use \Graphpinator\Typesystem\Utils\THasDirectives;
 
-    public function __construct(protected \Graphpinator\Typesystem\TypeSet $types)
+    public function __construct(
+        protected \Graphpinator\Typesystem\TypeSet $types,
+    )
     {
         $this->directiveUsages = new \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet();
     }
