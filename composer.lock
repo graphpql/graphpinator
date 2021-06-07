@@ -927,16 +927,16 @@
         },
         {
             "name": "infinityloop-dev/coding-standard",
-            "version": "v0.2.1",
+            "version": "v0.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/infinityloop-dev/coding-standard.git",
-                "reference": "69588946137ac82d0b906d988fa7d6220be276d2"
+                "reference": "b890f9e92d66f436b055755f4aedeae53cbf34b3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/infinityloop-dev/coding-standard/zipball/69588946137ac82d0b906d988fa7d6220be276d2",
-                "reference": "69588946137ac82d0b906d988fa7d6220be276d2",
+                "url": "https://api.github.com/repos/infinityloop-dev/coding-standard/zipball/b890f9e92d66f436b055755f4aedeae53cbf34b3",
+                "reference": "b890f9e92d66f436b055755f4aedeae53cbf34b3",
                 "shasum": ""
             },
             "require": {
@@ -960,9 +960,9 @@
             "description": "Inifnityloop PHPCS coding standard",
             "support": {
                 "issues": "https://github.com/infinityloop-dev/coding-standard/issues",
-                "source": "https://github.com/infinityloop-dev/coding-standard/tree/v0.2.1"
+                "source": "https://github.com/infinityloop-dev/coding-standard/tree/v0.2.3"
             },
-            "time": "2021-05-23T22:24:09+00:00"
+            "time": "2021-06-03T08:02:17+00:00"
         },
         {
             "name": "justinrainbow/json-schema",
