@@ -19,6 +19,7 @@ final class ConvertRawValueVisitor implements \Graphpinator\Typesystem\Contract\
         \Graphpinator\Typesystem\Argument\ArgumentSet $arguments,
         \stdClass $rawValue,
         \Graphpinator\Common\Path $path,
+        bool $canBeOmitted = false,
     ) : \stdClass
     {
         $rawValue = self::mergeRaw($rawValue, (object) $arguments->getRawDefaults());
@@ -51,8 +52,14 @@ final class ConvertRawValueVisitor implements \Graphpinator\Typesystem\Contract\
 
             if ($default instanceof ArgumentValue) {
                 $inner->{$argument->getName()} = $default;
+            } elseif (!$canBeOmitted) {
+                $inner->{$argument->getName()} = new ArgumentValue(
+                    $argument,
+                    $argument->getType()->accept(new ConvertRawValueVisitor(null, $path)),
+                    false,
+                );
             } elseif ($argument->getType() instanceof \Graphpinator\Typesystem\NotNullType) {
-                throw new \Graphpinator\Exception\Value\ValueCannotBeNull(false);
+                throw new \Graphpinator\Exception\Value\ValueCannotBeOmitted();
             }
 
             $path->pop();
@@ -86,7 +93,7 @@ final class ConvertRawValueVisitor implements \Graphpinator\Typesystem\Contract\
             throw new \Graphpinator\Exception\Value\InvalidValue($input->getName(), $this->rawValue, true);
         }
 
-        return new InputValue($input, self::convertArgumentSet($input->getArguments(), $this->rawValue, $this->path));
+        return new InputValue($input, self::convertArgumentSet($input->getArguments(), $this->rawValue, $this->path, true));
     }
 
     public function visitScalar(\Graphpinator\Typesystem\ScalarType $scalar) : InputedValue
