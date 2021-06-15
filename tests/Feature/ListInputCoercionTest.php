@@ -104,9 +104,9 @@ final class ListInputCoercionTest extends \PHPUnit\Framework\TestCase
                 return true;
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
             {
-                $argument = \Graphpinator\Argument\Argument::create(
+                $argument = \Graphpinator\Typesystem\Argument\Argument::create(
                     'listArg',
                     \Graphpinator\Typesystem\Container::Int()->notNullList(),
                 );
@@ -115,14 +115,14 @@ final class ListInputCoercionTest extends \PHPUnit\Framework\TestCase
                     $argument->setDefaultValue($this->defaultValue);
                 }
 
-                return new \Graphpinator\Field\ResolvableFieldSet([
-                    \Graphpinator\Field\ResolvableField::create(
+                return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
+                    \Graphpinator\Typesystem\Field\ResolvableField::create(
                         'field',
                         \Graphpinator\Typesystem\Container::Int()->notNullList(),
                         static function ($parent, array $listArg) : array {
                             return $listArg;
                         },
-                    )->setArguments(new \Graphpinator\Argument\ArgumentSet([
+                    )->setArguments(new \Graphpinator\Typesystem\Argument\ArgumentSet([
                         $argument,
                     ])),
                 ]);

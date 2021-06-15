@@ -13,18 +13,18 @@ final class InputObjectRepresentationTest extends \PHPUnit\Framework\TestCase
             protected const NAME = 'SimpleInput';
             protected const DATA_CLASS = \Graphpinator\Tests\Feature\InputObject::class;
 
-            protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
+            protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
             {
-                return new \Graphpinator\Argument\ArgumentSet([
-                    new \Graphpinator\Argument\Argument(
+                return new \Graphpinator\Typesystem\Argument\ArgumentSet([
+                    new \Graphpinator\Typesystem\Argument\Argument(
                         'number',
                         \Graphpinator\Typesystem\Container::Int(),
                     ),
-                    new \Graphpinator\Argument\Argument(
+                    new \Graphpinator\Typesystem\Argument\Argument(
                         'simpleInput2',
                         \Graphpinator\Tests\Feature\InputObjectRepresentationTest::getSimpleInput2(),
                     ),
-                    new \Graphpinator\Argument\Argument(
+                    new \Graphpinator\Typesystem\Argument\Argument(
                         'simpleInput3',
                         \Graphpinator\Tests\Feature\InputObjectRepresentationTest::getSimpleInput3(),
                     ),
@@ -40,10 +40,10 @@ final class InputObjectRepresentationTest extends \PHPUnit\Framework\TestCase
             protected const NAME = 'SimpleInput2';
             protected const DATA_CLASS = \Graphpinator\Tests\Feature\InputObject2::class;
 
-            protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
+            protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
             {
-                return new \Graphpinator\Argument\ArgumentSet([
-                    new \Graphpinator\Argument\Argument(
+                return new \Graphpinator\Typesystem\Argument\ArgumentSet([
+                    new \Graphpinator\Typesystem\Argument\Argument(
                         'number',
                         \Graphpinator\Typesystem\Container::Int(),
                     ),
@@ -58,10 +58,10 @@ final class InputObjectRepresentationTest extends \PHPUnit\Framework\TestCase
         {
             protected const NAME = 'SimpleInput3';
 
-            protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
+            protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
             {
-                return new \Graphpinator\Argument\ArgumentSet([
-                    new \Graphpinator\Argument\Argument(
+                return new \Graphpinator\Typesystem\Argument\ArgumentSet([
+                    new \Graphpinator\Typesystem\Argument\Argument(
                         'number',
                         \Graphpinator\Typesystem\Container::Int(),
                     ),
@@ -102,10 +102,10 @@ final class InputObjectRepresentationTest extends \PHPUnit\Framework\TestCase
                 return true;
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
             {
-                return new \Graphpinator\Field\ResolvableFieldSet([
-                    \Graphpinator\Field\ResolvableField::create(
+                return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
+                    \Graphpinator\Typesystem\Field\ResolvableField::create(
                         'field1',
                         \Graphpinator\Typesystem\Container::Int(),
                         static function($parent, \Graphpinator\Tests\Feature\InputObject $arg) : int {
@@ -114,8 +114,8 @@ final class InputObjectRepresentationTest extends \PHPUnit\Framework\TestCase
 
                             return $arg->number + $arg->simpleInput2->number + $arg->simpleInput3->number;
                         },
-                    )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        new \Graphpinator\Argument\Argument(
+                    )->setArguments(new \Graphpinator\Typesystem\Argument\ArgumentSet([
+                        new \Graphpinator\Typesystem\Argument\Argument(
                             'arg',
                             \Graphpinator\Tests\Feature\InputObjectRepresentationTest::getSimpleInput(),
                         ),

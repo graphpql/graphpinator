@@ -15,10 +15,10 @@ final class InterfaceNewOptionalArgumentTest extends \PHPUnit\Framework\TestCase
             {
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Field\FieldSet
+            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\FieldSet
             {
-                return new \Graphpinator\Field\FieldSet([
-                    new \Graphpinator\Field\Field(
+                return new \Graphpinator\Typesystem\Field\FieldSet([
+                    new \Graphpinator\Typesystem\Field\Field(
                         'field',
                         \Graphpinator\Typesystem\Container::Int(),
                     ),
@@ -44,17 +44,17 @@ final class InterfaceNewOptionalArgumentTest extends \PHPUnit\Framework\TestCase
                 return true;
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
             {
-                return new \Graphpinator\Field\ResolvableFieldSet([
-                    \Graphpinator\Field\ResolvableField::create(
+                return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
+                    \Graphpinator\Typesystem\Field\ResolvableField::create(
                         'field',
                         \Graphpinator\Typesystem\Container::Int(),
                         static function ($parent, $argumentDefaultNull) : void {
                         },
                     )->setArguments(
-                        new \Graphpinator\Argument\ArgumentSet([
-                            \Graphpinator\Argument\Argument::create(
+                        new \Graphpinator\Typesystem\Argument\ArgumentSet([
+                            \Graphpinator\Typesystem\Argument\Argument::create(
                                 'argument',
                                 \Graphpinator\Typesystem\Container::Int(),
                             ),

@@ -16,9 +16,9 @@ final class InterfaceOrTypeMustDefineOneOrMoreFieldsTest extends \PHPUnit\Framew
                 return true;
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
             {
-                return new \Graphpinator\Field\ResolvableFieldSet([]);
+                return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([]);
             }
         };
     }
@@ -39,9 +39,9 @@ final class InterfaceOrTypeMustDefineOneOrMoreFieldsTest extends \PHPUnit\Framew
             {
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Field\FieldSet
+            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\FieldSet
             {
-                return new \Graphpinator\Field\FieldSet([]);
+                return new \Graphpinator\Typesystem\Field\FieldSet([]);
             }
         };
     }

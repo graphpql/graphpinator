@@ -100,10 +100,10 @@ final class SpecifiedByDirectiveTest extends \PHPUnit\Framework\TestCase
                 return true;
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
             {
-                return new \Graphpinator\Field\ResolvableFieldSet([
-                    new \Graphpinator\Field\ResolvableField(
+                return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
+                    new \Graphpinator\Typesystem\Field\ResolvableField(
                         'field',
                         \Graphpinator\Typesystem\Container::String(),
                         static function () : void {

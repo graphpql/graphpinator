@@ -25,31 +25,31 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Value\TypeIntermediateValue(InterfaceTypeTest::getTypeImplementingInterface(), 123);
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Field\FieldSet
+            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\FieldSet
             {
-                return new \Graphpinator\Field\FieldSet([
-                    new \Graphpinator\Field\Field(
+                return new \Graphpinator\Typesystem\Field\FieldSet([
+                    new \Graphpinator\Typesystem\Field\Field(
                         'field',
                         \Graphpinator\Typesystem\Container::Int(),
                     ),
-                    new \Graphpinator\Field\Field(
+                    new \Graphpinator\Typesystem\Field\Field(
                         'fieldNotNull',
                         \Graphpinator\Typesystem\Container::Int()->notNull(),
                     ),
-                    \Graphpinator\Field\Field::create(
+                    \Graphpinator\Typesystem\Field\Field::create(
                         'fieldArg',
                         \Graphpinator\Typesystem\Container::Int()->notNull(),
-                    )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        new \Graphpinator\Argument\Argument(
+                    )->setArguments(new \Graphpinator\Typesystem\Argument\ArgumentSet([
+                        new \Graphpinator\Typesystem\Argument\Argument(
                             'argName',
                             \Graphpinator\Typesystem\Container::Int(),
                         ),
                     ])),
-                    \Graphpinator\Field\Field::create(
+                    \Graphpinator\Typesystem\Field\Field::create(
                         'fieldArgNotNull',
                         \Graphpinator\Typesystem\Container::Int()->notNull(),
-                    )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        new \Graphpinator\Argument\Argument(
+                    )->setArguments(new \Graphpinator\Typesystem\Argument\ArgumentSet([
+                        new \Graphpinator\Typesystem\Argument\Argument(
                             'argName',
                             \Graphpinator\Typesystem\Container::Int()->notNull(),
                         ),
@@ -69,10 +69,10 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Value\TypeIntermediateValue(InterfaceTypeTest::getTypeImplementingInterface(), 123);
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Field\FieldSet
+            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\FieldSet
             {
-                return new \Graphpinator\Field\FieldSet([
-                    new \Graphpinator\Field\Field(
+                return new \Graphpinator\Typesystem\Field\FieldSet([
+                    new \Graphpinator\Typesystem\Field\Field(
                         'field',
                         \Graphpinator\Typesystem\Container::Int(),
                     ),
@@ -100,39 +100,39 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
                 return true;
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
             {
-                return new \Graphpinator\Field\ResolvableFieldSet([
-                    new \Graphpinator\Field\ResolvableField(
+                return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
+                    new \Graphpinator\Typesystem\Field\ResolvableField(
                         'field',
                         \Graphpinator\Typesystem\Container::Int(),
                         static function () : void {
                         },
                     ),
-                    new \Graphpinator\Field\ResolvableField(
+                    new \Graphpinator\Typesystem\Field\ResolvableField(
                         'fieldNotNull',
                         \Graphpinator\Typesystem\Container::Boolean()->notNull(),
                         static function () : void {
                         },
                     ),
-                    \Graphpinator\Field\ResolvableField::create(
+                    \Graphpinator\Typesystem\Field\ResolvableField::create(
                         'fieldArg',
                         \Graphpinator\Typesystem\Container::Int()->notNull(),
                         static function () : void {
                         },
-                    )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        new \Graphpinator\Argument\Argument(
+                    )->setArguments(new \Graphpinator\Typesystem\Argument\ArgumentSet([
+                        new \Graphpinator\Typesystem\Argument\Argument(
                             'argName',
                             \Graphpinator\Typesystem\Container::Int(),
                         ),
                     ])),
-                    \Graphpinator\Field\ResolvableField::create(
+                    \Graphpinator\Typesystem\Field\ResolvableField::create(
                         'fieldArgNotNull',
                         \Graphpinator\Typesystem\Container::Int()->notNull(),
                         static function () : void {
                         },
-                    )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        new \Graphpinator\Argument\Argument(
+                    )->setArguments(new \Graphpinator\Typesystem\Argument\ArgumentSet([
+                        new \Graphpinator\Typesystem\Argument\Argument(
                             'argName',
                             \Graphpinator\Typesystem\Container::Int()->notNull(),
                         ),
@@ -161,39 +161,39 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
                 return true;
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
             {
-                return new \Graphpinator\Field\ResolvableFieldSet([
-                    new \Graphpinator\Field\ResolvableField(
+                return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
+                    new \Graphpinator\Typesystem\Field\ResolvableField(
                         'field',
                         \Graphpinator\Typesystem\Container::Int(),
                         static function () : void {
                         },
                     ),
-                    new \Graphpinator\Field\ResolvableField(
+                    new \Graphpinator\Typesystem\Field\ResolvableField(
                         'fieldNotNull',
                         \Graphpinator\Typesystem\Container::Int(),
                         static function () : void {
                         },
                     ),
-                    \Graphpinator\Field\ResolvableField::create(
+                    \Graphpinator\Typesystem\Field\ResolvableField::create(
                         'fieldArg',
                         \Graphpinator\Typesystem\Container::Int()->notNull(),
                         static function () : void {
                         },
-                    )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        new \Graphpinator\Argument\Argument(
+                    )->setArguments(new \Graphpinator\Typesystem\Argument\ArgumentSet([
+                        new \Graphpinator\Typesystem\Argument\Argument(
                             'argName',
                             \Graphpinator\Typesystem\Container::Int(),
                         ),
                     ])),
-                    \Graphpinator\Field\ResolvableField::create(
+                    \Graphpinator\Typesystem\Field\ResolvableField::create(
                         'fieldArgNotNull',
                         \Graphpinator\Typesystem\Container::Int()->notNull(),
                         static function () : void {
                         },
-                    )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        new \Graphpinator\Argument\Argument(
+                    )->setArguments(new \Graphpinator\Typesystem\Argument\ArgumentSet([
+                        new \Graphpinator\Typesystem\Argument\Argument(
                             'argName',
                             \Graphpinator\Typesystem\Container::Int()->notNull(),
                         ),
@@ -222,34 +222,34 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
                 return true;
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
             {
-                return new \Graphpinator\Field\ResolvableFieldSet([
-                    new \Graphpinator\Field\ResolvableField(
+                return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
+                    new \Graphpinator\Typesystem\Field\ResolvableField(
                         'field',
                         \Graphpinator\Typesystem\Container::Int(),
                         static function () : void {
                         },
                     ),
-                    new \Graphpinator\Field\ResolvableField(
+                    new \Graphpinator\Typesystem\Field\ResolvableField(
                         'fieldNotNull',
                         \Graphpinator\Typesystem\Container::Int()->notNull(),
                         static function () : void {
                         },
                     ),
-                    new \Graphpinator\Field\ResolvableField(
+                    new \Graphpinator\Typesystem\Field\ResolvableField(
                         'fieldArg',
                         \Graphpinator\Typesystem\Container::Int()->notNull(),
                         static function () : void {
                         },
                     ),
-                    \Graphpinator\Field\ResolvableField::create(
+                    \Graphpinator\Typesystem\Field\ResolvableField::create(
                         'fieldArgNotNull',
                         \Graphpinator\Typesystem\Container::Int()->notNull(),
                         static function () : void {
                         },
-                    )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        new \Graphpinator\Argument\Argument(
+                    )->setArguments(new \Graphpinator\Typesystem\Argument\ArgumentSet([
+                        new \Graphpinator\Typesystem\Argument\Argument(
                             'argName',
                             \Graphpinator\Typesystem\Container::Int()->notNull(),
                         ),
@@ -278,39 +278,39 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
                 return true;
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
             {
-                return new \Graphpinator\Field\ResolvableFieldSet([
-                    new \Graphpinator\Field\ResolvableField(
+                return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
+                    new \Graphpinator\Typesystem\Field\ResolvableField(
                         'field',
                         \Graphpinator\Typesystem\Container::Int(),
                         static function () : void {
                         },
                     ),
-                    new \Graphpinator\Field\ResolvableField(
+                    new \Graphpinator\Typesystem\Field\ResolvableField(
                         'fieldNotNull',
                         \Graphpinator\Typesystem\Container::Int()->notNull(),
                         static function () : void {
                         },
                     ),
-                    \Graphpinator\Field\ResolvableField::create(
+                    \Graphpinator\Typesystem\Field\ResolvableField::create(
                         'fieldArg',
                         \Graphpinator\Typesystem\Container::Int()->notNull(),
                         static function () : void {
                         },
-                    )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        new \Graphpinator\Argument\Argument(
+                    )->setArguments(new \Graphpinator\Typesystem\Argument\ArgumentSet([
+                        new \Graphpinator\Typesystem\Argument\Argument(
                             'argName',
                             \Graphpinator\Typesystem\Container::Int(),
                         ),
                     ])),
-                    \Graphpinator\Field\ResolvableField::create(
+                    \Graphpinator\Typesystem\Field\ResolvableField::create(
                         'fieldArgNotNull',
                         \Graphpinator\Typesystem\Container::Int()->notNull(),
                         static function () : void {
                         },
-                    )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        new \Graphpinator\Argument\Argument(
+                    )->setArguments(new \Graphpinator\Typesystem\Argument\ArgumentSet([
+                        new \Graphpinator\Typesystem\Argument\Argument(
                             'argName',
                             \Graphpinator\Typesystem\Container::Boolean()->notNull(),
                         ),
@@ -339,39 +339,39 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
                 return true;
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
             {
-                return new \Graphpinator\Field\ResolvableFieldSet([
-                    new \Graphpinator\Field\ResolvableField(
+                return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
+                    new \Graphpinator\Typesystem\Field\ResolvableField(
                         'field',
                         \Graphpinator\Typesystem\Container::Int(),
                         static function () : void {
                         },
                     ),
-                    new \Graphpinator\Field\ResolvableField(
+                    new \Graphpinator\Typesystem\Field\ResolvableField(
                         'fieldNotNull',
                         \Graphpinator\Typesystem\Container::Int()->notNull(),
                         static function () : void {
                         },
                     ),
-                    \Graphpinator\Field\ResolvableField::create(
+                    \Graphpinator\Typesystem\Field\ResolvableField::create(
                         'fieldArg',
                         \Graphpinator\Typesystem\Container::Int()->notNull(),
                         static function () : void {
                         },
-                    )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        new \Graphpinator\Argument\Argument(
+                    )->setArguments(new \Graphpinator\Typesystem\Argument\ArgumentSet([
+                        new \Graphpinator\Typesystem\Argument\Argument(
                             'argName',
                             \Graphpinator\Typesystem\Container::Int()->notNull(),
                         ),
                     ])),
-                    \Graphpinator\Field\ResolvableField::create(
+                    \Graphpinator\Typesystem\Field\ResolvableField::create(
                         'fieldArgNotNull',
                         \Graphpinator\Typesystem\Container::Int()->notNull(),
                         static function () : void {
                         },
-                    )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        new \Graphpinator\Argument\Argument(
+                    )->setArguments(new \Graphpinator\Typesystem\Argument\ArgumentSet([
+                        new \Graphpinator\Typesystem\Argument\Argument(
                             'argName',
                             \Graphpinator\Typesystem\Container::Int()->notNull(),
                         ),
@@ -391,9 +391,9 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
                 return true;
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
             {
-                return new \Graphpinator\Field\ResolvableFieldSet();
+                return new \Graphpinator\Typesystem\Field\ResolvableFieldSet();
             }
         };
     }
@@ -417,39 +417,39 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
                 return true;
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
             {
-                return new \Graphpinator\Field\ResolvableFieldSet([
-                    new \Graphpinator\Field\ResolvableField(
+                return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
+                    new \Graphpinator\Typesystem\Field\ResolvableField(
                         'field',
                         \Graphpinator\Typesystem\Container::Int(),
                         static function () : void {
                         },
                     ),
-                    new \Graphpinator\Field\ResolvableField(
+                    new \Graphpinator\Typesystem\Field\ResolvableField(
                         'fieldNotNull',
                         \Graphpinator\Typesystem\Container::Int()->notNull(),
                         static function () : void {
                         },
                     ),
-                    \Graphpinator\Field\ResolvableField::create(
+                    \Graphpinator\Typesystem\Field\ResolvableField::create(
                         'fieldArg',
                         \Graphpinator\Typesystem\Container::Int()->notNull(),
                         static function () : void {
                         },
-                    )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        new \Graphpinator\Argument\Argument(
+                    )->setArguments(new \Graphpinator\Typesystem\Argument\ArgumentSet([
+                        new \Graphpinator\Typesystem\Argument\Argument(
                             'argName',
                             \Graphpinator\Typesystem\Container::Int(),
                         ),
                     ])),
-                    \Graphpinator\Field\ResolvableField::create(
+                    \Graphpinator\Typesystem\Field\ResolvableField::create(
                         'fieldArgNotNull',
                         \Graphpinator\Typesystem\Container::Int()->notNull(),
                         static function () : void {
                         },
-                    )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        new \Graphpinator\Argument\Argument(
+                    )->setArguments(new \Graphpinator\Typesystem\Argument\ArgumentSet([
+                        new \Graphpinator\Typesystem\Argument\Argument(
                             'argName',
                             \Graphpinator\Typesystem\Container::Int()->notNull(),
                         ),
@@ -478,10 +478,10 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
                 return true;
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
             {
-                return new \Graphpinator\Field\ResolvableFieldSet([
-                    new \Graphpinator\Field\ResolvableField(
+                return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
+                    new \Graphpinator\Typesystem\Field\ResolvableField(
                         'field',
                         \Graphpinator\Typesystem\Container::Int(),
                         static function () : void {

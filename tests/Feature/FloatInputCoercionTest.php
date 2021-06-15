@@ -104,9 +104,9 @@ final class FloatInputCoercionTest extends \PHPUnit\Framework\TestCase
                 return true;
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
             {
-                $argument = \Graphpinator\Argument\Argument::create(
+                $argument = \Graphpinator\Typesystem\Argument\Argument::create(
                     'floatArg',
                     \Graphpinator\Typesystem\Container::Float()->notNull(),
                 );
@@ -115,14 +115,14 @@ final class FloatInputCoercionTest extends \PHPUnit\Framework\TestCase
                     $argument->setDefaultValue($this->defaultValue);
                 }
 
-                return new \Graphpinator\Field\ResolvableFieldSet([
-                    \Graphpinator\Field\ResolvableField::create(
+                return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
+                    \Graphpinator\Typesystem\Field\ResolvableField::create(
                         'field',
                         \Graphpinator\Typesystem\Container::Float()->notNull(),
                         static function ($parent, float $floatArg) : float {
                             return $floatArg;
                         },
-                    )->setArguments(new \Graphpinator\Argument\ArgumentSet([
+                    )->setArguments(new \Graphpinator\Typesystem\Argument\ArgumentSet([
                         $argument,
                     ])),
                 ]);

@@ -27,7 +27,7 @@ final class DeprecatedDirectiveTest extends \PHPUnit\Framework\TestCase
                 parent::__construct();
             }
 
-            public function initGetFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+            public function initGetFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
             {
                 return $this->getFieldDefinition();
             }
@@ -37,29 +37,29 @@ final class DeprecatedDirectiveTest extends \PHPUnit\Framework\TestCase
                 return true;
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
             {
-                return new \Graphpinator\Field\ResolvableFieldSet([
-                    \Graphpinator\Field\ResolvableField::create(
+                return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
+                    \Graphpinator\Typesystem\Field\ResolvableField::create(
                         'testFieldDeprecatedNull',
                         \Graphpinator\Typesystem\Container::String(),
                         static function () : string {
                             return 'test';
                         },
-                    )->setDeprecated()->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        \Graphpinator\Argument\Argument::create(
+                    )->setDeprecated()->setArguments(new \Graphpinator\Typesystem\Argument\ArgumentSet([
+                        \Graphpinator\Typesystem\Argument\Argument::create(
                             'testArgumentDeprecatedNull',
                             \Graphpinator\Typesystem\Container::String(),
                         )->setDeprecated(),
                     ])),
-                    \Graphpinator\Field\ResolvableField::create(
+                    \Graphpinator\Typesystem\Field\ResolvableField::create(
                         'testFieldDeprecatedNotNull',
                         \Graphpinator\Typesystem\Container::String(),
                         static function () : string {
                             return 'test';
                         },
-                    )->setDeprecated('reasonField')->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        \Graphpinator\Argument\Argument::create(
+                    )->setDeprecated('reasonField')->setArguments(new \Graphpinator\Typesystem\Argument\ArgumentSet([
+                        \Graphpinator\Typesystem\Argument\Argument::create(
                             'testArgumentDeprecatedNotNull',
                             \Graphpinator\Typesystem\Container::String(),
                         )->setDeprecated('reasonArgument'),
@@ -89,19 +89,19 @@ final class DeprecatedDirectiveTest extends \PHPUnit\Framework\TestCase
                 parent::__construct();
             }
 
-            public function initGetFieldDefinition() : \Graphpinator\Argument\ArgumentSet
+            public function initGetFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
             {
                 return $this->getFieldDefinition();
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
+            protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
             {
-                return new \Graphpinator\Argument\ArgumentSet([
-                    \Graphpinator\Argument\Argument::create(
+                return new \Graphpinator\Typesystem\Argument\ArgumentSet([
+                    \Graphpinator\Typesystem\Argument\Argument::create(
                         'testDeprecatedNull',
                         \Graphpinator\Typesystem\Container::String(),
                     )->setDeprecated(),
-                    \Graphpinator\Argument\Argument::create(
+                    \Graphpinator\Typesystem\Argument\Argument::create(
                         'testDeprecatedNotNull',
                         \Graphpinator\Typesystem\Container::String(),
                     )->setDeprecated('reasonArgument'),
@@ -369,10 +369,10 @@ final class DeprecatedDirectiveTest extends \PHPUnit\Framework\TestCase
                 return true;
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
             {
-                return new \Graphpinator\Field\ResolvableFieldSet([
-                    new \Graphpinator\Field\ResolvableField(
+                return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
+                    new \Graphpinator\Typesystem\Field\ResolvableField(
                         'field',
                         \Graphpinator\Typesystem\Container::String(),
                         static function () : void {

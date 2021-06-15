@@ -15,10 +15,10 @@ final class InterfaceContractMissingFieldTest extends \PHPUnit\Framework\TestCas
             {
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Field\FieldSet
+            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\FieldSet
             {
-                return new \Graphpinator\Field\FieldSet([
-                    new \Graphpinator\Field\Field(
+                return new \Graphpinator\Typesystem\Field\FieldSet([
+                    new \Graphpinator\Typesystem\Field\Field(
                         'field',
                         \Graphpinator\Typesystem\Container::Int(),
                     ),
@@ -46,10 +46,10 @@ final class InterfaceContractMissingFieldTest extends \PHPUnit\Framework\TestCas
                 return true;
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
             {
-                return new \Graphpinator\Field\ResolvableFieldSet([
-                    new \Graphpinator\Field\ResolvableField(
+                return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
+                    new \Graphpinator\Typesystem\Field\ResolvableField(
                         'differentField',
                         \Graphpinator\Typesystem\Container::Int(),
                         static function () : void {

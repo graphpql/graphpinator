@@ -33,10 +33,10 @@ final class InterfaceCycleTest extends \PHPUnit\Framework\TestCase
             {
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Field\FieldSet
+            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\FieldSet
             {
-                return new \Graphpinator\Field\FieldSet([
-                    \Graphpinator\Field\Field::create(
+                return new \Graphpinator\Typesystem\Field\FieldSet([
+                    \Graphpinator\Typesystem\Field\Field::create(
                         'fieldInt',
                         \Graphpinator\Typesystem\Container::Int(),
                     ),
@@ -72,10 +72,10 @@ final class InterfaceCycleTest extends \PHPUnit\Framework\TestCase
             {
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Field\FieldSet
+            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\FieldSet
             {
-                return new \Graphpinator\Field\FieldSet([
-                    \Graphpinator\Field\Field::create(
+                return new \Graphpinator\Typesystem\Field\FieldSet([
+                    \Graphpinator\Typesystem\Field\Field::create(
                         'fieldInt',
                         \Graphpinator\Typesystem\Container::Int(),
                     ),
@@ -111,10 +111,10 @@ final class InterfaceCycleTest extends \PHPUnit\Framework\TestCase
             {
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Field\FieldSet
+            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\FieldSet
             {
-                return new \Graphpinator\Field\FieldSet([
-                    \Graphpinator\Field\Field::create(
+                return new \Graphpinator\Typesystem\Field\FieldSet([
+                    \Graphpinator\Typesystem\Field\Field::create(
                         'fieldInt',
                         \Graphpinator\Typesystem\Container::Int(),
                     ),

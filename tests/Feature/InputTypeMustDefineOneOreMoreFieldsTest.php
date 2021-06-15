@@ -12,9 +12,9 @@ final class InputTypeMustDefineOneOreMoreFieldsTest extends \PHPUnit\Framework\T
         {
             protected const NAME = 'InvalidInputType';
 
-            protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
+            protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
             {
-                return new \Graphpinator\Argument\ArgumentSet([]);
+                return new \Graphpinator\Typesystem\Argument\ArgumentSet([]);
             }
         };
     }
