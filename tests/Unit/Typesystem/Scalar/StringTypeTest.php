@@ -2,15 +2,15 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Tests\Unit\Type\Scalar;
+namespace Graphpinator\Tests\Unit\Typesystem\Scalar;
 
-final class BooleanTypeTest extends \PHPUnit\Framework\TestCase
+final class StringTypeTest extends \PHPUnit\Framework\TestCase
 {
     public function simpleDataProvider() : array
     {
         return [
-            [true],
-            [false],
+            ['abc'],
+            ['123'],
             [null],
         ];
     }
@@ -20,33 +20,33 @@ final class BooleanTypeTest extends \PHPUnit\Framework\TestCase
         return [
             [123],
             [123.123],
-            ['123'],
+            [true],
             [[]],
         ];
     }
 
     /**
      * @dataProvider simpleDataProvider
-     * @param bool|null $rawValue
+     * @param string|null $rawValue
      */
     public function testValidateValue($rawValue) : void
     {
-        $bool = new \Graphpinator\Type\Spec\BooleanType();
-        $value = $bool->accept(new \Graphpinator\Value\ConvertRawValueVisitor($rawValue, new \Graphpinator\Common\Path()));
+        $string = new \Graphpinator\Typesystem\Spec\StringType();
+        $value = $string->accept(new \Graphpinator\Value\ConvertRawValueVisitor($rawValue, new \Graphpinator\Common\Path()));
 
-        self::assertSame($bool, $value->getType());
+        self::assertSame($string, $value->getType());
         self::assertSame($rawValue, $value->getRawValue());
     }
 
     /**
      * @dataProvider invalidDataProvider
-     * @param int|float|string|array $rawValue
+     * @param int|float|bool|array $rawValue
      */
     public function testValidateValueInvalid($rawValue) : void
     {
         $this->expectException(\Graphpinator\Exception\Value\InvalidValue::class);
 
-        $bool = new \Graphpinator\Type\Spec\BooleanType();
-        $bool->accept(new \Graphpinator\Value\ConvertRawValueVisitor($rawValue, new \Graphpinator\Common\Path()));
+        $string = new \Graphpinator\Typesystem\Spec\StringType();
+        $string->accept(new \Graphpinator\Value\ConvertRawValueVisitor($rawValue, new \Graphpinator\Common\Path()));
     }
 }

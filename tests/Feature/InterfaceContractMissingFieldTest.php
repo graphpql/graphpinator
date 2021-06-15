@@ -6,9 +6,9 @@ namespace Graphpinator\Tests\Feature;
 
 final class InterfaceContractMissingFieldTest extends \PHPUnit\Framework\TestCase
 {
-    public static function createMainInterface() : \Graphpinator\Type\InterfaceType
+    public static function createMainInterface() : \Graphpinator\Typesystem\InterfaceType
     {
-        return new class extends \Graphpinator\Type\InterfaceType {
+        return new class extends \Graphpinator\Typesystem\InterfaceType {
             protected const NAME = 'Bar';
 
             public function createResolvedValue($rawValue) : \Graphpinator\Value\TypeIntermediateValue
@@ -20,22 +20,22 @@ final class InterfaceContractMissingFieldTest extends \PHPUnit\Framework\TestCas
                 return new \Graphpinator\Field\FieldSet([
                     new \Graphpinator\Field\Field(
                         'field',
-                        \Graphpinator\Container\Container::Int(),
+                        \Graphpinator\Typesystem\Container::Int(),
                     ),
                 ]);
             }
         };
     }
 
-    public static function getTypeMissingField() : \Graphpinator\Type\Type
+    public static function getTypeMissingField() : \Graphpinator\Typesystem\Type
     {
-        return new class extends \Graphpinator\Type\Type {
+        return new class extends \Graphpinator\Typesystem\Type {
             protected const NAME = 'Abc';
 
             public function __construct()
             {
                 parent::__construct(
-                    new \Graphpinator\Type\InterfaceSet([
+                    new \Graphpinator\Typesystem\InterfaceSet([
                         InterfaceContractMissingFieldTest::createMainInterface(),
                     ]),
                 );
@@ -51,7 +51,7 @@ final class InterfaceContractMissingFieldTest extends \PHPUnit\Framework\TestCas
                 return new \Graphpinator\Field\ResolvableFieldSet([
                     new \Graphpinator\Field\ResolvableField(
                         'differentField',
-                        \Graphpinator\Container\Container::Int(),
+                        \Graphpinator\Typesystem\Container::Int(),
                         static function () : void {
                         },
                     ),

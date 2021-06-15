@@ -8,15 +8,15 @@ use \Infinityloop\Utils\Json;
 
 final class TypeSystemDirectiveDuplicateTest extends \PHPUnit\Framework\TestCase
 {
-    private static ?\Graphpinator\Type\ScalarType $testDuplicateDirective = null;
+    private static ?\Graphpinator\Typesystem\ScalarType $testDuplicateDirective = null;
 
-    public static function createTestDuplicateDirective() : \Graphpinator\Type\ScalarType
+    public static function createTestDuplicateDirective() : \Graphpinator\Typesystem\ScalarType
     {
-        if (self::$testDuplicateDirective instanceof \Graphpinator\Type\ScalarType) {
+        if (self::$testDuplicateDirective instanceof \Graphpinator\Typesystem\ScalarType) {
             return self::$testDuplicateDirective;
         }
 
-        self::$testDuplicateDirective = new class extends \Graphpinator\Type\ScalarType {
+        self::$testDuplicateDirective = new class extends \Graphpinator\Typesystem\ScalarType {
             protected const NAME = 'TestDuplicateDirective';
 
             public function __construct()
@@ -76,24 +76,24 @@ final class TypeSystemDirectiveDuplicateTest extends \PHPUnit\Framework\TestCase
         $graphpinator->run(new \Graphpinator\Request\JsonRequestFactory($request));
     }
 
-    private function getSchema() : \Graphpinator\Type\Schema
+    private function getSchema() : \Graphpinator\Typesystem\Schema
     {
-        return new \Graphpinator\Type\Schema(
+        return new \Graphpinator\Typesystem\Schema(
             $this->getContainer(),
             $this->getQuery(),
         );
     }
 
-    private function getContainer() : \Graphpinator\Container\SimpleContainer
+    private function getContainer() : \Graphpinator\SimpleContainer
     {
-        return new \Graphpinator\Container\SimpleContainer([
+        return new \Graphpinator\SimpleContainer([
             'TestDuplicateDirective' => self::createTestDuplicateDirective(),
         ], []);
     }
 
-    private function getQuery() : \Graphpinator\Type\Type
+    private function getQuery() : \Graphpinator\Typesystem\Type
     {
-        return new class extends \Graphpinator\Type\Type {
+        return new class extends \Graphpinator\Typesystem\Type {
             protected const NAME = 'Query';
 
             public function validateNonNullValue($rawValue) : bool
@@ -106,7 +106,7 @@ final class TypeSystemDirectiveDuplicateTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Field\ResolvableFieldSet([
                     new \Graphpinator\Field\ResolvableField(
                         'field',
-                        \Graphpinator\Container\Container::String(),
+                        \Graphpinator\Typesystem\Container::String(),
                         static function () : void {
                         },
                     ),

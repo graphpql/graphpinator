@@ -2,13 +2,13 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Tests\Unit\Type\Container;
+namespace Graphpinator\Tests\Unit\Typesystem;
 
 final class SimpleContainerTest extends \PHPUnit\Framework\TestCase
 {
     public function testSimple() : void
     {
-        $container = new \Graphpinator\Container\SimpleContainer([], []);
+        $container = new \Graphpinator\SimpleContainer([], []);
 
         self::assertCount(0, $container->getTypes());
         self::assertCount(0, $container->getDirectives());

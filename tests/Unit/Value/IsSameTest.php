@@ -11,19 +11,19 @@ final class IsSameTest extends \PHPUnit\Framework\TestCase
         return [
             [
                 new \Graphpinator\Value\VariableValue(
-                    new \Graphpinator\Type\Spec\StringType(),
+                    new \Graphpinator\Typesystem\Spec\StringType(),
                     new \Graphpinator\Normalizer\Variable\Variable(
                         'var1',
-                        new \Graphpinator\Type\Spec\StringType(),
+                        new \Graphpinator\Typesystem\Spec\StringType(),
                         null,
                         new \Graphpinator\Normalizer\Directive\DirectiveSet(),
                     ),
                 ),
                 new \Graphpinator\Value\VariableValue(
-                    new \Graphpinator\Type\Spec\StringType(),
+                    new \Graphpinator\Typesystem\Spec\StringType(),
                     new \Graphpinator\Normalizer\Variable\Variable(
                         'var1',
-                        new \Graphpinator\Type\Spec\StringType(),
+                        new \Graphpinator\Typesystem\Spec\StringType(),
                         null,
                         new \Graphpinator\Normalizer\Directive\DirectiveSet(),
                     ),
@@ -32,19 +32,19 @@ final class IsSameTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 new \Graphpinator\Value\VariableValue(
-                    new \Graphpinator\Type\Spec\StringType(),
+                    new \Graphpinator\Typesystem\Spec\StringType(),
                     new \Graphpinator\Normalizer\Variable\Variable(
                         'var1',
-                        new \Graphpinator\Type\Spec\StringType(),
+                        new \Graphpinator\Typesystem\Spec\StringType(),
                         null,
                         new \Graphpinator\Normalizer\Directive\DirectiveSet(),
                     ),
                 ),
                 new \Graphpinator\Value\VariableValue(
-                    new \Graphpinator\Type\Spec\StringType(),
+                    new \Graphpinator\Typesystem\Spec\StringType(),
                     new \Graphpinator\Normalizer\Variable\Variable(
                         'var2',
-                        new \Graphpinator\Type\Spec\StringType(),
+                        new \Graphpinator\Typesystem\Spec\StringType(),
                         null,
                         new \Graphpinator\Normalizer\Directive\DirectiveSet(),
                     ),
@@ -83,10 +83,10 @@ final class IsSameTest extends \PHPUnit\Framework\TestCase
                     ),
                 ),
                 new \Graphpinator\Value\VariableValue(
-                    new \Graphpinator\Type\Spec\StringType(),
+                    new \Graphpinator\Typesystem\Spec\StringType(),
                     new \Graphpinator\Normalizer\Variable\Variable(
                         'var2',
-                        new \Graphpinator\Type\Spec\StringType(),
+                        new \Graphpinator\Typesystem\Spec\StringType(),
                         null,
                         new \Graphpinator\Normalizer\Directive\DirectiveSet(),
                     ),

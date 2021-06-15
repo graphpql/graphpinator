@@ -8,15 +8,15 @@ use \Infinityloop\Utils\Json;
 
 final class SpecifiedByDirectiveTest extends \PHPUnit\Framework\TestCase
 {
-    private static ?\Graphpinator\Type\ScalarType $testScalar = null;
+    private static ?\Graphpinator\Typesystem\ScalarType $testScalar = null;
 
-    public static function createTestScalar() : \Graphpinator\Type\ScalarType
+    public static function createTestScalar() : \Graphpinator\Typesystem\ScalarType
     {
-        if (self::$testScalar instanceof \Graphpinator\Type\ScalarType) {
+        if (self::$testScalar instanceof \Graphpinator\Typesystem\ScalarType) {
             return self::$testScalar;
         }
 
-        self::$testScalar = new class extends \Graphpinator\Type\ScalarType {
+        self::$testScalar = new class extends \Graphpinator\Typesystem\ScalarType {
             protected const NAME = 'TestScalar';
 
             public function __construct()
@@ -77,22 +77,22 @@ final class SpecifiedByDirectiveTest extends \PHPUnit\Framework\TestCase
         self::assertSame($expected->toString(), $result->toString());
     }
 
-    private function getSchema() : \Graphpinator\Type\Schema
+    private function getSchema() : \Graphpinator\Typesystem\Schema
     {
-        return new \Graphpinator\Type\Schema(
+        return new \Graphpinator\Typesystem\Schema(
             $this->getContainer(),
             $this->getQuery(),
         );
     }
 
-    private function getContainer() : \Graphpinator\Container\SimpleContainer
+    private function getContainer() : \Graphpinator\SimpleContainer
     {
-        return new \Graphpinator\Container\SimpleContainer(['TestScalar' => self::createTestScalar()], []);
+        return new \Graphpinator\SimpleContainer(['TestScalar' => self::createTestScalar()], []);
     }
 
-    private function getQuery() : \Graphpinator\Type\Type
+    private function getQuery() : \Graphpinator\Typesystem\Type
     {
-        return new class extends \Graphpinator\Type\Type {
+        return new class extends \Graphpinator\Typesystem\Type {
             protected const NAME = 'Query';
 
             public function validateNonNullValue($rawValue) : bool
@@ -105,7 +105,7 @@ final class SpecifiedByDirectiveTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Field\ResolvableFieldSet([
                     new \Graphpinator\Field\ResolvableField(
                         'field',
-                        \Graphpinator\Container\Container::String(),
+                        \Graphpinator\Typesystem\Container::String(),
                         static function () : void {
                         },
                     ),

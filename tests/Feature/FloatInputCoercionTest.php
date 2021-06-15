@@ -10,8 +10,8 @@ final class FloatInputCoercionTest extends \PHPUnit\Framework\TestCase
     {
         $query = $this->getQuery();
         $graphpinator = new \Graphpinator\Graphpinator(
-            new \Graphpinator\Type\Schema(
-                new \Graphpinator\Container\SimpleContainer([$query], []),
+            new \Graphpinator\Typesystem\Schema(
+                new \Graphpinator\SimpleContainer([$query], []),
                 $query,
             ),
         );
@@ -30,8 +30,8 @@ final class FloatInputCoercionTest extends \PHPUnit\Framework\TestCase
     {
         $query = $this->getQuery();
         $graphpinator = new \Graphpinator\Graphpinator(
-            new \Graphpinator\Type\Schema(
-                new \Graphpinator\Container\SimpleContainer([$query], []),
+            new \Graphpinator\Typesystem\Schema(
+                new \Graphpinator\SimpleContainer([$query], []),
                 $query,
             ),
         );
@@ -50,8 +50,8 @@ final class FloatInputCoercionTest extends \PHPUnit\Framework\TestCase
     {
         $query = $this->getQuery();
         $graphpinator = new \Graphpinator\Graphpinator(
-            new \Graphpinator\Type\Schema(
-                new \Graphpinator\Container\SimpleContainer([$query], []),
+            new \Graphpinator\Typesystem\Schema(
+                new \Graphpinator\SimpleContainer([$query], []),
                 $query,
             ),
         );
@@ -70,8 +70,8 @@ final class FloatInputCoercionTest extends \PHPUnit\Framework\TestCase
     {
         $query = $this->getQuery(3);
         $graphpinator = new \Graphpinator\Graphpinator(
-            new \Graphpinator\Type\Schema(
-                new \Graphpinator\Container\SimpleContainer([$query], []),
+            new \Graphpinator\Typesystem\Schema(
+                new \Graphpinator\SimpleContainer([$query], []),
                 $query,
             ),
         );
@@ -86,9 +86,9 @@ final class FloatInputCoercionTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function getQuery(?float $defaultValue = null) : \Graphpinator\Type\Type
+    public function getQuery(?float $defaultValue = null) : \Graphpinator\Typesystem\Type
     {
-        return new class ($defaultValue) extends \Graphpinator\Type\Type
+        return new class ($defaultValue) extends \Graphpinator\Typesystem\Type
         {
             protected const NAME = 'Query';
 
@@ -108,7 +108,7 @@ final class FloatInputCoercionTest extends \PHPUnit\Framework\TestCase
             {
                 $argument = \Graphpinator\Argument\Argument::create(
                     'floatArg',
-                    \Graphpinator\Container\Container::Float()->notNull(),
+                    \Graphpinator\Typesystem\Container::Float()->notNull(),
                 );
 
                 if (\is_float($this->defaultValue)) {
@@ -118,7 +118,7 @@ final class FloatInputCoercionTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Field\ResolvableFieldSet([
                     \Graphpinator\Field\ResolvableField::create(
                         'field',
-                        \Graphpinator\Container\Container::Float()->notNull(),
+                        \Graphpinator\Typesystem\Container::Float()->notNull(),
                         static function ($parent, float $floatArg) : float {
                             return $floatArg;
                         },

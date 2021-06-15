@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Tests\Unit\Type;
+namespace Graphpinator\Tests\Unit\Typesystem;
 
 final class EnumTypeTest extends \PHPUnit\Framework\TestCase
 {
@@ -78,9 +78,9 @@ final class EnumTypeTest extends \PHPUnit\Framework\TestCase
     }
 
     //@phpcs:disable SlevomatCodingStandard.Classes.UnusedPrivateElements.UnusedConstant
-    protected function createTestEnum() : \Graphpinator\Type\EnumType
+    protected function createTestEnum() : \Graphpinator\Typesystem\EnumType
     {
-        return new class extends \Graphpinator\Type\EnumType {
+        return new class extends \Graphpinator\Typesystem\EnumType {
             public const ENUMA = 'a';
             public const ENUMB = 'b';
 

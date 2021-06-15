@@ -10,8 +10,8 @@ final class IdInputCoercionTest extends \PHPUnit\Framework\TestCase
     {
         $query = $this->getQuery();
         $graphpinator = new \Graphpinator\Graphpinator(
-            new \Graphpinator\Type\Schema(
-                new \Graphpinator\Container\SimpleContainer([$query], []),
+            new \Graphpinator\Typesystem\Schema(
+                new \Graphpinator\SimpleContainer([$query], []),
                 $query,
             ),
         );
@@ -30,8 +30,8 @@ final class IdInputCoercionTest extends \PHPUnit\Framework\TestCase
     {
         $query = $this->getQuery();
         $graphpinator = new \Graphpinator\Graphpinator(
-            new \Graphpinator\Type\Schema(
-                new \Graphpinator\Container\SimpleContainer([$query], []),
+            new \Graphpinator\Typesystem\Schema(
+                new \Graphpinator\SimpleContainer([$query], []),
                 $query,
             ),
         );
@@ -50,8 +50,8 @@ final class IdInputCoercionTest extends \PHPUnit\Framework\TestCase
     {
         $query = $this->getQuery();
         $graphpinator = new \Graphpinator\Graphpinator(
-            new \Graphpinator\Type\Schema(
-                new \Graphpinator\Container\SimpleContainer([$query], []),
+            new \Graphpinator\Typesystem\Schema(
+                new \Graphpinator\SimpleContainer([$query], []),
                 $query,
             ),
         );
@@ -70,8 +70,8 @@ final class IdInputCoercionTest extends \PHPUnit\Framework\TestCase
     {
         $query = $this->getQuery(3);
         $graphpinator = new \Graphpinator\Graphpinator(
-            new \Graphpinator\Type\Schema(
-                new \Graphpinator\Container\SimpleContainer([$query], []),
+            new \Graphpinator\Typesystem\Schema(
+                new \Graphpinator\SimpleContainer([$query], []),
                 $query,
             ),
         );
@@ -92,8 +92,8 @@ final class IdInputCoercionTest extends \PHPUnit\Framework\TestCase
 
         $query = $this->getQuery();
         $graphpinator = new \Graphpinator\Graphpinator(
-            new \Graphpinator\Type\Schema(
-                new \Graphpinator\Container\SimpleContainer([$query], []),
+            new \Graphpinator\Typesystem\Schema(
+                new \Graphpinator\SimpleContainer([$query], []),
                 $query,
             ),
         );
@@ -103,9 +103,9 @@ final class IdInputCoercionTest extends \PHPUnit\Framework\TestCase
         ])));
     }
 
-    public function getQuery(?int $defaultValue = null) : \Graphpinator\Type\Type
+    public function getQuery(?int $defaultValue = null) : \Graphpinator\Typesystem\Type
     {
-        return new class ($defaultValue) extends \Graphpinator\Type\Type
+        return new class ($defaultValue) extends \Graphpinator\Typesystem\Type
         {
             protected const NAME = 'Query';
 
@@ -125,7 +125,7 @@ final class IdInputCoercionTest extends \PHPUnit\Framework\TestCase
             {
                 $argument = \Graphpinator\Argument\Argument::create(
                     'idArg',
-                    \Graphpinator\Container\Container::Id()->notNull(),
+                    \Graphpinator\Typesystem\Container::Id()->notNull(),
                 );
 
                 if (\is_int($this->defaultValue)) {
@@ -135,7 +135,7 @@ final class IdInputCoercionTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Field\ResolvableFieldSet([
                     \Graphpinator\Field\ResolvableField::create(
                         'field',
-                        \Graphpinator\Container\Container::Id()->notNull(),
+                        \Graphpinator\Typesystem\Container::Id()->notNull(),
                         static function ($parent, string $idArg) : string {
                             return $idArg;
                         },

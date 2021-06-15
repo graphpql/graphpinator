@@ -6,9 +6,9 @@ namespace Graphpinator\Tests\Feature;
 
 final class InputTypeMustDefineOneOreMoreFieldsTest extends \PHPUnit\Framework\TestCase
 {
-    public static function getInputTypeMustDefineOneOreMoreFieldsInputType() : \Graphpinator\Type\InputType
+    public static function getInputTypeMustDefineOneOreMoreFieldsInputType() : \Graphpinator\Typesystem\InputType
     {
-        return new class extends \Graphpinator\Type\InputType
+        return new class extends \Graphpinator\Typesystem\InputType
         {
             protected const NAME = 'InvalidInputType';
 

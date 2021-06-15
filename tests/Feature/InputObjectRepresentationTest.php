@@ -6,9 +6,9 @@ namespace Graphpinator\Tests\Feature;
 
 final class InputObjectRepresentationTest extends \PHPUnit\Framework\TestCase
 {
-    public static function getSimpleInput() : \Graphpinator\Type\InputType
+    public static function getSimpleInput() : \Graphpinator\Typesystem\InputType
     {
-        return new class extends \Graphpinator\Type\InputType
+        return new class extends \Graphpinator\Typesystem\InputType
         {
             protected const NAME = 'SimpleInput';
             protected const DATA_CLASS = \Graphpinator\Tests\Feature\InputObject::class;
@@ -18,7 +18,7 @@ final class InputObjectRepresentationTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Argument\ArgumentSet([
                     new \Graphpinator\Argument\Argument(
                         'number',
-                        \Graphpinator\Container\Container::Int(),
+                        \Graphpinator\Typesystem\Container::Int(),
                     ),
                     new \Graphpinator\Argument\Argument(
                         'simpleInput2',
@@ -33,9 +33,9 @@ final class InputObjectRepresentationTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    public static function getSimpleInput2() : \Graphpinator\Type\InputType
+    public static function getSimpleInput2() : \Graphpinator\Typesystem\InputType
     {
-        return new class extends \Graphpinator\Type\InputType
+        return new class extends \Graphpinator\Typesystem\InputType
         {
             protected const NAME = 'SimpleInput2';
             protected const DATA_CLASS = \Graphpinator\Tests\Feature\InputObject2::class;
@@ -45,16 +45,16 @@ final class InputObjectRepresentationTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Argument\ArgumentSet([
                     new \Graphpinator\Argument\Argument(
                         'number',
-                        \Graphpinator\Container\Container::Int(),
+                        \Graphpinator\Typesystem\Container::Int(),
                     ),
                 ]);
             }
         };
     }
 
-    public static function getSimpleInput3() : \Graphpinator\Type\InputType
+    public static function getSimpleInput3() : \Graphpinator\Typesystem\InputType
     {
-        return new class extends \Graphpinator\Type\InputType
+        return new class extends \Graphpinator\Typesystem\InputType
         {
             protected const NAME = 'SimpleInput3';
 
@@ -63,7 +63,7 @@ final class InputObjectRepresentationTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Argument\ArgumentSet([
                     new \Graphpinator\Argument\Argument(
                         'number',
-                        \Graphpinator\Container\Container::Int(),
+                        \Graphpinator\Typesystem\Container::Int(),
                     ),
                 ]);
             }
@@ -88,7 +88,7 @@ final class InputObjectRepresentationTest extends \PHPUnit\Framework\TestCase
 
     protected static function getGraphpinator() : \Graphpinator\Graphpinator
     {
-        $query = new class () extends \Graphpinator\Type\Type
+        $query = new class () extends \Graphpinator\Typesystem\Type
         {
             protected const NAME = 'Query';
 
@@ -107,7 +107,7 @@ final class InputObjectRepresentationTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Field\ResolvableFieldSet([
                     \Graphpinator\Field\ResolvableField::create(
                         'field1',
-                        \Graphpinator\Container\Container::Int(),
+                        \Graphpinator\Typesystem\Container::Int(),
                         static function($parent, \Graphpinator\Tests\Feature\InputObject $arg) : int {
                             \assert($arg->simpleInput2 instanceof \Graphpinator\Tests\Feature\InputObject2);
                             \assert($arg->simpleInput3 instanceof \stdClass);
@@ -125,8 +125,8 @@ final class InputObjectRepresentationTest extends \PHPUnit\Framework\TestCase
         };
 
         return new \Graphpinator\Graphpinator(
-            new \Graphpinator\Type\Schema(
-                new \Graphpinator\Container\SimpleContainer(['Query' => $query], []),
+            new \Graphpinator\Typesystem\Schema(
+                new \Graphpinator\SimpleContainer(['Query' => $query], []),
                 $query,
             ),
         );

@@ -2,13 +2,13 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Tests\Unit\Type;
+namespace Graphpinator\Tests\Unit\Typesystem;
 
 final class InterfaceNewOptionalArgumentTest extends \PHPUnit\Framework\TestCase
 {
-    public static function createInterface() : \Graphpinator\Type\InterfaceType
+    public static function createInterface() : \Graphpinator\Typesystem\InterfaceType
     {
-        return new class extends \Graphpinator\Type\InterfaceType {
+        return new class extends \Graphpinator\Typesystem\InterfaceType {
             protected const NAME = 'SomeInterface';
 
             public function createResolvedValue($rawValue) : \Graphpinator\Value\TypeIntermediateValue
@@ -20,22 +20,22 @@ final class InterfaceNewOptionalArgumentTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Field\FieldSet([
                     new \Graphpinator\Field\Field(
                         'field',
-                        \Graphpinator\Container\Container::Int(),
+                        \Graphpinator\Typesystem\Container::Int(),
                     ),
                 ]);
             }
         };
     }
 
-    public static function createChildType() : \Graphpinator\Type\Type
+    public static function createChildType() : \Graphpinator\Typesystem\Type
     {
-        return new class extends \Graphpinator\Type\Type {
+        return new class extends \Graphpinator\Typesystem\Type {
             protected const NAME = 'ChildType';
 
             public function __construct()
             {
                 parent::__construct(
-                    new \Graphpinator\Type\InterfaceSet([InterfaceNewOptionalArgumentTest::createInterface()]),
+                    new \Graphpinator\Typesystem\InterfaceSet([InterfaceNewOptionalArgumentTest::createInterface()]),
                 );
             }
 
@@ -49,14 +49,14 @@ final class InterfaceNewOptionalArgumentTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Field\ResolvableFieldSet([
                     \Graphpinator\Field\ResolvableField::create(
                         'field',
-                        \Graphpinator\Container\Container::Int(),
+                        \Graphpinator\Typesystem\Container::Int(),
                         static function ($parent, $argumentDefaultNull) : void {
                         },
                     )->setArguments(
                         new \Graphpinator\Argument\ArgumentSet([
                             \Graphpinator\Argument\Argument::create(
                                 'argument',
-                                \Graphpinator\Container\Container::Int(),
+                                \Graphpinator\Typesystem\Container::Int(),
                             ),
                         ]),
                     ),

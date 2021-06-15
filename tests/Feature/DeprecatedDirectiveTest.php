@@ -8,16 +8,16 @@ use \Infinityloop\Utils\Json;
 
 final class DeprecatedDirectiveTest extends \PHPUnit\Framework\TestCase
 {
-    private static ?\Graphpinator\Type\Type $testType = null;
-    private static ?\Graphpinator\Type\InputType $testInputType = null;
+    private static ?\Graphpinator\Typesystem\Type $testType = null;
+    private static ?\Graphpinator\Typesystem\InputType $testInputType = null;
 
-    public static function createTestType() : \Graphpinator\Type\Type
+    public static function createTestType() : \Graphpinator\Typesystem\Type
     {
-        if (self::$testType instanceof \Graphpinator\Type\Type) {
+        if (self::$testType instanceof \Graphpinator\Typesystem\Type) {
             return self::$testType;
         }
 
-        self::$testType = new class extends \Graphpinator\Type\Type {
+        self::$testType = new class extends \Graphpinator\Typesystem\Type {
             protected const NAME = 'TestType';
 
             public function __construct()
@@ -42,26 +42,26 @@ final class DeprecatedDirectiveTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Field\ResolvableFieldSet([
                     \Graphpinator\Field\ResolvableField::create(
                         'testFieldDeprecatedNull',
-                        \Graphpinator\Container\Container::String(),
+                        \Graphpinator\Typesystem\Container::String(),
                         static function () : string {
                             return 'test';
                         },
                     )->setDeprecated()->setArguments(new \Graphpinator\Argument\ArgumentSet([
                         \Graphpinator\Argument\Argument::create(
                             'testArgumentDeprecatedNull',
-                            \Graphpinator\Container\Container::String(),
+                            \Graphpinator\Typesystem\Container::String(),
                         )->setDeprecated(),
                     ])),
                     \Graphpinator\Field\ResolvableField::create(
                         'testFieldDeprecatedNotNull',
-                        \Graphpinator\Container\Container::String(),
+                        \Graphpinator\Typesystem\Container::String(),
                         static function () : string {
                             return 'test';
                         },
                     )->setDeprecated('reasonField')->setArguments(new \Graphpinator\Argument\ArgumentSet([
                         \Graphpinator\Argument\Argument::create(
                             'testArgumentDeprecatedNotNull',
-                            \Graphpinator\Container\Container::String(),
+                            \Graphpinator\Typesystem\Container::String(),
                         )->setDeprecated('reasonArgument'),
                     ])),
                 ]);
@@ -73,13 +73,13 @@ final class DeprecatedDirectiveTest extends \PHPUnit\Framework\TestCase
         return self::$testType;
     }
 
-    public static function createTestInputType() : \Graphpinator\Type\InputType
+    public static function createTestInputType() : \Graphpinator\Typesystem\InputType
     {
-        if (self::$testInputType instanceof \Graphpinator\Type\InputType) {
+        if (self::$testInputType instanceof \Graphpinator\Typesystem\InputType) {
             return self::$testInputType;
         }
 
-        self::$testInputType = new class extends \Graphpinator\Type\InputType {
+        self::$testInputType = new class extends \Graphpinator\Typesystem\InputType {
             protected const NAME = 'TestInputType';
 
             public function __construct()
@@ -99,11 +99,11 @@ final class DeprecatedDirectiveTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Argument\ArgumentSet([
                     \Graphpinator\Argument\Argument::create(
                         'testDeprecatedNull',
-                        \Graphpinator\Container\Container::String(),
+                        \Graphpinator\Typesystem\Container::String(),
                     )->setDeprecated(),
                     \Graphpinator\Argument\Argument::create(
                         'testDeprecatedNotNull',
-                        \Graphpinator\Container\Container::String(),
+                        \Graphpinator\Typesystem\Container::String(),
                     )->setDeprecated('reasonArgument'),
                 ]);
             }
@@ -343,25 +343,25 @@ final class DeprecatedDirectiveTest extends \PHPUnit\Framework\TestCase
         self::assertSame($expected->toString(), $result->toString());
     }
 
-    private function getSchema() : \Graphpinator\Type\Schema
+    private function getSchema() : \Graphpinator\Typesystem\Schema
     {
-        return new \Graphpinator\Type\Schema(
+        return new \Graphpinator\Typesystem\Schema(
             $this->getContainer(),
             $this->getQuery(),
         );
     }
 
-    private function getContainer() : \Graphpinator\Container\SimpleContainer
+    private function getContainer() : \Graphpinator\SimpleContainer
     {
-        return new \Graphpinator\Container\SimpleContainer([
+        return new \Graphpinator\SimpleContainer([
             'TestType' => self::createTestType(),
             'TestInputType' => self::createTestInputType(),
         ], []);
     }
 
-    private function getQuery() : \Graphpinator\Type\Type
+    private function getQuery() : \Graphpinator\Typesystem\Type
     {
-        return new class extends \Graphpinator\Type\Type {
+        return new class extends \Graphpinator\Typesystem\Type {
             protected const NAME = 'Query';
 
             public function validateNonNullValue($rawValue) : bool
@@ -374,7 +374,7 @@ final class DeprecatedDirectiveTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Field\ResolvableFieldSet([
                     new \Graphpinator\Field\ResolvableField(
                         'field',
-                        \Graphpinator\Container\Container::String(),
+                        \Graphpinator\Typesystem\Container::String(),
                         static function () : void {
                         },
                     ),

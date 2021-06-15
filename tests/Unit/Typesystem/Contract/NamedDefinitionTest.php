@@ -2,13 +2,13 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Tests\Unit\Type\Contract;
+namespace Graphpinator\Tests\Unit\Typesystem\Contract;
 
 final class NamedDefinitionTest extends \PHPUnit\Framework\TestCase
 {
     public function testModifiers() : void
     {
-        $base = \Graphpinator\Container\Container::String();
+        $base = \Graphpinator\Typesystem\Container::String();
 
         self::assertSame('String', $base->getName());
         self::assertSame('String built-in type', $base->getDescription());

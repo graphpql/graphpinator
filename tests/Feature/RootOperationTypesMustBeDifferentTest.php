@@ -13,7 +13,7 @@ final class RootOperationTypesMustBeDifferentTest extends \PHPUnit\Framework\Tes
 
         $query = $this->getQuery();
 
-        new \Graphpinator\Type\Schema(
+        new \Graphpinator\Typesystem\Schema(
             $this->getContainer(),
             $query,
             $query,
@@ -26,7 +26,7 @@ final class RootOperationTypesMustBeDifferentTest extends \PHPUnit\Framework\Tes
         $this->expectException(\Graphpinator\Typesystem\Exception\RootOperationTypesMustBeDifferent::class);
         $query = $this->getQuery();
 
-        new \Graphpinator\Type\Schema(
+        new \Graphpinator\Typesystem\Schema(
             $this->getContainer(),
             $query,
             $query,
@@ -39,7 +39,7 @@ final class RootOperationTypesMustBeDifferentTest extends \PHPUnit\Framework\Tes
         $this->expectException(\Graphpinator\Typesystem\Exception\RootOperationTypesMustBeDifferent::class);
         $query = $this->getQuery();
 
-        new \Graphpinator\Type\Schema(
+        new \Graphpinator\Typesystem\Schema(
             $this->getContainer(),
             $query,
             null,
@@ -53,7 +53,7 @@ final class RootOperationTypesMustBeDifferentTest extends \PHPUnit\Framework\Tes
         $query = $this->getQuery();
         $secondQuery = $this->getQuery();
 
-        new \Graphpinator\Type\Schema(
+        new \Graphpinator\Typesystem\Schema(
             $this->getContainer(),
             $query,
             $secondQuery,
@@ -61,14 +61,14 @@ final class RootOperationTypesMustBeDifferentTest extends \PHPUnit\Framework\Tes
         );
     }
 
-    private function getContainer() : \Graphpinator\Container\SimpleContainer
+    private function getContainer() : \Graphpinator\SimpleContainer
     {
-        return new \Graphpinator\Container\SimpleContainer(['Query' => $this->getQuery()], []);
+        return new \Graphpinator\SimpleContainer(['Query' => $this->getQuery()], []);
     }
 
-    private function getQuery() : \Graphpinator\Type\Type
+    private function getQuery() : \Graphpinator\Typesystem\Type
     {
-        return new class extends \Graphpinator\Type\Type {
+        return new class extends \Graphpinator\Typesystem\Type {
             protected const NAME = 'Query';
 
             public function validateNonNullValue($rawValue) : bool
@@ -81,7 +81,7 @@ final class RootOperationTypesMustBeDifferentTest extends \PHPUnit\Framework\Tes
                 return new \Graphpinator\Field\ResolvableFieldSet([
                     new \Graphpinator\Field\ResolvableField(
                         'field',
-                        \Graphpinator\Container\Container::Int(),
+                        \Graphpinator\Typesystem\Container::Int(),
                         static function () : int {
                             return 1;
                         },

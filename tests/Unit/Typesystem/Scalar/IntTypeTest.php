@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Tests\Unit\Type\Scalar;
+namespace Graphpinator\Tests\Unit\Typesystem\Scalar;
 
 final class IntTypeTest extends \PHPUnit\Framework\TestCase
 {
@@ -31,7 +31,7 @@ final class IntTypeTest extends \PHPUnit\Framework\TestCase
      */
     public function testValidateValue($rawValue) : void
     {
-        $int = new \Graphpinator\Type\Spec\IntType();
+        $int = new \Graphpinator\Typesystem\Spec\IntType();
         $value = $int->accept(new \Graphpinator\Value\ConvertRawValueVisitor($rawValue, new \Graphpinator\Common\Path()));
 
         self::assertSame($int, $value->getType());
@@ -46,7 +46,7 @@ final class IntTypeTest extends \PHPUnit\Framework\TestCase
     {
         $this->expectException(\Graphpinator\Exception\Value\InvalidValue::class);
 
-        $int = new \Graphpinator\Type\Spec\IntType();
+        $int = new \Graphpinator\Typesystem\Spec\IntType();
         $int->accept(new \Graphpinator\Value\ConvertRawValueVisitor($rawValue, new \Graphpinator\Common\Path()));
     }
 }

@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Tests\Unit\Type\Scalar;
+namespace Graphpinator\Tests\Unit\Typesystem\Scalar;
 
 final class FloatTypeTest extends \PHPUnit\Framework\TestCase
 {
@@ -33,7 +33,7 @@ final class FloatTypeTest extends \PHPUnit\Framework\TestCase
      */
     public function testValidateValue($rawValue, $resultValue) : void
     {
-        $float = new \Graphpinator\Type\Spec\FloatType();
+        $float = new \Graphpinator\Typesystem\Spec\FloatType();
         $value = $float->accept(new \Graphpinator\Value\ConvertRawValueVisitor($rawValue, new \Graphpinator\Common\Path()));
 
         self::assertSame($float, $value->getType());
@@ -48,7 +48,7 @@ final class FloatTypeTest extends \PHPUnit\Framework\TestCase
     {
         $this->expectException(\Graphpinator\Exception\Value\InvalidValue::class);
 
-        $float = new \Graphpinator\Type\Spec\FloatType();
+        $float = new \Graphpinator\Typesystem\Spec\FloatType();
         $float->accept(new \Graphpinator\Value\ConvertRawValueVisitor($rawValue, new \Graphpinator\Common\Path()));
     }
 }

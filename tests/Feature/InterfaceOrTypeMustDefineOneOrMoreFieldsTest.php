@@ -6,9 +6,9 @@ namespace Graphpinator\Tests\Feature;
 
 final class InterfaceOrTypeMustDefineOneOrMoreFieldsTest extends \PHPUnit\Framework\TestCase
 {
-    public static function getTypeMustDefineOneOrMoreFieldsType() : \Graphpinator\Type\Type
+    public static function getTypeMustDefineOneOrMoreFieldsType() : \Graphpinator\Typesystem\Type
     {
-        return new class extends \Graphpinator\Type\Type {
+        return new class extends \Graphpinator\Typesystem\Type {
             protected const NAME = 'InvalidType';
 
             public function validateNonNullValue($rawValue) : bool
@@ -23,15 +23,15 @@ final class InterfaceOrTypeMustDefineOneOrMoreFieldsTest extends \PHPUnit\Framew
         };
     }
 
-    public static function getInterfaceMustDefineOneOrMoreFieldsType() : \Graphpinator\Type\InterfaceType
+    public static function getInterfaceMustDefineOneOrMoreFieldsType() : \Graphpinator\Typesystem\InterfaceType
     {
-        return new class extends \Graphpinator\Type\InterfaceType {
+        return new class extends \Graphpinator\Typesystem\InterfaceType {
             protected const NAME = 'InvalidInterfaceType';
 
             public function __construct()
             {
                 parent::__construct(
-                    new \Graphpinator\Type\InterfaceSet([]),
+                    new \Graphpinator\Typesystem\InterfaceSet([]),
                 );
             }
 

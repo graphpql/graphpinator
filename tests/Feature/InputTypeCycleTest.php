@@ -6,9 +6,9 @@ namespace Graphpinator\Tests\Feature;
 
 final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
 {
-    public static function createNullableType() : \Graphpinator\Type\InputType
+    public static function createNullableType() : \Graphpinator\Typesystem\InputType
     {
-        return new class extends \Graphpinator\Type\InputType
+        return new class extends \Graphpinator\Typesystem\InputType
         {
             protected const NAME = 'NullableSelfCycle';
 
@@ -24,9 +24,9 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    public static function createNullableInNullableListType() : \Graphpinator\Type\InputType
+    public static function createNullableInNullableListType() : \Graphpinator\Typesystem\InputType
     {
-        return new class extends \Graphpinator\Type\InputType
+        return new class extends \Graphpinator\Typesystem\InputType
         {
             protected const NAME = 'NullableSelfCycle';
 
@@ -42,9 +42,9 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    public static function createNonNullInNullableListType() : \Graphpinator\Type\InputType
+    public static function createNonNullInNullableListType() : \Graphpinator\Typesystem\InputType
     {
-        return new class extends \Graphpinator\Type\InputType
+        return new class extends \Graphpinator\Typesystem\InputType
         {
             protected const NAME = 'NotNullSelfCycle';
 
@@ -60,9 +60,9 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    public static function createNonNullInNonNullListType() : \Graphpinator\Type\InputType
+    public static function createNonNullInNonNullListType() : \Graphpinator\Typesystem\InputType
     {
-        return new class extends \Graphpinator\Type\InputType
+        return new class extends \Graphpinator\Typesystem\InputType
         {
             protected const NAME = 'NotNullSelfCycle';
 
@@ -78,9 +78,9 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    public static function createNullableInNonNullListType() : \Graphpinator\Type\InputType
+    public static function createNullableInNonNullListType() : \Graphpinator\Typesystem\InputType
     {
-        return new class extends \Graphpinator\Type\InputType
+        return new class extends \Graphpinator\Typesystem\InputType
         {
             protected const NAME = 'NullableSelfCycle';
 
@@ -96,9 +96,9 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    public static function createInvalidNonNullType() : \Graphpinator\Type\InputType
+    public static function createInvalidNonNullType() : \Graphpinator\Typesystem\InputType
     {
-        return new class extends \Graphpinator\Type\InputType
+        return new class extends \Graphpinator\Typesystem\InputType
         {
             protected const NAME = 'NotNullSelfCycle';
 
@@ -114,9 +114,9 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    public static function createNullableAType() : \Graphpinator\Type\InputType
+    public static function createNullableAType() : \Graphpinator\Typesystem\InputType
     {
-        return new class extends \Graphpinator\Type\InputType
+        return new class extends \Graphpinator\Typesystem\InputType
         {
             protected const NAME = 'NullableSelfCycleA';
 
@@ -132,9 +132,9 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    public static function createNullableBType() : \Graphpinator\Type\InputType
+    public static function createNullableBType() : \Graphpinator\Typesystem\InputType
     {
-        return new class extends \Graphpinator\Type\InputType
+        return new class extends \Graphpinator\Typesystem\InputType
         {
             protected const NAME = 'NullableSelfCycleB';
 
@@ -150,9 +150,9 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    public static function createNullableInNullableListAType() : \Graphpinator\Type\InputType
+    public static function createNullableInNullableListAType() : \Graphpinator\Typesystem\InputType
     {
-        return new class extends \Graphpinator\Type\InputType
+        return new class extends \Graphpinator\Typesystem\InputType
         {
             protected const NAME = 'NullableSelfCycleA';
 
@@ -168,9 +168,9 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    public static function createNullableInNullableListBType() : \Graphpinator\Type\InputType
+    public static function createNullableInNullableListBType() : \Graphpinator\Typesystem\InputType
     {
-        return new class extends \Graphpinator\Type\InputType
+        return new class extends \Graphpinator\Typesystem\InputType
         {
             protected const NAME = 'NullableSelfCycleB';
 
@@ -186,9 +186,9 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    public static function createNonNullInNullableListAType() : \Graphpinator\Type\InputType
+    public static function createNonNullInNullableListAType() : \Graphpinator\Typesystem\InputType
     {
-        return new class extends \Graphpinator\Type\InputType
+        return new class extends \Graphpinator\Typesystem\InputType
         {
             protected const NAME = 'NotNullSelfCycle';
 
@@ -204,9 +204,9 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    public static function createNullableInNullableListCType() : \Graphpinator\Type\InputType
+    public static function createNullableInNullableListCType() : \Graphpinator\Typesystem\InputType
     {
-        return new class extends \Graphpinator\Type\InputType
+        return new class extends \Graphpinator\Typesystem\InputType
         {
             protected const NAME = 'NullableSelfCycle';
 
@@ -222,9 +222,9 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    public static function createNonNullInNonNullListAType() : \Graphpinator\Type\InputType
+    public static function createNonNullInNonNullListAType() : \Graphpinator\Typesystem\InputType
     {
-        return new class extends \Graphpinator\Type\InputType
+        return new class extends \Graphpinator\Typesystem\InputType
         {
             protected const NAME = 'NotNullSelfCycle';
 
@@ -240,9 +240,9 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    public static function createNullableInNullableListDType() : \Graphpinator\Type\InputType
+    public static function createNullableInNullableListDType() : \Graphpinator\Typesystem\InputType
     {
-        return new class extends \Graphpinator\Type\InputType
+        return new class extends \Graphpinator\Typesystem\InputType
         {
             protected const NAME = 'NullableSelfCycle';
 
@@ -258,9 +258,9 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    public static function createNonNullInNonNullListBType() : \Graphpinator\Type\InputType
+    public static function createNonNullInNonNullListBType() : \Graphpinator\Typesystem\InputType
     {
-        return new class extends \Graphpinator\Type\InputType
+        return new class extends \Graphpinator\Typesystem\InputType
         {
             protected const NAME = 'NotNullSelfCycleA';
 
@@ -276,9 +276,9 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    public static function createNonNullInNullableListBType() : \Graphpinator\Type\InputType
+    public static function createNonNullInNullableListBType() : \Graphpinator\Typesystem\InputType
     {
-        return new class extends \Graphpinator\Type\InputType
+        return new class extends \Graphpinator\Typesystem\InputType
         {
             protected const NAME = 'NotNullSelfCycleB';
 
@@ -294,9 +294,9 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    public static function createNonNullInNonNullListCType() : \Graphpinator\Type\InputType
+    public static function createNonNullInNonNullListCType() : \Graphpinator\Typesystem\InputType
     {
-        return new class extends \Graphpinator\Type\InputType
+        return new class extends \Graphpinator\Typesystem\InputType
         {
             protected const NAME = 'NotNullSelfCycleA';
 
@@ -312,9 +312,9 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    public static function createNonNullInNonNullListDType() : \Graphpinator\Type\InputType
+    public static function createNonNullInNonNullListDType() : \Graphpinator\Typesystem\InputType
     {
-        return new class extends \Graphpinator\Type\InputType
+        return new class extends \Graphpinator\Typesystem\InputType
         {
             protected const NAME = 'NotNullSelfCycleB';
 
@@ -330,9 +330,9 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    public static function createNullableCType() : \Graphpinator\Type\InputType
+    public static function createNullableCType() : \Graphpinator\Typesystem\InputType
     {
-        return new class extends \Graphpinator\Type\InputType
+        return new class extends \Graphpinator\Typesystem\InputType
         {
             protected const NAME = 'NullableSelfCycle';
 
@@ -348,9 +348,9 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    public static function createNonNullAType() : \Graphpinator\Type\InputType
+    public static function createNonNullAType() : \Graphpinator\Typesystem\InputType
     {
-        return new class extends \Graphpinator\Type\InputType
+        return new class extends \Graphpinator\Typesystem\InputType
         {
             protected const NAME = 'NotNullSelfCycle';
 
@@ -366,9 +366,9 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    public static function createNullableInNullableListEType() : \Graphpinator\Type\InputType
+    public static function createNullableInNullableListEType() : \Graphpinator\Typesystem\InputType
     {
-        return new class extends \Graphpinator\Type\InputType
+        return new class extends \Graphpinator\Typesystem\InputType
         {
             protected const NAME = 'NullableSelfCycle';
 
@@ -384,9 +384,9 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    public static function createNonNullBType() : \Graphpinator\Type\InputType
+    public static function createNonNullBType() : \Graphpinator\Typesystem\InputType
     {
-        return new class extends \Graphpinator\Type\InputType
+        return new class extends \Graphpinator\Typesystem\InputType
         {
             protected const NAME = 'NotNullSelfCycle';
 
@@ -402,9 +402,9 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    public static function createNonNullInNullableListCType() : \Graphpinator\Type\InputType
+    public static function createNonNullInNullableListCType() : \Graphpinator\Typesystem\InputType
     {
-        return new class extends \Graphpinator\Type\InputType
+        return new class extends \Graphpinator\Typesystem\InputType
         {
             protected const NAME = 'NotNullSelfCycleA';
 
@@ -420,9 +420,9 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    public static function createNonNullCType() : \Graphpinator\Type\InputType
+    public static function createNonNullCType() : \Graphpinator\Typesystem\InputType
     {
-        return new class extends \Graphpinator\Type\InputType
+        return new class extends \Graphpinator\Typesystem\InputType
         {
             protected const NAME = 'NotNullSelfCycleB';
 
@@ -438,9 +438,9 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    public static function createNonNullInNonNullListEType() : \Graphpinator\Type\InputType
+    public static function createNonNullInNonNullListEType() : \Graphpinator\Typesystem\InputType
     {
-        return new class extends \Graphpinator\Type\InputType
+        return new class extends \Graphpinator\Typesystem\InputType
         {
             protected const NAME = 'NotNullSelfCycleA';
 
@@ -456,9 +456,9 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    public static function createNonNullDType() : \Graphpinator\Type\InputType
+    public static function createNonNullDType() : \Graphpinator\Typesystem\InputType
     {
-        return new class extends \Graphpinator\Type\InputType
+        return new class extends \Graphpinator\Typesystem\InputType
         {
             protected const NAME = 'NotNullSelfCycleB';
 
@@ -474,9 +474,9 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    public static function createSimpleType() : \Graphpinator\Type\InputType
+    public static function createSimpleType() : \Graphpinator\Typesystem\InputType
     {
-        return new class extends \Graphpinator\Type\InputType
+        return new class extends \Graphpinator\Typesystem\InputType
         {
             protected const NAME = 'SimpleType';
 
@@ -485,16 +485,16 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Argument\ArgumentSet([
                     new \Graphpinator\Argument\Argument(
                         'value',
-                        \Graphpinator\Container\Container::String(),
+                        \Graphpinator\Typesystem\Container::String(),
                     ),
                 ]);
             }
         };
     }
 
-    public static function createValidationType() : \Graphpinator\Type\InputType
+    public static function createValidationType() : \Graphpinator\Typesystem\InputType
     {
-        return new class extends \Graphpinator\Type\InputType
+        return new class extends \Graphpinator\Typesystem\InputType
         {
             protected const NAME = 'ValidationType';
 
@@ -510,9 +510,9 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    public static function createInvalidNonNullAType() : \Graphpinator\Type\InputType
+    public static function createInvalidNonNullAType() : \Graphpinator\Typesystem\InputType
     {
-        return new class extends \Graphpinator\Type\InputType
+        return new class extends \Graphpinator\Typesystem\InputType
         {
             protected const NAME = 'NotNullSelfCycleA';
 
@@ -528,9 +528,9 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    public static function createInvalidNonNullBType() : \Graphpinator\Type\InputType
+    public static function createInvalidNonNullBType() : \Graphpinator\Typesystem\InputType
     {
-        return new class extends \Graphpinator\Type\InputType
+        return new class extends \Graphpinator\Typesystem\InputType
         {
             protected const NAME = 'NotNullSelfCycleB';
 

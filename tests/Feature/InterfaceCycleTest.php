@@ -6,17 +6,17 @@ namespace Graphpinator\Tests\Feature;
 
 final class InterfaceCycleTest extends \PHPUnit\Framework\TestCase
 {
-    private static ?\Graphpinator\Type\InterfaceType $interfaceA = null;
-    private static ?\Graphpinator\Type\InterfaceType $interfaceB = null;
-    private static ?\Graphpinator\Type\InterfaceType $interfaceC = null;
+    private static ?\Graphpinator\Typesystem\InterfaceType $interfaceA = null;
+    private static ?\Graphpinator\Typesystem\InterfaceType $interfaceB = null;
+    private static ?\Graphpinator\Typesystem\InterfaceType $interfaceC = null;
 
-    public static function getInterfaceB() : \Graphpinator\Type\InterfaceType
+    public static function getInterfaceB() : \Graphpinator\Typesystem\InterfaceType
     {
-        if (self::$interfaceB instanceof \Graphpinator\Type\InterfaceType) {
+        if (self::$interfaceB instanceof \Graphpinator\Typesystem\InterfaceType) {
             return self::$interfaceB;
         }
 
-        self::$interfaceB = new class extends \Graphpinator\Type\InterfaceType {
+        self::$interfaceB = new class extends \Graphpinator\Typesystem\InterfaceType {
             protected const NAME = 'BInterface';
 
             public function __construct()
@@ -38,7 +38,7 @@ final class InterfaceCycleTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Field\FieldSet([
                     \Graphpinator\Field\Field::create(
                         'fieldInt',
-                        \Graphpinator\Container\Container::Int(),
+                        \Graphpinator\Typesystem\Container::Int(),
                     ),
                 ]);
             }
@@ -49,13 +49,13 @@ final class InterfaceCycleTest extends \PHPUnit\Framework\TestCase
         return self::$interfaceB;
     }
 
-    public static function getInterfaceC() : \Graphpinator\Type\InterfaceType
+    public static function getInterfaceC() : \Graphpinator\Typesystem\InterfaceType
     {
-        if (self::$interfaceC instanceof \Graphpinator\Type\InterfaceType) {
+        if (self::$interfaceC instanceof \Graphpinator\Typesystem\InterfaceType) {
             return self::$interfaceC;
         }
 
-        self::$interfaceC = new class extends \Graphpinator\Type\InterfaceType {
+        self::$interfaceC = new class extends \Graphpinator\Typesystem\InterfaceType {
             protected const NAME = 'CInterface';
 
             public function __construct()
@@ -77,7 +77,7 @@ final class InterfaceCycleTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Field\FieldSet([
                     \Graphpinator\Field\Field::create(
                         'fieldInt',
-                        \Graphpinator\Container\Container::Int(),
+                        \Graphpinator\Typesystem\Container::Int(),
                     ),
                 ]);
             }
@@ -88,13 +88,13 @@ final class InterfaceCycleTest extends \PHPUnit\Framework\TestCase
         return self::$interfaceC;
     }
 
-    public static function getInterfaceA() : \Graphpinator\Type\InterfaceType
+    public static function getInterfaceA() : \Graphpinator\Typesystem\InterfaceType
     {
-        if (self::$interfaceA instanceof \Graphpinator\Type\InterfaceType) {
+        if (self::$interfaceA instanceof \Graphpinator\Typesystem\InterfaceType) {
             return self::$interfaceA;
         }
 
-        self::$interfaceA = new class extends \Graphpinator\Type\InterfaceType {
+        self::$interfaceA = new class extends \Graphpinator\Typesystem\InterfaceType {
             protected const NAME = 'InterfaceA';
 
             public function __construct()
@@ -116,7 +116,7 @@ final class InterfaceCycleTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Field\FieldSet([
                     \Graphpinator\Field\Field::create(
                         'fieldInt',
-                        \Graphpinator\Container\Container::Int(),
+                        \Graphpinator\Typesystem\Container::Int(),
                     ),
                 ]);
             }

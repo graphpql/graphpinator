@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Tests\Unit\Type\Scalar;
+namespace Graphpinator\Tests\Unit\Typesystem\Scalar;
 
 final class IDTypeTest extends \PHPUnit\Framework\TestCase
 {
@@ -31,7 +31,7 @@ final class IDTypeTest extends \PHPUnit\Framework\TestCase
      */
     public function testValidateValue(string|int|null $rawValue, ?string $resultValue) : void
     {
-        $id = new \Graphpinator\Type\Spec\IdType();
+        $id = new \Graphpinator\Typesystem\Spec\IdType();
         $value = $id->accept(new \Graphpinator\Value\ConvertRawValueVisitor($rawValue, new \Graphpinator\Common\Path()));
 
         self::assertSame($id, $value->getType());
@@ -46,7 +46,7 @@ final class IDTypeTest extends \PHPUnit\Framework\TestCase
     {
         $this->expectException(\Graphpinator\Exception\Value\InvalidValue::class);
 
-        $id = new \Graphpinator\Type\Spec\IdType();
+        $id = new \Graphpinator\Typesystem\Spec\IdType();
         $id->accept(new \Graphpinator\Value\ConvertRawValueVisitor($rawValue, new \Graphpinator\Common\Path()));
     }
 }

@@ -10,8 +10,8 @@ final class ListInputCoercionTest extends \PHPUnit\Framework\TestCase
     {
         $query = $this->getQuery();
         $graphpinator = new \Graphpinator\Graphpinator(
-            new \Graphpinator\Type\Schema(
-                new \Graphpinator\Container\SimpleContainer([$query], []),
+            new \Graphpinator\Typesystem\Schema(
+                new \Graphpinator\SimpleContainer([$query], []),
                 $query,
             ),
         );
@@ -30,8 +30,8 @@ final class ListInputCoercionTest extends \PHPUnit\Framework\TestCase
     {
         $query = $this->getQuery();
         $graphpinator = new \Graphpinator\Graphpinator(
-            new \Graphpinator\Type\Schema(
-                new \Graphpinator\Container\SimpleContainer([$query], []),
+            new \Graphpinator\Typesystem\Schema(
+                new \Graphpinator\SimpleContainer([$query], []),
                 $query,
             ),
         );
@@ -50,8 +50,8 @@ final class ListInputCoercionTest extends \PHPUnit\Framework\TestCase
     {
         $query = $this->getQuery();
         $graphpinator = new \Graphpinator\Graphpinator(
-            new \Graphpinator\Type\Schema(
-                new \Graphpinator\Container\SimpleContainer([$query], []),
+            new \Graphpinator\Typesystem\Schema(
+                new \Graphpinator\SimpleContainer([$query], []),
                 $query,
             ),
         );
@@ -70,8 +70,8 @@ final class ListInputCoercionTest extends \PHPUnit\Framework\TestCase
     {
         $query = $this->getQuery(12);
         $graphpinator = new \Graphpinator\Graphpinator(
-            new \Graphpinator\Type\Schema(
-                new \Graphpinator\Container\SimpleContainer([$query], []),
+            new \Graphpinator\Typesystem\Schema(
+                new \Graphpinator\SimpleContainer([$query], []),
                 $query,
             ),
         );
@@ -86,9 +86,9 @@ final class ListInputCoercionTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function getQuery(?int $defaultValue = null) : \Graphpinator\Type\Type
+    public function getQuery(?int $defaultValue = null) : \Graphpinator\Typesystem\Type
     {
-        return new class ($defaultValue) extends \Graphpinator\Type\Type
+        return new class ($defaultValue) extends \Graphpinator\Typesystem\Type
         {
             protected const NAME = 'Query';
 
@@ -108,7 +108,7 @@ final class ListInputCoercionTest extends \PHPUnit\Framework\TestCase
             {
                 $argument = \Graphpinator\Argument\Argument::create(
                     'listArg',
-                    \Graphpinator\Container\Container::Int()->notNullList(),
+                    \Graphpinator\Typesystem\Container::Int()->notNullList(),
                 );
 
                 if (\is_int($this->defaultValue)) {
@@ -118,7 +118,7 @@ final class ListInputCoercionTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Field\ResolvableFieldSet([
                     \Graphpinator\Field\ResolvableField::create(
                         'field',
-                        \Graphpinator\Container\Container::Int()->notNullList(),
+                        \Graphpinator\Typesystem\Container::Int()->notNullList(),
                         static function ($parent, array $listArg) : array {
                             return $listArg;
                         },
