@@ -25,7 +25,7 @@ final class UnionDirectiveTest extends \PHPUnit\Framework\TestCase
 
             protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
             {
-                return  new \Graphpinator\Typesystem\Argument\ArgumentSet();
+                return new \Graphpinator\Typesystem\Argument\ArgumentSet();
             }
         };
 
