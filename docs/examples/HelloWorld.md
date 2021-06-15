@@ -10,12 +10,12 @@ In this example, we define our simple schema and execute one request on it - all
 
 Schema is mainly defined by types. Each type is a separate class extending one of the abstract classes.
 
-- `\Graphpinator\Type\Type`
-- `\Graphpinator\Type\UnionType`
-- `\Graphpinator\Type\InterfaceType`
-- `\Graphpinator\Type\ScalarType`
-- `\Graphpinator\Type\EnumType`
-- `\Graphpinator\Type\InputType`
+- `\Graphpinator\Typesystem\Type`
+- `\Graphpinator\Typesystem\UnionType`
+- `\Graphpinator\Typesystem\InterfaceType`
+- `\Graphpinator\Typesystem\ScalarType`
+- `\Graphpinator\Typesystem\EnumType`
+- `\Graphpinator\Typesystem\InputType`
 
 In this example, we only define one type - the `Query` type.
 
@@ -26,7 +26,7 @@ declare(strict_types = 1);
 
 namespace Example;
 
-final class Query extends \Graphpinator\Type\Type
+final class Query extends \Graphpinator\Typesystem\Type
 {
     protected const NAME = 'Query';
     protected const DESCRIPTION = 'Graphpinator HelloWorld: Query type';
@@ -41,10 +41,10 @@ final class Query extends \Graphpinator\Type\Type
     {
         // types return ResolvableFieldSet, which is a map of ResolvableField (Fields with resolve function)
         // interface only define FieldSet, which is a map of Field, which does not have resolve function but only define the signature
-        return new \Graphpinator\Field\ResolvableFieldSet([
-            new \Graphpinator\Field\ResolvableField(
+        return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
+            new \Graphpinator\Typesystem\Field\ResolvableField(
                 'helloWorld',
-                \Graphpinator\Container\Container::String()->notNull(),
+                \Graphpinator\Typesystem\Container::String()->notNull(),
                 function ($parent) : string {
                     return 'Hello world!';
                 },
@@ -56,19 +56,19 @@ final class Query extends \Graphpinator\Type\Type
 
 ## Step two - create Container
 
-All available types for our GraphQL service are stored in a `\Graphpinator\Container\Container` class. 
+All available types for our GraphQL service are stored in a `\Graphpinator\Typesystem\Container` class. 
 
 > In this example we are going to assign the type to the `Container` manually, 
 but this step can (and is recommended to) be achieved automatically when using some dependency injection.
 
 ```php
 $query = new \Example\Query(); // our Query class which we defined above
-$container = new \Graphpinator\Container\SimpleContainer([$query], []);
+$container = new \Graphpinator\SimpleContainer([$query], []);
 ```
 
 ## Step three - create Schema
 
-`\Graphpinator\Type\Schema` is a class that contains all information about your service.
+`\Graphpinator\Typesystem\Schema` is a class that contains all information about your service.
 `Schema` needs `Container` of its types, and also information which types manage different operation types (`query`, `mutation`, `subscription`).
 In the following code snippet, we assign our `$container` to it and also declare that the type to manage `query` operation is our `Query` type.
 In more complex services, where we would use `mutation` or `subscription` operation types, we would also pass the third and fourth parameter.
@@ -76,7 +76,7 @@ In more complex services, where we would use `mutation` or `subscription` operat
 > This step is also skipped when using some dependency injection solution.
 
 ```php
-$schema = new \Graphpinator\Type\Schema($container, $query);
+$schema = new \Graphpinator\Typesystem\Schema($container, $query);
 ```
 
 ## Optional step - print schema definition
@@ -177,9 +177,9 @@ Example configuration for Nette framework, which automatically
 
 ```neon
 services:
-    - Graphpinator\Container\SimpleContainer
-    - Graphpinator\Type\Schema(
-        @Graphpinator\Container\SimpleContainer,
+    - Graphpinator\SimpleContainer
+    - Graphpinator\Typesystem\Schema(
+        @Graphpinator\SimpleContainer,
         @Example\Query,
         null, # Mutation
         null # Subscription
@@ -188,7 +188,7 @@ search:
     graphql:
         in: '%appDir%/GraphQL'
         extends:
-            - Graphpinator\Type\Contract\NamedDefinition
+            - Graphpinator\Typesystem\Contract\NamedType
 ```
 
 Similar approach is surely available for other frameworks as well. 
