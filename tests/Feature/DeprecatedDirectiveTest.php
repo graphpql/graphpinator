@@ -46,7 +46,8 @@ final class DeprecatedDirectiveTest extends \PHPUnit\Framework\TestCase
                         static function () : string {
                             return 'test';
                         },
-                    )->setDeprecated()->setArguments(new \Graphpinator\Typesystem\Argument\ArgumentSet([
+                    )->setDeprecated(
+                    )->setArguments(new \Graphpinator\Typesystem\Argument\ArgumentSet([
                         \Graphpinator\Typesystem\Argument\Argument::create(
                             'testArgumentDeprecatedNull',
                             \Graphpinator\Typesystem\Container::String(),
@@ -58,7 +59,9 @@ final class DeprecatedDirectiveTest extends \PHPUnit\Framework\TestCase
                         static function () : string {
                             return 'test';
                         },
-                    )->setDeprecated('reasonField')->setArguments(new \Graphpinator\Typesystem\Argument\ArgumentSet([
+                    )->setDeprecated(
+                        'reasonField',
+                    )->setArguments(new \Graphpinator\Typesystem\Argument\ArgumentSet([
                         \Graphpinator\Typesystem\Argument\Argument::create(
                             'testArgumentDeprecatedNotNull',
                             \Graphpinator\Typesystem\Container::String(),
