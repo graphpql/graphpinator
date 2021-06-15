@@ -35,27 +35,30 @@ final class ConvertRawValueVisitor implements \Graphpinator\Typesystem\Contract\
 
         foreach ($arguments as $argument) {
             $path->add($argument->getName() . ' <argument>');
-            $inner->{$argument->getName()} = self::convertArgument($argument, $rawValue->{$argument->getName()}
-                ?? null, $path);
+
+            if (\property_exists($rawValue, $argument->getName())) {
+                $inner->{$argument->getName()} = new ArgumentValue(
+                    $argument,
+                    $argument->getType()->accept(new ConvertRawValueVisitor($rawValue->{$argument->getName()}, $path)),
+                    false,
+                );
+                $path->pop();
+
+                continue;
+            }
+
+            $default = $argument->getDefaultValue();
+
+            if ($default instanceof ArgumentValue) {
+                $inner->{$argument->getName()} = $default;
+            } elseif ($argument->getType() instanceof \Graphpinator\Typesystem\NotNullType) {
+                throw new \Graphpinator\Exception\Value\ValueCannotBeNull(false);
+            }
+
             $path->pop();
         }
 
         return $inner;
-    }
-
-    public static function convertArgument(
-        \Graphpinator\Typesystem\Argument\Argument $argument,
-        mixed $rawValue,
-        \Graphpinator\Common\Path $path,
-    ) : ArgumentValue
-    {
-        $default = $argument->getDefaultValue();
-
-        if ($rawValue === null && $default instanceof \Graphpinator\Value\ArgumentValue) {
-            return $default;
-        }
-
-        return new ArgumentValue($argument, $argument->getType()->accept(new ConvertRawValueVisitor($rawValue, $path)), false);
     }
 
     public function visitType(\Graphpinator\Typesystem\Type $type) : mixed

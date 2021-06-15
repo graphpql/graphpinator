@@ -632,12 +632,12 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                                 [
                                     'name' => 'object',
                                     'description' => null,
-                                    'defaultValue' => '{name:"string",number:[1,2],bool:null}',
+                                    'defaultValue' => '{name:"string",number:[1,2]}',
                                 ],
                                 [
                                     'name' => 'listObjects',
                                     'description' => null,
-                                    'defaultValue' => '[{name:"string",number:[1],bool:null},{name:"string",number:[],bool:null}]',
+                                    'defaultValue' => '[{name:"string",number:[1]},{name:"string",number:[]}]',
                                 ],
                             ],
                         ],

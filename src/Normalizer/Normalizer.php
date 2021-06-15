@@ -274,21 +274,30 @@ final class Normalizer
         foreach ($argumentSet as $argument) {
             $this->path->add($argument->getName() . ' <argument>');
 
-            if (!$argumentValueSet->offsetExists($argument->getName())) {
-                $items[] = \Graphpinator\Value\ConvertRawValueVisitor::convertArgument($argument, null, $this->path);
+            if ($argumentValueSet->offsetExists($argument->getName())) {
+                $result = $argumentValueSet->offsetGet($argument->getName())->getValue()->accept(
+                    new \Graphpinator\Value\ConvertParserValueVisitor(
+                        $argument->getType(),
+                        $this->variableSet
+                            ?? null,
+                        $this->path,
+                    ),
+                );
+
+                $items[] = new \Graphpinator\Value\ArgumentValue($argument, $result, true);
                 $this->path->pop();
 
                 continue;
             }
 
-            $parsedArg = $argumentValueSet->offsetGet($argument->getName());
-            $items[] = \Graphpinator\Value\ConvertParserValueVisitor::convertArgumentValue(
-                $parsedArg->getValue(),
-                $argument,
-                $this->variableSet
-                    ?? null,
-                $this->path,
-            );
+            $default = $argument->getDefaultValue();
+            $items[] = $default instanceof \Graphpinator\Value\ArgumentValue
+                ? $default
+                : new \Graphpinator\Value\ArgumentValue(
+                    $argument,
+                    $argument->getType()->accept(new \Graphpinator\Value\ConvertRawValueVisitor(null, $this->path)),
+                    false,
+                ); // null is automatically passed to argument values, even if omitted
             $this->path->pop();
         }
 

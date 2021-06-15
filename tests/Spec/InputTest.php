@@ -35,7 +35,7 @@ final class InputTest extends \PHPUnit\Framework\TestCase
                     'data' => [
                         'fieldAbc' => [
                             'fieldXyz' => [
-                                'name' => 'name: foo; inner: null; innerList: []; innerNotNull: {name: bar; number: []; bool: null; }; ',
+                                'name' => 'name: foo; innerList: []; innerNotNull: {name: bar; number: []; }; ',
                             ],
                         ],
                     ],
@@ -60,7 +60,7 @@ final class InputTest extends \PHPUnit\Framework\TestCase
                     'data' => [
                         'fieldAbc' => [
                             'fieldXyz' => [
-                                'name' => 'name: foo; inner: null; innerList: []; innerNotNull: {name: bar; number: []; bool: null; }; ',
+                                'name' => 'name: foo; innerList: []; innerNotNull: {name: bar; number: []; }; ',
                             ],
                         ],
                     ],
@@ -85,7 +85,7 @@ final class InputTest extends \PHPUnit\Framework\TestCase
                     'data' => [
                         'fieldAbc' => [
                             'fieldXyz' => [
-                                'name' => 'name: foo; inner: null; innerList: []; innerNotNull: {name: bar; number: []; bool: null; }; ',
+                                'name' => 'name: foo; inner: null; innerList: []; innerNotNull: {name: bar; number: []; }; ',
                             ],
                         ],
                     ],
@@ -110,7 +110,7 @@ final class InputTest extends \PHPUnit\Framework\TestCase
                     'data' => [
                         'fieldAbc' => [
                             'fieldXyz' => [
-                                'name' => 'name: foo; inner: null; innerList: []; innerNotNull: {name: bar; number: []; bool: null; }; ',
+                                'name' => 'name: foo; innerList: []; innerNotNull: {name: bar; number: []; bool: null; }; ',
                             ],
                         ],
                     ],
@@ -135,7 +135,7 @@ final class InputTest extends \PHPUnit\Framework\TestCase
                     'data' => [
                         'fieldAbc' => [
                             'fieldXyz' => [
-                                'name' => 'name: foo; inner: null; innerList: []; innerNotNull: {name: bar; number: []; bool: 1; }; ',
+                                'name' => 'name: foo; innerList: []; innerNotNull: {name: bar; number: []; bool: 1; }; ',
                             ],
                         ],
                     ],
@@ -166,7 +166,7 @@ final class InputTest extends \PHPUnit\Framework\TestCase
                     'data' => [
                         'fieldAbc' => [
                             'fieldXyz' => [
-                                'name' => 'name: foo; inner: null; innerList: []; innerNotNull: {name: bar; number: []; bool: null; }; ',
+                                'name' => 'name: foo; innerList: []; innerNotNull: {name: bar; number: []; }; ',
                             ],
                         ],
                     ],
@@ -192,7 +192,7 @@ final class InputTest extends \PHPUnit\Framework\TestCase
                     'data' => [
                         'fieldAbc' => [
                             'fieldXyz' => [
-                                'name' => 'name: foo; inner: null; innerList: []; innerNotNull: {name: bar; number: []; bool: null; }; ',
+                                'name' => 'name: foo; innerList: []; innerNotNull: {name: bar; number: []; }; ',
                             ],
                         ],
                     ],
@@ -216,7 +216,7 @@ final class InputTest extends \PHPUnit\Framework\TestCase
                     'data' => [
                         'fieldAbc' => [
                             'fieldXyz' => [
-                                'name' => 'name: foo; inner: null; innerList: []; innerNotNull: {name: bar; number: []; bool: null; }; ',
+                                'name' => 'name: foo; innerList: []; innerNotNull: {name: bar; number: []; }; ',
                             ],
                         ],
                     ],
@@ -244,7 +244,7 @@ final class InputTest extends \PHPUnit\Framework\TestCase
                     'data' => [
                         'fieldAbc' => [
                             'fieldXyz' => [
-                                'name' => 'name: foo; inner: null; innerList: []; innerNotNull: {name: bar; number: []; bool: null; }; ',
+                                'name' => 'name: foo; innerList: []; innerNotNull: {name: bar; number: []; }; ',
                             ],
                         ],
                     ],

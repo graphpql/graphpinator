@@ -43,10 +43,10 @@ final class Argument implements \Graphpinator\Typesystem\Contract\Component
 
     public function setDefaultValue(\stdClass|array|string|int|float|bool|null $defaultValue) : self
     {
-        $this->defaultValue = \Graphpinator\Value\ConvertRawValueVisitor::convertArgument(
+        $this->defaultValue = new \Graphpinator\Value\ArgumentValue(
             $this,
-            $defaultValue,
-            new \Graphpinator\Common\Path(),
+            $this->getType()->accept(new \Graphpinator\Value\ConvertRawValueVisitor($defaultValue, new \Graphpinator\Common\Path())),
+            false,
         );
 
         return $this;

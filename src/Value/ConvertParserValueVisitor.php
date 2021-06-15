@@ -16,25 +16,6 @@ final class ConvertParserValueVisitor implements \Graphpinator\Parser\Value\Valu
     {
     }
 
-    public static function convertArgumentValue(
-        \Graphpinator\Parser\Value\Value $value,
-        \Graphpinator\Typesystem\Argument\Argument $argument,
-        ?\Graphpinator\Normalizer\Variable\VariableSet $variableSet,
-        \Graphpinator\Common\Path $path,
-    ) : \Graphpinator\Value\ArgumentValue
-    {
-        $default = $argument->getDefaultValue();
-        $result = $value->accept(
-            new ConvertParserValueVisitor($argument->getType(), $variableSet, $path),
-        );
-
-        if ($result instanceof \Graphpinator\Value\NullInputedValue && $default instanceof \Graphpinator\Value\ArgumentValue) {
-            return $default;
-        }
-
-        return new \Graphpinator\Value\ArgumentValue($argument, $result, true);
-    }
-
     public function visitLiteral(\Graphpinator\Parser\Value\Literal $literal) : \Graphpinator\Value\InputedValue
     {
         return $this->type->accept(new ConvertRawValueVisitor($literal->getRawValue(), $this->path));
@@ -107,9 +88,26 @@ final class ConvertParserValueVisitor implements \Graphpinator\Parser\Value\Valu
 
         foreach ($this->type->getArguments() as $argument) {
             $this->path->add($argument->getName() . ' <input field>');
-            $inner->{$argument->getName()} = \property_exists($objectVal->getValue(), $argument->getName())
-                ? self::convertArgumentValue($objectVal->getValue()->{$argument->getName()}, $argument, $this->variableSet, $this->path)
-                : \Graphpinator\Value\ConvertRawValueVisitor::convertArgument($argument, null, $this->path);
+
+            if (\property_exists($objectVal->getValue(), $argument->getName())) {
+                $result = $objectVal->getValue()->{$argument->getName()}->accept(
+                    new ConvertParserValueVisitor($argument->getType(), $this->variableSet, $this->path),
+                );
+
+                $inner->{$argument->getName()} = new \Graphpinator\Value\ArgumentValue($argument, $result, true);
+                $this->path->pop();
+
+                continue;
+            }
+
+            $default = $argument->getDefaultValue();
+
+            if ($default instanceof ArgumentValue) {
+                $inner->{$argument->getName()} = $default;
+            } elseif ($argument->getType() instanceof \Graphpinator\Typesystem\NotNullType) {
+                throw new \Graphpinator\Exception\Value\ValueCannotBeNull(false);
+            }
+
             $this->path->pop();
         }
 
