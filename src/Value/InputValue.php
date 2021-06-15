@@ -39,10 +39,10 @@ final class InputValue implements \Graphpinator\Value\InputedValue, \IteratorAgg
     {
         $component = [];
 
-        foreach ((array) $this->value as $key => $value) {
-            \assert($value instanceof \Graphpinator\Value\ArgumentValue);
+        foreach ((array) $this->value as $argumentName => $argumentValue) {
+            \assert($argumentValue instanceof \Graphpinator\Value\ArgumentValue);
 
-            $component[] = $key . ':' . $value->getValue()->printValue();
+            $component[] = $argumentName . ':' . $argumentValue->getValue()->printValue();
         }
 
         return '{' . \implode(',', $component) . '}';
@@ -50,10 +50,10 @@ final class InputValue implements \Graphpinator\Value\InputedValue, \IteratorAgg
 
     public function applyVariables(\Graphpinator\Normalizer\VariableValueSet $variables) : void
     {
-        foreach ($this->value as $value) {
-            \assert($value instanceof \Graphpinator\Value\ArgumentValue);
+        foreach ((array) $this->value as $argumentValue) {
+            \assert($argumentValue instanceof \Graphpinator\Value\ArgumentValue);
 
-            $value->applyVariables($variables);
+            $argumentValue->applyVariables($variables);
         }
 
         foreach ($this->type->getDirectiveUsages() as $directive) {
@@ -63,10 +63,10 @@ final class InputValue implements \Graphpinator\Value\InputedValue, \IteratorAgg
 
     public function resolveRemainingDirectives() : void
     {
-        foreach ($this->value as $value) {
-            \assert($value instanceof \Graphpinator\Value\ArgumentValue);
+        foreach ((array) $this->value as $argumentValue) {
+            \assert($argumentValue instanceof \Graphpinator\Value\ArgumentValue);
 
-            $value->resolveNonPureDirectives();
+            $argumentValue->resolveNonPureDirectives();
         }
     }
 
@@ -82,10 +82,11 @@ final class InputValue implements \Graphpinator\Value\InputedValue, \IteratorAgg
             return false;
         }
 
-        foreach ($this->value as $key => $value) {
-            \assert($value instanceof \Graphpinator\Value\ArgumentValue);
+        foreach ((array) $this->value as $argumentName => $argumentValue) {
+            \assert($argumentValue instanceof \Graphpinator\Value\ArgumentValue);
 
-            if (!\property_exists($secondObject, $key) || !$value->getValue()->isSame($secondObject->{$key}->getValue())) {
+            if (!\property_exists($secondObject, $argumentName) ||
+                !$argumentValue->getValue()->isSame($secondObject->{$argumentName}->getValue())) {
                 return false;
             }
         }
