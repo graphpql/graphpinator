@@ -8,8 +8,12 @@ abstract class ListValue implements \Graphpinator\Value\Value, \IteratorAggregat
 {
     use \Nette\SmartObject;
 
-    protected \Graphpinator\Typesystem\ListType $type;
-    protected array $value;
+    public function __construct(
+        protected \Graphpinator\Typesystem\ListType $type,
+        protected array $value,
+    )
+    {
+    }
 
     public function getIterator() : \ArrayIterator
     {

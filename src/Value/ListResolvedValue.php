@@ -6,12 +6,6 @@ namespace Graphpinator\Value;
 
 final class ListResolvedValue extends \Graphpinator\Value\ListValue implements \Graphpinator\Value\OutputValue
 {
-    public function __construct(\Graphpinator\Typesystem\ListType $type, array $rawValue)
-    {
-        $this->type = $type;
-        $this->value = $rawValue;
-    }
-
     public function getRawValue() : array
     {
         $return = [];
