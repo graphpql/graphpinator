@@ -100,7 +100,13 @@ final class Graphpinator implements \Psr\Log\LoggerAwareInterface
                 }
             }
 
-            return $this->resolver->resolve($result);
+            $result = $this->resolver->resolve($result);
+
+            foreach ($this->modules as $module) {
+                $result = $module->processResult($result);
+            }
+
+            return $result;
         } catch (\Throwable $exception) {
             if (!$this->catchExceptions) {
                 throw $exception;

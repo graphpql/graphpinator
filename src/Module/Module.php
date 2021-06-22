@@ -24,5 +24,11 @@ interface Module
     ) : \Graphpinator\Normalizer\NormalizedRequest|
         \Graphpinator\Normalizer\FinalizedRequest;
 
-    public function processFinalized(\Graphpinator\Normalizer\FinalizedRequest $request) : \Graphpinator\Normalizer\FinalizedRequest;
+    public function processFinalized(
+        \Graphpinator\Normalizer\FinalizedRequest $request,
+    ) : \Graphpinator\Normalizer\FinalizedRequest;
+
+    public function processResult(
+        \Graphpinator\Result $result,
+    ) : \Graphpinator\Result;
 }
