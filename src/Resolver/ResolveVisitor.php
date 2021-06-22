@@ -26,6 +26,7 @@ final class ResolveVisitor implements \Graphpinator\Typesystem\Contract\TypeVisi
 
             foreach ($field->getDirectives() as $directive) {
                 $directiveDef = $directive->getDirective();
+                \assert($directiveDef instanceof \Graphpinator\Typesystem\Location\FieldLocation);
                 $directiveResult = $directiveDef->resolveFieldBefore($directive->getArguments());
 
                 if (!\array_key_exists($directiveResult, \Graphpinator\Typesystem\Location\FieldLocation::ENUM)) {
@@ -43,6 +44,7 @@ final class ResolveVisitor implements \Graphpinator\Typesystem\Contract\TypeVisi
 
             foreach ($field->getDirectives() as $directive) {
                 $directiveDef = $directive->getDirective();
+                \assert($directiveDef instanceof \Graphpinator\Typesystem\Location\FieldLocation);
                 $directiveResult = $directiveDef->resolveFieldAfter($directive->getArguments(), $fieldResult);
 
                 if (!\array_key_exists($directiveResult, \Graphpinator\Typesystem\Location\FieldLocation::ENUM)) {
@@ -120,7 +122,9 @@ final class ResolveVisitor implements \Graphpinator\Typesystem\Contract\TypeVisi
     ) : \Graphpinator\Value\FieldValue
     {
         foreach ($field->getDirectiveUsages() as $directive) {
-            $directive->getDirective()->resolveFieldDefinitionStart($directive->getArgumentValues(), $this->parentResult);
+            $directiveDef = $directive->getDirective();
+            \assert($directiveDef instanceof \Graphpinator\Typesystem\Location\FieldDefinitionLocation);
+            $directiveDef->resolveFieldDefinitionStart($directive->getArgumentValues(), $this->parentResult);
         }
 
         $arguments = $requestedField->getArguments();
@@ -130,7 +134,9 @@ final class ResolveVisitor implements \Graphpinator\Typesystem\Contract\TypeVisi
         }
 
         foreach ($field->getDirectiveUsages() as $directive) {
-            $directive->getDirective()->resolveFieldDefinitionBefore($directive->getArgumentValues(), $this->parentResult, $arguments);
+            $directiveDef = $directive->getDirective();
+            \assert($directiveDef instanceof \Graphpinator\Typesystem\Location\FieldDefinitionLocation);
+            $directiveDef->resolveFieldDefinitionBefore($directive->getArgumentValues(), $this->parentResult, $arguments);
         }
 
         $rawArguments = $arguments->getValuesForResolver();
@@ -143,7 +149,9 @@ final class ResolveVisitor implements \Graphpinator\Typesystem\Contract\TypeVisi
         }
 
         foreach ($field->getDirectiveUsages() as $directive) {
-            $directive->getDirective()->resolveFieldDefinitionAfter($directive->getArgumentValues(), $resolvedValue, $arguments);
+            $directiveDef = $directive->getDirective();
+            \assert($directiveDef instanceof \Graphpinator\Typesystem\Location\FieldDefinitionLocation);
+            $directiveDef->resolveFieldDefinitionAfter($directive->getArgumentValues(), $resolvedValue, $arguments);
         }
 
         if ($resolvedValue instanceof \Graphpinator\Value\NullValue) {

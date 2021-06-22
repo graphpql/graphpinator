@@ -14,7 +14,9 @@ final class TypeValue implements \Graphpinator\Value\OutputValue
     )
     {
         foreach ($type->getDirectiveUsages() as $directive) {
-            $directive->getDirective()->resolveObject($directive->getArgumentValues(), $this);
+            $directiveDef = $directive->getDirective();
+            \assert($directiveDef instanceof \Graphpinator\Typesystem\Location\ObjectLocation);
+            $directiveDef->resolveObject($directive->getArgumentValues(), $this);
         }
     }
 

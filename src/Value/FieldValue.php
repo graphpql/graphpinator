@@ -14,7 +14,9 @@ final class FieldValue implements \JsonSerializable
     )
     {
         foreach ($field->getDirectiveUsages() as $directive) {
-            $directive->getDirective()->resolveFieldDefinitionValue($directive->getArgumentValues(), $this);
+            $directiveDef = $directive->getDirective();
+            \assert($directiveDef instanceof \Graphpinator\Typesystem\Location\FieldDefinitionLocation);
+            $directiveDef->resolveFieldDefinitionValue($directive->getArgumentValues(), $this);
         }
     }
 
