@@ -130,7 +130,7 @@ trait TInterfaceImplementor
         }
     }
 
-    public static function validateInvariance(
+    private static function validateInvariance(
         \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet $parent,
         \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet $child,
     ) : void
