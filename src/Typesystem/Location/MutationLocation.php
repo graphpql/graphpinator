@@ -8,10 +8,10 @@ interface MutationLocation extends \Graphpinator\Typesystem\Contract\ExecutableD
 {
     public function resolveMutationBefore(
         \Graphpinator\Value\ArgumentValueSet $arguments,
-    ) : string;
+    ) : void;
 
     public function resolveMutationAfter(
         \Graphpinator\Value\ArgumentValueSet $arguments,
         \Graphpinator\Value\TypeValue $typeValue,
-    ) : string;
+    ) : void;
 }

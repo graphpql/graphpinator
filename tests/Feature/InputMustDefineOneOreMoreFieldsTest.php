@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Feature;
 
-final class InputTypeMustDefineOneOreMoreFieldsTest extends \PHPUnit\Framework\TestCase
+final class InputMustDefineOneOreMoreFieldsTest extends \PHPUnit\Framework\TestCase
 {
     public static function getInputTypeMustDefineOneOreMoreFieldsInputType() : \Graphpinator\Typesystem\InputType
     {

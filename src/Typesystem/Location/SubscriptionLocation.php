@@ -8,10 +8,10 @@ interface SubscriptionLocation extends \Graphpinator\Typesystem\Contract\Executa
 {
     public function resolveSubscriptionBefore(
         \Graphpinator\Value\ArgumentValueSet $arguments,
-    ) : string;
+    ) : void;
 
     public function resolveSubscriptionAfter(
         \Graphpinator\Value\ArgumentValueSet $arguments,
         \Graphpinator\Value\TypeValue $typeValue,
-    ) : string;
+    ) : void;
 }
