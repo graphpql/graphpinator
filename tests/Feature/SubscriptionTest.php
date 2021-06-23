@@ -34,7 +34,7 @@ final class SubscriptionTest extends \PHPUnit\Framework\TestCase
                     \Graphpinator\Typesystem\Field\ResolvableField::create(
                         'field',
                         \Graphpinator\Typesystem\Container::Int()->notNull(),
-                        function ($parent) : int {
+                        static function ($parent) : int {
                             return 1;
                         },
                     ),

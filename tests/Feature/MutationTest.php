@@ -34,7 +34,10 @@ final class MutationTest extends \PHPUnit\Framework\TestCase
                         'field',
                         \Graphpinator\Typesystem\Container::Int()->notNull(),
                         function ($parent) : int {
-                            return $this->order++;
+                            $result = $this->order;
+                            ++$this->order;
+
+                            return $result;
                         },
                     ),
                 ]);
