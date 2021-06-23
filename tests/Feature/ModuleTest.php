@@ -103,7 +103,7 @@ final class ModuleTest extends \PHPUnit\Framework\TestCase
                                         [new \Graphpinator\Parser\Field\Field('field')],
                                         new \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet(),
                                     ),
-                                )
+                                ),
                             ]),
                             new \Graphpinator\Parser\Fragment\FragmentSet(),
                         );
@@ -327,7 +327,7 @@ final class ModuleTest extends \PHPUnit\Framework\TestCase
                         \Graphpinator\Typesystem\Container::String()->notNull(),
                         static function ($parent) : string {
                             return 'test';
-                        }
+                        },
                     ),
                 ]);
             }
