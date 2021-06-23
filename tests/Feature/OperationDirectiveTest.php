@@ -32,7 +32,7 @@ final class OperationDirectiveTest extends \PHPUnit\Framework\TestCase
                         \Graphpinator\Typesystem\Container::Int()->notNull(),
                         function ($parent) : int {
                             return $this->counter->count;
-                        }
+                        },
                     ),
                 ]);
             }
@@ -58,7 +58,7 @@ final class OperationDirectiveTest extends \PHPUnit\Framework\TestCase
                         \Graphpinator\Typesystem\Container::Int()->notNull(),
                         function ($parent) : int {
                             return $this->counter->count;
-                        }
+                        },
                     ),
                 ]);
             }
@@ -84,7 +84,7 @@ final class OperationDirectiveTest extends \PHPUnit\Framework\TestCase
                         \Graphpinator\Typesystem\Container::Int()->notNull(),
                         function ($parent) : int {
                             return $this->counter->count;
-                        }
+                        },
                     ),
                 ]);
             }
@@ -92,18 +92,14 @@ final class OperationDirectiveTest extends \PHPUnit\Framework\TestCase
         $test = new class ($counter) extends \Graphpinator\Typesystem\Directive implements
             \Graphpinator\Typesystem\Location\QueryLocation,
             \Graphpinator\Typesystem\Location\MutationLocation,
-            \Graphpinator\Typesystem\Location\SubscriptionLocation {
+            \Graphpinator\Typesystem\Location\SubscriptionLocation
+        {
             protected const NAME = 'test';
 
             public function __construct(
                 private \stdClass $counter,
             )
             {
-            }
-
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
-            {
-                return new \Graphpinator\Typesystem\Argument\ArgumentSet();
             }
 
             public function resolveQueryBefore(
@@ -149,6 +145,11 @@ final class OperationDirectiveTest extends \PHPUnit\Framework\TestCase
             ) : void
             {
                 ++$this->counter->count;
+            }
+
+            protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
+            {
+                return new \Graphpinator\Typesystem\Argument\ArgumentSet();
             }
         };
         $container = new \Graphpinator\SimpleContainer([$query], [$test]);
