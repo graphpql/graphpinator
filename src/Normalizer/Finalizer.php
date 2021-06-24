@@ -28,7 +28,7 @@ final class Finalizer
     private function selectOperation(NormalizedRequest $normalizedRequest, ?string $operationName) : \Graphpinator\Normalizer\Operation\Operation
     {
         return $operationName === null
-            ? $normalizedRequest->getOperations()->current()
+            ? $normalizedRequest->getOperations()->getFirst()
             : $normalizedRequest->getOperations()->offsetGet($operationName);
     }
 
