@@ -29,4 +29,14 @@ final class ScalarValue extends LeafValue
         $this->hasResolverValue = true;
         $this->resolverValue = $value;
     }
+
+    public function hasResolverValue() : bool
+    {
+        return $this->hasResolverValue;
+    }
+
+    public function getResolverValue() : mixed
+    {
+        return $this->resolverValue;
+    }
 }

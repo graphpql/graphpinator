@@ -31,6 +31,11 @@ final class VariableValue implements \Graphpinator\Value\InputedValue
         return $this->value;
     }
 
+    public function getVariable() : \Graphpinator\Normalizer\Variable\Variable
+    {
+        return $this->variable;
+    }
+
     public function getType() : \Graphpinator\Typesystem\Contract\Inputable
     {
         return $this->type;
