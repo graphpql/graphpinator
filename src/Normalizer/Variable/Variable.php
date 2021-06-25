@@ -16,6 +16,7 @@ final class Variable
         private ?\Graphpinator\Value\InputedValue $defaultValue,
     )
     {
+        $this->directives = new \Graphpinator\Normalizer\Directive\DirectiveSet();
     }
 
     public function getName() : string
