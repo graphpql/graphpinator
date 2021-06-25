@@ -38,7 +38,7 @@ final class Query extends \Graphpinator\Typesystem\Type
         parent::__construct();
     }
 
-    protected function validateNonNullValue($rawValue) : bool
+    public function validateNonNullValue($rawValue) : bool
     {
         return true;
     }
@@ -59,12 +59,13 @@ final class Query extends \Graphpinator\Typesystem\Type
                 function ($parent, int $arg) : int {
                     return $arg;
                 },
+            )->setArguments(
                 new \Graphpinator\Typesystem\Argument\ArgumentSet([
                     \Graphpinator\Typesystem\Argument\Argument::create(
                         'arg',
-                        \Graphpinator\Container\Container::Int()->notNull(),
+                        \Graphpinator\Typesystem\Container::Int()->notNull(),
                     )->addDirective($this->intConstraint, ['min' => 10]),
-                ]),
+                ])
             ),
         ]);
     }
@@ -84,7 +85,7 @@ final class AOrB extends \Graphpinator\Typesystem\Type
         $this->addDirective($objectConstraint, ['exactlyOne' => ['fieldA', 'fieldB']]);
     }
 
-    protected function validateNonNullValue($rawValue) : bool
+    public function validateNonNullValue($rawValue) : bool
     {
         return \is_int($rawValue) && \in_array($rawValue, [0, 1], true);
     }

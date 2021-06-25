@@ -32,7 +32,7 @@ final class Query extends \Graphpinator\Typesystem\Type
         $this->hasString = $hasString;
     }
 
-    protected function validateNonNullValue($rawValue) : bool
+    public function validateNonNullValue($rawValue) : bool
     {
         return true;
     }
@@ -61,19 +61,19 @@ final class TypeA extends \Graphpinator\Typesystem\Type
         parent::__construct(new \Graphpinator\Typesystem\InterfaceSet([$hasString]));
     }
 
-    protected function validateNonNullValue($rawValue) : bool
+    public function validateNonNullValue($rawValue) : bool
     {
         return \is_int($rawValue);
     }
 
-    protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+    protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
     {
         return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
             \Graphpinator\Typesystem\Field\ResolvableField::create(
                 'fieldString',
                 \Graphpinator\Typesystem\Container::String()->notNull(),
                 function (int $parent) : string {
-                    return \md5($parent);
+                    return \md5((string) $parent);
                 },
             ),
             \Graphpinator\Typesystem\Field\ResolvableField::create(
@@ -97,7 +97,7 @@ final class TypeB extends \Graphpinator\Typesystem\Type
         parent::__construct(new \Graphpinator\Typesystem\InterfaceSet([$hasString]));
     }
 
-    protected function validateNonNullValue($rawValue) : bool
+    public function validateNonNullValue($rawValue) : bool
     {
         return \is_string($rawValue);
     }
@@ -125,6 +125,8 @@ final class HasString extends \Graphpinator\Typesystem\InterfaceType
 
     public function __construct(\Example\TypeAccessor $typeAccessor)
     {
+        parent::__construct();
+    
         $this->typeAccessor = $typeAccessor;
     }
 
@@ -144,9 +146,9 @@ final class HasString extends \Graphpinator\Typesystem\InterfaceType
         return new \Graphpinator\Typesystem\Field\FieldSet([
             \Graphpinator\Typesystem\Field\Field::create(
                 'fieldString',
-                \Graphpinator\Container\Container::String()->notNull(),
+                \Graphpinator\Typesystem\Container::String()->notNull(),
             ),
-        };
+        ]);
     }
 }
 

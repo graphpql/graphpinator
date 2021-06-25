@@ -23,7 +23,7 @@ final class Query extends \Graphpinator\Typesystem\Type
     protected const NAME = 'Query';
     protected const DESCRIPTION = 'Graphpinator Deprecated: Query type';
 
-    protected function validateNonNullValue($rawValue) : bool
+    public function validateNonNullValue($rawValue) : bool
     {
         return true;
     }

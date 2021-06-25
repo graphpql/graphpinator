@@ -23,7 +23,7 @@ final class Query extends \Graphpinator\Typesystem\Type
     protected const NAME = 'Query';
     protected const DESCRIPTION = 'Graphpinator Arguments: Query type';
 
-    protected function validateNonNullValue($rawValue) : bool
+    public function validateNonNullValue($rawValue) : bool
     {
         return true;
     }
@@ -37,19 +37,21 @@ final class Query extends \Graphpinator\Typesystem\Type
                 function ($parent, string $arg) : string {
                     return $arg;
                 },
+            )->setArguments(
                 new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                    \Graphpinator\Typesystem\Argument\Argument::create
+                    \Graphpinator\Typesystem\Argument\Argument::create(
                         'arg',
                         \Graphpinator\Typesystem\Container::String()->notNull(),
                     ),            
-                ]),
+                ])
             ),
-            \Graphpinator\Typesystem\Field\ResolvableField::create
+            \Graphpinator\Typesystem\Field\ResolvableField::create(
                 'sum',
                 \Graphpinator\Typesystem\Container::Int()->notNull(),
                 function ($parent, int $arg1, int $arg2) : int {
                     return $arg1 + $arg2;
                 },
+            )->setArguments(
                 new \Graphpinator\Typesystem\Argument\ArgumentSet([
                     \Graphpinator\Typesystem\Argument\Argument::create(
                         'arg1',
@@ -58,9 +60,8 @@ final class Query extends \Graphpinator\Typesystem\Type
                     \Graphpinator\Typesystem\Argument\Argument::create(
                         'arg2',
                         \Graphpinator\Typesystem\Container::Int()->notNull(),
-                        0
-                    ),              
-                ]),
+                    )->setDefaultValue(0),              
+                ])
             ),
         ]);
     }
@@ -88,8 +89,13 @@ schema {
 Graphpinator Arguments: Query type
 """
 type Query {
-  print(arg: String!): String!
-  sum(arg1: Int!, arg2: Int! = 0): Int!
+  print(
+    arg: String!
+  ): String!
+  sum(
+    arg1: Int!
+    arg2: Int! = 0
+  ): Int!
 }
 ```
 
@@ -112,7 +118,7 @@ This is it, we have our response in `$response` variable. The query above will p
 Example using the sum endpoint:
 
 ```php
-$json = \Ininityloop\Utils\Json::fromString(
+$json = \Infinityloop\Utils\Json::fromString(
     '{"query":"query { sum(arg1: 10) }"}'
 );
 $requestFactory = new \Graphpinator\Request\JsonRequestFactory($json);

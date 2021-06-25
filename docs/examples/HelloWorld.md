@@ -37,7 +37,7 @@ final class Query extends \Graphpinator\Typesystem\Type
         return true;
     }
 
-    protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+    protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
     {
         // types return ResolvableFieldSet, which is a map of ResolvableField (Fields with resolve function)
         // interface only define FieldSet, which is a map of Field, which does not have resolve function but only define the signature
@@ -141,7 +141,7 @@ All depends on how your low-level request looks like and what middleware you use
 In this simple example, we choose the `JsonRequestFactory`.
 
 ```php
-$json = \Graphpinator\Utils\Json::fromString(
+$json = \Infinityloop\Utils\Json::fromString(
     '{"query":"query { helloWorld }"}'
 );
 $requestFactory = new \Graphpinator\Request\JsonRequestFactory($json);

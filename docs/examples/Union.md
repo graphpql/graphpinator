@@ -32,7 +32,7 @@ final class Query extends \Graphpinator\Typesystem\Type
         $this->abUnion = $abUnion;
     }
 
-    protected function validateNonNullValue($rawValue) : bool
+    public function validateNonNullValue($rawValue) : bool
     {
         return true;
     }
@@ -56,7 +56,7 @@ final class TypeA extends \Graphpinator\Typesystem\Type
     protected const NAME = 'TypeA';
     protected const DESCRIPTION = 'Graphpinator Union: TypeA type';
 
-    protected function validateNonNullValue($rawValue) : bool
+    public function validateNonNullValue($rawValue) : bool
     {
         return \is_int($rawValue);
     }
@@ -80,7 +80,7 @@ final class TypeB extends \Graphpinator\Typesystem\Type
     protected const NAME = 'TypeB';
     protected const DESCRIPTION = 'Graphpinator Union: TypeB type';
 
-    protected function validateNonNullValue($rawValue) : bool
+    public function validateNonNullValue($rawValue) : bool
     {
         return \is_string($rawValue);
     }

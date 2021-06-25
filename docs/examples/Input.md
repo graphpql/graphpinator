@@ -32,7 +32,7 @@ final class Query extends \Graphpinator\Typesystem\Type
         $this->person = $person;
     }
 
-    protected function validateNonNullValue($rawValue) : bool
+    public function validateNonNullValue($rawValue) : bool
     {
         return true;
     }
@@ -46,12 +46,13 @@ final class Query extends \Graphpinator\Typesystem\Type
                 function ($parent, \stdClass $arg) : string {
                     return 'User ' . $arg->name . ', age: ' . $arg->age;
                 },
+            )->setArguments(
                 new \Graphpinator\Typesystem\Argument\ArgumentSet([
                     \Graphpinator\Typesystem\Argument\Argument::create(
                         'arg',
                         $this->person->notNull(),
                     ),            
-                ]),
+                ])
             ),
         ]);
     }

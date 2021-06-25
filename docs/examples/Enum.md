@@ -32,7 +32,7 @@ final class Query extends \Graphpinator\Typesystem\Type
         $this->episode = $episode;
     }
 
-    protected function validateNonNullValue($rawValue) : bool
+    public function validateNonNullValue($rawValue) : bool
     {
         return true;
     }
