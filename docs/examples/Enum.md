@@ -18,7 +18,7 @@ declare(strict_types = 1);
 
 namespace Example;
 
-final class Query extends \Graphpinator\Type\Type
+final class Query extends \Graphpinator\Typesystem\Type
 {
     protected const NAME = 'Query';
     protected const DESCRIPTION = 'Graphpinator Union: Query type';
@@ -37,10 +37,10 @@ final class Query extends \Graphpinator\Type\Type
         return true;
     }
 
-    protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+    protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
     {
-        return new \Graphpinator\Field\ResolvableFieldSet([
-            new \Graphpinator\Field\ResolvableField(
+        return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
+            new \Graphpinator\Typesystem\Field\ResolvableField(
                 'randomEpisode',
                 $this->episode->notNull(),
                 function ($parent) : string {
@@ -61,14 +61,17 @@ final class Query extends \Graphpinator\Type\Type
     }
 }
 
-final class Episode extends \Graphpinator\Type\EnumType
+final class Episode extends \Graphpinator\Typesystem\EnumType
 {
     protected const NAME = 'Episode';
     protected const DESCRIPTION = 'Graphpinator Enum: Episode enum';
     
     // enum item with description
-    public const NEWHOPE = ['NEWHOPE', 'A New Hope']; 
-    public const EMPIRE = ['EMPIRE', 'The Empire Strikes Back'];
+    
+    /** A New Hope */
+    public const NEWHOPE = 'NEWHOPE';
+    /** The Empire Strikes Back */
+    public const EMPIRE = 'EMPIRE';
     
     // enum item without description
     public const JEDI = 'JEDI';
@@ -88,11 +91,7 @@ Visualize our GraphQL schema in type language.
 
 > Declaration of `Container`, `Schema` and `Graphpinator` classes is skipped in this example. Visit our HelloWorld example for more information.
 
-```php
-echo $schema->printSchema();
-```
-
-produces the following
+Printing the schema using infinityloop-dev/graphpinator-printer produces following schema.
 
 ```graphql
 schema {
@@ -125,7 +124,7 @@ type Query {
 ## Execute Request
 
 ```php
-$json = \Graphpinator\Utils\Json::fromString(
+$json = \Infinityloop\Utils\Json::fromString(
     '{"query":"query { randomEpisode }"}'
 );
 $requestFactory = new \Graphpinator\Request\JsonRequestFactory($json);
