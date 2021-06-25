@@ -18,7 +18,7 @@ declare(strict_types = 1);
 
 namespace Example;
 
-final class Query extends \Graphpinator\Type\Type
+final class Query extends \Graphpinator\Typesystem\Type
 {
     protected const NAME = 'Query';
     protected const DESCRIPTION = 'Graphpinator Union: Query type';
@@ -37,10 +37,10 @@ final class Query extends \Graphpinator\Type\Type
         return true;
     }
 
-    protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+    protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
     {
-        return new \Graphpinator\Field\ResolvableFieldSet([
-            new \Graphpinator\Field\ResolvableField(
+        return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
+            new \Graphpinator\Typesystem\Field\ResolvableField(
                 'simpleUnion',
                 $this->abUnion->notNull(),
                 function ($parent) : bool {
@@ -51,7 +51,7 @@ final class Query extends \Graphpinator\Type\Type
     }
 }
 
-final class TypeA extends \Graphpinator\Type\Type
+final class TypeA extends \Graphpinator\Typesystem\Type
 {
     protected const NAME = 'TypeA';
     protected const DESCRIPTION = 'Graphpinator Union: TypeA type';
@@ -61,12 +61,12 @@ final class TypeA extends \Graphpinator\Type\Type
         return \is_int($rawValue);
     }
 
-    protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+    protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
     {
-        return new \Graphpinator\Field\ResolvableFieldSet([
-            new \Graphpinator\Field\ResolvableField(
+        return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
+            new \Graphpinator\Typesystem\Field\ResolvableField(
                 'fieldInt',
-                \Graphpinator\Container\Container::Int()->notNull(),
+                \Graphpinator\Typesystem\Container::Int()->notNull(),
                 function (int $parent) : int {
                     return $parent;
                 },
@@ -75,7 +75,7 @@ final class TypeA extends \Graphpinator\Type\Type
     }
 }
 
-final class TypeB extends \Graphpinator\Type\Type
+final class TypeB extends \Graphpinator\Typesystem\Type
 {
     protected const NAME = 'TypeB';
     protected const DESCRIPTION = 'Graphpinator Union: TypeB type';
@@ -85,12 +85,12 @@ final class TypeB extends \Graphpinator\Type\Type
         return \is_string($rawValue);
     }
 
-    protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+    protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
     {
-        return new \Graphpinator\Field\ResolvableFieldSet([
-            new \Graphpinator\Field\ResolvableField(
+        return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
+            new \Graphpinator\Typesystem\Field\ResolvableField(
                 'fieldString',
-                \Graphpinator\Container\Container::String()->notNull(),
+                \Graphpinator\Typesystem\Container::String()->notNull(),
                 function (string $parent) : string {
                     return $parent;
                 },
@@ -99,7 +99,7 @@ final class TypeB extends \Graphpinator\Type\Type
     }
 }
 
-final class ABUnion extends \Graphpinator\Type\UnionType
+final class ABUnion extends \Graphpinator\Typesystem\UnionType
 {
     protected const NAME = 'ABUnion';
     protected const DESCRIPTION = 'Graphpinator Union: ABUnion union';
@@ -112,7 +112,7 @@ final class ABUnion extends \Graphpinator\Type\UnionType
         \Example\TypeB $typeB
     )
     {
-        parent::__construct(new \Graphpinator\Type\TypeSet([
+        parent::__construct(new \Graphpinator\Typesystem\TypeSet([
             $typeA,
             $typeB,
         ]));
@@ -142,11 +142,7 @@ Visualise our GraphQL schema in type language.
 
 > Declaration of `Container`, `Schema` and `Graphpinator` classes is skipped in this example. Visit our HelloWorld example for more information.
 
-```php
-echo $schema->printSchema();
-```
-
-produces the following
+Printing the schema using `infinityloop-dev/graphpinator-printer` produces following schema.
 
 ```graphql
 schema {
@@ -185,7 +181,7 @@ type TypeB {
 ## Execute Request
 
 ```php
-$json = \Graphpinator\Utils\Json::fromString(
+$json = \Infinityloop\Utils\Json::fromString(
     '{"query":"query { simpleUnion { __typename ... on TypeA { fieldInt } ... on TypeB { fieldString } } }"}'
 );
 $requestFactory = new \Graphpinator\Request\JsonRequestFactory($json);
