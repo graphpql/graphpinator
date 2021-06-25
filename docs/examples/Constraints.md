@@ -121,7 +121,7 @@ Visualize our GraphQL schema in type language.
 
 > Declaration of `Container`, `Schema` and `Graphpinator` classes is skipped in this example. Visit our HelloWorld example for more information.
 
-Printing the schema using `infinityloop-dev/graphpinator-printer` produces the following
+Printing the schema using `infinityloop-dev/graphpinator-printer` produces following schema.
 
 ```graphql
 schema {
