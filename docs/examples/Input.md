@@ -18,7 +18,7 @@ declare(strict_types = 1);
 
 namespace Example;
 
-final class Query extends \Graphpinator\Type\Type
+final class Query extends \Graphpinator\Typesystem\Type
 {
     protected const NAME = 'Query';
     protected const DESCRIPTION = 'Graphpinator Input: Query type';
@@ -37,17 +37,17 @@ final class Query extends \Graphpinator\Type\Type
         return true;
     }
 
-    protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+    protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
     {
-        return new \Graphpinator\Field\ResolvableFieldSet([
-            new \Graphpinator\Field\ResolvableField(
+        return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
+            \Graphpinator\Typesystem\Field\ResolvableField::create(
                 'print',
-                \Graphpinator\Container\Container::String()->notNull(),
+                \Graphpinator\Typesystem\Container::String()->notNull(),
                 function ($parent, \stdClass $arg) : string {
                     return 'User ' . $arg->name . ', age: ' . $arg->age;
                 },
-                new \Graphpinator\Argument\ArgumentSet([
-                    new \Graphpinator\Argument\Argument(
+                new \Graphpinator\Typesystem\Argument\ArgumentSet([
+                    \Graphpinator\Typesystem\Argument\Argument::create(
                         'arg',
                         $this->person->notNull(),
                     ),            
@@ -57,21 +57,21 @@ final class Query extends \Graphpinator\Type\Type
     }
 }
 
-final class Person extends \Graphpinator\Type\InputType
+final class Person extends \Graphpinator\Typesystem\InputType
 {
     protected const NAME = 'Person';
     protected const DESCRIPTION = 'Graphpinator Input: Person input';
 
-    protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
+    protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
     {
-        return new \Graphpinator\Argument\ArgumentSet([
-            new \Graphpinator\Argument\Argument(
+        return new \Graphpinator\Typesystem\Argument\ArgumentSet([
+            \Graphpinator\Typesystem\Argument\Argument::create(
                 'name',
-                \Graphpinator\Container\Container::String()->notNull(),
+                \Graphpinator\Typesystem\Container::String()->notNull(),
             ),
-            new \Graphpinator\Argument\Argument(
+            \Graphpinator\Typesystem\Argument\Argument::create(
                 'age',
-                \Graphpinator\Container\Container::Int()->notNull(),
+                \Graphpinator\Typesystem\Container::Int()->notNull(),
             ),
         ]);
     }
@@ -86,11 +86,7 @@ Visualize our GraphQL schema in type language.
 
 > Declaration of `Container`, `Schema` and `Graphpinator` classes is skipped in this example. Visit our HelloWorld example for more information.
 
-```php
-echo $schema->printSchema();
-```
-
-produces the following
+Printing the schema using `infinityloop-dev/graphpinator-printer` produces following schema.
 
 ```graphql
 schema {
@@ -118,7 +114,7 @@ type Query {
 ## Execute Request
 
 ```php
-$json = \Graphpinator\Utils\Json::fromString(
+$json = \Infinityloop\Utils\Json::fromString(
     '{"query":"query { print(arg: {name: "peldax", age: 26}) }"}'
 );
 $requestFactory = new \Graphpinator\Request\JsonRequestFactory($json);
