@@ -18,7 +18,7 @@ declare(strict_types = 1);
 
 namespace Example;
 
-final class Query extends \Graphpinator\Type\Type
+final class Query extends \Graphpinator\Typesystem\Type
 {
     protected const NAME = 'Query';
     protected const DESCRIPTION = 'Graphpinator Deprecated: Query type';
@@ -28,35 +28,38 @@ final class Query extends \Graphpinator\Type\Type
         return true;
     }
 
-    protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+    protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
     {
-        return new \Graphpinator\Field\ResolvableFieldSet([
-            new \Graphpinator\Field\ResolvableField(
+        return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
+            \Graphpinator\Typesystem\Field\ResolvableField::create(
                 'helloWorld',
-                \Graphpinator\Container\Container::String()->notNull(),
+                \Graphpinator\Typesystem\Container::String()->notNull(),
                 function ($parent) : string {
                     return 'Hello world!';
                 },
             ),
-            (new \Graphpinator\Field\ResolvableField(
+            \Graphpinator\Typesystem\Field\ResolvableField::create(
                 'helloWorldOld',
-                \Graphpinator\Container\Container::String()->notNull(),
+                \Graphpinator\Typesystem\Container::String()->notNull(),
                 function ($parent) : string {
                     return 'Hello world!';
                 },
-            ))->setDeprecated('Use helloWorld instead.'),
+            )->setDeprecated('Use helloWorld instead.'),
         ]);
     }
 }
 
-final class Episode extends \Graphpinator\Type\EnumType
+final class Episode extends \Graphpinator\Typesystem\EnumType
 {
     protected const NAME = 'Episode';
     protected const DESCRIPTION = 'Graphpinator Deprecated: Episode enum';
     
     // enum item with description
-    public const NEWHOPE = ['NEWHOPE', 'A New Hope']; 
-    public const EMPIRE = ['EMPIRE', 'The Empire Strikes Back'];
+
+    /** A New Hope */
+    public const NEWHOPE = 'NEWHOPE';
+    /** The Empire Strikes Back */
+    public const EMPIRE = 'EMPIRE';
     
     // enum item without description
     public const JEDI = 'JEDI';
@@ -65,14 +68,15 @@ final class Episode extends \Graphpinator\Type\EnumType
     public function __construct() 
     {
         $items = self::fromConstants();
-        $items[self::STRIKE]->setDeprecated('Use EMPIRE instead');
+        $items[self::STRIKE]->setDeprecated('Use EMPIRE instead.');
 
         parent::__construct($items);
     }
 }
 ```
 
-As you can see, declaring fields and enum items as deprecated is really simple - both have setDeprecated() and setDeprecationReason() methods.
+As you can see, declaring fields and enum items as deprecated is really simple - both have setDeprecated() method to mark the object as deprecated.
+The `setDeprecated` method is a shorcut method to append the Deprecated directive.
 
 > Setting deprecation reason is optional.
 
@@ -82,11 +86,7 @@ Visualise our GraphQL schema in type language.
 
 > Declaration of `Container`, `Schema` and `Graphpinator` classes is skipped in this example. Visit our HelloWorld example for more information.
 
-```php
-echo $schema->printSchema();
-```
-
-produces the following
+Printing the schema using `infinityloop-dev/graphpinator-printer` produces following schema.
 
 ```graphql
 schema {
