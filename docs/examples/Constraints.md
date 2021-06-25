@@ -52,7 +52,7 @@ final class Query extends \Graphpinator\Typesystem\Type
                 function ($parent) : string {
                     return 'Hello world';
                 },
-            )->addConstraint($this->stringConstraint, ['minLength' => 5]),
+            )->addDirective($this->stringConstraint, ['minLength' => 5]),
             \Graphpinator\Typesystem\Field\ResolvableField::create(
                 'argumentConstraint',
                 \Graphpinator\Typesystem\Container::Int()->notNull(),
@@ -121,11 +121,7 @@ Visualize our GraphQL schema in type language.
 
 > Declaration of `Container`, `Schema` and `Graphpinator` classes is skipped in this example. Visit our HelloWorld example for more information.
 
-```php
-echo $schema->printSchema();
-```
-
-produces the following
+Printing the schema using `infinityloop-dev/graphpinator-printer` produces the following
 
 ```graphql
 schema {
