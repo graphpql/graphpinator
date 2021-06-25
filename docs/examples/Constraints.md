@@ -2,6 +2,8 @@
 
 This example serves as a simple tutorial on how to declare and use constraints on fields, arguments and objects.
 
+> This example depends on optional package `infinityloop-dev/graphpinator-constraint-directives`.
+
 ## Introduction
 
 In this example, we define a simple schema with a few constraints - custom directives that apply value constraints to fields, arguments and types.
@@ -23,53 +25,63 @@ declare(strict_types = 1);
 
 namespace Example;
 
-final class Query extends \Graphpinator\Type\Type
+final class Query extends \Graphpinator\Typesystem\Type
 {
     protected const NAME = 'Query';
     protected const DESCRIPTION = 'Graphpinator Constraints: Query type';
+
+    public function __construct(
+        private \Graphpinator\ConstraintDirectives\StringConstraintDirective $stringConstraint,
+        private \Graphpinator\ConstraintDirectives\IntConstraintDirective $intConstraint,
+    )
+    {
+        parent::__construct();
+    }
 
     protected function validateNonNullValue($rawValue) : bool
     {
         return true;
     }
 
-    protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+    protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
     {
-        return new \Graphpinator\Field\ResolvableFieldSet([
-            (new \Graphpinator\Field\ResolvableField(
+        return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
+            \Graphpinator\Typesystem\Field\ResolvableField::create(
                 'fieldConstraint',
-                \Graphpinator\Container\Container::String()->notNull(),
+                \Graphpinator\Typesystem\Container::String()->notNull(),
                 function ($parent) : string {
                     return 'Hello world';
                 },
-            ))->addConstraint(new \Graphpinator\Constraint\StringConstraint(5)),
-            new \Graphpinator\Field\ResolvableField(
+            )->addConstraint($this->stringConstraint, ['minLength' => 5]),
+            \Graphpinator\Typesystem\Field\ResolvableField::create(
                 'argumentConstraint',
-                \Graphpinator\Container\Container::Int()->notNull(),
+                \Graphpinator\Typesystem\Container::Int()->notNull(),
                 function ($parent, int $arg) : int {
                     return $arg;
                 },
-                new \Graphpinator\Argument\ArgumentSet([
-                    (new \Graphpinator\Argument\Argument(
+                new \Graphpinator\Typesystem\Argument\ArgumentSet([
+                    \Graphpinator\Typesystem\Argument\Argument::create(
                         'arg',
                         \Graphpinator\Container\Container::Int()->notNull(),
-                    ))->addConstraint(new \Graphpinator\Constraint\IntConstraint(10)),            
+                    )->addDirective($this->intConstraint, ['min' => 10]),
                 ]),
             ),
         ]);
     }
 }
 
-final class AOrB extends \Graphpinator\Type\Type
+final class AOrB extends \Graphpinator\Typesystem\Type
 {
     protected const NAME = 'AOrB';
     protected const DESCRIPTION = 'Graphpinator Constraints: AOrB type';
 
-    public function __construct()
+    public function __construct(
+        private \Graphpinator\ConstraintDirectives\ObjectConstraintDirective $objectConstraint,
+    )
     {
         parent::__construct();
 
-        $this->addConstraint(new \Graphpinator\Constraint\ObjectConstraint(null, ['fieldA', 'fieldB']));
+        $this->addDirective($objectConstraint, ['exactlyOne' => ['fieldA', 'fieldB']]);
     }
 
     protected function validateNonNullValue($rawValue) : bool
@@ -77,19 +89,19 @@ final class AOrB extends \Graphpinator\Type\Type
         return \is_int($rawValue) && \in_array($rawValue, [0, 1], true);
     }
 
-    protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+    protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
     {
-        return new \Graphpinator\Field\ResolvableFieldSet([
-            new \Graphpinator\Field\ResolvableField(
+        return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
+            \Graphpinator\Typesystem\Field\ResolvableField::create(
                 'fieldA',
-                \Graphpinator\Container\Container::Int(),
+                \Graphpinator\Typesystem\Container::Int(),
                 function (?int $parent) : ?int {
                     return $parent === 1 ? 1 : null;
                 },
             ),
-            new \Graphpinator\Field\ResolvableField(
+            \Graphpinator\Typesystem\Field\ResolvableField::create(
                 'fieldB',
-                \Graphpinator\Container\Container::Int(),
+                \Graphpinator\Typesystem\Container::Int(),
                 function (int $parent) : ?int {
                     return $parent === 0 ? 1 : null;
                 },
@@ -99,7 +111,6 @@ final class AOrB extends \Graphpinator\Type\Type
 }
 ```
 
-As you can see, declaring constraints is really simple - call `addConstraint` method on `Argument`, `Field`, `Type`, `InterfaceType` or `InputType` to add constraint.
 Make sure to select Constraint corresponding to its usage e.g. 
 - StringConstraint for String fields/arguments
 - ObjectConstraint for types/interfaces/inputs
@@ -136,7 +147,9 @@ Graphpinator Constraints: Query type
 """
 type Query {
   fieldConstraint: String! @stringConstraint(minLength: 5)
-  argumentConstraint(arg: Int! @intConstraint(min: 10)): Int!
+  argumentConstraint(
+    arg: Int! @intConstraint(min: 10)
+  ): Int!
 }
 ```
 
