@@ -18,7 +18,7 @@ declare(strict_types = 1);
 
 namespace Example;
 
-final class Query extends \Graphpinator\Type\Type
+final class Query extends \Graphpinator\Typesystem\Type
 {
     protected const NAME = 'Query';
     protected const DESCRIPTION = 'Graphpinator Interface: Query type';
@@ -37,10 +37,10 @@ final class Query extends \Graphpinator\Type\Type
         return true;
     }
 
-    protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+    protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
     {
-        return new \Graphpinator\Field\ResolvableFieldSet([
-            new \Graphpinator\Field\ResolvableField(
+        return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
+            \Graphpinator\Typesystem\Field\ResolvableField::create(
                 'interfaceField',
                 $this->hasString->notNull(),
                 function ($parent) : bool {
@@ -51,14 +51,14 @@ final class Query extends \Graphpinator\Type\Type
     }
 }
 
-final class TypeA extends \Graphpinator\Type\Type
+final class TypeA extends \Graphpinator\Typesystem\Type
 {
     protected const NAME = 'TypeA';
     protected const DESCRIPTION = 'Graphpinator Interface: TypeA type';
 
     public function __construct(\Example\HasString $hasString)
     {
-        parent::__construct(new \Graphpinator\Type\InterfaceSet([$hasString]));
+        parent::__construct(new \Graphpinator\Typesystem\InterfaceSet([$hasString]));
     }
 
     protected function validateNonNullValue($rawValue) : bool
@@ -68,17 +68,17 @@ final class TypeA extends \Graphpinator\Type\Type
 
     protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
     {
-        return new \Graphpinator\Field\ResolvableFieldSet([
-            new \Graphpinator\Field\ResolvableField(
+        return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
+            \Graphpinator\Typesystem\Field\ResolvableField::create(
                 'fieldString',
-                \Graphpinator\Container\Container::String()->notNull(),
+                \Graphpinator\Typesystem\Container::String()->notNull(),
                 function (int $parent) : string {
                     return \md5($parent);
                 },
             ),
-            new \Graphpinator\Field\ResolvableField(
+            \Graphpinator\Typesystem\Field\ResolvableField::create(
                 'fieldInt',
-                \Graphpinator\Container\Container::Int()->notNull(),
+                \Graphpinator\Typesystem\Container::Int()->notNull(),
                 function (int $parent) : int {
                     return $parent;
                 },
@@ -87,14 +87,14 @@ final class TypeA extends \Graphpinator\Type\Type
     }
 }
 
-final class TypeB extends \Graphpinator\Type\Type
+final class TypeB extends \Graphpinator\Typesystem\Type
 {
     protected const NAME = 'TypeB';
     protected const DESCRIPTION = 'Graphpinator Interface: TypeB type';
 
     public function __construct(\Example\HasString $hasString)
     {
-        parent::__construct(new \Graphpinator\Type\InterfaceSet([$hasString]));
+        parent::__construct(new \Graphpinator\Typesystem\InterfaceSet([$hasString]));
     }
 
     protected function validateNonNullValue($rawValue) : bool
@@ -102,12 +102,12 @@ final class TypeB extends \Graphpinator\Type\Type
         return \is_string($rawValue);
     }
 
-    protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+    protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
     {
-        return new \Graphpinator\Field\ResolvableFieldSet([
-            new \Graphpinator\Field\ResolvableField(
+        return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
+            \Graphpinator\Typesystem\Field\ResolvableField::create(
                 'fieldString',
-                \Graphpinator\Container\Container::String()->notNull(),
+                \Graphpinator\Typesystem\Container::String()->notNull(),
                 function (string $parent) : string {
                     return $parent;
                 },
@@ -116,7 +116,7 @@ final class TypeB extends \Graphpinator\Type\Type
     }
 }
 
-final class HasString extends \Graphpinator\Type\InterfaceType
+final class HasString extends \Graphpinator\Typesystem\InterfaceType
 {
     protected const NAME = 'HasString';
     protected const DESCRIPTION = 'Graphpinator Interface: HasString interface';
@@ -139,10 +139,10 @@ final class HasString extends \Graphpinator\Type\InterfaceType
             : new \Graphpinator\Value\TypeIntermediateValue($this->typeAccessor->getTypeB(), \md5(\random_int(0, 100)));
     }
     
-    protected function getFieldDefinition() : \Graphpinator\Field\FieldSet
+    protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\FieldSet
     {
-        return new \Graphpinator\Field\FieldSet([
-            new \Graphpinator\Field\Field(
+        return new \Graphpinator\Typesystem\Field\FieldSet([
+            \Graphpinator\Typesystem\Field\Field::create(
                 'fieldString',
                 \Graphpinator\Container\Container::String()->notNull(),
             ),
@@ -169,11 +169,7 @@ Visualise our GraphQL schema in type language.
 
 > Declaration of `Container`, `Schema` and `Graphpinator` classes is skipped in this example. Visit our HelloWorld example for more information.
 
-```php
-echo $schema->printSchema();
-```
-
-produces the following
+Printing the schema using `infinityloop-dev/graphpinator-printer` produces following schema.
 
 ```graphql
 schema {
@@ -215,7 +211,7 @@ type TypeB implements HasString {
 ## Execute Request
 
 ```php
-$json = \Graphpinator\Utils\Json::fromString(
+$json = \Infinityloop\Utils\Json::fromString(
     '{"query":"query { interfaceField { __typename fieldString ... on TypeA { fieldInt } } }"}'
 );
 $requestFactory = new \Graphpinator\Request\JsonRequestFactory($json);
