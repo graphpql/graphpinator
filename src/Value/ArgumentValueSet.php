@@ -41,7 +41,7 @@ final class ArgumentValueSet extends \Infinityloop\Utils\ImplicitObjectMap
                 return false;
             }
 
-            if ($lhs->getValue()->isSame($lhs->getArgument()->getDefaultValue()->getValue())) {
+            if ($lhs->getValue()->isSame($lhs->getArgument()->getDefaultValue()?->getValue())) {
                 continue;
             }
 
@@ -49,11 +49,8 @@ final class ArgumentValueSet extends \Infinityloop\Utils\ImplicitObjectMap
         }
 
         foreach ($this as $lhs) {
-            if ($compare->offsetExists($lhs->getArgument()->getName())) {
-                continue;
-            }
-
-            if ($lhs->getValue()->isSame($lhs->getArgument()->getDefaultValue()->getValue())) {
+            if ($compare->offsetExists($lhs->getArgument()->getName()) ||
+                $lhs->getValue()->isSame($lhs->getArgument()->getDefaultValue()?->getValue())) {
                 continue;
             }
 
