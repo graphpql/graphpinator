@@ -92,6 +92,10 @@ jobs:
 
     - name: Phpstan
       run: composer run-script phpstan
+      
+    - name: Phpstan-next
+      run: composer run-script phpstan-next
+      continue-on-error: true
 
   codestyle:
     runs-on: ubuntu-latest
