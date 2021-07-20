@@ -49,6 +49,8 @@ abstract class Type extends \Graphpinator\Typesystem\Contract\ConcreteType imple
             }
         }
 
+        \assert($this->fields instanceof \Graphpinator\Typesystem\Field\ResolvableFieldSet);
+
         return $this->fields;
     }
 
