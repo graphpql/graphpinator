@@ -12,7 +12,7 @@ final class Operation
         private string $type,
         private ?string $name,
         private \Graphpinator\Typesystem\Type $rootObject,
-        private \Graphpinator\Normalizer\Field\FieldSet $children,
+        private \Graphpinator\Normalizer\Selection\SelectionSet $children,
         private \Graphpinator\Normalizer\Variable\VariableSet $variables,
         private \Graphpinator\Normalizer\Directive\DirectiveSet $directives,
     )
@@ -29,7 +29,7 @@ final class Operation
         return $this->rootObject;
     }
 
-    public function getFields() : \Graphpinator\Normalizer\Field\FieldSet
+    public function getSelections() : \Graphpinator\Normalizer\Selection\SelectionSet
     {
         return $this->children;
     }

@@ -4,7 +4,10 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem\Spec;
 
-final class IncludeDirective extends \Graphpinator\Typesystem\Directive implements \Graphpinator\Typesystem\Location\FieldLocation
+final class IncludeDirective extends \Graphpinator\Typesystem\Directive implements
+    \Graphpinator\Typesystem\Location\FieldLocation,
+    \Graphpinator\Typesystem\Location\InlineFragmentLocation,
+    \Graphpinator\Typesystem\Location\FragmentSpreadLocation
 {
     protected const NAME = 'include';
     protected const DESCRIPTION = 'Built-in include directive.';
@@ -29,6 +32,34 @@ final class IncludeDirective extends \Graphpinator\Typesystem\Directive implemen
     public function resolveFieldAfter(
         \Graphpinator\Value\ArgumentValueSet $arguments,
         \Graphpinator\Value\FieldValue $fieldValue,
+    ) : string
+    {
+        return \Graphpinator\Typesystem\Location\FieldLocation::NONE;
+    }
+
+    public function resolveFragmentSpreadBefore(
+        \Graphpinator\Value\ArgumentValueSet $arguments,
+    ) : string
+    {
+        return $this->resolveFieldBefore($arguments);
+    }
+
+    public function resolveFragmentSpreadAfter(
+        \Graphpinator\Value\ArgumentValueSet $arguments,
+    ) : string
+    {
+        return \Graphpinator\Typesystem\Location\FieldLocation::NONE;
+    }
+
+    public function resolveInlineFragmentBefore(
+        \Graphpinator\Value\ArgumentValueSet $arguments,
+    ) : string
+    {
+        return $this->resolveFieldBefore($arguments);
+    }
+
+    public function resolveInlineFragmentAfter(
+        \Graphpinator\Value\ArgumentValueSet $arguments,
     ) : string
     {
         return \Graphpinator\Typesystem\Location\FieldLocation::NONE;
