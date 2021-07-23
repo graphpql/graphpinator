@@ -142,13 +142,13 @@ final class DuplicateFieldModule implements RefinerModule, \Graphpinator\Normali
     }
 
     private static function canOccurTogether(
-        \Graphpinator\Type\Contract\TypeConditionable $typeA,
-        \Graphpinator\Type\Contract\TypeConditionable $typeB,
+        \Graphpinator\Typesystem\Contract\TypeConditionable $typeA,
+        \Graphpinator\Typesystem\Contract\TypeConditionable $typeB,
     ) : bool
     {
         return $typeA->isInstanceOf($typeB) // one is instance of other
             || $typeB->isInstanceOf($typeA)
-            || !($typeA instanceof \Graphpinator\Type\Type) // one is not object type
-            || !($typeB instanceof \Graphpinator\Type\Type);
+            || !($typeA instanceof \Graphpinator\Typesystem\Type) // one is not object type
+            || !($typeB instanceof \Graphpinator\Typesystem\Type);
     }
 }

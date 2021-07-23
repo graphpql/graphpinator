@@ -352,8 +352,8 @@ final class Normalizer
             ? $this->normalizeTypeRef($fragmentSpread->getTypeCond())
             : null;
 
-        if ($typeCond instanceof \Graphpinator\Type\Contract\NamedDefinition) {
-            if (!$typeCond instanceof \Graphpinator\Type\Contract\TypeConditionable) {
+        if ($typeCond instanceof \Graphpinator\Typesystem\Contract\NamedType) {
+            if (!$typeCond instanceof \Graphpinator\Typesystem\Contract\TypeConditionable) {
                 throw new \Graphpinator\Normalizer\Exception\TypeConditionOutputable();
             }
 

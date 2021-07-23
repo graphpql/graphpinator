@@ -15,7 +15,7 @@ final class ResolveSelectionVisitor implements \Graphpinator\Normalizer\Selectio
     public function visitField(\Graphpinator\Normalizer\Selection\Field $field) : array
     {
         $type = $this->parentResult->getType();
-        \assert($type instanceof \Graphpinator\Type\Type);
+        \assert($type instanceof \Graphpinator\Typesystem\Type);
 
         foreach ($field->getDirectives() as $directive) {
             $directiveResult = $directive->getDirective()->resolveFieldBefore($directive->getArguments());
@@ -138,8 +138,8 @@ final class ResolveSelectionVisitor implements \Graphpinator\Normalizer\Selectio
 
     private static function shouldSkip(string $directiveResult) : bool
     {
-        if (\array_key_exists($directiveResult, \Graphpinator\Directive\FieldDirectiveResult::ENUM)) {
-            return $directiveResult === \Graphpinator\Directive\FieldDirectiveResult::SKIP;
+        if (\array_key_exists($directiveResult, \Graphpinator\Typesystem\Location\FieldLocation::ENUM)) {
+            return $directiveResult === \Graphpinator\Typesystem\Location\FieldLocation::SKIP;
         }
 
         throw new \Graphpinator\Resolver\Exception\InvalidDirectiveResult();

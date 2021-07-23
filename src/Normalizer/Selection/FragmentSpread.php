@@ -12,7 +12,7 @@ final class FragmentSpread implements \Graphpinator\Normalizer\Selection\Selecti
         private string $name,
         private \Graphpinator\Normalizer\Selection\SelectionSet $children,
         private \Graphpinator\Normalizer\Directive\DirectiveSet $directives,
-        private \Graphpinator\Type\Contract\TypeConditionable $typeCondition,
+        private \Graphpinator\Typesystem\Contract\TypeConditionable $typeCondition,
     ) {}
 
     public function getName() : string
@@ -25,7 +25,7 @@ final class FragmentSpread implements \Graphpinator\Normalizer\Selection\Selecti
         return $this->children;
     }
 
-    public function getTypeCondition() : \Graphpinator\Type\Contract\TypeConditionable
+    public function getTypeCondition() : \Graphpinator\Typesystem\Contract\TypeConditionable
     {
         return $this->typeCondition;
     }

@@ -9,14 +9,14 @@ final class Field implements Selection
     use \Nette\SmartObject;
 
     public function __construct(
-        private \Graphpinator\Field\Field $field,
+        private \Graphpinator\Typesystem\Field\Field $field,
         private string $outputName,
         private \Graphpinator\Value\ArgumentValueSet $arguments,
         private \Graphpinator\Normalizer\Directive\DirectiveSet $directives,
         private ?\Graphpinator\Normalizer\Selection\SelectionSet $children = null,
     ) {}
 
-    public function getField() : \Graphpinator\Field\Field
+    public function getField() : \Graphpinator\Typesystem\Field\Field
     {
         return $this->field;
     }
