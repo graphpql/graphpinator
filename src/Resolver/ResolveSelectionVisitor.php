@@ -106,7 +106,7 @@ final class ResolveSelectionVisitor implements \Graphpinator\Normalizer\Selectio
 
     public function visitInlineFragment(\Graphpinator\Normalizer\Selection\InlineFragment $inlineFragment) : array
     {
-        if ($inlineFragment->getTypeCondition() instanceof \Graphpinator\Type\Contract\NamedDefinition &&
+        if ($inlineFragment->getTypeCondition() instanceof \Graphpinator\Typesystem\Contract\NamedType &&
             !$this->parentResult->getType()->isInstanceOf($inlineFragment->getTypeCondition())) {
             return [];
         }

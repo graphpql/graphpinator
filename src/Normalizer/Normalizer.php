@@ -360,6 +360,8 @@ final class Normalizer
             if (!$typeCond->isInstanceOf($this->scopeStack->top())) {
                 throw new \Graphpinator\Normalizer\Exception\InvalidFragmentType($typeCond->getName(), $this->scopeStack->top()->getName());
             }
+
+            $this->scopeStack->push($typeCond);
         } else {
             $this->scopeStack->push($this->scopeStack->top());
         }
