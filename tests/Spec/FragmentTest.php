@@ -226,13 +226,31 @@ final class FragmentTest extends \PHPUnit\Framework\TestCase
         return [
             [
                 Json::fromNative((object) [
-                    'query' => 'query queryName { ...namedFragment }',
+                    'query' => 'query { ...namedFragment }',
                 ]),
                 \Graphpinator\Normalizer\Exception\UnknownFragment::class,
             ],
             [
                 Json::fromNative((object) [
-                    'query' => 'query queryName { ...namedFragment } 
+                    'query' => 'query { ...namedFragment } fragment namedFragment on Query { ...secondFragment }',
+                ]),
+                \Graphpinator\Normalizer\Exception\UnknownFragment::class,
+            ],
+            [
+                Json::fromNative((object) [
+                    'query' => 'query { ... on TestInterface { __typename } }',
+                ]),
+                \Graphpinator\Normalizer\Exception\InvalidFragmentType::class,
+            ],
+            [
+                Json::fromNative((object) [
+                    'query' => 'query { ... namedFragment } fragment namedFragment on TestInterface { __typename }',
+                ]),
+                \Graphpinator\Normalizer\Exception\InvalidFragmentType::class,
+            ],
+            [
+                Json::fromNative((object) [
+                    'query' => 'query { ...namedFragment } 
                     fragment namedFragment on Query { 
                         ...cycleFragment 
                         fieldUnion

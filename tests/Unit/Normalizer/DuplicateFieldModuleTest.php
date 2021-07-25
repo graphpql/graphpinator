@@ -8,7 +8,7 @@ final class DuplicateFieldModuleTest extends \PHPUnit\Framework\TestCase
 {
     public function testSingleField() : void
     {
-        $field = new \Graphpinator\Field\Field('fieldName', \Graphpinator\Container\Container::String());
+        $field = new \Graphpinator\Typesystem\Field\Field('fieldName', \Graphpinator\Typesystem\Container::String());
 
         $refiner = new \Graphpinator\Normalizer\SelectionSetRefiner(new \Graphpinator\Normalizer\Selection\SelectionSet([
             new \Graphpinator\Normalizer\Selection\Field(
@@ -36,7 +36,7 @@ final class DuplicateFieldModuleTest extends \PHPUnit\Framework\TestCase
 
     public function testDuplicateField() : void
     {
-        $field = new \Graphpinator\Field\Field('fieldName', \Graphpinator\Container\Container::String());
+        $field = new \Graphpinator\Typesystem\Field\Field('fieldName', \Graphpinator\Typesystem\Container::String());
 
         $refiner = new \Graphpinator\Normalizer\SelectionSetRefiner(new \Graphpinator\Normalizer\Selection\SelectionSet([
             new \Graphpinator\Normalizer\Selection\Field(
@@ -63,7 +63,7 @@ final class DuplicateFieldModuleTest extends \PHPUnit\Framework\TestCase
 
     public function testInnerField() : void
     {
-        $field = new \Graphpinator\Field\Field('fieldName', \Graphpinator\Container\Container::String());
+        $field = new \Graphpinator\Typesystem\Field\Field('fieldName', \Graphpinator\Typesystem\Container::String());
 
         $refiner = new \Graphpinator\Normalizer\SelectionSetRefiner(new \Graphpinator\Normalizer\Selection\SelectionSet([
             new \Graphpinator\Normalizer\Selection\Field(
@@ -109,8 +109,8 @@ final class DuplicateFieldModuleTest extends \PHPUnit\Framework\TestCase
     {
         $this->expectException(\Graphpinator\Normalizer\Exception\ConflictingFieldType::class);
 
-        $field1 = new \Graphpinator\Field\Field('field1', \Graphpinator\Container\Container::String());
-        $field2 = new \Graphpinator\Field\Field('field2', \Graphpinator\Container\Container::Int());
+        $field1 = new \Graphpinator\Typesystem\Field\Field('field1', \Graphpinator\Typesystem\Container::String());
+        $field2 = new \Graphpinator\Typesystem\Field\Field('field2', \Graphpinator\Typesystem\Container::Int());
 
         $refiner = new \Graphpinator\Normalizer\SelectionSetRefiner(new \Graphpinator\Normalizer\Selection\SelectionSet([
             new \Graphpinator\Normalizer\Selection\Field(
@@ -136,8 +136,8 @@ final class DuplicateFieldModuleTest extends \PHPUnit\Framework\TestCase
     {
         $this->expectException(\Graphpinator\Normalizer\Exception\ConflictingFieldAlias::class);
 
-        $field1 = new \Graphpinator\Field\Field('field1', \Graphpinator\Container\Container::String());
-        $field2 = new \Graphpinator\Field\Field('field2', \Graphpinator\Container\Container::String());
+        $field1 = new \Graphpinator\Typesystem\Field\Field('field1', \Graphpinator\Typesystem\Container::String());
+        $field2 = new \Graphpinator\Typesystem\Field\Field('field2', \Graphpinator\Typesystem\Container::String());
 
         $refiner = new \Graphpinator\Normalizer\SelectionSetRefiner(new \Graphpinator\Normalizer\Selection\SelectionSet([
             new \Graphpinator\Normalizer\Selection\Field(
@@ -163,8 +163,8 @@ final class DuplicateFieldModuleTest extends \PHPUnit\Framework\TestCase
     {
         $this->expectException(\Graphpinator\Normalizer\Exception\ConflictingFieldArguments::class);
 
-        $field = new \Graphpinator\Field\Field('field1', \Graphpinator\Container\Container::String());
-        $argument = new \Graphpinator\Argument\Argument('argument', \Graphpinator\Container\Container::String());
+        $field = new \Graphpinator\Typesystem\Field\Field('field1', \Graphpinator\Typesystem\Container::String());
+        $argument = new \Graphpinator\Argument\Argument('argument', \Graphpinator\Typesystem\Container::String());
 
         $refiner = new \Graphpinator\Normalizer\SelectionSetRefiner(new \Graphpinator\Normalizer\Selection\SelectionSet([
             new \Graphpinator\Normalizer\Selection\Field(
@@ -173,7 +173,7 @@ final class DuplicateFieldModuleTest extends \PHPUnit\Framework\TestCase
                 new \Graphpinator\Value\ArgumentValueSet([
                     new \Graphpinator\Value\ArgumentValue(
                         $argument,
-                        new \Graphpinator\Value\ScalarValue(\Graphpinator\Container\Container::String(), '123', true),
+                        new \Graphpinator\Value\ScalarValue(\Graphpinator\Typesystem\Container::String(), '123', true),
                         true,
                     ),
                 ]),
@@ -186,7 +186,7 @@ final class DuplicateFieldModuleTest extends \PHPUnit\Framework\TestCase
                 new \Graphpinator\Value\ArgumentValueSet([
                     new \Graphpinator\Value\ArgumentValue(
                         $argument,
-                        new \Graphpinator\Value\ScalarValue(\Graphpinator\Container\Container::String(), '456', true),
+                        new \Graphpinator\Value\ScalarValue(\Graphpinator\Typesystem\Container::String(), '456', true),
                         true,
                     ),
                 ]),
@@ -202,7 +202,7 @@ final class DuplicateFieldModuleTest extends \PHPUnit\Framework\TestCase
     {
         $this->expectException(\Graphpinator\Normalizer\Exception\ConflictingFieldDirectives::class);
 
-        $field = new \Graphpinator\Field\Field('field1', \Graphpinator\Container\Container::String());
+        $field = new \Graphpinator\Typesystem\Field\Field('field1', \Graphpinator\Typesystem\Container::String());
 
         $refiner = new \Graphpinator\Normalizer\SelectionSetRefiner(new \Graphpinator\Normalizer\Selection\SelectionSet([
             new \Graphpinator\Normalizer\Selection\Field(
@@ -211,11 +211,11 @@ final class DuplicateFieldModuleTest extends \PHPUnit\Framework\TestCase
                 new \Graphpinator\Value\ArgumentValueSet(),
                 new \Graphpinator\Normalizer\Directive\DirectiveSet([
                     new \Graphpinator\Normalizer\Directive\Directive(
-                        \Graphpinator\Container\Container::directiveSkip(),
+                        \Graphpinator\Typesystem\Container::directiveSkip(),
                         new \Graphpinator\Value\ArgumentValueSet([
                             new \Graphpinator\Value\ArgumentValue(
-                                \Graphpinator\Container\Container::directiveSkip()->getArguments()['if'],
-                                new \Graphpinator\Value\ScalarValue(\Graphpinator\Container\Container::Boolean(), false, true),
+                                \Graphpinator\Typesystem\Container::directiveSkip()->getArguments()['if'],
+                                new \Graphpinator\Value\ScalarValue(\Graphpinator\Typesystem\Container::Boolean(), false, true),
                                 true,
                             ),
                         ]),
@@ -229,11 +229,11 @@ final class DuplicateFieldModuleTest extends \PHPUnit\Framework\TestCase
                 new \Graphpinator\Value\ArgumentValueSet(),
                 new \Graphpinator\Normalizer\Directive\DirectiveSet([
                     new \Graphpinator\Normalizer\Directive\Directive(
-                        \Graphpinator\Container\Container::directiveInclude(),
+                        \Graphpinator\Typesystem\Container::directiveInclude(),
                         new \Graphpinator\Value\ArgumentValueSet([
                             new \Graphpinator\Value\ArgumentValue(
-                                \Graphpinator\Container\Container::directiveInclude()->getArguments()['if'],
-                                new \Graphpinator\Value\ScalarValue(\Graphpinator\Container\Container::Boolean(), true, true),
+                                \Graphpinator\Typesystem\Container::directiveInclude()->getArguments()['if'],
+                                new \Graphpinator\Value\ScalarValue(\Graphpinator\Typesystem\Container::Boolean(), true, true),
                                 true,
                             ),
                         ]),
@@ -250,7 +250,7 @@ final class DuplicateFieldModuleTest extends \PHPUnit\Framework\TestCase
     {
         $this->expectException(\Graphpinator\Normalizer\Exception\ConflictingFieldDirectives::class);
 
-        $field = new \Graphpinator\Field\Field('field1', \Graphpinator\Container\Container::String());
+        $field = new \Graphpinator\Typesystem\Field\Field('field1', \Graphpinator\Typesystem\Container::String());
 
         $refiner = new \Graphpinator\Normalizer\SelectionSetRefiner(new \Graphpinator\Normalizer\Selection\SelectionSet([
             new \Graphpinator\Normalizer\Selection\Field(
@@ -259,11 +259,11 @@ final class DuplicateFieldModuleTest extends \PHPUnit\Framework\TestCase
                 new \Graphpinator\Value\ArgumentValueSet(),
                 new \Graphpinator\Normalizer\Directive\DirectiveSet([
                     new \Graphpinator\Normalizer\Directive\Directive(
-                        \Graphpinator\Container\Container::directiveSkip(),
+                        \Graphpinator\Typesystem\Container::directiveSkip(),
                         new \Graphpinator\Value\ArgumentValueSet([
                             new \Graphpinator\Value\ArgumentValue(
-                                \Graphpinator\Container\Container::directiveSkip()->getArguments()['if'],
-                                new \Graphpinator\Value\ScalarValue(\Graphpinator\Container\Container::Boolean(), false, true),
+                                \Graphpinator\Typesystem\Container::directiveSkip()->getArguments()['if'],
+                                new \Graphpinator\Value\ScalarValue(\Graphpinator\Typesystem\Container::Boolean(), false, true),
                                 true,
                             ),
                         ]),
@@ -277,11 +277,116 @@ final class DuplicateFieldModuleTest extends \PHPUnit\Framework\TestCase
                 new \Graphpinator\Value\ArgumentValueSet(),
                 new \Graphpinator\Normalizer\Directive\DirectiveSet([
                     new \Graphpinator\Normalizer\Directive\Directive(
-                        \Graphpinator\Container\Container::directiveSkip(),
+                        \Graphpinator\Typesystem\Container::directiveSkip(),
                         new \Graphpinator\Value\ArgumentValueSet([
                             new \Graphpinator\Value\ArgumentValue(
-                                \Graphpinator\Container\Container::directiveSkip()->getArguments()['if'],
-                                new \Graphpinator\Value\ScalarValue(\Graphpinator\Container\Container::Boolean(), true, true),
+                                \Graphpinator\Typesystem\Container::directiveSkip()->getArguments()['if'],
+                                new \Graphpinator\Value\ScalarValue(\Graphpinator\Typesystem\Container::Boolean(), true, true),
+                                true,
+                            ),
+                        ]),
+                    ),
+                ]),
+                null,
+            ),
+        ]));
+
+        $refiner->refine();
+    }
+
+    public function testConflictingDirectiveArguments2() : void
+    {
+        $this->expectException(\Graphpinator\Normalizer\Exception\ConflictingFieldDirectives::class);
+
+        $field = new \Graphpinator\Typesystem\Field\Field('field1', \Graphpinator\Typesystem\Container::String());
+
+        $refiner = new \Graphpinator\Normalizer\SelectionSetRefiner(new \Graphpinator\Normalizer\Selection\SelectionSet([
+            new \Graphpinator\Normalizer\Selection\Field(
+                $field,
+                'someName',
+                new \Graphpinator\Value\ArgumentValueSet(),
+                new \Graphpinator\Normalizer\Directive\DirectiveSet([
+                    new \Graphpinator\Normalizer\Directive\Directive(
+                        \Graphpinator\Typesystem\Container::directiveSkip(),
+                        new \Graphpinator\Value\ArgumentValueSet([
+                            new \Graphpinator\Value\ArgumentValue(
+                                \Graphpinator\Typesystem\Container::directiveSkip()->getArguments()['if'],
+                                new \Graphpinator\Value\ScalarValue(\Graphpinator\Typesystem\Container::Boolean(), false, true),
+                                true,
+                            ),
+                        ]),
+                    ),
+                ]),
+                null,
+            ),
+            new \Graphpinator\Normalizer\Selection\Field(
+                $field,
+                'someName',
+                new \Graphpinator\Value\ArgumentValueSet(),
+                new \Graphpinator\Normalizer\Directive\DirectiveSet(),
+                null,
+            ),
+        ]));
+
+        $refiner->refine();
+    }
+
+    public function testConflictingDirectiveArguments3() : void
+    {
+        $this->expectException(\Graphpinator\Normalizer\Exception\ConflictingFieldDirectives::class);
+
+        $field = new \Graphpinator\Typesystem\Field\Field('field1', \Graphpinator\Typesystem\Container::String());
+
+        $refiner = new \Graphpinator\Normalizer\SelectionSetRefiner(new \Graphpinator\Normalizer\Selection\SelectionSet([
+            new \Graphpinator\Normalizer\Selection\Field(
+                $field,
+                'someName',
+                new \Graphpinator\Value\ArgumentValueSet(),
+                new \Graphpinator\Normalizer\Directive\DirectiveSet([
+                    new \Graphpinator\Normalizer\Directive\Directive(
+                        \Graphpinator\Typesystem\Container::directiveSkip(),
+                        new \Graphpinator\Value\ArgumentValueSet([
+                            new \Graphpinator\Value\ArgumentValue(
+                                \Graphpinator\Typesystem\Container::directiveSkip()->getArguments()['if'],
+                                new \Graphpinator\Value\ScalarValue(\Graphpinator\Typesystem\Container::Boolean(), true, true),
+                                true,
+                            ),
+                        ]),
+                    ),
+                    new \Graphpinator\Normalizer\Directive\Directive(
+                        \Graphpinator\Typesystem\Container::directiveInclude(),
+                        new \Graphpinator\Value\ArgumentValueSet([
+                            new \Graphpinator\Value\ArgumentValue(
+                                \Graphpinator\Typesystem\Container::directiveInclude()->getArguments()['if'],
+                                new \Graphpinator\Value\ScalarValue(\Graphpinator\Typesystem\Container::Boolean(), true, true),
+                                true,
+                            ),
+                        ]),
+                    ),
+                ]),
+                null,
+            ),
+            new \Graphpinator\Normalizer\Selection\Field(
+                $field,
+                'someName',
+                new \Graphpinator\Value\ArgumentValueSet(),
+                new \Graphpinator\Normalizer\Directive\DirectiveSet([
+                    new \Graphpinator\Normalizer\Directive\Directive(
+                        \Graphpinator\Typesystem\Container::directiveSkip(),
+                        new \Graphpinator\Value\ArgumentValueSet([
+                            new \Graphpinator\Value\ArgumentValue(
+                                \Graphpinator\Typesystem\Container::directiveSkip()->getArguments()['if'],
+                                new \Graphpinator\Value\ScalarValue(\Graphpinator\Typesystem\Container::Boolean(), true, true),
+                                true,
+                            ),
+                        ]),
+                    ),
+                    new \Graphpinator\Normalizer\Directive\Directive(
+                        \Graphpinator\Typesystem\Container::directiveInclude(),
+                        new \Graphpinator\Value\ArgumentValueSet([
+                            new \Graphpinator\Value\ArgumentValue(
+                                \Graphpinator\Typesystem\Container::directiveInclude()->getArguments()['if'],
+                                new \Graphpinator\Value\ScalarValue(\Graphpinator\Typesystem\Container::Boolean(), false, true),
                                 true,
                             ),
                         ]),
@@ -296,7 +401,7 @@ final class DuplicateFieldModuleTest extends \PHPUnit\Framework\TestCase
 
     public function testDuplicateFieldInFragment() : void
     {
-        $field = new \Graphpinator\Field\Field('field1', \Graphpinator\Container\Container::String());
+        $field = new \Graphpinator\Typesystem\Field\Field('field1', \Graphpinator\Typesystem\Container::String());
         $fragmentSpread = new \Graphpinator\Normalizer\Selection\FragmentSpread(
             'someName',
             new \Graphpinator\Normalizer\Selection\SelectionSet([
@@ -337,7 +442,7 @@ final class DuplicateFieldModuleTest extends \PHPUnit\Framework\TestCase
 
     public function testDuplicateFieldInFragmentWithSelection() : void
     {
-        $field = new \Graphpinator\Field\Field('field1', \Graphpinator\Container\Container::String());
+        $field = new \Graphpinator\Typesystem\Field\Field('field1', \Graphpinator\Typesystem\Container::String());
         $fragmentSpread = new \Graphpinator\Normalizer\Selection\FragmentSpread(
             'fragmentName',
             new \Graphpinator\Normalizer\Selection\SelectionSet([
