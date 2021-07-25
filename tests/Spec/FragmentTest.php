@@ -19,6 +19,54 @@ final class FragmentTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 Json::fromNative((object) [
+                    'query' => 'query queryName { fieldUnion { ... @skip(if: true) { __typename } } }',
+                ]),
+                Json::fromNative((object) ['data' => ['fieldUnion' => new \stdClass()]]),
+            ],
+            [
+                Json::fromNative((object) [
+                    'query' => 'query queryName { fieldUnion { ... @skip(if: false) { __typename } } }',
+                ]),
+                Json::fromNative((object) ['data' => ['fieldUnion' => ['__typename' => 'Abc']]]),
+            ],
+            [
+                Json::fromNative((object) [
+                    'query' => 'query queryName { fieldUnion { ... @include(if: false) { __typename } } }',
+                ]),
+                Json::fromNative((object) ['data' => ['fieldUnion' => new \stdClass()]]),
+            ],
+            [
+                Json::fromNative((object) [
+                    'query' => 'query queryName { fieldUnion { ... @include(if: true) { __typename } } }',
+                ]),
+                Json::fromNative((object) ['data' => ['fieldUnion' => ['__typename' => 'Abc']]]),
+            ],
+            [
+                Json::fromNative((object) [
+                    'query' => 'query queryName { fieldUnion { ...namedFragment @skip(if: true) } } fragment namedFragment on Abc { __typename }',
+                ]),
+                Json::fromNative((object) ['data' => ['fieldUnion' => new \stdClass()]]),
+            ],
+            [
+                Json::fromNative((object) [
+                    'query' => 'query queryName { fieldUnion { ...namedFragment @skip(if: false) } } fragment namedFragment on Abc { __typename }',
+                ]),
+                Json::fromNative((object) ['data' => ['fieldUnion' => ['__typename' => 'Abc']]]),
+            ],
+            [
+                Json::fromNative((object) [
+                    'query' => 'query queryName { fieldUnion { ...namedFragment @include(if: false) } } fragment namedFragment on Abc { __typename }',
+                ]),
+                Json::fromNative((object) ['data' => ['fieldUnion' => new \stdClass()]]),
+            ],
+            [
+                Json::fromNative((object) [
+                    'query' => 'query queryName { fieldUnion { ...namedFragment @include(if: true) } } fragment namedFragment on Abc { __typename }',
+                ]),
+                Json::fromNative((object) ['data' => ['fieldUnion' => ['__typename' => 'Abc']]]),
+            ],
+            [
+                Json::fromNative((object) [
                     'query' => 'query queryName { fieldUnion { ... on Abc { fieldXyz { ... on Xyz { name } } } } }',
                 ]),
                 Json::fromNative((object) ['data' => ['fieldUnion' => ['fieldXyz' => ['name' => 'Test 123']]]]),
@@ -148,81 +196,36 @@ final class FragmentTest extends \PHPUnit\Framework\TestCase
         return [
             [
                 Json::fromNative((object) [
-                    'query' => 'query queryName { fieldUnion { ... on Abc { fieldXyz { __typename ... on Abc { __typename } } } } }',
+                    'query' => 'query { fieldUnion { ... on Abc { fieldXyz { __typename ... on Xyz { __typename } } } } }',
                 ]),
                 Json::fromNative((object) ['data' => ['fieldUnion' => ['fieldXyz' => ['__typename' => 'Xyz']]]]),
             ],
             [
                 Json::fromNative((object) [
-                    'query' => 'query queryName { fieldUnion { ... on Abc { fieldXyz { __typename ... on Xyz { __typename name } } } } }',
+                    'query' => 'query { fieldUnion { ... on Abc { fieldXyz { __typename ... on Xyz { __typename name } } } } }',
                 ]),
                 Json::fromNative((object) ['data' => ['fieldUnion' => ['fieldXyz' => ['__typename' => 'Xyz', 'name' => 'Test 123']]]]),
             ],
             [
                 Json::fromNative((object) [
-                    'query' => 'query queryName { fieldUnion { ... on Abc { fieldXyz { ... on Xyz { __typename name } __typename } } } }',
+                    'query' => 'query { fieldUnion { ... on Abc { fieldXyz { ... on Xyz { __typename name } __typename } } } }',
                 ]),
                 Json::fromNative((object) ['data' => ['fieldUnion' => ['fieldXyz' => ['__typename' => 'Xyz', 'name' => 'Test 123']]]]),
             ],
             [
                 Json::fromNative((object) [
-                    'query' => 'query queryName { fieldUnion { ... on Abc { fieldXyz { ... on TestInterface { __typename name } } } } }',
-                ]),
-                Json::fromNative((object) ['data' => ['fieldUnion' => ['fieldXyz' => ['__typename' => 'Xyz', 'name' => 'Test 123']]]]),
-            ],
-            [
-                Json::fromNative((object) [
-                    'query' => 'query queryName { fieldUnion { ... on Abc { 
-                    fieldXyz { ... on Xyz { __typename name } ... on TestInterface { __typename name } } 
-                    } } }',
-                ]),
-                Json::fromNative((object) ['data' => ['fieldUnion' => ['fieldXyz' => ['__typename' => 'Xyz', 'name' => 'Test 123']]]]),
-            ],
-            [
-                Json::fromNative((object) [
-                    'query' => 'query queryName { fieldUnion { ... on Abc { 
-                    fieldXyz { ... on TestInterface { __typename name } ... on Xyz { __typename name } } 
-                    } } }',
-                ]),
-                Json::fromNative((object) ['data' => ['fieldUnion' => ['fieldXyz' => ['__typename' => 'Xyz', 'name' => 'Test 123']]]]),
-            ],
-            [
-                Json::fromNative((object) [
-                    'query' => 'query queryName { fieldUnion { ... on Abc { 
-                     fieldXyz { __typename } ... on Abc { fieldXyz { ... on Xyz { __typename name } } } 
-                     } } }',
-                ]),
-                Json::fromNative((object) ['data' => ['fieldUnion' => ['fieldXyz' => ['__typename' => 'Xyz', 'name' => 'Test 123']]]]),
-            ],
-            [
-                Json::fromNative((object) [
-                    'query' => 'query queryName { fieldUnion { ... on Abc { 
-                    fieldXyz { __typename ... on Xyz { __typename name } ... on Abc { __typename } } 
-                    } } }',
-                ]),
-                Json::fromNative((object) ['data' => ['fieldUnion' => ['fieldXyz' => ['__typename' => 'Xyz', 'name' => 'Test 123']]]]),
-            ],
-            [
-                Json::fromNative((object) [
-                    'query' => 'query queryName { fieldUnion { ... on Abc { 
-                    fieldXyz { name: __typename ... on Xyz { __typename } } 
-                    } } }',
+                    'query' => 'query { fieldUnion { ... on Abc { 
+                        fieldXyz { name: __typename ... on Xyz { __typename } } 
+                    }}}',
                 ]),
                 Json::fromNative((object) ['data' => ['fieldUnion' => ['fieldXyz' => ['name' => 'Xyz', '__typename' => 'Xyz']]]]),
             ],
             [
                 Json::fromNative((object) [
-                    'query' => 'query queryName { fieldUnion { ... on Abc { 
-                    fieldXyz(arg1: 456) { name } ... on Abc { fieldXyz(arg1: 456) { __typename } } 
-                    } } }',
-                ]),
-                Json::fromNative((object) ['data' => ['fieldUnion' => ['fieldXyz' => ['name' => 'Test 456', '__typename' => 'Xyz']]]]),
-            ],
-            [
-                Json::fromNative((object) [
-                    'query' => 'query queryName { fieldUnion { ... on Abc { 
-                    fieldXyz(arg1: 456) { name } ... on Abc { fieldXyz(arg1: 456) { name } } 
-                    } } }',
+                    'query' => 'query { fieldUnion { 
+                        ... on Abc { fieldXyz(arg1: 456) { name } }
+                        ... on Abc { fieldXyz(arg1: 456) { name } } 
+                    }}',
                 ]),
                 Json::fromNative((object) ['data' => ['fieldUnion' => ['fieldXyz' => ['name' => 'Test 456']]]]),
             ],
@@ -247,13 +250,31 @@ final class FragmentTest extends \PHPUnit\Framework\TestCase
         return [
             [
                 Json::fromNative((object) [
-                    'query' => 'query queryName { ...namedFragment }',
+                    'query' => 'query { ...namedFragment }',
                 ]),
                 \Graphpinator\Normalizer\Exception\UnknownFragment::class,
             ],
             [
                 Json::fromNative((object) [
-                    'query' => 'query queryName { ...namedFragment } 
+                    'query' => 'query { ...namedFragment } fragment namedFragment on Query { ...secondFragment }',
+                ]),
+                \Graphpinator\Normalizer\Exception\UnknownFragment::class,
+            ],
+            [
+                Json::fromNative((object) [
+                    'query' => 'query { ... on TestInterface { __typename } }',
+                ]),
+                \Graphpinator\Normalizer\Exception\InvalidFragmentType::class,
+            ],
+            [
+                Json::fromNative((object) [
+                    'query' => 'query { ... namedFragment } fragment namedFragment on TestInterface { __typename }',
+                ]),
+                \Graphpinator\Normalizer\Exception\InvalidFragmentType::class,
+            ],
+            [
+                Json::fromNative((object) [
+                    'query' => 'query { ...namedFragment } 
                     fragment namedFragment on Query { 
                         ...cycleFragment 
                         fieldUnion

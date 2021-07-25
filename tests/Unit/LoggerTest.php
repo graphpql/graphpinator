@@ -24,7 +24,7 @@ final class LoggerTest extends \PHPUnit\Framework\TestCase
         $this->logs = [];
 
         $loggerMock = $this->createPartialMock(\Psr\Log\AbstractLogger::class, ['log']);
-        $loggerMock->expects($this->any())
+        $loggerMock->expects($this->once())
             ->method('log')
             ->willReturnCallback([$this, 'mockLog']);
 
@@ -41,9 +41,9 @@ final class LoggerTest extends \PHPUnit\Framework\TestCase
 
         $graphpinator->run(new \Graphpinator\Request\JsonRequestFactory($request));
 
+        self::assertCount(1, $this->logs);
         self::assertSame(\Psr\Log\LogLevel::DEBUG, $this->logs[0]['level']);
         self::assertSame($request['query'], $this->logs[0]['message']);
-        self::assertCount(1, $this->logs);
     }
 
     public function testInfo() : void
@@ -51,7 +51,7 @@ final class LoggerTest extends \PHPUnit\Framework\TestCase
         $this->logs = [];
 
         $loggerMock = $this->createPartialMock(\Psr\Log\AbstractLogger::class, ['log']);
-        $loggerMock->expects($this->any())
+        $loggerMock->expects($this->exactly(2))
             ->method('log')
             ->willReturnCallback([$this, 'mockLog']);
 
@@ -69,11 +69,11 @@ final class LoggerTest extends \PHPUnit\Framework\TestCase
 
         $graphpinator->run(new \Graphpinator\Request\JsonRequestFactory($request));
 
+        self::assertCount(2, $this->logs);
         self::assertSame(\Psr\Log\LogLevel::DEBUG, $this->logs[0]['level']);
         self::assertSame($request['query'], $this->logs[0]['message']);
         self::assertSame(\Psr\Log\LogLevel::INFO, $this->logs[1]['level']);
         self::assertStringStartsWith($expected, $this->logs[1]['message'] . ' in ');
-        self::assertCount(2, $this->logs);
     }
 
     public function testEmergency() : void
@@ -81,7 +81,7 @@ final class LoggerTest extends \PHPUnit\Framework\TestCase
         $this->logs = [];
 
         $loggerMock = $this->createPartialMock(\Psr\Log\AbstractLogger::class, ['log']);
-        $loggerMock->expects($this->any())
+        $loggerMock->expects($this->exactly(2))
             ->method('log')
             ->willReturnCallback([$this, 'mockLog']);
 
@@ -99,11 +99,11 @@ final class LoggerTest extends \PHPUnit\Framework\TestCase
 
         $graphpinator->run(new \Graphpinator\Request\JsonRequestFactory($request));
 
+        self::assertCount(2, $this->logs);
         self::assertSame(\Psr\Log\LogLevel::DEBUG, $this->logs[0]['level']);
         self::assertSame($request['query'], $this->logs[0]['message']);
         self::assertSame(\Psr\Log\LogLevel::EMERGENCY, $this->logs[1]['level']);
         self::assertStringStartsWith($expected, $this->logs[1]['message'] . ' in ');
-        self::assertCount(2, $this->logs);
     }
 
     public function testSetLogger() : void
@@ -111,7 +111,7 @@ final class LoggerTest extends \PHPUnit\Framework\TestCase
         $this->logs = [];
 
         $loggerMock = $this->createPartialMock(\Psr\Log\AbstractLogger::class, ['log']);
-        $loggerMock->expects($this->any())
+        $loggerMock->expects($this->once())
             ->method('log')
             ->willReturnCallback([$this, 'mockLog']);
 
@@ -133,8 +133,8 @@ final class LoggerTest extends \PHPUnit\Framework\TestCase
         $graphpinator->setLogger($loggerMock);
         $graphpinator->run(new \Graphpinator\Request\JsonRequestFactory($request));
 
+        self::assertCount(1, $this->logs);
         self::assertSame(\Psr\Log\LogLevel::DEBUG, $this->logs[0]['level']);
         self::assertSame($request['query'], $this->logs[0]['message']);
-        self::assertCount(1, $this->logs);
     }
 }

@@ -8,17 +8,18 @@ final class FragmentCycleValidator
 {
     use \Nette\SmartObject;
 
-    private \Graphpinator\Parser\Fragment\FragmentSet $fragmentSet;
-    private array $stack;
-    private array $validated;
+    private array $stack = [];
+    private array $validated = [];
 
-    public function validate(\Graphpinator\Parser\Fragment\FragmentSet $fragmentSet) : void
+    public function __construct(
+        private \Graphpinator\Parser\Fragment\FragmentSet $fragmentSet,
+    )
     {
-        $this->fragmentSet = $fragmentSet;
-        $this->stack = [];
-        $this->validated = [];
+    }
 
-        foreach ($fragmentSet as $fragment) {
+    public function validate() : void
+    {
+        foreach ($this->fragmentSet as $fragment) {
             $this->validateFragment($fragment);
         }
     }

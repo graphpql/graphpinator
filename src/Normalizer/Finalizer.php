@@ -50,7 +50,7 @@ final class Finalizer
             $this->path->pop();
         }
 
-        $operation->getFields()->applyVariables(new \Graphpinator\Normalizer\VariableValueSet($normalized));
+        $operation->getSelections()->applyVariables(new \Graphpinator\Normalizer\VariableValueSet($normalized));
     }
 
     private function normalizeVariableValue(
