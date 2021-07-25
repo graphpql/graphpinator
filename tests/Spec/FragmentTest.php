@@ -166,12 +166,6 @@ final class FragmentTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 Json::fromNative((object) [
-                    'query' => 'query { fieldUnion { ... on Abc { fieldXyz { ... on TestInterface { __typename name } } } } }',
-                ]),
-                Json::fromNative((object) ['data' => ['fieldUnion' => ['fieldXyz' => ['__typename' => 'Xyz', 'name' => 'Test 123']]]]),
-            ],
-            [
-                Json::fromNative((object) [
                     'query' => 'query { fieldUnion { ... on Abc { 
                         fieldXyz { name: __typename ... on Xyz { __typename } } 
                     }}}',

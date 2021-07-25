@@ -183,8 +183,8 @@ final class ModuleTest extends \PHPUnit\Framework\TestCase
                                     'query',
                                     null,
                                     $this->query,
-                                    new \Graphpinator\Normalizer\Field\FieldSet([
-                                        new \Graphpinator\Normalizer\Field\Field(
+                                    new \Graphpinator\Normalizer\Selection\SelectionSet([
+                                        new \Graphpinator\Normalizer\Selection\Field(
                                             $this->query->getFields()['field'],
                                             'field',
                                             new \Graphpinator\Value\ArgumentValueSet(),
@@ -271,8 +271,8 @@ final class ModuleTest extends \PHPUnit\Framework\TestCase
                                 'query',
                                 null,
                                 $this->query,
-                                new \Graphpinator\Normalizer\Field\FieldSet([
-                                    new \Graphpinator\Normalizer\Field\Field(
+                                new \Graphpinator\Normalizer\Selection\SelectionSet([
+                                    new \Graphpinator\Normalizer\Selection\Field(
                                         $this->query->getFields()['field'],
                                         'field',
                                         new \Graphpinator\Value\ArgumentValueSet(),
