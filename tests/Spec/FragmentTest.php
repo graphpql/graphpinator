@@ -25,9 +25,21 @@ final class FragmentTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 Json::fromNative((object) [
+                    'query' => 'query queryName { fieldUnion { ... @skip(if: false) { __typename } } }',
+                ]),
+                Json::fromNative((object) ['data' => ['fieldUnion' => ['__typename' => 'Abc']]]),
+            ],
+            [
+                Json::fromNative((object) [
                     'query' => 'query queryName { fieldUnion { ... @include(if: false) { __typename } } }',
                 ]),
                 Json::fromNative((object) ['data' => ['fieldUnion' => new \stdClass()]]),
+            ],
+            [
+                Json::fromNative((object) [
+                    'query' => 'query queryName { fieldUnion { ... @include(if: true) { __typename } } }',
+                ]),
+                Json::fromNative((object) ['data' => ['fieldUnion' => ['__typename' => 'Abc']]]),
             ],
             [
                 Json::fromNative((object) [
