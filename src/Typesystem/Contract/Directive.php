@@ -55,7 +55,11 @@ interface Directive extends \Graphpinator\Typesystem\Contract\Entity
         ],
         \Graphpinator\Typesystem\Location\FieldLocation::class => [
             \Graphpinator\Typesystem\Location\ExecutableDirectiveLocation::FIELD,
+        ],
+        \Graphpinator\Typesystem\Location\InlineFragmentLocation::class => [
             \Graphpinator\Typesystem\Location\ExecutableDirectiveLocation::INLINE_FRAGMENT,
+        ],
+        \Graphpinator\Typesystem\Location\FragmentSpreadLocation::class => [
             \Graphpinator\Typesystem\Location\ExecutableDirectiveLocation::FRAGMENT_SPREAD,
         ],
     ];
