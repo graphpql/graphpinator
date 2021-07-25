@@ -11,5 +11,7 @@ final class FragmentOption
     public function __construct(
         public \Graphpinator\Normalizer\Directive\DirectiveSet $directives,
         public ?\Graphpinator\Typesystem\Contract\TypeConditionable $typeCondition,
-    ) {}
+    )
+    {
+    }
 }

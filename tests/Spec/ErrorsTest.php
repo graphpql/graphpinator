@@ -354,7 +354,8 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
                     'errors' => [[
                         'message' => 'Invalid fragment type condition. ("TestInterface" is not instance of "Xyz").',
                         'path' => [' <operation>', 'fieldUnion <field>', '<inline fragment>', 'fieldXyz <field>', '<inline fragment>'],
-                    ]],
+                    ],
+                        ],
                 ]),
             ],
         ];

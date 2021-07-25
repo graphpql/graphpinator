@@ -13,8 +13,13 @@ final class EmptyFragmentModuleTest extends \PHPUnit\Framework\TestCase
             new \Graphpinator\Normalizer\Selection\SelectionSet(),
             new \Graphpinator\Normalizer\Directive\DirectiveSet(),
             new class extends \Graphpinator\Type\Type {
-                public function validateNonNullValue(mixed $rawValue): bool {}
-                protected function getFieldDefinition(): \Graphpinator\Field\ResolvableFieldSet {}
+                public function validateNonNullValue(mixed $rawValue) : bool
+                {
+                }
+
+                protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+                {
+                }
             },
         );
 
@@ -51,8 +56,13 @@ final class EmptyFragmentModuleTest extends \PHPUnit\Framework\TestCase
             new \Graphpinator\Normalizer\Selection\SelectionSet(),
             new \Graphpinator\Normalizer\Directive\DirectiveSet(),
             new class extends \Graphpinator\Type\Type {
-                public function validateNonNullValue(mixed $rawValue): bool {}
-                protected function getFieldDefinition(): \Graphpinator\Field\ResolvableFieldSet {}
+                public function validateNonNullValue(mixed $rawValue) : bool
+                {
+                }
+
+                protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+                {
+                }
             },
         );
         $inlineFragment = new \Graphpinator\Normalizer\Selection\InlineFragment(

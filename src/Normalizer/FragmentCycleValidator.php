@@ -12,8 +12,10 @@ final class FragmentCycleValidator
     private array $validated = [];
 
     public function __construct(
-        private \Graphpinator\Parser\Fragment\FragmentSet $fragmentSet
-    ) {}
+        private \Graphpinator\Parser\Fragment\FragmentSet $fragmentSet,
+    )
+    {
+    }
 
     public function validate() : void
     {

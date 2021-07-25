@@ -12,7 +12,9 @@ final class EmptyFragmentModule implements RefinerModule, \Graphpinator\Normaliz
 
     public function __construct(
         private \Graphpinator\Normalizer\Selection\SelectionSet $selections,
-    ) {}
+    )
+    {
+    }
 
     public function refine() : void
     {

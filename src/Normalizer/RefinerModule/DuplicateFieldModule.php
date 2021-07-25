@@ -14,7 +14,9 @@ final class DuplicateFieldModule implements RefinerModule, \Graphpinator\Normali
 
     public function __construct(
         private \Graphpinator\Normalizer\Selection\SelectionSet $selections,
-    ) {}
+    )
+    {
+    }
 
     public function refine() : void
     {
@@ -59,6 +61,17 @@ final class DuplicateFieldModule implements RefinerModule, \Graphpinator\Normali
         $this->processFragment($inlineFragment);
 
         return null;
+    }
+
+    private static function canOccurTogether(
+        \Graphpinator\Typesystem\Contract\TypeConditionable $typeA,
+        \Graphpinator\Typesystem\Contract\TypeConditionable $typeB,
+    ) : bool
+    {
+        return $typeA->isInstanceOf($typeB) // one is instance of other
+            || $typeB->isInstanceOf($typeA)
+            || !($typeA instanceof \Graphpinator\Typesystem\Type) // one is not object type
+            || !($typeB instanceof \Graphpinator\Typesystem\Type);
     }
 
     private function processFragment(
@@ -139,16 +152,5 @@ final class DuplicateFieldModule implements RefinerModule, \Graphpinator\Normali
         }
 
         return $selections;
-    }
-
-    private static function canOccurTogether(
-        \Graphpinator\Typesystem\Contract\TypeConditionable $typeA,
-        \Graphpinator\Typesystem\Contract\TypeConditionable $typeB,
-    ) : bool
-    {
-        return $typeA->isInstanceOf($typeB) // one is instance of other
-            || $typeB->isInstanceOf($typeA)
-            || !($typeA instanceof \Graphpinator\Typesystem\Type) // one is not object type
-            || !($typeB instanceof \Graphpinator\Typesystem\Type);
     }
 }

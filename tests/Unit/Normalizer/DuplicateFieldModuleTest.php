@@ -77,9 +77,7 @@ final class DuplicateFieldModuleTest extends \PHPUnit\Framework\TestCase
                         'field1',
                         new \Graphpinator\Value\ArgumentValueSet(),
                         new \Graphpinator\Normalizer\Directive\DirectiveSet(),
-                        new \Graphpinator\Normalizer\Selection\SelectionSet([
-
-                        ]),
+                        new \Graphpinator\Normalizer\Selection\SelectionSet([]),
                     ),
                 ]),
             ),
@@ -94,9 +92,7 @@ final class DuplicateFieldModuleTest extends \PHPUnit\Framework\TestCase
                         'field2',
                         new \Graphpinator\Value\ArgumentValueSet(),
                         new \Graphpinator\Normalizer\Directive\DirectiveSet(),
-                        new \Graphpinator\Normalizer\Selection\SelectionSet([
-
-                        ]),
+                        new \Graphpinator\Normalizer\Selection\SelectionSet([]),
                     ),
                 ]),
             ),
@@ -222,7 +218,7 @@ final class DuplicateFieldModuleTest extends \PHPUnit\Framework\TestCase
                                 new \Graphpinator\Value\ScalarValue(\Graphpinator\Container\Container::Boolean(), false, true),
                                 true,
                             ),
-                        ])
+                        ]),
                     ),
                 ]),
                 null,
@@ -240,7 +236,7 @@ final class DuplicateFieldModuleTest extends \PHPUnit\Framework\TestCase
                                 new \Graphpinator\Value\ScalarValue(\Graphpinator\Container\Container::Boolean(), true, true),
                                 true,
                             ),
-                        ])
+                        ]),
                     ),
                 ]),
                 null,
@@ -270,7 +266,7 @@ final class DuplicateFieldModuleTest extends \PHPUnit\Framework\TestCase
                                 new \Graphpinator\Value\ScalarValue(\Graphpinator\Container\Container::Boolean(), false, true),
                                 true,
                             ),
-                        ])
+                        ]),
                     ),
                 ]),
                 null,
@@ -288,7 +284,7 @@ final class DuplicateFieldModuleTest extends \PHPUnit\Framework\TestCase
                                 new \Graphpinator\Value\ScalarValue(\Graphpinator\Container\Container::Boolean(), true, true),
                                 true,
                             ),
-                        ])
+                        ]),
                     ),
                 ]),
                 null,
@@ -313,8 +309,13 @@ final class DuplicateFieldModuleTest extends \PHPUnit\Framework\TestCase
             ]),
             new \Graphpinator\Normalizer\Directive\DirectiveSet(),
             new class extends \Graphpinator\Type\Type {
-                public function validateNonNullValue(mixed $rawValue): bool {}
-                protected function getFieldDefinition(): \Graphpinator\Field\ResolvableFieldSet {}
+                public function validateNonNullValue(mixed $rawValue) : bool
+                {
+                }
+
+                protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+                {
+                }
             },
         );
 
@@ -357,8 +358,13 @@ final class DuplicateFieldModuleTest extends \PHPUnit\Framework\TestCase
             ]),
             new \Graphpinator\Normalizer\Directive\DirectiveSet(),
             new class extends \Graphpinator\Type\Type {
-                public function validateNonNullValue(mixed $rawValue): bool {}
-                protected function getFieldDefinition(): \Graphpinator\Field\ResolvableFieldSet {}
+                public function validateNonNullValue(mixed $rawValue) : bool
+                {
+                }
+
+                protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+                {
+                }
             },
         );
         $selections = new \Graphpinator\Normalizer\Selection\SelectionSet([

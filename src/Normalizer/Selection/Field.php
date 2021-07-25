@@ -14,7 +14,9 @@ final class Field implements Selection
         private \Graphpinator\Value\ArgumentValueSet $arguments,
         private \Graphpinator\Normalizer\Directive\DirectiveSet $directives,
         private ?\Graphpinator\Normalizer\Selection\SelectionSet $children = null,
-    ) {}
+    )
+    {
+    }
 
     public function getField() : \Graphpinator\Typesystem\Field\Field
     {

@@ -13,7 +13,9 @@ final class DuplicateFragmentSpreadModule implements RefinerModule, \Graphpinato
 
     public function __construct(
         private \Graphpinator\Normalizer\Selection\SelectionSet $selections,
-    ) {}
+    )
+    {
+    }
 
     public function refine() : void
     {

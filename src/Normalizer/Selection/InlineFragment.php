@@ -12,7 +12,9 @@ final class InlineFragment implements \Graphpinator\Normalizer\Selection\Selecti
         private \Graphpinator\Normalizer\Selection\SelectionSet $children,
         private \Graphpinator\Normalizer\Directive\DirectiveSet $directives,
         private ?\Graphpinator\Typesystem\Contract\TypeConditionable $typeCondition,
-    ) {}
+    )
+    {
+    }
 
     public function getSelections() : \Graphpinator\Normalizer\Selection\SelectionSet
     {
@@ -29,7 +31,7 @@ final class InlineFragment implements \Graphpinator\Normalizer\Selection\Selecti
         return $this->directives;
     }
 
-    public function applyVariables(\Graphpinator\Normalizer\VariableValueSet $variables): void
+    public function applyVariables(\Graphpinator\Normalizer\VariableValueSet $variables) : void
     {
         $this->children->applyVariables($variables);
     }

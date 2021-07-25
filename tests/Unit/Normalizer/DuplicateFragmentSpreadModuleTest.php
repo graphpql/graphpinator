@@ -16,12 +16,17 @@ final class DuplicateFragmentSpreadModuleTest extends \PHPUnit\Framework\TestCas
                     'fieldName',
                     new \Graphpinator\Value\ArgumentValueSet(),
                     new \Graphpinator\Normalizer\Directive\DirectiveSet(),
-                )
+                ),
             ]),
             new \Graphpinator\Normalizer\Directive\DirectiveSet(),
             new class extends \Graphpinator\Type\Type {
-                public function validateNonNullValue(mixed $rawValue): bool {}
-                protected function getFieldDefinition(): \Graphpinator\Field\ResolvableFieldSet {}
+                public function validateNonNullValue(mixed $rawValue) : bool
+                {
+                }
+
+                protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+                {
+                }
             },
         );
 
@@ -50,8 +55,13 @@ final class DuplicateFragmentSpreadModuleTest extends \PHPUnit\Framework\TestCas
             ]),
             new \Graphpinator\Normalizer\Directive\DirectiveSet(),
             new class extends \Graphpinator\Type\Type {
-                public function validateNonNullValue(mixed $rawValue): bool {}
-                protected function getFieldDefinition(): \Graphpinator\Field\ResolvableFieldSet {}
+                public function validateNonNullValue(mixed $rawValue) : bool
+                {
+                }
+
+                protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+                {
+                }
             },
         );
 
