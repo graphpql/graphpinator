@@ -323,14 +323,7 @@ final class Normalizer
         $fragment = $this->fragmentDefinitions->offsetGet($fragmentSpread->getName());
         $typeCond = $this->normalizeTypeRef($fragment->getTypeCond());
 
-        if (!$typeCond instanceof \Graphpinator\Typesystem\Contract\TypeConditionable) {
-            throw new \Graphpinator\Normalizer\Exception\TypeConditionOutputable();
-        }
-
-        if (!$typeCond->isInstanceOf($this->scopeStack->top())) {
-            throw new \Graphpinator\Normalizer\Exception\InvalidFragmentType($typeCond->getName(), $this->scopeStack->top()->getName());
-        }
-
+        $this->validateTypeCondition($typeCond);
         $this->scopeStack->push($typeCond);
 
         $fields = $this->normalizeFieldSet($fragment->getFields());
@@ -353,14 +346,7 @@ final class Normalizer
             : null;
 
         if ($typeCond instanceof \Graphpinator\Typesystem\Contract\NamedType) {
-            if (!$typeCond instanceof \Graphpinator\Typesystem\Contract\TypeConditionable) {
-                throw new \Graphpinator\Normalizer\Exception\TypeConditionOutputable();
-            }
-
-            if (!$typeCond->isInstanceOf($this->scopeStack->top())) {
-                throw new \Graphpinator\Normalizer\Exception\InvalidFragmentType($typeCond->getName(), $this->scopeStack->top()->getName());
-            }
-
+            $this->validateTypeCondition($typeCond);
             $this->scopeStack->push($typeCond);
         } else {
             $this->scopeStack->push($this->scopeStack->top());
@@ -388,5 +374,19 @@ final class Normalizer
             \Graphpinator\Parser\TypeRef\NotNullRef::class =>
                 new \Graphpinator\Typesystem\NotNullType($this->normalizeTypeRef($typeRef->getInnerRef())),
         };
+    }
+
+    private function validateTypeCondition(\Graphpinator\Typesystem\Contract\NamedType $typeCond) : void
+    {
+        if (!$typeCond instanceof \Graphpinator\Typesystem\Contract\TypeConditionable) {
+            throw new \Graphpinator\Normalizer\Exception\TypeConditionOutputable();
+        }
+
+        $parentType = $this->scopeStack->top();
+        \assert($parentType instanceof \Graphpinator\Typesystem\Contract\TypeConditionable);
+
+        if (!$typeCond->isInstanceOf($parentType) && !$parentType->isInstanceOf($typeCond)) {
+            throw new \Graphpinator\Normalizer\Exception\InvalidFragmentType($typeCond->getName(), $this->scopeStack->top()->getName());
+        }
     }
 }
