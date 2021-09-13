@@ -48,11 +48,6 @@ final class Field implements Selection
         return $this->children;
     }
 
-    public function setSelections(\Graphpinator\Normalizer\Selection\SelectionSet $set) : void
-    {
-        $this->children = $set;
-    }
-
     public function applyVariables(\Graphpinator\Normalizer\VariableValueSet $variables) : void
     {
         $this->arguments->applyVariables($variables);
