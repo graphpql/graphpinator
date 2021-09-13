@@ -4,7 +4,8 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Normalizer\RefinerModule;
 
-final class FieldForName {
+final class FieldForName
+{
     use \Nette\SmartObject;
 
     public function __construct(

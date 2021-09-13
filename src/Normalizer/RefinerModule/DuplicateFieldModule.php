@@ -86,7 +86,8 @@ final class DuplicateFieldModule implements RefinerModule, \Graphpinator\Normali
         $oldSelections = $this->selections;
         $this->selections = $fragment->getSelections();
         $oldContextType = $this->contextType;
-        $this->contextType = $fragment->getTypeCondition() ?? $this->contextType;
+        $this->contextType = $fragment->getTypeCondition()
+            ?? $this->contextType;
 
         foreach ($fragment->getSelections() as $selection) {
             $selection->accept($this);
@@ -126,10 +127,12 @@ final class DuplicateFieldModule implements RefinerModule, \Graphpinator\Normali
         }
 
         /** Fields are composite -> validate combined inner fields */
-        if ($conflict->getSelections() instanceof \Graphpinator\Normalizer\Selection\SelectionSet) {
-            $mergedSet = $conflict->getSelections()->merge($field->getSelections());
-            $refiner = new self($mergedSet);
-            $refiner->refine();
+        if (!$conflict->getSelections() instanceof \Graphpinator\Normalizer\Selection\SelectionSet) {
+            return;
         }
+
+        $mergedSet = $conflict->getSelections()->merge($field->getSelections());
+        $refiner = new self($mergedSet);
+        $refiner->refine();
     }
 }
