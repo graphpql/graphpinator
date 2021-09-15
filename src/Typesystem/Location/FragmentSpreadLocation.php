@@ -12,5 +12,5 @@ interface FragmentSpreadLocation extends \Graphpinator\Typesystem\Contract\Execu
 
     public function resolveFragmentSpreadAfter(
         \Graphpinator\Value\ArgumentValueSet $arguments,
-    ) : string;
+    ) : void;
 }

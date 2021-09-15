@@ -12,5 +12,5 @@ interface InlineFragmentLocation extends \Graphpinator\Typesystem\Contract\Execu
 
     public function resolveInlineFragmentAfter(
         \Graphpinator\Value\ArgumentValueSet $arguments,
-    ) : string;
+    ) : void;
 }

@@ -46,9 +46,9 @@ final class SkipDirective extends \Graphpinator\Typesystem\Directive implements
 
     public function resolveFragmentSpreadAfter(
         \Graphpinator\Value\ArgumentValueSet $arguments,
-    ) : string
+    ) : void
     {
-        return \Graphpinator\Typesystem\Location\FieldLocation::NONE;
+        // nothing here
     }
 
     public function resolveInlineFragmentBefore(
@@ -60,9 +60,9 @@ final class SkipDirective extends \Graphpinator\Typesystem\Directive implements
 
     public function resolveInlineFragmentAfter(
         \Graphpinator\Value\ArgumentValueSet $arguments,
-    ) : string
+    ) : void
     {
-        return \Graphpinator\Typesystem\Location\FieldLocation::NONE;
+        // nothing here
     }
 
     protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
