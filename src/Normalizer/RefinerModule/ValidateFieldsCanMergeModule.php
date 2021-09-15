@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Normalizer\RefinerModule;
 
-final class DuplicateFieldModule implements RefinerModule, \Graphpinator\Normalizer\Selection\SelectionVisitor
+final class ValidateFieldsCanMergeModule implements RefinerModule, \Graphpinator\Normalizer\Selection\SelectionVisitor
 {
     use \Nette\SmartObject;
 
