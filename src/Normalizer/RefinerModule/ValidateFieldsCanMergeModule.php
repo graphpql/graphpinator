@@ -13,6 +13,7 @@ final class ValidateFieldsCanMergeModule implements RefinerModule, \Graphpinator
 
     public function __construct(
         private \Graphpinator\Normalizer\Selection\SelectionSet $selections,
+        private bool $identity = true,
     )
     {
     }
@@ -33,9 +34,15 @@ final class ValidateFieldsCanMergeModule implements RefinerModule, \Graphpinator
             foreach ($this->fieldsForName[$field->getOutputName()] as $fieldForName) {
                 \assert($fieldForName instanceof FieldForName);
 
-                if (self::canOccurTogether($this->contextType, $fieldForName->fragmentType)) {
-                    $this->validateConflictingFields($field, $fieldForName->field);
+                $canOccurTogether = false;
+                $this->validateResponseShape($field, $fieldForName->field);
+
+                if ($this->identity && self::canOccurTogether($this->contextType, $fieldForName->fragmentType)) {
+                    $this->validateIdentity($field, $fieldForName->field);
+                    $canOccurTogether = true;
                 }
+
+                $this->validateInnerFields($field, $fieldForName->field, $canOccurTogether);
             }
 
             return null;
@@ -97,7 +104,22 @@ final class ValidateFieldsCanMergeModule implements RefinerModule, \Graphpinator
         $this->contextType = $oldContextType;
     }
 
-    private function validateConflictingFields(
+    private function validateResponseShape(
+        \Graphpinator\Normalizer\Selection\Field $field,
+        \Graphpinator\Normalizer\Selection\Field $conflict,
+    ) : void
+    {
+        $fieldReturnType = $field->getField()->getType();
+        $conflictReturnType = $conflict->getField()->getType();
+
+        /** Fields must have same response shape (return type) */
+        if (!$fieldReturnType->isInstanceOf($conflictReturnType) ||
+            !$conflictReturnType->isInstanceOf($fieldReturnType)) {
+            throw new \Graphpinator\Normalizer\Exception\ConflictingFieldType();
+        }
+    }
+
+    private function validateIdentity(
         \Graphpinator\Normalizer\Selection\Field $field,
         \Graphpinator\Normalizer\Selection\Field $conflict,
     ) : void
@@ -125,14 +147,21 @@ final class ValidateFieldsCanMergeModule implements RefinerModule, \Graphpinator
         if (!$field->getDirectives()->isSame($conflict->getDirectives())) {
             throw new \Graphpinator\Normalizer\Exception\ConflictingFieldDirectives();
         }
+    }
 
+    private function validateInnerFields(
+        \Graphpinator\Normalizer\Selection\Field $field,
+        \Graphpinator\Normalizer\Selection\Field $conflict,
+        bool $identity,
+    ) : void
+    {
         /** Fields are composite -> validate combined inner fields */
         if (!$conflict->getSelections() instanceof \Graphpinator\Normalizer\Selection\SelectionSet) {
             return;
         }
 
         $mergedSet = $conflict->getSelections()->merge($field->getSelections());
-        $refiner = new self($mergedSet);
+        $refiner = new self($mergedSet, $identity);
         $refiner->refine();
     }
 }
