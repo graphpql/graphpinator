@@ -10,11 +10,12 @@ final class ResolveSelectionVisitor implements \Graphpinator\Normalizer\Selectio
 
     public function __construct(
         private \Graphpinator\Value\ResolvedValue $parentResult,
+        private \stdClass $result,
     )
     {
     }
 
-    public function visitField(\Graphpinator\Normalizer\Selection\Field $field) : array
+    public function visitField(\Graphpinator\Normalizer\Selection\Field $field) : mixed
     {
         $type = $this->parentResult->getType();
         \assert($type instanceof \Graphpinator\Typesystem\Type);
@@ -23,118 +24,124 @@ final class ResolveSelectionVisitor implements \Graphpinator\Normalizer\Selectio
             $directiveResult = $directive->getDirective()->resolveFieldBefore($directive->getArguments());
 
             if (self::shouldSkip($directiveResult)) {
-                return [];
+                return null;
             }
         }
 
-        $fieldDef = $type->getMetaFields()[$field->getName()]
-            ?? $type->getFields()[$field->getName()];
+        if (\property_exists($this->result, $field->getOutputName())) {
+            $fieldValue = $this->result->{$field->getOutputName()};
+            \assert($fieldValue instanceof \Graphpinator\Value\FieldValue);
 
-        foreach ($fieldDef->getDirectiveUsages() as $directive) {
-            $directive->getDirective()->resolveFieldDefinitionStart($directive->getArgumentValues(), $this->parentResult);
-        }
-
-        $arguments = $field->getArguments();
-
-        foreach ($arguments as $argumentValue) {
-            $argumentValue->resolveNonPureDirectives();
-        }
-
-        foreach ($fieldDef->getDirectiveUsages() as $directive) {
-            $directive->getDirective()->resolveFieldDefinitionBefore($directive->getArgumentValues(), $this->parentResult, $arguments);
-        }
-
-        $rawArguments = $arguments->getValuesForResolver();
-        \array_unshift($rawArguments, $this->parentResult->getRawValue());
-        $rawValue = \call_user_func_array($fieldDef->getResolveFunction(), $rawArguments);
-        $resolvedValue = $fieldDef->getType()->accept(new CreateResolvedValueVisitor($rawValue));
-
-        if (!$resolvedValue->getType()->isInstanceOf($fieldDef->getType())) {
-            throw new \Graphpinator\Resolver\Exception\FieldResultTypeMismatch();
-        }
-
-        foreach ($fieldDef->getDirectiveUsages() as $directive) {
-            $directive->getDirective()->resolveFieldDefinitionAfter($directive->getArgumentValues(), $resolvedValue, $arguments);
-        }
-
-        $fieldValue = new \Graphpinator\Value\FieldValue($fieldDef, $resolvedValue instanceof \Graphpinator\Value\NullValue
-            ? $resolvedValue
-            : $resolvedValue->getType()->accept(new ResolveVisitor($field->getSelections(), $resolvedValue)));
-
-        foreach ($field->getDirectives() as $directive) {
-            $directiveResult = $directive->getDirective()->resolveFieldAfter($directive->getArguments(), $fieldValue);
-
-            if (self::shouldSkip($directiveResult)) {
-                return [];
+            if ($field->getSelections() instanceof \Graphpinator\Normalizer\Selection\SelectionSet) {
+                $resolvedValue = $fieldValue->getIntermediateValue();
+                $resolvedValue->getType()->accept(new ResolveVisitor($field->getSelections(), $resolvedValue, ));
             }
+
+            foreach ($field->getDirectives() as $directive) {
+                $directive->getDirective()->resolveFieldAfter($directive->getArguments(), $fieldValue);
+            }
+        } else {
+            $fieldDef = $type->getMetaFields()[$field->getName()]
+                ?? $type->getFields()[$field->getName()];
+
+            foreach ($fieldDef->getDirectiveUsages() as $directive) {
+                $directive->getDirective()->resolveFieldDefinitionStart($directive->getArgumentValues(), $this->parentResult);
+            }
+
+            $arguments = $field->getArguments();
+
+            foreach ($arguments as $argumentValue) {
+                $argumentValue->resolveNonPureDirectives();
+            }
+
+            foreach ($fieldDef->getDirectiveUsages() as $directive) {
+                $directive->getDirective()->resolveFieldDefinitionBefore($directive->getArgumentValues(), $this->parentResult, $arguments);
+            }
+
+            $rawArguments = $arguments->getValuesForResolver();
+            \array_unshift($rawArguments, $this->parentResult->getRawValue());
+            $rawValue = \call_user_func_array($fieldDef->getResolveFunction(), $rawArguments);
+            $resolvedValue = $fieldDef->getType()->accept(new CreateResolvedValueVisitor($rawValue));
+
+            if (!$resolvedValue->getType()->isInstanceOf($fieldDef->getType())) {
+                throw new \Graphpinator\Resolver\Exception\FieldResultTypeMismatch();
+            }
+
+            foreach ($fieldDef->getDirectiveUsages() as $directive) {
+                $directive->getDirective()->resolveFieldDefinitionAfter($directive->getArgumentValues(), $resolvedValue, $arguments);
+            }
+
+            $fieldValue = new \Graphpinator\Value\FieldValue($fieldDef, $resolvedValue instanceof \Graphpinator\Value\NullValue
+                ? $resolvedValue
+                : $resolvedValue->getType()->accept(new ResolveVisitor($field->getSelections(), $resolvedValue)), $resolvedValue);
+
+            foreach ($field->getDirectives() as $directive) {
+                $directiveResult = $directive->getDirective()->resolveFieldAfter($directive->getArguments(), $fieldValue);
+
+                if (self::shouldSkip($directiveResult)) {
+                    return null;
+                }
+            }
+
+            $this->result->{$field->getOutputName()} = $fieldValue;
         }
 
-        return [
-            $field->getOutputName() => $fieldValue,
-        ];
+        return null;
     }
 
-    public function visitFragmentSpread(\Graphpinator\Normalizer\Selection\FragmentSpread $fragmentSpread) : array
+    public function visitFragmentSpread(\Graphpinator\Normalizer\Selection\FragmentSpread $fragmentSpread) : mixed
     {
         if (!$this->parentResult->getType()->isInstanceOf($fragmentSpread->getTypeCondition())) {
-            return [];
+            return null;
         }
 
         foreach ($fragmentSpread->getDirectives() as $directive) {
             $directiveResult = $directive->getDirective()->resolveFragmentSpreadBefore($directive->getArguments());
 
             if (self::shouldSkip($directiveResult)) {
-                return [];
+                return null;
             }
         }
 
-        $return = [];
-
         foreach ($fragmentSpread->getSelections() as $selection) {
-            $return += $selection->accept(new ResolveSelectionVisitor($this->parentResult));
+            $selection->accept(new ResolveSelectionVisitor($this->parentResult, $this->result));
         }
 
         foreach ($fragmentSpread->getDirectives() as $directive) {
-            $directiveResult = $directive->getDirective()->resolveFragmentSpreadAfter($directive->getArguments());
+            $directive->getDirective()->resolveFragmentSpreadAfter($directive->getArguments());
 
-            if (self::shouldSkip($directiveResult)) {
-                return [];
-            }
+            // skip is not allowed here due to implementation complexity and rarity of use-cases
         }
 
-        return $return;
+        return null;
     }
 
-    public function visitInlineFragment(\Graphpinator\Normalizer\Selection\InlineFragment $inlineFragment) : array
+    public function visitInlineFragment(\Graphpinator\Normalizer\Selection\InlineFragment $inlineFragment) : mixed
     {
         if ($inlineFragment->getTypeCondition() instanceof \Graphpinator\Typesystem\Contract\NamedType &&
             !$this->parentResult->getType()->isInstanceOf($inlineFragment->getTypeCondition())) {
-            return [];
+            return null;
         }
 
         foreach ($inlineFragment->getDirectives() as $directive) {
             $directiveResult = $directive->getDirective()->resolveInlineFragmentBefore($directive->getArguments());
 
             if (self::shouldSkip($directiveResult)) {
-                return [];
+                return null;
             }
         }
 
-        $return = [];
-
         foreach ($inlineFragment->getSelections() as $selection) {
-            $return += $selection->accept(new ResolveSelectionVisitor($this->parentResult));
+            $selection->accept(new ResolveSelectionVisitor($this->parentResult, $this->result));
         }
 
         foreach ($inlineFragment->getDirectives() as $directive) {
-            $directiveResult = $directive->getDirective()->resolveInlineFragmentAfter($directive->getArguments());
+            $directive->getDirective()->resolveInlineFragmentAfter($directive->getArguments());
 
-            if (self::shouldSkip($directiveResult)) {
-                return [];
-            }
+            // skip is not allowed here due to implementation complexity and rarity of use-cases
         }
 
-        return $return;
+        return null;
     }
 
     private static function shouldSkip(string $directiveResult) : bool

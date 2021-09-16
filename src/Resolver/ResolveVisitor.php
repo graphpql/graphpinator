@@ -7,22 +7,23 @@ namespace Graphpinator\Resolver;
 final class ResolveVisitor implements \Graphpinator\Typesystem\Contract\TypeVisitor
 {
     public function __construct(
-        private ?\Graphpinator\Normalizer\Selection\SelectionSet $entitySet,
+        private ?\Graphpinator\Normalizer\Selection\SelectionSet $selectionSet,
         private \Graphpinator\Value\ResolvedValue $parentResult,
+        private ?\stdClass $result = null,
     )
     {
+        $this->result ??= new \stdClass();
     }
 
     public function visitType(\Graphpinator\Typesystem\Type $type) : \Graphpinator\Value\TypeValue
     {
-        \assert($this->entitySet instanceof \Graphpinator\Normalizer\Selection\SelectionSet);
-        $resolved = [];
+        \assert($this->selectionSet instanceof \Graphpinator\Normalizer\Selection\SelectionSet);
 
-        foreach ($this->entitySet as $selectionEntity) {
-            $resolved += $selectionEntity->accept(new ResolveSelectionVisitor($this->parentResult));
+        foreach ($this->selectionSet as $selectionEntity) {
+            $selectionEntity->accept(new ResolveSelectionVisitor($this->parentResult, $this->result));
         }
 
-        return new \Graphpinator\Value\TypeValue($type, (object) $resolved);
+        return new \Graphpinator\Value\TypeValue($type, $this->result);
     }
 
     public function visitInterface(\Graphpinator\Typesystem\InterfaceType $interface) : mixed
@@ -59,15 +60,15 @@ final class ResolveVisitor implements \Graphpinator\Typesystem\Contract\TypeVisi
     {
         \assert($this->parentResult instanceof \Graphpinator\Value\ListIntermediateValue);
 
-        $return = [];
+        $result = [];
 
         foreach ($this->parentResult->getRawValue() as $rawValue) {
             $value = $list->getInnerType()->accept(new CreateResolvedValueVisitor($rawValue));
-            $return[] = $value instanceof \Graphpinator\Value\NullValue
+            $result[] = $value instanceof \Graphpinator\Value\NullValue
                 ? $value
-                : $value->getType()->accept(new self($this->entitySet, $value));
+                : $value->getType()->accept(new self($this->selectionSet, $value));
         }
 
-        return new \Graphpinator\Value\ListResolvedValue($list, $return);
+        return new \Graphpinator\Value\ListResolvedValue($list, $result);
     }
 }
