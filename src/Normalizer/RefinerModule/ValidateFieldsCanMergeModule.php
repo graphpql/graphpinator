@@ -160,7 +160,7 @@ final class ValidateFieldsCanMergeModule implements RefinerModule, \Graphpinator
             return;
         }
 
-        $mergedSet = $conflict->getSelections()->merge($field->getSelections());
+        $mergedSet = (clone $conflict->getSelections())->merge($field->getSelections());
         $refiner = new self($mergedSet, $identity);
         $refiner->refine();
     }
