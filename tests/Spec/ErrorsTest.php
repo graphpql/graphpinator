@@ -209,15 +209,15 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 Json::fromNative((object) [
-                    'query' => 'query queryName { fieldFragment { ... interfaceEfgFragment } }
-                    fragment interfaceEfgFragment on InterfaceEfg {  
-                        ... on InterfaceAbc { name }
+                    'query' => 'query queryName { fieldFragment { ... fragment } }
+                    fragment fragment on InterfaceAbc {  
+                        ... on Abc { name }
                     }',
                 ]),
                 Json::fromNative((object) [
         'errors' => [[
-                    'message' => 'Invalid fragment type condition. ("InterfaceAbc" is not instance of "InterfaceEfg").',
-                    'path' => ['queryName <operation>', 'fieldFragment <field>', 'interfaceEfgFragment <fragment spread>', '<inline fragment>'],
+                    'message' => 'Invalid fragment type condition. ("Abc" is not instance of "InterfaceAbc").',
+                    'path' => ['queryName <operation>', 'fieldFragment <field>', 'fragment <fragment spread>', '<inline fragment>'],
                 ],
                     ],
                     ]),
@@ -348,11 +348,11 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 Json::fromNative((object) [
-                    'query' => 'query { fieldUnion { ... on Abc { fieldXyz { ... on TestInterface { __typename name } } } } }',
+                    'query' => 'query { fieldUnion { ... on Abc { fieldXyz { ... on InterfaceEfg { __typename name } } } } }',
                 ]),
                 Json::fromNative((object) [
                     'errors' => [[
-                        'message' => 'Invalid fragment type condition. ("TestInterface" is not instance of "Xyz").',
+                        'message' => 'Invalid fragment type condition. ("InterfaceEfg" is not instance of "Xyz").',
                         'path' => [' <operation>', 'fieldUnion <field>', '<inline fragment>', 'fieldXyz <field>', '<inline fragment>'],
                     ],
                         ],
