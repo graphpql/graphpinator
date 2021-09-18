@@ -8,6 +8,44 @@ final class SingleExecutionTest extends \PHPUnit\Framework\TestCase
 {
     public static int $execCount;
 
+    public static function getCompositeType() : \Graphpinator\Typesystem\Type
+    {
+        return new class () extends \Graphpinator\Typesystem\Type
+        {
+            protected const NAME = 'CompositeType';
+
+            public function __construct()
+            {
+                parent::__construct();
+            }
+
+            public function validateNonNullValue($rawValue) : bool
+            {
+                return true;
+            }
+
+            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
+            {
+                return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
+                    \Graphpinator\Typesystem\Field\ResolvableField::create(
+                        'firstField',
+                        \Graphpinator\Typesystem\Container::Int(),
+                        static function($parent) : int {
+                            return 123;
+                        },
+                    ),
+                    \Graphpinator\Typesystem\Field\ResolvableField::create(
+                        'secondField',
+                        \Graphpinator\Typesystem\Container::Int(),
+                        static function($parent) : int {
+                            return 456;
+                        },
+                    ),
+                ]);
+            }
+        };
+    }
+
     public function testSimple() : void
     {
         self::$execCount = 0;
@@ -132,44 +170,6 @@ final class SingleExecutionTest extends \PHPUnit\Framework\TestCase
                             ++SingleExecutionTest::$execCount;
 
                             return 123;
-                        },
-                    ),
-                ]);
-            }
-        };
-    }
-
-    public static function getCompositeType() : \Graphpinator\Typesystem\Type
-    {
-        return new class () extends \Graphpinator\Typesystem\Type
-        {
-            protected const NAME = 'CompositeType';
-
-            public function __construct()
-            {
-                parent::__construct();
-            }
-
-            public function validateNonNullValue($rawValue) : bool
-            {
-                return true;
-            }
-
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
-            {
-                return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
-                    \Graphpinator\Typesystem\Field\ResolvableField::create(
-                        'firstField',
-                        \Graphpinator\Typesystem\Container::Int(),
-                        static function($parent) : int {
-                            return 123;
-                        },
-                    ),
-                    \Graphpinator\Typesystem\Field\ResolvableField::create(
-                        'secondField',
-                        \Graphpinator\Typesystem\Container::Int(),
-                        static function($parent) : int {
-                            return 456;
                         },
                     ),
                 ]);
