@@ -33,8 +33,10 @@ final class ResolveSelectionVisitor implements \Graphpinator\Normalizer\Selectio
             \assert($fieldValue instanceof \Graphpinator\Value\FieldValue);
 
             if ($field->getSelections() instanceof \Graphpinator\Normalizer\Selection\SelectionSet) {
+                $typeValue = $fieldValue->getValue();
+                \assert($typeValue instanceof \Graphpinator\Value\TypeValue);
                 $resolvedValue = $fieldValue->getIntermediateValue();
-                $resolvedValue->getType()->accept(new ResolveVisitor($field->getSelections(), $resolvedValue));
+                $resolvedValue->getType()->accept(new ResolveVisitor($field->getSelections(), $resolvedValue, $typeValue->getRawValue()));
             }
 
             foreach ($field->getDirectives() as $directive) {
