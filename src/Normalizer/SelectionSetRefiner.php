@@ -10,7 +10,9 @@ final class SelectionSetRefiner
 
     public function __construct(
         private \Graphpinator\Normalizer\Selection\SelectionSet $selections,
-    ) {}
+    )
+    {
+    }
 
     public function refine() : \Graphpinator\Normalizer\Selection\SelectionSet
     {

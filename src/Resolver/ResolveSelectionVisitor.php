@@ -34,7 +34,7 @@ final class ResolveSelectionVisitor implements \Graphpinator\Normalizer\Selectio
 
             if ($field->getSelections() instanceof \Graphpinator\Normalizer\Selection\SelectionSet) {
                 $resolvedValue = $fieldValue->getIntermediateValue();
-                $resolvedValue->getType()->accept(new ResolveVisitor($field->getSelections(), $resolvedValue, ));
+                $resolvedValue->getType()->accept(new ResolveVisitor($field->getSelections(), $resolvedValue));
             }
 
             foreach ($field->getDirectives() as $directive) {
