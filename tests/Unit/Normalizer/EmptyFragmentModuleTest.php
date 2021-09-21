@@ -23,13 +23,14 @@ final class EmptyFragmentModuleTest extends \PHPUnit\Framework\TestCase
             },
         );
 
-        $refiner = new \Graphpinator\Normalizer\SelectionSetRefiner(new \Graphpinator\Normalizer\Selection\SelectionSet([
+        $set = new \Graphpinator\Normalizer\Selection\SelectionSet([
             $fragmentSpread,
-        ]), \Graphpinator\Container\Container::String());
+        ]);
 
-        $result = $refiner->refine();
+        $refiner = new \Graphpinator\Normalizer\SelectionSetRefiner($set);
+        $refiner->refine();
 
-        self::assertCount(0, $result);
+        self::assertCount(0, $set);
     }
 
     public function testEmptyInlineFragment() : void
@@ -40,13 +41,14 @@ final class EmptyFragmentModuleTest extends \PHPUnit\Framework\TestCase
             null,
         );
 
-        $refiner = new \Graphpinator\Normalizer\SelectionSetRefiner(new \Graphpinator\Normalizer\Selection\SelectionSet([
+        $set = new \Graphpinator\Normalizer\Selection\SelectionSet([
             $inlineFragment,
-        ]), \Graphpinator\Container\Container::String());
+        ]);
 
-        $result = $refiner->refine();
+        $refiner = new \Graphpinator\Normalizer\SelectionSetRefiner($set);
+        $refiner->refine();
 
-        self::assertCount(0, $result);
+        self::assertCount(0, $set);
     }
 
     public function testEmptyCombined() : void
@@ -73,12 +75,13 @@ final class EmptyFragmentModuleTest extends \PHPUnit\Framework\TestCase
             null,
         );
 
-        $refiner = new \Graphpinator\Normalizer\SelectionSetRefiner(new \Graphpinator\Normalizer\Selection\SelectionSet([
+        $set = new \Graphpinator\Normalizer\Selection\SelectionSet([
             $inlineFragment,
-        ]), \Graphpinator\Container\Container::String());
+        ]);
 
-        $result = $refiner->refine();
+        $refiner = new \Graphpinator\Normalizer\SelectionSetRefiner($set);
+        $refiner->refine();
 
-        self::assertCount(0, $result);
+        self::assertCount(0, $set);
     }
 }

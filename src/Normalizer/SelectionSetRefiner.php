@@ -14,10 +14,9 @@ final class SelectionSetRefiner
     {
     }
 
-    public function refine() : \Graphpinator\Normalizer\Selection\SelectionSet
+    public function refine() : void
     {
         $modules = [
-            new \Graphpinator\Normalizer\RefinerModule\ValidateFieldsCanMergeModule($this->selections),
             new \Graphpinator\Normalizer\RefinerModule\DuplicateFragmentSpreadModule($this->selections),
             new \Graphpinator\Normalizer\RefinerModule\DuplicateFieldModule($this->selections),
             new \Graphpinator\Normalizer\RefinerModule\EmptyFragmentModule($this->selections),
@@ -26,7 +25,5 @@ final class SelectionSetRefiner
         foreach ($modules as $module) {
             $module->refine();
         }
-
-        return $this->selections;
     }
 }

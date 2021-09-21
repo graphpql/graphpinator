@@ -9,8 +9,7 @@ final class DuplicateFieldModuleTest extends \PHPUnit\Framework\TestCase
     public function testSingleField() : void
     {
         $field = new \Graphpinator\Typesystem\Field\Field('fieldName', \Graphpinator\Typesystem\Container::String());
-
-        $refiner = new \Graphpinator\Normalizer\SelectionSetRefiner(new \Graphpinator\Normalizer\Selection\SelectionSet([
+        $set = new \Graphpinator\Normalizer\Selection\SelectionSet([
             new \Graphpinator\Normalizer\Selection\Field(
                 $field,
                 'someName',
@@ -25,20 +24,20 @@ final class DuplicateFieldModuleTest extends \PHPUnit\Framework\TestCase
                 new \Graphpinator\Normalizer\Directive\DirectiveSet(),
                 null,
             ),
-        ]));
+        ]);
 
-        $result = $refiner->refine();
+        $refiner = new \Graphpinator\Normalizer\SelectionSetRefiner($set);
+        $refiner->refine();
 
-        self::assertCount(2, $result);
-        self::assertInstanceOf(\Graphpinator\Normalizer\Selection\Field::class, $result->offsetGet(0));
-        self::assertInstanceOf(\Graphpinator\Normalizer\Selection\Field::class, $result->offsetGet(1));
+        self::assertCount(2, $set);
+        self::assertInstanceOf(\Graphpinator\Normalizer\Selection\Field::class, $set->offsetGet(0));
+        self::assertInstanceOf(\Graphpinator\Normalizer\Selection\Field::class, $set->offsetGet(1));
     }
 
     public function testDuplicateField() : void
     {
         $field = new \Graphpinator\Typesystem\Field\Field('fieldName', \Graphpinator\Typesystem\Container::String());
-
-        $refiner = new \Graphpinator\Normalizer\SelectionSetRefiner(new \Graphpinator\Normalizer\Selection\SelectionSet([
+        $set = new \Graphpinator\Normalizer\Selection\SelectionSet([
             new \Graphpinator\Normalizer\Selection\Field(
                 $field,
                 'someName',
@@ -53,19 +52,19 @@ final class DuplicateFieldModuleTest extends \PHPUnit\Framework\TestCase
                 new \Graphpinator\Normalizer\Directive\DirectiveSet(),
                 null,
             ),
-        ]));
+        ]);
 
-        $result = $refiner->refine();
+        $refiner = new \Graphpinator\Normalizer\SelectionSetRefiner($set);
+        $refiner->refine();
 
-        self::assertCount(1, $result);
-        self::assertInstanceOf(\Graphpinator\Normalizer\Selection\Field::class, $result->offsetGet(0));
+        self::assertCount(1, $set);
+        self::assertInstanceOf(\Graphpinator\Normalizer\Selection\Field::class, $set->offsetGet(0));
     }
 
     public function testInnerField() : void
     {
         $field = new \Graphpinator\Typesystem\Field\Field('fieldName', \Graphpinator\Typesystem\Container::String());
-
-        $refiner = new \Graphpinator\Normalizer\SelectionSetRefiner(new \Graphpinator\Normalizer\Selection\SelectionSet([
+        $set = new \Graphpinator\Normalizer\Selection\SelectionSet([
             new \Graphpinator\Normalizer\Selection\Field(
                 $field,
                 'fieldName',
@@ -96,306 +95,13 @@ final class DuplicateFieldModuleTest extends \PHPUnit\Framework\TestCase
                     ),
                 ]),
             ),
-        ]));
+        ]);
 
-        $result = $refiner->refine();
-
-        self::assertCount(1, $result);
-        self::assertInstanceOf(\Graphpinator\Normalizer\Selection\Field::class, $result->offsetGet(0));
-        self::assertCount(2, $result->offsetGet(0)->getSelections());
-    }
-
-    public function testConflictingType() : void
-    {
-        $this->expectException(\Graphpinator\Normalizer\Exception\ConflictingFieldType::class);
-
-        $field1 = new \Graphpinator\Typesystem\Field\Field('field1', \Graphpinator\Typesystem\Container::String());
-        $field2 = new \Graphpinator\Typesystem\Field\Field('field2', \Graphpinator\Typesystem\Container::Int());
-
-        $refiner = new \Graphpinator\Normalizer\SelectionSetRefiner(new \Graphpinator\Normalizer\Selection\SelectionSet([
-            new \Graphpinator\Normalizer\Selection\Field(
-                $field1,
-                'someName',
-                new \Graphpinator\Value\ArgumentValueSet(),
-                new \Graphpinator\Normalizer\Directive\DirectiveSet(),
-                null,
-            ),
-            new \Graphpinator\Normalizer\Selection\Field(
-                $field2,
-                'someName',
-                new \Graphpinator\Value\ArgumentValueSet(),
-                new \Graphpinator\Normalizer\Directive\DirectiveSet(),
-                null,
-            ),
-        ]));
-
+        $refiner = new \Graphpinator\Normalizer\SelectionSetRefiner($set);
         $refiner->refine();
-    }
 
-    public function testConflictingAlias() : void
-    {
-        $this->expectException(\Graphpinator\Normalizer\Exception\ConflictingFieldAlias::class);
-
-        $field1 = new \Graphpinator\Typesystem\Field\Field('field1', \Graphpinator\Typesystem\Container::String());
-        $field2 = new \Graphpinator\Typesystem\Field\Field('field2', \Graphpinator\Typesystem\Container::String());
-
-        $refiner = new \Graphpinator\Normalizer\SelectionSetRefiner(new \Graphpinator\Normalizer\Selection\SelectionSet([
-            new \Graphpinator\Normalizer\Selection\Field(
-                $field1,
-                'someName',
-                new \Graphpinator\Value\ArgumentValueSet(),
-                new \Graphpinator\Normalizer\Directive\DirectiveSet(),
-                null,
-            ),
-            new \Graphpinator\Normalizer\Selection\Field(
-                $field2,
-                'someName',
-                new \Graphpinator\Value\ArgumentValueSet(),
-                new \Graphpinator\Normalizer\Directive\DirectiveSet(),
-                null,
-            ),
-        ]));
-
-        $refiner->refine();
-    }
-
-    public function testConflictingArguments() : void
-    {
-        $this->expectException(\Graphpinator\Normalizer\Exception\ConflictingFieldArguments::class);
-
-        $field = new \Graphpinator\Typesystem\Field\Field('field1', \Graphpinator\Typesystem\Container::String());
-        $argument = new \Graphpinator\Argument\Argument('argument', \Graphpinator\Typesystem\Container::String());
-
-        $refiner = new \Graphpinator\Normalizer\SelectionSetRefiner(new \Graphpinator\Normalizer\Selection\SelectionSet([
-            new \Graphpinator\Normalizer\Selection\Field(
-                $field,
-                'someName',
-                new \Graphpinator\Value\ArgumentValueSet([
-                    new \Graphpinator\Value\ArgumentValue(
-                        $argument,
-                        new \Graphpinator\Value\ScalarValue(\Graphpinator\Typesystem\Container::String(), '123', true),
-                        true,
-                    ),
-                ]),
-                new \Graphpinator\Normalizer\Directive\DirectiveSet(),
-                null,
-            ),
-            new \Graphpinator\Normalizer\Selection\Field(
-                $field,
-                'someName',
-                new \Graphpinator\Value\ArgumentValueSet([
-                    new \Graphpinator\Value\ArgumentValue(
-                        $argument,
-                        new \Graphpinator\Value\ScalarValue(\Graphpinator\Typesystem\Container::String(), '456', true),
-                        true,
-                    ),
-                ]),
-                new \Graphpinator\Normalizer\Directive\DirectiveSet(),
-                null,
-            ),
-        ]));
-
-        $refiner->refine();
-    }
-
-    public function testConflictingDirectives() : void
-    {
-        $this->expectException(\Graphpinator\Normalizer\Exception\ConflictingFieldDirectives::class);
-
-        $field = new \Graphpinator\Typesystem\Field\Field('field1', \Graphpinator\Typesystem\Container::String());
-
-        $refiner = new \Graphpinator\Normalizer\SelectionSetRefiner(new \Graphpinator\Normalizer\Selection\SelectionSet([
-            new \Graphpinator\Normalizer\Selection\Field(
-                $field,
-                'someName',
-                new \Graphpinator\Value\ArgumentValueSet(),
-                new \Graphpinator\Normalizer\Directive\DirectiveSet([
-                    new \Graphpinator\Normalizer\Directive\Directive(
-                        \Graphpinator\Typesystem\Container::directiveSkip(),
-                        new \Graphpinator\Value\ArgumentValueSet([
-                            new \Graphpinator\Value\ArgumentValue(
-                                \Graphpinator\Typesystem\Container::directiveSkip()->getArguments()['if'],
-                                new \Graphpinator\Value\ScalarValue(\Graphpinator\Typesystem\Container::Boolean(), false, true),
-                                true,
-                            ),
-                        ]),
-                    ),
-                ]),
-                null,
-            ),
-            new \Graphpinator\Normalizer\Selection\Field(
-                $field,
-                'someName',
-                new \Graphpinator\Value\ArgumentValueSet(),
-                new \Graphpinator\Normalizer\Directive\DirectiveSet([
-                    new \Graphpinator\Normalizer\Directive\Directive(
-                        \Graphpinator\Typesystem\Container::directiveInclude(),
-                        new \Graphpinator\Value\ArgumentValueSet([
-                            new \Graphpinator\Value\ArgumentValue(
-                                \Graphpinator\Typesystem\Container::directiveInclude()->getArguments()['if'],
-                                new \Graphpinator\Value\ScalarValue(\Graphpinator\Typesystem\Container::Boolean(), true, true),
-                                true,
-                            ),
-                        ]),
-                    ),
-                ]),
-                null,
-            ),
-        ]));
-
-        $refiner->refine();
-    }
-
-    public function testConflictingDirectiveArguments() : void
-    {
-        $this->expectException(\Graphpinator\Normalizer\Exception\ConflictingFieldDirectives::class);
-
-        $field = new \Graphpinator\Typesystem\Field\Field('field1', \Graphpinator\Typesystem\Container::String());
-
-        $refiner = new \Graphpinator\Normalizer\SelectionSetRefiner(new \Graphpinator\Normalizer\Selection\SelectionSet([
-            new \Graphpinator\Normalizer\Selection\Field(
-                $field,
-                'someName',
-                new \Graphpinator\Value\ArgumentValueSet(),
-                new \Graphpinator\Normalizer\Directive\DirectiveSet([
-                    new \Graphpinator\Normalizer\Directive\Directive(
-                        \Graphpinator\Typesystem\Container::directiveSkip(),
-                        new \Graphpinator\Value\ArgumentValueSet([
-                            new \Graphpinator\Value\ArgumentValue(
-                                \Graphpinator\Typesystem\Container::directiveSkip()->getArguments()['if'],
-                                new \Graphpinator\Value\ScalarValue(\Graphpinator\Typesystem\Container::Boolean(), false, true),
-                                true,
-                            ),
-                        ]),
-                    ),
-                ]),
-                null,
-            ),
-            new \Graphpinator\Normalizer\Selection\Field(
-                $field,
-                'someName',
-                new \Graphpinator\Value\ArgumentValueSet(),
-                new \Graphpinator\Normalizer\Directive\DirectiveSet([
-                    new \Graphpinator\Normalizer\Directive\Directive(
-                        \Graphpinator\Typesystem\Container::directiveSkip(),
-                        new \Graphpinator\Value\ArgumentValueSet([
-                            new \Graphpinator\Value\ArgumentValue(
-                                \Graphpinator\Typesystem\Container::directiveSkip()->getArguments()['if'],
-                                new \Graphpinator\Value\ScalarValue(\Graphpinator\Typesystem\Container::Boolean(), true, true),
-                                true,
-                            ),
-                        ]),
-                    ),
-                ]),
-                null,
-            ),
-        ]));
-
-        $refiner->refine();
-    }
-
-    public function testConflictingDirectiveArguments2() : void
-    {
-        $this->expectException(\Graphpinator\Normalizer\Exception\ConflictingFieldDirectives::class);
-
-        $field = new \Graphpinator\Typesystem\Field\Field('field1', \Graphpinator\Typesystem\Container::String());
-
-        $refiner = new \Graphpinator\Normalizer\SelectionSetRefiner(new \Graphpinator\Normalizer\Selection\SelectionSet([
-            new \Graphpinator\Normalizer\Selection\Field(
-                $field,
-                'someName',
-                new \Graphpinator\Value\ArgumentValueSet(),
-                new \Graphpinator\Normalizer\Directive\DirectiveSet([
-                    new \Graphpinator\Normalizer\Directive\Directive(
-                        \Graphpinator\Typesystem\Container::directiveSkip(),
-                        new \Graphpinator\Value\ArgumentValueSet([
-                            new \Graphpinator\Value\ArgumentValue(
-                                \Graphpinator\Typesystem\Container::directiveSkip()->getArguments()['if'],
-                                new \Graphpinator\Value\ScalarValue(\Graphpinator\Typesystem\Container::Boolean(), false, true),
-                                true,
-                            ),
-                        ]),
-                    ),
-                ]),
-                null,
-            ),
-            new \Graphpinator\Normalizer\Selection\Field(
-                $field,
-                'someName',
-                new \Graphpinator\Value\ArgumentValueSet(),
-                new \Graphpinator\Normalizer\Directive\DirectiveSet(),
-                null,
-            ),
-        ]));
-
-        $refiner->refine();
-    }
-
-    public function testConflictingDirectiveArguments3() : void
-    {
-        $this->expectException(\Graphpinator\Normalizer\Exception\ConflictingFieldDirectives::class);
-
-        $field = new \Graphpinator\Typesystem\Field\Field('field1', \Graphpinator\Typesystem\Container::String());
-
-        $refiner = new \Graphpinator\Normalizer\SelectionSetRefiner(new \Graphpinator\Normalizer\Selection\SelectionSet([
-            new \Graphpinator\Normalizer\Selection\Field(
-                $field,
-                'someName',
-                new \Graphpinator\Value\ArgumentValueSet(),
-                new \Graphpinator\Normalizer\Directive\DirectiveSet([
-                    new \Graphpinator\Normalizer\Directive\Directive(
-                        \Graphpinator\Typesystem\Container::directiveSkip(),
-                        new \Graphpinator\Value\ArgumentValueSet([
-                            new \Graphpinator\Value\ArgumentValue(
-                                \Graphpinator\Typesystem\Container::directiveSkip()->getArguments()['if'],
-                                new \Graphpinator\Value\ScalarValue(\Graphpinator\Typesystem\Container::Boolean(), true, true),
-                                true,
-                            ),
-                        ]),
-                    ),
-                    new \Graphpinator\Normalizer\Directive\Directive(
-                        \Graphpinator\Typesystem\Container::directiveInclude(),
-                        new \Graphpinator\Value\ArgumentValueSet([
-                            new \Graphpinator\Value\ArgumentValue(
-                                \Graphpinator\Typesystem\Container::directiveInclude()->getArguments()['if'],
-                                new \Graphpinator\Value\ScalarValue(\Graphpinator\Typesystem\Container::Boolean(), true, true),
-                                true,
-                            ),
-                        ]),
-                    ),
-                ]),
-                null,
-            ),
-            new \Graphpinator\Normalizer\Selection\Field(
-                $field,
-                'someName',
-                new \Graphpinator\Value\ArgumentValueSet(),
-                new \Graphpinator\Normalizer\Directive\DirectiveSet([
-                    new \Graphpinator\Normalizer\Directive\Directive(
-                        \Graphpinator\Typesystem\Container::directiveSkip(),
-                        new \Graphpinator\Value\ArgumentValueSet([
-                            new \Graphpinator\Value\ArgumentValue(
-                                \Graphpinator\Typesystem\Container::directiveSkip()->getArguments()['if'],
-                                new \Graphpinator\Value\ScalarValue(\Graphpinator\Typesystem\Container::Boolean(), true, true),
-                                true,
-                            ),
-                        ]),
-                    ),
-                    new \Graphpinator\Normalizer\Directive\Directive(
-                        \Graphpinator\Typesystem\Container::directiveInclude(),
-                        new \Graphpinator\Value\ArgumentValueSet([
-                            new \Graphpinator\Value\ArgumentValue(
-                                \Graphpinator\Typesystem\Container::directiveInclude()->getArguments()['if'],
-                                new \Graphpinator\Value\ScalarValue(\Graphpinator\Typesystem\Container::Boolean(), false, true),
-                                true,
-                            ),
-                        ]),
-                    ),
-                ]),
-                null,
-            ),
-        ]));
-
-        $refiner->refine();
+        self::assertCount(1, $set);
+        self::assertInstanceOf(\Graphpinator\Normalizer\Selection\Field::class, $set->offsetGet(0));
+        self::assertCount(2, $set->offsetGet(0)->getSelections());
     }
 }

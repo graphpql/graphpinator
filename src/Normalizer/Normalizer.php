@@ -152,9 +152,12 @@ final class Normalizer
         }
 
         $result = new \Graphpinator\Normalizer\Selection\SelectionSet($normalized);
-        $selectionSetRefiner = new \Graphpinator\Normalizer\SelectionSetRefiner($result);
+        $validator = new \Graphpinator\Normalizer\SelectionSetValidator($result);
+        $validator->validate();
+        $refiner = new \Graphpinator\Normalizer\SelectionSetRefiner($result);
+        $refiner->refine();
 
-        return $selectionSetRefiner->refine();
+        return $result;
     }
 
     private function normalizeField(

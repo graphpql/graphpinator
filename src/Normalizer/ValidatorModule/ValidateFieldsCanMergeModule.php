@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Normalizer\RefinerModule;
+namespace Graphpinator\Normalizer\ValidatorModule;
 
-final class ValidateFieldsCanMergeModule implements RefinerModule, \Graphpinator\Normalizer\Selection\SelectionVisitor
+final class ValidateFieldsCanMergeModule implements ValidatorModule, \Graphpinator\Normalizer\Selection\SelectionVisitor
 {
     use \Nette\SmartObject;
 
@@ -18,7 +18,7 @@ final class ValidateFieldsCanMergeModule implements RefinerModule, \Graphpinator
     {
     }
 
-    public function refine() : void
+    public function validate() : void
     {
         $this->fieldsForName = [];
         $this->contextType = null;
@@ -162,6 +162,6 @@ final class ValidateFieldsCanMergeModule implements RefinerModule, \Graphpinator
 
         $mergedSet = (clone $conflict->getSelections())->merge($field->getSelections());
         $refiner = new self($mergedSet, $identity);
-        $refiner->refine();
+        $refiner->validate();
     }
 }

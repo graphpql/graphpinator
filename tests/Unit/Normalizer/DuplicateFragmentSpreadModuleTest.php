@@ -30,15 +30,16 @@ final class DuplicateFragmentSpreadModuleTest extends \PHPUnit\Framework\TestCas
             },
         );
 
-        $refiner = new \Graphpinator\Normalizer\SelectionSetRefiner(new \Graphpinator\Normalizer\Selection\SelectionSet([
+        $set = new \Graphpinator\Normalizer\Selection\SelectionSet([
             $fragmentSpread,
             $fragmentSpread,
-        ]), \Graphpinator\Container\Container::String());
+        ]);
 
-        $result = $refiner->refine();
+        $refiner = new \Graphpinator\Normalizer\SelectionSetRefiner($set);
+        $refiner->refine();
 
-        self::assertCount(1, $result);
-        self::assertInstanceOf(\Graphpinator\Normalizer\Selection\FragmentSpread::class, $result->offsetGet(0));
+        self::assertCount(1, $set);
+        self::assertInstanceOf(\Graphpinator\Normalizer\Selection\FragmentSpread::class, $set->offsetGet(0));
     }
 
     public function testDuplicateInnerFragmentSpread() : void
@@ -65,7 +66,7 @@ final class DuplicateFragmentSpreadModuleTest extends \PHPUnit\Framework\TestCas
             },
         );
 
-        $refiner = new \Graphpinator\Normalizer\SelectionSetRefiner(new \Graphpinator\Normalizer\Selection\SelectionSet([
+        $set = new \Graphpinator\Normalizer\Selection\SelectionSet([
             $fragmentSpread,
             new \Graphpinator\Normalizer\Selection\InlineFragment(
                 new \Graphpinator\Normalizer\Selection\SelectionSet([
@@ -80,14 +81,15 @@ final class DuplicateFragmentSpreadModuleTest extends \PHPUnit\Framework\TestCas
                 new \Graphpinator\Normalizer\Directive\DirectiveSet(),
                 null,
             ),
-        ]), \Graphpinator\Container\Container::String());
+        ]);
 
-        $result = $refiner->refine();
+        $refiner = new \Graphpinator\Normalizer\SelectionSetRefiner($set);
+        $refiner->refine();
 
-        self::assertCount(2, $result);
-        self::assertInstanceOf(\Graphpinator\Normalizer\Selection\FragmentSpread::class, $result->offsetGet(0));
-        self::assertInstanceOf(\Graphpinator\Normalizer\Selection\InlineFragment::class, $result->offsetGet(1));
-        self::assertCount(1, $result->offsetGet(1)->getSelections());
-        self::assertInstanceOf(\Graphpinator\Normalizer\Selection\Field::class, $result->offsetGet(1)->getSelections()->offsetGet(1));
+        self::assertCount(2, $set);
+        self::assertInstanceOf(\Graphpinator\Normalizer\Selection\FragmentSpread::class, $set->offsetGet(0));
+        self::assertInstanceOf(\Graphpinator\Normalizer\Selection\InlineFragment::class, $set->offsetGet(1));
+        self::assertCount(1, $set->offsetGet(1)->getSelections());
+        self::assertInstanceOf(\Graphpinator\Normalizer\Selection\Field::class, $set->offsetGet(1)->getSelections()->offsetGet(1));
     }
 }
