@@ -12,12 +12,12 @@ final class EmptyFragmentModuleTest extends \PHPUnit\Framework\TestCase
             'someName',
             new \Graphpinator\Normalizer\Selection\SelectionSet(),
             new \Graphpinator\Normalizer\Directive\DirectiveSet(),
-            new class extends \Graphpinator\Type\Type {
+            new class extends \Graphpinator\Typesystem\Type {
                 public function validateNonNullValue(mixed $rawValue) : bool
                 {
                 }
 
-                protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+                protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
                 {
                 }
             },
@@ -57,12 +57,12 @@ final class EmptyFragmentModuleTest extends \PHPUnit\Framework\TestCase
             'someName',
             new \Graphpinator\Normalizer\Selection\SelectionSet(),
             new \Graphpinator\Normalizer\Directive\DirectiveSet(),
-            new class extends \Graphpinator\Type\Type {
+            new class extends \Graphpinator\Typesystem\Type {
                 public function validateNonNullValue(mixed $rawValue) : bool
                 {
                 }
 
-                protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+                protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
                 {
                 }
             },

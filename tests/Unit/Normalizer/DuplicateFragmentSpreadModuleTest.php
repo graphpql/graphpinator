@@ -12,19 +12,19 @@ final class DuplicateFragmentSpreadModuleTest extends \PHPUnit\Framework\TestCas
             'someName',
             new \Graphpinator\Normalizer\Selection\SelectionSet([
                 new \Graphpinator\Normalizer\Selection\Field(
-                    new \Graphpinator\Field\Field('fieldName', \Graphpinator\Container\Container::String()),
+                    new \Graphpinator\Typesystem\Field\Field('fieldName', \Graphpinator\Typesystem\Container::String()),
                     'fieldName',
                     new \Graphpinator\Value\ArgumentValueSet(),
                     new \Graphpinator\Normalizer\Directive\DirectiveSet(),
                 ),
             ]),
             new \Graphpinator\Normalizer\Directive\DirectiveSet(),
-            new class extends \Graphpinator\Type\Type {
+            new class extends \Graphpinator\Typesystem\Type {
                 public function validateNonNullValue(mixed $rawValue) : bool
                 {
                 }
 
-                protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+                protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
                 {
                 }
             },
@@ -48,19 +48,19 @@ final class DuplicateFragmentSpreadModuleTest extends \PHPUnit\Framework\TestCas
             'someName',
             new \Graphpinator\Normalizer\Selection\SelectionSet([
                 new \Graphpinator\Normalizer\Selection\Field(
-                    new \Graphpinator\Field\Field('fieldName', \Graphpinator\Container\Container::String()),
+                    new \Graphpinator\Typesystem\Field\Field('fieldName', \Graphpinator\Typesystem\Container::String()),
                     'fieldName',
                     new \Graphpinator\Value\ArgumentValueSet(),
                     new \Graphpinator\Normalizer\Directive\DirectiveSet(),
                 ),
             ]),
             new \Graphpinator\Normalizer\Directive\DirectiveSet(),
-            new class extends \Graphpinator\Type\Type {
+            new class extends \Graphpinator\Typesystem\Type {
                 public function validateNonNullValue(mixed $rawValue) : bool
                 {
                 }
 
-                protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+                protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
                 {
                 }
             },
@@ -72,7 +72,7 @@ final class DuplicateFragmentSpreadModuleTest extends \PHPUnit\Framework\TestCas
                 new \Graphpinator\Normalizer\Selection\SelectionSet([
                     $fragmentSpread,
                     new \Graphpinator\Normalizer\Selection\Field(
-                        new \Graphpinator\Field\Field('fieldName', \Graphpinator\Container\Container::String()),
+                        new \Graphpinator\Typesystem\Field\Field('fieldName', \Graphpinator\Typesystem\Container::String()),
                         'someField',
                         new \Graphpinator\Value\ArgumentValueSet(),
                         new \Graphpinator\Normalizer\Directive\DirectiveSet(),

@@ -21,7 +21,7 @@ final class TypeSystemDirectiveDuplicateTest extends \PHPUnit\Framework\TestCase
 
             public function __construct()
             {
-                $this->directiveUsages = new \Graphpinator\DirectiveUsage\DirectiveUsageSet();
+                $this->directiveUsages = new \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet();
 
                 parent::__construct();
             }

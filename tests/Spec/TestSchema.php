@@ -1000,12 +1000,12 @@ final class TestSchema
 
             public function __construct()
             {
-                parent::__construct(new \Graphpinator\EnumItem\EnumItemSet([
-                    new \Graphpinator\EnumItem\EnumItem('A', 'single line description'),
-                    (new \Graphpinator\EnumItem\EnumItem('B'))
+                parent::__construct(new \Graphpinator\Typesystem\EnumItem\EnumItemSet([
+                    new \Graphpinator\Typesystem\EnumItem\EnumItem('A', 'single line description'),
+                    (new \Graphpinator\Typesystem\EnumItem\EnumItem('B'))
                         ->setDeprecated(),
-                    new \Graphpinator\EnumItem\EnumItem('C', 'multi line' . \PHP_EOL . 'description'),
-                    (new \Graphpinator\EnumItem\EnumItem('D', 'single line description'))
+                    new \Graphpinator\Typesystem\EnumItem\EnumItem('C', 'multi line' . \PHP_EOL . 'description'),
+                    (new \Graphpinator\Typesystem\EnumItem\EnumItem('D', 'single line description'))
                         ->setDeprecated('reason'),
                 ]));
             }
@@ -1025,9 +1025,9 @@ final class TestSchema
         };
     }
 
-    public static function getTestDirective() : \Graphpinator\Directive\Directive
+    public static function getTestDirective() : \Graphpinator\Typesystem\Directive
     {
-        return new class extends \Graphpinator\Directive\Directive implements \Graphpinator\Directive\Contract\FieldLocation
+        return new class extends \Graphpinator\Typesystem\Directive implements \Graphpinator\Typesystem\Location\FieldLocation
         {
             protected const NAME = 'testDirective';
             protected const REPEATABLE = true;
@@ -1063,9 +1063,9 @@ final class TestSchema
         };
     }
 
-    public static function getInvalidDirectiveResult() : \Graphpinator\Directive\Directive
+    public static function getInvalidDirectiveResult() : \Graphpinator\Typesystem\Directive
     {
-        return new class extends \Graphpinator\Directive\Directive implements \Graphpinator\Directive\Contract\FieldLocation
+        return new class extends \Graphpinator\Typesystem\Directive implements \Graphpinator\Typesystem\Location\FieldLocation
         {
             protected const NAME = 'invalidDirectiveResult';
             protected const REPEATABLE = true;
@@ -1098,9 +1098,9 @@ final class TestSchema
         };
     }
 
-    public static function getInvalidDirectiveType() : \Graphpinator\Directive\Directive
+    public static function getInvalidDirectiveType() : \Graphpinator\Typesystem\Directive
     {
-        return new class extends \Graphpinator\Directive\Directive implements \Graphpinator\Directive\Contract\FieldLocation
+        return new class extends \Graphpinator\Typesystem\Directive implements \Graphpinator\Typesystem\Location\FieldLocation
         {
             protected const NAME = 'invalidDirectiveType';
 

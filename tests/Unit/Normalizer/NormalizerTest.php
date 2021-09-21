@@ -131,7 +131,7 @@ final class NormalizerTest extends \PHPUnit\Framework\TestCase
         self::assertCount(1, $operation->getSelections()->offsetGet(0)->getDirectives());
         self::assertArrayHasKey(0, $operation->getSelections()->offsetGet(0)->getDirectives());
         self::assertInstanceOf(
-            \Graphpinator\Directive\Spec\SkipDirective::class,
+            \Graphpinator\Typesystem\Spec\SkipDirective::class,
             $operation->getSelections()->offsetGet(0)->getDirectives()->offsetGet(0)->getDirective(),
         );
 

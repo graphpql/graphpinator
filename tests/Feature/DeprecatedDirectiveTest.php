@@ -22,7 +22,7 @@ final class DeprecatedDirectiveTest extends \PHPUnit\Framework\TestCase
 
             public function __construct()
             {
-                $this->directiveUsages = new \Graphpinator\DirectiveUsage\DirectiveUsageSet();
+                $this->directiveUsages = new \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet();
 
                 parent::__construct();
             }
@@ -87,7 +87,7 @@ final class DeprecatedDirectiveTest extends \PHPUnit\Framework\TestCase
 
             public function __construct()
             {
-                $this->directiveUsages = new \Graphpinator\DirectiveUsage\DirectiveUsageSet();
+                $this->directiveUsages = new \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet();
 
                 parent::__construct();
             }
