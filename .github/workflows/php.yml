@@ -43,6 +43,35 @@ jobs:
       uses: codecov/codecov-action@v1.0.14
       with:
         file: './build/phpunit.clover.xml'
+        
+  tests-matrix:
+    runs-on: ubuntu-latest
+    needs: [tests]
+    
+    strategy:
+      matrix:
+        php-versions: ['8.0', '8.1']
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ matrix.php-versions }}
+        ini-values: zend.assertions=1, assert.exception=1
+        coverage: none
+      env:
+        update: true
+
+    - name: Validate composer.json and composer.lock
+      run: composer validate
+
+    - name: Install dependencies
+      run: composer install --prefer-dist --no-progress --no-suggest
+
+    - name: Tests
+      run: composer run-script phpunit
 
   mutation:
     runs-on: ubuntu-latest
