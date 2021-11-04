@@ -6,25 +6,25 @@
 
 Feature complete PHP implementation of GraphQL server. Its job is transformation of query string into resolved Json result for a given Schema. 
 
-- Aims to be compliant with the latest draft of GraphQL specification.
-- Fully typesafe, and therefore minimum required PHP version is 8.0. Sacrifices a tiny bit of convenience for huge amount of clarity and safety - no random configuration `array`s, no mixed types, no variable function arguments - this library doesnt try to save you from verbosity, but makes sure you always know what you've got.
+- Aims to be compliant with the **latest draft of GraphQL specification**.
+- Fully typesafe, and therefore **minimum required PHP version is 8.0**. Sacrifices a tiny bit of convenience for huge amount of clarity and safety - no random configuration `array`s, no mixed types, no variable function arguments - this library doesnt try to save you from verbosity, but makes sure you always know what you've got.
 - Code first.
 - Flexible. Easy to extend with extra functionality using Modules or middleware Directives.
 - Includes some opt-in extensions which are out of scope of official specs:
-    - [Printer](https://github.com/infinityloop-dev/graphpinator-printer) - Schema printing for GraPHPinator typesystem.
-    - [Extra types](https://github.com/infinityloop-dev/graphpinator-extra-types) - Some useful and commonly used types, both scalar or composite.
-    - [Constraint directives](https://github.com/infinityloop-dev/graphpinator-constraint-directives) - Typesystem directives to declare additional validation on top of GraphQL typesystem.
-    - [Where directives](https://github.com/infinityloop-dev/graphpinator-where-directives) - Executable directives to filter values in lists.
-    - [Upload](https://github.com/infinityloop-dev/graphpinator-upload) - Module to handle [multipart-formdata](https://github.com/jaydenseric/graphql-multipart-request-spec) requests.
-    - [Query cost](https://github.com/infinityloop-dev/graphpinator-query-cost) - Modules to limit query cost by restricting maximum depth or number of nodes.
-    - [Persisted queries](https://github.com/infinityloop-dev/graphpinator-persisted-queries) - Module to persist validated query in cache and improve performace of repeating queries.
+    - [Printer](https://github.com/infinityloop-dev/graphpinator-printer) - Schema printing for GraPHPinator typesystem. ![GitHub release](https://img.shields.io/github/v/release/infinityloop-dev/graphpinator-printer?label=version)
+    - [Extra types](https://github.com/infinityloop-dev/graphpinator-extra-types) - Some useful and commonly used types, both scalar or composite. ![GitHub release](https://img.shields.io/github/v/release/infinityloop-dev/graphpinator-extra-types?label=version)
+    - [Constraint directives](https://github.com/infinityloop-dev/graphpinator-constraint-directives) - Typesystem directives to declare additional validation on top of GraphQL typesystem. ![GitHub release](https://img.shields.io/github/v/release/infinityloop-dev/graphpinator-constraint-directives?label=version)
+    - [Where directives](https://github.com/infinityloop-dev/graphpinator-where-directives) - Executable directives to filter values in lists. ![GitHub release](https://img.shields.io/github/v/release/infinityloop-dev/graphpinator-where-directives?label=version)
+    - [Upload](https://github.com/infinityloop-dev/graphpinator-upload) - Module to handle [multipart-formdata](https://github.com/jaydenseric/graphql-multipart-request-spec) requests. ![GitHub release](https://img.shields.io/github/v/release/infinityloop-dev/graphpinator-upload?label=version)
+    - [Query cost](https://github.com/infinityloop-dev/graphpinator-query-cost) - Modules to limit query cost by restricting maximum depth or number of nodes. ![GitHub release](https://img.shields.io/github/v/release/infinityloop-dev/graphpinator-query-cost?label=version)
+    - [Persisted queries](https://github.com/infinityloop-dev/graphpinator-persisted-queries) - Module to persist validated query in cache and improve performace of repeating queries. ![GitHub release](https://img.shields.io/github/v/release/infinityloop-dev/graphpinator-persisted-queries?label=version)
 - Includes adapters for easy integration into other PHP frameworks:
     - PSR - Bundled
-    - [Nette](https://github.com/infinityloop-dev/graphpinator-nette) - Adapters for [Nette framework](https://nette.org/).
+    - [Nette](https://github.com/infinityloop-dev/graphpinator-nette) - Adapters for [Nette framework](https://nette.org/). ![GitHub release](https://img.shields.io/github/v/release/infinityloop-dev/graphpinator-nette?label=version)
 - Project is composed of multiple smaller packages, which may be used standalone:
-    - [Source](https://github.com/infinityloop-dev/graphpinator-source) - Wrapper around source document.
-    - [Tokenizer](https://github.com/infinityloop-dev/graphpinator-tokenizer) - Lexical analyzer of GraphQL document.
-    - [Parser](https://github.com/infinityloop-dev/graphpinator-parser) - Syntactic analyzer of GraphQL document.
+    - [Source](https://github.com/infinityloop-dev/graphpinator-source) - Wrapper around source document. ![GitHub release](https://img.shields.io/github/v/release/infinityloop-dev/graphpinator-source?label=version)
+    - [Tokenizer](https://github.com/infinityloop-dev/graphpinator-tokenizer) - Lexical analyzer of GraphQL document. ![GitHub release](https://img.shields.io/github/v/release/infinityloop-dev/graphpinator-tokenizer?label=version)
+    - [Parser](https://github.com/infinityloop-dev/graphpinator-parser) - Syntactic analyzer of GraphQL document. ![GitHub release](https://img.shields.io/github/v/release/infinityloop-dev/graphpinator-parser?label=version)
 
 ## Installation
 
