@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Feature;
 
+use \Graphpinator\Typesystem\Location\UnionLocation;
+
 final class UnionDirectiveTest extends \PHPUnit\Framework\TestCase
 {
     public function testSimple() : void
@@ -20,7 +22,7 @@ final class UnionDirectiveTest extends \PHPUnit\Framework\TestCase
             {
             }
         };
-        $directive = new class extends \Graphpinator\Typesystem\Directive implements \Graphpinator\Typesystem\Location\UnionLocation {
+        $directive = new class extends \Graphpinator\Typesystem\Directive implements UnionLocation {
             protected const NAME = 'SomeUnionDirective';
 
             protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet

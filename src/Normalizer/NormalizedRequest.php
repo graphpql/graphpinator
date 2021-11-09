@@ -4,17 +4,19 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Normalizer;
 
+use \Graphpinator\Normalizer\Operation\OperationSet;
+
 final class NormalizedRequest
 {
     use \Nette\SmartObject;
 
     public function __construct(
-        private \Graphpinator\Normalizer\Operation\OperationSet $operations,
+        private OperationSet $operations,
     )
     {
     }
 
-    public function getOperations() : \Graphpinator\Normalizer\Operation\OperationSet
+    public function getOperations() : OperationSet
     {
         return $this->operations;
     }

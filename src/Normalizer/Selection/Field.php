@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Normalizer\Selection;
 
+use \Graphpinator\Normalizer\Directive\DirectiveSet;
+
 final class Field implements Selection
 {
     use \Nette\SmartObject;
@@ -12,8 +14,8 @@ final class Field implements Selection
         private \Graphpinator\Typesystem\Field\Field $field,
         private string $outputName,
         private \Graphpinator\Value\ArgumentValueSet $arguments,
-        private \Graphpinator\Normalizer\Directive\DirectiveSet $directives,
-        private ?\Graphpinator\Normalizer\Selection\SelectionSet $children = null,
+        private DirectiveSet $directives,
+        private ?SelectionSet $children = null,
     )
     {
     }
@@ -38,12 +40,12 @@ final class Field implements Selection
         return $this->arguments;
     }
 
-    public function getDirectives() : \Graphpinator\Normalizer\Directive\DirectiveSet
+    public function getDirectives() : DirectiveSet
     {
         return $this->directives;
     }
 
-    public function getSelections() : ?\Graphpinator\Normalizer\Selection\SelectionSet
+    public function getSelections() : ?SelectionSet
     {
         return $this->children;
     }

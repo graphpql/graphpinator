@@ -4,6 +4,12 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Feature;
 
+use \Graphpinator\Typesystem\Argument\Argument;
+use \Graphpinator\Typesystem\Argument\ArgumentSet;
+use \Graphpinator\Typesystem\Container;
+use \Graphpinator\Typesystem\Field\ResolvableField;
+use \Graphpinator\Typesystem\Field\ResolvableFieldSet;
+
 final class InputTypeCoercionTest extends \PHPUnit\Framework\TestCase
 {
     public static function getSimpleInput() : \Graphpinator\Typesystem\InputType
@@ -12,12 +18,12 @@ final class InputTypeCoercionTest extends \PHPUnit\Framework\TestCase
         {
             protected const NAME = 'SimpleInput';
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
+            protected function getFieldDefinition() : ArgumentSet
             {
                 return new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                    new \Graphpinator\Typesystem\Argument\Argument(
+                    new Argument(
                         'string',
-                        \Graphpinator\Typesystem\Container::String(),
+                        Container::String(),
                     ),
                     new \Graphpinator\Typesystem\Argument\Argument(
                         'stringNotNull',
@@ -80,10 +86,10 @@ final class InputTypeCoercionTest extends \PHPUnit\Framework\TestCase
                 return true;
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
+            protected function getFieldDefinition() : ResolvableFieldSet
             {
-                return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
-                    \Graphpinator\Typesystem\Field\ResolvableField::create(
+                return new ResolvableFieldSet([
+                    ResolvableField::create(
                         'field1',
                         \Graphpinator\Typesystem\Container::String(),
                         static function($parent, \stdClass $arg) : string {
@@ -96,7 +102,7 @@ final class InputTypeCoercionTest extends \PHPUnit\Framework\TestCase
                     )->setArguments(new \Graphpinator\Typesystem\Argument\ArgumentSet([
                         new \Graphpinator\Typesystem\Argument\Argument(
                             'arg',
-                            \Graphpinator\Tests\Feature\InputTypeCoercionTest::getSimpleInput(),
+                            InputTypeCoercionTest::getSimpleInput(),
                         ),
                     ])),
                 ]);

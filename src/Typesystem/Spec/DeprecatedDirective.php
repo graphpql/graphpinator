@@ -4,10 +4,16 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem\Spec;
 
+use \Graphpinator\Typesystem\Location\ArgumentDefinitionLocation;
+use \Graphpinator\Typesystem\Location\EnumItemLocation;
+use \Graphpinator\Typesystem\Location\FieldDefinitionLocation;
+use \Graphpinator\Value\ArgumentValueSet;
+use \Graphpinator\Value\ResolvedValue;
+
 final class DeprecatedDirective extends \Graphpinator\Typesystem\Directive implements
-    \Graphpinator\Typesystem\Location\FieldDefinitionLocation,
-    \Graphpinator\Typesystem\Location\EnumItemLocation,
-    \Graphpinator\Typesystem\Location\ArgumentDefinitionLocation
+    FieldDefinitionLocation,
+    EnumItemLocation,
+    ArgumentDefinitionLocation
 {
     protected const NAME = 'deprecated';
     protected const DESCRIPTION = 'Built-in deprecated directive.';
@@ -19,48 +25,48 @@ final class DeprecatedDirective extends \Graphpinator\Typesystem\Directive imple
 
     public function validateFieldUsage(
         \Graphpinator\Typesystem\Field\Field $field,
-        \Graphpinator\Value\ArgumentValueSet $arguments,
+        ArgumentValueSet $arguments,
     ) : bool
     {
         return true;
     }
 
     public function validateVariance(
-        ?\Graphpinator\Value\ArgumentValueSet $biggerSet,
-        ?\Graphpinator\Value\ArgumentValueSet $smallerSet,
+        ?ArgumentValueSet $biggerSet,
+        ?ArgumentValueSet $smallerSet,
     ) : void
     {
         // nothing here
     }
 
     public function resolveFieldDefinitionStart(
-        \Graphpinator\Value\ArgumentValueSet $arguments,
-        \Graphpinator\Value\ResolvedValue $parentValue,
+        ArgumentValueSet $arguments,
+        ResolvedValue $parentValue,
     ) : void
     {
         // nothing here
     }
 
     public function resolveFieldDefinitionBefore(
-        \Graphpinator\Value\ArgumentValueSet $arguments,
+        ArgumentValueSet $arguments,
         \Graphpinator\Value\ResolvedValue $parentValue,
-        \Graphpinator\Value\ArgumentValueSet $fieldArguments,
+        ArgumentValueSet $fieldArguments,
     ) : void
     {
         // nothing here
     }
 
     public function resolveFieldDefinitionAfter(
-        \Graphpinator\Value\ArgumentValueSet $arguments,
+        ArgumentValueSet $arguments,
         \Graphpinator\Value\ResolvedValue $resolvedValue,
-        \Graphpinator\Value\ArgumentValueSet $fieldArguments,
+        ArgumentValueSet $fieldArguments,
     ) : void
     {
         // nothing here
     }
 
     public function resolveFieldDefinitionValue(
-        \Graphpinator\Value\ArgumentValueSet $arguments,
+        ArgumentValueSet $arguments,
         \Graphpinator\Value\FieldValue $fieldValue,
     ) : void
     {
@@ -69,14 +75,14 @@ final class DeprecatedDirective extends \Graphpinator\Typesystem\Directive imple
 
     public function validateArgumentUsage(
         \Graphpinator\Typesystem\Argument\Argument $argument,
-        \Graphpinator\Value\ArgumentValueSet $arguments,
+        ArgumentValueSet $arguments,
     ) : bool
     {
         return true;
     }
 
     public function resolveArgumentDefinition(
-        \Graphpinator\Value\ArgumentValueSet $arguments,
+        ArgumentValueSet $arguments,
         \Graphpinator\Value\ArgumentValue $argumentValue,
     ) : void
     {

@@ -4,7 +4,9 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem\Location;
 
-interface QueryLocation extends \Graphpinator\Typesystem\Contract\ExecutableDirective
+use \Graphpinator\Typesystem\Contract\ExecutableDirective;
+
+interface QueryLocation extends ExecutableDirective
 {
     public function resolveQueryBefore(
         \Graphpinator\Value\ArgumentValueSet $arguments,

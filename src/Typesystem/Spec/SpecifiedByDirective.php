@@ -4,7 +4,9 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem\Spec;
 
-final class SpecifiedByDirective extends \Graphpinator\Typesystem\Directive implements \Graphpinator\Typesystem\Location\ScalarLocation
+use \Graphpinator\Typesystem\Location\ScalarLocation;
+
+final class SpecifiedByDirective extends \Graphpinator\Typesystem\Directive implements ScalarLocation
 {
     protected const NAME = 'specifiedBy';
     protected const DESCRIPTION = 'Built-in specified by directive.';

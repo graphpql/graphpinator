@@ -4,6 +4,13 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Value;
 
+use \Graphpinator\Exception\Value\InvalidValue;
+use \Graphpinator\Exception\Value\ValueCannotBeNull;
+use \Graphpinator\Normalizer\Exception\UnknownArgument;
+use \Graphpinator\Normalizer\Exception\UnknownVariable;
+use \Graphpinator\Normalizer\Exception\VariableInConstContext;
+use \Graphpinator\Typesystem\NotNullType;
+
 final class ConvertParserValueVisitor implements \Graphpinator\Parser\Value\ValueVisitor
 {
     use \Nette\SmartObject;
@@ -23,7 +30,7 @@ final class ConvertParserValueVisitor implements \Graphpinator\Parser\Value\Valu
 
     public function visitEnumLiteral(\Graphpinator\Parser\Value\EnumLiteral $enumLiteral) : \Graphpinator\Value\InputedValue
     {
-        if ($this->type instanceof \Graphpinator\Typesystem\NotNullType) {
+        if ($this->type instanceof NotNullType) {
             $this->type = $this->type->getInnerType();
 
             return $enumLiteral->accept($this);
@@ -33,12 +40,12 @@ final class ConvertParserValueVisitor implements \Graphpinator\Parser\Value\Valu
             return $this->type->accept(new ConvertRawValueVisitor($enumLiteral->getRawValue(), $this->path));
         }
 
-        throw new \Graphpinator\Exception\Value\InvalidValue($this->type->printName(), $enumLiteral->getRawValue(), true);
+        throw new InvalidValue($this->type->printName(), $enumLiteral->getRawValue(), true);
     }
 
     public function visitListVal(\Graphpinator\Parser\Value\ListVal $listVal) : \Graphpinator\Value\ListInputedValue
     {
-        if ($this->type instanceof \Graphpinator\Typesystem\NotNullType) {
+        if ($this->type instanceof NotNullType) {
             $this->type = $this->type->getInnerType();
 
             return $listVal->accept($this);
@@ -66,7 +73,7 @@ final class ConvertParserValueVisitor implements \Graphpinator\Parser\Value\Valu
 
     public function visitObjectVal(\Graphpinator\Parser\Value\ObjectVal $objectVal) : \Graphpinator\Value\InputValue
     {
-        if ($this->type instanceof \Graphpinator\Typesystem\NotNullType) {
+        if ($this->type instanceof NotNullType) {
             $this->type = $this->type->getInnerType();
 
             return $objectVal->accept($this);
@@ -81,7 +88,7 @@ final class ConvertParserValueVisitor implements \Graphpinator\Parser\Value\Valu
                 continue;
             }
 
-            throw new \Graphpinator\Normalizer\Exception\UnknownArgument($name);
+            throw new UnknownArgument($name);
         }
 
         $inner = new \stdClass();
@@ -104,8 +111,8 @@ final class ConvertParserValueVisitor implements \Graphpinator\Parser\Value\Valu
 
             if ($default instanceof ArgumentValue) {
                 $inner->{$argument->getName()} = $default;
-            } elseif ($argument->getType() instanceof \Graphpinator\Typesystem\NotNullType) {
-                throw new \Graphpinator\Exception\Value\ValueCannotBeNull(false);
+            } elseif ($argument->getType() instanceof NotNullType) {
+                throw new ValueCannotBeNull(false);
             }
 
             $this->path->pop();
@@ -119,9 +126,9 @@ final class ConvertParserValueVisitor implements \Graphpinator\Parser\Value\Valu
         if ($this->variableSet instanceof \Graphpinator\Normalizer\Variable\VariableSet) {
             return $this->variableSet->offsetExists($variableRef->getVarName())
                 ? new \Graphpinator\Value\VariableValue($this->type, $this->variableSet->offsetGet($variableRef->getVarName()))
-                : throw new \Graphpinator\Normalizer\Exception\UnknownVariable($variableRef->getVarName());
+                : throw new UnknownVariable($variableRef->getVarName());
         }
 
-        throw new \Graphpinator\Normalizer\Exception\VariableInConstContext();
+        throw new VariableInConstContext();
     }
 }

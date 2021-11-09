@@ -4,7 +4,12 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Normalizer\RefinerModule;
 
-final class DuplicateFragmentSpreadModule implements RefinerModule, \Graphpinator\Normalizer\Selection\SelectionVisitor
+use \Graphpinator\Normalizer\Selection\FragmentSpread;
+use \Graphpinator\Normalizer\Selection\InlineFragment;
+use \Graphpinator\Normalizer\Selection\SelectionSet;
+use \Graphpinator\Normalizer\Selection\SelectionVisitor;
+
+final class DuplicateFragmentSpreadModule implements RefinerModule, SelectionVisitor
 {
     use \Nette\SmartObject;
 
@@ -12,7 +17,7 @@ final class DuplicateFragmentSpreadModule implements RefinerModule, \Graphpinato
     private int $index;
 
     public function __construct(
-        private \Graphpinator\Normalizer\Selection\SelectionSet $selections,
+        private SelectionSet $selections,
     )
     {
     }
@@ -33,7 +38,7 @@ final class DuplicateFragmentSpreadModule implements RefinerModule, \Graphpinato
     }
 
     public function visitFragmentSpread(
-        \Graphpinator\Normalizer\Selection\FragmentSpread $fragmentSpread,
+        FragmentSpread $fragmentSpread,
     ) : mixed
     {
         if (!\array_key_exists($fragmentSpread->getName(), $this->visitedFragments)) {
@@ -49,7 +54,7 @@ final class DuplicateFragmentSpreadModule implements RefinerModule, \Graphpinato
     }
 
     public function visitInlineFragment(
-        \Graphpinator\Normalizer\Selection\InlineFragment $inlineFragment,
+        InlineFragment $inlineFragment,
     ) : mixed
     {
         $oldSelections = $this->selections;

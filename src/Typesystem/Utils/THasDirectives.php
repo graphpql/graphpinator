@@ -4,11 +4,13 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem\Utils;
 
+use \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet;
+
 trait THasDirectives
 {
-    protected \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet $directiveUsages;
+    protected DirectiveUsageSet $directiveUsages;
 
-    public function getDirectiveUsages() : \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet
+    public function getDirectiveUsages() : DirectiveUsageSet
     {
         return $this->directiveUsages;
     }

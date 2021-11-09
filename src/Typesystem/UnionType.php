@@ -4,7 +4,13 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem;
 
-abstract class UnionType extends \Graphpinator\Typesystem\Contract\AbstractType
+use \Graphpinator\Typesystem\Contract\AbstractType;
+use \Graphpinator\Typesystem\Contract\NamedTypeVisitor;
+use \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsage;
+use \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet;
+use \Graphpinator\Typesystem\Location\UnionLocation;
+
+abstract class UnionType extends AbstractType
 {
     use \Graphpinator\Typesystem\Utils\TMetaFields;
     use \Graphpinator\Typesystem\Utils\THasDirectives;
@@ -13,7 +19,7 @@ abstract class UnionType extends \Graphpinator\Typesystem\Contract\AbstractType
         protected \Graphpinator\Typesystem\TypeSet $types,
     )
     {
-        $this->directiveUsages = new \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet();
+        $this->directiveUsages = new DirectiveUsageSet();
     }
 
     final public function getTypes() : \Graphpinator\Typesystem\TypeSet
@@ -41,17 +47,17 @@ abstract class UnionType extends \Graphpinator\Typesystem\Contract\AbstractType
         return false;
     }
 
-    final public function accept(\Graphpinator\Typesystem\Contract\NamedTypeVisitor $visitor) : mixed
+    final public function accept(NamedTypeVisitor $visitor) : mixed
     {
         return $visitor->visitUnion($this);
     }
 
     final public function addDirective(
-        \Graphpinator\Typesystem\Location\UnionLocation $directive,
+        UnionLocation $directive,
         array $arguments = [],
     ) : static
     {
-        $this->directiveUsages[] = new \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsage($directive, $arguments);
+        $this->directiveUsages[] = new DirectiveUsage($directive, $arguments);
 
         return $this;
     }

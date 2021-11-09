@@ -4,18 +4,24 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem;
 
+use \Graphpinator\Typesystem\Contract\NamedTypeVisitor;
+use \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsage;
+use \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet;
+use \Graphpinator\Typesystem\EnumItem\EnumItemSet;
+use \Graphpinator\Typesystem\Location\EnumLocation;
+
 abstract class EnumType extends \Graphpinator\Typesystem\Contract\LeafType
 {
     use \Graphpinator\Typesystem\Utils\THasDirectives;
 
     public function __construct(
-        protected \Graphpinator\Typesystem\EnumItem\EnumItemSet $options,
+        protected EnumItemSet $options,
     )
     {
-        $this->directiveUsages = new \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet();
+        $this->directiveUsages = new DirectiveUsageSet();
     }
 
-    final public static function fromConstants() : \Graphpinator\Typesystem\EnumItem\EnumItemSet
+    final public static function fromConstants() : EnumItemSet
     {
         $values = [];
 
@@ -31,15 +37,15 @@ abstract class EnumType extends \Graphpinator\Typesystem\Contract\LeafType
                 : null);
         }
 
-        return new \Graphpinator\Typesystem\EnumItem\EnumItemSet($values);
+        return new EnumItemSet($values);
     }
 
-    final public function getItems() : \Graphpinator\Typesystem\EnumItem\EnumItemSet
+    final public function getItems() : EnumItemSet
     {
         return $this->options;
     }
 
-    final public function accept(\Graphpinator\Typesystem\Contract\NamedTypeVisitor $visitor) : mixed
+    final public function accept(NamedTypeVisitor $visitor) : mixed
     {
         return $visitor->visitEnum($this);
     }
@@ -50,11 +56,11 @@ abstract class EnumType extends \Graphpinator\Typesystem\Contract\LeafType
     }
 
     final public function addDirective(
-        \Graphpinator\Typesystem\Location\EnumLocation $directive,
+        EnumLocation $directive,
         array $arguments = [],
     ) : static
     {
-        $this->directiveUsages[] = new \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsage($directive, $arguments);
+        $this->directiveUsages[] = new DirectiveUsage($directive, $arguments);
 
         return $this;
     }

@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Value;
 
+use \Graphpinator\Typesystem\Location\ObjectLocation;
+
 final class TypeValue implements \Graphpinator\Value\OutputValue
 {
     use \Nette\SmartObject;
@@ -15,7 +17,7 @@ final class TypeValue implements \Graphpinator\Value\OutputValue
     {
         foreach ($type->getDirectiveUsages() as $directive) {
             $directiveDef = $directive->getDirective();
-            \assert($directiveDef instanceof \Graphpinator\Typesystem\Location\ObjectLocation);
+            \assert($directiveDef instanceof ObjectLocation);
             $directiveDef->resolveObject($directive->getArgumentValues(), $this);
         }
     }

@@ -4,18 +4,20 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Normalizer\Directive;
 
+use \Graphpinator\Typesystem\Contract\ExecutableDirective;
+
 final class Directive
 {
     use \Nette\SmartObject;
 
     public function __construct(
-        private \Graphpinator\Typesystem\Contract\ExecutableDirective $directive,
+        private ExecutableDirective $directive,
         private \Graphpinator\Value\ArgumentValueSet $arguments,
     )
     {
     }
 
-    public function getDirective() : \Graphpinator\Typesystem\Contract\ExecutableDirective
+    public function getDirective() : ExecutableDirective
     {
         return $this->directive;
     }

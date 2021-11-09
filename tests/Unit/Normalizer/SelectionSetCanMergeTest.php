@@ -4,55 +4,70 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Unit\Normalizer;
 
+use \Graphpinator\Normalizer\Directive\Directive;
+use \Graphpinator\Normalizer\Directive\DirectiveSet;
+use \Graphpinator\Normalizer\Exception\ConflictingFieldAlias;
+use \Graphpinator\Normalizer\Exception\ConflictingFieldArguments;
+use \Graphpinator\Normalizer\Exception\ConflictingFieldDirectives;
+use \Graphpinator\Normalizer\Exception\ConflictingFieldType;
+use \Graphpinator\Normalizer\Selection\Field as NField;
+use \Graphpinator\Normalizer\Selection\SelectionSet;
+use \Graphpinator\Normalizer\SelectionSetValidator;
+use \Graphpinator\Typesystem\Container;
+use \Graphpinator\Typesystem\Field\Field;
+use \Graphpinator\Value\ArgumentValue;
+use \Graphpinator\Value\ArgumentValueSet;
+use \Graphpinator\Value\ScalarValue;
+
 final class SelectionSetCanMergeTest extends \PHPUnit\Framework\TestCase
 {
     public function testConflictingType() : void
     {
-        $this->expectException(\Graphpinator\Normalizer\Exception\ConflictingFieldType::class);
+        $this->expectException(ConflictingFieldType::class);
 
-        $field1 = new \Graphpinator\Typesystem\Field\Field('field1', \Graphpinator\Typesystem\Container::String());
-        $field2 = new \Graphpinator\Typesystem\Field\Field('field2', \Graphpinator\Typesystem\Container::Int());
-        $set = new \Graphpinator\Normalizer\Selection\SelectionSet([
-            new \Graphpinator\Normalizer\Selection\Field(
+        $field1 = new Field('field1', Container::String());
+        $field2 = new Field('field2', Container::Int());
+        $set = new SelectionSet([
+            new NField(
                 $field1,
                 'someName',
-                new \Graphpinator\Value\ArgumentValueSet(),
-                new \Graphpinator\Normalizer\Directive\DirectiveSet(),
+                new ArgumentValueSet(),
+                new DirectiveSet(),
                 null,
             ),
-            new \Graphpinator\Normalizer\Selection\Field(
+            new NField(
                 $field2,
                 'someName',
-                new \Graphpinator\Value\ArgumentValueSet(),
-                new \Graphpinator\Normalizer\Directive\DirectiveSet(),
+                new ArgumentValueSet(),
+                new DirectiveSet(),
                 null,
             ),
         ]);
 
-        $validator = new \Graphpinator\Normalizer\SelectionSetValidator($set);
+        $validator = new SelectionSetValidator($set);
         $validator->validate();
     }
 
     public function testConflictingAlias() : void
     {
-        $this->expectException(\Graphpinator\Normalizer\Exception\ConflictingFieldAlias::class);
+        $this->expectException(ConflictingFieldAlias::class);
 
-        $field1 = new \Graphpinator\Typesystem\Field\Field('field1', \Graphpinator\Typesystem\Container::String());
-        $field2 = new \Graphpinator\Typesystem\Field\Field('field2', \Graphpinator\Typesystem\Container::String());
+        $field1 = new Field('field1', Container::String());
+        $field2 = new Field('field2', Container::String());
 
-        $validator = new \Graphpinator\Normalizer\SelectionSetValidator(new \Graphpinator\Normalizer\Selection\SelectionSet([
-            new \Graphpinator\Normalizer\Selection\Field(
+        $validator = new SelectionSetValidator(new SelectionSet([
+            new NField(
                 $field1,
                 'someName',
-                new \Graphpinator\Value\ArgumentValueSet(),
-                new \Graphpinator\Normalizer\Directive\DirectiveSet(),
+                new ArgumentValueSet(),
+                new DirectiveSet(),
                 null,
             ),
-            new \Graphpinator\Normalizer\Selection\Field(
+            new NField(
                 $field2,
                 'someName',
-                new \Graphpinator\Value\ArgumentValueSet(),
-                new \Graphpinator\Normalizer\Directive\DirectiveSet(),
+                new ArgumentValueSet(),
+                new DirectiveSet(),
                 null,
             ),
         ]));
@@ -62,36 +77,36 @@ final class SelectionSetCanMergeTest extends \PHPUnit\Framework\TestCase
 
     public function testConflictingArguments() : void
     {
-        $this->expectException(\Graphpinator\Normalizer\Exception\ConflictingFieldArguments::class);
+        $this->expectException(ConflictingFieldArguments::class);
 
-        $field = new \Graphpinator\Typesystem\Field\Field('field1', \Graphpinator\Typesystem\Container::String());
-        $argument = new \Graphpinator\Typesystem\Argument\Argument('argument', \Graphpinator\Typesystem\Container::String());
+        $field = new Field('field1', Container::String());
+        $argument = new \Graphpinator\Typesystem\Argument\Argument('argument', Container::String());
 
-        $validator = new \Graphpinator\Normalizer\SelectionSetValidator(new \Graphpinator\Normalizer\Selection\SelectionSet([
-            new \Graphpinator\Normalizer\Selection\Field(
+        $validator = new SelectionSetValidator(new SelectionSet([
+            new NField(
                 $field,
                 'someName',
-                new \Graphpinator\Value\ArgumentValueSet([
-                    new \Graphpinator\Value\ArgumentValue(
+                new ArgumentValueSet([
+                    new ArgumentValue(
                         $argument,
-                        new \Graphpinator\Value\ScalarValue(\Graphpinator\Typesystem\Container::String(), '123', true),
+                        new ScalarValue(Container::String(), '123', true),
                         true,
                     ),
                 ]),
-                new \Graphpinator\Normalizer\Directive\DirectiveSet(),
+                new DirectiveSet(),
                 null,
             ),
-            new \Graphpinator\Normalizer\Selection\Field(
+            new NField(
                 $field,
                 'someName',
-                new \Graphpinator\Value\ArgumentValueSet([
-                    new \Graphpinator\Value\ArgumentValue(
+                new ArgumentValueSet([
+                    new ArgumentValue(
                         $argument,
-                        new \Graphpinator\Value\ScalarValue(\Graphpinator\Typesystem\Container::String(), '456', true),
+                        new ScalarValue(Container::String(), '456', true),
                         true,
                     ),
                 ]),
-                new \Graphpinator\Normalizer\Directive\DirectiveSet(),
+                new DirectiveSet(),
                 null,
             ),
         ]));
@@ -101,21 +116,21 @@ final class SelectionSetCanMergeTest extends \PHPUnit\Framework\TestCase
 
     public function testConflictingDirectives() : void
     {
-        $this->expectException(\Graphpinator\Normalizer\Exception\ConflictingFieldDirectives::class);
+        $this->expectException(ConflictingFieldDirectives::class);
 
-        $field = new \Graphpinator\Typesystem\Field\Field('field1', \Graphpinator\Typesystem\Container::String());
-        $validator = new \Graphpinator\Normalizer\SelectionSetValidator(new \Graphpinator\Normalizer\Selection\SelectionSet([
-            new \Graphpinator\Normalizer\Selection\Field(
+        $field = new Field('field1', Container::String());
+        $validator = new SelectionSetValidator(new SelectionSet([
+            new NField(
                 $field,
                 'someName',
-                new \Graphpinator\Value\ArgumentValueSet(),
-                new \Graphpinator\Normalizer\Directive\DirectiveSet([
-                    new \Graphpinator\Normalizer\Directive\Directive(
-                        \Graphpinator\Typesystem\Container::directiveSkip(),
-                        new \Graphpinator\Value\ArgumentValueSet([
-                            new \Graphpinator\Value\ArgumentValue(
-                                \Graphpinator\Typesystem\Container::directiveSkip()->getArguments()['if'],
-                                new \Graphpinator\Value\ScalarValue(\Graphpinator\Typesystem\Container::Boolean(), false, true),
+                new ArgumentValueSet(),
+                new DirectiveSet([
+                    new Directive(
+                        Container::directiveSkip(),
+                        new ArgumentValueSet([
+                            new ArgumentValue(
+                                Container::directiveSkip()->getArguments()['if'],
+                                new ScalarValue(Container::Boolean(), false, true),
                                 true,
                             ),
                         ]),
@@ -123,17 +138,17 @@ final class SelectionSetCanMergeTest extends \PHPUnit\Framework\TestCase
                 ]),
                 null,
             ),
-            new \Graphpinator\Normalizer\Selection\Field(
+            new NField(
                 $field,
                 'someName',
-                new \Graphpinator\Value\ArgumentValueSet(),
-                new \Graphpinator\Normalizer\Directive\DirectiveSet([
-                    new \Graphpinator\Normalizer\Directive\Directive(
-                        \Graphpinator\Typesystem\Container::directiveInclude(),
-                        new \Graphpinator\Value\ArgumentValueSet([
-                            new \Graphpinator\Value\ArgumentValue(
-                                \Graphpinator\Typesystem\Container::directiveInclude()->getArguments()['if'],
-                                new \Graphpinator\Value\ScalarValue(\Graphpinator\Typesystem\Container::Boolean(), true, true),
+                new ArgumentValueSet(),
+                new DirectiveSet([
+                    new Directive(
+                        Container::directiveInclude(),
+                        new ArgumentValueSet([
+                            new ArgumentValue(
+                                Container::directiveInclude()->getArguments()['if'],
+                                new ScalarValue(Container::Boolean(), true, true),
                                 true,
                             ),
                         ]),
@@ -148,21 +163,21 @@ final class SelectionSetCanMergeTest extends \PHPUnit\Framework\TestCase
 
     public function testConflictingDirectiveArguments() : void
     {
-        $this->expectException(\Graphpinator\Normalizer\Exception\ConflictingFieldDirectives::class);
+        $this->expectException(ConflictingFieldDirectives::class);
 
-        $field = new \Graphpinator\Typesystem\Field\Field('field1', \Graphpinator\Typesystem\Container::String());
-        $validator = new \Graphpinator\Normalizer\SelectionSetValidator(new \Graphpinator\Normalizer\Selection\SelectionSet([
-            new \Graphpinator\Normalizer\Selection\Field(
+        $field = new Field('field1', Container::String());
+        $validator = new SelectionSetValidator(new SelectionSet([
+            new NField(
                 $field,
                 'someName',
-                new \Graphpinator\Value\ArgumentValueSet(),
-                new \Graphpinator\Normalizer\Directive\DirectiveSet([
-                    new \Graphpinator\Normalizer\Directive\Directive(
-                        \Graphpinator\Typesystem\Container::directiveSkip(),
-                        new \Graphpinator\Value\ArgumentValueSet([
-                            new \Graphpinator\Value\ArgumentValue(
-                                \Graphpinator\Typesystem\Container::directiveSkip()->getArguments()['if'],
-                                new \Graphpinator\Value\ScalarValue(\Graphpinator\Typesystem\Container::Boolean(), false, true),
+                new ArgumentValueSet(),
+                new DirectiveSet([
+                    new Directive(
+                        Container::directiveSkip(),
+                        new ArgumentValueSet([
+                            new ArgumentValue(
+                                Container::directiveSkip()->getArguments()['if'],
+                                new ScalarValue(Container::Boolean(), false, true),
                                 true,
                             ),
                         ]),
@@ -170,17 +185,17 @@ final class SelectionSetCanMergeTest extends \PHPUnit\Framework\TestCase
                 ]),
                 null,
             ),
-            new \Graphpinator\Normalizer\Selection\Field(
+            new NField(
                 $field,
                 'someName',
-                new \Graphpinator\Value\ArgumentValueSet(),
-                new \Graphpinator\Normalizer\Directive\DirectiveSet([
-                    new \Graphpinator\Normalizer\Directive\Directive(
-                        \Graphpinator\Typesystem\Container::directiveSkip(),
-                        new \Graphpinator\Value\ArgumentValueSet([
-                            new \Graphpinator\Value\ArgumentValue(
-                                \Graphpinator\Typesystem\Container::directiveSkip()->getArguments()['if'],
-                                new \Graphpinator\Value\ScalarValue(\Graphpinator\Typesystem\Container::Boolean(), true, true),
+                new ArgumentValueSet(),
+                new DirectiveSet([
+                    new Directive(
+                        Container::directiveSkip(),
+                        new ArgumentValueSet([
+                            new ArgumentValue(
+                                Container::directiveSkip()->getArguments()['if'],
+                                new ScalarValue(Container::Boolean(), true, true),
                                 true,
                             ),
                         ]),
@@ -195,21 +210,21 @@ final class SelectionSetCanMergeTest extends \PHPUnit\Framework\TestCase
 
     public function testConflictingDirectiveArguments2() : void
     {
-        $this->expectException(\Graphpinator\Normalizer\Exception\ConflictingFieldDirectives::class);
+        $this->expectException(ConflictingFieldDirectives::class);
 
-        $field = new \Graphpinator\Typesystem\Field\Field('field1', \Graphpinator\Typesystem\Container::String());
-        $validator = new \Graphpinator\Normalizer\SelectionSetValidator(new \Graphpinator\Normalizer\Selection\SelectionSet([
-            new \Graphpinator\Normalizer\Selection\Field(
+        $field = new Field('field1', Container::String());
+        $validator = new SelectionSetValidator(new SelectionSet([
+            new NField(
                 $field,
                 'someName',
-                new \Graphpinator\Value\ArgumentValueSet(),
-                new \Graphpinator\Normalizer\Directive\DirectiveSet([
-                    new \Graphpinator\Normalizer\Directive\Directive(
-                        \Graphpinator\Typesystem\Container::directiveSkip(),
-                        new \Graphpinator\Value\ArgumentValueSet([
-                            new \Graphpinator\Value\ArgumentValue(
-                                \Graphpinator\Typesystem\Container::directiveSkip()->getArguments()['if'],
-                                new \Graphpinator\Value\ScalarValue(\Graphpinator\Typesystem\Container::Boolean(), false, true),
+                new ArgumentValueSet(),
+                new DirectiveSet([
+                    new Directive(
+                        Container::directiveSkip(),
+                        new ArgumentValueSet([
+                            new ArgumentValue(
+                                Container::directiveSkip()->getArguments()['if'],
+                                new ScalarValue(Container::Boolean(), false, true),
                                 true,
                             ),
                         ]),
@@ -217,11 +232,11 @@ final class SelectionSetCanMergeTest extends \PHPUnit\Framework\TestCase
                 ]),
                 null,
             ),
-            new \Graphpinator\Normalizer\Selection\Field(
+            new NField(
                 $field,
                 'someName',
-                new \Graphpinator\Value\ArgumentValueSet(),
-                new \Graphpinator\Normalizer\Directive\DirectiveSet(),
+                new ArgumentValueSet(),
+                new DirectiveSet(),
                 null,
             ),
         ]));
@@ -231,31 +246,31 @@ final class SelectionSetCanMergeTest extends \PHPUnit\Framework\TestCase
 
     public function testConflictingDirectiveArguments3() : void
     {
-        $this->expectException(\Graphpinator\Normalizer\Exception\ConflictingFieldDirectives::class);
+        $this->expectException(ConflictingFieldDirectives::class);
 
-        $field = new \Graphpinator\Typesystem\Field\Field('field1', \Graphpinator\Typesystem\Container::String());
-        $validator = new \Graphpinator\Normalizer\SelectionSetValidator(new \Graphpinator\Normalizer\Selection\SelectionSet([
-            new \Graphpinator\Normalizer\Selection\Field(
+        $field = new Field('field1', Container::String());
+        $validator = new SelectionSetValidator(new SelectionSet([
+            new NField(
                 $field,
                 'someName',
-                new \Graphpinator\Value\ArgumentValueSet(),
-                new \Graphpinator\Normalizer\Directive\DirectiveSet([
-                    new \Graphpinator\Normalizer\Directive\Directive(
-                        \Graphpinator\Typesystem\Container::directiveSkip(),
-                        new \Graphpinator\Value\ArgumentValueSet([
-                            new \Graphpinator\Value\ArgumentValue(
-                                \Graphpinator\Typesystem\Container::directiveSkip()->getArguments()['if'],
-                                new \Graphpinator\Value\ScalarValue(\Graphpinator\Typesystem\Container::Boolean(), true, true),
+                new ArgumentValueSet(),
+                new DirectiveSet([
+                    new Directive(
+                        Container::directiveSkip(),
+                        new ArgumentValueSet([
+                            new ArgumentValue(
+                                Container::directiveSkip()->getArguments()['if'],
+                                new ScalarValue(Container::Boolean(), true, true),
                                 true,
                             ),
                         ]),
                     ),
-                    new \Graphpinator\Normalizer\Directive\Directive(
-                        \Graphpinator\Typesystem\Container::directiveInclude(),
-                        new \Graphpinator\Value\ArgumentValueSet([
-                            new \Graphpinator\Value\ArgumentValue(
-                                \Graphpinator\Typesystem\Container::directiveInclude()->getArguments()['if'],
-                                new \Graphpinator\Value\ScalarValue(\Graphpinator\Typesystem\Container::Boolean(), true, true),
+                    new Directive(
+                        Container::directiveInclude(),
+                        new ArgumentValueSet([
+                            new ArgumentValue(
+                                Container::directiveInclude()->getArguments()['if'],
+                                new ScalarValue(Container::Boolean(), true, true),
                                 true,
                             ),
                         ]),
@@ -263,27 +278,27 @@ final class SelectionSetCanMergeTest extends \PHPUnit\Framework\TestCase
                 ]),
                 null,
             ),
-            new \Graphpinator\Normalizer\Selection\Field(
+            new NField(
                 $field,
                 'someName',
-                new \Graphpinator\Value\ArgumentValueSet(),
-                new \Graphpinator\Normalizer\Directive\DirectiveSet([
-                    new \Graphpinator\Normalizer\Directive\Directive(
-                        \Graphpinator\Typesystem\Container::directiveSkip(),
-                        new \Graphpinator\Value\ArgumentValueSet([
-                            new \Graphpinator\Value\ArgumentValue(
-                                \Graphpinator\Typesystem\Container::directiveSkip()->getArguments()['if'],
-                                new \Graphpinator\Value\ScalarValue(\Graphpinator\Typesystem\Container::Boolean(), true, true),
+                new ArgumentValueSet(),
+                new DirectiveSet([
+                    new Directive(
+                        Container::directiveSkip(),
+                        new ArgumentValueSet([
+                            new ArgumentValue(
+                                Container::directiveSkip()->getArguments()['if'],
+                                new ScalarValue(Container::Boolean(), true, true),
                                 true,
                             ),
                         ]),
                     ),
-                    new \Graphpinator\Normalizer\Directive\Directive(
-                        \Graphpinator\Typesystem\Container::directiveInclude(),
-                        new \Graphpinator\Value\ArgumentValueSet([
-                            new \Graphpinator\Value\ArgumentValue(
-                                \Graphpinator\Typesystem\Container::directiveInclude()->getArguments()['if'],
-                                new \Graphpinator\Value\ScalarValue(\Graphpinator\Typesystem\Container::Boolean(), false, true),
+                    new Directive(
+                        Container::directiveInclude(),
+                        new ArgumentValueSet([
+                            new ArgumentValue(
+                                Container::directiveInclude()->getArguments()['if'],
+                                new ScalarValue(Container::Boolean(), false, true),
                                 true,
                             ),
                         ]),

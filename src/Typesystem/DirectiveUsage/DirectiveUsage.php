@@ -4,20 +4,25 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem\DirectiveUsage;
 
+use \Graphpinator\Typesystem\Contract\ComponentVisitor;
+use \Graphpinator\Typesystem\Contract\TypeSystemDirective;
+use \Graphpinator\Typesystem\Exception\DirectiveUsageArgumentsInvalidMap;
+use \Graphpinator\Value\ArgumentValueSet;
+
 final class DirectiveUsage implements \Graphpinator\Typesystem\Contract\Component
 {
     use \Nette\SmartObject;
 
-    private \Graphpinator\Value\ArgumentValueSet $argumentValues;
+    private ArgumentValueSet $argumentValues;
 
     public function __construct(
-        private \Graphpinator\Typesystem\Contract\TypeSystemDirective $directive,
+        private TypeSystemDirective $directive,
         array $arguments,
     )
     {
         // replace with \array_is_list() for PHP 8.1
         if (\count($arguments) > 0 && \array_key_first($arguments) === 0) {
-            throw new \Graphpinator\Typesystem\Exception\DirectiveUsageArgumentsInvalidMap();
+            throw new DirectiveUsageArgumentsInvalidMap();
         }
 
         $this->argumentValues = new \Graphpinator\Value\ArgumentValueSet(
@@ -29,7 +34,7 @@ final class DirectiveUsage implements \Graphpinator\Typesystem\Contract\Componen
         );
     }
 
-    public function getDirective() : \Graphpinator\Typesystem\Contract\TypeSystemDirective
+    public function getDirective() : TypeSystemDirective
     {
         return $this->directive;
     }
@@ -39,7 +44,7 @@ final class DirectiveUsage implements \Graphpinator\Typesystem\Contract\Componen
         return $this->argumentValues;
     }
 
-    public function accept(\Graphpinator\Typesystem\Contract\ComponentVisitor $visitor) : mixed
+    public function accept(ComponentVisitor $visitor) : mixed
     {
         return $visitor->visitDirectiveUsage($this);
     }

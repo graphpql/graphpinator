@@ -4,7 +4,9 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem\Location;
 
-interface InlineFragmentLocation extends \Graphpinator\Typesystem\Contract\ExecutableDirective
+use \Graphpinator\Typesystem\Contract\ExecutableDirective;
+
+interface InlineFragmentLocation extends ExecutableDirective
 {
     public function resolveInlineFragmentBefore(
         \Graphpinator\Value\ArgumentValueSet $arguments,

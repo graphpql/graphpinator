@@ -4,6 +4,9 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Spec;
 
+use \Graphpinator\Exception\Value\ValueCannotBeNull;
+use \Graphpinator\Normalizer\Exception\UnknownVariable;
+use \Graphpinator\Request\Exception\VariablesNotObject;
 use \Infinityloop\Utils\Json;
 
 final class InputTest extends \PHPUnit\Framework\TestCase
@@ -280,19 +283,19 @@ final class InputTest extends \PHPUnit\Framework\TestCase
                     'query' => 'query queryName ($var1: Int = 123) { fieldAbc { fieldXyz { name } } }',
                     'variables' => ['var1' => '123'],
                 ]),
-                \Graphpinator\Request\Exception\VariablesNotObject::class,
+                VariablesNotObject::class,
             ],
             [
                 Json::fromNative((object) [
                     'query' => 'query queryName ($var1: Int!) { fieldAbc { fieldXyz { name } } }',
                 ]),
-                \Graphpinator\Exception\Value\ValueCannotBeNull::class,
+                ValueCannotBeNull::class,
             ],
             [
                 Json::fromNative((object) [
                     'query' => 'query queryName { fieldAbc { fieldXyz(arg1: $varNonExistent) { name } } }',
                 ]),
-                \Graphpinator\Normalizer\Exception\UnknownVariable::class,
+                UnknownVariable::class,
             ],
         ];
     }

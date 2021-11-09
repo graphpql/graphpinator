@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem\Contract;
 
-abstract class LeafType extends \Graphpinator\Typesystem\Contract\ConcreteType implements
+abstract class LeafType extends ConcreteType implements
     \Graphpinator\Typesystem\Contract\Inputable,
     \Graphpinator\Typesystem\Contract\Outputable
 {

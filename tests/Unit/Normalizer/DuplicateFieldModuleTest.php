@@ -4,52 +4,60 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Unit\Normalizer;
 
+use \Graphpinator\Normalizer\Directive\DirectiveSet;
+use \Graphpinator\Normalizer\Selection\Field as NField;
+use \Graphpinator\Normalizer\Selection\SelectionSet;
+use \Graphpinator\Normalizer\SelectionSetRefiner;
+use \Graphpinator\Typesystem\Container;
+use \Graphpinator\Typesystem\Field\Field;
+use \Graphpinator\Value\ArgumentValueSet;
+
 final class DuplicateFieldModuleTest extends \PHPUnit\Framework\TestCase
 {
     public function testSingleField() : void
     {
-        $field = new \Graphpinator\Typesystem\Field\Field('fieldName', \Graphpinator\Typesystem\Container::String());
-        $set = new \Graphpinator\Normalizer\Selection\SelectionSet([
-            new \Graphpinator\Normalizer\Selection\Field(
+        $field = new Field('fieldName', Container::String());
+        $set = new SelectionSet([
+            new NField(
                 $field,
                 'someName',
-                new \Graphpinator\Value\ArgumentValueSet(),
-                new \Graphpinator\Normalizer\Directive\DirectiveSet(),
+                new ArgumentValueSet(),
+                new DirectiveSet(),
                 null,
             ),
-            new \Graphpinator\Normalizer\Selection\Field(
+            new NField(
                 $field,
                 'someOtherName',
-                new \Graphpinator\Value\ArgumentValueSet(),
-                new \Graphpinator\Normalizer\Directive\DirectiveSet(),
+                new ArgumentValueSet(),
+                new DirectiveSet(),
                 null,
             ),
         ]);
 
-        $refiner = new \Graphpinator\Normalizer\SelectionSetRefiner($set);
+        $refiner = new SelectionSetRefiner($set);
         $refiner->refine();
 
         self::assertCount(2, $set);
-        self::assertInstanceOf(\Graphpinator\Normalizer\Selection\Field::class, $set->offsetGet(0));
-        self::assertInstanceOf(\Graphpinator\Normalizer\Selection\Field::class, $set->offsetGet(1));
+        self::assertInstanceOf(NField::class, $set->offsetGet(0));
+        self::assertInstanceOf(NField::class, $set->offsetGet(1));
     }
 
     public function testDuplicateField() : void
     {
         $field = new \Graphpinator\Typesystem\Field\Field('fieldName', \Graphpinator\Typesystem\Container::String());
-        $set = new \Graphpinator\Normalizer\Selection\SelectionSet([
-            new \Graphpinator\Normalizer\Selection\Field(
+        $set = new SelectionSet([
+            new NField(
                 $field,
                 'someName',
-                new \Graphpinator\Value\ArgumentValueSet(),
-                new \Graphpinator\Normalizer\Directive\DirectiveSet(),
+                new ArgumentValueSet(),
+                new DirectiveSet(),
                 null,
             ),
-            new \Graphpinator\Normalizer\Selection\Field(
+            new NField(
                 $field,
                 'someName',
-                new \Graphpinator\Value\ArgumentValueSet(),
-                new \Graphpinator\Normalizer\Directive\DirectiveSet(),
+                new ArgumentValueSet(),
+                new DirectiveSet(),
                 null,
             ),
         ]);
@@ -58,40 +66,40 @@ final class DuplicateFieldModuleTest extends \PHPUnit\Framework\TestCase
         $refiner->refine();
 
         self::assertCount(1, $set);
-        self::assertInstanceOf(\Graphpinator\Normalizer\Selection\Field::class, $set->offsetGet(0));
+        self::assertInstanceOf(NField::class, $set->offsetGet(0));
     }
 
     public function testInnerField() : void
     {
         $field = new \Graphpinator\Typesystem\Field\Field('fieldName', \Graphpinator\Typesystem\Container::String());
-        $set = new \Graphpinator\Normalizer\Selection\SelectionSet([
-            new \Graphpinator\Normalizer\Selection\Field(
+        $set = new SelectionSet([
+            new NField(
                 $field,
                 'fieldName',
-                new \Graphpinator\Value\ArgumentValueSet(),
-                new \Graphpinator\Normalizer\Directive\DirectiveSet(),
-                new \Graphpinator\Normalizer\Selection\SelectionSet([
-                    new \Graphpinator\Normalizer\Selection\Field(
+                new ArgumentValueSet(),
+                new DirectiveSet(),
+                new SelectionSet([
+                    new NField(
                         $field,
                         'field1',
-                        new \Graphpinator\Value\ArgumentValueSet(),
-                        new \Graphpinator\Normalizer\Directive\DirectiveSet(),
-                        new \Graphpinator\Normalizer\Selection\SelectionSet([]),
+                        new ArgumentValueSet(),
+                        new DirectiveSet(),
+                        new SelectionSet([]),
                     ),
                 ]),
             ),
-            new \Graphpinator\Normalizer\Selection\Field(
+            new NField(
                 $field,
                 'fieldName',
-                new \Graphpinator\Value\ArgumentValueSet(),
-                new \Graphpinator\Normalizer\Directive\DirectiveSet(),
-                new \Graphpinator\Normalizer\Selection\SelectionSet([
-                    new \Graphpinator\Normalizer\Selection\Field(
+                new ArgumentValueSet(),
+                new DirectiveSet(),
+                new SelectionSet([
+                    new NField(
                         $field,
                         'field2',
-                        new \Graphpinator\Value\ArgumentValueSet(),
-                        new \Graphpinator\Normalizer\Directive\DirectiveSet(),
-                        new \Graphpinator\Normalizer\Selection\SelectionSet([]),
+                        new ArgumentValueSet(),
+                        new DirectiveSet(),
+                        new SelectionSet([]),
                     ),
                 ]),
             ),
@@ -101,7 +109,7 @@ final class DuplicateFieldModuleTest extends \PHPUnit\Framework\TestCase
         $refiner->refine();
 
         self::assertCount(1, $set);
-        self::assertInstanceOf(\Graphpinator\Normalizer\Selection\Field::class, $set->offsetGet(0));
+        self::assertInstanceOf(NField::class, $set->offsetGet(0));
         self::assertCount(2, $set->offsetGet(0)->getSelections());
     }
 }

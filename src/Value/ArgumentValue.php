@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Value;
 
+use \Graphpinator\Typesystem\Location\ArgumentDefinitionLocation;
+
 final class ArgumentValue
 {
     use \Nette\SmartObject;
@@ -41,7 +43,7 @@ final class ArgumentValue
     {
         foreach ($this->argument->getDirectiveUsages() as $directiveUsage) {
             $directive = $directiveUsage->getDirective();
-            \assert($directive instanceof \Graphpinator\Typesystem\Location\ArgumentDefinitionLocation);
+            \assert($directive instanceof ArgumentDefinitionLocation);
 
             if ($directive::isPure()) {
                 $directive->resolveArgumentDefinition($directiveUsage->getArgumentValues(), $this);
@@ -55,7 +57,7 @@ final class ArgumentValue
 
         foreach ($this->argument->getDirectiveUsages() as $directiveUsage) {
             $directive = $directiveUsage->getDirective();
-            \assert($directive instanceof \Graphpinator\Typesystem\Location\ArgumentDefinitionLocation);
+            \assert($directive instanceof ArgumentDefinitionLocation);
 
             if (!$directive::isPure()) {
                 $directive->resolveArgumentDefinition($directiveUsage->getArgumentValues(), $this);

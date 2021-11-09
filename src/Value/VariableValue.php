@@ -4,7 +4,9 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Value;
 
-final class VariableValue implements \Graphpinator\Value\InputedValue
+use \Graphpinator\Normalizer\Exception\VariableTypeMismatch;
+
+final class VariableValue implements InputedValue
 {
     use \Nette\SmartObject;
 
@@ -17,7 +19,7 @@ final class VariableValue implements \Graphpinator\Value\InputedValue
     {
         // flipped because of contravariance, isInstanceOf is covariant
         if (!$type->isInstanceOf($variable->getType())) {
-            throw new \Graphpinator\Normalizer\Exception\VariableTypeMismatch();
+            throw new VariableTypeMismatch();
         }
     }
 

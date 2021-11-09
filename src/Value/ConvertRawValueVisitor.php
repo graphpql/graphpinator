@@ -4,6 +4,10 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Value;
 
+use \Graphpinator\Exception\Value\ValueCannotBeNull;
+use \Graphpinator\Exception\Value\ValueCannotBeOmitted;
+use \Graphpinator\Normalizer\Exception\UnknownArgument;
+
 final class ConvertRawValueVisitor implements \Graphpinator\Typesystem\Contract\TypeVisitor
 {
     use \Nette\SmartObject;
@@ -29,7 +33,7 @@ final class ConvertRawValueVisitor implements \Graphpinator\Typesystem\Contract\
                 continue;
             }
 
-            throw new \Graphpinator\Normalizer\Exception\UnknownArgument((string) $name);
+            throw new UnknownArgument((string) $name);
         }
 
         $inner = new \stdClass();
@@ -59,7 +63,7 @@ final class ConvertRawValueVisitor implements \Graphpinator\Typesystem\Contract\
                     false,
                 );
             } elseif ($argument->getType() instanceof \Graphpinator\Typesystem\NotNullType) {
-                throw new \Graphpinator\Exception\Value\ValueCannotBeOmitted();
+                throw new ValueCannotBeOmitted();
             }
 
             $path->pop();
@@ -86,7 +90,7 @@ final class ConvertRawValueVisitor implements \Graphpinator\Typesystem\Contract\
     public function visitInput(\Graphpinator\Typesystem\InputType $input) : InputedValue
     {
         if ($this->rawValue === null) {
-            return new \Graphpinator\Value\NullInputedValue($input);
+            return new NullInputedValue($input);
         }
 
         if (!$this->rawValue instanceof \stdClass) {
@@ -99,7 +103,7 @@ final class ConvertRawValueVisitor implements \Graphpinator\Typesystem\Contract\
     public function visitScalar(\Graphpinator\Typesystem\ScalarType $scalar) : InputedValue
     {
         if ($this->rawValue === null) {
-            return new \Graphpinator\Value\NullInputedValue($scalar);
+            return new NullInputedValue($scalar);
         }
 
         $this->rawValue = $scalar->coerceValue($this->rawValue);
@@ -110,7 +114,7 @@ final class ConvertRawValueVisitor implements \Graphpinator\Typesystem\Contract\
     public function visitEnum(\Graphpinator\Typesystem\EnumType $enum) : InputedValue
     {
         if ($this->rawValue === null) {
-            return new \Graphpinator\Value\NullInputedValue($enum);
+            return new NullInputedValue($enum);
         }
 
         return new \Graphpinator\Value\EnumValue($enum, $this->rawValue, true);
@@ -121,7 +125,7 @@ final class ConvertRawValueVisitor implements \Graphpinator\Typesystem\Contract\
         $value = $notNull->getInnerType()->accept($this);
 
         if ($value instanceof \Graphpinator\Value\NullValue) {
-            throw new \Graphpinator\Exception\Value\ValueCannotBeNull(true);
+            throw new ValueCannotBeNull(true);
         }
 
         return $value;
@@ -130,7 +134,7 @@ final class ConvertRawValueVisitor implements \Graphpinator\Typesystem\Contract\
     public function visitList(\Graphpinator\Typesystem\ListType $list) : InputedValue
     {
         if ($this->rawValue === null) {
-            return new \Graphpinator\Value\NullInputedValue($list);
+            return new NullInputedValue($list);
         }
 
         if (!\is_array($this->rawValue)) {

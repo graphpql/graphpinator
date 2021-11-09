@@ -4,6 +4,18 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem\Utils;
 
+use \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet;
+use \Graphpinator\Typesystem\Exception\ArgumentDirectiveNotContravariant;
+use \Graphpinator\Typesystem\Exception\FieldDirectiveNotCovariant;
+use \Graphpinator\Typesystem\Exception\InterfaceContractArgumentTypeMismatch;
+use \Graphpinator\Typesystem\Exception\InterfaceContractFieldTypeMismatch;
+use \Graphpinator\Typesystem\Exception\InterfaceContractMissingArgument;
+use \Graphpinator\Typesystem\Exception\InterfaceContractMissingField;
+use \Graphpinator\Typesystem\Exception\InterfaceContractNewArgumentWithoutDefault;
+use \Graphpinator\Typesystem\Exception\InterfaceDirectivesNotPreserved;
+use \Graphpinator\Typesystem\Location\ArgumentDefinitionLocation;
+use \Graphpinator\Typesystem\Location\FieldDefinitionLocation;
+
 /**
  * Trait TInterfaceImplementor which is implementation of InterfaceImplementor interface.
  */
@@ -52,7 +64,7 @@ trait TInterfaceImplementor
 
             foreach ($interface->getFields() as $fieldContract) {
                 if (!$this->getFields()->offsetExists($fieldContract->getName())) {
-                    throw new \Graphpinator\Typesystem\Exception\InterfaceContractMissingField(
+                    throw new InterfaceContractMissingField(
                         $this->getName(),
                         $interface->getName(),
                         $fieldContract->getName(),
@@ -62,7 +74,7 @@ trait TInterfaceImplementor
                 $field = $this->getFields()->offsetGet($fieldContract->getName());
 
                 if (!$fieldContract->getType()->isInstanceOf($field->getType())) {
-                    throw new \Graphpinator\Typesystem\Exception\InterfaceContractFieldTypeMismatch(
+                    throw new InterfaceContractFieldTypeMismatch(
                         $this->getName(),
                         $interface->getName(),
                         $fieldContract->getName(),
@@ -72,7 +84,7 @@ trait TInterfaceImplementor
                 try {
                     self::validateCovariance($fieldContract->getDirectiveUsages(), $field->getDirectiveUsages());
                 } catch (\Throwable) {
-                    throw new \Graphpinator\Typesystem\Exception\FieldDirectiveNotCovariant(
+                    throw new FieldDirectiveNotCovariant(
                         $this->getName(),
                         $interface->getName(),
                         $fieldContract->getName(),
@@ -81,7 +93,7 @@ trait TInterfaceImplementor
 
                 foreach ($fieldContract->getArguments() as $argumentContract) {
                     if (!$field->getArguments()->offsetExists($argumentContract->getName())) {
-                        throw new \Graphpinator\Typesystem\Exception\InterfaceContractMissingArgument(
+                        throw new InterfaceContractMissingArgument(
                             $this->getName(),
                             $interface->getName(),
                             $fieldContract->getName(),
@@ -92,7 +104,7 @@ trait TInterfaceImplementor
                     $argument = $field->getArguments()->offsetGet($argumentContract->getName());
 
                     if (!$argument->getType()->isInstanceOf($argumentContract->getType())) {
-                        throw new \Graphpinator\Typesystem\Exception\InterfaceContractArgumentTypeMismatch(
+                        throw new InterfaceContractArgumentTypeMismatch(
                             $this->getName(),
                             $interface->getName(),
                             $fieldContract->getName(),
@@ -103,7 +115,7 @@ trait TInterfaceImplementor
                     try {
                         self::validateContravariance($argumentContract->getDirectiveUsages(), $argument->getDirectiveUsages());
                     } catch (\Throwable) {
-                        throw new \Graphpinator\Typesystem\Exception\ArgumentDirectiveNotContravariant(
+                        throw new ArgumentDirectiveNotContravariant(
                             $this->getName(),
                             $interface->getName(),
                             $fieldContract->getName(),
@@ -118,7 +130,7 @@ trait TInterfaceImplementor
 
                 foreach ($field->getArguments() as $argument) {
                     if (!$fieldContract->getArguments()->offsetExists($argument->getName()) && $argument->getDefaultValue() === null) {
-                        throw new \Graphpinator\Typesystem\Exception\InterfaceContractNewArgumentWithoutDefault(
+                        throw new InterfaceContractNewArgumentWithoutDefault(
                             $this->getName(),
                             $interface->getName(),
                             $field->getName(),
@@ -131,8 +143,8 @@ trait TInterfaceImplementor
     }
 
     private static function validateInvariance(
-        \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet $parent,
-        \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet $child,
+        DirectiveUsageSet $parent,
+        DirectiveUsageSet $child,
     ) : void
     {
         foreach ($parent as $index => $usage) {
@@ -142,37 +154,37 @@ trait TInterfaceImplementor
                 continue;
             }
 
-            throw new \Graphpinator\Typesystem\Exception\InterfaceDirectivesNotPreserved();
+            throw new InterfaceDirectivesNotPreserved();
         }
     }
 
     private static function validateCovariance(
-        \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet $parent,
-        \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet $child,
+        DirectiveUsageSet $parent,
+        DirectiveUsageSet $child,
     ) : void
     {
         self::compareVariance($parent, $child);
     }
 
     private static function validateContravariance(
-        \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet $parent,
-        \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet $child,
+        DirectiveUsageSet $parent,
+        DirectiveUsageSet $child,
     ) : void
     {
         self::compareVariance($child, $parent);
     }
 
     private static function compareVariance(
-        \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet $biggerSet,
-        \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet $smallerSet,
+        DirectiveUsageSet $biggerSet,
+        DirectiveUsageSet $smallerSet,
     ) : void
     {
         $childIndex = 0;
 
         foreach ($biggerSet as $usage) {
             $directive = $usage->getDirective();
-            \assert($directive instanceof \Graphpinator\Typesystem\Location\FieldDefinitionLocation
-                || $directive instanceof \Graphpinator\Typesystem\Location\ArgumentDefinitionLocation);
+            \assert($directive instanceof FieldDefinitionLocation
+                || $directive instanceof ArgumentDefinitionLocation);
 
             if ($smallerSet->offsetExists($childIndex) && $directive instanceof ($smallerSet->offsetGet($childIndex)->getDirective())) {
                 $directive->validateVariance(

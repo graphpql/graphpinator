@@ -4,11 +4,13 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Normalizer\Variable;
 
+use \Graphpinator\Normalizer\Directive\DirectiveSet;
+
 final class Variable
 {
     use \Nette\SmartObject;
 
-    private \Graphpinator\Normalizer\Directive\DirectiveSet $directives;
+    private DirectiveSet $directives;
 
     public function __construct(
         private string $name,
@@ -16,7 +18,7 @@ final class Variable
         private ?\Graphpinator\Value\InputedValue $defaultValue,
     )
     {
-        $this->directives = new \Graphpinator\Normalizer\Directive\DirectiveSet();
+        $this->directives = new DirectiveSet();
     }
 
     public function getName() : string
@@ -34,12 +36,12 @@ final class Variable
         return $this->defaultValue;
     }
 
-    public function setDirectives(\Graphpinator\Normalizer\Directive\DirectiveSet $directives) : void
+    public function setDirectives(DirectiveSet $directives) : void
     {
         $this->directives = $directives;
     }
 
-    public function getDirectives() : \Graphpinator\Normalizer\Directive\DirectiveSet
+    public function getDirectives() : DirectiveSet
     {
         return $this->directives;
     }

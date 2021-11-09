@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem\Location;
 
-interface SchemaLocation extends \Graphpinator\Typesystem\Contract\TypeSystemDirective
+use \Graphpinator\Typesystem\Contract\TypeSystemDirective;
+
+interface SchemaLocation extends TypeSystemDirective
 {
 }

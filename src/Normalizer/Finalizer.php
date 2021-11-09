@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Normalizer;
 
+use \Graphpinator\Typesystem\Location\VariableDefinitionLocation;
+
 final class Finalizer
 {
     use \Nette\SmartObject;
@@ -42,7 +44,7 @@ final class Finalizer
 
             foreach ($variable->getDirectives() as $directive) {
                 $directiveDef = $directive->getDirective();
-                \assert($directiveDef instanceof \Graphpinator\Typesystem\Location\VariableDefinitionLocation);
+                \assert($directiveDef instanceof VariableDefinitionLocation);
                 $directiveDef->resolveVariableDefinition($directive->getArguments(), $value);
             }
 

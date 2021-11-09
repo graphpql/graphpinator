@@ -4,24 +4,26 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Value;
 
+use \Graphpinator\Typesystem\Location\FieldDefinitionLocation;
+
 final class FieldValue implements \JsonSerializable
 {
     use \Nette\SmartObject;
 
     public function __construct(
         private \Graphpinator\Typesystem\Field\Field $field,
-        private \Graphpinator\Value\ResolvedValue $value,
-        private \Graphpinator\Value\ResolvedValue $intermediateValue,
+        private ResolvedValue $value,
+        private ResolvedValue $intermediateValue,
     )
     {
         foreach ($field->getDirectiveUsages() as $directive) {
             $directiveDef = $directive->getDirective();
-            \assert($directiveDef instanceof \Graphpinator\Typesystem\Location\FieldDefinitionLocation);
+            \assert($directiveDef instanceof FieldDefinitionLocation);
             $directiveDef->resolveFieldDefinitionValue($directive->getArgumentValues(), $this);
         }
     }
 
-    public function jsonSerialize() : \Graphpinator\Value\ResolvedValue
+    public function jsonSerialize() : ResolvedValue
     {
         return $this->value;
     }
@@ -31,12 +33,12 @@ final class FieldValue implements \JsonSerializable
         return $this->field;
     }
 
-    public function getValue() : \Graphpinator\Value\ResolvedValue
+    public function getValue() : ResolvedValue
     {
         return $this->value;
     }
 
-    public function getIntermediateValue() : \Graphpinator\Value\ResolvedValue
+    public function getIntermediateValue() : ResolvedValue
     {
         return $this->intermediateValue;
     }

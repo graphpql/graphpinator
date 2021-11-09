@@ -4,11 +4,14 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Resolver;
 
+use \Graphpinator\Normalizer\Selection\SelectionSet;
+use \Graphpinator\Value\ResolvedValue;
+
 final class ResolveVisitor implements \Graphpinator\Typesystem\Contract\TypeVisitor
 {
     public function __construct(
-        private ?\Graphpinator\Normalizer\Selection\SelectionSet $selectionSet,
-        private \Graphpinator\Value\ResolvedValue $parentResult,
+        private ?SelectionSet $selectionSet,
+        private ResolvedValue $parentResult,
         private ?\stdClass $result = null,
     )
     {
@@ -17,7 +20,7 @@ final class ResolveVisitor implements \Graphpinator\Typesystem\Contract\TypeVisi
 
     public function visitType(\Graphpinator\Typesystem\Type $type) : \Graphpinator\Value\TypeValue
     {
-        \assert($this->selectionSet instanceof \Graphpinator\Normalizer\Selection\SelectionSet);
+        \assert($this->selectionSet instanceof SelectionSet);
 
         foreach ($this->selectionSet as $selectionEntity) {
             $selectionEntity->accept(new ResolveSelectionVisitor($this->parentResult, $this->result));
@@ -41,17 +44,17 @@ final class ResolveVisitor implements \Graphpinator\Typesystem\Contract\TypeVisi
         // nothing here
     }
 
-    public function visitScalar(\Graphpinator\Typesystem\ScalarType $scalar) : \Graphpinator\Value\ResolvedValue
+    public function visitScalar(\Graphpinator\Typesystem\ScalarType $scalar) : ResolvedValue
     {
         return $this->parentResult;
     }
 
-    public function visitEnum(\Graphpinator\Typesystem\EnumType $enum) : \Graphpinator\Value\ResolvedValue
+    public function visitEnum(\Graphpinator\Typesystem\EnumType $enum) : ResolvedValue
     {
         return $this->parentResult;
     }
 
-    public function visitNotNull(\Graphpinator\Typesystem\NotNullType $notNull) : \Graphpinator\Value\ResolvedValue
+    public function visitNotNull(\Graphpinator\Typesystem\NotNullType $notNull) : ResolvedValue
     {
         return $notNull->getInnerType()->accept($this);
     }

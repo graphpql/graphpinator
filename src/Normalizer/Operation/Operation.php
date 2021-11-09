@@ -4,6 +4,9 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Normalizer\Operation;
 
+use \Graphpinator\Normalizer\Directive\DirectiveSet;
+use \Graphpinator\Normalizer\Selection\SelectionSet;
+
 final class Operation
 {
     use \Nette\SmartObject;
@@ -12,9 +15,9 @@ final class Operation
         private string $type,
         private ?string $name,
         private \Graphpinator\Typesystem\Type $rootObject,
-        private \Graphpinator\Normalizer\Selection\SelectionSet $children,
+        private SelectionSet $children,
         private \Graphpinator\Normalizer\Variable\VariableSet $variables,
-        private \Graphpinator\Normalizer\Directive\DirectiveSet $directives,
+        private DirectiveSet $directives,
     )
     {
     }
@@ -29,7 +32,7 @@ final class Operation
         return $this->rootObject;
     }
 
-    public function getSelections() : \Graphpinator\Normalizer\Selection\SelectionSet
+    public function getSelections() : SelectionSet
     {
         return $this->children;
     }
@@ -39,7 +42,7 @@ final class Operation
         return $this->variables;
     }
 
-    public function getDirectives() : \Graphpinator\Normalizer\Directive\DirectiveSet
+    public function getDirectives() : DirectiveSet
     {
         return $this->directives;
     }

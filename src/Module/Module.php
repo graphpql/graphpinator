@@ -4,29 +4,33 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Module;
 
+use \Graphpinator\Normalizer\FinalizedRequest;
+use \Graphpinator\Normalizer\NormalizedRequest;
+use \Graphpinator\Parser\ParsedRequest;
+
 interface Module
 {
     public function processRequest(
         \Graphpinator\Request\Request $request,
     ) : \Graphpinator\Request\Request|
-        \Graphpinator\Parser\ParsedRequest|
-        \Graphpinator\Normalizer\NormalizedRequest|
-        \Graphpinator\Normalizer\FinalizedRequest;
+        ParsedRequest|
+        NormalizedRequest|
+        FinalizedRequest;
 
     public function processParsed(
         \Graphpinator\Parser\ParsedRequest $request,
     ) : \Graphpinator\Parser\ParsedRequest|
-        \Graphpinator\Normalizer\NormalizedRequest|
-        \Graphpinator\Normalizer\FinalizedRequest;
+        NormalizedRequest|
+        FinalizedRequest;
 
     public function processNormalized(
-        \Graphpinator\Normalizer\NormalizedRequest $request,
-    ) : \Graphpinator\Normalizer\NormalizedRequest|
-        \Graphpinator\Normalizer\FinalizedRequest;
+        NormalizedRequest $request,
+    ) : NormalizedRequest|
+        FinalizedRequest;
 
     public function processFinalized(
-        \Graphpinator\Normalizer\FinalizedRequest $request,
-    ) : \Graphpinator\Normalizer\FinalizedRequest;
+        FinalizedRequest $request,
+    ) : FinalizedRequest;
 
     public function processResult(
         \Graphpinator\Result $result,

@@ -4,15 +4,18 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Normalizer\Selection;
 
+use \Graphpinator\Normalizer\Directive\DirectiveSet;
+use \Graphpinator\Typesystem\Contract\TypeConditionable;
+
 final class FragmentSpread implements \Graphpinator\Normalizer\Selection\Selection
 {
     use \Nette\SmartObject;
 
     public function __construct(
         private string $name,
-        private \Graphpinator\Normalizer\Selection\SelectionSet $children,
-        private \Graphpinator\Normalizer\Directive\DirectiveSet $directives,
-        private \Graphpinator\Typesystem\Contract\TypeConditionable $typeCondition,
+        private SelectionSet $children,
+        private DirectiveSet $directives,
+        private TypeConditionable $typeCondition,
     )
     {
     }
@@ -22,17 +25,17 @@ final class FragmentSpread implements \Graphpinator\Normalizer\Selection\Selecti
         return $this->name;
     }
 
-    public function getSelections() : \Graphpinator\Normalizer\Selection\SelectionSet
+    public function getSelections() : SelectionSet
     {
         return $this->children;
     }
 
-    public function getTypeCondition() : \Graphpinator\Typesystem\Contract\TypeConditionable
+    public function getTypeCondition() : TypeConditionable
     {
         return $this->typeCondition;
     }
 
-    public function getDirectives() : \Graphpinator\Normalizer\Directive\DirectiveSet
+    public function getDirectives() : DirectiveSet
     {
         return $this->directives;
     }

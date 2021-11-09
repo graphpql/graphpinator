@@ -4,16 +4,21 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Feature;
 
+use \Graphpinator\Typesystem\Exception\RootOperationTypesMustBeDifferent;
+use \Graphpinator\Typesystem\Field\ResolvableField;
+use \Graphpinator\Typesystem\Field\ResolvableFieldSet;
+use \Graphpinator\Typesystem\Schema;
+
 final class RootOperationTypesMustBeDifferentTest extends \PHPUnit\Framework\TestCase
 {
     public function testAllSame() : void
     {
-        $this->expectException(\Graphpinator\Typesystem\Exception\RootOperationTypesMustBeDifferent::class);
+        $this->expectException(RootOperationTypesMustBeDifferent::class);
         $this->expectExceptionMessage('The query, mutation, and subscription root types must all be different types if provided.');
 
         $query = $this->getQuery();
 
-        new \Graphpinator\Typesystem\Schema(
+        new Schema(
             $this->getContainer(),
             $query,
             $query,
@@ -23,10 +28,10 @@ final class RootOperationTypesMustBeDifferentTest extends \PHPUnit\Framework\Tes
 
     public function testQueryMutation() : void
     {
-        $this->expectException(\Graphpinator\Typesystem\Exception\RootOperationTypesMustBeDifferent::class);
+        $this->expectException(RootOperationTypesMustBeDifferent::class);
         $query = $this->getQuery();
 
-        new \Graphpinator\Typesystem\Schema(
+        new Schema(
             $this->getContainer(),
             $query,
             $query,
@@ -36,10 +41,10 @@ final class RootOperationTypesMustBeDifferentTest extends \PHPUnit\Framework\Tes
 
     public function testQuerySubscription() : void
     {
-        $this->expectException(\Graphpinator\Typesystem\Exception\RootOperationTypesMustBeDifferent::class);
+        $this->expectException(RootOperationTypesMustBeDifferent::class);
         $query = $this->getQuery();
 
-        new \Graphpinator\Typesystem\Schema(
+        new Schema(
             $this->getContainer(),
             $query,
             null,
@@ -49,11 +54,11 @@ final class RootOperationTypesMustBeDifferentTest extends \PHPUnit\Framework\Tes
 
     public function testMutationSubscription() : void
     {
-        $this->expectException(\Graphpinator\Typesystem\Exception\RootOperationTypesMustBeDifferent::class);
+        $this->expectException(RootOperationTypesMustBeDifferent::class);
         $query = $this->getQuery();
         $secondQuery = $this->getQuery();
 
-        new \Graphpinator\Typesystem\Schema(
+        new Schema(
             $this->getContainer(),
             $query,
             $secondQuery,
@@ -76,10 +81,10 @@ final class RootOperationTypesMustBeDifferentTest extends \PHPUnit\Framework\Tes
                 return true;
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
+            protected function getFieldDefinition() : ResolvableFieldSet
             {
-                return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
-                    new \Graphpinator\Typesystem\Field\ResolvableField(
+                return new ResolvableFieldSet([
+                    new ResolvableField(
                         'field',
                         \Graphpinator\Typesystem\Container::Int(),
                         static function () : int {

@@ -4,6 +4,9 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Feature;
 
+use \Graphpinator\Typesystem\Exception\InterfaceOrTypeMustDefineOneOrMoreFields;
+use \Graphpinator\Typesystem\Field\ResolvableFieldSet;
+
 final class TypeMustDefineOneOrMoreFieldsTest extends \PHPUnit\Framework\TestCase
 {
     public static function getTypeMustDefineOneOrMoreFieldsType() : \Graphpinator\Typesystem\Type
@@ -16,16 +19,16 @@ final class TypeMustDefineOneOrMoreFieldsTest extends \PHPUnit\Framework\TestCas
                 return true;
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
+            protected function getFieldDefinition() : ResolvableFieldSet
             {
-                return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([]);
+                return new ResolvableFieldSet([]);
             }
         };
     }
 
     public function testTypeMustDefineOneOrMoreFields() : void
     {
-        $this->expectException(\Graphpinator\Typesystem\Exception\InterfaceOrTypeMustDefineOneOrMoreFields::class);
+        $this->expectException(InterfaceOrTypeMustDefineOneOrMoreFields::class);
         $this->expectExceptionMessage('An Object type or interface must define one or more fields.');
 
         self::getTypeMustDefineOneOrMoreFieldsType()->getFields();

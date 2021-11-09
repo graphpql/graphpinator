@@ -4,6 +4,10 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Request;
 
+use \Graphpinator\Request\Exception\OperationNameNotString;
+use \Graphpinator\Request\Exception\QueryNotString;
+use \Graphpinator\Request\Exception\VariablesNotObject;
+
 final class JsonRequestFactory implements \Graphpinator\Request\RequestFactory
 {
     use \Nette\SmartObject;
@@ -31,15 +35,15 @@ final class JsonRequestFactory implements \Graphpinator\Request\RequestFactory
         }
 
         if (!\is_string($this->json[self::QUERY])) {
-            throw new \Graphpinator\Request\Exception\QueryNotString();
+            throw new QueryNotString();
         }
 
         if (isset($this->json[self::VARIABLES]) && !$this->json[self::VARIABLES] instanceof \stdClass) {
-            throw new \Graphpinator\Request\Exception\VariablesNotObject();
+            throw new VariablesNotObject();
         }
 
         if (isset($this->json[self::OPERATION_NAME]) && !\is_string($this->json[self::OPERATION_NAME])) {
-            throw new \Graphpinator\Request\Exception\OperationNameNotString();
+            throw new OperationNameNotString();
         }
 
         if ($this->strict) {

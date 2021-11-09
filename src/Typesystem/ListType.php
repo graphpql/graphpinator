@@ -4,7 +4,9 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem;
 
-final class ListType extends \Graphpinator\Typesystem\Contract\ModifierType
+use \Graphpinator\Typesystem\Contract\ModifierType;
+
+final class ListType extends ModifierType
 {
     public function isInstanceOf(\Graphpinator\Typesystem\Contract\Type $type) : bool
     {

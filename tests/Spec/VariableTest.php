@@ -4,6 +4,10 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Spec;
 
+use \Graphpinator\Exception\Value\ValueCannotBeNull;
+use \Graphpinator\Normalizer\Exception\UnknownVariable;
+use \Graphpinator\Normalizer\Exception\VariableTypeInputable;
+use \Graphpinator\Request\Exception\VariablesNotObject;
 use \Infinityloop\Utils\Json;
 
 final class VariableTest extends \PHPUnit\Framework\TestCase
@@ -77,35 +81,35 @@ final class VariableTest extends \PHPUnit\Framework\TestCase
                     'query' => 'query queryName ($var1: Int = "123") { fieldAbc { fieldXyz { name } } }',
                     'variables' => ['var1' => '123'],
                 ]),
-                \Graphpinator\Request\Exception\VariablesNotObject::class,
+                VariablesNotObject::class,
             ],
             [
                 Json::fromNative((object) [
                     'query' => 'query queryName ($var1: Int!) { fieldAbc { fieldXyz { name } } }',
                     'variables' => (object) [],
                 ]),
-                \Graphpinator\Exception\Value\ValueCannotBeNull::class,
+                ValueCannotBeNull::class,
             ],
             [
                 Json::fromNative((object) [
                     'query' => 'query queryName ($var1: Abc) { fieldAbc { fieldXyz { name } } }',
                     'variables' => (object) [],
                 ]),
-                \Graphpinator\Normalizer\Exception\VariableTypeInputable::class,
+                VariableTypeInputable::class,
             ],
             [
                 Json::fromNative((object) [
                     'query' => 'query queryName ($var1: Abc!) { fieldAbc { fieldXyz { name } } }',
                     'variables' => (object) [],
                 ]),
-                \Graphpinator\Normalizer\Exception\VariableTypeInputable::class,
+                VariableTypeInputable::class,
             ],
             [
                 Json::fromNative((object) [
                     'query' => 'query queryName { fieldAbc { fieldXyz(arg1: $varNonExistent) { name } } }',
                     'variables' => (object) [],
                 ]),
-                \Graphpinator\Normalizer\Exception\UnknownVariable::class,
+                UnknownVariable::class,
             ],
         ];
     }

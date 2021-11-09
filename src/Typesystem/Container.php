@@ -4,6 +4,10 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem;
 
+use \Graphpinator\Typesystem\Spec\DeprecatedDirective;
+use \Graphpinator\Typesystem\Spec\IncludeDirective;
+use \Graphpinator\Typesystem\Spec\SpecifiedByDirective;
+
 /**
  * Class Container which is responsible for fetching instances of type classes.
  * @phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
@@ -114,10 +118,10 @@ abstract class Container
     /**
      * Built-in Include directive.
      */
-    public static function directiveInclude() : \Graphpinator\Typesystem\Spec\IncludeDirective
+    public static function directiveInclude() : IncludeDirective
     {
         if (!\array_key_exists('include', self::$builtInDirectives)) {
-            self::$builtInDirectives['include'] = new \Graphpinator\Typesystem\Spec\IncludeDirective();
+            self::$builtInDirectives['include'] = new IncludeDirective();
         }
 
         return self::$builtInDirectives['include'];
@@ -126,10 +130,10 @@ abstract class Container
     /**
      * Built-in Deprecated directive.
      */
-    public static function directiveDeprecated() : \Graphpinator\Typesystem\Spec\DeprecatedDirective
+    public static function directiveDeprecated() : DeprecatedDirective
     {
         if (!\array_key_exists('deprecated', self::$builtInDirectives)) {
-            self::$builtInDirectives['deprecated'] = new \Graphpinator\Typesystem\Spec\DeprecatedDirective();
+            self::$builtInDirectives['deprecated'] = new DeprecatedDirective();
         }
 
         return self::$builtInDirectives['deprecated'];
@@ -138,10 +142,10 @@ abstract class Container
     /**
      * Built-in Specified By directive.
      */
-    public static function directiveSpecifiedBy() : \Graphpinator\Typesystem\Spec\SpecifiedByDirective
+    public static function directiveSpecifiedBy() : SpecifiedByDirective
     {
         if (!\array_key_exists('specifiedBy', self::$builtInDirectives)) {
-            self::$builtInDirectives['specifiedBy'] = new \Graphpinator\Typesystem\Spec\SpecifiedByDirective();
+            self::$builtInDirectives['specifiedBy'] = new SpecifiedByDirective();
         }
 
         return self::$builtInDirectives['specifiedBy'];

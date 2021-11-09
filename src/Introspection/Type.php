@@ -4,13 +4,22 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Introspection;
 
+use \Graphpinator\Typesystem\Argument\Argument;
+use \Graphpinator\Typesystem\Argument\ArgumentSet;
+use \Graphpinator\Typesystem\Container;
+use \Graphpinator\Typesystem\Contract\InterfaceImplementor;
+use \Graphpinator\Typesystem\Contract\ModifierType;
+use \Graphpinator\Typesystem\Field\ResolvableField;
+use \Graphpinator\Typesystem\Field\ResolvableFieldSet;
+use \Graphpinator\Typesystem\InterfaceSet;
+
 final class Type extends \Graphpinator\Typesystem\Type
 {
     protected const NAME = '__Type';
     protected const DESCRIPTION = 'Built-in introspection type.';
 
     public function __construct(
-        private \Graphpinator\Typesystem\Container $container,
+        private Container $container,
     )
     {
         parent::__construct();
@@ -21,42 +30,42 @@ final class Type extends \Graphpinator\Typesystem\Type
         return $rawValue instanceof \Graphpinator\Typesystem\Contract\Type;
     }
 
-    protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
+    protected function getFieldDefinition() : ResolvableFieldSet
     {
-        return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
-            \Graphpinator\Typesystem\Field\ResolvableField::create(
+        return new ResolvableFieldSet([
+            ResolvableField::create(
                 'kind',
                 $this->container->getType('__TypeKind')->notNull(),
                 static function (\Graphpinator\Typesystem\Contract\Type $definition) : string {
                     return $definition->accept(new TypeKindVisitor());
                 },
             ),
-            \Graphpinator\Typesystem\Field\ResolvableField::create(
+            ResolvableField::create(
                 'name',
-                \Graphpinator\Typesystem\Container::String(),
+                Container::String(),
                 static function (\Graphpinator\Typesystem\Contract\Type $definition) : ?string {
                     return $definition instanceof \Graphpinator\Typesystem\Contract\NamedType
                         ? $definition->getName()
                         : null;
                 },
             ),
-            \Graphpinator\Typesystem\Field\ResolvableField::create(
+            ResolvableField::create(
                 'description',
-                \Graphpinator\Typesystem\Container::String(),
+                Container::String(),
                 static function (\Graphpinator\Typesystem\Contract\Type $definition) : ?string {
                     return $definition instanceof \Graphpinator\Typesystem\Contract\NamedType
                         ? $definition->getDescription()
                         : null;
                 },
             ),
-            \Graphpinator\Typesystem\Field\ResolvableField::create(
+            ResolvableField::create(
                 'fields',
                 $this->container->getType('__Field')->notNull()->list(),
                 static function (
                     \Graphpinator\Typesystem\Contract\Type $definition,
                     bool $includeDeprecated,
                 ) : ?\Graphpinator\Typesystem\Field\FieldSet {
-                    if (!$definition instanceof \Graphpinator\Typesystem\Contract\InterfaceImplementor) {
+                    if (!$definition instanceof InterfaceImplementor) {
                         return null;
                     }
 
@@ -76,22 +85,22 @@ final class Type extends \Graphpinator\Typesystem\Type
 
                     return new \Graphpinator\Typesystem\Field\FieldSet($filtered);
                 },
-            )->setArguments(new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                \Graphpinator\Typesystem\Argument\Argument::create(
+            )->setArguments(new ArgumentSet([
+                Argument::create(
                     'includeDeprecated',
-                    \Graphpinator\Typesystem\Container::Boolean()->notNull(),
+                    Container::Boolean()->notNull(),
                 )->setDefaultValue(false),
             ])),
-            \Graphpinator\Typesystem\Field\ResolvableField::create(
+            ResolvableField::create(
                 'interfaces',
                 $this->notNull()->list(),
-                static function (\Graphpinator\Typesystem\Contract\Type $definition) : ?\Graphpinator\Typesystem\InterfaceSet {
-                    return $definition instanceof \Graphpinator\Typesystem\Contract\InterfaceImplementor
+                static function (\Graphpinator\Typesystem\Contract\Type $definition) : ?InterfaceSet {
+                    return $definition instanceof InterfaceImplementor
                         ? self::recursiveGetInterfaces($definition->getInterfaces())
                         : null;
                 },
             ),
-            \Graphpinator\Typesystem\Field\ResolvableField::create(
+            ResolvableField::create(
                 'possibleTypes',
                 $this->notNull()->list(),
                 function (\Graphpinator\Typesystem\Contract\Type $definition) : ?\Graphpinator\Typesystem\TypeSet {
@@ -115,7 +124,7 @@ final class Type extends \Graphpinator\Typesystem\Type
                     return null;
                 },
             ),
-            \Graphpinator\Typesystem\Field\ResolvableField::create(
+            ResolvableField::create(
                 'enumValues',
                 $this->container->getType('__EnumValue')->notNull()->list(),
                 static function (
@@ -142,19 +151,19 @@ final class Type extends \Graphpinator\Typesystem\Type
 
                     return new \Graphpinator\Typesystem\EnumItem\EnumItemSet($filtered);
                 },
-            )->setArguments(new \Graphpinator\Typesystem\Argument\ArgumentSet([
+            )->setArguments(new ArgumentSet([
                 \Graphpinator\Typesystem\Argument\Argument::create(
                     'includeDeprecated',
-                    \Graphpinator\Typesystem\Container::Boolean()->notNull(),
+                    Container::Boolean()->notNull(),
                 )->setDefaultValue(false),
             ])),
-            \Graphpinator\Typesystem\Field\ResolvableField::create(
+            ResolvableField::create(
                 'inputFields',
                 $this->container->getType('__InputValue')->notNull()->list(),
                 static function (
                     \Graphpinator\Typesystem\Contract\Type $definition,
                     bool $includeDeprecated,
-                ) : ?\Graphpinator\Typesystem\Argument\ArgumentSet {
+                ) : ?ArgumentSet {
                     if (!$definition instanceof \Graphpinator\Typesystem\InputType) {
                         return null;
                     }
@@ -173,26 +182,26 @@ final class Type extends \Graphpinator\Typesystem\Type
                         $filtered[] = $argument;
                     }
 
-                    return new \Graphpinator\Typesystem\Argument\ArgumentSet($filtered);
+                    return new ArgumentSet($filtered);
                 },
-            )->setArguments(new \Graphpinator\Typesystem\Argument\ArgumentSet([
+            )->setArguments(new ArgumentSet([
                 \Graphpinator\Typesystem\Argument\Argument::create(
                     'includeDeprecated',
-                    \Graphpinator\Typesystem\Container::Boolean()->notNull(),
+                    Container::Boolean()->notNull(),
                 )->setDefaultValue(false),
             ])),
-            \Graphpinator\Typesystem\Field\ResolvableField::create(
+            ResolvableField::create(
                 'ofType',
                 $this,
                 static function (\Graphpinator\Typesystem\Contract\Type $definition) : ?\Graphpinator\Typesystem\Contract\Type {
-                    return $definition instanceof \Graphpinator\Typesystem\Contract\ModifierType
+                    return $definition instanceof ModifierType
                         ? $definition->getInnerType()
                         : null;
                 },
             ),
-            \Graphpinator\Typesystem\Field\ResolvableField::create(
+            ResolvableField::create(
                 'specifiedByURL',
-                \Graphpinator\Typesystem\Container::String(),
+                Container::String(),
                 static function (\Graphpinator\Typesystem\Contract\Type $definition) : ?string {
                     return $definition instanceof \Graphpinator\Typesystem\ScalarType
                         ? $definition->getSpecifiedByUrl()
@@ -202,9 +211,9 @@ final class Type extends \Graphpinator\Typesystem\Type
         ]);
     }
 
-    private static function recursiveGetInterfaces(\Graphpinator\Typesystem\InterfaceSet $implements) : \Graphpinator\Typesystem\InterfaceSet
+    private static function recursiveGetInterfaces(InterfaceSet $implements) : InterfaceSet
     {
-        $return = new \Graphpinator\Typesystem\InterfaceSet([]);
+        $return = new InterfaceSet([]);
 
         foreach ($implements as $interface) {
             $return->merge(self::recursiveGetInterfaces($interface->getInterfaces()));

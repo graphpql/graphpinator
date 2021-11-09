@@ -4,7 +4,9 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem\Location;
 
-interface VariableDefinitionLocation extends \Graphpinator\Typesystem\Contract\ExecutableDirective
+use \Graphpinator\Typesystem\Contract\ExecutableDirective;
+
+interface VariableDefinitionLocation extends ExecutableDirective
 {
     public function validateVariableUsage(
         \Graphpinator\Normalizer\Variable\Variable $variable,

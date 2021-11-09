@@ -4,15 +4,26 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Normalizer\ValidatorModule;
 
-final class ValidateFieldsCanMergeModule implements ValidatorModule, \Graphpinator\Normalizer\Selection\SelectionVisitor
+use \Graphpinator\Normalizer\Exception\ConflictingFieldAlias;
+use \Graphpinator\Normalizer\Exception\ConflictingFieldArguments;
+use \Graphpinator\Normalizer\Exception\ConflictingFieldDirectives;
+use \Graphpinator\Normalizer\Exception\ConflictingFieldType;
+use \Graphpinator\Normalizer\Selection\Field;
+use \Graphpinator\Normalizer\Selection\FragmentSpread;
+use \Graphpinator\Normalizer\Selection\InlineFragment;
+use \Graphpinator\Normalizer\Selection\SelectionSet;
+use \Graphpinator\Normalizer\Selection\SelectionVisitor;
+use \Graphpinator\Typesystem\Contract\TypeConditionable;
+
+final class ValidateFieldsCanMergeModule implements ValidatorModule, SelectionVisitor
 {
     use \Nette\SmartObject;
 
     private array $fieldsForName;
-    private ?\Graphpinator\Typesystem\Contract\TypeConditionable $contextType;
+    private ?TypeConditionable $contextType;
 
     public function __construct(
-        private \Graphpinator\Normalizer\Selection\SelectionSet $selections,
+        private SelectionSet $selections,
         private bool $identity = true,
     )
     {
@@ -28,7 +39,7 @@ final class ValidateFieldsCanMergeModule implements ValidatorModule, \Graphpinat
         }
     }
 
-    public function visitField(\Graphpinator\Normalizer\Selection\Field $field) : mixed
+    public function visitField(Field $field) : mixed
     {
         if (\array_key_exists($field->getOutputName(), $this->fieldsForName)) {
             foreach ($this->fieldsForName[$field->getOutputName()] as $fieldForName) {
@@ -56,7 +67,7 @@ final class ValidateFieldsCanMergeModule implements ValidatorModule, \Graphpinat
     }
 
     public function visitFragmentSpread(
-        \Graphpinator\Normalizer\Selection\FragmentSpread $fragmentSpread,
+        FragmentSpread $fragmentSpread,
     ) : mixed
     {
         $this->processFragment($fragmentSpread);
@@ -65,7 +76,7 @@ final class ValidateFieldsCanMergeModule implements ValidatorModule, \Graphpinat
     }
 
     public function visitInlineFragment(
-        \Graphpinator\Normalizer\Selection\InlineFragment $inlineFragment,
+        InlineFragment $inlineFragment,
     ) : mixed
     {
         $this->processFragment($inlineFragment);
@@ -74,8 +85,8 @@ final class ValidateFieldsCanMergeModule implements ValidatorModule, \Graphpinat
     }
 
     private static function canOccurTogether(
-        ?\Graphpinator\Typesystem\Contract\TypeConditionable $typeA,
-        ?\Graphpinator\Typesystem\Contract\TypeConditionable $typeB,
+        ?TypeConditionable $typeA,
+        ?TypeConditionable $typeB,
     ) : bool
     {
         return $typeA === null
@@ -87,7 +98,7 @@ final class ValidateFieldsCanMergeModule implements ValidatorModule, \Graphpinat
     }
 
     private function processFragment(
-        \Graphpinator\Normalizer\Selection\InlineFragment|\Graphpinator\Normalizer\Selection\FragmentSpread $fragment,
+        InlineFragment|FragmentSpread $fragment,
     ) : void
     {
         $oldSelections = $this->selections;
@@ -105,8 +116,8 @@ final class ValidateFieldsCanMergeModule implements ValidatorModule, \Graphpinat
     }
 
     private function validateResponseShape(
-        \Graphpinator\Normalizer\Selection\Field $field,
-        \Graphpinator\Normalizer\Selection\Field $conflict,
+        Field $field,
+        Field $conflict,
     ) : void
     {
         $fieldReturnType = $field->getField()->getType();
@@ -115,13 +126,13 @@ final class ValidateFieldsCanMergeModule implements ValidatorModule, \Graphpinat
         /** Fields must have same response shape (return type) */
         if (!$fieldReturnType->isInstanceOf($conflictReturnType) ||
             !$conflictReturnType->isInstanceOf($fieldReturnType)) {
-            throw new \Graphpinator\Normalizer\Exception\ConflictingFieldType();
+            throw new ConflictingFieldType();
         }
     }
 
     private function validateIdentity(
-        \Graphpinator\Normalizer\Selection\Field $field,
-        \Graphpinator\Normalizer\Selection\Field $conflict,
+        Field $field,
+        Field $conflict,
     ) : void
     {
         $fieldReturnType = $field->getField()->getType();
@@ -130,33 +141,33 @@ final class ValidateFieldsCanMergeModule implements ValidatorModule, \Graphpinat
         /** Fields must have same response shape (return type) */
         if (!$fieldReturnType->isInstanceOf($conflictReturnType) ||
             !$conflictReturnType->isInstanceOf($fieldReturnType)) {
-            throw new \Graphpinator\Normalizer\Exception\ConflictingFieldType();
+            throw new ConflictingFieldType();
         }
 
         /** Fields have same alias, but refer to a different field */
         if ($field->getName() !== $conflict->getName()) {
-            throw new \Graphpinator\Normalizer\Exception\ConflictingFieldAlias();
+            throw new ConflictingFieldAlias();
         }
 
         /** Fields have different arguments */
         if (!$field->getArguments()->isSame($conflict->getArguments())) {
-            throw new \Graphpinator\Normalizer\Exception\ConflictingFieldArguments();
+            throw new ConflictingFieldArguments();
         }
 
         /** Fields have different directives */
         if (!$field->getDirectives()->isSame($conflict->getDirectives())) {
-            throw new \Graphpinator\Normalizer\Exception\ConflictingFieldDirectives();
+            throw new ConflictingFieldDirectives();
         }
     }
 
     private function validateInnerFields(
-        \Graphpinator\Normalizer\Selection\Field $field,
-        \Graphpinator\Normalizer\Selection\Field $conflict,
+        Field $field,
+        Field $conflict,
         bool $identity,
     ) : void
     {
         /** Fields are composite -> validate combined inner fields */
-        if (!$conflict->getSelections() instanceof \Graphpinator\Normalizer\Selection\SelectionSet) {
+        if (!$conflict->getSelections() instanceof SelectionSet) {
             return;
         }
 

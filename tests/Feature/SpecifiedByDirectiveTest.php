@@ -4,24 +4,28 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Feature;
 
+use \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet;
+use \Graphpinator\Typesystem\Field\ResolvableField;
+use \Graphpinator\Typesystem\Field\ResolvableFieldSet;
+use \Graphpinator\Typesystem\ScalarType;
 use \Infinityloop\Utils\Json;
 
 final class SpecifiedByDirectiveTest extends \PHPUnit\Framework\TestCase
 {
-    private static ?\Graphpinator\Typesystem\ScalarType $testScalar = null;
+    private static ?ScalarType $testScalar = null;
 
-    public static function createTestScalar() : \Graphpinator\Typesystem\ScalarType
+    public static function createTestScalar() : ScalarType
     {
-        if (self::$testScalar instanceof \Graphpinator\Typesystem\ScalarType) {
+        if (self::$testScalar instanceof ScalarType) {
             return self::$testScalar;
         }
 
-        self::$testScalar = new class extends \Graphpinator\Typesystem\ScalarType {
+        self::$testScalar = new class extends ScalarType {
             protected const NAME = 'TestScalar';
 
             public function __construct()
             {
-                $this->directiveUsages = new \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet();
+                $this->directiveUsages = new DirectiveUsageSet();
 
                 parent::__construct();
             }
@@ -100,10 +104,10 @@ final class SpecifiedByDirectiveTest extends \PHPUnit\Framework\TestCase
                 return true;
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
+            protected function getFieldDefinition() : ResolvableFieldSet
             {
-                return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
-                    new \Graphpinator\Typesystem\Field\ResolvableField(
+                return new ResolvableFieldSet([
+                    new ResolvableField(
                         'field',
                         \Graphpinator\Typesystem\Container::String(),
                         static function () : void {

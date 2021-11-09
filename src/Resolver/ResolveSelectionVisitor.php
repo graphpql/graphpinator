@@ -4,7 +4,15 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Resolver;
 
-final class ResolveSelectionVisitor implements \Graphpinator\Normalizer\Selection\SelectionVisitor
+use \Graphpinator\Normalizer\Selection\FragmentSpread;
+use \Graphpinator\Normalizer\Selection\InlineFragment;
+use \Graphpinator\Normalizer\Selection\SelectionSet;
+use \Graphpinator\Normalizer\Selection\SelectionVisitor;
+use \Graphpinator\Resolver\Exception\FieldResultTypeMismatch;
+use \Graphpinator\Resolver\Exception\InvalidDirectiveResult;
+use \Graphpinator\Typesystem\Location\FieldLocation;
+
+final class ResolveSelectionVisitor implements SelectionVisitor
 {
     use \Nette\SmartObject;
 
@@ -32,7 +40,7 @@ final class ResolveSelectionVisitor implements \Graphpinator\Normalizer\Selectio
             $fieldValue = $this->result->{$field->getOutputName()};
             \assert($fieldValue instanceof \Graphpinator\Value\FieldValue);
 
-            if ($field->getSelections() instanceof \Graphpinator\Normalizer\Selection\SelectionSet) {
+            if ($field->getSelections() instanceof SelectionSet) {
                 $typeValue = $fieldValue->getValue();
                 \assert($typeValue instanceof \Graphpinator\Value\TypeValue);
                 $resolvedValue = $fieldValue->getIntermediateValue();
@@ -66,7 +74,7 @@ final class ResolveSelectionVisitor implements \Graphpinator\Normalizer\Selectio
             $resolvedValue = $fieldDef->getType()->accept(new CreateResolvedValueVisitor($rawValue));
 
             if (!$resolvedValue->getType()->isInstanceOf($fieldDef->getType())) {
-                throw new \Graphpinator\Resolver\Exception\FieldResultTypeMismatch();
+                throw new FieldResultTypeMismatch();
             }
 
             foreach ($fieldDef->getDirectiveUsages() as $directive) {
@@ -91,7 +99,7 @@ final class ResolveSelectionVisitor implements \Graphpinator\Normalizer\Selectio
         return null;
     }
 
-    public function visitFragmentSpread(\Graphpinator\Normalizer\Selection\FragmentSpread $fragmentSpread) : mixed
+    public function visitFragmentSpread(FragmentSpread $fragmentSpread) : mixed
     {
         if (!$this->parentResult->getType()->isInstanceOf($fragmentSpread->getTypeCondition())) {
             return null;
@@ -118,7 +126,7 @@ final class ResolveSelectionVisitor implements \Graphpinator\Normalizer\Selectio
         return null;
     }
 
-    public function visitInlineFragment(\Graphpinator\Normalizer\Selection\InlineFragment $inlineFragment) : mixed
+    public function visitInlineFragment(InlineFragment $inlineFragment) : mixed
     {
         if ($inlineFragment->getTypeCondition() instanceof \Graphpinator\Typesystem\Contract\NamedType &&
             !$this->parentResult->getType()->isInstanceOf($inlineFragment->getTypeCondition())) {
@@ -148,10 +156,10 @@ final class ResolveSelectionVisitor implements \Graphpinator\Normalizer\Selectio
 
     private static function shouldSkip(string $directiveResult) : bool
     {
-        if (\array_key_exists($directiveResult, \Graphpinator\Typesystem\Location\FieldLocation::ENUM)) {
-            return $directiveResult === \Graphpinator\Typesystem\Location\FieldLocation::SKIP;
+        if (\array_key_exists($directiveResult, FieldLocation::ENUM)) {
+            return $directiveResult === FieldLocation::SKIP;
         }
 
-        throw new \Graphpinator\Resolver\Exception\InvalidDirectiveResult();
+        throw new InvalidDirectiveResult();
     }
 }

@@ -4,63 +4,83 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem\Contract;
 
+use \Graphpinator\Typesystem\Location\ArgumentDefinitionLocation;
+use \Graphpinator\Typesystem\Location\EnumItemLocation;
+use \Graphpinator\Typesystem\Location\EnumLocation;
+use \Graphpinator\Typesystem\Location\ExecutableDirectiveLocation;
+use \Graphpinator\Typesystem\Location\FieldDefinitionLocation;
+use \Graphpinator\Typesystem\Location\FieldLocation;
+use \Graphpinator\Typesystem\Location\FragmentDefinitionLocation;
+use \Graphpinator\Typesystem\Location\FragmentSpreadLocation;
+use \Graphpinator\Typesystem\Location\InlineFragmentLocation;
+use \Graphpinator\Typesystem\Location\InputObjectLocation;
+use \Graphpinator\Typesystem\Location\MutationLocation;
+use \Graphpinator\Typesystem\Location\ObjectLocation;
+use \Graphpinator\Typesystem\Location\QueryLocation;
+use \Graphpinator\Typesystem\Location\ScalarLocation;
+use \Graphpinator\Typesystem\Location\SchemaLocation;
+use \Graphpinator\Typesystem\Location\SubscriptionLocation;
+use \Graphpinator\Typesystem\Location\TypeSystemDirectiveLocation;
+use \Graphpinator\Typesystem\Location\UnionLocation;
+use \Graphpinator\Typesystem\Location\VariableDefinitionLocation;
+
 interface Directive extends \Graphpinator\Typesystem\Contract\Entity
 {
     public const INTERFACE_TO_LOCATION = [
         // Typesystem
-        \Graphpinator\Typesystem\Location\SchemaLocation::class => [
-            \Graphpinator\Typesystem\Location\TypeSystemDirectiveLocation::SCHEMA,
+        SchemaLocation::class => [
+            TypeSystemDirectiveLocation::SCHEMA,
         ],
-        \Graphpinator\Typesystem\Location\ObjectLocation::class => [
-            \Graphpinator\Typesystem\Location\TypeSystemDirectiveLocation::OBJECT,
-            \Graphpinator\Typesystem\Location\TypeSystemDirectiveLocation::INTERFACE,
+        ObjectLocation::class => [
+            TypeSystemDirectiveLocation::OBJECT,
+            TypeSystemDirectiveLocation::INTERFACE,
         ],
-        \Graphpinator\Typesystem\Location\InputObjectLocation::class => [
-            \Graphpinator\Typesystem\Location\TypeSystemDirectiveLocation::INPUT_OBJECT,
+        InputObjectLocation::class => [
+            TypeSystemDirectiveLocation::INPUT_OBJECT,
         ],
-        \Graphpinator\Typesystem\Location\UnionLocation::class => [
-            \Graphpinator\Typesystem\Location\TypeSystemDirectiveLocation::UNION,
+        UnionLocation::class => [
+            TypeSystemDirectiveLocation::UNION,
         ],
-        \Graphpinator\Typesystem\Location\EnumLocation::class => [
-            \Graphpinator\Typesystem\Location\TypeSystemDirectiveLocation::ENUM,
+        EnumLocation::class => [
+            TypeSystemDirectiveLocation::ENUM,
         ],
-        \Graphpinator\Typesystem\Location\ScalarLocation::class => [
-            \Graphpinator\Typesystem\Location\TypeSystemDirectiveLocation::SCALAR,
+        ScalarLocation::class => [
+            TypeSystemDirectiveLocation::SCALAR,
         ],
-        \Graphpinator\Typesystem\Location\ArgumentDefinitionLocation::class => [
-            \Graphpinator\Typesystem\Location\TypeSystemDirectiveLocation::ARGUMENT_DEFINITION,
-            \Graphpinator\Typesystem\Location\TypeSystemDirectiveLocation::INPUT_FIELD_DEFINITION,
+        ArgumentDefinitionLocation::class => [
+            TypeSystemDirectiveLocation::ARGUMENT_DEFINITION,
+            TypeSystemDirectiveLocation::INPUT_FIELD_DEFINITION,
         ],
-        \Graphpinator\Typesystem\Location\FieldDefinitionLocation::class => [
-            \Graphpinator\Typesystem\Location\TypeSystemDirectiveLocation::FIELD_DEFINITION,
+        FieldDefinitionLocation::class => [
+            TypeSystemDirectiveLocation::FIELD_DEFINITION,
         ],
-        \Graphpinator\Typesystem\Location\EnumItemLocation::class => [
-            \Graphpinator\Typesystem\Location\TypeSystemDirectiveLocation::ENUM_VALUE,
+        EnumItemLocation::class => [
+            TypeSystemDirectiveLocation::ENUM_VALUE,
         ],
         // Executable
-        \Graphpinator\Typesystem\Location\QueryLocation::class => [
-            \Graphpinator\Typesystem\Location\ExecutableDirectiveLocation::QUERY,
+        QueryLocation::class => [
+            ExecutableDirectiveLocation::QUERY,
         ],
-        \Graphpinator\Typesystem\Location\MutationLocation::class => [
-            \Graphpinator\Typesystem\Location\ExecutableDirectiveLocation::MUTATION,
+        MutationLocation::class => [
+            ExecutableDirectiveLocation::MUTATION,
         ],
-        \Graphpinator\Typesystem\Location\SubscriptionLocation::class => [
-            \Graphpinator\Typesystem\Location\ExecutableDirectiveLocation::SUBSCRIPTION,
+        SubscriptionLocation::class => [
+            ExecutableDirectiveLocation::SUBSCRIPTION,
         ],
-        \Graphpinator\Typesystem\Location\VariableDefinitionLocation::class => [
-            \Graphpinator\Typesystem\Location\ExecutableDirectiveLocation::VARIABLE_DEFINITION,
+        VariableDefinitionLocation::class => [
+            ExecutableDirectiveLocation::VARIABLE_DEFINITION,
         ],
-        \Graphpinator\Typesystem\Location\FragmentDefinitionLocation::class => [
-            \Graphpinator\Typesystem\Location\ExecutableDirectiveLocation::FRAGMENT_DEFINITION,
+        FragmentDefinitionLocation::class => [
+            ExecutableDirectiveLocation::FRAGMENT_DEFINITION,
         ],
-        \Graphpinator\Typesystem\Location\FieldLocation::class => [
-            \Graphpinator\Typesystem\Location\ExecutableDirectiveLocation::FIELD,
+        FieldLocation::class => [
+            ExecutableDirectiveLocation::FIELD,
         ],
-        \Graphpinator\Typesystem\Location\InlineFragmentLocation::class => [
-            \Graphpinator\Typesystem\Location\ExecutableDirectiveLocation::INLINE_FRAGMENT,
+        InlineFragmentLocation::class => [
+            ExecutableDirectiveLocation::INLINE_FRAGMENT,
         ],
-        \Graphpinator\Typesystem\Location\FragmentSpreadLocation::class => [
-            \Graphpinator\Typesystem\Location\ExecutableDirectiveLocation::FRAGMENT_SPREAD,
+        FragmentSpreadLocation::class => [
+            ExecutableDirectiveLocation::FRAGMENT_SPREAD,
         ],
     ];
 

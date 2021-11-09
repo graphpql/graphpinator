@@ -4,13 +4,18 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Introspection;
 
+use \Graphpinator\Typesystem\Argument\ArgumentSet;
+use \Graphpinator\Typesystem\Container;
+use \Graphpinator\Typesystem\Field\ResolvableField;
+use \Graphpinator\Typesystem\Field\ResolvableFieldSet;
+
 final class Field extends \Graphpinator\Typesystem\Type
 {
     protected const NAME = '__Field';
     protected const DESCRIPTION = 'Built-in introspection type.';
 
     public function __construct(
-        private \Graphpinator\Typesystem\Container $container,
+        private Container $container,
     )
     {
         parent::__construct();
@@ -21,30 +26,30 @@ final class Field extends \Graphpinator\Typesystem\Type
         return $rawValue instanceof \Graphpinator\Typesystem\Field\Field;
     }
 
-    protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
+    protected function getFieldDefinition() : ResolvableFieldSet
     {
-        return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
-            new \Graphpinator\Typesystem\Field\ResolvableField(
+        return new ResolvableFieldSet([
+            new ResolvableField(
                 'name',
-                \Graphpinator\Typesystem\Container::String()->notNull(),
+                Container::String()->notNull(),
                 static function (\Graphpinator\Typesystem\Field\Field $field) : string {
                     return $field->getName();
                 },
             ),
-            new \Graphpinator\Typesystem\Field\ResolvableField(
+            new ResolvableField(
                 'description',
-                \Graphpinator\Typesystem\Container::String(),
+                Container::String(),
                 static function (\Graphpinator\Typesystem\Field\Field $field) : ?string {
                     return $field->getDescription();
                 },
             ),
-            \Graphpinator\Typesystem\Field\ResolvableField::create(
+            ResolvableField::create(
                 'args',
                 $this->container->getType('__InputValue')->notNullList(),
                 static function (
                     \Graphpinator\Typesystem\Field\Field $field,
                     bool $includeDeprecated,
-                ) : \Graphpinator\Typesystem\Argument\ArgumentSet {
+                ) : ArgumentSet {
                     if ($includeDeprecated === true) {
                         return $field->getArguments();
                     }
@@ -64,26 +69,26 @@ final class Field extends \Graphpinator\Typesystem\Type
             )->setArguments(new \Graphpinator\Typesystem\Argument\ArgumentSet([
                 \Graphpinator\Typesystem\Argument\Argument::create(
                     'includeDeprecated',
-                    \Graphpinator\Typesystem\Container::Boolean()->notNull(),
+                    Container::Boolean()->notNull(),
                 )->setDefaultValue(false),
             ])),
-            new \Graphpinator\Typesystem\Field\ResolvableField(
+            new ResolvableField(
                 'type',
                 $this->container->getType('__Type')->notNull(),
                 static function (\Graphpinator\Typesystem\Field\Field $field) : \Graphpinator\Typesystem\Contract\Type {
                     return $field->getType();
                 },
             ),
-            new \Graphpinator\Typesystem\Field\ResolvableField(
+            new ResolvableField(
                 'isDeprecated',
-                \Graphpinator\Typesystem\Container::Boolean()->notNull(),
+                Container::Boolean()->notNull(),
                 static function (\Graphpinator\Typesystem\Field\Field $field) : bool {
                     return $field->isDeprecated();
                 },
             ),
-            new \Graphpinator\Typesystem\Field\ResolvableField(
+            new ResolvableField(
                 'deprecationReason',
-                \Graphpinator\Typesystem\Container::String(),
+                Container::String(),
                 static function (\Graphpinator\Typesystem\Field\Field $field) : ?string {
                     return $field->getDeprecationReason();
                 },

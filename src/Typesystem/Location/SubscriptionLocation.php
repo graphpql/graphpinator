@@ -4,7 +4,9 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem\Location;
 
-interface SubscriptionLocation extends \Graphpinator\Typesystem\Contract\ExecutableDirective
+use \Graphpinator\Typesystem\Contract\ExecutableDirective;
+
+interface SubscriptionLocation extends ExecutableDirective
 {
     public function resolveSubscriptionBefore(
         \Graphpinator\Value\ArgumentValueSet $arguments,

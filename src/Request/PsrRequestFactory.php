@@ -4,6 +4,9 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Request;
 
+use \Graphpinator\Request\Exception\InvalidMultipartRequest;
+use \Infinityloop\Utils\Json\MapJson;
+
 final class PsrRequestFactory implements \Graphpinator\Request\RequestFactory
 {
     use \Nette\SmartObject;
@@ -28,29 +31,29 @@ final class PsrRequestFactory implements \Graphpinator\Request\RequestFactory
 
         if (\is_string($contentType) && \str_starts_with($contentType, 'multipart/form-data')) {
             if ($method === 'POST' && \array_key_exists('operations', $this->request->getParsedBody())) {
-                return $this->applyJsonFactory(\Infinityloop\Utils\Json\MapJson::fromString($this->request->getParsedBody()['operations']));
+                return $this->applyJsonFactory(MapJson::fromString($this->request->getParsedBody()['operations']));
             }
 
-            throw new \Graphpinator\Request\Exception\InvalidMultipartRequest();
+            throw new InvalidMultipartRequest();
         }
 
         switch ($contentType) {
             case 'application/graphql':
                 return new \Graphpinator\Request\Request($this->request->getBody()->getContents());
             case 'application/json':
-                return $this->applyJsonFactory(\Infinityloop\Utils\Json\MapJson::fromString($this->request->getBody()->getContents()));
+                return $this->applyJsonFactory(MapJson::fromString($this->request->getBody()->getContents()));
             default:
                 $params = $this->request->getQueryParams();
 
                 if (\array_key_exists('variables', $params)) {
-                    $params['variables'] = \Infinityloop\Utils\Json\MapJson::fromString($params['variables'])->toNative();
+                    $params['variables'] = MapJson::fromString($params['variables'])->toNative();
                 }
 
-                return $this->applyJsonFactory(\Infinityloop\Utils\Json\MapJson::fromNative((object) $params));
+                return $this->applyJsonFactory(MapJson::fromNative((object) $params));
         }
     }
 
-    private function applyJsonFactory(\Infinityloop\Utils\Json\MapJson $json) : Request
+    private function applyJsonFactory(MapJson $json) : Request
     {
         $jsonFactory = new \Graphpinator\Request\JsonRequestFactory($json, $this->strict);
 

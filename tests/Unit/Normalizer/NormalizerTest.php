@@ -4,37 +4,63 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Unit\Normalizer;
 
+use \Graphpinator\Normalizer\Exception\FragmentCycle;
+use \Graphpinator\Normalizer\Exception\OperationNotSupported;
+use \Graphpinator\Normalizer\Exception\UnknownFragment;
+use \Graphpinator\Normalizer\Normalizer;
+use \Graphpinator\Normalizer\Selection\FragmentSpread;
+use \Graphpinator\Normalizer\Selection\InlineFragment;
+use \Graphpinator\Parser\Directive\Directive;
+use \Graphpinator\Parser\Directive\DirectiveSet;
+use \Graphpinator\Parser\Field\Field;
+use \Graphpinator\Parser\Field\FieldSet;
+use \Graphpinator\Parser\Fragment\Fragment;
+use \Graphpinator\Parser\Fragment\FragmentSet;
+use \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet;
+use \Graphpinator\Parser\FragmentSpread\InlineFragmentSpread;
+use \Graphpinator\Parser\FragmentSpread\NamedFragmentSpread;
+use \Graphpinator\Parser\Operation\Operation;
+use \Graphpinator\Parser\Operation\OperationSet;
+use \Graphpinator\Parser\ParsedRequest;
+use \Graphpinator\Parser\TypeRef\NamedTypeRef;
+use \Graphpinator\Parser\Value\ArgumentValue;
+use \Graphpinator\Parser\Value\ArgumentValueSet;
+use \Graphpinator\Parser\Value\Literal;
+use \Graphpinator\Tests\Spec\TestSchema;
+use \Graphpinator\Tokenizer\OperationType;
+use \Graphpinator\Typesystem\Spec\IncludeDirective;
+
 final class NormalizerTest extends \PHPUnit\Framework\TestCase
 {
     public function testVariableTypeReferences() : void
     {
-        $parseResult = new \Graphpinator\Parser\ParsedRequest(
-            new \Graphpinator\Parser\Operation\OperationSet([
-                new \Graphpinator\Parser\Operation\Operation(
-                    \Graphpinator\Tokenizer\OperationType::QUERY,
+        $parseResult = new ParsedRequest(
+            new OperationSet([
+                new Operation(
+                    OperationType::QUERY,
                     'operationName',
                     new \Graphpinator\Parser\Variable\VariableSet([
                         new \Graphpinator\Parser\Variable\Variable(
                             'varName',
-                            new \Graphpinator\Parser\TypeRef\NotNullRef(new \Graphpinator\Parser\TypeRef\NamedTypeRef('String')),
+                            new \Graphpinator\Parser\TypeRef\NotNullRef(new NamedTypeRef('String')),
                             null,
-                            new \Graphpinator\Parser\Directive\DirectiveSet(),
+                            new DirectiveSet(),
                         ),
                         new \Graphpinator\Parser\Variable\Variable(
                             'varNameList',
-                            new \Graphpinator\Parser\TypeRef\ListTypeRef(new \Graphpinator\Parser\TypeRef\NamedTypeRef('String')),
+                            new \Graphpinator\Parser\TypeRef\ListTypeRef(new NamedTypeRef('String')),
                             null,
-                            new \Graphpinator\Parser\Directive\DirectiveSet(),
+                            new DirectiveSet(),
                         ),
                     ]),
-                    new \Graphpinator\Parser\Directive\DirectiveSet(),
-                    new \Graphpinator\Parser\Field\FieldSet([], new \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet()),
+                    new DirectiveSet(),
+                    new FieldSet([], new FragmentSpreadSet()),
                 ),
             ]),
-            new \Graphpinator\Parser\Fragment\FragmentSet(),
+            new FragmentSet(),
         );
 
-        $normalizer = new \Graphpinator\Normalizer\Normalizer(\Graphpinator\Tests\Spec\TestSchema::getSchema());
+        $normalizer = new Normalizer(TestSchema::getSchema());
         $operation = $normalizer->normalize($parseResult)->getOperations()->current();
 
         self::assertCount(0, $operation->getSelections());
@@ -53,24 +79,38 @@ final class NormalizerTest extends \PHPUnit\Framework\TestCase
 
     public function testDirectiveReferences() : void
     {
-        $parseResult = new \Graphpinator\Parser\ParsedRequest(
-            new \Graphpinator\Parser\Operation\OperationSet([
-                new \Graphpinator\Parser\Operation\Operation(
-                    \Graphpinator\Tokenizer\OperationType::QUERY,
+        $parseResult = new ParsedRequest(
+            new OperationSet([
+                new Operation(
+                    OperationType::QUERY,
                     'operationName',
                     null,
                     null,
-                    new \Graphpinator\Parser\Field\FieldSet([
-                        new \Graphpinator\Parser\Field\Field(
+                    new FieldSet([
+                        new Field(
                             'fieldAbc',
                             null,
-                            new \Graphpinator\Parser\Field\FieldSet([
-                                new \Graphpinator\Parser\Field\Field('fieldXyz', null, new \Graphpinator\Parser\Field\FieldSet([
-                                    new \Graphpinator\Parser\Field\Field('name'),
-                                ], new \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet())),
-                            ], new \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet()),
+                            new FieldSet([
+                                new Field('fieldXyz', null, new FieldSet([
+                                    new Field('name'),
+                                ], new FragmentSpreadSet())),
+                            ], new FragmentSpreadSet()),
                             null,
-                            new \Graphpinator\Parser\Directive\DirectiveSet([
+                            new DirectiveSet([
+                                new Directive(
+                                    'skip',
+                                    new ArgumentValueSet([
+                                        new ArgumentValue(new Literal(true), 'if'),
+                                    ]),
+                                ),
+                            ]),
+                        ),
+                    ], new FragmentSpreadSet([
+                        new InlineFragmentSpread(
+                            new FieldSet([
+                                new Field('fieldListInt'),
+                            ], new FragmentSpreadSet()),
+                            new DirectiveSet([
                                 new \Graphpinator\Parser\Directive\Directive(
                                     'skip',
                                     new \Graphpinator\Parser\Value\ArgumentValueSet([
@@ -79,23 +119,9 @@ final class NormalizerTest extends \PHPUnit\Framework\TestCase
                                 ),
                             ]),
                         ),
-                    ], new \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet([
-                        new \Graphpinator\Parser\FragmentSpread\InlineFragmentSpread(
-                            new \Graphpinator\Parser\Field\FieldSet([
-                                new \Graphpinator\Parser\Field\Field('fieldListInt'),
-                            ], new \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet()),
-                            new \Graphpinator\Parser\Directive\DirectiveSet([
-                                new \Graphpinator\Parser\Directive\Directive(
-                                    'skip',
-                                    new \Graphpinator\Parser\Value\ArgumentValueSet([
-                                        new \Graphpinator\Parser\Value\ArgumentValue(new \Graphpinator\Parser\Value\Literal(true), 'if'),
-                                    ]),
-                                ),
-                            ]),
-                        ),
-                        new \Graphpinator\Parser\FragmentSpread\NamedFragmentSpread(
+                        new NamedFragmentSpread(
                             'fragmentName',
-                            new \Graphpinator\Parser\Directive\DirectiveSet([
+                            new DirectiveSet([
                                 new \Graphpinator\Parser\Directive\Directive(
                                     'include',
                                     new \Graphpinator\Parser\Value\ArgumentValueSet([
@@ -107,14 +133,14 @@ final class NormalizerTest extends \PHPUnit\Framework\TestCase
                     ])),
                 ),
             ]),
-            new \Graphpinator\Parser\Fragment\FragmentSet([
-                new \Graphpinator\Parser\Fragment\Fragment(
+            new FragmentSet([
+                new Fragment(
                     'fragmentName',
-                    new \Graphpinator\Parser\TypeRef\NamedTypeRef('Query'),
-                    new \Graphpinator\Parser\Directive\DirectiveSet(),
-                    new \Graphpinator\Parser\Field\FieldSet([
-                        new \Graphpinator\Parser\Field\Field('fieldList'),
-                    ], new \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet()),
+                    new NamedTypeRef('Query'),
+                    new DirectiveSet(),
+                    new FieldSet([
+                        new Field('fieldList'),
+                    ], new FragmentSpreadSet()),
                 ),
             ]),
         );
@@ -136,7 +162,7 @@ final class NormalizerTest extends \PHPUnit\Framework\TestCase
         );
 
         self::assertArrayHasKey(1, $operation->getSelections());
-        self::assertInstanceOf(\Graphpinator\Normalizer\Selection\InlineFragment::class, $operation->getSelections()->offsetGet(1));
+        self::assertInstanceOf(InlineFragment::class, $operation->getSelections()->offsetGet(1));
         self::assertSame('fieldListInt', $operation->getSelections()->offsetGet(1)->getSelections()->offsetGet(0)->getName());
         self::assertCount(1, $operation->getSelections()->offsetGet(1)->getDirectives());
         self::assertArrayHasKey(0, $operation->getSelections()->offsetGet(1)->getDirectives());
@@ -146,12 +172,12 @@ final class NormalizerTest extends \PHPUnit\Framework\TestCase
         );
 
         self::assertArrayHasKey(2, $operation->getSelections());
-        self::assertInstanceOf(\Graphpinator\Normalizer\Selection\FragmentSpread::class, $operation->getSelections()->offsetGet(2));
+        self::assertInstanceOf(FragmentSpread::class, $operation->getSelections()->offsetGet(2));
         self::assertSame('fieldList', $operation->getSelections()->offsetGet(2)->getSelections()->offsetGet(0)->getName());
         self::assertCount(1, $operation->getSelections()->offsetGet(2)->getDirectives());
         self::assertArrayHasKey(0, $operation->getSelections()->offsetGet(2)->getDirectives());
         self::assertInstanceOf(
-            \Graphpinator\Typesystem\Spec\IncludeDirective::class,
+            IncludeDirective::class,
             $operation->getSelections()->offsetGet(2)->getDirectives()->offsetGet(0)->getDirective(),
         );
     }
@@ -160,185 +186,185 @@ final class NormalizerTest extends \PHPUnit\Framework\TestCase
     {
         return [
             [
-                new \Graphpinator\Parser\ParsedRequest(
-                    new \Graphpinator\Parser\Operation\OperationSet([
-                        new \Graphpinator\Parser\Operation\Operation(
-                            \Graphpinator\Tokenizer\OperationType::MUTATION,
+                new ParsedRequest(
+                    new OperationSet([
+                        new Operation(
+                            OperationType::MUTATION,
                             null,
                             null,
                             null,
-                            new \Graphpinator\Parser\Field\FieldSet([], new \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet()),
+                            new FieldSet([], new FragmentSpreadSet()),
                         ),
                     ]),
-                    new \Graphpinator\Parser\Fragment\FragmentSet(),
+                    new FragmentSet(),
                 ),
-                \Graphpinator\Normalizer\Exception\OperationNotSupported::class,
+                OperationNotSupported::class,
             ],
             [
-                new \Graphpinator\Parser\ParsedRequest(
-                    new \Graphpinator\Parser\Operation\OperationSet([
-                        new \Graphpinator\Parser\Operation\Operation(
-                            \Graphpinator\Tokenizer\OperationType::SUBSCRIPTION,
+                new ParsedRequest(
+                    new OperationSet([
+                        new Operation(
+                            OperationType::SUBSCRIPTION,
                             null,
                             null,
                             null,
-                            new \Graphpinator\Parser\Field\FieldSet([], new \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet()),
+                            new FieldSet([], new FragmentSpreadSet()),
                         ),
                     ]),
-                    new \Graphpinator\Parser\Fragment\FragmentSet(),
+                    new FragmentSet(),
                 ),
-                \Graphpinator\Normalizer\Exception\OperationNotSupported::class,
+                OperationNotSupported::class,
             ],
             [
-                new \Graphpinator\Parser\ParsedRequest(
-                    new \Graphpinator\Parser\Operation\OperationSet([
-                        new \Graphpinator\Parser\Operation\Operation(
-                            \Graphpinator\Tokenizer\OperationType::QUERY,
+                new ParsedRequest(
+                    new OperationSet([
+                        new Operation(
+                            OperationType::QUERY,
                             null,
                             null,
                             null,
-                            new \Graphpinator\Parser\Field\FieldSet([], new \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet([
-                                new \Graphpinator\Parser\FragmentSpread\NamedFragmentSpread('fragmentName'),
+                            new FieldSet([], new FragmentSpreadSet([
+                                new NamedFragmentSpread('fragmentName'),
                             ])),
                         ),
                     ]),
-                    new \Graphpinator\Parser\Fragment\FragmentSet(),
+                    new FragmentSet(),
                 ),
-                \Graphpinator\Normalizer\Exception\UnknownFragment::class,
+                UnknownFragment::class,
             ],
             [
-                new \Graphpinator\Parser\ParsedRequest(
-                    new \Graphpinator\Parser\Operation\OperationSet([
-                        new \Graphpinator\Parser\Operation\Operation(
-                            \Graphpinator\Tokenizer\OperationType::QUERY,
+                new ParsedRequest(
+                    new OperationSet([
+                        new Operation(
+                            OperationType::QUERY,
                             null,
                             null,
                             null,
-                            new \Graphpinator\Parser\Field\FieldSet([], new \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet()),
+                            new FieldSet([], new FragmentSpreadSet()),
                         ),
                     ]),
-                    new \Graphpinator\Parser\Fragment\FragmentSet([
-                        new \Graphpinator\Parser\Fragment\Fragment(
+                    new FragmentSet([
+                        new Fragment(
                             'fragment1',
-                            new \Graphpinator\Parser\TypeRef\NamedTypeRef('Int'),
-                            new \Graphpinator\Parser\Directive\DirectiveSet(),
-                            new \Graphpinator\Parser\Field\FieldSet([], new \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet([
-                                new \Graphpinator\Parser\FragmentSpread\NamedFragmentSpread('fragment5'),
-                                new \Graphpinator\Parser\FragmentSpread\NamedFragmentSpread('fragment2'),
+                            new NamedTypeRef('Int'),
+                            new DirectiveSet(),
+                            new FieldSet([], new FragmentSpreadSet([
+                                new NamedFragmentSpread('fragment5'),
+                                new NamedFragmentSpread('fragment2'),
                             ])),
                         ),
-                        new \Graphpinator\Parser\Fragment\Fragment(
+                        new Fragment(
                             'fragment2',
-                            new \Graphpinator\Parser\TypeRef\NamedTypeRef('Int'),
-                            new \Graphpinator\Parser\Directive\DirectiveSet(),
-                            new \Graphpinator\Parser\Field\FieldSet([], new \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet([
-                                new \Graphpinator\Parser\FragmentSpread\NamedFragmentSpread('fragment3'),
+                            new NamedTypeRef('Int'),
+                            new DirectiveSet(),
+                            new FieldSet([], new FragmentSpreadSet([
+                                new NamedFragmentSpread('fragment3'),
                             ])),
                         ),
-                        new \Graphpinator\Parser\Fragment\Fragment(
+                        new Fragment(
                             'fragment3',
-                            new \Graphpinator\Parser\TypeRef\NamedTypeRef('Int'),
-                            new \Graphpinator\Parser\Directive\DirectiveSet(),
-                            new \Graphpinator\Parser\Field\FieldSet([], new \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet([
-                                new \Graphpinator\Parser\FragmentSpread\NamedFragmentSpread('fragment4'),
+                            new NamedTypeRef('Int'),
+                            new DirectiveSet(),
+                            new FieldSet([], new FragmentSpreadSet([
+                                new NamedFragmentSpread('fragment4'),
                             ])),
                         ),
-                        new \Graphpinator\Parser\Fragment\Fragment(
+                        new Fragment(
                             'fragment4',
-                            new \Graphpinator\Parser\TypeRef\NamedTypeRef('Int'),
-                            new \Graphpinator\Parser\Directive\DirectiveSet(),
-                            new \Graphpinator\Parser\Field\FieldSet([], new \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet([
-                                new \Graphpinator\Parser\FragmentSpread\NamedFragmentSpread('fragment5'),
-                                new \Graphpinator\Parser\FragmentSpread\NamedFragmentSpread('fragment1'),
+                            new NamedTypeRef('Int'),
+                            new DirectiveSet(),
+                            new FieldSet([], new FragmentSpreadSet([
+                                new NamedFragmentSpread('fragment5'),
+                                new NamedFragmentSpread('fragment1'),
                             ])),
                         ),
-                        new \Graphpinator\Parser\Fragment\Fragment(
+                        new Fragment(
                             'fragment5',
-                            new \Graphpinator\Parser\TypeRef\NamedTypeRef('Int'),
-                            new \Graphpinator\Parser\Directive\DirectiveSet(),
-                            new \Graphpinator\Parser\Field\FieldSet([], new \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet()),
+                            new NamedTypeRef('Int'),
+                            new DirectiveSet(),
+                            new FieldSet([], new FragmentSpreadSet()),
                         ),
                     ]),
                 ),
-                \Graphpinator\Normalizer\Exception\FragmentCycle::class,
+                FragmentCycle::class,
             ],
             [
-                new \Graphpinator\Parser\ParsedRequest(
-                    new \Graphpinator\Parser\Operation\OperationSet([
-                        new \Graphpinator\Parser\Operation\Operation(
-                            \Graphpinator\Tokenizer\OperationType::QUERY,
+                new ParsedRequest(
+                    new OperationSet([
+                        new Operation(
+                            OperationType::QUERY,
                             null,
                             null,
                             null,
-                            new \Graphpinator\Parser\Field\FieldSet([], new \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet()),
+                            new FieldSet([], new FragmentSpreadSet()),
                         ),
                     ]),
-                    new \Graphpinator\Parser\Fragment\FragmentSet([
-                        new \Graphpinator\Parser\Fragment\Fragment(
+                    new FragmentSet([
+                        new Fragment(
                             'fragment1',
-                            new \Graphpinator\Parser\TypeRef\NamedTypeRef('Int'),
-                            new \Graphpinator\Parser\Directive\DirectiveSet(),
-                            new \Graphpinator\Parser\Field\FieldSet([], new \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet([
-                                new \Graphpinator\Parser\FragmentSpread\InlineFragmentSpread(new \Graphpinator\Parser\Field\FieldSet(
+                            new NamedTypeRef('Int'),
+                            new DirectiveSet(),
+                            new FieldSet([], new FragmentSpreadSet([
+                                new InlineFragmentSpread(new FieldSet(
                                     [],
-                                    new \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet([]),
+                                    new FragmentSpreadSet([]),
                                 )),
-                                new \Graphpinator\Parser\FragmentSpread\NamedFragmentSpread('fragment2'),
+                                new NamedFragmentSpread('fragment2'),
                             ])),
                         ),
-                        new \Graphpinator\Parser\Fragment\Fragment(
+                        new Fragment(
                             'fragment2',
-                            new \Graphpinator\Parser\TypeRef\NamedTypeRef('Int'),
-                            new \Graphpinator\Parser\Directive\DirectiveSet(),
-                            new \Graphpinator\Parser\Field\FieldSet([], new \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet([
-                                new \Graphpinator\Parser\FragmentSpread\InlineFragmentSpread(new \Graphpinator\Parser\Field\FieldSet(
+                            new NamedTypeRef('Int'),
+                            new DirectiveSet(),
+                            new FieldSet([], new FragmentSpreadSet([
+                                new InlineFragmentSpread(new FieldSet(
                                     [],
-                                    new \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet(),
+                                    new FragmentSpreadSet(),
                                 )),
-                                new \Graphpinator\Parser\FragmentSpread\NamedFragmentSpread('fragment1'),
+                                new NamedFragmentSpread('fragment1'),
                             ])),
                         ),
                     ]),
                 ),
-                \Graphpinator\Normalizer\Exception\FragmentCycle::class,
+                FragmentCycle::class,
             ],
             [
-                new \Graphpinator\Parser\ParsedRequest(
-                    new \Graphpinator\Parser\Operation\OperationSet([
-                        new \Graphpinator\Parser\Operation\Operation(
-                            \Graphpinator\Tokenizer\OperationType::QUERY,
+                new ParsedRequest(
+                    new OperationSet([
+                        new Operation(
+                            OperationType::QUERY,
                             null,
                             null,
                             null,
-                            new \Graphpinator\Parser\Field\FieldSet([], new \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet()),
+                            new FieldSet([], new FragmentSpreadSet()),
                         ),
                     ]),
-                    new \Graphpinator\Parser\Fragment\FragmentSet([
-                        new \Graphpinator\Parser\Fragment\Fragment(
+                    new FragmentSet([
+                        new Fragment(
                             'fragment1',
-                            new \Graphpinator\Parser\TypeRef\NamedTypeRef('Int'),
-                            new \Graphpinator\Parser\Directive\DirectiveSet(),
-                            new \Graphpinator\Parser\Field\FieldSet([], new \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet([
-                                new \Graphpinator\Parser\FragmentSpread\NamedFragmentSpread('fragment2'),
+                            new NamedTypeRef('Int'),
+                            new DirectiveSet(),
+                            new FieldSet([], new FragmentSpreadSet([
+                                new NamedFragmentSpread('fragment2'),
                             ])),
                         ),
-                        new \Graphpinator\Parser\Fragment\Fragment(
+                        new Fragment(
                             'fragment2',
-                            new \Graphpinator\Parser\TypeRef\NamedTypeRef('Int'),
-                            new \Graphpinator\Parser\Directive\DirectiveSet(),
-                            new \Graphpinator\Parser\Field\FieldSet([
-                                new \Graphpinator\Parser\Field\Field(
+                            new NamedTypeRef('Int'),
+                            new DirectiveSet(),
+                            new FieldSet([
+                                new Field(
                                     'field',
                                     null,
-                                    new \Graphpinator\Parser\Field\FieldSet([], new \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet([
-                                        new \Graphpinator\Parser\FragmentSpread\NamedFragmentSpread('fragment1'),
+                                    new FieldSet([], new FragmentSpreadSet([
+                                        new NamedFragmentSpread('fragment1'),
                                     ])),
                                 ),
-                            ], new \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet()),
+                            ], new FragmentSpreadSet()),
                         ),
                     ]),
                 ),
-                \Graphpinator\Normalizer\Exception\FragmentCycle::class,
+                FragmentCycle::class,
             ],
         ];
     }
@@ -348,7 +374,7 @@ final class NormalizerTest extends \PHPUnit\Framework\TestCase
      * @param \Graphpinator\Parser\ParsedRequest $parseResult
      * @param string $exception
      */
-    public function testInvalid(\Graphpinator\Parser\ParsedRequest $parseResult, string $exception) : void
+    public function testInvalid(ParsedRequest $parseResult, string $exception) : void
     {
         $this->expectException($exception);
 

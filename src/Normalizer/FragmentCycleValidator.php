@@ -4,6 +4,10 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Normalizer;
 
+use \Graphpinator\Normalizer\Exception\FragmentCycle;
+use \Graphpinator\Normalizer\Exception\UnknownFragment;
+use \Graphpinator\Parser\FragmentSpread\NamedFragmentSpread;
+
 final class FragmentCycleValidator
 {
     use \Nette\SmartObject;
@@ -31,7 +35,7 @@ final class FragmentCycleValidator
         }
 
         if (\array_key_exists($fragment->getName(), $this->stack)) {
-            throw new \Graphpinator\Normalizer\Exception\FragmentCycle();
+            throw new FragmentCycle();
         }
 
         $this->stack[$fragment->getName()] = true;
@@ -49,12 +53,12 @@ final class FragmentCycleValidator
         }
 
         foreach ($fieldSet->getFragmentSpreads() as $spread) {
-            if (!$spread instanceof \Graphpinator\Parser\FragmentSpread\NamedFragmentSpread) {
+            if (!$spread instanceof NamedFragmentSpread) {
                 continue;
             }
 
             if (!$this->fragmentSet->offsetExists($spread->getName())) {
-                throw new \Graphpinator\Normalizer\Exception\UnknownFragment($spread->getName());
+                throw new UnknownFragment($spread->getName());
             }
 
             $this->validateFragment($this->fragmentSet->offsetGet($spread->getName()));

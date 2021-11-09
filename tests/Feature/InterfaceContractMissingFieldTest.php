@@ -4,6 +4,10 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Feature;
 
+use \Graphpinator\Typesystem\Exception\InterfaceContractMissingField;
+use \Graphpinator\Typesystem\Field\ResolvableField;
+use \Graphpinator\Typesystem\Field\ResolvableFieldSet;
+
 final class InterfaceContractMissingFieldTest extends \PHPUnit\Framework\TestCase
 {
     public static function createMainInterface() : \Graphpinator\Typesystem\InterfaceType
@@ -46,10 +50,10 @@ final class InterfaceContractMissingFieldTest extends \PHPUnit\Framework\TestCas
                 return true;
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
+            protected function getFieldDefinition() : ResolvableFieldSet
             {
-                return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
-                    new \Graphpinator\Typesystem\Field\ResolvableField(
+                return new ResolvableFieldSet([
+                    new ResolvableField(
                         'differentField',
                         \Graphpinator\Typesystem\Container::Int(),
                         static function () : void {
@@ -62,7 +66,7 @@ final class InterfaceContractMissingFieldTest extends \PHPUnit\Framework\TestCas
 
     public function testTypeMissingField() : void
     {
-        $this->expectException(\Graphpinator\Typesystem\Exception\InterfaceContractMissingField::class);
+        $this->expectException(InterfaceContractMissingField::class);
         $this->expectExceptionMessage('Type "Abc" does not satisfy interface "Bar" - missing field "field".');
 
         self::getTypeMissingField()->getFields();

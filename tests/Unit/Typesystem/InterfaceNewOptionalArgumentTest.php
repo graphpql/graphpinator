@@ -4,6 +4,11 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Unit\Typesystem;
 
+use \Graphpinator\Typesystem\Container;
+use \Graphpinator\Typesystem\Exception\InterfaceContractNewArgumentWithoutDefault;
+use \Graphpinator\Typesystem\Field\ResolvableField;
+use \Graphpinator\Typesystem\Field\ResolvableFieldSet;
+
 final class InterfaceNewOptionalArgumentTest extends \PHPUnit\Framework\TestCase
 {
     public static function createInterface() : \Graphpinator\Typesystem\InterfaceType
@@ -20,7 +25,7 @@ final class InterfaceNewOptionalArgumentTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Typesystem\Field\FieldSet([
                     new \Graphpinator\Typesystem\Field\Field(
                         'field',
-                        \Graphpinator\Typesystem\Container::Int(),
+                        Container::Int(),
                     ),
                 ]);
             }
@@ -44,10 +49,10 @@ final class InterfaceNewOptionalArgumentTest extends \PHPUnit\Framework\TestCase
                 return true;
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
+            protected function getFieldDefinition() : ResolvableFieldSet
             {
-                return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
-                    \Graphpinator\Typesystem\Field\ResolvableField::create(
+                return new ResolvableFieldSet([
+                    ResolvableField::create(
                         'field',
                         \Graphpinator\Typesystem\Container::Int(),
                         static function ($parent, $argumentDefaultNull) : void {
@@ -67,7 +72,7 @@ final class InterfaceNewOptionalArgumentTest extends \PHPUnit\Framework\TestCase
 
     public function testAdditionalChildArgumentCannotBeNull() : void
     {
-        $this->expectException(\Graphpinator\Typesystem\Exception\InterfaceContractNewArgumentWithoutDefault::class);
+        $this->expectException(InterfaceContractNewArgumentWithoutDefault::class);
 
         self::createChildType()->getFields();
     }

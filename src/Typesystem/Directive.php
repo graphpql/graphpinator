@@ -4,6 +4,9 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem;
 
+use \Graphpinator\Typesystem\Argument\ArgumentSet;
+use \Graphpinator\Typesystem\Contract\EntityVisitor;
+
 abstract class Directive implements \Graphpinator\Typesystem\Contract\Directive
 {
     use \Nette\SmartObject;
@@ -12,7 +15,7 @@ abstract class Directive implements \Graphpinator\Typesystem\Contract\Directive
     protected const DESCRIPTION = null;
     protected const REPEATABLE = false;
 
-    protected ?\Graphpinator\Typesystem\Argument\ArgumentSet $arguments = null;
+    protected ?ArgumentSet $arguments = null;
 
     final public function getName() : string
     {
@@ -43,9 +46,9 @@ abstract class Directive implements \Graphpinator\Typesystem\Contract\Directive
         return static::REPEATABLE;
     }
 
-    final public function getArguments() : \Graphpinator\Typesystem\Argument\ArgumentSet
+    final public function getArguments() : ArgumentSet
     {
-        if (!$this->arguments instanceof \Graphpinator\Typesystem\Argument\ArgumentSet) {
+        if (!$this->arguments instanceof ArgumentSet) {
             $this->arguments = $this->getFieldDefinition();
             $this->afterGetFieldDefinition();
         }
@@ -53,12 +56,12 @@ abstract class Directive implements \Graphpinator\Typesystem\Contract\Directive
         return $this->arguments;
     }
 
-    final public function accept(\Graphpinator\Typesystem\Contract\EntityVisitor $visitor) : mixed
+    final public function accept(EntityVisitor $visitor) : mixed
     {
         return $visitor->visitDirective($this);
     }
 
-    abstract protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet;
+    abstract protected function getFieldDefinition() : ArgumentSet;
 
     /**
      * This function serves to prevent infinite cycles.

@@ -4,10 +4,22 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem;
 
-abstract class InterfaceType extends \Graphpinator\Typesystem\Contract\AbstractType implements
-    \Graphpinator\Typesystem\Contract\InterfaceImplementor
+use \Graphpinator\Typesystem\Contract\AbstractType;
+use \Graphpinator\Typesystem\Contract\InterfaceImplementor;
+use \Graphpinator\Typesystem\Contract\NamedTypeVisitor;
+use \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsage;
+use \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet;
+use \Graphpinator\Typesystem\Exception\DirectiveIncorrectType;
+use \Graphpinator\Typesystem\Exception\InterfaceCycle;
+use \Graphpinator\Typesystem\Exception\InterfaceOrTypeMustDefineOneOrMoreFields;
+use \Graphpinator\Typesystem\Field\FieldSet;
+use \Graphpinator\Typesystem\Location\ObjectLocation;
+use \Graphpinator\Typesystem\Utils\TInterfaceImplementor;
+
+abstract class InterfaceType extends AbstractType implements
+    InterfaceImplementor
 {
-    use \Graphpinator\Typesystem\Utils\TInterfaceImplementor;
+    use TInterfaceImplementor;
     use \Graphpinator\Typesystem\Utils\TMetaFields;
     use \Graphpinator\Typesystem\Utils\THasDirectives;
 
@@ -17,7 +29,7 @@ abstract class InterfaceType extends \Graphpinator\Typesystem\Contract\AbstractT
     {
         $this->implements = $implements
             ?? new \Graphpinator\Typesystem\InterfaceSet([]);
-        $this->directiveUsages = new \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet();
+        $this->directiveUsages = new DirectiveUsageSet();
     }
 
     final public function isInstanceOf(\Graphpinator\Typesystem\Contract\Type $type) : bool
@@ -36,14 +48,14 @@ abstract class InterfaceType extends \Graphpinator\Typesystem\Contract\AbstractT
             return $this->isImplementedBy($type->getInnerType());
         }
 
-        return $type instanceof \Graphpinator\Typesystem\Contract\InterfaceImplementor
+        return $type instanceof InterfaceImplementor
             && $type->implements($this);
     }
 
-    final public function getFields() : \Graphpinator\Typesystem\Field\FieldSet
+    final public function getFields() : FieldSet
     {
-        if (!$this->fields instanceof \Graphpinator\Typesystem\Field\FieldSet) {
-            $this->fields = new \Graphpinator\Typesystem\Field\FieldSet([]);
+        if (!$this->fields instanceof FieldSet) {
+            $this->fields = new FieldSet([]);
 
             foreach ($this->implements as $interfaceType) {
                 $this->fields->merge($interfaceType->getFields(), true);
@@ -53,7 +65,7 @@ abstract class InterfaceType extends \Graphpinator\Typesystem\Contract\AbstractT
 
             if (\Graphpinator\Graphpinator::$validateSchema) {
                 if ($this->fields->count() === 0) {
-                    throw new \Graphpinator\Typesystem\Exception\InterfaceOrTypeMustDefineOneOrMoreFields();
+                    throw new InterfaceOrTypeMustDefineOneOrMoreFields();
                 }
 
                 $this->validateInterfaceContract();
@@ -64,20 +76,20 @@ abstract class InterfaceType extends \Graphpinator\Typesystem\Contract\AbstractT
         return $this->fields;
     }
 
-    final public function accept(\Graphpinator\Typesystem\Contract\NamedTypeVisitor $visitor) : mixed
+    final public function accept(NamedTypeVisitor $visitor) : mixed
     {
         return $visitor->visitInterface($this);
     }
 
     final public function addDirective(
-        \Graphpinator\Typesystem\Location\ObjectLocation $directive,
+        ObjectLocation $directive,
         array $arguments = [],
     ) : static
     {
-        $usage = new \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsage($directive, $arguments);
+        $usage = new DirectiveUsage($directive, $arguments);
 
         if (\Graphpinator\Graphpinator::$validateSchema && !$directive->validateObjectUsage($this, $usage->getArgumentValues())) {
-            throw new \Graphpinator\Typesystem\Exception\DirectiveIncorrectType();
+            throw new DirectiveIncorrectType();
         }
 
         $this->directiveUsages[] = $usage;
@@ -85,7 +97,7 @@ abstract class InterfaceType extends \Graphpinator\Typesystem\Contract\AbstractT
         return $this;
     }
 
-    abstract protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\FieldSet;
+    abstract protected function getFieldDefinition() : FieldSet;
 
     private function validateCycles(array $stack) : void
     {
@@ -94,7 +106,7 @@ abstract class InterfaceType extends \Graphpinator\Typesystem\Contract\AbstractT
         }
 
         if (\array_key_exists($this->getName(), $stack)) {
-            throw new \Graphpinator\Typesystem\Exception\InterfaceCycle();
+            throw new InterfaceCycle();
         }
 
         $stack[$this->getName()] = true;

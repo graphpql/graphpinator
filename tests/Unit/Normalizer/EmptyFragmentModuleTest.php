@@ -4,30 +4,37 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Unit\Normalizer;
 
+use \Graphpinator\Normalizer\Directive\DirectiveSet;
+use \Graphpinator\Normalizer\Selection\FragmentSpread;
+use \Graphpinator\Normalizer\Selection\InlineFragment;
+use \Graphpinator\Normalizer\Selection\SelectionSet;
+use \Graphpinator\Normalizer\SelectionSetRefiner;
+use \Graphpinator\Typesystem\Field\ResolvableFieldSet;
+
 final class EmptyFragmentModuleTest extends \PHPUnit\Framework\TestCase
 {
     public function testEmptyFragmentSpread() : void
     {
-        $fragmentSpread = new \Graphpinator\Normalizer\Selection\FragmentSpread(
+        $fragmentSpread = new FragmentSpread(
             'someName',
-            new \Graphpinator\Normalizer\Selection\SelectionSet(),
-            new \Graphpinator\Normalizer\Directive\DirectiveSet(),
+            new SelectionSet(),
+            new DirectiveSet(),
             new class extends \Graphpinator\Typesystem\Type {
                 public function validateNonNullValue(mixed $rawValue) : bool
                 {
                 }
 
-                protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
+                protected function getFieldDefinition() : ResolvableFieldSet
                 {
                 }
             },
         );
 
-        $set = new \Graphpinator\Normalizer\Selection\SelectionSet([
+        $set = new SelectionSet([
             $fragmentSpread,
         ]);
 
-        $refiner = new \Graphpinator\Normalizer\SelectionSetRefiner($set);
+        $refiner = new SelectionSetRefiner($set);
         $refiner->refine();
 
         self::assertCount(0, $set);
@@ -35,13 +42,13 @@ final class EmptyFragmentModuleTest extends \PHPUnit\Framework\TestCase
 
     public function testEmptyInlineFragment() : void
     {
-        $inlineFragment = new \Graphpinator\Normalizer\Selection\InlineFragment(
-            new \Graphpinator\Normalizer\Selection\SelectionSet(),
-            new \Graphpinator\Normalizer\Directive\DirectiveSet(),
+        $inlineFragment = new InlineFragment(
+            new SelectionSet(),
+            new DirectiveSet(),
             null,
         );
 
-        $set = new \Graphpinator\Normalizer\Selection\SelectionSet([
+        $set = new SelectionSet([
             $inlineFragment,
         ]);
 
@@ -53,29 +60,29 @@ final class EmptyFragmentModuleTest extends \PHPUnit\Framework\TestCase
 
     public function testEmptyCombined() : void
     {
-        $fragmentSpread = new \Graphpinator\Normalizer\Selection\FragmentSpread(
+        $fragmentSpread = new FragmentSpread(
             'someName',
-            new \Graphpinator\Normalizer\Selection\SelectionSet(),
-            new \Graphpinator\Normalizer\Directive\DirectiveSet(),
+            new SelectionSet(),
+            new DirectiveSet(),
             new class extends \Graphpinator\Typesystem\Type {
                 public function validateNonNullValue(mixed $rawValue) : bool
                 {
                 }
 
-                protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
+                protected function getFieldDefinition() : ResolvableFieldSet
                 {
                 }
             },
         );
-        $inlineFragment = new \Graphpinator\Normalizer\Selection\InlineFragment(
-            new \Graphpinator\Normalizer\Selection\SelectionSet([
+        $inlineFragment = new InlineFragment(
+            new SelectionSet([
                 $fragmentSpread,
             ]),
-            new \Graphpinator\Normalizer\Directive\DirectiveSet(),
+            new DirectiveSet(),
             null,
         );
 
-        $set = new \Graphpinator\Normalizer\Selection\SelectionSet([
+        $set = new SelectionSet([
             $inlineFragment,
         ]);
 

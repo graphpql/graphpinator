@@ -4,13 +4,20 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Feature;
 
+use \Graphpinator\Request\JsonRequestFactory;
+use \Graphpinator\Typesystem\Container;
+use \Graphpinator\Typesystem\Field\ResolvableField;
+use \Graphpinator\Typesystem\Field\ResolvableFieldSet;
+use \Graphpinator\Typesystem\Type;
+use \Infinityloop\Utils\Json;
+
 final class SingleExecutionTest extends \PHPUnit\Framework\TestCase
 {
     public static int $execCount;
 
-    public static function getCompositeType() : \Graphpinator\Typesystem\Type
+    public static function getCompositeType() : Type
     {
-        return new class () extends \Graphpinator\Typesystem\Type
+        return new class () extends Type
         {
             protected const NAME = 'CompositeType';
 
@@ -24,17 +31,17 @@ final class SingleExecutionTest extends \PHPUnit\Framework\TestCase
                 return true;
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
+            protected function getFieldDefinition() : ResolvableFieldSet
             {
-                return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
-                    \Graphpinator\Typesystem\Field\ResolvableField::create(
+                return new ResolvableFieldSet([
+                    ResolvableField::create(
                         'firstField',
-                        \Graphpinator\Typesystem\Container::Int(),
+                        Container::Int(),
                         static function($parent) : int {
                             return 123;
                         },
                     ),
-                    \Graphpinator\Typesystem\Field\ResolvableField::create(
+                    ResolvableField::create(
                         'secondField',
                         \Graphpinator\Typesystem\Container::Int(),
                         static function($parent) : int {
@@ -50,20 +57,20 @@ final class SingleExecutionTest extends \PHPUnit\Framework\TestCase
     {
         self::$execCount = 0;
 
-        $request = \Infinityloop\Utils\Json::fromNative((object) [
+        $request = Json::fromNative((object) [
             'query' => 'query { 
                 field
                 field
              }',
         ]);
-        $expected = \Infinityloop\Utils\Json::fromNative((object) [
+        $expected = Json::fromNative((object) [
             'data' => [
                 'field' => 123,
             ],
         ]);
 
         self::assertSame(0, self::$execCount);
-        $result = self::getGraphpinator()->run(new \Graphpinator\Request\JsonRequestFactory($request));
+        $result = self::getGraphpinator()->run(new JsonRequestFactory($request));
         self::assertSame($expected->toString(), $result->toString());
         self::assertSame(1, self::$execCount);
     }
@@ -72,7 +79,7 @@ final class SingleExecutionTest extends \PHPUnit\Framework\TestCase
     {
         self::$execCount = 0;
 
-        $request = \Infinityloop\Utils\Json::fromNative((object) [
+        $request = Json::fromNative((object) [
             'query' => 'query { 
                 field
                 ... @skip(if: false) {
@@ -80,7 +87,7 @@ final class SingleExecutionTest extends \PHPUnit\Framework\TestCase
                 }
              }',
         ]);
-        $expected = \Infinityloop\Utils\Json::fromNative((object) [
+        $expected = Json::fromNative((object) [
             'data' => [
                 'field' => 123,
             ],
@@ -96,7 +103,7 @@ final class SingleExecutionTest extends \PHPUnit\Framework\TestCase
     {
         self::$execCount = 0;
 
-        $request = \Infinityloop\Utils\Json::fromNative((object) [
+        $request = Json::fromNative((object) [
             'query' => 'query { 
                 compositeField {
                   firstField
@@ -108,7 +115,7 @@ final class SingleExecutionTest extends \PHPUnit\Framework\TestCase
                 }
              }',
         ]);
-        $expected = \Infinityloop\Utils\Json::fromNative((object) [
+        $expected = Json::fromNative((object) [
             'data' => [
                 'compositeField' => (object) [
                     'firstField' => 123,
@@ -135,9 +142,9 @@ final class SingleExecutionTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    protected static function getQuery() : \Graphpinator\Typesystem\Type
+    protected static function getQuery() : Type
     {
-        return new class () extends \Graphpinator\Typesystem\Type
+        return new class () extends Type
         {
             protected const NAME = 'Query';
 
@@ -151,10 +158,10 @@ final class SingleExecutionTest extends \PHPUnit\Framework\TestCase
                 return true;
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
+            protected function getFieldDefinition() : ResolvableFieldSet
             {
-                return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
-                    \Graphpinator\Typesystem\Field\ResolvableField::create(
+                return new ResolvableFieldSet([
+                    ResolvableField::create(
                         'field',
                         \Graphpinator\Typesystem\Container::Int()->notNull(),
                         static function($parent) : int {
@@ -163,7 +170,7 @@ final class SingleExecutionTest extends \PHPUnit\Framework\TestCase
                             return 123;
                         },
                     ),
-                    \Graphpinator\Typesystem\Field\ResolvableField::create(
+                    ResolvableField::create(
                         'compositeField',
                         SingleExecutionTest::getCompositeType()->notNull(),
                         static function($parent) : int {
