@@ -29,7 +29,7 @@ final class ConvertRawValueVisitor implements \Graphpinator\Typesystem\Contract\
                 continue;
             }
 
-            throw new \Graphpinator\Normalizer\Exception\UnknownArgument($name);
+            throw new \Graphpinator\Normalizer\Exception\UnknownArgument((string) $name);
         }
 
         $inner = new \stdClass();
