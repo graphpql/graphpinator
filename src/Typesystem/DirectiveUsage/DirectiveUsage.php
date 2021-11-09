@@ -15,6 +15,11 @@ final class DirectiveUsage implements \Graphpinator\Typesystem\Contract\Componen
         array $arguments,
     )
     {
+        // replace with \array_is_list() for PHP 8.1
+        if (\count($arguments) > 0 && \array_key_first($arguments) === 0) {
+            throw new \Graphpinator\Typesystem\Exception\DirectiveUsageArgumentsInvalidMap();
+        }
+        
         $this->argumentValues = new \Graphpinator\Value\ArgumentValueSet(
             (array) \Graphpinator\Value\ConvertRawValueVisitor::convertArgumentSet(
                 $directive->getArguments(),
