@@ -19,7 +19,7 @@ final class DirectiveUsage implements \Graphpinator\Typesystem\Contract\Componen
         if (\count($arguments) > 0 && \array_key_first($arguments) === 0) {
             throw new \Graphpinator\Typesystem\Exception\DirectiveUsageArgumentsInvalidMap();
         }
-        
+
         $this->argumentValues = new \Graphpinator\Value\ArgumentValueSet(
             (array) \Graphpinator\Value\ConvertRawValueVisitor::convertArgumentSet(
                 $directive->getArguments(),
