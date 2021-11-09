@@ -18,12 +18,30 @@ final class Schema implements \Graphpinator\Typesystem\Contract\Entity
     )
     {
         if (\Graphpinator\Graphpinator::$validateSchema) {
-            if (self::isSame($query, $mutation) || self::isSame($query, $subscription) || self::isSame($mutation, $subscription)) {
+            if (self::isSame($query, $mutation) ||
+                self::isSame($query, $subscription) ||
+                self::isSame($mutation, $subscription)) {
                 throw new \Graphpinator\Typesystem\Exception\RootOperationTypesMustBeDifferent();
             }
         }
 
         $this->directiveUsages = new \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet();
+        $query->addMetaField(\Graphpinator\Typesystem\Field\ResolvableField::create(
+            '__schema',
+            $container->getType('__Schema')->notNull(),
+            function() : \Graphpinator\Typesystem\Schema {
+                return $this;
+            },
+        ));
+        $query->addMetaField(\Graphpinator\Typesystem\Field\ResolvableField::create(
+            '__type',
+            $container->getType('__Type'),
+            function($parent, string $name) : ?\Graphpinator\Typesystem\Contract\Type {
+                return $this->container->getType($name);
+            },
+        )->setArguments(new \Graphpinator\Typesystem\Argument\ArgumentSet([
+            \Graphpinator\Typesystem\Argument\Argument::create('name', \Graphpinator\Typesystem\Container::String()->notNull()),
+        ])));
     }
 
     public function getContainer() : \Graphpinator\Typesystem\Container
