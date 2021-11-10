@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Value;
 
-final class VariableValue implements \Graphpinator\Value\InputedValue
+final class VariableValue implements InputedValue
 {
     use \Nette\SmartObject;
 

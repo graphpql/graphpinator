@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Normalizer;
 
+use \Graphpinator\Normalizer\ValidatorModule\ValidateFieldsCanMergeModule;
+
 final class SelectionSetValidator
 {
     use \Nette\SmartObject;
@@ -17,7 +19,7 @@ final class SelectionSetValidator
     public function validate() : void
     {
         $modules = [
-            new \Graphpinator\Normalizer\ValidatorModule\ValidateFieldsCanMergeModule($this->selections),
+            new ValidateFieldsCanMergeModule($this->selections),
         ];
 
         foreach ($modules as $module) {

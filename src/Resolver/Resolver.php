@@ -4,22 +4,27 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Resolver;
 
+use \Graphpinator\Normalizer\Operation\Operation;
+use \Graphpinator\Result;
+use \Graphpinator\Tokenizer\OperationType;
+use \Graphpinator\Value\TypeIntermediateValue;
+
 final class Resolver
 {
     use \Nette\SmartObject;
 
-    public function resolve(\Graphpinator\Normalizer\FinalizedRequest $finalizedRequest) : \Graphpinator\Result
+    public function resolve(\Graphpinator\Normalizer\FinalizedRequest $finalizedRequest) : Result
     {
         $operation = $finalizedRequest->getOperation();
 
         return match ($operation->getType()) {
-            \Graphpinator\Tokenizer\OperationType::QUERY => $this->resolveQuery($operation),
+            OperationType::QUERY => $this->resolveQuery($operation),
             \Graphpinator\Tokenizer\OperationType::MUTATION => $this->resolveMutation($operation),
             \Graphpinator\Tokenizer\OperationType::SUBSCRIPTION => $this->resolveSubscription($operation),
         };
     }
 
-    private function resolveQuery(\Graphpinator\Normalizer\Operation\Operation $operation) : \Graphpinator\Result
+    private function resolveQuery(Operation $operation) : Result
     {
         foreach ($operation->getDirectives() as $directive) {
             $directiveDef = $directive->getDirective();
@@ -27,9 +32,9 @@ final class Resolver
             $directiveDef->resolveQueryBefore($directive->getArguments());
         }
 
-        $resolver = new \Graphpinator\Resolver\ResolveVisitor(
+        $resolver = new ResolveVisitor(
             $operation->getSelections(),
-            new \Graphpinator\Value\TypeIntermediateValue($operation->getRootObject(), null),
+            new TypeIntermediateValue($operation->getRootObject(), null),
         );
 
         $operationValue = $operation->getRootObject()->accept($resolver);
@@ -40,10 +45,10 @@ final class Resolver
             $directiveDef->resolveQueryAfter($directive->getArguments(), $operationValue);
         }
 
-        return new \Graphpinator\Result($operationValue);
+        return new Result($operationValue);
     }
 
-    private function resolveMutation(\Graphpinator\Normalizer\Operation\Operation $operation) : \Graphpinator\Result
+    private function resolveMutation(\Graphpinator\Normalizer\Operation\Operation $operation) : Result
     {
         foreach ($operation->getDirectives() as $directive) {
             $directiveDef = $directive->getDirective();
@@ -64,10 +69,10 @@ final class Resolver
             $directiveDef->resolveMutationAfter($directive->getArguments(), $operationValue);
         }
 
-        return new \Graphpinator\Result($operationValue);
+        return new Result($operationValue);
     }
 
-    private function resolveSubscription(\Graphpinator\Normalizer\Operation\Operation $operation) : \Graphpinator\Result
+    private function resolveSubscription(\Graphpinator\Normalizer\Operation\Operation $operation) : Result
     {
         foreach ($operation->getDirectives() as $directive) {
             $directiveDef = $directive->getDirective();
@@ -88,6 +93,6 @@ final class Resolver
             $directiveDef->resolveSubscriptionAfter($directive->getArguments(), $operationValue);
         }
 
-        return new \Graphpinator\Result($operationValue);
+        return new Result($operationValue);
     }
 }

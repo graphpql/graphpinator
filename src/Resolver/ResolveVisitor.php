@@ -4,11 +4,13 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Resolver;
 
+use \Graphpinator\Value\ResolvedValue;
+
 final class ResolveVisitor implements \Graphpinator\Typesystem\Contract\TypeVisitor
 {
     public function __construct(
         private ?\Graphpinator\Normalizer\Selection\SelectionSet $selectionSet,
-        private \Graphpinator\Value\ResolvedValue $parentResult,
+        private ResolvedValue $parentResult,
         private ?\stdClass $result = null,
     )
     {
@@ -41,17 +43,17 @@ final class ResolveVisitor implements \Graphpinator\Typesystem\Contract\TypeVisi
         // nothing here
     }
 
-    public function visitScalar(\Graphpinator\Typesystem\ScalarType $scalar) : \Graphpinator\Value\ResolvedValue
+    public function visitScalar(\Graphpinator\Typesystem\ScalarType $scalar) : ResolvedValue
     {
         return $this->parentResult;
     }
 
-    public function visitEnum(\Graphpinator\Typesystem\EnumType $enum) : \Graphpinator\Value\ResolvedValue
+    public function visitEnum(\Graphpinator\Typesystem\EnumType $enum) : ResolvedValue
     {
         return $this->parentResult;
     }
 
-    public function visitNotNull(\Graphpinator\Typesystem\NotNullType $notNull) : \Graphpinator\Value\ResolvedValue
+    public function visitNotNull(\Graphpinator\Typesystem\NotNullType $notNull) : ResolvedValue
     {
         return $notNull->getInnerType()->accept($this);
     }

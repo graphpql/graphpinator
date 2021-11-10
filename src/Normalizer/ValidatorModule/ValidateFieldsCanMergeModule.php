@@ -4,12 +4,16 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Normalizer\ValidatorModule;
 
+use \Graphpinator\Normalizer\Exception\ConflictingFieldDirectives;
+use \Graphpinator\Normalizer\Selection\Field;
+use \Graphpinator\Typesystem\Contract\TypeConditionable;
+
 final class ValidateFieldsCanMergeModule implements ValidatorModule, \Graphpinator\Normalizer\Selection\SelectionVisitor
 {
     use \Nette\SmartObject;
 
     private array $fieldsForName;
-    private ?\Graphpinator\Typesystem\Contract\TypeConditionable $contextType;
+    private ?TypeConditionable $contextType;
 
     public function __construct(
         private \Graphpinator\Normalizer\Selection\SelectionSet $selections,
@@ -28,7 +32,7 @@ final class ValidateFieldsCanMergeModule implements ValidatorModule, \Graphpinat
         }
     }
 
-    public function visitField(\Graphpinator\Normalizer\Selection\Field $field) : mixed
+    public function visitField(Field $field) : mixed
     {
         if (\array_key_exists($field->getOutputName(), $this->fieldsForName)) {
             foreach ($this->fieldsForName[$field->getOutputName()] as $fieldForName) {
@@ -105,8 +109,8 @@ final class ValidateFieldsCanMergeModule implements ValidatorModule, \Graphpinat
     }
 
     private function validateResponseShape(
-        \Graphpinator\Normalizer\Selection\Field $field,
-        \Graphpinator\Normalizer\Selection\Field $conflict,
+        Field $field,
+        Field $conflict,
     ) : void
     {
         $fieldReturnType = $field->getField()->getType();
@@ -120,8 +124,8 @@ final class ValidateFieldsCanMergeModule implements ValidatorModule, \Graphpinat
     }
 
     private function validateIdentity(
-        \Graphpinator\Normalizer\Selection\Field $field,
-        \Graphpinator\Normalizer\Selection\Field $conflict,
+        Field $field,
+        Field $conflict,
     ) : void
     {
         $fieldReturnType = $field->getField()->getType();
@@ -145,13 +149,13 @@ final class ValidateFieldsCanMergeModule implements ValidatorModule, \Graphpinat
 
         /** Fields have different directives */
         if (!$field->getDirectives()->isSame($conflict->getDirectives())) {
-            throw new \Graphpinator\Normalizer\Exception\ConflictingFieldDirectives();
+            throw new ConflictingFieldDirectives();
         }
     }
 
     private function validateInnerFields(
-        \Graphpinator\Normalizer\Selection\Field $field,
-        \Graphpinator\Normalizer\Selection\Field $conflict,
+        Field $field,
+        Field $conflict,
         bool $identity,
     ) : void
     {

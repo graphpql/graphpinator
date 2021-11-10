@@ -4,22 +4,24 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem\Utils;
 
+use \Graphpinator\Typesystem\Field\ResolvableFieldSet;
+
 trait TMetaFields
 {
-    protected ?\Graphpinator\Typesystem\Field\ResolvableFieldSet $metaFields = null;
+    protected ?ResolvableFieldSet $metaFields = null;
 
-    public function getMetaFields() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
+    public function getMetaFields() : ResolvableFieldSet
     {
-        if (!$this->metaFields instanceof \Graphpinator\Typesystem\Field\ResolvableFieldSet) {
+        if (!$this->metaFields instanceof ResolvableFieldSet) {
             $this->metaFields = $this->getMetaFieldDefinition();
         }
 
         return $this->metaFields;
     }
 
-    private function getMetaFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
+    private function getMetaFieldDefinition() : ResolvableFieldSet
     {
-        return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
+        return new ResolvableFieldSet([
             new \Graphpinator\Typesystem\Field\ResolvableField(
                 '__typename',
                 \Graphpinator\Typesystem\Container::String()->notNull(),

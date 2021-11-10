@@ -4,22 +4,24 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem\Location;
 
+use \Graphpinator\Value\ArgumentValueSet;
+
 interface ArgumentDefinitionLocation extends \Graphpinator\Typesystem\Contract\TypeSystemDirective
 {
     public static function isPure() : bool;
 
     public function validateArgumentUsage(
         \Graphpinator\Typesystem\Argument\Argument $argument,
-        \Graphpinator\Value\ArgumentValueSet $arguments,
+        ArgumentValueSet $arguments,
     ) : bool;
 
     public function validateVariance(
-        ?\Graphpinator\Value\ArgumentValueSet $biggerSet,
-        ?\Graphpinator\Value\ArgumentValueSet $smallerSet,
+        ?ArgumentValueSet $biggerSet,
+        ?ArgumentValueSet $smallerSet,
     ) : void;
 
     public function resolveArgumentDefinition(
-        \Graphpinator\Value\ArgumentValueSet $arguments,
+        ArgumentValueSet $arguments,
         \Graphpinator\Value\ArgumentValue $argumentValue,
     ) : void;
 }

@@ -4,6 +4,9 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem;
 
+use \Graphpinator\Typesystem\Exception\InterfaceOrTypeMustDefineOneOrMoreFields;
+use \Graphpinator\Typesystem\Field\FieldSet;
+
 abstract class InterfaceType extends \Graphpinator\Typesystem\Contract\AbstractType implements
     \Graphpinator\Typesystem\Contract\InterfaceImplementor
 {
@@ -40,10 +43,10 @@ abstract class InterfaceType extends \Graphpinator\Typesystem\Contract\AbstractT
             && $type->implements($this);
     }
 
-    final public function getFields() : \Graphpinator\Typesystem\Field\FieldSet
+    final public function getFields() : FieldSet
     {
-        if (!$this->fields instanceof \Graphpinator\Typesystem\Field\FieldSet) {
-            $this->fields = new \Graphpinator\Typesystem\Field\FieldSet([]);
+        if (!$this->fields instanceof FieldSet) {
+            $this->fields = new FieldSet([]);
 
             foreach ($this->implements as $interfaceType) {
                 $this->fields->merge($interfaceType->getFields(), true);
@@ -53,7 +56,7 @@ abstract class InterfaceType extends \Graphpinator\Typesystem\Contract\AbstractT
 
             if (\Graphpinator\Graphpinator::$validateSchema) {
                 if ($this->fields->count() === 0) {
-                    throw new \Graphpinator\Typesystem\Exception\InterfaceOrTypeMustDefineOneOrMoreFields();
+                    throw new InterfaceOrTypeMustDefineOneOrMoreFields();
                 }
 
                 $this->validateInterfaceContract();
@@ -85,7 +88,7 @@ abstract class InterfaceType extends \Graphpinator\Typesystem\Contract\AbstractT
         return $this;
     }
 
-    abstract protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\FieldSet;
+    abstract protected function getFieldDefinition() : FieldSet;
 
     private function validateCycles(array $stack) : void
     {

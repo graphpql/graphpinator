@@ -4,6 +4,10 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Unit\Typesystem;
 
+use \Graphpinator\Typesystem\Field\ResolvableFieldSet;
+use \Graphpinator\Typesystem\NotNullType;
+use \Graphpinator\Typesystem\Type;
+
 final class UnionTypeTest extends \PHPUnit\Framework\TestCase
 {
     public static function createTestUnion() : \Graphpinator\Typesystem\UnionType
@@ -28,9 +32,9 @@ final class UnionTypeTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    public static function getTestTypeAbc() : \Graphpinator\Typesystem\Type
+    public static function getTestTypeAbc() : Type
     {
-        return new class extends \Graphpinator\Typesystem\Type {
+        return new class extends Type {
             protected const NAME = 'Abc';
 
             public function validateNonNullValue($rawValue) : bool
@@ -38,16 +42,16 @@ final class UnionTypeTest extends \PHPUnit\Framework\TestCase
                 return true;
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
+            protected function getFieldDefinition() : ResolvableFieldSet
             {
-                return new \Graphpinator\Typesystem\Field\ResolvableFieldSet();
+                return new ResolvableFieldSet();
             }
         };
     }
 
-    public static function getTestTypeXyz() : \Graphpinator\Typesystem\Type
+    public static function getTestTypeXyz() : Type
     {
-        return new class extends \Graphpinator\Typesystem\Type {
+        return new class extends Type {
             protected const NAME = 'Xyz';
 
             public function validateNonNullValue($rawValue) : bool
@@ -55,16 +59,16 @@ final class UnionTypeTest extends \PHPUnit\Framework\TestCase
                 return true;
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
+            protected function getFieldDefinition() : ResolvableFieldSet
             {
-                return new \Graphpinator\Typesystem\Field\ResolvableFieldSet();
+                return new ResolvableFieldSet();
             }
         };
     }
 
-    public static function getTestTypeZzz() : \Graphpinator\Typesystem\Type
+    public static function getTestTypeZzz() : Type
     {
-        return new class extends \Graphpinator\Typesystem\Type {
+        return new class extends Type {
             protected const NAME = 'Zzz';
 
             public function validateNonNullValue($rawValue) : bool
@@ -72,9 +76,9 @@ final class UnionTypeTest extends \PHPUnit\Framework\TestCase
                 return true;
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
+            protected function getFieldDefinition() : ResolvableFieldSet
             {
-                return new \Graphpinator\Typesystem\Field\ResolvableFieldSet();
+                return new ResolvableFieldSet();
             }
         };
     }
@@ -89,14 +93,14 @@ final class UnionTypeTest extends \PHPUnit\Framework\TestCase
         self::assertSame('Zzz', $union->getTypes()->offsetGet('Zzz')->getName());
 
         self::assertTrue($union->isInstanceOf($union));
-        self::assertTrue($union->isInstanceOf(new \Graphpinator\Typesystem\NotNullType($union)));
+        self::assertTrue($union->isInstanceOf(new NotNullType($union)));
         self::assertFalse($union->isInstanceOf(self::getTestTypeZzz()));
-        self::assertFalse($union->isInstanceOf(new \Graphpinator\Typesystem\NotNullType(self::getTestTypeZzz())));
+        self::assertFalse($union->isInstanceOf(new NotNullType(self::getTestTypeZzz())));
         self::assertTrue($union->isImplementedBy(self::getTestTypeXyz()));
-        self::assertTrue($union->isImplementedBy(new \Graphpinator\Typesystem\NotNullType(self::getTestTypeXyz())));
+        self::assertTrue($union->isImplementedBy(new NotNullType(self::getTestTypeXyz())));
         self::assertTrue($union->isImplementedBy(self::getTestTypeZzz()));
-        self::assertTrue($union->isImplementedBy(new \Graphpinator\Typesystem\NotNullType(self::getTestTypeZzz())));
+        self::assertTrue($union->isImplementedBy(new NotNullType(self::getTestTypeZzz())));
         self::assertFalse($union->isImplementedBy(self::getTestTypeAbc()));
-        self::assertFalse($union->isImplementedBy(new \Graphpinator\Typesystem\NotNullType(self::getTestTypeAbc())));
+        self::assertFalse($union->isImplementedBy(new NotNullType(self::getTestTypeAbc())));
     }
 }

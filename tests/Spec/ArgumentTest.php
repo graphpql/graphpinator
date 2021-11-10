@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Spec;
 
+use \Graphpinator\Exception\Value\InvalidValue;
 use \Infinityloop\Utils\Json;
 
 final class ArgumentTest extends \PHPUnit\Framework\TestCase
@@ -89,7 +90,7 @@ final class ArgumentTest extends \PHPUnit\Framework\TestCase
                 Json::fromNative((object) [
                     'query' => 'query queryName { fieldAbc { fieldXyz(arg1: "123") { name } } }',
                 ]),
-                \Graphpinator\Exception\Value\InvalidValue::class,
+                InvalidValue::class,
             ],
             [
                 Json::fromNative((object) [
@@ -101,19 +102,19 @@ final class ArgumentTest extends \PHPUnit\Framework\TestCase
                 Json::fromNative((object) [
                     'query' => 'query queryName { fieldAbc { fieldXyz(arg1: 2147483649) { name } } }',
                 ]),
-                \Graphpinator\Exception\Value\InvalidValue::class,
+                InvalidValue::class,
             ],
             [
                 Json::fromNative((object) [
                     'query' => 'query queryName { fieldArgumentDefaults(inputNumberList: {val: 3}) { fieldName } }',
                 ]),
-                \Graphpinator\Exception\Value\InvalidValue::class,
+                InvalidValue::class,
             ],
             [
                 Json::fromNative((object) [
                     'query' => 'query queryName { fieldAbc { fieldXyz(arg2: []) { name } } }',
                 ]),
-                \Graphpinator\Exception\Value\InvalidValue::class,
+                InvalidValue::class,
             ],
         ];
     }

@@ -4,6 +4,9 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Feature;
 
+use \Graphpinator\Typesystem\Field\ResolvableFieldSet;
+use \Infinityloop\Utils\Json;
+
 final class MutationTest extends \PHPUnit\Framework\TestCase
 {
     public function testSimple() : void
@@ -14,9 +17,9 @@ final class MutationTest extends \PHPUnit\Framework\TestCase
                 return true;
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
+            protected function getFieldDefinition() : ResolvableFieldSet
             {
-                return new \Graphpinator\Typesystem\Field\ResolvableFieldSet();
+                return new ResolvableFieldSet();
             }
         };
         $mutation = new class extends \Graphpinator\Typesystem\Type {
@@ -27,9 +30,9 @@ final class MutationTest extends \PHPUnit\Framework\TestCase
                 return true;
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
+            protected function getFieldDefinition() : ResolvableFieldSet
             {
-                return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
+                return new ResolvableFieldSet([
                     \Graphpinator\Typesystem\Field\ResolvableField::create(
                         'field',
                         \Graphpinator\Typesystem\Container::Int()->notNull(),
@@ -47,18 +50,18 @@ final class MutationTest extends \PHPUnit\Framework\TestCase
         $schema = new \Graphpinator\Typesystem\Schema($container, $query, $mutation);
 
         $graphpinator = new \Graphpinator\Graphpinator($schema);
-        $result = $graphpinator->run(new \Graphpinator\Request\JsonRequestFactory(\Infinityloop\Utils\Json::fromNative((object) [
+        $result = $graphpinator->run(new \Graphpinator\Request\JsonRequestFactory(Json::fromNative((object) [
              'query' => 'mutation { field, secondField: field, thirdField: field }',
         ])));
         self::assertSame(
-            \Infinityloop\Utils\Json::fromNative((object) ['data' => ['field' => 0, 'secondField' => 1, 'thirdField' => 2]])->toString(),
+            Json::fromNative((object) ['data' => ['field' => 0, 'secondField' => 1, 'thirdField' => 2]])->toString(),
             $result->toString(),
         );
-        $result = $graphpinator->run(new \Graphpinator\Request\JsonRequestFactory(\Infinityloop\Utils\Json::fromNative((object) [
+        $result = $graphpinator->run(new \Graphpinator\Request\JsonRequestFactory(Json::fromNative((object) [
              'query' => 'mutation { thirdField: field, field, secondField: field }',
         ])));
         self::assertSame(
-            \Infinityloop\Utils\Json::fromNative((object) ['data' => ['thirdField' => 3, 'field' => 4, 'secondField' => 5]])->toString(),
+            Json::fromNative((object) ['data' => ['thirdField' => 3, 'field' => 4, 'secondField' => 5]])->toString(),
             $result->toString(),
         );
     }

@@ -4,12 +4,14 @@ declare(strict_types = 1);
 
 namespace Graphpinator;
 
+use \Graphpinator\Value\TypeValue;
+
 final class Result implements \JsonSerializable
 {
     use \Nette\SmartObject;
 
     public function __construct(
-        private ?\Graphpinator\Value\TypeValue $data = null,
+        private ?TypeValue $data = null,
         private ?array $errors = null,
     )
     {

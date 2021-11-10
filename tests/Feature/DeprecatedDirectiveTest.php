@@ -4,20 +4,27 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Feature;
 
+use \Graphpinator\Typesystem\Argument\Argument;
+use \Graphpinator\Typesystem\Argument\ArgumentSet;
+use \Graphpinator\Typesystem\Container;
+use \Graphpinator\Typesystem\Field\ResolvableField;
+use \Graphpinator\Typesystem\Field\ResolvableFieldSet;
+use \Graphpinator\Typesystem\InputType;
+use \Graphpinator\Typesystem\Type;
 use \Infinityloop\Utils\Json;
 
 final class DeprecatedDirectiveTest extends \PHPUnit\Framework\TestCase
 {
-    private static ?\Graphpinator\Typesystem\Type $testType = null;
-    private static ?\Graphpinator\Typesystem\InputType $testInputType = null;
+    private static ?Type $testType = null;
+    private static ?InputType $testInputType = null;
 
-    public static function createTestType() : \Graphpinator\Typesystem\Type
+    public static function createTestType() : Type
     {
-        if (self::$testType instanceof \Graphpinator\Typesystem\Type) {
+        if (self::$testType instanceof Type) {
             return self::$testType;
         }
 
-        self::$testType = new class extends \Graphpinator\Typesystem\Type {
+        self::$testType = new class extends Type {
             protected const NAME = 'TestType';
 
             public function __construct()
@@ -27,7 +34,7 @@ final class DeprecatedDirectiveTest extends \PHPUnit\Framework\TestCase
                 parent::__construct();
             }
 
-            public function initGetFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
+            public function initGetFieldDefinition() : ResolvableFieldSet
             {
                 return $this->getFieldDefinition();
             }
@@ -37,34 +44,34 @@ final class DeprecatedDirectiveTest extends \PHPUnit\Framework\TestCase
                 return true;
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
+            protected function getFieldDefinition() : ResolvableFieldSet
             {
-                return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
-                    \Graphpinator\Typesystem\Field\ResolvableField::create(
+                return new ResolvableFieldSet([
+                    ResolvableField::create(
                         'testFieldDeprecatedNull',
-                        \Graphpinator\Typesystem\Container::String(),
+                        Container::String(),
                         static function () : string {
                             return 'test';
                         },
                     )->setDeprecated(
-                    )->setArguments(new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                        \Graphpinator\Typesystem\Argument\Argument::create(
+                    )->setArguments(new ArgumentSet([
+                        Argument::create(
                             'testArgumentDeprecatedNull',
-                            \Graphpinator\Typesystem\Container::String(),
+                            Container::String(),
                         )->setDeprecated(),
                     ])),
                     \Graphpinator\Typesystem\Field\ResolvableField::create(
                         'testFieldDeprecatedNotNull',
-                        \Graphpinator\Typesystem\Container::String(),
+                        Container::String(),
                         static function () : string {
                             return 'test';
                         },
                     )->setDeprecated(
                         'reasonField',
-                    )->setArguments(new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                        \Graphpinator\Typesystem\Argument\Argument::create(
+                    )->setArguments(new ArgumentSet([
+                        Argument::create(
                             'testArgumentDeprecatedNotNull',
-                            \Graphpinator\Typesystem\Container::String(),
+                            Container::String(),
                         )->setDeprecated('reasonArgument'),
                     ])),
                 ]);
@@ -76,13 +83,13 @@ final class DeprecatedDirectiveTest extends \PHPUnit\Framework\TestCase
         return self::$testType;
     }
 
-    public static function createTestInputType() : \Graphpinator\Typesystem\InputType
+    public static function createTestInputType() : InputType
     {
-        if (self::$testInputType instanceof \Graphpinator\Typesystem\InputType) {
+        if (self::$testInputType instanceof InputType) {
             return self::$testInputType;
         }
 
-        self::$testInputType = new class extends \Graphpinator\Typesystem\InputType {
+        self::$testInputType = new class extends InputType {
             protected const NAME = 'TestInputType';
 
             public function __construct()
@@ -92,21 +99,21 @@ final class DeprecatedDirectiveTest extends \PHPUnit\Framework\TestCase
                 parent::__construct();
             }
 
-            public function initGetFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
+            public function initGetFieldDefinition() : ArgumentSet
             {
                 return $this->getFieldDefinition();
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
+            protected function getFieldDefinition() : ArgumentSet
             {
-                return new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                    \Graphpinator\Typesystem\Argument\Argument::create(
+                return new ArgumentSet([
+                    Argument::create(
                         'testDeprecatedNull',
-                        \Graphpinator\Typesystem\Container::String(),
+                        Container::String(),
                     )->setDeprecated(),
-                    \Graphpinator\Typesystem\Argument\Argument::create(
+                    Argument::create(
                         'testDeprecatedNotNull',
-                        \Graphpinator\Typesystem\Container::String(),
+                        Container::String(),
                     )->setDeprecated('reasonArgument'),
                 ]);
             }
@@ -362,9 +369,9 @@ final class DeprecatedDirectiveTest extends \PHPUnit\Framework\TestCase
         ], []);
     }
 
-    private function getQuery() : \Graphpinator\Typesystem\Type
+    private function getQuery() : Type
     {
-        return new class extends \Graphpinator\Typesystem\Type {
+        return new class extends Type {
             protected const NAME = 'Query';
 
             public function validateNonNullValue($rawValue) : bool
@@ -372,12 +379,12 @@ final class DeprecatedDirectiveTest extends \PHPUnit\Framework\TestCase
                 return true;
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
+            protected function getFieldDefinition() : ResolvableFieldSet
             {
-                return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
+                return new ResolvableFieldSet([
                     new \Graphpinator\Typesystem\Field\ResolvableField(
                         'field',
-                        \Graphpinator\Typesystem\Container::String(),
+                        Container::String(),
                         static function () : void {
                         },
                     ),

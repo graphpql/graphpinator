@@ -4,19 +4,20 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Feature;
 
+use \Graphpinator\Typesystem\ScalarType;
 use \Infinityloop\Utils\Json;
 
 final class TypeSystemDirectiveDuplicateTest extends \PHPUnit\Framework\TestCase
 {
-    private static ?\Graphpinator\Typesystem\ScalarType $testDuplicateDirective = null;
+    private static ?ScalarType $testDuplicateDirective = null;
 
-    public static function createTestDuplicateDirective() : \Graphpinator\Typesystem\ScalarType
+    public static function createTestDuplicateDirective() : ScalarType
     {
-        if (self::$testDuplicateDirective instanceof \Graphpinator\Typesystem\ScalarType) {
+        if (self::$testDuplicateDirective instanceof ScalarType) {
             return self::$testDuplicateDirective;
         }
 
-        self::$testDuplicateDirective = new class extends \Graphpinator\Typesystem\ScalarType {
+        self::$testDuplicateDirective = new class extends ScalarType {
             protected const NAME = 'TestDuplicateDirective';
 
             public function __construct()

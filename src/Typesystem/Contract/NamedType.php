@@ -4,7 +4,10 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem\Contract;
 
-abstract class NamedType implements \Graphpinator\Typesystem\Contract\Type, \Graphpinator\Typesystem\Contract\Entity
+use \Graphpinator\Typesystem\ListType;
+use \Graphpinator\Typesystem\NotNullType;
+
+abstract class NamedType implements Type, \Graphpinator\Typesystem\Contract\Entity
 {
     protected const NAME = '';
     protected const DESCRIPTION = null;
@@ -43,14 +46,14 @@ abstract class NamedType implements \Graphpinator\Typesystem\Contract\Type, \Gra
         return $this instanceof Inputable;
     }
 
-    final public function notNull() : \Graphpinator\Typesystem\NotNullType
+    final public function notNull() : NotNullType
     {
-        return new \Graphpinator\Typesystem\NotNullType($this);
+        return new NotNullType($this);
     }
 
-    final public function notNullList() : \Graphpinator\Typesystem\NotNullType
+    final public function notNullList() : NotNullType
     {
-        return new \Graphpinator\Typesystem\NotNullType(new \Graphpinator\Typesystem\ListType(new \Graphpinator\Typesystem\NotNullType($this)));
+        return new NotNullType(new ListType(new NotNullType($this)));
     }
 
     final public function list() : \Graphpinator\Typesystem\ListType

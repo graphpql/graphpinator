@@ -4,6 +4,9 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem;
 
+use \Graphpinator\Typesystem\Exception\InterfaceOrTypeMustDefineOneOrMoreFields;
+use \Graphpinator\Typesystem\Field\ResolvableFieldSet;
+
 abstract class Type extends \Graphpinator\Typesystem\Contract\ConcreteType implements
     \Graphpinator\Typesystem\Contract\TypeConditionable,
     \Graphpinator\Typesystem\Contract\InterfaceImplementor
@@ -35,21 +38,21 @@ abstract class Type extends \Graphpinator\Typesystem\Contract\ConcreteType imple
         return parent::isInstanceOf($type);
     }
 
-    final public function getFields() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
+    final public function getFields() : ResolvableFieldSet
     {
-        if (!$this->fields instanceof \Graphpinator\Typesystem\Field\ResolvableFieldSet) {
+        if (!$this->fields instanceof ResolvableFieldSet) {
             $this->fields = $this->getFieldDefinition();
 
             if (\Graphpinator\Graphpinator::$validateSchema) {
                 if ($this->fields->count() === 0) {
-                    throw new \Graphpinator\Typesystem\Exception\InterfaceOrTypeMustDefineOneOrMoreFields();
+                    throw new InterfaceOrTypeMustDefineOneOrMoreFields();
                 }
 
                 $this->validateInterfaceContract();
             }
         }
 
-        \assert($this->fields instanceof \Graphpinator\Typesystem\Field\ResolvableFieldSet);
+        \assert($this->fields instanceof ResolvableFieldSet);
 
         return $this->fields;
     }
@@ -75,5 +78,5 @@ abstract class Type extends \Graphpinator\Typesystem\Contract\ConcreteType imple
         return $this;
     }
 
-    abstract protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet;
+    abstract protected function getFieldDefinition() : ResolvableFieldSet;
 }

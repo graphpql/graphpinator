@@ -4,6 +4,9 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Resolver;
 
+use \Graphpinator\Value\NullResolvedValue;
+use \Graphpinator\Value\ResolvedValue;
+
 final class CreateResolvedValueVisitor implements \Graphpinator\Typesystem\Contract\TypeVisitor
 {
     public function __construct(
@@ -12,28 +15,28 @@ final class CreateResolvedValueVisitor implements \Graphpinator\Typesystem\Contr
     {
     }
 
-    public function visitType(\Graphpinator\Typesystem\Type $type) : \Graphpinator\Value\ResolvedValue
+    public function visitType(\Graphpinator\Typesystem\Type $type) : ResolvedValue
     {
         if ($this->rawValue === null) {
-            return new \Graphpinator\Value\NullResolvedValue($type);
+            return new NullResolvedValue($type);
         }
 
         return new \Graphpinator\Value\TypeIntermediateValue($type, $this->rawValue);
     }
 
-    public function visitInterface(\Graphpinator\Typesystem\InterfaceType $interface) : \Graphpinator\Value\ResolvedValue
+    public function visitInterface(\Graphpinator\Typesystem\InterfaceType $interface) : ResolvedValue
     {
         if ($this->rawValue === null) {
-            return new \Graphpinator\Value\NullResolvedValue($interface);
+            return new NullResolvedValue($interface);
         }
 
         return $interface->createResolvedValue($this->rawValue);
     }
 
-    public function visitUnion(\Graphpinator\Typesystem\UnionType $union) : \Graphpinator\Value\ResolvedValue
+    public function visitUnion(\Graphpinator\Typesystem\UnionType $union) : ResolvedValue
     {
         if ($this->rawValue === null) {
-            return new \Graphpinator\Value\NullResolvedValue($union);
+            return new NullResolvedValue($union);
         }
 
         return $union->createResolvedValue($this->rawValue);
@@ -44,25 +47,25 @@ final class CreateResolvedValueVisitor implements \Graphpinator\Typesystem\Contr
         // nothing here
     }
 
-    public function visitScalar(\Graphpinator\Typesystem\ScalarType $scalar) : \Graphpinator\Value\ResolvedValue
+    public function visitScalar(\Graphpinator\Typesystem\ScalarType $scalar) : ResolvedValue
     {
         if ($this->rawValue === null) {
-            return new \Graphpinator\Value\NullResolvedValue($scalar);
+            return new NullResolvedValue($scalar);
         }
 
         return new \Graphpinator\Value\ScalarValue($scalar, $this->rawValue, false);
     }
 
-    public function visitEnum(\Graphpinator\Typesystem\EnumType $enum) : \Graphpinator\Value\ResolvedValue
+    public function visitEnum(\Graphpinator\Typesystem\EnumType $enum) : ResolvedValue
     {
         if ($this->rawValue === null) {
-            return new \Graphpinator\Value\NullResolvedValue($enum);
+            return new NullResolvedValue($enum);
         }
 
         return new \Graphpinator\Value\ScalarValue($enum, $this->rawValue, false);
     }
 
-    public function visitNotNull(\Graphpinator\Typesystem\NotNullType $notNull) : \Graphpinator\Value\ResolvedValue
+    public function visitNotNull(\Graphpinator\Typesystem\NotNullType $notNull) : ResolvedValue
     {
         $value = $notNull->getInnerType()->accept($this);
 
@@ -73,12 +76,12 @@ final class CreateResolvedValueVisitor implements \Graphpinator\Typesystem\Contr
         return $value;
     }
 
-    public function visitList(\Graphpinator\Typesystem\ListType $list) : \Graphpinator\Value\ResolvedValue
+    public function visitList(\Graphpinator\Typesystem\ListType $list) : ResolvedValue
     {
         if (\is_iterable($this->rawValue)) {
             return new \Graphpinator\Value\ListIntermediateValue($list, $this->rawValue);
         }
 
-        return new \Graphpinator\Value\NullResolvedValue($list);
+        return new NullResolvedValue($list);
     }
 }

@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem\Location;
 
+use \Graphpinator\Value\ArgumentValueSet;
+
 interface FieldLocation extends \Graphpinator\Typesystem\Contract\ExecutableDirective
 {
     public const NONE = 'none';
@@ -16,7 +18,7 @@ interface FieldLocation extends \Graphpinator\Typesystem\Contract\ExecutableDire
 
     public function validateFieldUsage(
         \Graphpinator\Typesystem\Field\Field $field,
-        \Graphpinator\Value\ArgumentValueSet $arguments,
+        ArgumentValueSet $arguments,
     ) : bool;
 
     public function resolveFieldBefore(

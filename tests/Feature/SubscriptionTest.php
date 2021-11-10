@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Feature;
 
+use \Graphpinator\Typesystem\Field\ResolvableFieldSet;
+
 /**
  * Adjust to correct subscription behaviour
  */
@@ -17,9 +19,9 @@ final class SubscriptionTest extends \PHPUnit\Framework\TestCase
                 return true;
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
+            protected function getFieldDefinition() : ResolvableFieldSet
             {
-                return new \Graphpinator\Typesystem\Field\ResolvableFieldSet();
+                return new ResolvableFieldSet();
             }
         };
         $subscription = new class extends \Graphpinator\Typesystem\Type {
@@ -28,9 +30,9 @@ final class SubscriptionTest extends \PHPUnit\Framework\TestCase
                 return true;
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
+            protected function getFieldDefinition() : ResolvableFieldSet
             {
-                return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
+                return new ResolvableFieldSet([
                     \Graphpinator\Typesystem\Field\ResolvableField::create(
                         'field',
                         \Graphpinator\Typesystem\Container::Int()->notNull(),

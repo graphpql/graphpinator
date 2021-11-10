@@ -4,13 +4,18 @@ declare(strict_types = 1);
 
 namespace Graphpinator;
 
+use \Graphpinator\Exception\GraphpinatorBase;
+use \Graphpinator\Module\ModuleSet;
+use \Psr\Log\LogLevel;
+use \Psr\Log\LoggerInterface;
+
 final class Graphpinator implements \Psr\Log\LoggerAwareInterface
 {
     use \Nette\SmartObject;
 
     public static bool $validateSchema = true;
-    private \Graphpinator\Module\ModuleSet $modules;
-    private \Psr\Log\LoggerInterface $logger;
+    private ModuleSet $modules;
+    private LoggerInterface $logger;
     private \Graphpinator\Parser\Parser $parser;
     private \Graphpinator\Normalizer\Normalizer $normalizer;
     private \Graphpinator\Normalizer\Finalizer $finalizer;
@@ -19,14 +24,14 @@ final class Graphpinator implements \Psr\Log\LoggerAwareInterface
     public function __construct(
         \Graphpinator\Typesystem\Schema $schema,
         private bool $catchExceptions = false,
-        ?\Graphpinator\Module\ModuleSet $modules = null,
-        ?\Psr\Log\LoggerInterface $logger = null,
+        ?ModuleSet $modules = null,
+        ?LoggerInterface $logger = null,
     )
     {
-        $this->modules = $modules instanceof \Graphpinator\Module\ModuleSet
+        $this->modules = $modules instanceof ModuleSet
             ? $modules
-            : new \Graphpinator\Module\ModuleSet([]);
-        $this->logger = $logger instanceof \Psr\Log\LoggerInterface
+            : new ModuleSet([]);
+        $this->logger = $logger instanceof LoggerInterface
             ? $logger
             : new \Psr\Log\NullLogger();
         $this->parser = new \Graphpinator\Parser\Parser();
@@ -98,14 +103,14 @@ final class Graphpinator implements \Psr\Log\LoggerAwareInterface
             $this->logger->log(self::getLogLevel($exception), self::getLogMessage($exception));
 
             return new \Graphpinator\Result(null, [
-                $exception instanceof \Graphpinator\Exception\GraphpinatorBase
+                $exception instanceof GraphpinatorBase
                     ? $exception
                     : \Graphpinator\Exception\GraphpinatorBase::notOutputableResponse(),
             ]);
         }
     }
 
-    public function setLogger(\Psr\Log\LoggerInterface $logger) : void
+    public function setLogger(LoggerInterface $logger) : void
     {
         $this->logger = $logger;
     }
@@ -119,7 +124,7 @@ final class Graphpinator implements \Psr\Log\LoggerAwareInterface
     {
         if ($exception instanceof \Graphpinator\Exception\GraphpinatorBase) {
             return $exception->isOutputable()
-                ? \Psr\Log\LogLevel::INFO
+                ? LogLevel::INFO
                 : \Psr\Log\LogLevel::ERROR;
         }
 

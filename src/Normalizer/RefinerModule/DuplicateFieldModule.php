@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Normalizer\RefinerModule;
 
+use \Graphpinator\Normalizer\Selection\SelectionSet;
+
 final class DuplicateFieldModule implements RefinerModule, \Graphpinator\Normalizer\Selection\SelectionVisitor
 {
     use \Nette\SmartObject;
@@ -12,7 +14,7 @@ final class DuplicateFieldModule implements RefinerModule, \Graphpinator\Normali
     private int $index;
 
     public function __construct(
-        private \Graphpinator\Normalizer\Selection\SelectionSet $selections,
+        private SelectionSet $selections,
     )
     {
     }

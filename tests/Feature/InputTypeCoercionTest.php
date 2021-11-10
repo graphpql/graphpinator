@@ -4,6 +4,10 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Feature;
 
+use \Graphpinator\Typesystem\Argument\Argument;
+use \Graphpinator\Typesystem\Argument\ArgumentSet;
+use \Graphpinator\Typesystem\Container;
+
 final class InputTypeCoercionTest extends \PHPUnit\Framework\TestCase
 {
     public static function getSimpleInput() : \Graphpinator\Typesystem\InputType
@@ -12,12 +16,12 @@ final class InputTypeCoercionTest extends \PHPUnit\Framework\TestCase
         {
             protected const NAME = 'SimpleInput';
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
+            protected function getFieldDefinition() : ArgumentSet
             {
                 return new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                    new \Graphpinator\Typesystem\Argument\Argument(
+                    new Argument(
                         'string',
-                        \Graphpinator\Typesystem\Container::String(),
+                        Container::String(),
                     ),
                     new \Graphpinator\Typesystem\Argument\Argument(
                         'stringNotNull',

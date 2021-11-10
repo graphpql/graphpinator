@@ -4,19 +4,26 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Feature;
 
+use \Graphpinator\Typesystem\Container;
+use \Graphpinator\Typesystem\Exception\InterfaceCycle;
+use \Graphpinator\Typesystem\Field\Field;
+use \Graphpinator\Typesystem\Field\FieldSet;
+use \Graphpinator\Typesystem\InterfaceType;
+use \Graphpinator\Value\TypeIntermediateValue;
+
 final class InterfaceCycleTest extends \PHPUnit\Framework\TestCase
 {
-    private static ?\Graphpinator\Typesystem\InterfaceType $interfaceA = null;
-    private static ?\Graphpinator\Typesystem\InterfaceType $interfaceB = null;
-    private static ?\Graphpinator\Typesystem\InterfaceType $interfaceC = null;
+    private static ?InterfaceType $interfaceA = null;
+    private static ?InterfaceType $interfaceB = null;
+    private static ?InterfaceType $interfaceC = null;
 
-    public static function getInterfaceB() : \Graphpinator\Typesystem\InterfaceType
+    public static function getInterfaceB() : InterfaceType
     {
-        if (self::$interfaceB instanceof \Graphpinator\Typesystem\InterfaceType) {
+        if (self::$interfaceB instanceof InterfaceType) {
             return self::$interfaceB;
         }
 
-        self::$interfaceB = new class extends \Graphpinator\Typesystem\InterfaceType {
+        self::$interfaceB = new class extends InterfaceType {
             protected const NAME = 'BInterface';
 
             public function __construct()
@@ -29,16 +36,16 @@ final class InterfaceCycleTest extends \PHPUnit\Framework\TestCase
                 $this->implements[] = InterfaceCycleTest::getInterfaceA();
             }
 
-            public function createResolvedValue($rawValue) : \Graphpinator\Value\TypeIntermediateValue
+            public function createResolvedValue($rawValue) : TypeIntermediateValue
             {
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\FieldSet
+            protected function getFieldDefinition() : FieldSet
             {
-                return new \Graphpinator\Typesystem\Field\FieldSet([
-                    \Graphpinator\Typesystem\Field\Field::create(
+                return new FieldSet([
+                    Field::create(
                         'fieldInt',
-                        \Graphpinator\Typesystem\Container::Int(),
+                        Container::Int(),
                     ),
                 ]);
             }
@@ -49,13 +56,13 @@ final class InterfaceCycleTest extends \PHPUnit\Framework\TestCase
         return self::$interfaceB;
     }
 
-    public static function getInterfaceC() : \Graphpinator\Typesystem\InterfaceType
+    public static function getInterfaceC() : InterfaceType
     {
-        if (self::$interfaceC instanceof \Graphpinator\Typesystem\InterfaceType) {
+        if (self::$interfaceC instanceof InterfaceType) {
             return self::$interfaceC;
         }
 
-        self::$interfaceC = new class extends \Graphpinator\Typesystem\InterfaceType {
+        self::$interfaceC = new class extends InterfaceType {
             protected const NAME = 'CInterface';
 
             public function __construct()
@@ -72,9 +79,9 @@ final class InterfaceCycleTest extends \PHPUnit\Framework\TestCase
             {
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\FieldSet
+            protected function getFieldDefinition() : FieldSet
             {
-                return new \Graphpinator\Typesystem\Field\FieldSet([
+                return new FieldSet([
                     \Graphpinator\Typesystem\Field\Field::create(
                         'fieldInt',
                         \Graphpinator\Typesystem\Container::Int(),
@@ -88,13 +95,13 @@ final class InterfaceCycleTest extends \PHPUnit\Framework\TestCase
         return self::$interfaceC;
     }
 
-    public static function getInterfaceA() : \Graphpinator\Typesystem\InterfaceType
+    public static function getInterfaceA() : InterfaceType
     {
-        if (self::$interfaceA instanceof \Graphpinator\Typesystem\InterfaceType) {
+        if (self::$interfaceA instanceof InterfaceType) {
             return self::$interfaceA;
         }
 
-        self::$interfaceA = new class extends \Graphpinator\Typesystem\InterfaceType {
+        self::$interfaceA = new class extends InterfaceType {
             protected const NAME = 'InterfaceA';
 
             public function __construct()
@@ -111,9 +118,9 @@ final class InterfaceCycleTest extends \PHPUnit\Framework\TestCase
             {
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\FieldSet
+            protected function getFieldDefinition() : FieldSet
             {
-                return new \Graphpinator\Typesystem\Field\FieldSet([
+                return new FieldSet([
                     \Graphpinator\Typesystem\Field\Field::create(
                         'fieldInt',
                         \Graphpinator\Typesystem\Container::Int(),
@@ -133,8 +140,8 @@ final class InterfaceCycleTest extends \PHPUnit\Framework\TestCase
         self::$interfaceB = null;
         self::$interfaceC = null;
 
-        $this->expectException(\Graphpinator\Typesystem\Exception\InterfaceCycle::class);
-        $this->expectDeprecationMessage(\Graphpinator\Typesystem\Exception\InterfaceCycle::MESSAGE);
+        $this->expectException(InterfaceCycle::class);
+        $this->expectDeprecationMessage(InterfaceCycle::MESSAGE);
 
         self::getInterfaceA()->getFields();
     }
@@ -145,8 +152,8 @@ final class InterfaceCycleTest extends \PHPUnit\Framework\TestCase
         self::$interfaceB = null;
         self::$interfaceC = null;
 
-        $this->expectException(\Graphpinator\Typesystem\Exception\InterfaceCycle::class);
-        $this->expectDeprecationMessage(\Graphpinator\Typesystem\Exception\InterfaceCycle::MESSAGE);
+        $this->expectException(InterfaceCycle::class);
+        $this->expectDeprecationMessage(InterfaceCycle::MESSAGE);
 
         self::getInterfaceB()->getFields();
     }
@@ -157,8 +164,8 @@ final class InterfaceCycleTest extends \PHPUnit\Framework\TestCase
         self::$interfaceB = null;
         self::$interfaceC = null;
 
-        $this->expectException(\Graphpinator\Typesystem\Exception\InterfaceCycle::class);
-        $this->expectDeprecationMessage(\Graphpinator\Typesystem\Exception\InterfaceCycle::MESSAGE);
+        $this->expectException(InterfaceCycle::class);
+        $this->expectDeprecationMessage(InterfaceCycle::MESSAGE);
 
         self::getInterfaceC()->getFields();
     }

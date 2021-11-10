@@ -4,11 +4,14 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem\DirectiveUsage;
 
+use \Graphpinator\Typesystem\Exception\DirectiveUsageArgumentsInvalidMap;
+use \Graphpinator\Value\ArgumentValueSet;
+
 final class DirectiveUsage implements \Graphpinator\Typesystem\Contract\Component
 {
     use \Nette\SmartObject;
 
-    private \Graphpinator\Value\ArgumentValueSet $argumentValues;
+    private ArgumentValueSet $argumentValues;
 
     public function __construct(
         private \Graphpinator\Typesystem\Contract\TypeSystemDirective $directive,
@@ -17,7 +20,7 @@ final class DirectiveUsage implements \Graphpinator\Typesystem\Contract\Componen
     {
         // replace with \array_is_list() for PHP 8.1
         if (\count($arguments) > 0 && \array_key_first($arguments) === 0) {
-            throw new \Graphpinator\Typesystem\Exception\DirectiveUsageArgumentsInvalidMap();
+            throw new DirectiveUsageArgumentsInvalidMap();
         }
 
         $this->argumentValues = new \Graphpinator\Value\ArgumentValueSet(

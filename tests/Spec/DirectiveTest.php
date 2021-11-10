@@ -4,6 +4,9 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Spec;
 
+use \Graphpinator\Graphpinator;
+use \Graphpinator\Normalizer\Exception\DirectiveIncorrectLocation;
+use \Graphpinator\Request\JsonRequestFactory;
 use \Infinityloop\Utils\Json;
 
 final class DirectiveTest extends \PHPUnit\Framework\TestCase
@@ -103,8 +106,8 @@ final class DirectiveTest extends \PHPUnit\Framework\TestCase
      */
     public function testSimple(Json $request, Json $expected) : void
     {
-        $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
-        $result = $graphpinator->run(new \Graphpinator\Request\JsonRequestFactory($request));
+        $graphpinator = new Graphpinator(TestSchema::getSchema());
+        $result = $graphpinator->run(new JsonRequestFactory($request));
 
         self::assertSame($expected->toString(), $result->toString());
         self::assertNull($result->getErrors());
@@ -147,7 +150,7 @@ final class DirectiveTest extends \PHPUnit\Framework\TestCase
                 Json::fromNative((object) [
                     'query' => 'query @testDirective { fieldAbc { fieldXyz { name } } }',
                 ]),
-                \Graphpinator\Normalizer\Exception\DirectiveIncorrectLocation::class,
+                DirectiveIncorrectLocation::class,
             ],
             [
                 Json::fromNative((object) [

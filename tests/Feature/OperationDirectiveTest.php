@@ -4,6 +4,15 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Feature;
 
+use \Graphpinator\Request\JsonRequestFactory;
+use \Graphpinator\Typesystem\Container;
+use \Graphpinator\Typesystem\Field\ResolvableField;
+use \Graphpinator\Typesystem\Field\ResolvableFieldSet;
+use \Graphpinator\Typesystem\Type;
+use \Graphpinator\Value\ArgumentValueSet;
+use \Graphpinator\Value\TypeValue;
+use \Infinityloop\Utils\Json;
+
 final class OperationDirectiveTest extends \PHPUnit\Framework\TestCase
 {
     public function testSimple() : void
@@ -11,7 +20,7 @@ final class OperationDirectiveTest extends \PHPUnit\Framework\TestCase
         $counter = new \stdClass();
         $counter->count = 0;
 
-        $query = new class ($counter) extends \Graphpinator\Typesystem\Type {
+        $query = new class ($counter) extends Type {
             public function __construct(
                 private \stdClass $counter,
             )
@@ -24,12 +33,12 @@ final class OperationDirectiveTest extends \PHPUnit\Framework\TestCase
                 return true;
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
+            protected function getFieldDefinition() : ResolvableFieldSet
             {
-                return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
-                    \Graphpinator\Typesystem\Field\ResolvableField::create(
+                return new ResolvableFieldSet([
+                    ResolvableField::create(
                         'field',
-                        \Graphpinator\Typesystem\Container::Int()->notNull(),
+                        Container::Int()->notNull(),
                         function ($parent) : int {
                             return $this->counter->count;
                         },
@@ -50,9 +59,9 @@ final class OperationDirectiveTest extends \PHPUnit\Framework\TestCase
                 return true;
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
+            protected function getFieldDefinition() : ResolvableFieldSet
             {
-                return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
+                return new ResolvableFieldSet([
                     \Graphpinator\Typesystem\Field\ResolvableField::create(
                         'field',
                         \Graphpinator\Typesystem\Container::Int()->notNull(),
@@ -76,9 +85,9 @@ final class OperationDirectiveTest extends \PHPUnit\Framework\TestCase
                 return true;
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
+            protected function getFieldDefinition() : ResolvableFieldSet
             {
-                return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
+                return new ResolvableFieldSet([
                     \Graphpinator\Typesystem\Field\ResolvableField::create(
                         'field',
                         \Graphpinator\Typesystem\Container::Int()->notNull(),
@@ -103,29 +112,29 @@ final class OperationDirectiveTest extends \PHPUnit\Framework\TestCase
             }
 
             public function resolveQueryBefore(
-                \Graphpinator\Value\ArgumentValueSet $arguments,
+                ArgumentValueSet $arguments,
             ) : void
             {
                 ++$this->counter->count;
             }
 
             public function resolveQueryAfter(
-                \Graphpinator\Value\ArgumentValueSet $arguments,
-                \Graphpinator\Value\TypeValue $typeValue,
+                ArgumentValueSet $arguments,
+                TypeValue $typeValue,
             ) : void
             {
                 ++$this->counter->count;
             }
 
             public function resolveMutationBefore(
-                \Graphpinator\Value\ArgumentValueSet $arguments,
+                ArgumentValueSet $arguments,
             ) : void
             {
                 ++$this->counter->count;
             }
 
             public function resolveMutationAfter(
-                \Graphpinator\Value\ArgumentValueSet $arguments,
+                ArgumentValueSet $arguments,
                 \Graphpinator\Value\TypeValue $typeValue,
             ) : void
             {
@@ -133,14 +142,14 @@ final class OperationDirectiveTest extends \PHPUnit\Framework\TestCase
             }
 
             public function resolveSubscriptionBefore(
-                \Graphpinator\Value\ArgumentValueSet $arguments,
+                ArgumentValueSet $arguments,
             ) : void
             {
                 ++$this->counter->count;
             }
 
             public function resolveSubscriptionAfter(
-                \Graphpinator\Value\ArgumentValueSet $arguments,
+                ArgumentValueSet $arguments,
                 \Graphpinator\Value\TypeValue $typeValue,
             ) : void
             {
@@ -156,27 +165,27 @@ final class OperationDirectiveTest extends \PHPUnit\Framework\TestCase
         $schema = new \Graphpinator\Typesystem\Schema($container, $query, $mutation, $subscription);
         $graphpinator = new \Graphpinator\Graphpinator($schema);
 
-        $result = $graphpinator->run(new \Graphpinator\Request\JsonRequestFactory(\Infinityloop\Utils\Json::fromNative((object) [
+        $result = $graphpinator->run(new JsonRequestFactory(Json::fromNative((object) [
              'query' => 'query @test { field }',
         ])));
         self::assertSame(
-            \Infinityloop\Utils\Json::fromNative((object) ['data' => ['field' => 1]])->toString(),
+            Json::fromNative((object) ['data' => ['field' => 1]])->toString(),
             $result->toString(),
         );
         self::assertSame(2, $counter->count);
-        $result = $graphpinator->run(new \Graphpinator\Request\JsonRequestFactory(\Infinityloop\Utils\Json::fromNative((object) [
+        $result = $graphpinator->run(new \Graphpinator\Request\JsonRequestFactory(Json::fromNative((object) [
              'query' => 'mutation @test { field }',
         ])));
         self::assertSame(
-            \Infinityloop\Utils\Json::fromNative((object) ['data' => ['field' => 3]])->toString(),
+            Json::fromNative((object) ['data' => ['field' => 3]])->toString(),
             $result->toString(),
         );
         self::assertSame(4, $counter->count);
-        $result = $graphpinator->run(new \Graphpinator\Request\JsonRequestFactory(\Infinityloop\Utils\Json::fromNative((object) [
+        $result = $graphpinator->run(new \Graphpinator\Request\JsonRequestFactory(Json::fromNative((object) [
              'query' => 'subscription @test { field }',
         ])));
         self::assertSame(
-            \Infinityloop\Utils\Json::fromNative((object) ['data' => ['field' => 5]])->toString(),
+            Json::fromNative((object) ['data' => ['field' => 5]])->toString(),
             $result->toString(),
         );
         self::assertSame(6, $counter->count);

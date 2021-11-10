@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Feature;
 
+use \Graphpinator\Typesystem\Location\SchemaLocation;
+
 final class SchemaDirectiveTest extends \PHPUnit\Framework\TestCase
 {
     public function testSimple() : void
@@ -21,7 +23,7 @@ final class SchemaDirectiveTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Typesystem\Field\ResolvableFieldSet();
             }
         };
-        $directive = new class extends \Graphpinator\Typesystem\Directive implements \Graphpinator\Typesystem\Location\SchemaLocation {
+        $directive = new class extends \Graphpinator\Typesystem\Directive implements SchemaLocation {
             protected const NAME = 'SomeSchemaDirective';
 
             protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet

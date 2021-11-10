@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Graphpinator\Tests\Spec;
 
 use \Infinityloop\Utils\Json;
+use \Psr\Http\Message\ServerRequestInterface;
 
 final class ErrorsTest extends \PHPUnit\Framework\TestCase
 {
@@ -378,15 +379,15 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
 
     public function psrDataProvider() : array
     {
-        $httpRequest = $this->createStub(\Psr\Http\Message\ServerRequestInterface::class);
+        $httpRequest = $this->createStub(ServerRequestInterface::class);
         $httpRequest->method('getMethod')->willReturn('PUT');
 
-        $httpRequest2 = $this->createStub(\Psr\Http\Message\ServerRequestInterface::class);
+        $httpRequest2 = $this->createStub(ServerRequestInterface::class);
         $httpRequest2->method('getParsedBody')->willReturn([]);
         $httpRequest2->method('getHeader')->willReturn(['multipart/form-data; boundary=-------9051914041544843365972754266']);
         $httpRequest2->method('getMethod')->willReturn('POST');
 
-        $httpRequest3 = $this->createStub(\Psr\Http\Message\ServerRequestInterface::class);
+        $httpRequest3 = $this->createStub(ServerRequestInterface::class);
         $httpRequest3->method('getParsedBody')->willReturn(['operations' => '{}']);
         $httpRequest3->method('getHeader')->willReturn(['multipart/form-data; boundary=-------9051914041544843365972754266']);
         $httpRequest3->method('getMethod')->willReturn('GET');
@@ -424,7 +425,7 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Infinityloop\Utils\Json $expected
      */
-    public function testPsrRequest(\Psr\Http\Message\ServerRequestInterface $request, Json $expected) : void
+    public function testPsrRequest(ServerRequestInterface $request, Json $expected) : void
     {
         $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema(), true);
         $result = $graphpinator->run(new \Graphpinator\Request\PsrRequestFactory($request));
