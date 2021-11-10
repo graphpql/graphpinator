@@ -7,6 +7,7 @@ namespace Graphpinator\Introspection;
 use \Graphpinator\Typesystem\Contract\Type;
 use \Graphpinator\Typesystem\Field\ResolvableField;
 use \Graphpinator\Typesystem\Field\ResolvableFieldSet;
+use \Graphpinator\Typesystem\Schema as TSchema;
 
 final class Schema extends \Graphpinator\Typesystem\Type
 {
@@ -22,7 +23,7 @@ final class Schema extends \Graphpinator\Typesystem\Type
 
     public function validateNonNullValue(mixed $rawValue) : bool
     {
-        return $rawValue instanceof \Graphpinator\Typesystem\Schema;
+        return $rawValue instanceof TSchema;
     }
 
     protected function getFieldDefinition() : ResolvableFieldSet
@@ -31,42 +32,42 @@ final class Schema extends \Graphpinator\Typesystem\Type
             new ResolvableField(
                 'description',
                 \Graphpinator\Typesystem\Container::String(),
-                static function (\Graphpinator\Typesystem\Schema $schema) : ?string {
+                static function (TSchema $schema) : ?string {
                     return $schema->getDescription();
                 },
             ),
             new ResolvableField(
                 'types',
                 $this->container->getType('__Type')->notNullList(),
-                static function (\Graphpinator\Typesystem\Schema $schema) : array {
+                static function (TSchema $schema) : array {
                     return $schema->getContainer()->getTypes(true);
                 },
             ),
             new ResolvableField(
                 'queryType',
                 $this->container->getType('__Type')->notNull(),
-                static function (\Graphpinator\Typesystem\Schema $schema) : Type {
+                static function (TSchema $schema) : Type {
                     return $schema->getQuery();
                 },
             ),
             new ResolvableField(
                 'mutationType',
                 $this->container->getType('__Type'),
-                static function (\Graphpinator\Typesystem\Schema $schema) : ?\Graphpinator\Typesystem\Contract\Type {
+                static function (TSchema $schema) : ?\Graphpinator\Typesystem\Contract\Type {
                     return $schema->getMutation();
                 },
             ),
             new ResolvableField(
                 'subscriptionType',
                 $this->container->getType('__Type'),
-                static function (\Graphpinator\Typesystem\Schema $schema) : ?\Graphpinator\Typesystem\Contract\Type {
+                static function (TSchema $schema) : ?\Graphpinator\Typesystem\Contract\Type {
                     return $schema->getMutation();
                 },
             ),
             new ResolvableField(
                 'directives',
                 $this->container->getType('__Directive')->notNullList(),
-                static function (\Graphpinator\Typesystem\Schema $schema) : array {
+                static function (TSchema $schema) : array {
                     return $schema->getContainer()->getDirectives(true);
                 },
             ),

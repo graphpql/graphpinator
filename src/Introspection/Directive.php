@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Graphpinator\Introspection;
 
 use \Graphpinator\Typesystem\Container;
+use \Graphpinator\Typesystem\Contract\Directive as TDirective;
 use \Graphpinator\Typesystem\Field\ResolvableField;
 use \Graphpinator\Typesystem\Field\ResolvableFieldSet;
 
@@ -22,7 +23,7 @@ final class Directive extends \Graphpinator\Typesystem\Type
 
     public function validateNonNullValue(mixed $rawValue) : bool
     {
-        return $rawValue instanceof \Graphpinator\Typesystem\Contract\Directive;
+        return $rawValue instanceof TDirective;
     }
 
     protected function getFieldDefinition() : ResolvableFieldSet
@@ -31,35 +32,35 @@ final class Directive extends \Graphpinator\Typesystem\Type
             new ResolvableField(
                 'name',
                 Container::String()->notNull(),
-                static function (\Graphpinator\Typesystem\Contract\Directive $directive) : string {
+                static function (TDirective $directive) : string {
                     return $directive->getName();
                 },
             ),
             new ResolvableField(
                 'description',
                 Container::String(),
-                static function (\Graphpinator\Typesystem\Contract\Directive $directive) : ?string {
+                static function (TDirective $directive) : ?string {
                     return $directive->getDescription();
                 },
             ),
             new ResolvableField(
                 'locations',
                 $this->container->getType('__DirectiveLocation')->notNullList(),
-                static function (\Graphpinator\Typesystem\Contract\Directive $directive) : array {
+                static function (TDirective $directive) : array {
                     return $directive->getLocations();
                 },
             ),
             new ResolvableField(
                 'args',
                 $this->container->getType('__InputValue')->notNullList(),
-                static function (\Graphpinator\Typesystem\Contract\Directive $directive) : \Graphpinator\Typesystem\Argument\ArgumentSet {
+                static function (TDirective $directive) : \Graphpinator\Typesystem\Argument\ArgumentSet {
                     return $directive->getArguments();
                 },
             ),
             new ResolvableField(
                 'isRepeatable',
                 Container::Boolean()->notNull(),
-                static function (\Graphpinator\Typesystem\Contract\Directive $directive) : bool {
+                static function (TDirective $directive) : bool {
                     return $directive->isRepeatable();
                 },
             ),

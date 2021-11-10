@@ -6,6 +6,7 @@ namespace Graphpinator\Introspection;
 
 use \Graphpinator\Typesystem\Argument\ArgumentSet;
 use \Graphpinator\Typesystem\Container;
+use \Graphpinator\Typesystem\Field\Field as TField;
 use \Graphpinator\Typesystem\Field\ResolvableField;
 use \Graphpinator\Typesystem\Field\ResolvableFieldSet;
 
@@ -23,7 +24,7 @@ final class Field extends \Graphpinator\Typesystem\Type
 
     public function validateNonNullValue(mixed $rawValue) : bool
     {
-        return $rawValue instanceof \Graphpinator\Typesystem\Field\Field;
+        return $rawValue instanceof TField;
     }
 
     protected function getFieldDefinition() : ResolvableFieldSet
@@ -32,14 +33,14 @@ final class Field extends \Graphpinator\Typesystem\Type
             new ResolvableField(
                 'name',
                 Container::String()->notNull(),
-                static function (\Graphpinator\Typesystem\Field\Field $field) : string {
+                static function (TField $field) : string {
                     return $field->getName();
                 },
             ),
             new ResolvableField(
                 'description',
                 Container::String(),
-                static function (\Graphpinator\Typesystem\Field\Field $field) : ?string {
+                static function (TField $field) : ?string {
                     return $field->getDescription();
                 },
             ),
@@ -47,7 +48,7 @@ final class Field extends \Graphpinator\Typesystem\Type
                 'args',
                 $this->container->getType('__InputValue')->notNullList(),
                 static function (
-                    \Graphpinator\Typesystem\Field\Field $field,
+                    TField $field,
                     bool $includeDeprecated,
                 ) : ArgumentSet {
                     if ($includeDeprecated === true) {
@@ -75,21 +76,21 @@ final class Field extends \Graphpinator\Typesystem\Type
             new ResolvableField(
                 'type',
                 $this->container->getType('__Type')->notNull(),
-                static function (\Graphpinator\Typesystem\Field\Field $field) : \Graphpinator\Typesystem\Contract\Type {
+                static function (TField $field) : \Graphpinator\Typesystem\Contract\Type {
                     return $field->getType();
                 },
             ),
             new ResolvableField(
                 'isDeprecated',
                 Container::Boolean()->notNull(),
-                static function (\Graphpinator\Typesystem\Field\Field $field) : bool {
+                static function (TField $field) : bool {
                     return $field->isDeprecated();
                 },
             ),
             new ResolvableField(
                 'deprecationReason',
                 Container::String(),
-                static function (\Graphpinator\Typesystem\Field\Field $field) : ?string {
+                static function (TField $field) : ?string {
                     return $field->getDeprecationReason();
                 },
             ),

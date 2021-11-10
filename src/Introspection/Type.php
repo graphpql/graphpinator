@@ -9,6 +9,7 @@ use \Graphpinator\Typesystem\Argument\ArgumentSet;
 use \Graphpinator\Typesystem\Container;
 use \Graphpinator\Typesystem\Contract\InterfaceImplementor;
 use \Graphpinator\Typesystem\Contract\ModifierType;
+use \Graphpinator\Typesystem\Contract\Type as TType;
 use \Graphpinator\Typesystem\Field\ResolvableField;
 use \Graphpinator\Typesystem\Field\ResolvableFieldSet;
 use \Graphpinator\Typesystem\InterfaceSet;
@@ -27,7 +28,7 @@ final class Type extends \Graphpinator\Typesystem\Type
 
     public function validateNonNullValue(mixed $rawValue) : bool
     {
-        return $rawValue instanceof \Graphpinator\Typesystem\Contract\Type;
+        return $rawValue instanceof TType;
     }
 
     protected function getFieldDefinition() : ResolvableFieldSet
@@ -36,14 +37,14 @@ final class Type extends \Graphpinator\Typesystem\Type
             ResolvableField::create(
                 'kind',
                 $this->container->getType('__TypeKind')->notNull(),
-                static function (\Graphpinator\Typesystem\Contract\Type $definition) : string {
+                static function (TType $definition) : string {
                     return $definition->accept(new TypeKindVisitor());
                 },
             ),
             ResolvableField::create(
                 'name',
                 Container::String(),
-                static function (\Graphpinator\Typesystem\Contract\Type $definition) : ?string {
+                static function (TType $definition) : ?string {
                     return $definition instanceof \Graphpinator\Typesystem\Contract\NamedType
                         ? $definition->getName()
                         : null;
@@ -52,7 +53,7 @@ final class Type extends \Graphpinator\Typesystem\Type
             ResolvableField::create(
                 'description',
                 Container::String(),
-                static function (\Graphpinator\Typesystem\Contract\Type $definition) : ?string {
+                static function (TType $definition) : ?string {
                     return $definition instanceof \Graphpinator\Typesystem\Contract\NamedType
                         ? $definition->getDescription()
                         : null;
@@ -62,7 +63,7 @@ final class Type extends \Graphpinator\Typesystem\Type
                 'fields',
                 $this->container->getType('__Field')->notNull()->list(),
                 static function (
-                    \Graphpinator\Typesystem\Contract\Type $definition,
+                    TType $definition,
                     bool $includeDeprecated,
                 ) : ?\Graphpinator\Typesystem\Field\FieldSet {
                     if (!$definition instanceof InterfaceImplementor) {
@@ -94,7 +95,7 @@ final class Type extends \Graphpinator\Typesystem\Type
             ResolvableField::create(
                 'interfaces',
                 $this->notNull()->list(),
-                static function (\Graphpinator\Typesystem\Contract\Type $definition) : ?InterfaceSet {
+                static function (TType $definition) : ?InterfaceSet {
                     return $definition instanceof InterfaceImplementor
                         ? self::recursiveGetInterfaces($definition->getInterfaces())
                         : null;
@@ -103,7 +104,7 @@ final class Type extends \Graphpinator\Typesystem\Type
             ResolvableField::create(
                 'possibleTypes',
                 $this->notNull()->list(),
-                function (\Graphpinator\Typesystem\Contract\Type $definition) : ?\Graphpinator\Typesystem\TypeSet {
+                function (TType $definition) : ?\Graphpinator\Typesystem\TypeSet {
                     if ($definition instanceof \Graphpinator\Typesystem\UnionType) {
                         return $definition->getTypes();
                     }
@@ -128,7 +129,7 @@ final class Type extends \Graphpinator\Typesystem\Type
                 'enumValues',
                 $this->container->getType('__EnumValue')->notNull()->list(),
                 static function (
-                    \Graphpinator\Typesystem\Contract\Type $definition,
+                    TType $definition,
                     bool $includeDeprecated,
                 ) : ?\Graphpinator\Typesystem\EnumItem\EnumItemSet {
                     if (!$definition instanceof \Graphpinator\Typesystem\EnumType) {
@@ -161,7 +162,7 @@ final class Type extends \Graphpinator\Typesystem\Type
                 'inputFields',
                 $this->container->getType('__InputValue')->notNull()->list(),
                 static function (
-                    \Graphpinator\Typesystem\Contract\Type $definition,
+                    TType $definition,
                     bool $includeDeprecated,
                 ) : ?ArgumentSet {
                     if (!$definition instanceof \Graphpinator\Typesystem\InputType) {
@@ -193,7 +194,7 @@ final class Type extends \Graphpinator\Typesystem\Type
             ResolvableField::create(
                 'ofType',
                 $this,
-                static function (\Graphpinator\Typesystem\Contract\Type $definition) : ?\Graphpinator\Typesystem\Contract\Type {
+                static function (TType $definition) : ?TType {
                     return $definition instanceof ModifierType
                         ? $definition->getInnerType()
                         : null;
@@ -202,7 +203,7 @@ final class Type extends \Graphpinator\Typesystem\Type
             ResolvableField::create(
                 'specifiedByURL',
                 Container::String(),
-                static function (\Graphpinator\Typesystem\Contract\Type $definition) : ?string {
+                static function (TType $definition) : ?string {
                     return $definition instanceof \Graphpinator\Typesystem\ScalarType
                         ? $definition->getSpecifiedByUrl()
                         : null;
