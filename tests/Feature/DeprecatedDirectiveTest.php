@@ -60,7 +60,7 @@ final class DeprecatedDirectiveTest extends \PHPUnit\Framework\TestCase
                             Container::String(),
                         )->setDeprecated(),
                     ])),
-                    \Graphpinator\Typesystem\Field\ResolvableField::create(
+                    ResolvableField::create(
                         'testFieldDeprecatedNotNull',
                         Container::String(),
                         static function () : string {
@@ -382,7 +382,7 @@ final class DeprecatedDirectiveTest extends \PHPUnit\Framework\TestCase
             protected function getFieldDefinition() : ResolvableFieldSet
             {
                 return new ResolvableFieldSet([
-                    new \Graphpinator\Typesystem\Field\ResolvableField(
+                    new ResolvableField(
                         'field',
                         Container::String(),
                         static function () : void {

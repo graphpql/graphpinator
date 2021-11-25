@@ -68,8 +68,8 @@ final class Normalizer
     {
         $rootObject = match ($operation->getType()) {
             OperationType::QUERY => $this->schema->getQuery(),
-            \Graphpinator\Tokenizer\OperationType::MUTATION => $this->schema->getMutation(),
-            \Graphpinator\Tokenizer\OperationType::SUBSCRIPTION => $this->schema->getSubscription(),
+            OperationType::MUTATION => $this->schema->getMutation(),
+            OperationType::SUBSCRIPTION => $this->schema->getSubscription(),
         };
 
         if (!$rootObject instanceof \Graphpinator\Typesystem\Type) {
@@ -96,7 +96,7 @@ final class Normalizer
 
     private function normalizeVariables(
         \Graphpinator\Parser\Variable\VariableSet $variableSet,
-    ) : \Graphpinator\Normalizer\Variable\VariableSet
+    ) : VariableSet
     {
         $normalized = [];
 
@@ -106,7 +106,7 @@ final class Normalizer
             $this->path->pop();
         }
 
-        return new \Graphpinator\Normalizer\Variable\VariableSet($normalized);
+        return new VariableSet($normalized);
     }
 
     private function normalizeVariable(
@@ -207,7 +207,7 @@ final class Normalizer
         \Graphpinator\Parser\Directive\DirectiveSet $directiveSet,
         string $location,
         \Graphpinator\Typesystem\Field\Field|Variable|null $usage = null,
-    ) : \Graphpinator\Normalizer\Directive\DirectiveSet
+    ) : DirectiveSet
     {
         $normalized = [];
         $directiveTypes = [];
@@ -229,7 +229,7 @@ final class Normalizer
             $this->path->pop();
         }
 
-        return new \Graphpinator\Normalizer\Directive\DirectiveSet($normalized);
+        return new DirectiveSet($normalized);
     }
 
     private function normalizeDirective(
@@ -296,9 +296,9 @@ final class Normalizer
             }
 
             $default = $argument->getDefaultValue();
-            $items[] = $default instanceof \Graphpinator\Value\ArgumentValue
+            $items[] = $default instanceof ArgumentValue
                 ? $default
-                : new \Graphpinator\Value\ArgumentValue(
+                : new ArgumentValue(
                     $argument,
                     $argument->getType()->accept(new \Graphpinator\Value\ConvertRawValueVisitor(null, $this->path)),
                     false,
@@ -323,7 +323,7 @@ final class Normalizer
 
     private function normalizeNamedFragmentSpread(
         \Graphpinator\Parser\FragmentSpread\NamedFragmentSpread $fragmentSpread,
-    ) : \Graphpinator\Normalizer\Selection\FragmentSpread
+    ) : FragmentSpread
     {
         $this->path->add($fragmentSpread->getName() . ' <fragment spread>');
 

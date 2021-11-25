@@ -52,14 +52,14 @@ final class InterfaceNewOptionalArgumentTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
                     \Graphpinator\Typesystem\Field\ResolvableField::create(
                         'field',
-                        \Graphpinator\Typesystem\Container::Int(),
+                        Container::Int(),
                         static function ($parent, $argumentDefaultNull) : void {
                         },
                     )->setArguments(
                         new \Graphpinator\Typesystem\Argument\ArgumentSet([
                             \Graphpinator\Typesystem\Argument\Argument::create(
                                 'argument',
-                                \Graphpinator\Typesystem\Container::Int(),
+                                Container::Int(),
                             ),
                         ]),
                     ),

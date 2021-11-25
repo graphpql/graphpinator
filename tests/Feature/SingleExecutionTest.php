@@ -43,7 +43,7 @@ final class SingleExecutionTest extends \PHPUnit\Framework\TestCase
                     ),
                     ResolvableField::create(
                         'secondField',
-                        \Graphpinator\Typesystem\Container::Int(),
+                        Container::Int(),
                         static function($parent) : int {
                             return 456;
                         },
@@ -94,7 +94,7 @@ final class SingleExecutionTest extends \PHPUnit\Framework\TestCase
         ]);
 
         self::assertSame(0, self::$execCount);
-        $result = self::getGraphpinator()->run(new \Graphpinator\Request\JsonRequestFactory($request));
+        $result = self::getGraphpinator()->run(new JsonRequestFactory($request));
         self::assertSame($expected->toString(), $result->toString());
         self::assertSame(1, self::$execCount);
     }
@@ -125,7 +125,7 @@ final class SingleExecutionTest extends \PHPUnit\Framework\TestCase
         ]);
 
         self::assertSame(0, self::$execCount);
-        $result = self::getGraphpinator()->run(new \Graphpinator\Request\JsonRequestFactory($request));
+        $result = self::getGraphpinator()->run(new JsonRequestFactory($request));
         self::assertSame($expected->toString(), $result->toString());
         self::assertSame(1, self::$execCount);
     }
@@ -163,7 +163,7 @@ final class SingleExecutionTest extends \PHPUnit\Framework\TestCase
                 return new ResolvableFieldSet([
                     ResolvableField::create(
                         'field',
-                        \Graphpinator\Typesystem\Container::Int()->notNull(),
+                        Container::Int()->notNull(),
                         static function($parent) : int {
                             ++SingleExecutionTest::$execCount;
 

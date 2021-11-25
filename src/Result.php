@@ -17,7 +17,7 @@ final class Result implements \JsonSerializable
     {
     }
 
-    public function getData() : ?\Graphpinator\Value\TypeValue
+    public function getData() : ?TypeValue
     {
         return $this->data;
     }
@@ -31,7 +31,7 @@ final class Result implements \JsonSerializable
     {
         $return = new \stdClass();
 
-        if ($this->data instanceof \Graphpinator\Value\TypeValue) {
+        if ($this->data instanceof TypeValue) {
             $return->data = $this->data;
         }
 

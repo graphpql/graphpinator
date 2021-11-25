@@ -26,13 +26,13 @@ interface FieldDefinitionLocation extends \Graphpinator\Typesystem\Contract\Type
 
     public function resolveFieldDefinitionBefore(
         ArgumentValueSet $arguments,
-        \Graphpinator\Value\ResolvedValue $parentValue,
+        ResolvedValue $parentValue,
         ArgumentValueSet $fieldArguments,
     ) : void;
 
     public function resolveFieldDefinitionAfter(
         ArgumentValueSet $arguments,
-        \Graphpinator\Value\ResolvedValue $resolvedValue,
+        ResolvedValue $resolvedValue,
         ArgumentValueSet $fieldArguments,
     ) : void;
 

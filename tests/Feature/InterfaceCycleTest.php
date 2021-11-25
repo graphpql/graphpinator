@@ -75,16 +75,16 @@ final class InterfaceCycleTest extends \PHPUnit\Framework\TestCase
                 $this->implements[] = InterfaceCycleTest::getInterfaceB();
             }
 
-            public function createResolvedValue($rawValue) : \Graphpinator\Value\TypeIntermediateValue
+            public function createResolvedValue($rawValue) : TypeIntermediateValue
             {
             }
 
             protected function getFieldDefinition() : FieldSet
             {
                 return new FieldSet([
-                    \Graphpinator\Typesystem\Field\Field::create(
+                    Field::create(
                         'fieldInt',
-                        \Graphpinator\Typesystem\Container::Int(),
+                        Container::Int(),
                     ),
                 ]);
             }
@@ -114,16 +114,16 @@ final class InterfaceCycleTest extends \PHPUnit\Framework\TestCase
                 $this->implements[] = InterfaceCycleTest::getInterfaceC();
             }
 
-            public function createResolvedValue($rawValue) : \Graphpinator\Value\TypeIntermediateValue
+            public function createResolvedValue($rawValue) : TypeIntermediateValue
             {
             }
 
             protected function getFieldDefinition() : FieldSet
             {
                 return new FieldSet([
-                    \Graphpinator\Typesystem\Field\Field::create(
+                    Field::create(
                         'fieldInt',
-                        \Graphpinator\Typesystem\Container::Int(),
+                        Container::Int(),
                     ),
                 ]);
             }

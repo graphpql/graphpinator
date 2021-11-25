@@ -1107,7 +1107,7 @@ final class TestSchema
 
             public function resolveFieldAfter(
                 ArgumentValueSet $arguments,
-                \Graphpinator\Value\FieldValue $fieldValue,
+                FieldValue $fieldValue,
             ) : string
             {
                 return FieldDirectiveResult::NONE;
@@ -1136,15 +1136,15 @@ final class TestSchema
 
             public function resolveFieldBefore(ArgumentValueSet $arguments) : string
             {
-                return \Graphpinator\Directive\FieldDirectiveResult::NONE;
+                return FieldDirectiveResult::NONE;
             }
 
             public function resolveFieldAfter(
                 ArgumentValueSet $arguments,
-                \Graphpinator\Value\FieldValue $fieldValue,
+                FieldValue $fieldValue,
             ) : string
             {
-                return \Graphpinator\Directive\FieldDirectiveResult::NONE;
+                return FieldDirectiveResult::NONE;
             }
 
             protected function getFieldDefinition() : ArgumentSet

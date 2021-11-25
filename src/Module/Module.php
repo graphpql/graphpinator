@@ -18,8 +18,8 @@ interface Module
         FinalizedRequest;
 
     public function processParsed(
-        \Graphpinator\Parser\ParsedRequest $request,
-    ) : \Graphpinator\Parser\ParsedRequest|
+        ParsedRequest $request,
+    ) : ParsedRequest|
         NormalizedRequest|
         FinalizedRequest;
 

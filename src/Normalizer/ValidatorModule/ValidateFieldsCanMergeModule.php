@@ -78,8 +78,8 @@ final class ValidateFieldsCanMergeModule implements ValidatorModule, \Graphpinat
     }
 
     private static function canOccurTogether(
-        ?\Graphpinator\Typesystem\Contract\TypeConditionable $typeA,
-        ?\Graphpinator\Typesystem\Contract\TypeConditionable $typeB,
+        ?TypeConditionable $typeA,
+        ?TypeConditionable $typeB,
     ) : bool
     {
         return $typeA === null

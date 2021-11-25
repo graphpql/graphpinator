@@ -44,7 +44,7 @@ final class DuplicateFieldModuleTest extends \PHPUnit\Framework\TestCase
 
     public function testDuplicateField() : void
     {
-        $field = new \Graphpinator\Typesystem\Field\Field('fieldName', \Graphpinator\Typesystem\Container::String());
+        $field = new Field('fieldName', Container::String());
         $set = new SelectionSet([
             new NField(
                 $field,
@@ -62,7 +62,7 @@ final class DuplicateFieldModuleTest extends \PHPUnit\Framework\TestCase
             ),
         ]);
 
-        $refiner = new \Graphpinator\Normalizer\SelectionSetRefiner($set);
+        $refiner = new SelectionSetRefiner($set);
         $refiner->refine();
 
         self::assertCount(1, $set);
@@ -71,7 +71,7 @@ final class DuplicateFieldModuleTest extends \PHPUnit\Framework\TestCase
 
     public function testInnerField() : void
     {
-        $field = new \Graphpinator\Typesystem\Field\Field('fieldName', \Graphpinator\Typesystem\Container::String());
+        $field = new Field('fieldName', Container::String());
         $set = new SelectionSet([
             new NField(
                 $field,
@@ -105,7 +105,7 @@ final class DuplicateFieldModuleTest extends \PHPUnit\Framework\TestCase
             ),
         ]);
 
-        $refiner = new \Graphpinator\Normalizer\SelectionSetRefiner($set);
+        $refiner = new SelectionSetRefiner($set);
         $refiner->refine();
 
         self::assertCount(1, $set);

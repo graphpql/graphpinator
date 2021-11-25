@@ -24,7 +24,7 @@ final class Argument implements \Graphpinator\Typesystem\Contract\Component
         $this->directiveUsages = new \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet();
     }
 
-    public static function create(string $name, \Graphpinator\Typesystem\Contract\Inputable $type) : self
+    public static function create(string $name, Inputable $type) : self
     {
         return new self($name, $type);
     }
@@ -34,19 +34,19 @@ final class Argument implements \Graphpinator\Typesystem\Contract\Component
         return $this->name;
     }
 
-    public function getType() : \Graphpinator\Typesystem\Contract\Inputable
+    public function getType() : Inputable
     {
         return $this->type;
     }
 
-    public function getDefaultValue() : ?\Graphpinator\Value\ArgumentValue
+    public function getDefaultValue() : ?ArgumentValue
     {
         return $this->defaultValue;
     }
 
     public function setDefaultValue(\stdClass|array|string|int|float|bool|null $defaultValue) : self
     {
-        $this->defaultValue = new \Graphpinator\Value\ArgumentValue(
+        $this->defaultValue = new ArgumentValue(
             $this,
             $this->getType()->accept(new \Graphpinator\Value\ConvertRawValueVisitor($defaultValue, new \Graphpinator\Common\Path())),
             false,

@@ -56,8 +56,8 @@ abstract class NamedType implements Type, \Graphpinator\Typesystem\Contract\Enti
         return new NotNullType(new ListType(new NotNullType($this)));
     }
 
-    final public function list() : \Graphpinator\Typesystem\ListType
+    final public function list() : ListType
     {
-        return new \Graphpinator\Typesystem\ListType($this);
+        return new ListType($this);
     }
 }

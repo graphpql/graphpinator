@@ -115,13 +115,13 @@ final class DirectiveTest extends \PHPUnit\Framework\TestCase
 
     public function testRepeatable() : void
     {
-        $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
+        $graphpinator = new Graphpinator(TestSchema::getSchema());
         TestSchema::getSchema()->getContainer()->getDirective('testDirective')::$count = 0;
 
         self::assertSame(
             Json::fromNative((object) ['data' => ['fieldAbc' => ['fieldXyz' => ['name' => 'Test 123']]]])->toString(),
             $graphpinator->run(
-                new \Graphpinator\Request\JsonRequestFactory(
+                new JsonRequestFactory(
                     Json::fromNative((object) [
                         'query' => 'query queryName { fieldAbc { fieldXyz @testDirective @testDirective @testDirective { name } } }',
                     ]),
@@ -182,7 +182,7 @@ final class DirectiveTest extends \PHPUnit\Framework\TestCase
     {
         $this->expectException($exception);
 
-        $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
-        $graphpinator->run(new \Graphpinator\Request\JsonRequestFactory($request));
+        $graphpinator = new Graphpinator(TestSchema::getSchema());
+        $graphpinator->run(new JsonRequestFactory($request));
     }
 }

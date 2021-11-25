@@ -108,10 +108,10 @@ final class NormalizerTest extends \PHPUnit\Framework\TestCase
                                 new Field('fieldListInt'),
                             ], new FragmentSpreadSet()),
                             new DirectiveSet([
-                                new \Graphpinator\Parser\Directive\Directive(
+                                new Directive(
                                     'skip',
-                                    new \Graphpinator\Parser\Value\ArgumentValueSet([
-                                        new \Graphpinator\Parser\Value\ArgumentValue(new \Graphpinator\Parser\Value\Literal(true), 'if'),
+                                    new ArgumentValueSet([
+                                        new ArgumentValue(new Literal(true), 'if'),
                                     ]),
                                 ),
                             ]),
@@ -119,10 +119,10 @@ final class NormalizerTest extends \PHPUnit\Framework\TestCase
                         new NamedFragmentSpread(
                             'fragmentName',
                             new DirectiveSet([
-                                new \Graphpinator\Parser\Directive\Directive(
+                                new Directive(
                                     'include',
-                                    new \Graphpinator\Parser\Value\ArgumentValueSet([
-                                        new \Graphpinator\Parser\Value\ArgumentValue(new \Graphpinator\Parser\Value\Literal(true), 'if'),
+                                    new ArgumentValueSet([
+                                        new ArgumentValue(new Literal(true), 'if'),
                                     ]),
                                 ),
                             ]),
@@ -142,7 +142,7 @@ final class NormalizerTest extends \PHPUnit\Framework\TestCase
             ]),
         );
 
-        $normalizer = new \Graphpinator\Normalizer\Normalizer(\Graphpinator\Tests\Spec\TestSchema::getSchema());
+        $normalizer = new Normalizer(TestSchema::getSchema());
         $operation = $normalizer->normalize($parseResult)->getOperations()->current();
 
         self::assertCount(0, $operation->getVariables());
@@ -323,7 +323,7 @@ final class NormalizerTest extends \PHPUnit\Framework\TestCase
                         ),
                     ]),
                 ),
-                \Graphpinator\Normalizer\Exception\FragmentCycle::class,
+                FragmentCycle::class,
             ],
             [
                 new ParsedRequest(
@@ -361,7 +361,7 @@ final class NormalizerTest extends \PHPUnit\Framework\TestCase
                         ),
                     ]),
                 ),
-                \Graphpinator\Normalizer\Exception\FragmentCycle::class,
+                FragmentCycle::class,
             ],
         ];
     }
@@ -375,7 +375,7 @@ final class NormalizerTest extends \PHPUnit\Framework\TestCase
     {
         $this->expectException($exception);
 
-        $normalizer = new \Graphpinator\Normalizer\Normalizer(\Graphpinator\Tests\Spec\TestSchema::getSchema());
+        $normalizer = new Normalizer(TestSchema::getSchema());
         $normalizer->normalize($parseResult)->getOperations()->current();
     }
 }

@@ -38,10 +38,10 @@ final class DuplicateFieldModule implements RefinerModule, \Graphpinator\Normali
         }
 
         /** Merge duplicate field together */
-        if ($field->getSelections() instanceof \Graphpinator\Normalizer\Selection\SelectionSet) {
+        if ($field->getSelections() instanceof SelectionSet) {
             $conflict = $this->fieldForName[$field->getOutputName()];
             \assert($conflict instanceof \Graphpinator\Normalizer\Selection\Field);
-            \assert($conflict->getSelections() instanceof \Graphpinator\Normalizer\Selection\SelectionSet);
+            \assert($conflict->getSelections() instanceof SelectionSet);
             $mergedSelectionSet = $conflict->getSelections()->merge($field->getSelections());
             $refiner = new \Graphpinator\Normalizer\SelectionSetRefiner($mergedSelectionSet);
             $refiner->refine();

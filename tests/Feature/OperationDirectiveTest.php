@@ -46,7 +46,7 @@ final class OperationDirectiveTest extends \PHPUnit\Framework\TestCase
                 ]);
             }
         };
-        $mutation = new class ($counter) extends \Graphpinator\Typesystem\Type {
+        $mutation = new class ($counter) extends Type {
             public function __construct(
                 private \stdClass $counter,
             )
@@ -62,9 +62,9 @@ final class OperationDirectiveTest extends \PHPUnit\Framework\TestCase
             protected function getFieldDefinition() : ResolvableFieldSet
             {
                 return new ResolvableFieldSet([
-                    \Graphpinator\Typesystem\Field\ResolvableField::create(
+                    ResolvableField::create(
                         'field',
-                        \Graphpinator\Typesystem\Container::Int()->notNull(),
+                        Container::Int()->notNull(),
                         function ($parent) : int {
                             return $this->counter->count;
                         },
@@ -72,7 +72,7 @@ final class OperationDirectiveTest extends \PHPUnit\Framework\TestCase
                 ]);
             }
         };
-        $subscription = new class ($counter) extends \Graphpinator\Typesystem\Type {
+        $subscription = new class ($counter) extends Type {
             public function __construct(
                 private \stdClass $counter,
             )
@@ -88,9 +88,9 @@ final class OperationDirectiveTest extends \PHPUnit\Framework\TestCase
             protected function getFieldDefinition() : ResolvableFieldSet
             {
                 return new ResolvableFieldSet([
-                    \Graphpinator\Typesystem\Field\ResolvableField::create(
+                    ResolvableField::create(
                         'field',
-                        \Graphpinator\Typesystem\Container::Int()->notNull(),
+                        Container::Int()->notNull(),
                         function ($parent) : int {
                             return $this->counter->count;
                         },
@@ -135,7 +135,7 @@ final class OperationDirectiveTest extends \PHPUnit\Framework\TestCase
 
             public function resolveMutationAfter(
                 ArgumentValueSet $arguments,
-                \Graphpinator\Value\TypeValue $typeValue,
+                TypeValue $typeValue,
             ) : void
             {
                 ++$this->counter->count;
@@ -150,7 +150,7 @@ final class OperationDirectiveTest extends \PHPUnit\Framework\TestCase
 
             public function resolveSubscriptionAfter(
                 ArgumentValueSet $arguments,
-                \Graphpinator\Value\TypeValue $typeValue,
+                TypeValue $typeValue,
             ) : void
             {
                 ++$this->counter->count;
@@ -173,7 +173,7 @@ final class OperationDirectiveTest extends \PHPUnit\Framework\TestCase
             $result->toString(),
         );
         self::assertSame(2, $counter->count);
-        $result = $graphpinator->run(new \Graphpinator\Request\JsonRequestFactory(Json::fromNative((object) [
+        $result = $graphpinator->run(new JsonRequestFactory(Json::fromNative((object) [
              'query' => 'mutation @test { field }',
         ])));
         self::assertSame(
@@ -181,7 +181,7 @@ final class OperationDirectiveTest extends \PHPUnit\Framework\TestCase
             $result->toString(),
         );
         self::assertSame(4, $counter->count);
-        $result = $graphpinator->run(new \Graphpinator\Request\JsonRequestFactory(Json::fromNative((object) [
+        $result = $graphpinator->run(new JsonRequestFactory(Json::fromNative((object) [
              'query' => 'subscription @test { field }',
         ])));
         self::assertSame(

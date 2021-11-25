@@ -64,9 +64,9 @@ final class Field extends \Graphpinator\Typesystem\Type
                         $filtered[] = $argument;
                     }
 
-                    return new \Graphpinator\Typesystem\Argument\ArgumentSet($filtered);
+                    return new ArgumentSet($filtered);
                 },
-            )->setArguments(new \Graphpinator\Typesystem\Argument\ArgumentSet([
+            )->setArguments(new ArgumentSet([
                 \Graphpinator\Typesystem\Argument\Argument::create(
                     'includeDeprecated',
                     Container::Boolean()->notNull(),

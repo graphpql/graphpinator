@@ -56,9 +56,9 @@ final class DuplicateFragmentSpreadModuleTest extends \PHPUnit\Framework\TestCas
             'someName',
             new SelectionSet([
                 new Field(
-                    new \Graphpinator\Typesystem\Field\Field('fieldName', \Graphpinator\Typesystem\Container::String()),
+                    new TField('fieldName', Container::String()),
                     'fieldName',
-                    new \Graphpinator\Value\ArgumentValueSet(),
+                    new ArgumentValueSet(),
                     new DirectiveSet(),
                 ),
             ]),
@@ -80,9 +80,9 @@ final class DuplicateFragmentSpreadModuleTest extends \PHPUnit\Framework\TestCas
                 new SelectionSet([
                     $fragmentSpread,
                     new Field(
-                        new \Graphpinator\Typesystem\Field\Field('fieldName', \Graphpinator\Typesystem\Container::String()),
+                        new TField('fieldName', Container::String()),
                         'someField',
-                        new \Graphpinator\Value\ArgumentValueSet(),
+                        new ArgumentValueSet(),
                         new DirectiveSet(),
                     ),
                 ]),

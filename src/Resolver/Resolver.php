@@ -19,8 +19,8 @@ final class Resolver
 
         return match ($operation->getType()) {
             OperationType::QUERY => $this->resolveQuery($operation),
-            \Graphpinator\Tokenizer\OperationType::MUTATION => $this->resolveMutation($operation),
-            \Graphpinator\Tokenizer\OperationType::SUBSCRIPTION => $this->resolveSubscription($operation),
+            OperationType::MUTATION => $this->resolveMutation($operation),
+            OperationType::SUBSCRIPTION => $this->resolveSubscription($operation),
         };
     }
 
@@ -48,7 +48,7 @@ final class Resolver
         return new Result($operationValue);
     }
 
-    private function resolveMutation(\Graphpinator\Normalizer\Operation\Operation $operation) : Result
+    private function resolveMutation(Operation $operation) : Result
     {
         foreach ($operation->getDirectives() as $directive) {
             $directiveDef = $directive->getDirective();
@@ -58,7 +58,7 @@ final class Resolver
 
         $resolver = new \Graphpinator\Resolver\ResolveVisitor(
             $operation->getSelections(),
-            new \Graphpinator\Value\TypeIntermediateValue($operation->getRootObject(), null),
+            new TypeIntermediateValue($operation->getRootObject(), null),
         );
 
         $operationValue = $operation->getRootObject()->accept($resolver);
@@ -72,7 +72,7 @@ final class Resolver
         return new Result($operationValue);
     }
 
-    private function resolveSubscription(\Graphpinator\Normalizer\Operation\Operation $operation) : Result
+    private function resolveSubscription(Operation $operation) : Result
     {
         foreach ($operation->getDirectives() as $directive) {
             $directiveDef = $directive->getDirective();
@@ -82,7 +82,7 @@ final class Resolver
 
         $resolver = new \Graphpinator\Resolver\ResolveVisitor(
             $operation->getSelections(),
-            new \Graphpinator\Value\TypeIntermediateValue($operation->getRootObject(), null),
+            new TypeIntermediateValue($operation->getRootObject(), null),
         );
 
         $operationValue = $operation->getRootObject()->accept($resolver);

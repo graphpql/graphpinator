@@ -49,7 +49,7 @@ final class EmptyFragmentModuleTest extends \PHPUnit\Framework\TestCase
             $inlineFragment,
         ]);
 
-        $refiner = new \Graphpinator\Normalizer\SelectionSetRefiner($set);
+        $refiner = new SelectionSetRefiner($set);
         $refiner->refine();
 
         self::assertCount(0, $set);
@@ -83,7 +83,7 @@ final class EmptyFragmentModuleTest extends \PHPUnit\Framework\TestCase
             $inlineFragment,
         ]);
 
-        $refiner = new \Graphpinator\Normalizer\SelectionSetRefiner($set);
+        $refiner = new SelectionSetRefiner($set);
         $refiner->refine();
 
         self::assertCount(0, $set);

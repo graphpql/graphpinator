@@ -105,7 +105,7 @@ final class Graphpinator implements \Psr\Log\LoggerAwareInterface
             return new \Graphpinator\Result(null, [
                 $exception instanceof GraphpinatorBase
                     ? $exception
-                    : \Graphpinator\Exception\GraphpinatorBase::notOutputableResponse(),
+                    : GraphpinatorBase::notOutputableResponse(),
             ]);
         }
     }
@@ -122,12 +122,12 @@ final class Graphpinator implements \Psr\Log\LoggerAwareInterface
 
     private static function getLogLevel(\Throwable $exception) : string
     {
-        if ($exception instanceof \Graphpinator\Exception\GraphpinatorBase) {
+        if ($exception instanceof GraphpinatorBase) {
             return $exception->isOutputable()
                 ? LogLevel::INFO
-                : \Psr\Log\LogLevel::ERROR;
+                : LogLevel::ERROR;
         }
 
-        return \Psr\Log\LogLevel::EMERGENCY;
+        return LogLevel::EMERGENCY;
     }
 }

@@ -217,7 +217,7 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
      */
     public function testHttpJsonBodyPost(Json $request, Json $expected) : void
     {
-        $stream = $this->createStub(\Psr\Http\Message\StreamInterface::class);
+        $stream = $this->createStub(StreamInterface::class);
         $stream->method('getContents')->willReturn($request->toString());
         $httpRequest = $this->createStub(ServerRequestInterface::class);
         $httpRequest->method('getHeader')->willReturn(['application/json']);
@@ -237,7 +237,7 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
      */
     public function testHttpGraphQlBody(Json $request, Json $expected) : void
     {
-        $stream = $this->createStub(\Psr\Http\Message\StreamInterface::class);
+        $stream = $this->createStub(StreamInterface::class);
         $stream->method('getContents')->willReturn($request['query']);
         $httpRequest = $this->createStub(ServerRequestInterface::class);
         $httpRequest->method('getHeader')->willReturn(['application/graphql']);
