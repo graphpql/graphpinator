@@ -34,6 +34,24 @@ abstract class EnumType extends \Graphpinator\Typesystem\Contract\LeafType
         return new \Graphpinator\Typesystem\EnumItem\EnumItemSet($values);
     }
 
+    final public static function fromEnum(string $enumClass) : \Graphpinator\Typesystem\EnumItem\EnumItemSet
+    {
+        $values = [];
+        $ref = new \ReflectionEnum($enumClass);
+
+        if (((string) $ref->getBackingType()) !== 'string') {
+            throw new \InvalidArgumentException('Enum must be backed by string.');
+        }
+
+        foreach ($ref->getCases() as $case) {
+            $values[] = new \Graphpinator\Typesystem\EnumItem\EnumItem($case->getBackingValue(), $case->getDocComment()
+                ? \trim($case->getDocComment(), '/* ')
+                : null);
+        }
+
+        return new \Graphpinator\Typesystem\EnumItem\EnumItemSet($values);
+    }
+
     final public function getItems() : \Graphpinator\Typesystem\EnumItem\EnumItemSet
     {
         return $this->options;
