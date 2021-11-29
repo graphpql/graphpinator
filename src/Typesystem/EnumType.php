@@ -39,7 +39,7 @@ abstract class EnumType extends \Graphpinator\Typesystem\Contract\LeafType
         $values = [];
         $ref = new \ReflectionEnum($enumClass);
 
-        if (((string) $ref->getBackingType()) !== 'string') {
+        if ((string) $ref->getBackingType() !== 'string') {
             throw new \InvalidArgumentException('Enum must be backed by string.');
         }
 
