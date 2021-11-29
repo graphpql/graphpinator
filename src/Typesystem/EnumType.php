@@ -49,12 +49,17 @@ abstract class EnumType extends \Graphpinator\Typesystem\Contract\LeafType
                 : null);
         }
 
-        return new \Graphpinator\Typesystem\EnumItem\EnumItemSet($values);
+        return new \Graphpinator\Typesystem\EnumItem\EnumItemSet($values, $enumClass);
     }
 
     final public function getItems() : \Graphpinator\Typesystem\EnumItem\EnumItemSet
     {
         return $this->options;
+    }
+
+    final public function getEnumClass() : ?string
+    {
+        return $this->options->getEnumClass();
     }
 
     final public function accept(\Graphpinator\Typesystem\Contract\NamedTypeVisitor $visitor) : mixed

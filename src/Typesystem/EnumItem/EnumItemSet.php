@@ -12,6 +12,19 @@ final class EnumItemSet extends \Infinityloop\Utils\ImplicitObjectMap
 {
     protected const INNER_CLASS = EnumItem::class;
 
+    public function __construct(
+        array $data = [],
+        private ?string $enumClass = null,
+    )
+    {
+        parent::__construct($data);
+    }
+
+    public function getEnumClass() : ?string
+    {
+        return $this->enumClass;
+    }
+
     public function getArray() : array
     {
         $return = [];

@@ -59,6 +59,10 @@ final class CreateResolvedValueVisitor implements \Graphpinator\Typesystem\Contr
             return new \Graphpinator\Value\NullResolvedValue($enum);
         }
 
+        if (\is_object($this->rawValue)) {
+            $this->rawValue = $this->rawValue->value;
+        }
+
         return new \Graphpinator\Value\ScalarValue($enum, $this->rawValue, false);
     }
 
