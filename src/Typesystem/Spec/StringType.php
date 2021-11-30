@@ -7,7 +7,7 @@ namespace Graphpinator\Typesystem\Spec;
 final class StringType extends \Graphpinator\Typesystem\ScalarType
 {
     protected const NAME = 'String';
-    protected const DESCRIPTION = 'String built-in type';
+    protected const DESCRIPTION = 'String built-in type.';
 
     public function validateNonNullValue(mixed $rawValue) : bool
     {

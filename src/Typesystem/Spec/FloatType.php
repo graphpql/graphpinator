@@ -7,7 +7,7 @@ namespace Graphpinator\Typesystem\Spec;
 final class FloatType extends \Graphpinator\Typesystem\ScalarType
 {
     protected const NAME = 'Float';
-    protected const DESCRIPTION = 'Float built-in type';
+    protected const DESCRIPTION = 'Float built-in type.';
 
     public function validateNonNullValue(mixed $rawValue) : bool
     {

@@ -7,7 +7,7 @@ namespace Graphpinator\Typesystem\Spec;
 final class BooleanType extends \Graphpinator\Typesystem\ScalarType
 {
     protected const NAME = 'Boolean';
-    protected const DESCRIPTION = 'Boolean built-in type';
+    protected const DESCRIPTION = 'Boolean built-in type.';
 
     public function validateNonNullValue(mixed $rawValue) : bool
     {

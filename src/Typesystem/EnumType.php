@@ -26,9 +26,7 @@ abstract class EnumType extends \Graphpinator\Typesystem\Contract\LeafType
                 continue;
             }
 
-            $values[] = new \Graphpinator\Typesystem\EnumItem\EnumItem($value, $constant->getDocComment()
-                ? \trim($constant->getDocComment(), '/* ')
-                : null);
+            $values[] = new \Graphpinator\Typesystem\EnumItem\EnumItem($value, self::getItemDescription($constant));
         }
 
         return new \Graphpinator\Typesystem\EnumItem\EnumItemSet($values);
@@ -44,9 +42,7 @@ abstract class EnumType extends \Graphpinator\Typesystem\Contract\LeafType
         }
 
         foreach ($ref->getCases() as $case) {
-            $values[] = new \Graphpinator\Typesystem\EnumItem\EnumItem($case->getBackingValue(), $case->getDocComment()
-                ? \trim($case->getDocComment(), '/* ')
-                : null);
+            $values[] = new \Graphpinator\Typesystem\EnumItem\EnumItem($case->getBackingValue(), self::getItemDescription($case));
         }
 
         return new \Graphpinator\Typesystem\EnumItem\EnumItemSet($values, $enumClass);
@@ -80,5 +76,25 @@ abstract class EnumType extends \Graphpinator\Typesystem\Contract\LeafType
         $this->directiveUsages[] = new \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsage($directive, $arguments);
 
         return $this;
+    }
+
+    private static function getItemDescription(\ReflectionClassConstant|\ReflectionEnumBackedCase $reflection) : ?string
+    {
+        $attrs = $reflection->getAttributes(\Graphpinator\Typesystem\Attribute\Description::class);
+
+        if (\count($attrs) === 1) {
+            $attr = $attrs[0]->newInstance();
+            \assert($attr instanceof \Graphpinator\Typesystem\Attribute\Description);
+
+            return $attr->getValue();
+        }
+
+        $comment = $reflection->getDocComment();
+
+        if ($comment) {
+            return \trim($comment, '/* ');
+        }
+
+        return null;
     }
 }

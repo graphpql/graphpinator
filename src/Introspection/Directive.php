@@ -4,10 +4,10 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Introspection;
 
+#[\Graphpinator\Typesystem\Attribute\Description('Built-in introspection type.')]
 final class Directive extends \Graphpinator\Typesystem\Type
 {
     protected const NAME = '__Directive';
-    protected const DESCRIPTION = 'Built-in introspection type.';
 
     public function __construct(
         private \Graphpinator\Typesystem\Container $container,

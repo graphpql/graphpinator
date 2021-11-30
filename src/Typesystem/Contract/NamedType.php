@@ -25,6 +25,15 @@ abstract class NamedType implements \Graphpinator\Typesystem\Contract\Type, \Gra
 
     final public function getDescription() : ?string
     {
+        $attrs = (new \ReflectionClass(static::class))->getAttributes(\Graphpinator\Typesystem\Attribute\Description::class);
+
+        if (\count($attrs) === 1) {
+            $attr = $attrs[0]->newInstance();
+            \assert($attr instanceof \Graphpinator\Typesystem\Attribute\Description);
+
+            return $attr->getValue();
+        }
+
         return static::DESCRIPTION;
     }
 

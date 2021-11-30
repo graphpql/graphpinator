@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Introspection;
 
+#[\Graphpinator\Typesystem\Attribute\Description('Built-in introspection type.')]
 final class TypeKind extends \Graphpinator\Typesystem\EnumType
 {
     public const SCALAR = 'SCALAR';
@@ -16,7 +17,6 @@ final class TypeKind extends \Graphpinator\Typesystem\EnumType
     public const NON_NULL = 'NON_NULL';
 
     protected const NAME = '__TypeKind';
-    protected const DESCRIPTION = 'Built-in introspection enum.';
 
     public function __construct()
     {
