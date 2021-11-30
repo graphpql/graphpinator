@@ -217,6 +217,11 @@ final class Normalizer
                 $directiveTypes[$directiveDef->getName()] = true;
             }
 
+            if ($usage instanceof \Graphpinator\Normalizer\Variable\Variable) {
+                \assert($directiveDef instanceof \Graphpinator\Typesystem\Location\VariableDefinitionLocation);
+                $directiveDef->validateVariableUsage($usage, $normalizedDirective->getArguments());
+            }
+
             $normalized[] = $normalizedDirective;
             $this->path->pop();
         }
