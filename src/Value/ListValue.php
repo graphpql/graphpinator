@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Value;
 
-abstract class ListValue implements \Graphpinator\Value\Value, \IteratorAggregate, \ArrayAccess
+abstract class ListValue implements \Graphpinator\Value\Value, \IteratorAggregate, \ArrayAccess, \Countable
 {
     use \Nette\SmartObject;
 
@@ -18,6 +18,11 @@ abstract class ListValue implements \Graphpinator\Value\Value, \IteratorAggregat
     public function getIterator() : \ArrayIterator
     {
         return new \ArrayIterator($this->value);
+    }
+
+    public function count() : int
+    {
+        return \count($this->value);
     }
 
     public function offsetExists($offset) : bool
