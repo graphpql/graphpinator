@@ -18,14 +18,9 @@ abstract class NamedType implements \Graphpinator\Typesystem\Contract\Type, \Gra
         return static::NAME;
     }
 
-    final public function printName() : string
-    {
-        return $this->getName();
-    }
-
     final public function getDescription() : ?string
     {
-        $attrs = (new \ReflectionClass(static::class))->getAttributes(\Graphpinator\Typesystem\Attribute\Description::class);
+        $attrs = (new \ReflectionClass($this))->getAttributes(\Graphpinator\Typesystem\Attribute\Description::class);
 
         if (\count($attrs) === 1) {
             $attr = $attrs[0]->newInstance();
@@ -35,6 +30,11 @@ abstract class NamedType implements \Graphpinator\Typesystem\Contract\Type, \Gra
         }
 
         return static::DESCRIPTION;
+    }
+
+    final public function printName() : string
+    {
+        return $this->getName();
     }
 
     final public function getNamedType() : \Graphpinator\Typesystem\Contract\NamedType
