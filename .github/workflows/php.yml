@@ -24,7 +24,7 @@ jobs:
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
       with:
-        php-version: '8.0'
+        php-version: '8.1'
         ini-values: zend.assertions=1, assert.exception=1
         coverage: xdebug
       env:
@@ -84,7 +84,7 @@ jobs:
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
       with:
-        php-version: '8.0'
+        php-version: '8.1'
         ini-values: zend.assertions=1, assert.exception=1
         coverage: xdebug
       env:
@@ -109,7 +109,7 @@ jobs:
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
       with:
-        php-version: '8.0'
+        php-version: '8.1'
         ini-values: zend.assertions=1, assert.exception=1
       env:
         update: true
@@ -136,7 +136,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.0'
+          php-version: '8.1'
         env:
           update: true
 
