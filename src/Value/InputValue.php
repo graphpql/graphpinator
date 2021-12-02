@@ -18,7 +18,7 @@ final class InputValue implements \Graphpinator\Value\InputedValue, \IteratorAgg
     public function getRawValue(bool $forResolvers = false) : object
     {
         $return = $forResolvers === true
-            ? new ($this->getType()->getDataClass())
+            ? new ($this->getType()->getDataClass())()
             : new \stdClass();
 
         foreach ((array) $this->value as $argumentName => $argumentValue) {
