@@ -81,7 +81,7 @@ abstract class InputType extends \Graphpinator\Typesystem\Contract\ConcreteType 
         }
 
         if (\array_key_exists($this->getName(), $stack)) {
-            throw new \Graphpinator\Typesystem\Exception\InputCycle();
+            throw new \Graphpinator\Typesystem\Exception\InputCycle(\array_keys($stack));
         }
 
         $stack[$this->getName()] = true;

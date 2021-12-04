@@ -671,7 +671,7 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
     public function testInvalidNonNull() : void
     {
         $this->expectException(\Graphpinator\Typesystem\Exception\InputCycle::class);
-        $this->expectDeprecationMessage(\Graphpinator\Typesystem\Exception\InputCycle::MESSAGE);
+        $this->expectDeprecationMessage('Input cycle detected (NotNullSelfCycle).');
 
         self::createInvalidNonNullType()->getArguments();
     }
@@ -679,7 +679,7 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
     public function testInvalidNonNullOnNonNull() : void
     {
         $this->expectException(\Graphpinator\Typesystem\Exception\InputCycle::class);
-        $this->expectDeprecationMessage(\Graphpinator\Typesystem\Exception\InputCycle::MESSAGE);
+        $this->expectDeprecationMessage('Input cycle detected (NotNullSelfCycleA -> NotNullSelfCycleB).');
 
         self::createInvalidNonNullAType()->getArguments();
         self::createInvalidNonNullBType()->getArguments();

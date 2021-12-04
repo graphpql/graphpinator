@@ -94,7 +94,7 @@ abstract class InterfaceType extends \Graphpinator\Typesystem\Contract\AbstractT
         }
 
         if (\array_key_exists($this->getName(), $stack)) {
-            throw new \Graphpinator\Typesystem\Exception\InterfaceCycle();
+            throw new \Graphpinator\Typesystem\Exception\InterfaceCycle(\array_keys($stack));
         }
 
         $stack[$this->getName()] = true;

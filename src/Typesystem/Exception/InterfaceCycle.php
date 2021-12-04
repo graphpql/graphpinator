@@ -6,5 +6,12 @@ namespace Graphpinator\Typesystem\Exception;
 
 final class InterfaceCycle extends \Graphpinator\Typesystem\Exception\TypeError
 {
-    public const MESSAGE = 'Interface implement cycle detected.';
+    public const MESSAGE = 'Interface implement cycle detected (%s).';
+
+    public function __construct(array $interfaceCycle)
+    {
+        $this->messageArgs = [\implode(' -> ', $interfaceCycle)];
+
+        parent::__construct();
+    }
 }
