@@ -4,13 +4,13 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem\Spec;
 
+#[\Graphpinator\Typesystem\Attribute\Description('Built-in skip directive')]
 final class SkipDirective extends \Graphpinator\Typesystem\Directive implements
     \Graphpinator\Typesystem\Location\FieldLocation,
     \Graphpinator\Typesystem\Location\InlineFragmentLocation,
     \Graphpinator\Typesystem\Location\FragmentSpreadLocation
 {
     protected const NAME = 'skip';
-    protected const DESCRIPTION = 'Built-in skip directive.';
 
     public function validateFieldUsage(
         \Graphpinator\Typesystem\Field\Field $field,

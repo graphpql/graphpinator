@@ -98,19 +98,19 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                                 ['name' => 'FragmentTypeB', 'description' => null],
                                 ['name' => 'SimpleEmptyTestInput', 'description' => null],
                                 ['name' => 'InterfaceChildType', 'description' => null],
-                                ['name' => 'ID', 'description' => 'ID built-in type.'],
-                                ['name' => 'Int', 'description' => 'Int built-in type (32 bit).'],
-                                ['name' => 'Float', 'description' => 'Float built-in type.'],
-                                ['name' => 'String', 'description' => 'String built-in type.'],
-                                ['name' => 'Boolean', 'description' => 'Boolean built-in type.'],
-                                ['name' => '__Schema', 'description' => 'Built-in introspection type.'],
-                                ['name' => '__Type', 'description' => 'Built-in introspection type.'],
-                                ['name' => '__TypeKind', 'description' => 'Built-in introspection type.'],
-                                ['name' => '__Field', 'description' => 'Built-in introspection type.'],
-                                ['name' => '__EnumValue', 'description' => 'Built-in introspection type.'],
-                                ['name' => '__InputValue', 'description' => 'Built-in introspection type.'],
-                                ['name' => '__Directive', 'description' => 'Built-in introspection type.'],
-                                ['name' => '__DirectiveLocation', 'description' => 'Built-in introspection type.'],
+                                ['name' => 'ID', 'description' => 'ID built-in type'],
+                                ['name' => 'Int', 'description' => 'Int built-in type (32 bit)'],
+                                ['name' => 'Float', 'description' => 'Float built-in type'],
+                                ['name' => 'String', 'description' => 'String built-in type'],
+                                ['name' => 'Boolean', 'description' => 'Boolean built-in type'],
+                                ['name' => '__Schema', 'description' => 'Built-in introspection type'],
+                                ['name' => '__Type', 'description' => 'Built-in introspection type'],
+                                ['name' => '__TypeKind', 'description' => 'Built-in introspection type'],
+                                ['name' => '__Field', 'description' => 'Built-in introspection type'],
+                                ['name' => '__EnumValue', 'description' => 'Built-in introspection type'],
+                                ['name' => '__InputValue', 'description' => 'Built-in introspection type'],
+                                ['name' => '__Directive', 'description' => 'Built-in introspection type'],
+                                ['name' => '__DirectiveLocation', 'description' => 'Built-in introspection type'],
                             ],
                         ],
                     ],
@@ -147,7 +147,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                                 ],
                                 [
                                     'name' => 'skip',
-                                    'description' => 'Built-in skip directive.',
+                                    'description' => 'Built-in skip directive',
                                     'args' => [
                                         ['name' => 'if'],
                                     ],
@@ -156,7 +156,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                                 ],
                                 [
                                     'name' => 'include',
-                                    'description' => 'Built-in include directive.',
+                                    'description' => 'Built-in include directive',
                                     'args' => [
                                         ['name' => 'if'],
                                     ],
@@ -165,7 +165,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                                 ],
                                 [
                                     'name' => 'deprecated',
-                                    'description' => 'Built-in deprecated directive.',
+                                    'description' => 'Built-in deprecated directive',
                                     'args' => [
                                         ['name' => 'reason'],
                                     ],
@@ -174,7 +174,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                                 ],
                                 [
                                     'name' => 'specifiedBy',
-                                    'description' => 'Built-in specified by directive.',
+                                    'description' => 'Built-in specifiedBy directive',
                                     'args' => [
                                         ['name' => 'url'],
                                     ],

@@ -7,7 +7,7 @@ namespace Graphpinator\Introspection;
 use \Graphpinator\Typesystem\Location\ExecutableDirectiveLocation;
 use \Graphpinator\Typesystem\Location\TypeSystemDirectiveLocation;
 
-#[\Graphpinator\Typesystem\Attribute\Description('Built-in introspection type.')]
+#[\Graphpinator\Typesystem\Attribute\Description('Built-in introspection type')]
 final class DirectiveLocation extends \Graphpinator\Typesystem\EnumType
 {
     public const QUERY = ExecutableDirectiveLocation::QUERY;

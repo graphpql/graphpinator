@@ -11,7 +11,7 @@ final class NamedDefinitionTest extends \PHPUnit\Framework\TestCase
         $base = \Graphpinator\Typesystem\Container::String();
 
         self::assertSame('String', $base->getName());
-        self::assertSame('String built-in type.', $base->getDescription());
+        self::assertSame('String built-in type', $base->getDescription());
 
         self::assertSame($base, $base->notNull()->getInnerType());
         self::assertSame($base, $base->list()->getInnerType());

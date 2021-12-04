@@ -4,13 +4,13 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem\Spec;
 
+#[\Graphpinator\Typesystem\Attribute\Description('Built-in include directive')]
 final class IncludeDirective extends \Graphpinator\Typesystem\Directive implements
     \Graphpinator\Typesystem\Location\FieldLocation,
     \Graphpinator\Typesystem\Location\InlineFragmentLocation,
     \Graphpinator\Typesystem\Location\FragmentSpreadLocation
 {
     protected const NAME = 'include';
-    protected const DESCRIPTION = 'Built-in include directive.';
 
     public function validateFieldUsage(
         \Graphpinator\Typesystem\Field\Field $field,

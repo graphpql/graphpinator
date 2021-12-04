@@ -4,10 +4,10 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem\Spec;
 
+#[\Graphpinator\Typesystem\Attribute\Description('ID built-in type')]
 final class IdType extends \Graphpinator\Typesystem\ScalarType
 {
     protected const NAME = 'ID';
-    protected const DESCRIPTION = 'ID built-in type.';
 
     public function validateNonNullValue(mixed $rawValue) : bool
     {

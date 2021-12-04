@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Introspection;
 
-#[\Graphpinator\Typesystem\Attribute\Description('Built-in introspection type.')]
+#[\Graphpinator\Typesystem\Attribute\Description('Built-in introspection type')]
 final class Directive extends \Graphpinator\Typesystem\Type
 {
     protected const NAME = '__Directive';

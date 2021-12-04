@@ -4,13 +4,13 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem\Spec;
 
+#[\Graphpinator\Typesystem\Attribute\Description('Built-in deprecated directive')]
 final class DeprecatedDirective extends \Graphpinator\Typesystem\Directive implements
     \Graphpinator\Typesystem\Location\FieldDefinitionLocation,
     \Graphpinator\Typesystem\Location\EnumItemLocation,
     \Graphpinator\Typesystem\Location\ArgumentDefinitionLocation
 {
     protected const NAME = 'deprecated';
-    protected const DESCRIPTION = 'Built-in deprecated directive.';
 
     public static function isPure() : bool
     {
