@@ -7,9 +7,9 @@ namespace Graphpinator\Typesystem;
 abstract class Directive implements \Graphpinator\Typesystem\Contract\Directive
 {
     use \Nette\SmartObject;
+    use \Graphpinator\Typesystem\Utils\THasDescription;
 
     protected const NAME = '';
-    protected const DESCRIPTION = null;
     protected const REPEATABLE = false;
 
     protected ?\Graphpinator\Typesystem\Argument\ArgumentSet $arguments = null;
@@ -17,11 +17,6 @@ abstract class Directive implements \Graphpinator\Typesystem\Contract\Directive
     final public function getName() : string
     {
         return static::NAME;
-    }
-
-    final public function getDescription() : ?string
-    {
-        return static::DESCRIPTION;
     }
 
     final public function getLocations() : array

@@ -6,8 +6,10 @@ namespace Graphpinator\Typesystem\Contract;
 
 abstract class NamedType implements \Graphpinator\Typesystem\Contract\Type, \Graphpinator\Typesystem\Contract\Entity
 {
+    use \Nette\SmartObject;
+    use \Graphpinator\Typesystem\Utils\THasDescription;
+
     protected const NAME = '';
-    protected const DESCRIPTION = null;
 
     abstract public function isInstanceOf(\Graphpinator\Typesystem\Contract\Type $type) : bool;
 
@@ -16,20 +18,6 @@ abstract class NamedType implements \Graphpinator\Typesystem\Contract\Type, \Gra
     final public function getName() : string
     {
         return static::NAME;
-    }
-
-    final public function getDescription() : ?string
-    {
-        $attrs = (new \ReflectionClass($this))->getAttributes(\Graphpinator\Typesystem\Attribute\Description::class);
-
-        if (\count($attrs) === 1) {
-            $attr = $attrs[0]->newInstance();
-            \assert($attr instanceof \Graphpinator\Typesystem\Attribute\Description);
-
-            return $attr->getValue();
-        }
-
-        return static::DESCRIPTION;
     }
 
     final public function printName() : string
