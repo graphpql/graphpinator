@@ -71,11 +71,14 @@ trait TInterfaceImplementor
 
                 try {
                     self::validateCovariance($fieldContract->getDirectiveUsages(), $field->getDirectiveUsages());
-                } catch (\Throwable) {
+                } catch (\Throwable $e) {
                     throw new \Graphpinator\Typesystem\Exception\FieldDirectiveNotCovariant(
                         $this->getName(),
                         $interface->getName(),
                         $fieldContract->getName(),
+                        $e instanceof \Graphpinator\Typesystem\Exception\VarianceError
+                            ? $e->getExplanationMessage()
+                            : 'No additional details were provided.',
                     );
                 }
 
@@ -102,12 +105,15 @@ trait TInterfaceImplementor
 
                     try {
                         self::validateContravariance($argumentContract->getDirectiveUsages(), $argument->getDirectiveUsages());
-                    } catch (\Throwable) {
+                    } catch (\Throwable $e) {
                         throw new \Graphpinator\Typesystem\Exception\ArgumentDirectiveNotContravariant(
                             $this->getName(),
                             $interface->getName(),
                             $fieldContract->getName(),
                             $argumentContract->getName(),
+                            $e instanceof \Graphpinator\Typesystem\Exception\VarianceError
+                                ? $e->getExplanationMessage()
+                                : 'No additional details were provided.',
                         );
                     }
                 }

@@ -6,11 +6,11 @@ namespace Graphpinator\Typesystem\Exception;
 
 final class ArgumentDirectiveNotContravariant extends \Graphpinator\Typesystem\Exception\TypeError
 {
-    public const MESSAGE = 'Type "%s" does not satisfy interface "%s" - argument "%s" on field "%s" has constraint which is not contravariant.';
+    public const MESSAGE = 'Type "%s" does not satisfy interface "%s" - argument "%s" on field "%s" has directive which is not contravariant (%s).';
 
-    public function __construct(string $childName, string $interfaceName, string $fieldName, string $argumentName)
+    public function __construct(string $childName, string $interfaceName, string $fieldName, string $argumentName, string $message)
     {
-        $this->messageArgs = [$childName, $interfaceName, $argumentName, $fieldName];
+        $this->messageArgs = [$childName, $interfaceName, $argumentName, $fieldName, $message];
 
         parent::__construct();
     }
