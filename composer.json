@@ -58,5 +58,11 @@
     "psr-4": {
       "Graphpinator\\Tests\\": "tests/"
     }
+  },
+  "config": {
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true,
+      "infection/extension-installer": true
+    }
   }
 }
