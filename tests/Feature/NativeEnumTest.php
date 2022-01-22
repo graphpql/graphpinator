@@ -30,7 +30,7 @@ final class NativeEnumTest extends \PHPUnit\Framework\TestCase
         self::assertEquals('XYZ', $items->offsetGet('XYZ')->getName());
         self::assertEquals('Another description for following enum case', $items->offsetGet('XYZ')->getDescription());
 
-        $query = new class($enumType) extends \Graphpinator\Typesystem\Type {
+        $query = new class ($enumType) extends \Graphpinator\Typesystem\Type {
             public function __construct(
                 private \Graphpinator\Typesystem\EnumType $enumType,
             )
