@@ -41,7 +41,7 @@ final class Argument implements \Graphpinator\Typesystem\Contract\Component
         return $this->defaultValue;
     }
 
-    public function setDefaultValue(\stdClass|array|string|int|float|bool|null $defaultValue) : self
+    public function setDefaultValue(mixed $defaultValue) : self
     {
         $this->defaultValue = new \Graphpinator\Value\ArgumentValue(
             $this,

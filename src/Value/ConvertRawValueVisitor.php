@@ -113,6 +113,10 @@ final class ConvertRawValueVisitor implements \Graphpinator\Typesystem\Contract\
             return new \Graphpinator\Value\NullInputedValue($enum);
         }
 
+        if (\is_object($this->rawValue) && \is_string($enum->getEnumClass())) {
+            return new \Graphpinator\Value\EnumValue($enum, $this->rawValue->value, true);
+        }
+
         return new \Graphpinator\Value\EnumValue($enum, $this->rawValue, true);
     }
 
