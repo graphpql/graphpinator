@@ -22,10 +22,6 @@ abstract class InterfaceType extends \Graphpinator\Typesystem\Contract\AbstractT
 
     final public function isInstanceOf(\Graphpinator\Typesystem\Contract\Type $type) : bool
     {
-        if ($type instanceof NotNullType) {
-            return $this->isInstanceOf($type->getInnerType());
-        }
-
         return $type instanceof static
             || ($type instanceof self && $this->implements($type));
     }

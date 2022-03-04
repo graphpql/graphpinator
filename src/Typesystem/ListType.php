@@ -12,10 +12,6 @@ final class ListType extends \Graphpinator\Typesystem\Contract\ModifierType
             return $this->innerType->isInstanceOf($type->getInnerType());
         }
 
-        if ($type instanceof NotNullType) {
-            return $this->isInstanceOf($type->getInnerType());
-        }
-
         return false;
     }
 

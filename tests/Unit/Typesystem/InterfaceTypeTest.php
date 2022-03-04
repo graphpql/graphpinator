@@ -501,9 +501,11 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
         self::assertSame('Bar', $interface->getInterfaces()->offsetGet('Bar')->getName());
 
         self::assertTrue($interface->isInstanceOf($interface));
-        self::assertTrue($interface->isInstanceOf(new \Graphpinator\Typesystem\NotNullType($interface)));
+        self::assertFalse($interface->isInstanceOf(new \Graphpinator\Typesystem\NotNullType($interface)));
+        self::assertTrue((new \Graphpinator\Typesystem\NotNullType($interface))->isInstanceOf($interface));
         self::assertTrue($interface->isInstanceOf($parentInterface));
-        self::assertTrue($interface->isInstanceOf(new \Graphpinator\Typesystem\NotNullType($parentInterface)));
+        self::assertFalse($interface->isInstanceOf(new \Graphpinator\Typesystem\NotNullType($parentInterface)));
+        self::assertTrue((new \Graphpinator\Typesystem\NotNullType($interface))->isInstanceOf($parentInterface));
         self::assertFalse($parentInterface->isInstanceOf($interface));
         self::assertFalse($parentInterface->isInstanceOf(new \Graphpinator\Typesystem\NotNullType($interface)));
         self::assertFalse($interface->isImplementedBy(self::getTypeWithoutInterface()));
@@ -528,7 +530,7 @@ final class InterfaceTypeTest extends \PHPUnit\Framework\TestCase
         self::getTypeFieldTypeMismatch()->getFields();
     }
 
-    public function testIncompatibleFieldTypeContravariance() : void
+    public function testIncompatibleFieldTypeCovariance() : void
     {
         $this->expectException(\Graphpinator\Typesystem\Exception\InterfaceContractFieldTypeMismatch::class);
         $this->expectExceptionMessage('Type "Abc" does not satisfy interface "Foo" - field "fieldNotNull" does not have a compatible type.');

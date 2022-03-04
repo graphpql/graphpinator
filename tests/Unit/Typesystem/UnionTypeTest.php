@@ -89,7 +89,8 @@ final class UnionTypeTest extends \PHPUnit\Framework\TestCase
         self::assertSame('Zzz', $union->getTypes()->offsetGet('Zzz')->getName());
 
         self::assertTrue($union->isInstanceOf($union));
-        self::assertTrue($union->isInstanceOf(new \Graphpinator\Typesystem\NotNullType($union)));
+        self::assertFalse($union->isInstanceOf(new \Graphpinator\Typesystem\NotNullType($union)));
+        self::assertTrue((new \Graphpinator\Typesystem\NotNullType($union))->isInstanceOf($union));
         self::assertFalse($union->isInstanceOf(self::getTestTypeZzz()));
         self::assertFalse($union->isInstanceOf(new \Graphpinator\Typesystem\NotNullType(self::getTestTypeZzz())));
         self::assertTrue($union->isImplementedBy(self::getTestTypeXyz()));

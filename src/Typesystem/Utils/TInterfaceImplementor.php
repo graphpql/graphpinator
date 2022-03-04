@@ -61,7 +61,7 @@ trait TInterfaceImplementor
 
                 $field = $this->getFields()->offsetGet($fieldContract->getName());
 
-                if (!$fieldContract->getType()->isInstanceOf($field->getType())) {
+                if (!$field->getType()->isInstanceOf($fieldContract->getType())) {
                     throw new \Graphpinator\Typesystem\Exception\InterfaceContractFieldTypeMismatch(
                         $this->getName(),
                         $interface->getName(),
@@ -94,7 +94,7 @@ trait TInterfaceImplementor
 
                     $argument = $field->getArguments()->offsetGet($argumentContract->getName());
 
-                    if (!$argument->getType()->isInstanceOf($argumentContract->getType())) {
+                    if (!$argumentContract->getType()->isInstanceOf($argument->getType())) {
                         throw new \Graphpinator\Typesystem\Exception\InterfaceContractArgumentTypeMismatch(
                             $this->getName(),
                             $interface->getName(),

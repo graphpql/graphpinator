@@ -23,17 +23,13 @@ abstract class UnionType extends \Graphpinator\Typesystem\Contract\AbstractType
 
     final public function isInstanceOf(\Graphpinator\Typesystem\Contract\Type $type) : bool
     {
-        if ($type instanceof NotNullType) {
-            return $this->isInstanceOf($type->getInnerType());
-        }
-
         return $type instanceof static;
     }
 
     final public function isImplementedBy(\Graphpinator\Typesystem\Contract\Type $type) : bool
     {
         foreach ($this->types as $temp) {
-            if ($temp->isInstanceOf($type)) {
+            if ($temp->isInstanceOf($type->getShapingType())) {
                 return true;
             }
         }

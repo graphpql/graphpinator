@@ -15,8 +15,7 @@ final class VariableValue implements \Graphpinator\Value\InputedValue
         private \Graphpinator\Normalizer\Variable\Variable $variable,
     )
     {
-        // flipped because of contravariance, isInstanceOf is covariant
-        if (!$type->isInstanceOf($variable->getType())) {
+        if (!$variable->getType()->isInstanceOf($type)) {
             throw new \Graphpinator\Normalizer\Exception\VariableTypeMismatch();
         }
     }

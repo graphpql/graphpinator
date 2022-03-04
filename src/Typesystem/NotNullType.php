@@ -12,7 +12,7 @@ final class NotNullType extends \Graphpinator\Typesystem\Contract\ModifierType
             return $this->innerType->isInstanceOf($type->getInnerType());
         }
 
-        return false;
+        return $this->innerType->isInstanceOf($type);
     }
 
     public function printName() : string

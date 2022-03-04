@@ -65,7 +65,7 @@ final class ResolveSelectionVisitor implements \Graphpinator\Normalizer\Selectio
             $rawValue = \call_user_func_array($fieldDef->getResolveFunction(), $rawArguments);
             $resolvedValue = $fieldDef->getType()->accept(new CreateResolvedValueVisitor($rawValue));
 
-            if (!$resolvedValue->getType()->isInstanceOf($fieldDef->getType())) {
+            if (!$resolvedValue->getType()->getShapingType()->isInstanceOf($fieldDef->getType()->getShapingType())) {
                 throw new \Graphpinator\Resolver\Exception\FieldResultTypeMismatch();
             }
 
