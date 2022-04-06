@@ -8,6 +8,9 @@ final class Graphpinator implements \Psr\Log\LoggerAwareInterface
 {
     use \Nette\SmartObject;
 
+    /**
+     * Whether Graphpinator should perform schema integrity checks. Disable in production to avoid unnecassary overhead.
+     */
     public static bool $validateSchema = true;
     private \Graphpinator\Module\ModuleSet $modules;
     private \Psr\Log\LoggerInterface $logger;
