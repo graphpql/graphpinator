@@ -53,7 +53,7 @@ abstract class InterfaceType extends \Graphpinator\Typesystem\Contract\AbstractT
                 }
 
                 $this->validateInterfaceContract();
-                $this->validateCycles([]);
+                $this->validateCycles();
             }
         }
 
@@ -83,7 +83,7 @@ abstract class InterfaceType extends \Graphpinator\Typesystem\Contract\AbstractT
 
     abstract protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\FieldSet;
 
-    private function validateCycles(array $stack) : void
+    private function validateCycles(array $stack = []) : void
     {
         if ($this->cycleValidated) {
             return;
