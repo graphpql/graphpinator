@@ -47,6 +47,8 @@ abstract class Type extends \Graphpinator\Typesystem\Contract\ConcreteType imple
 
                 $this->validateInterfaceContract();
             }
+
+            $this->inheritDescriptions();
         }
 
         \assert($this->fields instanceof \Graphpinator\Typesystem\Field\ResolvableFieldSet);
@@ -76,4 +78,25 @@ abstract class Type extends \Graphpinator\Typesystem\Contract\ConcreteType imple
     }
 
     abstract protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet;
+
+    private function inheritDescriptions() : void
+    {
+        foreach ($this->implements as $interfaceType) {
+            foreach ($interfaceType->getFields() as $interfaceField) {
+                $currentField = $this->fields[$interfaceField->getName()];
+
+                if ($currentField->getDescription() === null && $interfaceField->getDescription() !== null) {
+                    $currentField->setDescription($interfaceField->getDescription());
+                }
+
+                foreach ($interfaceField->getArguments() as $interfaceArgument) {
+                    $currentArgument = $currentField->getArguments()[$interfaceArgument->getName()];
+
+                    if ($currentArgument->getDescription() === null && $interfaceArgument->getDescription() !== null) {
+                        $currentArgument->setDescription($interfaceArgument->getDescription());
+                    }
+                }
+            }
+        }
+    }
 }
