@@ -11,6 +11,7 @@ final class TypeValue implements \Graphpinator\Value\OutputValue
     public function __construct(
         private \Graphpinator\Typesystem\Type $type,
         private \stdClass $value,
+        private TypeIntermediateValue $intermediateValue,
     )
     {
         foreach ($type->getDirectiveUsages() as $directive) {
@@ -28,6 +29,11 @@ final class TypeValue implements \Graphpinator\Value\OutputValue
     public function getType() : \Graphpinator\Typesystem\Type
     {
         return $this->type;
+    }
+
+    public function getIntermediateValue() : TypeIntermediateValue
+    {
+        return $this->intermediateValue;
     }
 
     public function jsonSerialize() : \stdClass

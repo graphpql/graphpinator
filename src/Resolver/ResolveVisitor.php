@@ -17,13 +17,14 @@ final class ResolveVisitor implements \Graphpinator\Typesystem\Contract\TypeVisi
 
     public function visitType(\Graphpinator\Typesystem\Type $type) : \Graphpinator\Value\TypeValue
     {
+        \assert($this->parentResult instanceof \Graphpinator\Value\TypeIntermediateValue);
         \assert($this->selectionSet instanceof \Graphpinator\Normalizer\Selection\SelectionSet);
 
         foreach ($this->selectionSet as $selectionEntity) {
             $selectionEntity->accept(new ResolveSelectionVisitor($this->parentResult, $this->result));
         }
 
-        return new \Graphpinator\Value\TypeValue($type, $this->result);
+        return new \Graphpinator\Value\TypeValue($type, $this->result, $this->parentResult);
     }
 
     public function visitInterface(\Graphpinator\Typesystem\InterfaceType $interface) : mixed

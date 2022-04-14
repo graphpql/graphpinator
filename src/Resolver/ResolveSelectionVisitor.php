@@ -33,10 +33,7 @@ final class ResolveSelectionVisitor implements \Graphpinator\Normalizer\Selectio
             \assert($fieldValue instanceof \Graphpinator\Value\FieldValue);
 
             if ($field->getSelections() instanceof \Graphpinator\Normalizer\Selection\SelectionSet) {
-                $typeValue = $fieldValue->getValue();
-                \assert($typeValue instanceof \Graphpinator\Value\TypeValue);
-                $resolvedValue = $fieldValue->getIntermediateValue();
-                $resolvedValue->getType()->accept(new ResolveVisitor($field->getSelections(), $resolvedValue, $typeValue->getRawValue()));
+                self::addToResultingSelection($fieldValue->getValue(), $field->getSelections());
             }
 
             foreach ($field->getDirectives() as $directive) {
@@ -153,5 +150,22 @@ final class ResolveSelectionVisitor implements \Graphpinator\Normalizer\Selectio
         }
 
         throw new \Graphpinator\Resolver\Exception\InvalidDirectiveResult();
+    }
+
+    private static function addToResultingSelection(
+        \Graphpinator\Value\TypeValue|\Graphpinator\Value\ListResolvedValue $value,
+        \Graphpinator\Normalizer\Selection\SelectionSet $selectionSet,
+    ) : void
+    {
+        if ($value instanceof \Graphpinator\Value\TypeValue) {
+            $resolvedValue = $value->getIntermediateValue();
+            $resolvedValue->getType()->accept(new ResolveVisitor($selectionSet, $resolvedValue, $value->getRawValue()));
+
+            return;
+        }
+
+        foreach ($value as $innerValue) {
+            self::addToResultingSelection($innerValue, $selectionSet);
+        }
     }
 }

@@ -11,7 +11,6 @@ final class FieldValue implements \JsonSerializable
     public function __construct(
         private \Graphpinator\Typesystem\Field\Field $field,
         private \Graphpinator\Value\ResolvedValue $value,
-        private \Graphpinator\Value\ResolvedValue $intermediateValue,
     )
     {
         foreach ($field->getDirectiveUsages() as $directive) {
@@ -34,10 +33,5 @@ final class FieldValue implements \JsonSerializable
     public function getValue() : \Graphpinator\Value\ResolvedValue
     {
         return $this->value;
-    }
-
-    public function getIntermediateValue() : \Graphpinator\Value\ResolvedValue
-    {
-        return $this->intermediateValue;
     }
 }
