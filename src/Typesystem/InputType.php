@@ -30,7 +30,7 @@ abstract class InputType extends \Graphpinator\Typesystem\Contract\ConcreteType 
                     throw new \Graphpinator\Typesystem\Exception\InputTypeMustDefineOneOreMoreFields();
                 }
 
-                $this->validateCycles([]);
+                $this->validateCycles();
             }
         }
 
@@ -74,7 +74,7 @@ abstract class InputType extends \Graphpinator\Typesystem\Contract\ConcreteType 
     {
     }
 
-    private function validateCycles(array $stack) : void
+    private function validateCycles(array $stack = []) : void
     {
         if ($this->cycleValidated) {
             return;
