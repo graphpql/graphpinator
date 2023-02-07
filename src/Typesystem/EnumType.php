@@ -4,18 +4,21 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem;
 
+use \Graphpinator\Typesystem\EnumItem\EnumItem;
+use \Graphpinator\Typesystem\EnumItem\EnumItemSet;
+
 abstract class EnumType extends \Graphpinator\Typesystem\Contract\LeafType
 {
     use \Graphpinator\Typesystem\Utils\THasDirectives;
 
     public function __construct(
-        protected \Graphpinator\Typesystem\EnumItem\EnumItemSet $options,
+        protected EnumItemSet $options,
     )
     {
         $this->directiveUsages = new \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet();
     }
 
-    final public static function fromConstants() : \Graphpinator\Typesystem\EnumItem\EnumItemSet
+    final public static function fromConstants() : EnumItemSet
     {
         $values = [];
 
@@ -26,13 +29,13 @@ abstract class EnumType extends \Graphpinator\Typesystem\Contract\LeafType
                 continue;
             }
 
-            $values[] = new \Graphpinator\Typesystem\EnumItem\EnumItem($value, self::getItemDescription($constant));
+            $values[] = new EnumItem($value, self::getItemDescription($constant));
         }
 
-        return new \Graphpinator\Typesystem\EnumItem\EnumItemSet($values);
+        return new EnumItemSet($values);
     }
 
-    final public static function fromEnum(string $enumClass) : \Graphpinator\Typesystem\EnumItem\EnumItemSet
+    final public static function fromEnum(string $enumClass) : EnumItemSet
     {
         $values = [];
         $ref = new \ReflectionEnum($enumClass);
@@ -42,13 +45,13 @@ abstract class EnumType extends \Graphpinator\Typesystem\Contract\LeafType
         }
 
         foreach ($ref->getCases() as $case) {
-            $values[] = new \Graphpinator\Typesystem\EnumItem\EnumItem($case->getBackingValue(), self::getItemDescription($case));
+            $values[] = new EnumItem($case->getBackingValue(), self::getItemDescription($case));
         }
 
-        return new \Graphpinator\Typesystem\EnumItem\EnumItemSet($values, $enumClass);
+        return new EnumItemSet($values, $enumClass);
     }
 
-    final public function getItems() : \Graphpinator\Typesystem\EnumItem\EnumItemSet
+    final public function getItems() : EnumItemSet
     {
         return $this->options;
     }
