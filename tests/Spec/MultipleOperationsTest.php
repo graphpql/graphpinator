@@ -8,7 +8,7 @@ use \Infinityloop\Utils\Json;
 
 final class MultipleOperationsTest extends \PHPUnit\Framework\TestCase
 {
-    public function requestDataProvider() : array
+    public static function requestDataProvider() : array
     {
         return [
             [

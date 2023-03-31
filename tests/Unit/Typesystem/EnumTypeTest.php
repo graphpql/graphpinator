@@ -6,7 +6,7 @@ namespace Graphpinator\Tests\Unit\Typesystem;
 
 final class EnumTypeTest extends \PHPUnit\Framework\TestCase
 {
-    public function simpleDataProvider() : array
+    public static function simpleDataProvider() : array
     {
         return [
             ['a'],
@@ -28,7 +28,7 @@ final class EnumTypeTest extends \PHPUnit\Framework\TestCase
         self::assertSame($rawValue, $value->getRawValue());
     }
 
-    public function invalidDataProvider() : array
+    public static function invalidDataProvider() : array
     {
         return [
             [123],

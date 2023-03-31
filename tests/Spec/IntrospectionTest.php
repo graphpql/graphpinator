@@ -8,7 +8,7 @@ use \Infinityloop\Utils\Json;
 
 final class IntrospectionTest extends \PHPUnit\Framework\TestCase
 {
-    public function typenameDataProvider() : array
+    public static function typenameDataProvider() : array
     {
         return [
             [
@@ -39,7 +39,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
         self::assertSame($expected->toString(), $result->toString());
     }
 
-    public function schemaDataProvider() : array
+    public static function schemaDataProvider() : array
     {
         return [
             [
@@ -204,7 +204,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
         self::assertSame($expected->toString(), $result->toString());
     }
 
-    public function typeDataProvider() : array
+    public static function typeDataProvider() : array
     {
         return [
             [

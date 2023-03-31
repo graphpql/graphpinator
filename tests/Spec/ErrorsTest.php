@@ -8,7 +8,7 @@ use \Infinityloop\Utils\Json;
 
 final class ErrorsTest extends \PHPUnit\Framework\TestCase
 {
-    public function tokenizerDataProvider() : array
+    public static function tokenizerDataProvider() : array
     {
         return [
             [
@@ -40,7 +40,7 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
         ];
     }
 
-    public function parserDataProvider() : array
+    public static function parserDataProvider() : array
     {
         return [
             [
@@ -111,7 +111,7 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
         ];
     }
 
-    public function normalizerDataProvider() : array
+    public static function normalizerDataProvider() : array
     {
         return [
             [
@@ -376,58 +376,57 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
         self::assertSame($expected->toString(), $result->toString());
     }
 
-    public function psrDataProvider() : array
+    public function testPsrRequestPut() : void
     {
         $httpRequest = $this->createStub(\Psr\Http\Message\ServerRequestInterface::class);
         $httpRequest->method('getMethod')->willReturn('PUT');
 
-        $httpRequest2 = $this->createStub(\Psr\Http\Message\ServerRequestInterface::class);
-        $httpRequest2->method('getParsedBody')->willReturn([]);
-        $httpRequest2->method('getHeader')->willReturn(['multipart/form-data; boundary=-------9051914041544843365972754266']);
-        $httpRequest2->method('getMethod')->willReturn('POST');
+        $expected = Json::fromNative((object) [
+            'errors' => [
+                ['message' => 'Invalid request - only GET and POST methods are supported.'],
+            ],
+        ]);
 
-        $httpRequest3 = $this->createStub(\Psr\Http\Message\ServerRequestInterface::class);
-        $httpRequest3->method('getParsedBody')->willReturn(['operations' => '{}']);
-        $httpRequest3->method('getHeader')->willReturn(['multipart/form-data; boundary=-------9051914041544843365972754266']);
-        $httpRequest3->method('getMethod')->willReturn('GET');
+        $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema(), true);
+        $result = $graphpinator->run(new \Graphpinator\Request\PsrRequestFactory($httpRequest));
 
-        return [
-            [
-                $httpRequest,
-                Json::fromNative((object) [
-                    'errors' => [
-                        ['message' => 'Invalid request - only GET and POST methods are supported.'],
-                    ],
-                ]),
-            ],
-            [
-                $httpRequest2,
-                Json::fromNative((object) [
-                    'errors' => [
-                        ['message' => 'Invalid multipart request - request must be POST and contain "operations" data.'],
-                    ],
-                ]),
-            ],
-            [
-                $httpRequest3,
-                Json::fromNative((object) [
-                    'errors' => [
-                        ['message' => 'Invalid multipart request - request must be POST and contain "operations" data.'],
-                    ],
-                ]),
-            ],
-        ];
+        self::assertSame($expected->toString(), $result->toString());
     }
 
-    /**
-     * @dataProvider psrDataProvider
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @param \Infinityloop\Utils\Json $expected
-     */
-    public function testPsrRequest(\Psr\Http\Message\ServerRequestInterface $request, Json $expected) : void
+    public function testPsrRequestMultipartNoOperations() : void
     {
+        $httpRequest = $this->createStub(\Psr\Http\Message\ServerRequestInterface::class);
+        $httpRequest->method('getParsedBody')->willReturn([]);
+        $httpRequest->method('getHeader')->willReturn(['multipart/form-data; boundary=-------9051914041544843365972754266']);
+        $httpRequest->method('getMethod')->willReturn('POST');
+
+        $expected = Json::fromNative((object) [
+            'errors' => [
+                ['message' => 'Invalid multipart request - request must be POST and contain "operations" data.'],
+            ],
+        ]);
+
         $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema(), true);
-        $result = $graphpinator->run(new \Graphpinator\Request\PsrRequestFactory($request));
+        $result = $graphpinator->run(new \Graphpinator\Request\PsrRequestFactory($httpRequest));
+
+        self::assertSame($expected->toString(), $result->toString());
+    }
+
+    public function testPsrRequestMultipartGet() : void
+    {
+        $httpRequest = $this->createStub(\Psr\Http\Message\ServerRequestInterface::class);
+        $httpRequest->method('getParsedBody')->willReturn(['operations' => '{}']);
+        $httpRequest->method('getHeader')->willReturn(['multipart/form-data; boundary=-------9051914041544843365972754266']);
+        $httpRequest->method('getMethod')->willReturn('GET');
+
+        $expected = Json::fromNative((object) [
+            'errors' => [
+                ['message' => 'Invalid multipart request - request must be POST and contain "operations" data.'],
+            ],
+        ]);
+
+        $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema(), true);
+        $result = $graphpinator->run(new \Graphpinator\Request\PsrRequestFactory($httpRequest));
 
         self::assertSame($expected->toString(), $result->toString());
     }

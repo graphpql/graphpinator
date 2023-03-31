@@ -28,7 +28,7 @@ final class InputTypeCoercionTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    public function inputObjectDataProvider() : array
+    public static function inputObjectDataProvider() : array
     {
         return [
             [

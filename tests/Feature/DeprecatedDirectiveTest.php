@@ -117,7 +117,7 @@ final class DeprecatedDirectiveTest extends \PHPUnit\Framework\TestCase
         return self::$testInputType;
     }
 
-    public function fieldsDataProvider() : array
+    public static function fieldsDataProvider() : array
     {
         return [
             [
@@ -280,7 +280,7 @@ final class DeprecatedDirectiveTest extends \PHPUnit\Framework\TestCase
         self::assertSame($expected->toString(), $result->toString());
     }
 
-    public function inputFieldsDataProvider() : array
+    public static function inputFieldsDataProvider() : array
     {
         return [
             [

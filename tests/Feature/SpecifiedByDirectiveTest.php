@@ -42,7 +42,7 @@ final class SpecifiedByDirectiveTest extends \PHPUnit\Framework\TestCase
         return self::$testScalar;
     }
 
-    public function typeDataProvider() : array
+    public static function typeDataProvider() : array
     {
         return [
             [

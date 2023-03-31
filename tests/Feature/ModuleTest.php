@@ -6,7 +6,7 @@ namespace Graphpinator\Tests\Feature;
 
 final class ModuleTest extends \PHPUnit\Framework\TestCase
 {
-    public function moduleDataProvider() : array
+    public static function moduleDataProvider() : array
     {
         return [
             [

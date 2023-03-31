@@ -8,7 +8,7 @@ use \Infinityloop\Utils\Json;
 
 final class VariableTest extends \PHPUnit\Framework\TestCase
 {
-    public function simpleDataProvider() : array
+    public static function simpleDataProvider() : array
     {
         return [
             [
@@ -55,7 +55,7 @@ final class VariableTest extends \PHPUnit\Framework\TestCase
         self::assertSame($expected->toString(), $result->toString());
     }
 
-    public function invalidDataProvider() : array
+    public static function invalidDataProvider() : array
     {
         return [
             [

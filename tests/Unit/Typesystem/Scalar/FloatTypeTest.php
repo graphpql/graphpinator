@@ -6,7 +6,7 @@ namespace Graphpinator\Tests\Unit\Typesystem\Scalar;
 
 final class FloatTypeTest extends \PHPUnit\Framework\TestCase
 {
-    public function simpleDataProvider() : array
+    public static function simpleDataProvider() : array
     {
         return [
             [123.123, 123.123],
@@ -17,7 +17,7 @@ final class FloatTypeTest extends \PHPUnit\Framework\TestCase
         ];
     }
 
-    public function invalidDataProvider() : array
+    public static function invalidDataProvider() : array
     {
         return [
             [true],

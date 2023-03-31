@@ -6,7 +6,7 @@ namespace Graphpinator\Tests\Unit\Typesystem\Scalar;
 
 final class IDTypeTest extends \PHPUnit\Framework\TestCase
 {
-    public function simpleDataProvider() : array
+    public static function simpleDataProvider() : array
     {
         return [
             [123, '123'],
@@ -15,7 +15,7 @@ final class IDTypeTest extends \PHPUnit\Framework\TestCase
         ];
     }
 
-    public function invalidDataProvider() : array
+    public static function invalidDataProvider() : array
     {
         return [
             [123.123],

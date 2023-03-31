@@ -8,7 +8,7 @@ use \Infinityloop\Utils\Json;
 
 final class DirectiveTest extends \PHPUnit\Framework\TestCase
 {
-    public function simpleDataProvider() : array
+    public static function simpleDataProvider() : array
     {
         return [
             [
@@ -128,7 +128,7 @@ final class DirectiveTest extends \PHPUnit\Framework\TestCase
         self::assertSame(3, TestSchema::getSchema()->getContainer()->getDirective('testDirective')::$count);
     }
 
-    public function invalidDataProvider() : array
+    public static function invalidDataProvider() : array
     {
         return [
             [

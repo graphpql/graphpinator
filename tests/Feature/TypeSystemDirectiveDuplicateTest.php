@@ -43,7 +43,7 @@ final class TypeSystemDirectiveDuplicateTest extends \PHPUnit\Framework\TestCase
         return self::$testDuplicateDirective;
     }
 
-    public function simpleDataProvider() : array
+    public static function simpleDataProvider() : array
     {
         return [
             [

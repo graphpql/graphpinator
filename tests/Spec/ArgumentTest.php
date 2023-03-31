@@ -8,7 +8,7 @@ use \Infinityloop\Utils\Json;
 
 final class ArgumentTest extends \PHPUnit\Framework\TestCase
 {
-    public function simpleDataProvider() : array
+    public static function simpleDataProvider() : array
     {
         return [
             [
@@ -76,7 +76,7 @@ final class ArgumentTest extends \PHPUnit\Framework\TestCase
         self::assertNull($result->getErrors());
     }
 
-    public function invalidDataProvider() : array
+    public static function invalidDataProvider() : array
     {
         return [
             [
