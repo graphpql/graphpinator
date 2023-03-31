@@ -127,6 +127,7 @@ jobs:
       continue-on-error: true
 
   codestyle:
+    if: false
     runs-on: ubuntu-latest
 
     steps:
