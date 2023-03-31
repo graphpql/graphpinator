@@ -23,17 +23,7 @@ final class ConvertParserValueVisitor implements \Graphpinator\Parser\Value\Valu
 
     public function visitEnumLiteral(\Graphpinator\Parser\Value\EnumLiteral $enumLiteral) : \Graphpinator\Value\InputedValue
     {
-        if ($this->type instanceof \Graphpinator\Typesystem\NotNullType) {
-            $this->type = $this->type->getInnerType();
-
-            return $enumLiteral->accept($this);
-        }
-
-        if ($this->type instanceof \Graphpinator\Typesystem\EnumType) {
-            return $this->type->accept(new ConvertRawValueVisitor($enumLiteral->getRawValue(), $this->path));
-        }
-
-        throw new \Graphpinator\Exception\Value\InvalidValue($this->type->printName(), $enumLiteral->getRawValue(), true);
+        return $this->type->accept(new ConvertRawValueVisitor($enumLiteral->getRawValue(), $this->path));
     }
 
     public function visitListVal(\Graphpinator\Parser\Value\ListVal $listVal) : \Graphpinator\Value\ListInputedValue
