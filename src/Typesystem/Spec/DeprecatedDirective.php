@@ -4,6 +4,9 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem\Spec;
 
+use \Graphpinator\Value\ArgumentValueSet;
+use \Graphpinator\Value\ResolvedValue;
+
 #[\Graphpinator\Typesystem\Attribute\Description('Built-in deprecated directive')]
 final class DeprecatedDirective extends \Graphpinator\Typesystem\Directive implements
     \Graphpinator\Typesystem\Location\FieldDefinitionLocation,
@@ -17,69 +20,44 @@ final class DeprecatedDirective extends \Graphpinator\Typesystem\Directive imple
         return true;
     }
 
-    public function validateFieldUsage(
-        \Graphpinator\Typesystem\Field\Field $field,
-        \Graphpinator\Value\ArgumentValueSet $arguments,
-    ) : bool
+    public function validateFieldUsage(\Graphpinator\Typesystem\Field\Field $field, ArgumentValueSet $arguments) : bool
     {
         return true;
     }
 
-    public function validateVariance(
-        ?\Graphpinator\Value\ArgumentValueSet $biggerSet,
-        ?\Graphpinator\Value\ArgumentValueSet $smallerSet,
-    ) : void
+    public function validateVariance(?ArgumentValueSet $biggerSet, ?ArgumentValueSet $smallerSet) : void
     {
         // nothing here
     }
 
-    public function resolveFieldDefinitionStart(
-        \Graphpinator\Value\ArgumentValueSet $arguments,
-        \Graphpinator\Value\ResolvedValue $parentValue,
-    ) : void
+    public function resolveFieldDefinitionStart(ArgumentValueSet $arguments, ResolvedValue $parentValue) : void
     {
         // nothing here
     }
 
-    public function resolveFieldDefinitionBefore(
-        \Graphpinator\Value\ArgumentValueSet $arguments,
-        \Graphpinator\Value\ResolvedValue $parentValue,
-        \Graphpinator\Value\ArgumentValueSet $fieldArguments,
-    ) : void
+    public function resolveFieldDefinitionBefore(ArgumentValueSet $arguments, ResolvedValue $parentValue, ArgumentValueSet $fieldArguments) : void
     {
         // nothing here
     }
 
-    public function resolveFieldDefinitionAfter(
-        \Graphpinator\Value\ArgumentValueSet $arguments,
-        \Graphpinator\Value\ResolvedValue $resolvedValue,
-        \Graphpinator\Value\ArgumentValueSet $fieldArguments,
-    ) : void
+    public function resolveFieldDefinitionAfter(ArgumentValueSet $arguments, ResolvedValue $resolvedValue, ArgumentValueSet $fieldArguments) : void
     {
         // nothing here
     }
 
-    public function resolveFieldDefinitionValue(
-        \Graphpinator\Value\ArgumentValueSet $arguments,
-        \Graphpinator\Value\FieldValue $fieldValue,
-    ) : void
+    public function resolveFieldDefinitionValue(ArgumentValueSet $arguments, \Graphpinator\Value\FieldValue $fieldValue) : void
     {
         // nothing here
     }
 
-    public function validateArgumentUsage(
-        \Graphpinator\Typesystem\Argument\Argument $argument,
-        \Graphpinator\Value\ArgumentValueSet $arguments,
-    ) : bool
+    public function validateArgumentUsage(\Graphpinator\Typesystem\Argument\Argument $argument, ArgumentValueSet $arguments) : bool
     {
         return true;
     }
 
-    public function resolveArgumentDefinition(
-        \Graphpinator\Value\ArgumentValueSet $arguments,
-        \Graphpinator\Value\ArgumentValue $argumentValue,
-    ) : void
+    public function resolveArgumentDefinition(ArgumentValueSet $arguments, \Graphpinator\Value\ArgumentValue $argumentValue) : void
     {
+        // nothing here
     }
 
     protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet

@@ -143,13 +143,9 @@ final class ResolveSelectionVisitor implements \Graphpinator\Normalizer\Selectio
         return null;
     }
 
-    private static function shouldSkip(string $directiveResult) : bool
+    private static function shouldSkip(\Graphpinator\Typesystem\Location\SelectionDirectiveResult $directiveResult) : bool
     {
-        if (\array_key_exists($directiveResult, \Graphpinator\Typesystem\Location\FieldLocation::ENUM)) {
-            return $directiveResult === \Graphpinator\Typesystem\Location\FieldLocation::SKIP;
-        }
-
-        throw new \Graphpinator\Resolver\Exception\InvalidDirectiveResult();
+        return $directiveResult === \Graphpinator\Typesystem\Location\SelectionDirectiveResult::SKIP;
     }
 
     private static function addToResultingSelection(

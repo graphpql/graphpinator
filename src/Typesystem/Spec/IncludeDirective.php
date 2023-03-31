@@ -4,6 +4,9 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem\Spec;
 
+use \Graphpinator\Typesystem\Location\SelectionDirectiveResult;
+use \Graphpinator\Value\ArgumentValueSet;
+
 #[\Graphpinator\Typesystem\Attribute\Description('Built-in include directive')]
 final class IncludeDirective extends \Graphpinator\Typesystem\Directive implements
     \Graphpinator\Typesystem\Location\FieldLocation,
@@ -12,55 +15,39 @@ final class IncludeDirective extends \Graphpinator\Typesystem\Directive implemen
 {
     protected const NAME = 'include';
 
-    public function validateFieldUsage(
-        \Graphpinator\Typesystem\Field\Field $field,
-        \Graphpinator\Value\ArgumentValueSet $arguments,
-    ) : bool
+    public function validateFieldUsage(\Graphpinator\Typesystem\Field\Field $field, ArgumentValueSet $arguments) : bool
     {
         return true;
     }
 
-    public function resolveFieldBefore(
-        \Graphpinator\Value\ArgumentValueSet $arguments,
-    ) : string
+    public function resolveFieldBefore(ArgumentValueSet $arguments) : SelectionDirectiveResult
     {
         return $arguments->offsetGet('if')->getValue()->getRawValue()
-            ? \Graphpinator\Typesystem\Location\FieldLocation::NONE
-            : \Graphpinator\Typesystem\Location\FieldLocation::SKIP;
+            ? SelectionDirectiveResult::NONE
+            : SelectionDirectiveResult::SKIP;
     }
 
-    public function resolveFieldAfter(
-        \Graphpinator\Value\ArgumentValueSet $arguments,
-        \Graphpinator\Value\FieldValue $fieldValue,
-    ) : string
+    public function resolveFieldAfter(ArgumentValueSet $arguments, \Graphpinator\Value\FieldValue $fieldValue) : SelectionDirectiveResult
     {
-        return \Graphpinator\Typesystem\Location\FieldLocation::NONE;
+        return SelectionDirectiveResult::NONE;
     }
 
-    public function resolveFragmentSpreadBefore(
-        \Graphpinator\Value\ArgumentValueSet $arguments,
-    ) : string
+    public function resolveFragmentSpreadBefore(ArgumentValueSet $arguments) : SelectionDirectiveResult
     {
         return $this->resolveFieldBefore($arguments);
     }
 
-    public function resolveFragmentSpreadAfter(
-        \Graphpinator\Value\ArgumentValueSet $arguments,
-    ) : void
+    public function resolveFragmentSpreadAfter(ArgumentValueSet $arguments) : void
     {
         // nothing here
     }
 
-    public function resolveInlineFragmentBefore(
-        \Graphpinator\Value\ArgumentValueSet $arguments,
-    ) : string
+    public function resolveInlineFragmentBefore(ArgumentValueSet $arguments) : SelectionDirectiveResult
     {
         return $this->resolveFieldBefore($arguments);
     }
 
-    public function resolveInlineFragmentAfter(
-        \Graphpinator\Value\ArgumentValueSet $arguments,
-    ) : void
+    public function resolveInlineFragmentAfter(ArgumentValueSet $arguments) : void
     {
         // nothing here
     }

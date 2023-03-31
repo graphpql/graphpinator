@@ -5,8 +5,8 @@ declare(strict_types = 1);
 namespace Graphpinator\Typesystem\EnumItem;
 
 /**
- * @method \Graphpinator\Typesystem\EnumItem\EnumItem current() : object
- * @method \Graphpinator\Typesystem\EnumItem\EnumItem offsetGet($offset) : object
+ * @method EnumItem current() : object
+ * @method EnumItem offsetGet($offset) : object
  */
 final class EnumItemSet extends \Infinityloop\Utils\ImplicitObjectMap
 {

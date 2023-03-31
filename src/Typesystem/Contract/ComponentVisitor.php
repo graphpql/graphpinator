@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem\Contract;
 
-interface ComponentVisitor extends \Graphpinator\Typesystem\Contract\EntityVisitor
+interface ComponentVisitor extends EntityVisitor
 {
     public function visitField(\Graphpinator\Typesystem\Field\Field $field) : mixed;
 

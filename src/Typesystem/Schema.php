@@ -11,10 +11,10 @@ final class Schema implements \Graphpinator\Typesystem\Contract\Entity
     use \Graphpinator\Typesystem\Utils\THasDirectives;
 
     public function __construct(
-        private \Graphpinator\Typesystem\Container $container,
-        private \Graphpinator\Typesystem\Type $query,
-        private ?\Graphpinator\Typesystem\Type $mutation = null,
-        private ?\Graphpinator\Typesystem\Type $subscription = null,
+        private Container $container,
+        private Type $query,
+        private ?Type $mutation = null,
+        private ?Type $subscription = null,
     )
     {
         if (\Graphpinator\Graphpinator::$validateSchema) {
@@ -40,26 +40,26 @@ final class Schema implements \Graphpinator\Typesystem\Contract\Entity
                 return $this->container->getType($name);
             },
         )->setArguments(new \Graphpinator\Typesystem\Argument\ArgumentSet([
-            \Graphpinator\Typesystem\Argument\Argument::create('name', \Graphpinator\Typesystem\Container::String()->notNull()),
+            \Graphpinator\Typesystem\Argument\Argument::create('name', Container::String()->notNull()),
         ])));
     }
 
-    public function getContainer() : \Graphpinator\Typesystem\Container
+    public function getContainer() : Container
     {
         return $this->container;
     }
 
-    public function getQuery() : \Graphpinator\Typesystem\Type
+    public function getQuery() : Type
     {
         return $this->query;
     }
 
-    public function getMutation() : ?\Graphpinator\Typesystem\Type
+    public function getMutation() : ?Type
     {
         return $this->mutation;
     }
 
-    public function getSubscription() : ?\Graphpinator\Typesystem\Type
+    public function getSubscription() : ?Type
     {
         return $this->subscription;
     }
@@ -79,7 +79,7 @@ final class Schema implements \Graphpinator\Typesystem\Contract\Entity
         return $this;
     }
 
-    private static function isSame(?\Graphpinator\Typesystem\Type $lhs, ?\Graphpinator\Typesystem\Type $rhs) : bool
+    private static function isSame(?Type $lhs, ?Type $rhs) : bool
     {
         return $lhs === $rhs
             && ($lhs !== null || $rhs !== null);

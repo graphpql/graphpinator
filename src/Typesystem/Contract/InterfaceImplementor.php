@@ -8,7 +8,7 @@ namespace Graphpinator\Typesystem\Contract;
  * Interface InterfaceImplementor which marks types which can implement interface - currently Type and Interface.
  */
 //@phpcs:ignore SlevomatCodingStandard.Classes.SuperfluousInterfaceNaming.SuperfluousPrefix
-interface InterfaceImplementor extends \Graphpinator\Typesystem\Contract\Type
+interface InterfaceImplementor extends Type
 {
     /**
      * Returns fields defined for this type.

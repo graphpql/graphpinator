@@ -4,11 +4,13 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem\DirectiveUsage;
 
+use \Graphpinator\Value\ArgumentValueSet;
+
 final class DirectiveUsage implements \Graphpinator\Typesystem\Contract\Component
 {
     use \Nette\SmartObject;
 
-    private \Graphpinator\Value\ArgumentValueSet $argumentValues;
+    private ArgumentValueSet $argumentValues;
 
     public function __construct(
         private \Graphpinator\Typesystem\Contract\TypeSystemDirective $directive,
@@ -20,7 +22,7 @@ final class DirectiveUsage implements \Graphpinator\Typesystem\Contract\Componen
             throw new \Graphpinator\Typesystem\Exception\DirectiveUsageArgumentsInvalidMap();
         }
 
-        $this->argumentValues = new \Graphpinator\Value\ArgumentValueSet(
+        $this->argumentValues = new ArgumentValueSet(
             (array) \Graphpinator\Value\ConvertRawValueVisitor::convertArgumentSet(
                 $directive->getArguments(),
                 (object) $arguments,
@@ -34,7 +36,7 @@ final class DirectiveUsage implements \Graphpinator\Typesystem\Contract\Componen
         return $this->directive;
     }
 
-    public function getArgumentValues() : \Graphpinator\Value\ArgumentValueSet
+    public function getArgumentValues() : ArgumentValueSet
     {
         return $this->argumentValues;
     }

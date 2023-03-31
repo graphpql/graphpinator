@@ -5,8 +5,8 @@ declare(strict_types = 1);
 namespace Graphpinator\Typesystem\Argument;
 
 /**
- * @method \Graphpinator\Typesystem\Argument\Argument current() : object
- * @method \Graphpinator\Typesystem\Argument\Argument offsetGet($offset) : object
+ * @method Argument current() : object
+ * @method Argument offsetGet($offset) : object
  */
 final class ArgumentSet extends \Infinityloop\Utils\ImplicitObjectMap
 {

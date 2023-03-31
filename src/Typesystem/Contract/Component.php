@@ -13,5 +13,5 @@ namespace Graphpinator\Typesystem\Contract;
  */
 interface Component
 {
-    public function accept(\Graphpinator\Typesystem\Contract\ComponentVisitor $visitor) : mixed;
+    public function accept(ComponentVisitor $visitor) : mixed;
 }

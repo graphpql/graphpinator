@@ -13,7 +13,7 @@ abstract class Type extends \Graphpinator\Typesystem\Contract\ConcreteType imple
     use \Graphpinator\Typesystem\Utils\THasDirectives;
 
     public function __construct(
-        \Graphpinator\Typesystem\InterfaceSet $implements = new \Graphpinator\Typesystem\InterfaceSet([]),
+        InterfaceSet $implements = new InterfaceSet([]),
     )
     {
         $this->implements = $implements;

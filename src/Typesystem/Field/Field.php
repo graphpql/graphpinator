@@ -4,6 +4,9 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem\Field;
 
+use \Graphpinator\Typesystem\Argument\ArgumentSet;
+use \Graphpinator\Typesystem\Contract\Outputable;
+
 class Field implements \Graphpinator\Typesystem\Contract\Component
 {
     use \Nette\SmartObject;
@@ -11,18 +14,18 @@ class Field implements \Graphpinator\Typesystem\Contract\Component
     use \Graphpinator\Typesystem\Utils\THasDirectives;
     use \Graphpinator\Typesystem\Utils\TDeprecatable;
 
-    protected \Graphpinator\Typesystem\Argument\ArgumentSet $arguments;
+    protected ArgumentSet $arguments;
 
     public function __construct(
         protected string $name,
-        protected \Graphpinator\Typesystem\Contract\Outputable $type,
+        protected Outputable $type,
     )
     {
-        $this->arguments = new \Graphpinator\Typesystem\Argument\ArgumentSet([]);
+        $this->arguments = new ArgumentSet([]);
         $this->directiveUsages = new \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet();
     }
 
-    public static function create(string $name, \Graphpinator\Typesystem\Contract\Outputable $type) : self
+    public static function create(string $name, Outputable $type) : self
     {
         return new self($name, $type);
     }
@@ -32,17 +35,17 @@ class Field implements \Graphpinator\Typesystem\Contract\Component
         return $this->name;
     }
 
-    final public function getType() : \Graphpinator\Typesystem\Contract\Outputable
+    final public function getType() : Outputable
     {
         return $this->type;
     }
 
-    final public function getArguments() : \Graphpinator\Typesystem\Argument\ArgumentSet
+    final public function getArguments() : ArgumentSet
     {
         return $this->arguments;
     }
 
-    final public function setArguments(\Graphpinator\Typesystem\Argument\ArgumentSet $arguments) : static
+    final public function setArguments(ArgumentSet $arguments) : static
     {
         $this->arguments = $arguments;
 

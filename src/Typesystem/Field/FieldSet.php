@@ -5,8 +5,8 @@ declare(strict_types = 1);
 namespace Graphpinator\Typesystem\Field;
 
 /**
- * @method \Graphpinator\Typesystem\Field\Field current() : object
- * @method \Graphpinator\Typesystem\Field\Field offsetGet($offset) : object
+ * @method Field current() : object
+ * @method Field offsetGet($offset) : object
  */
 class FieldSet extends \Infinityloop\Utils\ImplicitObjectMap
 {

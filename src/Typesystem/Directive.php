@@ -81,7 +81,7 @@ abstract class Directive implements \Graphpinator\Typesystem\Contract\Directive
     }
 
     /**
-     * @return array<string>
+     * @return array<ExecutableDirectiveLocation|TypeSystemDirectiveLocation>
      */
     final public function getLocations() : array
     {

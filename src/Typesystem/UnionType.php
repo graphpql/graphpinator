@@ -10,13 +10,13 @@ abstract class UnionType extends \Graphpinator\Typesystem\Contract\AbstractType
     use \Graphpinator\Typesystem\Utils\THasDirectives;
 
     public function __construct(
-        protected \Graphpinator\Typesystem\TypeSet $types,
+        protected TypeSet $types,
     )
     {
         $this->directiveUsages = new \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet();
     }
 
-    final public function getTypes() : \Graphpinator\Typesystem\TypeSet
+    final public function getTypes() : TypeSet
     {
         return $this->types;
     }

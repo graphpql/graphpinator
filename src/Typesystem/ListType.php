@@ -20,9 +20,9 @@ final class ListType extends \Graphpinator\Typesystem\Contract\ModifierType
         return '[' . $this->innerType->printName() . ']';
     }
 
-    public function notNull() : \Graphpinator\Typesystem\NotNullType
+    public function notNull() : NotNullType
     {
-        return new \Graphpinator\Typesystem\NotNullType($this);
+        return new NotNullType($this);
     }
 
     public function getShapingType() : \Graphpinator\Typesystem\Contract\Type

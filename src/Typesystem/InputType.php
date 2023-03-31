@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem;
 
+use \Graphpinator\Typesystem\Argument\ArgumentSet;
+
 abstract class InputType extends \Graphpinator\Typesystem\Contract\ConcreteType implements
     \Graphpinator\Typesystem\Contract\Inputable
 {
@@ -11,7 +13,7 @@ abstract class InputType extends \Graphpinator\Typesystem\Contract\ConcreteType 
 
     protected const DATA_CLASS = \stdClass::class;
 
-    protected ?\Graphpinator\Typesystem\Argument\ArgumentSet $arguments = null;
+    protected ?ArgumentSet $arguments = null;
     private bool $cycleValidated = false;
 
     public function __construct()
@@ -19,9 +21,9 @@ abstract class InputType extends \Graphpinator\Typesystem\Contract\ConcreteType 
         $this->directiveUsages = new \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet();
     }
 
-    final public function getArguments() : \Graphpinator\Typesystem\Argument\ArgumentSet
+    final public function getArguments() : ArgumentSet
     {
-        if (!$this->arguments instanceof \Graphpinator\Typesystem\Argument\ArgumentSet) {
+        if (!$this->arguments instanceof ArgumentSet) {
             $this->arguments = $this->getFieldDefinition();
             $this->afterGetFieldDefinition();
 
@@ -63,7 +65,7 @@ abstract class InputType extends \Graphpinator\Typesystem\Contract\ConcreteType 
         return $this;
     }
 
-    abstract protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet;
+    abstract protected function getFieldDefinition() : ArgumentSet;
 
     /**
      * This function serves to prevent infinite cycles.

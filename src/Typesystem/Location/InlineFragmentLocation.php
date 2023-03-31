@@ -6,11 +6,7 @@ namespace Graphpinator\Typesystem\Location;
 
 interface InlineFragmentLocation extends \Graphpinator\Typesystem\Contract\ExecutableDirective
 {
-    public function resolveInlineFragmentBefore(
-        \Graphpinator\Value\ArgumentValueSet $arguments,
-    ) : string;
+    public function resolveInlineFragmentBefore(\Graphpinator\Value\ArgumentValueSet $arguments) : SelectionDirectiveResult;
 
-    public function resolveInlineFragmentAfter(
-        \Graphpinator\Value\ArgumentValueSet $arguments,
-    ) : void;
+    public function resolveInlineFragmentAfter(\Graphpinator\Value\ArgumentValueSet $arguments) : void;
 }

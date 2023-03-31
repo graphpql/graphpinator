@@ -5,8 +5,8 @@ declare(strict_types = 1);
 namespace Graphpinator\Typesystem\DirectiveUsage;
 
 /**
- * @method \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsage current() : object
- * @method \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsage offsetGet($offset) : object
+ * @method DirectiveUsage current() : object
+ * @method DirectiveUsage offsetGet($offset) : object
  */
 final class DirectiveUsageSet extends \Infinityloop\Utils\ObjectSet
 {
@@ -15,7 +15,7 @@ final class DirectiveUsageSet extends \Infinityloop\Utils\ObjectSet
 
     protected function offsetSetImpl($offset, object $object) : void
     {
-        \assert($object instanceof \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsage);
+        \assert($object instanceof DirectiveUsage);
 
         if (\Graphpinator\Graphpinator::$validateSchema && !$object->getDirective()->isRepeatable()) {
             $this->checkForDuplicate($object->getDirective());

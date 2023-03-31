@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Spec;
 
+use \Graphpinator\Typesystem\Location\SelectionDirectiveResult;
+
 final class TestSchema
 {
     use \Nette\StaticClass;
@@ -63,7 +65,6 @@ final class TestSchema
             'SimpleEmptyTestInput' => self::getSimpleEmptyTestInput(),
             'InterfaceChildType' => self::getInterfaceChildType(),
             'testDirective' => self::getTestDirective(),
-            'invalidDirectiveResult' => self::getInvalidDirectiveResult(),
             'invalidDirectiveType' => self::getInvalidDirectiveType(),
         };
 
@@ -103,7 +104,6 @@ final class TestSchema
             'InterfaceChildType' => self::getType('InterfaceChildType'),
         ], [
             'testDirective' => self::getType('testDirective'),
-            'invalidDirectiveResult' => self::getType('invalidDirectiveResult'),
             'invalidDirectiveType' => self::getType('invalidDirectiveType'),
         ]);
 
@@ -1041,54 +1041,19 @@ final class TestSchema
                 return true;
             }
 
-            public function resolveFieldBefore(\Graphpinator\Value\ArgumentValueSet $arguments) : string
+            public function resolveFieldBefore(\Graphpinator\Value\ArgumentValueSet $arguments) : SelectionDirectiveResult
             {
                 ++self::$count;
 
-                return \Graphpinator\Typesystem\Location\FieldLocation::NONE;
+                return SelectionDirectiveResult::NONE;
             }
 
             public function resolveFieldAfter(
                 \Graphpinator\Value\ArgumentValueSet $arguments,
                 \Graphpinator\Value\FieldValue $fieldValue,
-            ) : string
+            ) : SelectionDirectiveResult
             {
-                return \Graphpinator\Typesystem\Location\FieldLocation::NONE;
-            }
-
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
-            {
-                return new \Graphpinator\Typesystem\Argument\ArgumentSet();
-            }
-        };
-    }
-
-    public static function getInvalidDirectiveResult() : \Graphpinator\Typesystem\Directive
-    {
-        return new class extends \Graphpinator\Typesystem\Directive implements \Graphpinator\Typesystem\Location\FieldLocation
-        {
-            protected const NAME = 'invalidDirectiveResult';
-            protected const REPEATABLE = true;
-
-            public function validateFieldUsage(
-                \Graphpinator\Typesystem\Field\Field $field,
-                \Graphpinator\Value\ArgumentValueSet $arguments,
-            ) : bool
-            {
-                return true;
-            }
-
-            public function resolveFieldBefore(\Graphpinator\Value\ArgumentValueSet $arguments) : string
-            {
-                return 'random';
-            }
-
-            public function resolveFieldAfter(
-                \Graphpinator\Value\ArgumentValueSet $arguments,
-                \Graphpinator\Value\FieldValue $fieldValue,
-            ) : string
-            {
-                return \Graphpinator\Directive\FieldDirectiveResult::NONE;
+                return SelectionDirectiveResult::NONE;
             }
 
             protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
@@ -1112,17 +1077,17 @@ final class TestSchema
                 return false;
             }
 
-            public function resolveFieldBefore(\Graphpinator\Value\ArgumentValueSet $arguments) : string
+            public function resolveFieldBefore(\Graphpinator\Value\ArgumentValueSet $arguments) : SelectionDirectiveResult
             {
-                return \Graphpinator\Directive\FieldDirectiveResult::NONE;
+                return SelectionDirectiveResult::NONE;
             }
 
             public function resolveFieldAfter(
                 \Graphpinator\Value\ArgumentValueSet $arguments,
                 \Graphpinator\Value\FieldValue $fieldValue,
-            ) : string
+            ) : SelectionDirectiveResult
             {
-                return \Graphpinator\Directive\FieldDirectiveResult::NONE;
+                return SelectionDirectiveResult::NONE;
             }
 
             protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet

@@ -4,9 +4,9 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem\Contract;
 
-abstract class ConcreteType extends \Graphpinator\Typesystem\Contract\NamedType
+abstract class ConcreteType extends NamedType
 {
-    public function isInstanceOf(\Graphpinator\Typesystem\Contract\Type $type) : bool
+    public function isInstanceOf(Type $type) : bool
     {
         return $type instanceof static;
     }

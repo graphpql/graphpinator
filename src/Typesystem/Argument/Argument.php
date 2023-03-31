@@ -4,6 +4,9 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem\Argument;
 
+use \Graphpinator\Typesystem\Contract\Inputable;
+use \Graphpinator\Value\ArgumentValue;
+
 final class Argument implements \Graphpinator\Typesystem\Contract\Component
 {
     use \Nette\SmartObject;
@@ -11,17 +14,17 @@ final class Argument implements \Graphpinator\Typesystem\Contract\Component
     use \Graphpinator\Typesystem\Utils\THasDirectives;
     use \Graphpinator\Typesystem\Utils\TDeprecatable;
 
-    private ?\Graphpinator\Value\ArgumentValue $defaultValue = null;
+    private ?ArgumentValue $defaultValue = null;
 
     public function __construct(
         private string $name,
-        private \Graphpinator\Typesystem\Contract\Inputable $type,
+        private Inputable $type,
     )
     {
         $this->directiveUsages = new \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet();
     }
 
-    public static function create(string $name, \Graphpinator\Typesystem\Contract\Inputable $type) : self
+    public static function create(string $name, Inputable $type) : self
     {
         return new self($name, $type);
     }
@@ -31,19 +34,19 @@ final class Argument implements \Graphpinator\Typesystem\Contract\Component
         return $this->name;
     }
 
-    public function getType() : \Graphpinator\Typesystem\Contract\Inputable
+    public function getType() : Inputable
     {
         return $this->type;
     }
 
-    public function getDefaultValue() : ?\Graphpinator\Value\ArgumentValue
+    public function getDefaultValue() : ?ArgumentValue
     {
         return $this->defaultValue;
     }
 
     public function setDefaultValue(mixed $defaultValue) : self
     {
-        $this->defaultValue = new \Graphpinator\Value\ArgumentValue(
+        $this->defaultValue = new ArgumentValue(
             $this,
             $this->getType()->accept(new \Graphpinator\Value\ConvertRawValueVisitor($defaultValue, new \Graphpinator\Common\Path())),
             false,

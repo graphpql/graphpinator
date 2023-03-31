@@ -6,9 +6,9 @@ namespace Graphpinator\Typesystem\Contract;
 
 interface Type
 {
-    public function accept(\Graphpinator\Typesystem\Contract\TypeVisitor $visitor) : mixed;
+    public function accept(TypeVisitor $visitor) : mixed;
 
-    public function getNamedType() : \Graphpinator\Typesystem\Contract\NamedType;
+    public function getNamedType() : NamedType;
 
     public function getShapingType() : self;
 
