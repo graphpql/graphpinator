@@ -8,16 +8,12 @@ final class Request
 {
     use \Nette\SmartObject;
 
-    private \stdClass $variables;
-
     public function __construct(
         private string $query,
-        ?\stdClass $variables = null,
+        private \stdClass $variables = new \stdClass(),
         private ?string $operationName = null,
     )
     {
-        $this->variables = $variables
-            ?? new \stdClass();
     }
 
     public function getQuery() : string

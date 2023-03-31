@@ -9,11 +9,9 @@ final class Graphpinator implements \Psr\Log\LoggerAwareInterface
     use \Nette\SmartObject;
 
     /**
-     * Whether Graphpinator should perform schema integrity checks. Disable in production to avoid unnecassary overhead.
+     * Whether Graphpinator should perform schema integrity checks. Disable in production to avoid unnecessary overhead.
      */
     public static bool $validateSchema = true;
-    private \Graphpinator\Module\ModuleSet $modules;
-    private \Psr\Log\LoggerInterface $logger;
     private \Graphpinator\Parser\Parser $parser;
     private \Graphpinator\Normalizer\Normalizer $normalizer;
     private \Graphpinator\Normalizer\Finalizer $finalizer;
@@ -22,16 +20,10 @@ final class Graphpinator implements \Psr\Log\LoggerAwareInterface
     public function __construct(
         \Graphpinator\Typesystem\Schema $schema,
         private bool $catchExceptions = false,
-        ?\Graphpinator\Module\ModuleSet $modules = null,
-        ?\Psr\Log\LoggerInterface $logger = null,
+        private \Graphpinator\Module\ModuleSet $modules = new \Graphpinator\Module\ModuleSet([]),
+        private \Psr\Log\LoggerInterface $logger = new \Psr\Log\NullLogger(),
     )
     {
-        $this->modules = $modules instanceof \Graphpinator\Module\ModuleSet
-            ? $modules
-            : new \Graphpinator\Module\ModuleSet([]);
-        $this->logger = $logger instanceof \Psr\Log\LoggerInterface
-            ? $logger
-            : new \Psr\Log\NullLogger();
         $this->parser = new \Graphpinator\Parser\Parser();
         $this->normalizer = new \Graphpinator\Normalizer\Normalizer($schema);
         $this->finalizer = new \Graphpinator\Normalizer\Finalizer();

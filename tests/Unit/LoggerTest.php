@@ -31,8 +31,7 @@ final class LoggerTest extends \PHPUnit\Framework\TestCase
         $graphpinator = new \Graphpinator\Graphpinator(
             \Graphpinator\Tests\Spec\TestSchema::getSchema(),
             true,
-            null,
-            $loggerMock,
+            logger: $loggerMock,
         );
 
         $request = Json::fromNative((object) [
@@ -58,8 +57,7 @@ final class LoggerTest extends \PHPUnit\Framework\TestCase
         $graphpinator = new \Graphpinator\Graphpinator(
             \Graphpinator\Tests\Spec\TestSchema::getSchema(),
             true,
-            null,
-            $loggerMock,
+            logger: $loggerMock,
         );
 
         $request = Json::fromNative((object) [
@@ -88,8 +86,7 @@ final class LoggerTest extends \PHPUnit\Framework\TestCase
         $graphpinator = new \Graphpinator\Graphpinator(
             \Graphpinator\Tests\Spec\TestSchema::getSchema(),
             true,
-            null,
-            $loggerMock,
+            logger: $loggerMock,
         );
 
         $request = Json::fromNative((object) [
@@ -118,8 +115,7 @@ final class LoggerTest extends \PHPUnit\Framework\TestCase
         $graphpinator = new \Graphpinator\Graphpinator(
             \Graphpinator\Tests\Spec\TestSchema::getSchema(),
             true,
-            null,
-            $loggerMock,
+            logger: $loggerMock,
         );
         $request = Json::fromNative((object) [
             'query' => 'query queryName { fieldArgumentDefaults(inputNumberList: [3, 4]) { fieldName fieldNumber fieldBool } }',

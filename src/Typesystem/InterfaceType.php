@@ -13,10 +13,11 @@ abstract class InterfaceType extends \Graphpinator\Typesystem\Contract\AbstractT
 
     private bool $cycleValidated = false;
 
-    public function __construct(?\Graphpinator\Typesystem\InterfaceSet $implements = null)
+    public function __construct(
+        \Graphpinator\Typesystem\InterfaceSet $implements = new \Graphpinator\Typesystem\InterfaceSet([]),
+    )
     {
-        $this->implements = $implements
-            ?? new \Graphpinator\Typesystem\InterfaceSet([]);
+        $this->implements = $implements;
         $this->directiveUsages = new \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet();
     }
 

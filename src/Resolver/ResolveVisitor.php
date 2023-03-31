@@ -9,10 +9,9 @@ final class ResolveVisitor implements \Graphpinator\Typesystem\Contract\TypeVisi
     public function __construct(
         private ?\Graphpinator\Normalizer\Selection\SelectionSet $selectionSet,
         private \Graphpinator\Value\ResolvedValue $parentResult,
-        private ?\stdClass $result = null,
+        private \stdClass $result = new \stdClass(),
     )
     {
-        $this->result ??= new \stdClass();
     }
 
     public function visitType(\Graphpinator\Typesystem\Type $type) : \Graphpinator\Value\TypeValue

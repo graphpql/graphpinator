@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem\Utils;
 
+use \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet;
+
 /**
  * Trait TInterfaceImplementor which is implementation of InterfaceImplementor interface.
  */
@@ -136,10 +138,7 @@ trait TInterfaceImplementor
         }
     }
 
-    private static function validateInvariance(
-        \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet $parent,
-        \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet $child,
-    ) : void
+    private static function validateInvariance(DirectiveUsageSet $parent, DirectiveUsageSet $child) : void
     {
         foreach ($parent as $index => $usage) {
             if ($child->offsetExists($index) &&
@@ -152,26 +151,17 @@ trait TInterfaceImplementor
         }
     }
 
-    private static function validateCovariance(
-        \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet $parent,
-        \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet $child,
-    ) : void
+    private static function validateCovariance(DirectiveUsageSet $parent, DirectiveUsageSet $child) : void
     {
         self::compareVariance($parent, $child);
     }
 
-    private static function validateContravariance(
-        \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet $parent,
-        \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet $child,
-    ) : void
+    private static function validateContravariance(DirectiveUsageSet $parent, DirectiveUsageSet $child) : void
     {
         self::compareVariance($child, $parent);
     }
 
-    private static function compareVariance(
-        \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet $biggerSet,
-        \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet $smallerSet,
-    ) : void
+    private static function compareVariance(DirectiveUsageSet $biggerSet, DirectiveUsageSet $smallerSet) : void
     {
         $childIndex = 0;
 

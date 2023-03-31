@@ -12,10 +12,11 @@ abstract class Type extends \Graphpinator\Typesystem\Contract\ConcreteType imple
     use \Graphpinator\Typesystem\Utils\TMetaFields;
     use \Graphpinator\Typesystem\Utils\THasDirectives;
 
-    public function __construct(?\Graphpinator\Typesystem\InterfaceSet $implements = null)
+    public function __construct(
+        \Graphpinator\Typesystem\InterfaceSet $implements = new \Graphpinator\Typesystem\InterfaceSet([]),
+    )
     {
-        $this->implements = $implements
-            ?? new \Graphpinator\Typesystem\InterfaceSet([]);
+        $this->implements = $implements;
         $this->directiveUsages = new \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet();
     }
 
