@@ -8,10 +8,6 @@ final class NativeEnumTest extends \PHPUnit\Framework\TestCase
 {
     public function testSimple() : void
     {
-        if (\PHP_VERSION_ID < 80100) {
-            return;
-        }
-
         $enumType = new class extends \Graphpinator\Typesystem\EnumType {
             public function __construct()
             {
