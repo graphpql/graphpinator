@@ -4,6 +4,9 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Resolver;
 
+use \Graphpinator\Typesystem\Location\FieldLocation;
+use \Graphpinator\Typesystem\Location\FieldDefinitionLocation;
+
 final class ResolveSelectionVisitor implements \Graphpinator\Normalizer\Selection\SelectionVisitor
 {
     use \Nette\SmartObject;
@@ -21,9 +24,10 @@ final class ResolveSelectionVisitor implements \Graphpinator\Normalizer\Selectio
         \assert($type instanceof \Graphpinator\Typesystem\Type);
 
         foreach ($field->getDirectives() as $directive) {
-            $directiveResult = $directive->getDirective()->resolveFieldBefore($directive->getArguments());
+            $directiveDef = $directive->getDirective();
+            \assert($directiveDef instanceof FieldLocation);
 
-            if (self::shouldSkip($directiveResult)) {
+            if (self::shouldSkip($directiveDef->resolveFieldBefore($directive->getArguments()))) {
                 return null;
             }
         }
@@ -37,14 +41,20 @@ final class ResolveSelectionVisitor implements \Graphpinator\Normalizer\Selectio
             }
 
             foreach ($field->getDirectives() as $directive) {
-                $directive->getDirective()->resolveFieldAfter($directive->getArguments(), $fieldValue);
+                $directiveDef = $directive->getDirective();
+                \assert($directiveDef instanceof FieldLocation);
+
+                $directiveDef->resolveFieldAfter($directive->getArguments(), $fieldValue);
             }
         } else {
             $fieldDef = $type->getMetaFields()[$field->getName()]
                 ?? $type->getFields()[$field->getName()];
 
             foreach ($fieldDef->getDirectiveUsages() as $directive) {
-                $directive->getDirective()->resolveFieldDefinitionStart($directive->getArgumentValues(), $this->parentResult);
+                $directiveDef = $directive->getDirective();
+                \assert($directiveDef instanceof FieldDefinitionLocation);
+
+                $directiveDef->resolveFieldDefinitionStart($directive->getArgumentValues(), $this->parentResult);
             }
 
             $arguments = $field->getArguments();
@@ -54,7 +64,10 @@ final class ResolveSelectionVisitor implements \Graphpinator\Normalizer\Selectio
             }
 
             foreach ($fieldDef->getDirectiveUsages() as $directive) {
-                $directive->getDirective()->resolveFieldDefinitionBefore($directive->getArgumentValues(), $this->parentResult, $arguments);
+                $directiveDef = $directive->getDirective();
+                \assert($directiveDef instanceof FieldDefinitionLocation);
+
+                $directiveDef->resolveFieldDefinitionBefore($directive->getArgumentValues(), $this->parentResult, $arguments);
             }
 
             $rawArguments = $arguments->getValuesForResolver();
@@ -67,7 +80,10 @@ final class ResolveSelectionVisitor implements \Graphpinator\Normalizer\Selectio
             }
 
             foreach ($fieldDef->getDirectiveUsages() as $directive) {
-                $directive->getDirective()->resolveFieldDefinitionAfter($directive->getArgumentValues(), $resolvedValue, $arguments);
+                $directiveDef = $directive->getDirective();
+                \assert($directiveDef instanceof FieldDefinitionLocation);
+
+                $directiveDef->resolveFieldDefinitionAfter($directive->getArgumentValues(), $resolvedValue, $arguments);
             }
 
             $fieldValue = new \Graphpinator\Value\FieldValue($fieldDef, $resolvedValue instanceof \Graphpinator\Value\NullValue
@@ -75,9 +91,10 @@ final class ResolveSelectionVisitor implements \Graphpinator\Normalizer\Selectio
                 : $resolvedValue->getType()->accept(new ResolveVisitor($field->getSelections(), $resolvedValue)));
 
             foreach ($field->getDirectives() as $directive) {
-                $directiveResult = $directive->getDirective()->resolveFieldAfter($directive->getArguments(), $fieldValue);
+                $directiveDef = $directive->getDirective();
+                \assert($directiveDef instanceof \Graphpinator\Typesystem\Location\FieldLocation);
 
-                if (self::shouldSkip($directiveResult)) {
+                if (self::shouldSkip($directiveDef->resolveFieldAfter($directive->getArguments(), $fieldValue))) {
                     return null;
                 }
             }
@@ -95,9 +112,10 @@ final class ResolveSelectionVisitor implements \Graphpinator\Normalizer\Selectio
         }
 
         foreach ($fragmentSpread->getDirectives() as $directive) {
-            $directiveResult = $directive->getDirective()->resolveFragmentSpreadBefore($directive->getArguments());
+            $directiveDef = $directive->getDirective();
+            \assert($directiveDef instanceof \Graphpinator\Typesystem\Location\FragmentSpreadLocation);
 
-            if (self::shouldSkip($directiveResult)) {
+            if (self::shouldSkip($directiveDef->resolveFragmentSpreadBefore($directive->getArguments()))) {
                 return null;
             }
         }
@@ -107,8 +125,10 @@ final class ResolveSelectionVisitor implements \Graphpinator\Normalizer\Selectio
         }
 
         foreach ($fragmentSpread->getDirectives() as $directive) {
-            $directive->getDirective()->resolveFragmentSpreadAfter($directive->getArguments());
+            $directiveDef = $directive->getDirective();
+            \assert($directiveDef instanceof \Graphpinator\Typesystem\Location\FragmentSpreadLocation);
 
+            $directiveDef->resolveFragmentSpreadAfter($directive->getArguments());
             // skip is not allowed here due to implementation complexity and rarity of use-cases
         }
 
@@ -123,9 +143,10 @@ final class ResolveSelectionVisitor implements \Graphpinator\Normalizer\Selectio
         }
 
         foreach ($inlineFragment->getDirectives() as $directive) {
-            $directiveResult = $directive->getDirective()->resolveInlineFragmentBefore($directive->getArguments());
+            $directiveDef = $directive->getDirective();
+            \assert($directiveDef instanceof \Graphpinator\Typesystem\Location\InlineFragmentLocation);
 
-            if (self::shouldSkip($directiveResult)) {
+            if (self::shouldSkip($directiveDef->resolveInlineFragmentBefore($directive->getArguments()))) {
                 return null;
             }
         }
@@ -135,8 +156,10 @@ final class ResolveSelectionVisitor implements \Graphpinator\Normalizer\Selectio
         }
 
         foreach ($inlineFragment->getDirectives() as $directive) {
-            $directive->getDirective()->resolveInlineFragmentAfter($directive->getArguments());
+            $directiveDef = $directive->getDirective();
+            \assert($directiveDef instanceof \Graphpinator\Typesystem\Location\InlineFragmentLocation);
 
+            $directiveDef->resolveInlineFragmentAfter($directive->getArguments());
             // skip is not allowed here due to implementation complexity and rarity of use-cases
         }
 

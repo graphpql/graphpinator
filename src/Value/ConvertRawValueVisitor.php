@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Value;
 
+use \Nette\InvalidStateException;
+
 final class ConvertRawValueVisitor implements \Graphpinator\Typesystem\Contract\TypeVisitor
 {
     use \Nette\SmartObject;
@@ -40,7 +42,7 @@ final class ConvertRawValueVisitor implements \Graphpinator\Typesystem\Contract\
             if (\property_exists($rawValue, $argument->getName())) {
                 $inner->{$argument->getName()} = new ArgumentValue(
                     $argument,
-                    $argument->getType()->accept(new ConvertRawValueVisitor($rawValue->{$argument->getName()}, $path)),
+                    $argument->getType()->accept(new self($rawValue->{$argument->getName()}, $path)),
                     false,
                 );
                 $path->pop();
@@ -55,7 +57,7 @@ final class ConvertRawValueVisitor implements \Graphpinator\Typesystem\Contract\
             } elseif (!$canBeOmitted) {
                 $inner->{$argument->getName()} = new ArgumentValue(
                     $argument,
-                    $argument->getType()->accept(new ConvertRawValueVisitor(null, $path)),
+                    $argument->getType()->accept(new self(null, $path)),
                     false,
                 );
             } elseif ($argument->getType() instanceof \Graphpinator\Typesystem\NotNullType) {
@@ -70,17 +72,17 @@ final class ConvertRawValueVisitor implements \Graphpinator\Typesystem\Contract\
 
     public function visitType(\Graphpinator\Typesystem\Type $type) : mixed
     {
-        // nothing here
+        throw new InvalidStateException();
     }
 
     public function visitInterface(\Graphpinator\Typesystem\InterfaceType $interface) : mixed
     {
-        // nothing here
+        throw new InvalidStateException();
     }
 
     public function visitUnion(\Graphpinator\Typesystem\UnionType $union) : mixed
     {
-        // nothing here
+        throw new InvalidStateException();
     }
 
     public function visitInput(\Graphpinator\Typesystem\InputType $input) : InputedValue
@@ -113,7 +115,7 @@ final class ConvertRawValueVisitor implements \Graphpinator\Typesystem\Contract\
             return new \Graphpinator\Value\NullInputedValue($enum);
         }
 
-        if (\is_object($this->rawValue) && \is_string($enum->getEnumClass())) {
+        if ($this->rawValue instanceof \BackedEnum && \is_string($enum->getEnumClass())) {
             return new \Graphpinator\Value\EnumValue($enum, $this->rawValue->value, true);
         }
 

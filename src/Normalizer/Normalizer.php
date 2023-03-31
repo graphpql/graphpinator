@@ -253,8 +253,12 @@ final class Normalizer
 
         $arguments = $this->normalizeArgumentValueSet($directive->getArguments(), $directiveDef->getArguments());
 
-        if ($location === ExecutableDirectiveLocation::FIELD && !$directiveDef->validateFieldUsage($usage, $arguments)) {
-            throw new \Graphpinator\Normalizer\Exception\DirectiveIncorrectUsage($directive->getName());
+        if ($location === ExecutableDirectiveLocation::FIELD) {
+            \assert($directiveDef instanceof \Graphpinator\Typesystem\Location\FieldLocation);
+
+            if (!$directiveDef->validateFieldUsage($usage, $arguments)) {
+                throw new \Graphpinator\Normalizer\Exception\DirectiveIncorrectUsage($directive->getName());
+            }
         }
 
         return new \Graphpinator\Normalizer\Directive\Directive($directiveDef, $arguments);
@@ -316,6 +320,8 @@ final class Normalizer
                 $this->normalizeNamedFragmentSpread($fragmentSpread),
             \Graphpinator\Parser\FragmentSpread\InlineFragmentSpread::class =>
                 $this->normalizeInlineFragmentSpread($fragmentSpread),
+            default =>
+                throw new \Nette\InvalidStateException(),
         };
     }
 
@@ -382,6 +388,8 @@ final class Normalizer
                 new \Graphpinator\Typesystem\ListType($this->normalizeTypeRef($typeRef->getInnerRef())),
             \Graphpinator\Parser\TypeRef\NotNullRef::class =>
                 new \Graphpinator\Typesystem\NotNullType($this->normalizeTypeRef($typeRef->getInnerRef())),
+            default =>
+                throw new \Nette\InvalidStateException(),
         };
     }
 

@@ -4,11 +4,14 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Resolver;
 
+use \Graphpinator\Value\ResolvedValue;
+use \Nette\InvalidStateException;
+
 final class ResolveVisitor implements \Graphpinator\Typesystem\Contract\TypeVisitor
 {
     public function __construct(
         private ?\Graphpinator\Normalizer\Selection\SelectionSet $selectionSet,
-        private \Graphpinator\Value\ResolvedValue $parentResult,
+        private ResolvedValue $parentResult,
         private \stdClass $result = new \stdClass(),
     )
     {
@@ -28,30 +31,30 @@ final class ResolveVisitor implements \Graphpinator\Typesystem\Contract\TypeVisi
 
     public function visitInterface(\Graphpinator\Typesystem\InterfaceType $interface) : mixed
     {
-        // nothing here
+        throw new InvalidStateException();
     }
 
     public function visitUnion(\Graphpinator\Typesystem\UnionType $union) : mixed
     {
-        // nothing here
+        throw new InvalidStateException();
     }
 
     public function visitInput(\Graphpinator\Typesystem\InputType $input) : mixed
     {
-        // nothing here
+        throw new InvalidStateException();
     }
 
-    public function visitScalar(\Graphpinator\Typesystem\ScalarType $scalar) : \Graphpinator\Value\ResolvedValue
+    public function visitScalar(\Graphpinator\Typesystem\ScalarType $scalar) : ResolvedValue
     {
         return $this->parentResult;
     }
 
-    public function visitEnum(\Graphpinator\Typesystem\EnumType $enum) : \Graphpinator\Value\ResolvedValue
+    public function visitEnum(\Graphpinator\Typesystem\EnumType $enum) : ResolvedValue
     {
         return $this->parentResult;
     }
 
-    public function visitNotNull(\Graphpinator\Typesystem\NotNullType $notNull) : \Graphpinator\Value\ResolvedValue
+    public function visitNotNull(\Graphpinator\Typesystem\NotNullType $notNull) : ResolvedValue
     {
         return $notNull->getInnerType()->accept($this);
     }
