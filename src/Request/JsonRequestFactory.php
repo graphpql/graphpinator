@@ -14,7 +14,7 @@ final class JsonRequestFactory implements \Graphpinator\Request\RequestFactory
 
     public function __construct(
         private \Infinityloop\Utils\Json\JsonContract $json,
-        private bool $strict = true,
+        private bool $strict = true, // whether to allow unknown JSON keys in request, enable this to pass additional data in request, e.g. request ID
     )
     {
     }
@@ -56,6 +56,6 @@ final class JsonRequestFactory implements \Graphpinator\Request\RequestFactory
         $operationName = $this->json[self::OPERATION_NAME]
             ?? null;
 
-        return new \Graphpinator\Request\Request($query, $variables, $operationName);
+        return new Request($query, $variables, $operationName);
     }
 }

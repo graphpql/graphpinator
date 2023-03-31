@@ -4,18 +4,20 @@ declare(strict_types = 1);
 
 namespace Graphpinator;
 
+use \Graphpinator\Value\TypeValue;
+
 final class Result implements \JsonSerializable
 {
     use \Nette\SmartObject;
 
     public function __construct(
-        private ?\Graphpinator\Value\TypeValue $data = null,
+        private ?TypeValue $data = null,
         private ?array $errors = null,
     )
     {
     }
 
-    public function getData() : ?\Graphpinator\Value\TypeValue
+    public function getData() : ?TypeValue
     {
         return $this->data;
     }
@@ -29,7 +31,7 @@ final class Result implements \JsonSerializable
     {
         $return = new \stdClass();
 
-        if ($this->data instanceof \Graphpinator\Value\TypeValue) {
+        if ($this->data instanceof TypeValue) {
             $return->data = $this->data;
         }
 
