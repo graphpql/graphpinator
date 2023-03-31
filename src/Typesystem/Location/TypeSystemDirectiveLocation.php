@@ -4,19 +4,17 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem\Location;
 
-final class TypeSystemDirectiveLocation
+enum TypeSystemDirectiveLocation : string
 {
-    use \Nette\StaticClass;
-
-    public const SCHEMA = 'SCHEMA';
-    public const SCALAR = 'SCALAR';
-    public const UNION = 'UNION';
-    public const ENUM = 'ENUM';
-    public const OBJECT = 'OBJECT';
-    public const INTERFACE = 'INTERFACE';
-    public const INPUT_OBJECT = 'INPUT_OBJECT';
-    public const FIELD_DEFINITION = 'FIELD_DEFINITION';
-    public const ARGUMENT_DEFINITION = 'ARGUMENT_DEFINITION';
-    public const INPUT_FIELD_DEFINITION = 'INPUT_FIELD_DEFINITION';
-    public const ENUM_VALUE = 'ENUM_VALUE';
+    case SCHEMA = 'SCHEMA';
+    case SCALAR = 'SCALAR';
+    case UNION = 'UNION';
+    case ENUM = 'ENUM';
+    case OBJECT = 'OBJECT';
+    case INTERFACE = 'INTERFACE';
+    case INPUT_OBJECT = 'INPUT_OBJECT';
+    case FIELD_DEFINITION = 'FIELD_DEFINITION';
+    case ARGUMENT_DEFINITION = 'ARGUMENT_DEFINITION';
+    case INPUT_FIELD_DEFINITION = 'INPUT_FIELD_DEFINITION';
+    case ENUM_VALUE = 'ENUM_VALUE';
 }

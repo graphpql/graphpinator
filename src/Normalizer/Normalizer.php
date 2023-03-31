@@ -5,6 +5,9 @@ declare(strict_types = 1);
 namespace Graphpinator\Normalizer;
 
 use \Graphpinator\Typesystem\Location\ExecutableDirectiveLocation;
+use \Graphpinator\Normalizer\Variable\Variable;
+use \Graphpinator\Normalizer\Variable\VariableSet;
+use \Graphpinator\Normalizer\Directive\DirectiveSet;
 
 final class Normalizer
 {
@@ -13,7 +16,7 @@ final class Normalizer
     private \Graphpinator\Common\Path $path;
     private \SplStack $scopeStack;
     private \Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions;
-    private \Graphpinator\Normalizer\Variable\VariableSet $variableSet;
+    private VariableSet $variableSet;
 
     public function __construct(
         private \Graphpinator\Typesystem\Schema $schema,
@@ -72,7 +75,10 @@ final class Normalizer
 
         $this->variableSet = $this->normalizeVariables($operation->getVariables());
         $children = $this->normalizeFieldSet($operation->getFields());
-        $directives = $this->normalizeDirectiveSet($operation->getDirectives(), \strtoupper($operation->getType()));
+        $directives = $this->normalizeDirectiveSet(
+            $operation->getDirectives(),
+            ExecutableDirectiveLocation::from(\strtoupper($operation->getType())),
+        );
 
         $this->scopeStack->pop();
 
@@ -86,9 +92,7 @@ final class Normalizer
         );
     }
 
-    private function normalizeVariables(
-        \Graphpinator\Parser\Variable\VariableSet $variableSet,
-    ) : \Graphpinator\Normalizer\Variable\VariableSet
+    private function normalizeVariables(\Graphpinator\Parser\Variable\VariableSet $variableSet) : VariableSet
     {
         $normalized = [];
 
@@ -98,12 +102,10 @@ final class Normalizer
             $this->path->pop();
         }
 
-        return new \Graphpinator\Normalizer\Variable\VariableSet($normalized);
+        return new VariableSet($normalized);
     }
 
-    private function normalizeVariable(
-        \Graphpinator\Parser\Variable\Variable $variable,
-    ) : \Graphpinator\Normalizer\Variable\Variable
+    private function normalizeVariable(\Graphpinator\Parser\Variable\Variable $variable) : Variable
     {
         $type = $this->normalizeTypeRef($variable->getType());
         $defaultValue = $variable->getDefault();
@@ -114,7 +116,7 @@ final class Normalizer
 
         \assert($type instanceof \Graphpinator\Typesystem\Contract\Inputable);
 
-        $normalized = new \Graphpinator\Normalizer\Variable\Variable(
+        $normalized = new Variable(
             $variable->getName(),
             $type,
             $defaultValue instanceof \Graphpinator\Parser\Value\Value
@@ -174,7 +176,7 @@ final class Normalizer
         $arguments = $this->normalizeArgumentValueSet($field->getArguments(), $fieldDef->getArguments());
         $directives = $field->getDirectives() instanceof \Graphpinator\Parser\Directive\DirectiveSet
             ? $this->normalizeDirectiveSet($field->getDirectives(), ExecutableDirectiveLocation::FIELD, $fieldDef)
-            : new \Graphpinator\Normalizer\Directive\DirectiveSet();
+            : new DirectiveSet();
         $children = $field->getFields() instanceof \Graphpinator\Parser\Field\FieldSet
             ? $this->normalizeFieldSet($field->getFields())
             : null;
@@ -197,9 +199,9 @@ final class Normalizer
 
     private function normalizeDirectiveSet(
         \Graphpinator\Parser\Directive\DirectiveSet $directiveSet,
-        string $location,
-        \Graphpinator\Typesystem\Field\Field|\Graphpinator\Normalizer\Variable\Variable|null $usage = null,
-    ) : \Graphpinator\Normalizer\Directive\DirectiveSet
+        ExecutableDirectiveLocation $location,
+        \Graphpinator\Typesystem\Field\Field|Variable|null $usage = null,
+    ) : DirectiveSet
     {
         $normalized = [];
         $directiveTypes = [];
@@ -217,7 +219,7 @@ final class Normalizer
                 $directiveTypes[$directiveDef->getName()] = true;
             }
 
-            if ($usage instanceof \Graphpinator\Normalizer\Variable\Variable) {
+            if ($usage instanceof Variable) {
                 \assert($directiveDef instanceof \Graphpinator\Typesystem\Location\VariableDefinitionLocation);
                 $directiveDef->validateVariableUsage($usage, $normalizedDirective->getArguments());
             }
@@ -226,13 +228,13 @@ final class Normalizer
             $this->path->pop();
         }
 
-        return new \Graphpinator\Normalizer\Directive\DirectiveSet($normalized);
+        return new DirectiveSet($normalized);
     }
 
     private function normalizeDirective(
         \Graphpinator\Parser\Directive\Directive $directive,
-        string $location,
-        \Graphpinator\Typesystem\Field\Field|\Graphpinator\Normalizer\Variable\Variable|null $usage = null,
+        ExecutableDirectiveLocation $location,
+        \Graphpinator\Typesystem\Field\Field|Variable|null $usage = null,
     ) : \Graphpinator\Normalizer\Directive\Directive
     {
         $directiveDef = $this->schema->getContainer()->getDirective($directive->getName());
@@ -251,8 +253,7 @@ final class Normalizer
 
         $arguments = $this->normalizeArgumentValueSet($directive->getArguments(), $directiveDef->getArguments());
 
-        if ($location === \Graphpinator\Typesystem\Location\ExecutableDirectiveLocation::FIELD &&
-            !$directiveDef->validateFieldUsage($usage, $arguments)) {
+        if ($location === ExecutableDirectiveLocation::FIELD && !$directiveDef->validateFieldUsage($usage, $arguments)) {
             throw new \Graphpinator\Normalizer\Exception\DirectiveIncorrectUsage($directive->getName());
         }
 

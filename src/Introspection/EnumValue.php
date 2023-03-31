@@ -4,6 +4,10 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Introspection;
 
+use \Graphpinator\Typesystem\Container;
+use \Graphpinator\Typesystem\EnumItem\EnumItem;
+use \Graphpinator\Typesystem\Field\ResolvableField;
+
 #[\Graphpinator\Typesystem\Attribute\Description('Built-in introspection type')]
 final class EnumValue extends \Graphpinator\Typesystem\Type
 {
@@ -16,37 +20,37 @@ final class EnumValue extends \Graphpinator\Typesystem\Type
 
     public function validateNonNullValue(mixed $rawValue) : bool
     {
-        return $rawValue instanceof \Graphpinator\Typesystem\EnumItem\EnumItem;
+        return $rawValue instanceof EnumItem;
     }
 
     protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
     {
         return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
-            new \Graphpinator\Typesystem\Field\ResolvableField(
+            ResolvableField::create(
                 'name',
-                \Graphpinator\Typesystem\Container::String()->notNull(),
-                static function (\Graphpinator\Typesystem\EnumItem\EnumItem $item) : string {
+                Container::String()->notNull(),
+                static function (EnumItem $item) : string {
                     return $item->getName();
                 },
             ),
-            new \Graphpinator\Typesystem\Field\ResolvableField(
+            ResolvableField::create(
                 'description',
-                \Graphpinator\Typesystem\Container::String(),
-                static function (\Graphpinator\Typesystem\EnumItem\EnumItem $item) : ?string {
+                Container::String(),
+                static function (EnumItem $item) : ?string {
                     return $item->getDescription();
                 },
             ),
-            new \Graphpinator\Typesystem\Field\ResolvableField(
+            ResolvableField::create(
                 'isDeprecated',
-                \Graphpinator\Typesystem\Container::Boolean()->notNull(),
-                static function (\Graphpinator\Typesystem\EnumItem\EnumItem $item) : bool {
+                Container::Boolean()->notNull(),
+                static function (EnumItem $item) : bool {
                     return $item->isDeprecated();
                 },
             ),
-            new \Graphpinator\Typesystem\Field\ResolvableField(
+            ResolvableField::create(
                 'deprecationReason',
-                \Graphpinator\Typesystem\Container::String(),
-                static function (\Graphpinator\Typesystem\EnumItem\EnumItem $item) : ?string {
+                Container::String(),
+                static function (EnumItem $item) : ?string {
                     return $item->getDeprecationReason();
                 },
             ),

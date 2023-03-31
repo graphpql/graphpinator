@@ -4,13 +4,17 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Introspection;
 
+use \Graphpinator\Typesystem\Argument\Argument;
+use \Graphpinator\Typesystem\Container;
+use \Graphpinator\Typesystem\Field\ResolvableField;
+
 #[\Graphpinator\Typesystem\Attribute\Description('Built-in introspection type')]
 final class InputValue extends \Graphpinator\Typesystem\Type
 {
     protected const NAME = '__InputValue';
 
     public function __construct(
-        private \Graphpinator\Typesystem\Container $container,
+        private Container $container,
     )
     {
         parent::__construct();
@@ -18,53 +22,53 @@ final class InputValue extends \Graphpinator\Typesystem\Type
 
     public function validateNonNullValue(mixed $rawValue) : bool
     {
-        return $rawValue instanceof \Graphpinator\Typesystem\Argument\Argument;
+        return $rawValue instanceof Argument;
     }
 
     protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
     {
         return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
-            new \Graphpinator\Typesystem\Field\ResolvableField(
+            ResolvableField::create(
                 'name',
-                \Graphpinator\Typesystem\Container::String()->notNull(),
-                static function (\Graphpinator\Typesystem\Argument\Argument $argument) : string {
+                Container::String()->notNull(),
+                static function (Argument $argument) : string {
                     return $argument->getName();
                 },
             ),
-            new \Graphpinator\Typesystem\Field\ResolvableField(
+            ResolvableField::create(
                 'description',
-                \Graphpinator\Typesystem\Container::String(),
-                static function (\Graphpinator\Typesystem\Argument\Argument $argument) : ?string {
+                Container::String(),
+                static function (Argument $argument) : ?string {
                     return $argument->getDescription();
                 },
             ),
-            new \Graphpinator\Typesystem\Field\ResolvableField(
+            ResolvableField::create(
                 'type',
                 $this->container->getType('__Type')->notNull(),
-                static function (\Graphpinator\Typesystem\Argument\Argument $argument) : \Graphpinator\Typesystem\Contract\Type {
+                static function (Argument $argument) : \Graphpinator\Typesystem\Contract\Type {
                     return $argument->getType();
                 },
             ),
-            new \Graphpinator\Typesystem\Field\ResolvableField(
+            ResolvableField::create(
                 'defaultValue',
-                \Graphpinator\Typesystem\Container::String(),
-                static function (\Graphpinator\Typesystem\Argument\Argument $argument) : ?string {
+                Container::String(),
+                static function (Argument $argument) : ?string {
                     return $argument->getDefaultValue() instanceof \Graphpinator\Value\ArgumentValue
                         ? $argument->getDefaultValue()->getValue()->printValue()
                         : null;
                 },
             ),
-            new \Graphpinator\Typesystem\Field\ResolvableField(
+            ResolvableField::create(
                 'isDeprecated',
-                \Graphpinator\Typesystem\Container::Boolean()->notNull(),
-                static function (\Graphpinator\Typesystem\Argument\Argument $argument) : bool {
+                Container::Boolean()->notNull(),
+                static function (Argument $argument) : bool {
                     return $argument->isDeprecated();
                 },
             ),
-            new \Graphpinator\Typesystem\Field\ResolvableField(
+            ResolvableField::create(
                 'deprecationReason',
-                \Graphpinator\Typesystem\Container::String(),
-                static function (\Graphpinator\Typesystem\Argument\Argument $argument) : ?string {
+                Container::String(),
+                static function (Argument $argument) : ?string {
                     return $argument->getDeprecationReason();
                 },
             ),
