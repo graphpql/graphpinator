@@ -72,7 +72,7 @@ jobs:
       run: composer install --prefer-dist --no-progress --no-suggest
 
     - name: Tests
-      run: composer run-script phpunit
+      run: composer run-script phpunit-no-coverage
 
   mutation:
     runs-on: ubuntu-latest

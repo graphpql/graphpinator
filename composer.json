@@ -39,6 +39,7 @@
   },
   "scripts": {
     "phpunit": "phpunit tests",
+    "phpunit-no-coverage": "phpunit tests --no-coverage",
     "infection": [
       "Composer\\Config::disableProcessTimeout",
       "infection -j$(nproc)"
