@@ -116,9 +116,9 @@ It contains your `Schema`, logger, and other information needed to execute a req
 ```php
 $graphpinator = new \Graphpinator\Graphpinator(
     $schema, 
-    true,            // optional bool - whether to catch exceptions (Dont worry! Only graphpinator errors are printed in response, eg. syntax errors)
-    null,            // optional \Graphpinator\Module\ModuleSet - extending functionality using modules
-    $loggerInterface // optional \Psr\Log\LoggerInterface - logging queries and errors
+    true,             // optional bool - whether to catch exceptions (Dont worry! Only graphpinator errors are printed in response, eg. syntax errors)
+    $modules,         // optional \Graphpinator\Module\ModuleSet - extending functionality using modules
+    $loggerInterface  // optional \Psr\Log\LoggerInterface - logging queries and errors
 );
 ```
 
