@@ -7,7 +7,7 @@
 Feature complete PHP implementation of GraphQL server. Its job is transformation of query string into resolved Json result for a given Schema. 
 
 - Aims to be compliant with the **latest draft of GraphQL specification**.
-- Fully typesafe, and therefore **minimum required PHP version is 8.0**. Sacrifices a tiny bit of convenience for huge amount of clarity and safety - no random configuration `array`s, no mixed types, no variable function arguments - this library doesnt try to save you from verbosity, but makes sure you always know what you've got.
+- Fully typesafe, and therefore **minimum required PHP version is 8.1**. Sacrifices a tiny bit of convenience for huge amount of clarity and safety - no random configuration `array`s, no mixed types, no variable function arguments - this library doesnt try to save you from verbosity, but makes sure you always know what you've got.
 - Code first.
 - Flexible. Easy to extend with extra functionality using Modules or middleware Directives.
 - Includes some opt-in extensions which are out of scope of official specs:
@@ -45,8 +45,9 @@ Install package using composer
 
 ## Dependencies
 
-- PHP 8.0.1+ 
-    - Latest PHP 7.4+ version is 0.25.x [![stable 7.4](https://github.com/infinityloop-dev/graphpinator/workflows/PHP/badge.svg?branch=php74_bugfixes)](https://github.com/infinityloop-dev/graphpinator/actions?query=branch%3Aphp74_bugfixes) [![codecov](https://codecov.io/gh/infinityloop-dev/graphpinator/branch/php74_bugfixes/graph/badge.svg)](https://codecov.io/gh/infinityloop-dev/graphpinator)
+- PHP 8.1+ 
+  - Latest PHP 8.0+ version is 1.3.x
+  - Latest PHP 7.4+ version is 0.25.x
 - [infinityloop-dev/utils](https://github.com/infinityloop-dev/utils)
 - [psr/http-message](https://github.com/php-fig/http-message)
 - [psr/log](https://github.com/php-fig/log)
