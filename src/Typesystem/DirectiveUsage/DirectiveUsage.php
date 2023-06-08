@@ -17,7 +17,7 @@ final class DirectiveUsage implements \Graphpinator\Typesystem\Contract\Componen
         array $arguments,
     )
     {
-        if (\array_is_list($arguments)) {
+        if (\count($arguments) > 0 && \array_is_list($arguments)) {
             throw new \Graphpinator\Typesystem\Exception\DirectiveUsageArgumentsInvalidMap();
         }
 
