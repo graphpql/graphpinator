@@ -6,7 +6,6 @@ namespace Graphpinator\Typesystem;
 
 /**
  * Class Container which is responsible for fetching instances of type classes.
- * @phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
  */
 abstract class Container
 {
@@ -136,7 +135,7 @@ abstract class Container
     }
 
     /**
-     * Built-in Specified By directive.
+     * Built-in SpecifiedBy directive.
      */
     public static function directiveSpecifiedBy() : \Graphpinator\Typesystem\Spec\SpecifiedByDirective
     {
@@ -147,4 +146,3 @@ abstract class Container
         return self::$builtInDirectives['specifiedBy'];
     }
 }
-//@phpcs:enable PSR1.Methods.CamelCapsMethodName.NotCamelCaps

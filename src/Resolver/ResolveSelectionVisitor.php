@@ -40,21 +40,21 @@ final class ResolveSelectionVisitor implements \Graphpinator\Normalizer\Selectio
                 self::addToResultingSelection($fieldValue->getValue(), $field->getSelections());
             }
 
-            foreach ($field->getDirectives() as $directive) {
-                $directiveDef = $directive->getDirective();
-                \assert($directiveDef instanceof FieldLocation);
+            foreach ($field->getDirectives() as $directiveUsage) {
+                $directive = $directiveUsage->getDirective();
+                \assert($directive instanceof FieldLocation);
 
-                $directiveDef->resolveFieldAfter($directive->getArguments(), $fieldValue);
+                $directive->resolveFieldAfter($directiveUsage->getArguments(), $fieldValue);
             }
         } else {
             $fieldDef = $type->getMetaFields()[$field->getName()]
                 ?? $type->getFields()[$field->getName()];
 
-            foreach ($fieldDef->getDirectiveUsages() as $directive) {
-                $directiveDef = $directive->getDirective();
-                \assert($directiveDef instanceof FieldDefinitionLocation);
+            foreach ($fieldDef->getDirectiveUsages() as $directiveUsage) {
+                $directive = $directiveUsage->getDirective();
+                \assert($directive instanceof FieldDefinitionLocation);
 
-                $directiveDef->resolveFieldDefinitionStart($directive->getArgumentValues(), $this->parentResult);
+                $directive->resolveFieldDefinitionStart($directiveUsage->getArgumentValues(), $this->parentResult);
             }
 
             $arguments = $field->getArguments();
@@ -63,11 +63,11 @@ final class ResolveSelectionVisitor implements \Graphpinator\Normalizer\Selectio
                 $argumentValue->resolveNonPureDirectives();
             }
 
-            foreach ($fieldDef->getDirectiveUsages() as $directive) {
-                $directiveDef = $directive->getDirective();
-                \assert($directiveDef instanceof FieldDefinitionLocation);
+            foreach ($fieldDef->getDirectiveUsages() as $directiveUsage) {
+                $directive = $directiveUsage->getDirective();
+                \assert($directive instanceof FieldDefinitionLocation);
 
-                $directiveDef->resolveFieldDefinitionBefore($directive->getArgumentValues(), $this->parentResult, $arguments);
+                $directive->resolveFieldDefinitionBefore($directiveUsage->getArgumentValues(), $this->parentResult, $arguments);
             }
 
             $rawArguments = $arguments->getValuesForResolver();
@@ -79,11 +79,11 @@ final class ResolveSelectionVisitor implements \Graphpinator\Normalizer\Selectio
                 throw new \Graphpinator\Resolver\Exception\FieldResultTypeMismatch();
             }
 
-            foreach ($fieldDef->getDirectiveUsages() as $directive) {
-                $directiveDef = $directive->getDirective();
-                \assert($directiveDef instanceof FieldDefinitionLocation);
+            foreach ($fieldDef->getDirectiveUsages() as $directiveUsage) {
+                $directive = $directiveUsage->getDirective();
+                \assert($directive instanceof FieldDefinitionLocation);
 
-                $directiveDef->resolveFieldDefinitionAfter($directive->getArgumentValues(), $resolvedValue, $arguments);
+                $directive->resolveFieldDefinitionAfter($directiveUsage->getArgumentValues(), $resolvedValue, $arguments);
             }
 
             $fieldValue = new \Graphpinator\Value\FieldValue($fieldDef, $resolvedValue instanceof \Graphpinator\Value\NullValue

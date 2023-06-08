@@ -14,10 +14,10 @@ final class TypeValue implements \Graphpinator\Value\OutputValue
         private TypeIntermediateValue $intermediateValue,
     )
     {
-        foreach ($type->getDirectiveUsages() as $directive) {
-            $directiveDef = $directive->getDirective();
-            \assert($directiveDef instanceof \Graphpinator\Typesystem\Location\ObjectLocation);
-            $directiveDef->resolveObject($directive->getArgumentValues(), $this);
+        foreach ($type->getDirectiveUsages() as $directiveUsage) {
+            $directive = $directiveUsage->getDirective();
+            \assert($directive instanceof \Graphpinator\Typesystem\Location\ObjectLocation);
+            $directive->resolveObject($directiveUsage->getArgumentValues(), $this);
         }
     }
 

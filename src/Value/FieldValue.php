@@ -13,10 +13,10 @@ final class FieldValue implements \JsonSerializable
         private \Graphpinator\Value\ResolvedValue $value,
     )
     {
-        foreach ($field->getDirectiveUsages() as $directive) {
-            $directiveDef = $directive->getDirective();
-            \assert($directiveDef instanceof \Graphpinator\Typesystem\Location\FieldDefinitionLocation);
-            $directiveDef->resolveFieldDefinitionValue($directive->getArgumentValues(), $this);
+        foreach ($field->getDirectiveUsages() as $directiveUsage) {
+            $directive = $directiveUsage->getDirective();
+            \assert($directive instanceof \Graphpinator\Typesystem\Location\FieldDefinitionLocation);
+            $directive->resolveFieldDefinitionValue($directiveUsage->getArgumentValues(), $this);
         }
     }
 

@@ -56,10 +56,10 @@ final class InputValue implements \Graphpinator\Value\InputedValue, \IteratorAgg
             $argumentValue->applyVariables($variables);
         }
 
-        foreach ($this->type->getDirectiveUsages() as $directive) {
-            $directiveDef = $directive->getDirective();
-            \assert($directiveDef instanceof \Graphpinator\Typesystem\Location\InputObjectLocation);
-            $directiveDef->resolveInputObject($directive->getArgumentValues(), $this);
+        foreach ($this->type->getDirectiveUsages() as $directiveUsage) {
+            $directive = $directiveUsage->getDirective();
+            \assert($directive instanceof \Graphpinator\Typesystem\Location\InputObjectLocation);
+            $directive->resolveInputObject($directiveUsage->getArgumentValues(), $this);
         }
     }
 

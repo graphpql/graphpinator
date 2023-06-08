@@ -17,8 +17,7 @@ final class DirectiveUsage implements \Graphpinator\Typesystem\Contract\Componen
         array $arguments,
     )
     {
-        // replace with \array_is_list() for PHP 8.1
-        if (\count($arguments) > 0 && \array_key_first($arguments) === 0) {
+        if (!\array_is_list($arguments)) {
             throw new \Graphpinator\Typesystem\Exception\DirectiveUsageArgumentsInvalidMap();
         }
 
