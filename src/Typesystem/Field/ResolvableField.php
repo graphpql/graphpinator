@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem\Field;
 
-final class ResolvableField extends Field
+class ResolvableField extends Field
 {
     private \Closure $resolveFn;
 
