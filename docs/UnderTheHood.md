@@ -40,18 +40,18 @@ compact objects representing request's operations and fragments.
 
 ## Normalizing - validating and comparing request against given schema
 
-Normalizing stage is basicaly putting together ParseResult and Schema. It is responsible for converting `Parser\ParseResult` into `Request\Operation`, which is a fully validated object that can be executed and resolved in next stage.
+Normalizing stage is basicaly putting together `ParseResult` and a `Schema`. It is responsible for converting `Parser\ParseResult` into `Normalizer\NormalizedRequest`, which is a fully validated object that can be executed and resolved in next stage.
 
 Converting `ParseResult` is operation that consist of few sub-operations:
   - Replace Type references (string representation of Type) with instances of Types from Schema.
   - Validate Variable default values and Types.
 
-Result of normalization is a new object, which does not modify the result from parsing. `ParseResult` can therefore be used again and normalized against different schema without parsing the string again. This is barely useful feature (how many times are you going to use the same request for multiple schemas), but it is done in order to keep the interface uniformed - execution also doesnt modify normalization result in order to possibly use it again with different variables, which is more common scenario.
+Result of normalization is a new object, which does not modify the result from parsing. `ParseResult` can therefore be used again and normalized against different schema without parsing the string again. This is barely useful feature (how many times are you going to use the same request for multiple schemas), but it is done in order to keep the interface uniformed - execution also doesnt modify normalization result in order to allow using it again with different variables, which is a more common scenario. For example, this functionality is used by [persisted queries module](https://github.com/graphpql/graphpinator-persisted-queries).
 
 ***
 
 ## Resolving - executing the request
 
-Resolving is the final step towards getting the data client asked for. At first, it takes Json of variables and replaces variable references with literal values. Then resolves request using tree structure of types and fields.
+Resolving is the final step towards getting the data client asked for. At first, it takes `Json` of variables and replaces variable references with literal values. Then resolves request using tree structure of types and fields.
 
-Result of resolving is `ExecutionResult`. Previous stage result remained intact, in order to use it again with different set of variables.
+Result of this operation is `Result` a `JsonSerializable` object which is ready to be sent as a response. 
