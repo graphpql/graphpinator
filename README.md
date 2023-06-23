@@ -1,4 +1,4 @@
-# GraPHPinator [![master 8.0](https://github.com/infinityloop-dev/graphpinator/workflows/PHP/badge.svg?branch=master)](https://github.com/infinityloop-dev/graphpinator/actions?query=branch%3Amaster) [![codecov](https://codecov.io/gh/infinityloop-dev/graphpinator/branch/master/graph/badge.svg)](https://codecov.io/gh/infinityloop-dev/graphpinator)
+# GraPHPinator [![master 8.0](https://github.com/graphpql/graphpinator/workflows/PHP/badge.svg?branch=master)](https://github.com/graphpql/graphpinator/actions?query=branch%3Amaster) [![codecov](https://codecov.io/gh/graphpql/graphpinator/branch/master/graph/badge.svg)](https://codecov.io/gh/graphpql/graphpinator)
 
 :zap::globe_with_meridians::zap: Easy-to-use & Fast GraphQL server implementation for PHP.
 
@@ -14,28 +14,28 @@ Feature complete PHP implementation of GraphQL server. Its job is transformation
 
 |Name|Version|Description|
 |---|---|---|
-|[Printer](https://github.com/infinityloop-dev/graphpinator-printer)|![GitHub release](https://img.shields.io/github/v/release/infinityloop-dev/graphpinator-printer?label=version)|Schema printing for GraPHPinator typesystem.|
-|[Extra types](https://github.com/infinityloop-dev/graphpinator-extra-types)|![GitHub release](https://img.shields.io/github/v/release/infinityloop-dev/graphpinator-extra-types?label=version)|Some useful directives and commonly used types, both scalar or composite.|
-|[Constraint directives](https://github.com/infinityloop-dev/graphpinator-constraint-directives)|![GitHub release](https://img.shields.io/github/v/release/infinityloop-dev/graphpinator-constraint-directives?label=version)|Typesystem directives to declare additional validation on top of GraphQL typesystem.|
-|[Where directives](https://github.com/infinityloop-dev/graphpinator-where-directives)|![GitHub release](https://img.shields.io/github/v/release/infinityloop-dev/graphpinator-where-directives?label=version)|Executable directives to filter values in lists.|
-|[Upload](https://github.com/infinityloop-dev/graphpinator-upload)|![GitHub release](https://img.shields.io/github/v/release/infinityloop-dev/graphpinator-upload?label=version)|Module to handle [multipart-formdata](https://github.com/jaydenseric/graphql-multipart-request-spec) requests.|
-|[Query cost](https://github.com/infinityloop-dev/graphpinator-query-cost)|![GitHub release](https://img.shields.io/github/v/release/infinityloop-dev/graphpinator-query-cost?label=version)|Modules to limit query cost by restricting maximum depth or number of nodes.|
-|[Persisted queries](https://github.com/infinityloop-dev/graphpinator-persisted-queries)|![GitHub release](https://img.shields.io/github/v/release/infinityloop-dev/graphpinator-persisted-queries?label=version)|Module to persist validated query in cache and improve performace of repeating queries.|
+|[Printer](https://github.com/graphpql/graphpinator-printer)|![GitHub release](https://img.shields.io/github/v/release/graphpql/graphpinator-printer?label=version)|Schema printing for GraPHPinator typesystem.|
+|[Extra types](https://github.com/graphpql/graphpinator-extra-types)|![GitHub release](https://img.shields.io/github/v/release/graphpql/graphpinator-extra-types?label=version)|Some useful directives and commonly used types, both scalar or composite.|
+|[Constraint directives](https://github.com/graphpql/graphpinator-constraint-directives)|![GitHub release](https://img.shields.io/github/v/release/graphpql/graphpinator-constraint-directives?label=version)|Typesystem directives to declare additional validation on top of GraphQL typesystem.|
+|[Where directives](https://github.com/graphpql/graphpinator-where-directives)|![GitHub release](https://img.shields.io/github/v/release/graphpql/graphpinator-where-directives?label=version)|Executable directives to filter values in lists.|
+|[Upload](https://github.com/graphpql/graphpinator-upload)|![GitHub release](https://img.shields.io/github/v/release/graphpql/graphpinator-upload?label=version)|Module to handle [multipart-formdata](https://github.com/jaydenseric/graphql-multipart-request-spec) requests.|
+|[Query cost](https://github.com/graphpql/graphpinator-query-cost)|![GitHub release](https://img.shields.io/github/v/release/graphpql/graphpinator-query-cost?label=version)|Modules to limit query cost by restricting maximum depth or number of nodes.|
+|[Persisted queries](https://github.com/graphpql/graphpinator-persisted-queries)|![GitHub release](https://img.shields.io/github/v/release/graphpql/graphpinator-persisted-queries?label=version)|Module to persist validated query in cache and improve performace of repeating queries.|
 
 - Includes adapters for easy integration into other PHP frameworks:
 
 |Name|Version|Description|
 |---|---|---|
 |PSR|Bundled||
-|[Nette](https://github.com/infinityloop-dev/graphpinator-nette)|![GitHub release](https://img.shields.io/github/v/release/infinityloop-dev/graphpinator-nette?label=version)|Adapters for [Nette framework](https://nette.org/).|
+|[Nette](https://github.com/graphpql/graphpinator-nette)|![GitHub release](https://img.shields.io/github/v/release/graphpql/graphpinator-nette?label=version)|Adapters for [Nette framework](https://nette.org/).|
 
 - Project is composed of multiple smaller packages, which may be used standalone:
 
 |Name|Version|Description|
 |---|---|---|
-|[Source](https://github.com/infinityloop-dev/graphpinator-source)|![GitHub release](https://img.shields.io/github/v/release/infinityloop-dev/graphpinator-source?label=version)|Wrapper around source document.|
-|[Tokenizer](https://github.com/infinityloop-dev/graphpinator-tokenizer)|![GitHub release](https://img.shields.io/github/v/release/infinityloop-dev/graphpinator-tokenizer?label=version)|Lexical analyzer of GraphQL document.|
-|[Parser](https://github.com/infinityloop-dev/graphpinator-parser)|![GitHub release](https://img.shields.io/github/v/release/infinityloop-dev/graphpinator-parser?label=version)|Syntactic analyzer of GraphQL document.|
+|[Source](https://github.com/graphpql/graphpinator-source)|![GitHub release](https://img.shields.io/github/v/release/graphpql/graphpinator-source?label=version)|Wrapper around source document.|
+|[Tokenizer](https://github.com/graphpql/graphpinator-tokenizer)|![GitHub release](https://img.shields.io/github/v/release/graphpql/graphpinator-tokenizer?label=version)|Lexical analyzer of GraphQL document.|
+|[Parser](https://github.com/graphpql/graphpinator-parser)|![GitHub release](https://img.shields.io/github/v/release/graphpql/graphpinator-parser?label=version)|Syntactic analyzer of GraphQL document.|
 
 ## Installation
 
@@ -45,8 +45,8 @@ Install package using composer
 
 ## How to use
 
-- Visit our simple [Hello world example](https://github.com/infinityloop-dev/graphpinator/blob/master/docs/examples/HelloWorld.md).
-- Or visit [the complete Docs](https://github.com/infinityloop-dev/graphpinator/blob/master/docs/README.md).
+- Visit our simple [Hello world example](https://github.com/graphpql/graphpinator/blob/master/docs/examples/HelloWorld.md).
+- Or visit [the complete Docs](https://github.com/graphpql/graphpinator/blob/master/docs/README.md).
 
 ## Dependencies
 
