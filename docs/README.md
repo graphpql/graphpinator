@@ -11,10 +11,9 @@ All the necessary information is presented on [the official website](http://grap
 ## Compliance status
 
 This library aims at the [latest draft of the GraphQL specification](http://spec.graphql.org/draft/).
-
 The current version supports all the features and is ready to be used in real-world applications.
 
-Known incompatibilities can be found in [issues with "Spec incompatibility" label](https://github.com/infinityloop-dev/graphpinator/issues?q=is%3Aopen+is%3Aissue+label%3A%22Ctg+-+Spec+incompatibility%22).
+Known incompatibilities can be found in [issues with "Spec incompatibility" label](https://github.com/infinityloop-dev/graphpinator/issues?q=is%3Aopen+is%3Aissue+label%3A%22Ctg+-+Spec+incompatibility%22). Those deviations from specification should not affect your application in any way, but are listed anyway for full transparency.
 
 ## Table of contents:
 
