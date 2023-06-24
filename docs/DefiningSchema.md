@@ -10,55 +10,28 @@ Alpha & Omega in GraphQL type language is a Schema. Schema describes which opera
 
 This section describes internal architecture of the type system, feel free to skip to next section.
 
-### Types
+### Modifer & Named types
 
-For GraPHPinator, types are descendants of `\Graphpinator\Type\Contract\Definition`.
+For GraPHPinator, types are descendants of `\Graphpinator\Typesystem\Contract\Type`.
 
 Types can either be Named or Modifiers. 
-- Modifier types are the well known NotNullType and ListType
-  - descendants of `\Graphpinator\Type\Contract\ModifierDefinition`
+- Modifier types are the well known `NotNullType` and `ListType`
+  - descendants of `\Graphpinator\Typesystem\Contract\ModifierType`
   - basicaly decorators around other types declaring nullability or declaring an array
-  - cannot work on their own and their behavior depends on the type they are decorating
+  - cannot work on their own
 - Named types are "the real" types.
-  - descendants of `\Graphpinator\Type\Contract\NamedDefinition`
+  - descendants of `\Graphpinator\Typesystem\Contract\NamedType`
 
 ### Named types
 
 Named types can either be Abstract or Concrete.
-- Abstract types are Interfaces and Unions
-  - descendants of `\Graphpinator\Type\Contract\AbstractDefinition`
-- Concrete types are Types, Inputs and Scalars
-  - descendants of `\Graphpinator\Type\Contract\ConcreteDefinition`
+- Abstract types are `InterfaceType` and `UnionType`
+  - descendants of `\Graphpinator\Typesystem\Contract\AbstractType`
+  - implements logic to decide which concrete type it resolved to
+- Concrete types are `Type`, `InputType`, `EnumType` and `ScalarType`
+  - descendants of `\Graphpinator\Typesystem\Contract\ConcreteType`
 
-This hierarchy describes "logical" grouping of the types, on top of this hierarchy there are four interfaces which tag the types by the features they support.
-
-#### Instantiable
-
-Simpliest definition is that it is a type which can have a value. Abstract types are the only ones not Instantiable, because they do not have "their" own value, the value belongs to the concrete instance of Abstract type.
-
-- Type, Input, Scalar
-
-#### Outputable
-
-Outputable types are types which can be defined as return type to a Field. Input type is the only one not Outputable - of course, because its an Input type and can only be given as input.
-
-- Type, Scalar. Interface, Union
-
-#### Inputable
-
-> Inputable extends Instantiable
-
-Inputable types are types which can be defined as a type for an Argument. Only Scalars and Inputs are Inputable.
-
-- Input, Scalar
-
-#### Resolvable
-
-> Resolvable extends Outputable, Instantiable
-
-Resolvable types are types which value can be resolved during execution.
-
-- Type, Scalar
+This hierarchy describes "logical" grouping of the types, lets jump stright into definitions for each kind.
 
 ## Defining types
 
@@ -66,7 +39,7 @@ Lets jump stright into examples for each kind.
 
 ### Type
 
-> \Graphpinator\Type\Type
+> \Graphpinator\Typesystem\Type
 
 ```
 type Starship {
