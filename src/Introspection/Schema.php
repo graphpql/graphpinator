@@ -60,7 +60,7 @@ final class Schema extends \Graphpinator\Typesystem\Type
                 'subscriptionType',
                 $this->container->getType('__Type'),
                 static function (SchemaDef $schema) : ?Type {
-                    return $schema->getMutation();
+                    return $schema->getSubscription();
                 },
             ),
             ResolvableField::create(
