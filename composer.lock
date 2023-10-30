@@ -58,16 +58,16 @@
         },
         {
             "name": "infinityloop-dev/graphpinator-parser",
-            "version": "v1.1",
+            "version": "v1.1.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/infinityloop-dev/graphpinator-parser.git",
-                "reference": "b7686d0ea9e2855bfced19e35d09a43b4ec0d5be"
+                "url": "https://github.com/graphpql/graphpinator-parser.git",
+                "reference": "1445936ba8854f2135bbfa9fdb31c174840b727d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/infinityloop-dev/graphpinator-parser/zipball/b7686d0ea9e2855bfced19e35d09a43b4ec0d5be",
-                "reference": "b7686d0ea9e2855bfced19e35d09a43b4ec0d5be",
+                "url": "https://api.github.com/repos/graphpql/graphpinator-parser/zipball/1445936ba8854f2135bbfa9fdb31c174840b727d",
+                "reference": "1445936ba8854f2135bbfa9fdb31c174840b727d",
                 "shasum": ""
             },
             "require": {
@@ -78,9 +78,9 @@
                 "php": ">=8.0"
             },
             "require-dev": {
-                "infection/infection": "^0.23",
+                "infection/infection": "^0.26",
                 "infinityloop-dev/coding-standard": "^0.2",
-                "phpstan/phpstan": "^0.12",
+                "phpstan/phpstan": "^1.0",
                 "phpunit/phpunit": "^9.3"
             },
             "type": "library",
@@ -101,12 +101,12 @@
                 }
             ],
             "description": "Parser subproject for GraPHPinator: GraphQL server implementation for PHP.",
-            "homepage": "https://www.infinityloop.dev/",
+            "homepage": "https://github.com/graphpql",
             "support": {
-                "issues": "https://github.com/infinityloop-dev/graphpinator-parser/issues",
-                "source": "https://github.com/infinityloop-dev/graphpinator-parser/tree/v1.1"
+                "issues": "https://github.com/graphpql/graphpinator-parser/issues",
+                "source": "https://github.com/graphpql/graphpinator-parser/tree/v1.1.1"
             },
-            "time": "2021-06-01T21:26:47+00:00"
+            "time": "2023-10-27T16:20:59+00:00"
         },
         {
             "name": "infinityloop-dev/graphpinator-source",
