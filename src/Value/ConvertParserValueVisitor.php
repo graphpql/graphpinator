@@ -95,7 +95,7 @@ final class ConvertParserValueVisitor implements \Graphpinator\Parser\Value\Valu
             if ($default instanceof ArgumentValue) {
                 $inner->{$argument->getName()} = $default;
             } elseif ($argument->getType() instanceof \Graphpinator\Typesystem\NotNullType) {
-                throw new \Graphpinator\Exception\Value\ValueCannotBeNull(false);
+                throw new \Graphpinator\Exception\Value\ValueCannotBeNull(true);
             }
 
             $this->path->pop();
