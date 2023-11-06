@@ -65,6 +65,17 @@ abstract class InputType extends \Graphpinator\Typesystem\Contract\ConcreteType 
         return $this;
     }
 
+    public function isOneOf() : bool
+    {
+        foreach ($this->getDirectiveUsages() as $directive) {
+            if ($directive->getDirective() instanceof \Graphpinator\Typesystem\Spec\OneOfDirective) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     abstract protected function getFieldDefinition() : ArgumentSet;
 
     /**

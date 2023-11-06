@@ -6,8 +6,8 @@ namespace Graphpinator\Introspection;
 
 use \Graphpinator\Typesystem\Argument\Argument;
 use \Graphpinator\Typesystem\Argument\ArgumentSet;
-use \Graphpinator\Typesystem\Contract\Type as TypeDef;
 use \Graphpinator\Typesystem\Container;
+use \Graphpinator\Typesystem\Contract\Type as TypeDef;
 use \Graphpinator\Typesystem\Field\ResolvableField;
 use \Graphpinator\Typesystem\InterfaceSet;
 
@@ -188,6 +188,15 @@ final class Type extends \Graphpinator\Typesystem\Type
                 static function (TypeDef $definition) : ?string {
                     return $definition instanceof \Graphpinator\Typesystem\ScalarType
                         ? $definition->getSpecifiedByUrl()
+                        : null;
+                },
+            ),
+            ResolvableField::create(
+                'isOneOf',
+                Container::Boolean(),
+                static function (TypeDef $definition) : ?bool {
+                    return $definition instanceof \Graphpinator\Typesystem\InputType
+                        ? $definition->isOneOf()
                         : null;
                 },
             ),
