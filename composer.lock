@@ -58,16 +58,16 @@
         },
         {
             "name": "infinityloop-dev/graphpinator-parser",
-            "version": "v1.1",
+            "version": "v1.1.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/infinityloop-dev/graphpinator-parser.git",
-                "reference": "b7686d0ea9e2855bfced19e35d09a43b4ec0d5be"
+                "url": "https://github.com/graphpql/graphpinator-parser.git",
+                "reference": "1445936ba8854f2135bbfa9fdb31c174840b727d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/infinityloop-dev/graphpinator-parser/zipball/b7686d0ea9e2855bfced19e35d09a43b4ec0d5be",
-                "reference": "b7686d0ea9e2855bfced19e35d09a43b4ec0d5be",
+                "url": "https://api.github.com/repos/graphpql/graphpinator-parser/zipball/1445936ba8854f2135bbfa9fdb31c174840b727d",
+                "reference": "1445936ba8854f2135bbfa9fdb31c174840b727d",
                 "shasum": ""
             },
             "require": {
@@ -78,9 +78,9 @@
                 "php": ">=8.0"
             },
             "require-dev": {
-                "infection/infection": "^0.23",
+                "infection/infection": "^0.26",
                 "infinityloop-dev/coding-standard": "^0.2",
-                "phpstan/phpstan": "^0.12",
+                "phpstan/phpstan": "^1.0",
                 "phpunit/phpunit": "^9.3"
             },
             "type": "library",
@@ -101,12 +101,12 @@
                 }
             ],
             "description": "Parser subproject for GraPHPinator: GraphQL server implementation for PHP.",
-            "homepage": "https://www.infinityloop.dev/",
+            "homepage": "https://github.com/graphpql",
             "support": {
-                "issues": "https://github.com/infinityloop-dev/graphpinator-parser/issues",
-                "source": "https://github.com/infinityloop-dev/graphpinator-parser/tree/v1.1"
+                "issues": "https://github.com/graphpql/graphpinator-parser/issues",
+                "source": "https://github.com/graphpql/graphpinator-parser/tree/v1.1.1"
             },
-            "time": "2021-06-01T21:26:47+00:00"
+            "time": "2023-10-27T16:20:59+00:00"
         },
         {
             "name": "infinityloop-dev/graphpinator-source",
@@ -1539,16 +1539,16 @@
         },
         {
             "name": "phpstan/phpdoc-parser",
-            "version": "1.22.0",
+            "version": "1.24.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpdoc-parser.git",
-                "reference": "ec58baf7b3c7f1c81b3b00617c953249fb8cf30c"
+                "reference": "bcad8d995980440892759db0c32acae7c8e79442"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/ec58baf7b3c7f1c81b3b00617c953249fb8cf30c",
-                "reference": "ec58baf7b3c7f1c81b3b00617c953249fb8cf30c",
+                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/bcad8d995980440892759db0c32acae7c8e79442",
+                "reference": "bcad8d995980440892759db0c32acae7c8e79442",
                 "shasum": ""
             },
             "require": {
@@ -1580,9 +1580,9 @@
             "description": "PHPDoc parser with support for nullable, intersection and generic types",
             "support": {
                 "issues": "https://github.com/phpstan/phpdoc-parser/issues",
-                "source": "https://github.com/phpstan/phpdoc-parser/tree/1.22.0"
+                "source": "https://github.com/phpstan/phpdoc-parser/tree/1.24.2"
             },
-            "time": "2023-06-01T12:35:21+00:00"
+            "time": "2023-09-26T12:28:12+00:00"
         },
         {
             "name": "phpstan/phpstan",
