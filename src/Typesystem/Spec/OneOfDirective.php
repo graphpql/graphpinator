@@ -20,6 +20,8 @@ final class OneOfDirective extends \Graphpinator\Typesystem\Directive implements
                 throw new \Graphpinator\Typesystem\Exception\OneOfInputInvalidFields();
             }
         }
+
+        return true;
     }
 
     public function resolveInputObject(ArgumentValueSet $arguments, InputValue $inputValue) : void
@@ -34,6 +36,10 @@ final class OneOfDirective extends \Graphpinator\Typesystem\Directive implements
             }
 
             ++$currentCount;
+        }
+
+        if ($currentCount !== 1) {
+            throw new \Graphpinator\Typesystem\Exception\OneOfDirectiveNotSatisfied();
         }
     }
 

@@ -142,6 +142,80 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
         ];
     }
 
+    public static function invalidDataProvider() : array
+    {
+        return [
+            [
+                Json::fromNative((object) [
+                    'query' => 'query queryName { fieldAbc { fieldXyz } }',
+                ]),
+                \Graphpinator\Normalizer\Exception\SelectionOnComposite::class,
+            ],
+            [
+                Json::fromNative((object) [
+                    'query' => 'query queryName { fieldAbc { fieldXyz { nonExisting } } }',
+                ]),
+                \Graphpinator\Normalizer\Exception\UnknownField::class,
+            ],
+            [
+                Json::fromNative((object) [
+                    'query' => 'query queryName { fieldAbc { fieldXyz { name { nonExisting } } } }',
+                ]),
+                \Graphpinator\Normalizer\Exception\SelectionOnLeaf::class,
+            ],
+            [
+                Json::fromNative((object) [
+                    'query' => 'query queryName { fieldInvalidType { __typename } }',
+                ]),
+                \Graphpinator\Resolver\Exception\FieldResultTypeMismatch::class,
+            ],
+            [
+                Json::fromNative((object) []),
+                \Graphpinator\Request\Exception\QueryMissing::class,
+            ],
+            [
+                Json::fromNative((object) [
+                    'query' => 123,
+                ]),
+                \Graphpinator\Request\Exception\QueryNotString::class,
+            ],
+            [
+                Json::fromNative((object) [
+                    'query' => '',
+                    'variables' => 'abc',
+                ]),
+                \Graphpinator\Request\Exception\VariablesNotObject::class,
+            ],
+            [
+                Json::fromNative((object) [
+                    'query' => '',
+                    'operationName' => 123,
+                ]),
+                \Graphpinator\Request\Exception\OperationNameNotString::class,
+            ],
+            [
+                Json::fromNative((object) [
+                    'query' => '',
+                    'operationName' => '',
+                    'randomKey' => 'randomVal',
+                ]),
+                \Graphpinator\Request\Exception\UnknownKey::class,
+            ],
+            [
+                Json::fromNative((object) [
+                    'query' => 'query queryName { fieldArgumentDefaults(arg: [1,2], arg: false) { fieldName fieldNumber fieldBool } }',
+                ]),
+                'Exception',
+            ],
+            [
+                Json::fromNative((object) [
+                    'query' => 'query queryName { fieldRequiredArgumentInvalid { fieldName fieldNumber fieldBool } }',
+                ]),
+                \Graphpinator\Exception\Value\ValueCannotBeNull::class,
+            ],
+        ];
+    }
+
     /**
      * @dataProvider simpleDataProvider
      * @param \Infinityloop\Utils\Json $request
@@ -286,80 +360,6 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
         $result = $graphpinator->run(new \Graphpinator\Request\PsrRequestFactory($httpRequest));
 
         self::assertSame($expected->toString(), $result->toString());
-    }
-
-    public static function invalidDataProvider() : array
-    {
-        return [
-            [
-                Json::fromNative((object) [
-                    'query' => 'query queryName { fieldAbc { fieldXyz } }',
-                ]),
-                \Graphpinator\Normalizer\Exception\SelectionOnComposite::class,
-            ],
-            [
-                Json::fromNative((object) [
-                    'query' => 'query queryName { fieldAbc { fieldXyz { nonExisting } } }',
-                ]),
-                \Graphpinator\Normalizer\Exception\UnknownField::class,
-            ],
-            [
-                Json::fromNative((object) [
-                    'query' => 'query queryName { fieldAbc { fieldXyz { name { nonExisting } } } }',
-                ]),
-                \Graphpinator\Normalizer\Exception\SelectionOnLeaf::class,
-            ],
-            [
-                Json::fromNative((object) [
-                    'query' => 'query queryName { fieldInvalidType { } }',
-                ]),
-                \Graphpinator\Resolver\Exception\FieldResultTypeMismatch::class,
-            ],
-            [
-                Json::fromNative((object) []),
-                \Graphpinator\Request\Exception\QueryMissing::class,
-            ],
-            [
-                Json::fromNative((object) [
-                    'query' => 123,
-                ]),
-                \Graphpinator\Request\Exception\QueryNotString::class,
-            ],
-            [
-                Json::fromNative((object) [
-                    'query' => '',
-                    'variables' => 'abc',
-                ]),
-                \Graphpinator\Request\Exception\VariablesNotObject::class,
-            ],
-            [
-                Json::fromNative((object) [
-                    'query' => '',
-                    'operationName' => 123,
-                ]),
-                \Graphpinator\Request\Exception\OperationNameNotString::class,
-            ],
-            [
-                Json::fromNative((object) [
-                    'query' => '',
-                    'operationName' => '',
-                    'randomKey' => 'randomVal',
-                ]),
-                \Graphpinator\Request\Exception\UnknownKey::class,
-            ],
-            [
-                Json::fromNative((object) [
-                    'query' => 'query queryName { fieldArgumentDefaults(arg: [1,2], arg: false) { fieldName fieldNumber fieldBool } }',
-                ]),
-                'Exception',
-            ],
-            [
-                Json::fromNative((object) [
-                    'query' => 'query queryName { fieldRequiredArgumentInvalid { fieldName fieldNumber fieldBool } }',
-                ]),
-                \Graphpinator\Exception\Value\ValueCannotBeNull::class,
-            ],
-        ];
     }
 
     /**

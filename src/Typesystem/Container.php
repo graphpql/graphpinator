@@ -145,4 +145,16 @@ abstract class Container
 
         return self::$builtInDirectives['specifiedBy'];
     }
+
+    /**
+     * Built-in SpecifiedBy directive.
+     */
+    public static function directiveOneOf() : \Graphpinator\Typesystem\Spec\OneOfDirective
+    {
+        if (!\array_key_exists('oneOf', self::$builtInDirectives)) {
+            self::$builtInDirectives['oneOf'] = new \Graphpinator\Typesystem\Spec\OneOfDirective();
+        }
+
+        return self::$builtInDirectives['oneOf'];
+    }
 }

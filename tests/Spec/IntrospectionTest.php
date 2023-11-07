@@ -26,19 +26,6 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
         ];
     }
 
-    /**
-     * @dataProvider typenameDataProvider
-     * @param \Infinityloop\Utils\Json $request
-     * @param \Infinityloop\Utils\Json $expected
-     */
-    public function testTypename(Json $request, Json $expected) : void
-    {
-        $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
-        $result = $graphpinator->run(new \Graphpinator\Request\JsonRequestFactory($request));
-
-        self::assertSame($expected->toString(), $result->toString());
-    }
-
     public static function schemaDataProvider() : array
     {
         return [
@@ -174,27 +161,19 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                                     'locations' => ['SCALAR'],
                                     'isRepeatable' => false,
                                 ],
+                                [
+                                    'name' => 'oneOf',
+                                    'description' => 'Built-in oneOf directive',
+                                    'args' => [],
+                                    'locations' => ['INPUT_OBJECT'],
+                                    'isRepeatable' => false,
+                                ],
                             ],
                         ],
                     ],
                 ]),
             ],
         ];
-    }
-
-    /**
-     * @dataProvider schemaDataProvider
-     * @param \Infinityloop\Utils\Json $request
-     * @param \Infinityloop\Utils\Json $expected
-     */
-    public function testSchema(Json $request, Json $expected) : void
-    {
-        $schema = TestSchema::getSchema();
-        $schema->setDescription('Test schema description');
-        $graphpinator = new \Graphpinator\Graphpinator($schema);
-        $result = $graphpinator->run(new \Graphpinator\Request\JsonRequestFactory($request));
-
-        self::assertSame($expected->toString(), $result->toString());
     }
 
     public static function typeDataProvider() : array
@@ -224,6 +203,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                                 name
                             }
                             specifiedByURL
+                            isOneOf
                         } 
                     }',
                 ]),
@@ -240,6 +220,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                             'enumValues' => null,
                             'ofType' => null,
                             'specifiedByURL' => null,
+                            'isOneOf' => null,
                         ],
                     ],
                 ]),
@@ -267,6 +248,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                                 name
                             } 
                             specifiedByURL
+                            isOneOf
                         } 
                     }',
                 ]),
@@ -283,6 +265,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                             'enumValues' => null,
                             'ofType' => null,
                             'specifiedByURL' => null,
+                            'isOneOf' => null,
                         ],
                     ],
                 ]),
@@ -310,6 +293,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                                 name
                             } 
                             specifiedByURL
+                            isOneOf
                         } 
                     }',
                 ]),
@@ -326,6 +310,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                             'enumValues' => null,
                             'ofType' => null,
                             'specifiedByURL' => null,
+                            'isOneOf' => null,
                         ],
                     ],
                 ]),
@@ -342,6 +327,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                             enumValues { name }
                             ofType { name }
                             specifiedByURL
+                            isOneOf
                         } 
                     }',
                 ]),
@@ -358,6 +344,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                             'enumValues' => null,
                             'ofType' => null,
                             'specifiedByURL' => null,
+                            'isOneOf' => null,
                         ],
                     ],
                 ]),
@@ -374,6 +361,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                             enumValues { name }
                             ofType { name }
                             specifiedByURL
+                            isOneOf
                         } 
                     }',
                 ]),
@@ -390,6 +378,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                             'enumValues' => null,
                             'ofType' => null,
                             'specifiedByURL' => null,
+                            'isOneOf' => false,
                         ],
                     ],
                 ]),
@@ -406,6 +395,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                             enumValues { name description isDeprecated deprecationReason } 
                             ofType { name }
                             specifiedByURL
+                            isOneOf
                         } 
                     }',
                 ]),
@@ -427,6 +417,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                             ],
                             'ofType' => null,
                             'specifiedByURL' => null,
+                            'isOneOf' => null,
                         ],
                     ],
                 ]),
@@ -675,7 +666,7 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 Json::fromNative((object) [
-                    'query' => '{ __type(name: "TestScalar") { name kind specifiedByURL } }',
+                    'query' => '{ __type(name: "TestScalar") { name kind specifiedByURL isOneOf } }',
                 ]),
                 Json::fromNative((object) [
                     'data' => [
@@ -683,11 +674,40 @@ final class IntrospectionTest extends \PHPUnit\Framework\TestCase
                             'name' => 'TestScalar',
                             'kind' => 'SCALAR',
                             'specifiedByURL' => null,
+                            'isOneOf' => null,
                         ],
                     ],
                 ]),
             ],
         ];
+    }
+
+    /**
+     * @dataProvider typenameDataProvider
+     * @param \Infinityloop\Utils\Json $request
+     * @param \Infinityloop\Utils\Json $expected
+     */
+    public function testTypename(Json $request, Json $expected) : void
+    {
+        $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
+        $result = $graphpinator->run(new \Graphpinator\Request\JsonRequestFactory($request));
+
+        self::assertSame($expected->toString(), $result->toString());
+    }
+
+    /**
+     * @dataProvider schemaDataProvider
+     * @param \Infinityloop\Utils\Json $request
+     * @param \Infinityloop\Utils\Json $expected
+     */
+    public function testSchema(Json $request, Json $expected) : void
+    {
+        $schema = TestSchema::getSchema();
+        $schema->setDescription('Test schema description');
+        $graphpinator = new \Graphpinator\Graphpinator($schema);
+        $result = $graphpinator->run(new \Graphpinator\Request\JsonRequestFactory($request));
+
+        self::assertSame($expected->toString(), $result->toString());
     }
 
     /**

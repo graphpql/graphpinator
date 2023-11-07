@@ -253,19 +253,6 @@ final class InputTest extends \PHPUnit\Framework\TestCase
         ];
     }
 
-    /**
-     * @dataProvider simpleDataProvider
-     * @param \Infinityloop\Utils\Json $request
-     * @param \Infinityloop\Utils\Json $expected
-     */
-    public function testSimple(Json $request, Json $expected) : void
-    {
-        $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
-        $result = $graphpinator->run(new \Graphpinator\Request\JsonRequestFactory($request));
-
-        self::assertSame($expected->toString(), $result->toString());
-    }
-
     public static function invalidDataProvider() : array
     {
         return [
@@ -295,6 +282,19 @@ final class InputTest extends \PHPUnit\Framework\TestCase
                 \Graphpinator\Normalizer\Exception\UnknownVariable::class,
             ],
         ];
+    }
+
+    /**
+     * @dataProvider simpleDataProvider
+     * @param \Infinityloop\Utils\Json $request
+     * @param \Infinityloop\Utils\Json $expected
+     */
+    public function testSimple(Json $request, Json $expected) : void
+    {
+        $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
+        $result = $graphpinator->run(new \Graphpinator\Request\JsonRequestFactory($request));
+
+        self::assertSame($expected->toString(), $result->toString());
     }
 
     /**

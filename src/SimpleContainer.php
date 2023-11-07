@@ -42,6 +42,7 @@ class SimpleContainer extends \Graphpinator\Typesystem\Container
             'include' => self::directiveInclude(),
             'deprecated' => self::directiveDeprecated(),
             'specifiedBy' => self::directiveSpecifiedBy(),
+            'oneOf' => self::directiveOneOf(),
         ];
 
         foreach ($types as $type) {
