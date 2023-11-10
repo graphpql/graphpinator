@@ -8,8 +8,6 @@ use \Graphpinator\Value\ArgumentValueSet;
 
 final class DirectiveUsage implements \Graphpinator\Typesystem\Contract\Component
 {
-    use \Nette\SmartObject;
-
     private ArgumentValueSet $argumentValues;
 
     public function __construct(

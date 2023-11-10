@@ -6,8 +6,6 @@ namespace Graphpinator\Value;
 
 final class TypeIntermediateValue implements \Graphpinator\Value\ResolvedValue
 {
-    use \Nette\SmartObject;
-
     public function __construct(
         private \Graphpinator\Typesystem\Type $type,
         private mixed $rawValue,

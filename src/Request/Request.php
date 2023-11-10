@@ -6,8 +6,6 @@ namespace Graphpinator\Request;
 
 final class Request
 {
-    use \Nette\SmartObject;
-
     public function __construct(
         private string $query,
         private \stdClass $variables = new \stdClass(),

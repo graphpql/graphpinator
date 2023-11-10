@@ -4,12 +4,10 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Request;
 
-use \Infinityloop\Utils\Json\MapJson;
+use \Infinityloop\Utils\Json;
 
 final class PsrRequestFactory implements RequestFactory
 {
-    use \Nette\SmartObject;
-
     public function __construct(
         private \Psr\Http\Message\ServerRequestInterface $request,
         private bool $strict = true,
@@ -30,7 +28,7 @@ final class PsrRequestFactory implements RequestFactory
 
         if (\is_string($contentType) && \str_starts_with($contentType, 'multipart/form-data')) {
             if ($method === 'POST' && \array_key_exists('operations', $this->request->getParsedBody())) {
-                return $this->applyJsonFactory(MapJson::fromString($this->request->getParsedBody()['operations']));
+                return $this->applyJsonFactory(Json::fromString($this->request->getParsedBody()['operations']));
             }
 
             throw new \Graphpinator\Request\Exception\InvalidMultipartRequest();
@@ -40,19 +38,19 @@ final class PsrRequestFactory implements RequestFactory
             case 'application/graphql':
                 return new Request($this->request->getBody()->getContents());
             case 'application/json':
-                return $this->applyJsonFactory(MapJson::fromString($this->request->getBody()->getContents()));
+                return $this->applyJsonFactory(Json::fromString($this->request->getBody()->getContents()));
             default:
                 $params = $this->request->getQueryParams();
 
                 if (\array_key_exists('variables', $params)) {
-                    $params['variables'] = MapJson::fromString($params['variables'])->toNative();
+                    $params['variables'] = Json::fromString($params['variables'])->toNative();
                 }
 
-                return $this->applyJsonFactory(MapJson::fromNative((object) $params));
+                return $this->applyJsonFactory(Json::fromNative((object) $params));
         }
     }
 
-    private function applyJsonFactory(MapJson $json) : Request
+    private function applyJsonFactory(Json $json) : Request
     {
         return (new JsonRequestFactory($json, $this->strict))->create();
     }

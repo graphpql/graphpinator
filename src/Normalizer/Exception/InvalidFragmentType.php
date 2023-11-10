@@ -10,8 +10,6 @@ final class InvalidFragmentType extends \Graphpinator\Normalizer\Exception\Norma
 
     public function __construct(string $childType, string $parentType)
     {
-        $this->messageArgs = [$childType, $parentType];
-
-        parent::__construct();
+        parent::__construct([$childType, $parentType]);
     }
 }

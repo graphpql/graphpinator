@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace Graphpinator\Resolver;
 
 use \Graphpinator\Value\ResolvedValue;
-use \Nette\InvalidStateException;
 
 final class ResolveVisitor implements \Graphpinator\Typesystem\Contract\TypeVisitor
 {
@@ -31,17 +30,17 @@ final class ResolveVisitor implements \Graphpinator\Typesystem\Contract\TypeVisi
 
     public function visitInterface(\Graphpinator\Typesystem\InterfaceType $interface) : mixed
     {
-        throw new InvalidStateException();
+        throw new \LogicException();
     }
 
     public function visitUnion(\Graphpinator\Typesystem\UnionType $union) : mixed
     {
-        throw new InvalidStateException();
+        throw new \LogicException();
     }
 
     public function visitInput(\Graphpinator\Typesystem\InputType $input) : mixed
     {
-        throw new InvalidStateException();
+        throw new \LogicException();
     }
 
     public function visitScalar(\Graphpinator\Typesystem\ScalarType $scalar) : ResolvedValue

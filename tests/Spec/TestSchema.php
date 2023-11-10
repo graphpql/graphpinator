@@ -8,8 +8,6 @@ use \Graphpinator\Typesystem\Location\SelectionDirectiveResult;
 
 final class TestSchema
 {
-    use \Nette\StaticClass;
-
     private static array $types = [];
     private static ?\Graphpinator\Typesystem\Container $container = null;
 

@@ -6,8 +6,6 @@ namespace Graphpinator\Normalizer\Selection;
 
 final class Field implements Selection
 {
-    use \Nette\SmartObject;
-
     public function __construct(
         private \Graphpinator\Typesystem\Field\Field $field,
         private string $outputName,

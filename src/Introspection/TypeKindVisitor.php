@@ -6,8 +6,6 @@ namespace Graphpinator\Introspection;
 
 final class TypeKindVisitor implements \Graphpinator\Typesystem\Contract\TypeVisitor
 {
-    use \Nette\SmartObject;
-
     public function visitType(\Graphpinator\Typesystem\Type $type) : string
     {
         return TypeKind::OBJECT;

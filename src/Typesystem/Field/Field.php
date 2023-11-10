@@ -9,7 +9,6 @@ use \Graphpinator\Typesystem\Contract\Outputable;
 
 class Field implements \Graphpinator\Typesystem\Contract\Component
 {
-    use \Nette\SmartObject;
     use \Graphpinator\Typesystem\Utils\TOptionalDescription;
     use \Graphpinator\Typesystem\Utils\THasDirectives;
     use \Graphpinator\Typesystem\Utils\TDeprecatable;

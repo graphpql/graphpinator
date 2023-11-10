@@ -6,8 +6,6 @@ namespace Graphpinator\Value;
 
 final class InputValue implements \Graphpinator\Value\InputedValue, \IteratorAggregate
 {
-    use \Nette\SmartObject;
-
     public function __construct(
         private \Graphpinator\Typesystem\InputType $type,
         private \stdClass $value,

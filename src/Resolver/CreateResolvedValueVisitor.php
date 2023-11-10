@@ -41,7 +41,7 @@ final class CreateResolvedValueVisitor implements \Graphpinator\Typesystem\Contr
 
     public function visitInput(\Graphpinator\Typesystem\InputType $input) : mixed
     {
-        throw new \Nette\InvalidStateException();
+        throw new \LogicException();
     }
 
     public function visitScalar(\Graphpinator\Typesystem\ScalarType $scalar) : \Graphpinator\Value\ResolvedValue

@@ -4,15 +4,13 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Normalizer;
 
-use \Graphpinator\Typesystem\Location\ExecutableDirectiveLocation;
+use \Graphpinator\Normalizer\Directive\DirectiveSet;
 use \Graphpinator\Normalizer\Variable\Variable;
 use \Graphpinator\Normalizer\Variable\VariableSet;
-use \Graphpinator\Normalizer\Directive\DirectiveSet;
+use \Graphpinator\Typesystem\Location\ExecutableDirectiveLocation;
 
 final class Normalizer
 {
-    use \Nette\SmartObject;
-
     private \Graphpinator\Common\Path $path;
     private \SplStack $scopeStack;
     private \Graphpinator\Parser\Fragment\FragmentSet $fragmentDefinitions;
@@ -62,9 +60,9 @@ final class Normalizer
     ) : \Graphpinator\Normalizer\Operation\Operation
     {
         $rootObject = match ($operation->getType()) {
-            \Graphpinator\Tokenizer\OperationType::QUERY => $this->schema->getQuery(),
-            \Graphpinator\Tokenizer\OperationType::MUTATION => $this->schema->getMutation(),
-            \Graphpinator\Tokenizer\OperationType::SUBSCRIPTION => $this->schema->getSubscription(),
+            \Graphpinator\Tokenizer\TokenType::QUERY->value => $this->schema->getQuery(),
+            \Graphpinator\Tokenizer\TokenType::MUTATION->value => $this->schema->getMutation(),
+            \Graphpinator\Tokenizer\TokenType::SUBSCRIPTION->value => $this->schema->getSubscription(),
         };
 
         if (!$rootObject instanceof \Graphpinator\Typesystem\Type) {
@@ -321,7 +319,7 @@ final class Normalizer
             \Graphpinator\Parser\FragmentSpread\InlineFragmentSpread::class =>
                 $this->normalizeInlineFragmentSpread($fragmentSpread),
             default =>
-                throw new \Nette\InvalidStateException(),
+                throw new \LogicException(),
         };
     }
 
@@ -389,7 +387,7 @@ final class Normalizer
             \Graphpinator\Parser\TypeRef\NotNullRef::class =>
                 new \Graphpinator\Typesystem\NotNullType($this->normalizeTypeRef($typeRef->getInnerRef())),
             default =>
-                throw new \Nette\InvalidStateException(),
+                throw new \LogicException(),
         };
     }
 

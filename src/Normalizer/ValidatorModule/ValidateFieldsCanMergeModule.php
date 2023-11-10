@@ -6,8 +6,6 @@ namespace Graphpinator\Normalizer\ValidatorModule;
 
 final class ValidateFieldsCanMergeModule implements ValidatorModule, \Graphpinator\Normalizer\Selection\SelectionVisitor
 {
-    use \Nette\SmartObject;
-
     private array $fieldsForName;
     private ?\Graphpinator\Typesystem\Contract\TypeConditionable $contextType;
 

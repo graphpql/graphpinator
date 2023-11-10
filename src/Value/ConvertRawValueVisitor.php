@@ -4,12 +4,8 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Value;
 
-use \Nette\InvalidStateException;
-
 final class ConvertRawValueVisitor implements \Graphpinator\Typesystem\Contract\TypeVisitor
 {
-    use \Nette\SmartObject;
-
     public function __construct(
         private mixed $rawValue,
         private \Graphpinator\Common\Path $path,
@@ -72,17 +68,17 @@ final class ConvertRawValueVisitor implements \Graphpinator\Typesystem\Contract\
 
     public function visitType(\Graphpinator\Typesystem\Type $type) : mixed
     {
-        throw new InvalidStateException();
+        throw new \LogicException();
     }
 
     public function visitInterface(\Graphpinator\Typesystem\InterfaceType $interface) : mixed
     {
-        throw new InvalidStateException();
+        throw new \LogicException();
     }
 
     public function visitUnion(\Graphpinator\Typesystem\UnionType $union) : mixed
     {
-        throw new InvalidStateException();
+        throw new \LogicException();
     }
 
     public function visitInput(\Graphpinator\Typesystem\InputType $input) : InputedValue

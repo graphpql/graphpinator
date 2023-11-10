@@ -6,16 +6,14 @@ namespace Graphpinator\Resolver;
 
 final class Resolver
 {
-    use \Nette\SmartObject;
-
     public function resolve(\Graphpinator\Normalizer\FinalizedRequest $finalizedRequest) : \Graphpinator\Result
     {
         $operation = $finalizedRequest->getOperation();
 
         return match ($operation->getType()) {
-            \Graphpinator\Tokenizer\OperationType::QUERY => $this->resolveQuery($operation),
-            \Graphpinator\Tokenizer\OperationType::MUTATION => $this->resolveMutation($operation),
-            \Graphpinator\Tokenizer\OperationType::SUBSCRIPTION => $this->resolveSubscription($operation),
+            \Graphpinator\Tokenizer\TokenType::QUERY->value => $this->resolveQuery($operation),
+            \Graphpinator\Tokenizer\TokenType::MUTATION->value => $this->resolveMutation($operation),
+            \Graphpinator\Tokenizer\TokenType::SUBSCRIPTION->value => $this->resolveSubscription($operation),
         };
     }
 

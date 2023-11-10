@@ -6,8 +6,6 @@ namespace Graphpinator\Normalizer;
 
 final class SelectionSetRefiner
 {
-    use \Nette\SmartObject;
-
     public function __construct(
         private \Graphpinator\Normalizer\Selection\SelectionSet $selections,
     )

@@ -6,8 +6,6 @@ namespace Graphpinator\Normalizer;
 
 final class VariableValueSet
 {
-    use \Nette\SmartObject;
-
     public function __construct(
         private array $variables,
     )

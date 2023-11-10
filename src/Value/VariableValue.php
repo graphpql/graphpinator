@@ -6,8 +6,6 @@ namespace Graphpinator\Value;
 
 final class VariableValue implements \Graphpinator\Value\InputedValue
 {
-    use \Nette\SmartObject;
-
     private ?\Graphpinator\Value\InputedValue $value = null;
 
     public function __construct(

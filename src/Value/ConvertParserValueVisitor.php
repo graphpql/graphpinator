@@ -6,8 +6,6 @@ namespace Graphpinator\Value;
 
 final class ConvertParserValueVisitor implements \Graphpinator\Parser\Value\ValueVisitor
 {
-    use \Nette\SmartObject;
-
     public function __construct(
         private \Graphpinator\Typesystem\Contract\Inputable $type,
         private ?\Graphpinator\Normalizer\Variable\VariableSet $variableSet,

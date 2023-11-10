@@ -10,8 +10,6 @@ final class OperationNotSupported extends \Graphpinator\Normalizer\Exception\Nor
 
     public function __construct(string $operation)
     {
-        $this->messageArgs = [$operation];
-
-        parent::__construct();
+        parent::__construct([$operation]);
     }
 }

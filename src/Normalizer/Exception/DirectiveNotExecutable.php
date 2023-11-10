@@ -10,8 +10,6 @@ final class DirectiveNotExecutable extends \Graphpinator\Normalizer\Exception\No
 
     public function __construct(string $name)
     {
-        $this->messageArgs = [$name];
-
-        parent::__construct();
+        parent::__construct([$name]);
     }
 }

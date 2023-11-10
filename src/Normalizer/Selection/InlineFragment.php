@@ -6,8 +6,6 @@ namespace Graphpinator\Normalizer\Selection;
 
 final class InlineFragment implements \Graphpinator\Normalizer\Selection\Selection
 {
-    use \Nette\SmartObject;
-
     public function __construct(
         private \Graphpinator\Normalizer\Selection\SelectionSet $children,
         private \Graphpinator\Normalizer\Directive\DirectiveSet $directives,

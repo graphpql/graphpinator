@@ -6,8 +6,6 @@ namespace Graphpinator\Value;
 
 final class NullResolvedValue implements \Graphpinator\Value\OutputValue, \Graphpinator\Value\NullValue
 {
-    use \Nette\SmartObject;
-
     public function __construct(
         private \Graphpinator\Typesystem\Contract\Outputable $type,
     )

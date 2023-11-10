@@ -10,8 +10,6 @@ final class FieldDirectiveNotCovariant extends \Graphpinator\Typesystem\Exceptio
 
     public function __construct(string $childName, string $interfaceName, string $fieldName, string $message)
     {
-        $this->messageArgs = [$childName, $interfaceName, $fieldName, $message];
-
-        parent::__construct();
+        parent::__construct([$childName, $interfaceName, $fieldName, $message]);
     }
 }

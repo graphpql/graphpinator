@@ -6,8 +6,6 @@ namespace Graphpinator\Normalizer\RefinerModule;
 
 final class DuplicateFieldModule implements RefinerModule, \Graphpinator\Normalizer\Selection\SelectionVisitor
 {
-    use \Nette\SmartObject;
-
     private array $fieldForName;
     private int $index;
 

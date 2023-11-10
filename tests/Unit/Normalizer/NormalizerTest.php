@@ -11,7 +11,7 @@ final class NormalizerTest extends \PHPUnit\Framework\TestCase
         $parseResult = new \Graphpinator\Parser\ParsedRequest(
             new \Graphpinator\Parser\Operation\OperationSet([
                 new \Graphpinator\Parser\Operation\Operation(
-                    \Graphpinator\Tokenizer\OperationType::QUERY,
+                    \Graphpinator\Tokenizer\TokenType::QUERY->value,
                     'operationName',
                     new \Graphpinator\Parser\Variable\VariableSet([
                         new \Graphpinator\Parser\Variable\Variable(
@@ -56,7 +56,7 @@ final class NormalizerTest extends \PHPUnit\Framework\TestCase
         $parseResult = new \Graphpinator\Parser\ParsedRequest(
             new \Graphpinator\Parser\Operation\OperationSet([
                 new \Graphpinator\Parser\Operation\Operation(
-                    \Graphpinator\Tokenizer\OperationType::QUERY,
+                    \Graphpinator\Tokenizer\TokenType::QUERY->value,
                     'operationName',
                     null,
                     null,
@@ -163,7 +163,7 @@ final class NormalizerTest extends \PHPUnit\Framework\TestCase
                 new \Graphpinator\Parser\ParsedRequest(
                     new \Graphpinator\Parser\Operation\OperationSet([
                         new \Graphpinator\Parser\Operation\Operation(
-                            \Graphpinator\Tokenizer\OperationType::MUTATION,
+                            \Graphpinator\Tokenizer\TokenType::MUTATION->value,
                             null,
                             null,
                             null,
@@ -178,7 +178,7 @@ final class NormalizerTest extends \PHPUnit\Framework\TestCase
                 new \Graphpinator\Parser\ParsedRequest(
                     new \Graphpinator\Parser\Operation\OperationSet([
                         new \Graphpinator\Parser\Operation\Operation(
-                            \Graphpinator\Tokenizer\OperationType::SUBSCRIPTION,
+                            \Graphpinator\Tokenizer\TokenType::SUBSCRIPTION->value,
                             null,
                             null,
                             null,
@@ -193,7 +193,7 @@ final class NormalizerTest extends \PHPUnit\Framework\TestCase
                 new \Graphpinator\Parser\ParsedRequest(
                     new \Graphpinator\Parser\Operation\OperationSet([
                         new \Graphpinator\Parser\Operation\Operation(
-                            \Graphpinator\Tokenizer\OperationType::QUERY,
+                            \Graphpinator\Tokenizer\TokenType::QUERY->value,
                             null,
                             null,
                             null,
@@ -210,7 +210,7 @@ final class NormalizerTest extends \PHPUnit\Framework\TestCase
                 new \Graphpinator\Parser\ParsedRequest(
                     new \Graphpinator\Parser\Operation\OperationSet([
                         new \Graphpinator\Parser\Operation\Operation(
-                            \Graphpinator\Tokenizer\OperationType::QUERY,
+                            \Graphpinator\Tokenizer\TokenType::QUERY->value,
                             null,
                             null,
                             null,
@@ -266,7 +266,7 @@ final class NormalizerTest extends \PHPUnit\Framework\TestCase
                 new \Graphpinator\Parser\ParsedRequest(
                     new \Graphpinator\Parser\Operation\OperationSet([
                         new \Graphpinator\Parser\Operation\Operation(
-                            \Graphpinator\Tokenizer\OperationType::QUERY,
+                            \Graphpinator\Tokenizer\TokenType::QUERY->value,
                             null,
                             null,
                             null,
@@ -306,7 +306,7 @@ final class NormalizerTest extends \PHPUnit\Framework\TestCase
                 new \Graphpinator\Parser\ParsedRequest(
                     new \Graphpinator\Parser\Operation\OperationSet([
                         new \Graphpinator\Parser\Operation\Operation(
-                            \Graphpinator\Tokenizer\OperationType::QUERY,
+                            \Graphpinator\Tokenizer\TokenType::QUERY->value,
                             null,
                             null,
                             null,

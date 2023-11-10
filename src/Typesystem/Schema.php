@@ -6,7 +6,6 @@ namespace Graphpinator\Typesystem;
 
 class Schema implements \Graphpinator\Typesystem\Contract\Entity
 {
-    use \Nette\SmartObject;
     use \Graphpinator\Typesystem\Utils\TOptionalDescription;
     use \Graphpinator\Typesystem\Utils\THasDirectives;
 

@@ -6,8 +6,6 @@ namespace Graphpinator;
 
 final class Graphpinator implements \Psr\Log\LoggerAwareInterface
 {
-    use \Nette\SmartObject;
-
     /**
      * Whether Graphpinator should perform schema integrity checks. Disable in production to avoid unnecessary overhead.
      */
@@ -93,9 +91,9 @@ final class Graphpinator implements \Psr\Log\LoggerAwareInterface
             $this->logger->log(self::getLogLevel($exception), self::getLogMessage($exception));
 
             return new \Graphpinator\Result(null, [
-                $exception instanceof \Graphpinator\Exception\GraphpinatorBase
-                    ? $exception
-                    : \Graphpinator\Exception\GraphpinatorBase::notOutputableResponse(),
+                $exception instanceof \Graphpinator\Exception\ClientAware
+                    ? self::serializeError($exception)
+                    : self::notOutputableResponse(),
             ]);
         }
     }
@@ -119,5 +117,37 @@ final class Graphpinator implements \Psr\Log\LoggerAwareInterface
         }
 
         return \Psr\Log\LogLevel::EMERGENCY;
+    }
+
+    private static function serializeError(\Graphpinator\Exception\ClientAware $exception) : array
+    {
+        if (!$exception->isOutputable()) {
+            return self::notOutputableResponse();
+        }
+
+        $result = [
+            'message' => $exception->getMessage(),
+        ];
+
+        if ($exception->getLocation() instanceof \Graphpinator\Common\Location) {
+            $result['locations'] = [$exception->getLocation()];
+        }
+
+        if ($exception->getPath() instanceof \Graphpinator\Common\Path) {
+            $result['path'] = $exception->getPath();
+        }
+
+        if (\is_array($exception->getExtensions())) {
+            $result['extensions'] = $exception->getExtensions();
+        }
+
+        return $result;
+    }
+
+    private static function notOutputableResponse() : array
+    {
+        return [
+            'message' => 'Server responded with unknown error.',
+        ];
     }
 }

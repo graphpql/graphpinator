@@ -10,8 +10,6 @@ final class InterfaceCycle extends \Graphpinator\Typesystem\Exception\TypeError
 
     public function __construct(array $interfaceCycle)
     {
-        $this->messageArgs = [\implode(' -> ', $interfaceCycle)];
-
-        parent::__construct();
+        parent::__construct([\implode(' -> ', $interfaceCycle)]);
     }
 }

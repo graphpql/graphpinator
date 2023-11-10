@@ -6,8 +6,6 @@ namespace Graphpinator\Normalizer\Directive;
 
 final class Directive
 {
-    use \Nette\SmartObject;
-
     public function __construct(
         private \Graphpinator\Typesystem\Contract\ExecutableDirective $directive,
         private \Graphpinator\Value\ArgumentValueSet $arguments,

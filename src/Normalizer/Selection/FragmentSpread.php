@@ -6,8 +6,6 @@ namespace Graphpinator\Normalizer\Selection;
 
 final class FragmentSpread implements \Graphpinator\Normalizer\Selection\Selection
 {
-    use \Nette\SmartObject;
-
     public function __construct(
         private string $name,
         private \Graphpinator\Normalizer\Selection\SelectionSet $children,

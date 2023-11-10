@@ -10,8 +10,6 @@ final class EnumItemInvalid extends \Graphpinator\Typesystem\Exception\TypeError
 
     public function __construct(string $enumItem)
     {
-        $this->messageArgs = [$enumItem];
-
-        parent::__construct();
+        parent::__construct([$enumItem]);
     }
 }

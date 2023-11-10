@@ -10,8 +10,6 @@ final class ArgumentDirectiveNotContravariant extends \Graphpinator\Typesystem\E
 
     public function __construct(string $childName, string $interfaceName, string $fieldName, string $argumentName, string $message)
     {
-        $this->messageArgs = [$childName, $interfaceName, $argumentName, $fieldName, $message];
-
-        parent::__construct();
+        parent::__construct([$childName, $interfaceName, $argumentName, $fieldName, $message]);
     }
 }

@@ -10,8 +10,6 @@ final class InterfaceContractMissingField extends \Graphpinator\Typesystem\Excep
 
     public function __construct(string $childName, string $interfaceName, string $fieldName)
     {
-        $this->messageArgs = [$childName, $interfaceName, $fieldName];
-
-        parent::__construct();
+        parent::__construct([$childName, $interfaceName, $fieldName]);
     }
 }

@@ -5,12 +5,11 @@ declare(strict_types = 1);
 namespace Graphpinator\Typesystem;
 
 use \Graphpinator\Typesystem\Argument\ArgumentSet;
-use \Graphpinator\Typesystem\Location\TypeSystemDirectiveLocation;
 use \Graphpinator\Typesystem\Location\ExecutableDirectiveLocation;
+use \Graphpinator\Typesystem\Location\TypeSystemDirectiveLocation;
 
 abstract class Directive implements \Graphpinator\Typesystem\Contract\Directive
 {
-    use \Nette\SmartObject;
     use \Graphpinator\Typesystem\Utils\THasDescription;
 
     protected const NAME = '';
@@ -21,30 +20,30 @@ abstract class Directive implements \Graphpinator\Typesystem\Contract\Directive
             TypeSystemDirectiveLocation::SCHEMA,
         ],
         \Graphpinator\Typesystem\Location\ObjectLocation::class => [
-            TypesystemDirectiveLocation::OBJECT,
-            TypesystemDirectiveLocation::INTERFACE,
+            TypeSystemDirectiveLocation::OBJECT,
+            TypeSystemDirectiveLocation::INTERFACE,
         ],
         \Graphpinator\Typesystem\Location\InputObjectLocation::class => [
-            TypesystemDirectiveLocation::INPUT_OBJECT,
+            TypeSystemDirectiveLocation::INPUT_OBJECT,
         ],
         \Graphpinator\Typesystem\Location\UnionLocation::class => [
-            TypesystemDirectiveLocation::UNION,
+            TypeSystemDirectiveLocation::UNION,
         ],
         \Graphpinator\Typesystem\Location\EnumLocation::class => [
-            TypesystemDirectiveLocation::ENUM,
+            TypeSystemDirectiveLocation::ENUM,
         ],
         \Graphpinator\Typesystem\Location\ScalarLocation::class => [
-            TypesystemDirectiveLocation::SCALAR,
+            TypeSystemDirectiveLocation::SCALAR,
         ],
         \Graphpinator\Typesystem\Location\ArgumentDefinitionLocation::class => [
-            TypesystemDirectiveLocation::ARGUMENT_DEFINITION,
-            TypesystemDirectiveLocation::INPUT_FIELD_DEFINITION,
+            TypeSystemDirectiveLocation::ARGUMENT_DEFINITION,
+            TypeSystemDirectiveLocation::INPUT_FIELD_DEFINITION,
         ],
         \Graphpinator\Typesystem\Location\FieldDefinitionLocation::class => [
-            TypesystemDirectiveLocation::FIELD_DEFINITION,
+            TypeSystemDirectiveLocation::FIELD_DEFINITION,
         ],
         \Graphpinator\Typesystem\Location\EnumItemLocation::class => [
-            TypesystemDirectiveLocation::ENUM_VALUE,
+            TypeSystemDirectiveLocation::ENUM_VALUE,
         ],
         // Executable
         \Graphpinator\Typesystem\Location\QueryLocation::class => [
@@ -81,7 +80,7 @@ abstract class Directive implements \Graphpinator\Typesystem\Contract\Directive
     }
 
     /**
-     * @return array<ExecutableDirectiveLocation|TypeSystemDirectiveLocation>
+     * @return array<(\Graphpinator\Typesystem\Location\ExecutableDirectiveLocation|\Graphpinator\Typesystem\Location\TypeSystemDirectiveLocation)>
      */
     final public function getLocations() : array
     {

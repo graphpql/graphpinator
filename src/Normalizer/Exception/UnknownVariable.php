@@ -10,8 +10,6 @@ final class UnknownVariable extends \Graphpinator\Normalizer\Exception\Normalize
 
     public function __construct(string $varName)
     {
-        $this->messageArgs = [$varName];
-
-        parent::__construct();
+        parent::__construct([$varName]);
     }
 }

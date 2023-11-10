@@ -10,8 +10,6 @@ final class InputCycle extends \Graphpinator\Typesystem\Exception\TypeError
 
     public function __construct(array $inputCycle)
     {
-        $this->messageArgs = [\implode(' -> ', $inputCycle)];
-
-        parent::__construct();
+        parent::__construct([\implode(' -> ', $inputCycle)]);
     }
 }

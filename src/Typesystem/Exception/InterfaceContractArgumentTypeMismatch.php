@@ -10,8 +10,6 @@ final class InterfaceContractArgumentTypeMismatch extends \Graphpinator\Typesyst
 
     public function __construct(string $childName, string $interfaceName, string $fieldName, string $argumentName)
     {
-        $this->messageArgs = [$childName, $interfaceName, $argumentName, $fieldName];
-
-        parent::__construct();
+        parent::__construct([$childName, $interfaceName, $argumentName, $fieldName]);
     }
 }

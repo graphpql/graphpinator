@@ -6,8 +6,6 @@ namespace Graphpinator\Value;
 
 final class TypeValue implements \Graphpinator\Value\OutputValue
 {
-    use \Nette\SmartObject;
-
     public function __construct(
         private \Graphpinator\Typesystem\Type $type,
         private \stdClass $value,

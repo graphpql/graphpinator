@@ -6,8 +6,6 @@ namespace Graphpinator\Normalizer\RefinerModule;
 
 final class DuplicateFragmentSpreadModule implements RefinerModule, \Graphpinator\Normalizer\Selection\SelectionVisitor
 {
-    use \Nette\SmartObject;
-
     private array $visitedFragments;
     private int $index;
 

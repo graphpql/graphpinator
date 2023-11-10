@@ -6,14 +6,12 @@ namespace Graphpinator\Request;
 
 final class JsonRequestFactory implements \Graphpinator\Request\RequestFactory
 {
-    use \Nette\SmartObject;
-
     public const QUERY = 'query';
     public const VARIABLES = 'variables';
     public const OPERATION_NAME = 'operationName';
 
     public function __construct(
-        private \Infinityloop\Utils\Json\JsonContract $json,
+        private \Infinityloop\Utils\Json $json,
         private bool $strict = true, // whether to allow unknown JSON keys in request, enable this to pass additional data in request, e.g. request ID
     )
     {
@@ -21,7 +19,7 @@ final class JsonRequestFactory implements \Graphpinator\Request\RequestFactory
 
     public static function fromString(string $json, bool $strict = true) : self
     {
-        return new self(\Infinityloop\Utils\Json\MapJson::fromString($json), $strict);
+        return new self(\Infinityloop\Utils\Json::fromString($json), $strict);
     }
 
     public function create() : Request

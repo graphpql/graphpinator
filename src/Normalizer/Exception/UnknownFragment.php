@@ -10,8 +10,6 @@ final class UnknownFragment extends \Graphpinator\Normalizer\Exception\Normalize
 
     public function __construct(string $fragmentName)
     {
-        $this->messageArgs = [$fragmentName];
-
-        parent::__construct();
+        parent::__construct([$fragmentName]);
     }
 }

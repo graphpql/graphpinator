@@ -6,8 +6,6 @@ namespace Graphpinator\Normalizer;
 
 final class FragmentCycleValidator
 {
-    use \Nette\SmartObject;
-
     private array $stack = [];
     private array $validated = [];
 

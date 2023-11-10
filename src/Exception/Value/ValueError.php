@@ -8,9 +8,10 @@ abstract class ValueError extends \Graphpinator\Exception\GraphpinatorBase
 {
     public function __construct(
         protected bool $outputable,
+        array $messageArgs = [],
     )
     {
-        parent::__construct();
+        parent::__construct($messageArgs);
     }
 
     public function isOutputable() : bool

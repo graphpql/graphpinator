@@ -10,8 +10,6 @@ final class UnknownDirective extends \Graphpinator\Normalizer\Exception\Normaliz
 
     public function __construct(string $name)
     {
-        $this->messageArgs = [$name];
-
-        parent::__construct();
+        parent::__construct([$name]);
     }
 }

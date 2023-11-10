@@ -8,8 +8,6 @@ use \Graphpinator\Value\TypeValue;
 
 final class Result implements \JsonSerializable
 {
-    use \Nette\SmartObject;
-
     public function __construct(
         private ?TypeValue $data = null,
         private ?array $errors = null,
@@ -44,6 +42,6 @@ final class Result implements \JsonSerializable
 
     public function toString() : string
     {
-        return \Infinityloop\Utils\Json\MapJson::fromNative($this->jsonSerialize())->toString();
+        return \Infinityloop\Utils\Json::fromNative($this->jsonSerialize())->toString();
     }
 }

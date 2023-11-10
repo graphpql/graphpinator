@@ -36,7 +36,7 @@ final class GetFieldVisitor implements \Graphpinator\Typesystem\Contract\NamedTy
 
     public function visitInput(\Graphpinator\Typesystem\InputType $input) : mixed
     {
-        throw new \Nette\InvalidStateException();
+        throw new \LogicException();
     }
 
     public function visitScalar(\Graphpinator\Typesystem\ScalarType $scalar) : Field

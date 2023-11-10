@@ -10,8 +10,6 @@ final class UnknownArgument extends \Graphpinator\Normalizer\Exception\Normalize
 
     public function __construct(string $argument)
     {
-        $this->messageArgs = [$argument];
-
-        parent::__construct();
+        parent::__construct([$argument]);
     }
 }

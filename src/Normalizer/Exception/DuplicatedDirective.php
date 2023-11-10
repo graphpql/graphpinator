@@ -10,8 +10,6 @@ final class DuplicatedDirective extends \Graphpinator\Normalizer\Exception\Norma
 
     public function __construct(string $name)
     {
-        $this->messageArgs = [$name];
-
-        parent::__construct();
+        parent::__construct([$name]);
     }
 }

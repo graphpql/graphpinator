@@ -9,8 +9,6 @@ namespace Graphpinator\Typesystem;
  */
 abstract class Container
 {
-    use \Nette\SmartObject;
-
     protected static array $builtInTypes = [];
     protected static array $builtInDirectives = [];
 

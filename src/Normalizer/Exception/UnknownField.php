@@ -10,8 +10,6 @@ final class UnknownField extends \Graphpinator\Normalizer\Exception\NormalizerEr
 
     public function __construct(string $field, string $type)
     {
-        $this->messageArgs = [$field, $type];
-
-        parent::__construct();
+        parent::__construct([$field, $type]);
     }
 }

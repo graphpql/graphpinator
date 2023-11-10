@@ -10,9 +10,7 @@ final class InvalidValue extends \Graphpinator\Exception\Value\ValueError
 
     public function __construct(string $type, mixed $rawValue, bool $outputable)
     {
-        $this->messageArgs = [$type, $this->printValue($rawValue)];
-
-        parent::__construct($outputable);
+        parent::__construct($outputable, [$type, $this->printValue($rawValue)]);
     }
 
     private function printValue(mixed $rawValue) : string

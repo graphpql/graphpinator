@@ -6,8 +6,6 @@ namespace Graphpinator\Normalizer\RefinerModule;
 
 final class EmptyFragmentModule implements RefinerModule, \Graphpinator\Normalizer\Selection\SelectionVisitor
 {
-    use \Nette\SmartObject;
-
     private int $index;
 
     public function __construct(

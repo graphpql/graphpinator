@@ -6,8 +6,6 @@ namespace Graphpinator\Normalizer;
 
 final class Finalizer
 {
-    use \Nette\SmartObject;
-
     private \Graphpinator\Common\Path $path;
 
     public function finalize(NormalizedRequest $normalizedRequest, \stdClass $variables, ?string $operationName) : FinalizedRequest

@@ -10,8 +10,6 @@ final class DirectiveIncorrectUsage extends \Graphpinator\Normalizer\Exception\N
 
     public function __construct(string $name)
     {
-        $this->messageArgs = [$name];
-
-        parent::__construct();
+        parent::__construct([$name]);
     }
 }

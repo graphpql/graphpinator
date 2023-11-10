@@ -6,8 +6,6 @@ namespace Graphpinator\Value;
 
 abstract class ListValue implements \Graphpinator\Value\Value, \IteratorAggregate, \ArrayAccess, \Countable
 {
-    use \Nette\SmartObject;
-
     public function __construct(
         protected \Graphpinator\Typesystem\ListType $type,
         protected array $value,

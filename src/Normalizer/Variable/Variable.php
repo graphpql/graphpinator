@@ -6,8 +6,6 @@ namespace Graphpinator\Normalizer\Variable;
 
 final class Variable
 {
-    use \Nette\SmartObject;
-
     private \Graphpinator\Normalizer\Directive\DirectiveSet $directives;
 
     public function __construct(

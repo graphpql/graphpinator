@@ -6,8 +6,6 @@ namespace Graphpinator\Normalizer\Operation;
 
 final class Operation
 {
-    use \Nette\SmartObject;
-
     public function __construct(
         private string $type,
         private ?string $name,

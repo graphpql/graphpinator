@@ -9,7 +9,6 @@ use \Graphpinator\Typesystem\NotNullType;
 
 abstract class NamedType implements Type, Entity
 {
-    use \Nette\SmartObject;
     use \Graphpinator\Typesystem\Utils\THasDescription;
 
     protected const NAME = '';

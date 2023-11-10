@@ -6,8 +6,6 @@ namespace Graphpinator\Value;
 
 abstract class LeafValue implements \Graphpinator\Value\InputedValue, \Graphpinator\Value\OutputValue
 {
-    use \Nette\SmartObject;
-
     public function __construct(
         protected \Graphpinator\Typesystem\Contract\LeafType $type,
         protected mixed $rawValue,

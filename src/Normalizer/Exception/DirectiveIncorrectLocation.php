@@ -10,8 +10,6 @@ final class DirectiveIncorrectLocation extends \Graphpinator\Normalizer\Exceptio
 
     public function __construct(string $name)
     {
-        $this->messageArgs = [$name];
-
-        parent::__construct();
+        parent::__construct([$name]);
     }
 }

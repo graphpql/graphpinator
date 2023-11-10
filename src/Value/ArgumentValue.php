@@ -6,8 +6,6 @@ namespace Graphpinator\Value;
 
 final class ArgumentValue
 {
-    use \Nette\SmartObject;
-
     public function __construct(
         private \Graphpinator\Typesystem\Argument\Argument $argument,
         private \Graphpinator\Value\InputedValue $value,

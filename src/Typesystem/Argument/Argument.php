@@ -9,7 +9,6 @@ use \Graphpinator\Value\ArgumentValue;
 
 final class Argument implements \Graphpinator\Typesystem\Contract\Component
 {
-    use \Nette\SmartObject;
     use \Graphpinator\Typesystem\Utils\TOptionalDescription;
     use \Graphpinator\Typesystem\Utils\THasDirectives;
     use \Graphpinator\Typesystem\Utils\TDeprecatable;

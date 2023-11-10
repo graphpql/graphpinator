@@ -6,8 +6,6 @@ namespace Graphpinator\Value;
 
 final class FieldValue implements \JsonSerializable
 {
-    use \Nette\SmartObject;
-
     public function __construct(
         private \Graphpinator\Typesystem\Field\Field $field,
         private \Graphpinator\Value\ResolvedValue $value,

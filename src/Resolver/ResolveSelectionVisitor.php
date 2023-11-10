@@ -9,8 +9,6 @@ use \Graphpinator\Typesystem\Location\FieldDefinitionLocation;
 
 final class ResolveSelectionVisitor implements \Graphpinator\Normalizer\Selection\SelectionVisitor
 {
-    use \Nette\SmartObject;
-
     public function __construct(
         private \Graphpinator\Value\ResolvedValue $parentResult,
         private \stdClass $result,

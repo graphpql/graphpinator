@@ -10,8 +10,6 @@ final class VariableTypeInputable extends \Graphpinator\Normalizer\Exception\Nor
 
     public function __construct(string $name)
     {
-        $this->messageArgs = [$name];
-
-        parent::__construct();
+        parent::__construct([$name]);
     }
 }
