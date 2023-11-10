@@ -64,7 +64,7 @@ final class ConvertParserValueVisitor implements \Graphpinator\Parser\Value\Valu
             throw new \Graphpinator\Exception\Value\InvalidValue($this->type->printName(), new \stdClass(), true);
         }
 
-        foreach ($objectVal->getValue() as $name => $temp) {
+        foreach ((array) $objectVal->getValue() as $name => $temp) {
             if ($this->type->getArguments()->offsetExists($name)) {
                 continue;
             }
