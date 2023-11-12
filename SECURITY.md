@@ -4,9 +4,9 @@
 
 | Version | Supported          | PHP version | Status |
 | ------- | ------------------ |-------------|--------|
-| 1.x     | :heavy_check_mark: | 8.0         | Maintained and actively improved with new features.
-| 0.25.x  | :white_check_mark: | 7.4         | Maintained in bugfix only mode.
-| < 0.25  | :x:                | 7.4         | Please upgrade to 0.25 or later.
+| 1.x     | :heavy_check_mark: | 8.1         | Maintained and actively improved with new features.
+| 1.3.x   | :white_check_mark: | 8.0         | Maintained in bugfix only mode.
+| < 0.25  | :x:                | 7.4         | Please upgrade to 1.3 or later.
 
 ## Reporting a Vulnerability
 
