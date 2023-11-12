@@ -110,7 +110,7 @@ final class Graphpinator implements \Psr\Log\LoggerAwareInterface
 
     private static function getLogLevel(\Throwable $exception) : string
     {
-        if ($exception instanceof \Graphpinator\Exception\GraphpinatorBase) {
+        if ($exception instanceof \Graphpinator\Exception\ClientAware) {
             return $exception->isOutputable()
                 ? \Psr\Log\LogLevel::INFO
                 : \Psr\Log\LogLevel::ERROR;
