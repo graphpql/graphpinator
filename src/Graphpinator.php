@@ -10,6 +10,7 @@ final class Graphpinator implements \Psr\Log\LoggerAwareInterface
      * Whether Graphpinator should perform schema integrity checks. Disable in production to avoid unnecessary overhead.
      */
     public static bool $validateSchema = true;
+    private ErrorHandlingMode $errorHandlingMode;
     private \Graphpinator\Parser\Parser $parser;
     private \Graphpinator\Normalizer\Normalizer $normalizer;
     private \Graphpinator\Normalizer\Finalizer $finalizer;
@@ -17,11 +18,14 @@ final class Graphpinator implements \Psr\Log\LoggerAwareInterface
 
     public function __construct(
         \Graphpinator\Typesystem\Schema $schema,
-        private bool $catchExceptions = false,
+        bool|ErrorHandlingMode $errorHandlingMode = ErrorHandlingMode::NONE,
         private \Graphpinator\Module\ModuleSet $modules = new \Graphpinator\Module\ModuleSet([]),
         private \Psr\Log\LoggerInterface $logger = new \Psr\Log\NullLogger(),
     )
     {
+        $this->errorHandlingMode = $errorHandlingMode instanceof ErrorHandlingMode
+            ? $errorHandlingMode
+            : ErrorHandlingMode::fromBool($errorHandlingMode);
         $this->parser = new \Graphpinator\Parser\Parser();
         $this->normalizer = new \Graphpinator\Normalizer\Normalizer($schema);
         $this->finalizer = new \Graphpinator\Normalizer\Finalizer();
@@ -84,17 +88,13 @@ final class Graphpinator implements \Psr\Log\LoggerAwareInterface
 
             return $result;
         } catch (\Throwable $exception) {
-            if (!$this->catchExceptions) {
-                throw $exception;
-            }
-
             $this->logger->log(self::getLogLevel($exception), self::getLogMessage($exception));
 
-            return new \Graphpinator\Result(null, [
-                $exception instanceof \Graphpinator\Exception\ClientAware
-                    ? self::serializeError($exception)
-                    : self::notOutputableResponse(),
-            ]);
+            return match($this->errorHandlingMode) {
+                ErrorHandlingMode::ALL => $this->handleAll($exception),
+                ErrorHandlingMode::CLIENT_AWARE => $this->handleClientAware($exception),
+                ErrorHandlingMode::NONE => $this->handleNone($exception),
+            };
         }
     }
 
@@ -117,6 +117,27 @@ final class Graphpinator implements \Psr\Log\LoggerAwareInterface
         }
 
         return \Psr\Log\LogLevel::EMERGENCY;
+    }
+
+    private function handleAll(\Throwable $exception) : Result
+    {
+        return new \Graphpinator\Result(null, [
+            $exception instanceof \Graphpinator\Exception\ClientAware
+                ? self::serializeError($exception)
+                : self::notOutputableResponse(),
+        ]);
+    }
+
+    private function handleClientAware(\Throwable $exception) : Result
+    {
+        return $exception instanceof \Graphpinator\Exception\ClientAware
+            ? new \Graphpinator\Result(null, [self::serializeError($exception)])
+            : throw $exception;
+    }
+
+    private function handleNone(\Throwable $exception) : never
+    {
+        throw $exception;
     }
 
     private static function serializeError(\Graphpinator\Exception\ClientAware $exception) : array
