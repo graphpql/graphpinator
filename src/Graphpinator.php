@@ -92,6 +92,7 @@ final class Graphpinator implements \Psr\Log\LoggerAwareInterface
 
             return match($this->errorHandlingMode) {
                 ErrorHandlingMode::ALL => $this->handleAll($exception),
+                ErrorHandlingMode::OUTPUTABLE => $this->handleOutputable($exception),
                 ErrorHandlingMode::CLIENT_AWARE => $this->handleClientAware($exception),
                 ErrorHandlingMode::NONE => $this->handleNone($exception),
             };
@@ -126,6 +127,13 @@ final class Graphpinator implements \Psr\Log\LoggerAwareInterface
                 ? self::serializeError($exception)
                 : self::notOutputableResponse(),
         ]);
+    }
+
+    private function handleOutputable(\Throwable $exception) : Result
+    {
+        return $exception instanceof \Graphpinator\Exception\ClientAware && $exception->isOutputable()
+            ? new \Graphpinator\Result(null, [self::serializeError($exception)])
+            : throw $exception;
     }
 
     private function handleClientAware(\Throwable $exception) : Result

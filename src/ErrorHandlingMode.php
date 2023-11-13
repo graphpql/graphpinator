@@ -8,6 +8,8 @@ enum ErrorHandlingMode
 {
     // Catch all exceptions. ClientAware exceptions returns corresponding result, unknown exceptions throw an "Unknown error".
     case ALL;
+    // Catch outputable ClientAware exceptions and return corresponding result, internal exceptions are rethrown.
+    case OUTPUTABLE;
     // Catch ClientAware exceptions and return corresponding result, unknown exceptions are rethrown.
     case CLIENT_AWARE;
     // Rethrow all exceptions.
