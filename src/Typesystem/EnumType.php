@@ -45,6 +45,8 @@ abstract class EnumType extends \Graphpinator\Typesystem\Contract\LeafType
         }
 
         foreach ($ref->getCases() as $case) {
+            \assert($case instanceof \ReflectionEnumBackedCase);
+            
             $values[] = new EnumItem($case->getBackingValue(), self::getItemDescription($case));
         }
 
