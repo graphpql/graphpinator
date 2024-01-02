@@ -59,10 +59,6 @@ Install package using composer
 
 This list excludes graphpinator sub-packages such as graphpinator-common, graphpinator-tokenizer and others.
 
-### Dependency tree of graphpinator packages and extensions
-
-![Dependency tree](docs/dependency_diagram.svg)
-
 ## Contributing
 
 This package is relatively new, so some features might be missing. If you stumble upon something that is not included or is not compliant with the specs, please inform us by creating an issue or discussion. This is not yet another package, where issues and pull-requests lie around for months, so dont hesitate and help us improve the library.
