@@ -63,7 +63,7 @@ This list excludes graphpinator sub-packages such as graphpinator-common, graphp
 
 This project is being made with help by following companies and individuals. Thank you!
 
-[![Webthinx](docs/supporters/webthinx.png "Webthinx")](https://webthinx.com/)
+[![Webthinx](docs/supporters/webthinx.png "Webthinx")](https://www.webthinx.com/)
 
 ## Contributing
 
