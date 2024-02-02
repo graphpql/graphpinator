@@ -53,7 +53,6 @@ Install package using composer
 - PHP 8.1+ 
   - Latest PHP 8.0+ version is 1.3.x
   - Latest PHP 7.4+ version is 0.25.x
-- [infinityloop-dev/utils](https://github.com/infinityloop-dev/utils)
 - [psr/http-message](https://github.com/php-fig/http-message)
 - [psr/log](https://github.com/php-fig/log)
 
