@@ -27,6 +27,7 @@ Feature complete PHP implementation of GraphQL server. Its job is transformation
 |Name|Version|Description|
 |---|---|---|
 |PSR|Bundled||
+|[Symfony](https://github.com/graphpql/graphpinator-symfony)|![GitHub release](https://img.shields.io/github/v/release/graphpql/graphpinator-symfony?label=version)|Adapters for [Symfony framework](https://symfony.com/).|
 |[Nette](https://github.com/graphpql/graphpinator-nette)|![GitHub release](https://img.shields.io/github/v/release/graphpql/graphpinator-nette?label=version)|Adapters for [Nette framework](https://nette.org/).|
 
 - Project is composed of multiple smaller packages, which may be used standalone:
