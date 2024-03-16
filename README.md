@@ -38,6 +38,12 @@ Feature complete PHP implementation of GraphQL server. Its job is transformation
 |[Tokenizer](https://github.com/graphpql/graphpinator-tokenizer)|![GitHub release](https://img.shields.io/github/v/release/graphpql/graphpinator-tokenizer?label=version)|Lexical analyzer of GraphQL document.|
 |[Parser](https://github.com/graphpql/graphpinator-parser)|![GitHub release](https://img.shields.io/github/v/release/graphpql/graphpinator-parser?label=version)|Syntactic analyzer of GraphQL document.|
 
+## Supporters
+
+This project is being made with help by following companies and individuals. Thank you!
+
+[![Webthinx](docs/supporters/webthinx.png "Webthinx")](https://www.webthinx.com/)
+
 ## Installation
 
 Install package using composer
@@ -58,12 +64,6 @@ Install package using composer
 - [psr/log](https://github.com/php-fig/log)
 
 This list excludes graphpinator sub-packages such as graphpinator-common, graphpinator-tokenizer and others.
-
-## Supporters
-
-This project is being made with help by following companies and individuals. Thank you!
-
-[![Webthinx](docs/supporters/webthinx.png "Webthinx")](https://www.webthinx.com/)
 
 ## Contributing
 
