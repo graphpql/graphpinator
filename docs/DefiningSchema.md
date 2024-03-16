@@ -41,7 +41,7 @@ Lets jump stright into examples for each kind.
 
 > \Graphpinator\Typesystem\Type
 
-```
+```graphql
 type Starship {
   id: ID!
   name: String!
@@ -49,7 +49,7 @@ type Starship {
 }
 ```
 
-```
+```php
 <?php declare(strict_types = 1);
 
 use Graphpinator\Normalizer\ArgumentValueSet;
@@ -107,7 +107,7 @@ Types of fields or input types for arguments are instances of desired type.
 
 In order to make Type implement interface, pass `InterfaceSet` to parent constructor.
 
-```
+```php
 public function __construct(\Graphpinator\Type\InterfaceType $interfaceType)
 {
     parent::__construct(new \Graphpinator\Utils\InterfaceSet([$interfaceType]));
@@ -120,7 +120,7 @@ Validation against interface contract is done right after lazy-loading of fields
 
 > \Graphpinator\Type\InterfaceType
 
-```
+```graphql
 interface Character {
   id: ID!
   name: String!
@@ -129,7 +129,7 @@ interface Character {
 }
 ```
 
-```
+```php
 <?php declare(strict_types = 1);
 
 use Graphpinator\Field\Field;
@@ -175,16 +175,17 @@ class Character extends \Graphpinator\Type\InterfaceType
 Fields are defined using `getFieldDefinition` function using the same concept as for defining Types. The only difference is absence of resolve function, because Interfaces cannot be resolved directly. Field definitions are used to validate contract with Types implementing this interface.
 
 Interfaces can also implement other interfaces using the same procedure as types - passing `InterfaceSet` into parent constructor.
+In this case the fields from parent interface are automatically included and there is no need to repeat the field definitions in the child, unless you wish to be more specific - but keep in mind that covariance/contravariance rules must be applied.
 
 ### Union
 
 > \Graphpinator\Type\UnionType
 
-```
+```graphql
 union SearchResult = Human | Droid | Starship
 ```
 
-```
+```php
 class SearchResult extends \Graphpinator\Type\UnionType
 {
     protected const NAME = 'SearchResult';
