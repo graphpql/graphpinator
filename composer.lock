@@ -207,16 +207,16 @@
         },
         {
             "name": "infinityloop-dev/utils",
-            "version": "v2.3",
+            "version": "v2.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/graphpql/utils.git",
-                "reference": "560a91790921ce6ebb67759b789893c884d479a3"
+                "reference": "88d67d3f86013d9a1e1694f21444235e489af005"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/graphpql/utils/zipball/560a91790921ce6ebb67759b789893c884d479a3",
-                "reference": "560a91790921ce6ebb67759b789893c884d479a3",
+                "url": "https://api.github.com/repos/graphpql/utils/zipball/88d67d3f86013d9a1e1694f21444235e489af005",
+                "reference": "88d67d3f86013d9a1e1694f21444235e489af005",
                 "shasum": ""
             },
             "require": {
@@ -249,9 +249,9 @@
             "homepage": "https://www.infinityloop.dev/",
             "support": {
                 "issues": "https://github.com/graphpql/utils/issues",
-                "source": "https://github.com/graphpql/utils/tree/v2.3"
+                "source": "https://github.com/graphpql/utils/tree/v2.3.1"
             },
-            "time": "2023-11-10T10:40:43+00:00"
+            "time": "2024-03-16T14:35:34+00:00"
         },
         {
             "name": "psr/http-message",
