@@ -514,16 +514,18 @@ final class Query extends Type
                     ];
                 },
             ),
+
             // this operation is included in the query type for the sake of simplicity, although it should be within a mutation
             ResolvableField::create(
                 'postReview',
                 Container::Boolean()->notNull(),
                 function (null $parent, ReviewInputDto $input) : bool {
-                    $this->databaseHandler->insertReview($input);
+                    return $this->databaseHandler->insertReview($input);
                 },
             )->setArguments(new ArgumentSet([
                 Argument::create('input', $this->reviewInput->notNull()),
             ])),
+
             // another query field as a service to be more organized
             $this->thirdField,
         ]);
@@ -531,7 +533,7 @@ final class Query extends Type
 }
 ```
 
-As the number of `query` operations grows, the lengh of the file also grows. In order to get more organized it is possible to extend `ResolvableField` and create a separate service for it.
+As the number of `query` operations grows, the lengh of the file can become unwieldy. To enhance organization, it is possible to extend `ResolvableField` and create a separate service for it.
 
 ```php
 <?php declare(strict_types = 1);
@@ -547,7 +549,10 @@ use Graphpinator\Typesystem\Field\ResolvableField;
 
 final class ThirdField extends ResolvableField
 {
-    public function __construct(Starship $starship)
+    public function __construct(
+        Starship $starship,
+        private Dependency $dependency, // dependencies are also injected here and do not pollute the root type
+    )
     {
         parent::__construct('thirdField', $starship->notNull(), $this->resolve(...));
 
@@ -562,6 +567,7 @@ final class ThirdField extends ResolvableField
     }
 }
 ```
+This principle is not limited to the root type fields. It is possible to extend `ResolvableField` to create any number of reusable fields.
 
 ### Type container
 
@@ -604,7 +610,6 @@ schema {
   query: Query
 }
 ```
-
 ```php
 <?php declare(strict_types = 1);
 
@@ -623,7 +628,7 @@ final class StarWarsSchema extends Schema
 }
 ```
 
-In the example above, we created a simple query type and a schema service, which sets the `query` root typ to our `Query` `Type`.
+In the example above, we created a `Schema` service, which sets the `query` root typ to our `Query` `Type`.
 It is not required to create a named class for your `Schema`; you may create a instance of the `Graphpinator\Typesystem\Schema` directly. 
 
 ```php
