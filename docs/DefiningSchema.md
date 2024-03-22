@@ -115,7 +115,7 @@ final class Starship extends Type
 
 Fields are defined using `getFieldDefinition` function. This is (apart from secondary performance advantages) done because of a possible cyclic dependency across fields. Fields are therefore loaded lazily using this method, instead of passing FieldSet directly to constructor.
 
-Types of fields or input types for arguments are instances of desired type.
+The `validateNonNullValue` function allows the programmer to check if the parent resolver passed a correct value for this type. When false an `InvalidValue` is thrown.
 
 #### Implementing interface
 
