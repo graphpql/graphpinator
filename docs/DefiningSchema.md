@@ -595,13 +595,13 @@ The abstract `\Graphpinator\Typesystem\Container` provides static shortcuts to a
  - `Container::directiveSpecifiedBy()`
  - `Container::directiveOneOf()`
 
-By leveraging these shortcuts, developers can efficiently access both custom and predefined types within their GraphQL schema.
+By leveraging these shortcuts, developers can efficiently access the predefined types within their GraphQL schema.
 
 ### Schema
 
 > \Graphpinator\Typesystem\Schema
 
-The `Schema` is a simple wrapper around a `Type container` which identifies the root types. This entity is the final step whilst declaring a `Schema`.
+The `Schema` is a simple wrapper around a `Type container` which identifies the root types. This entity is the final step whilst declaring a GraphQL service.
 An instance of a `Schema` may be used to execute requests against or render a GraphQL type language documentation of you service.
 
 ```graphql
