@@ -2,9 +2,9 @@
 
 ## Introduction
 
-Alpha & Omega in GraphQL type language is a Schema. Schema describes which operations your service supports, which data are expected as inputs and which is your service going to return back to client. All this is done using GraphQL [type system](https://graphql.org/learn/schema/).
+In GraphQL, the Schema is the heart of your API. It describes the operations your service supports, the data structures it expects as inputs, and the data it returns to the client. This is all achieved using GraphQL's [type system](https://graphql.org/learn/schema/).
 
-> Before reading further, make sure to have basic understanding of the GraphQL [type system](https://graphql.org/learn/schema/).
+> Before diving in, ensure you have a basic understanding of the GraphQL type system.
 
 ## Understanding types
 
@@ -12,34 +12,32 @@ This section describes internal architecture of the type system, feel free to sk
 
 ### Modifer & Named types
 
-For GraPHPinator, types are descendants of `\Graphpinator\Typesystem\Contract\Type`.
+In GraPHPinator, types are descendants of the `\Graphpinator\Typesystem\Contract\Type` interface. They can be categorized into two main groups:
 
-Types can either be Named or Modifiers. 
 - Modifier types are the well known `NotNullType` and `ListType`
   - descendants of `\Graphpinator\Typesystem\Contract\ModifierType`
   - basicaly decorators around other types declaring nullability or declaring an array
   - cannot work on their own
-- Named types are "the real" types.
+- Named types are "the real" types which represent the core building blocks of your schema.
   - descendants of `\Graphpinator\Typesystem\Contract\NamedType`
+  - can be either abstract or concrete
+    - Abstract types are `InterfaceType` and `UnionType`
+      - descendants of `\Graphpinator\Typesystem\Contract\AbstractType`
+      - implements logic to decide which concrete type to be resolved
+    - Concrete types are `Type`, `InputType`, `EnumType` and `ScalarType`
+      - descendants of `\Graphpinator\Typesystem\Contract\ConcreteType`
 
-### Named types
-
-Named types can either be Abstract or Concrete.
-- Abstract types are `InterfaceType` and `UnionType`
-  - descendants of `\Graphpinator\Typesystem\Contract\AbstractType`
-  - implements logic to decide which concrete type to be resolved
-- Concrete types are `Type`, `InputType`, `EnumType` and `ScalarType`
-  - descendants of `\Graphpinator\Typesystem\Contract\ConcreteType`
-
-This hierarchy describes "logical" grouping of the types, lets jump stright into definitions for each kind.
+This hierarchy provides a logical grouping for types. Let's jump into how to define each kind!
 
 ## Defining types
 
-Lets jump stright into examples for each kind.
+Here, we'll explore examples for defining each type category in GraPHPinator.
 
 ### Type
 
 > \Graphpinator\Typesystem\Type
+
+Here's an example of a Starship type:
 
 ```graphql
 # My Starship type
@@ -68,7 +66,7 @@ use Graphpinator\Typesystem\Type;
 #[Description('My Starship type')]
 final class Starship extends Type
 {
-    protected const NAME = 'Starship'; // This is required
+    protected const NAME = 'Starship'; // required
   
     public function __construct(
         private LengthUnitType $lengthUnit,
@@ -88,21 +86,21 @@ final class Starship extends Type
             ResolvableField::create(
                 'id', 
                 Container::ID()->notNull(), 
-                function (StarshipDto $parentValue) : string|int {
-                    return $startshipDto->id; // or any other resolve function
+                function (StarshipDto $starshipDto) : string|int {
+                    return $starshipDto->id; // or any other resolve function
                 },
             ),
             ResolvableField::create(
                 'name', 
                 Container::String()->notNull(), 
-                function (StarshipDto $parentValue) : string {
+                function (StarshipDto $starshipDto) : string {
                     // resolve function
                 },
             ),
             ResolvableField::create(
                 'length', 
                 Container::Float(), 
-                function (StarshipDto $parentValue, LengthUnitEnum $unit) : ?float {
+                function (StarshipDto $starshipDto, LengthUnitEnum $unit) : ?float {
                     // resolve function
                 },
             )->setArguments(new ArgumentSet([
