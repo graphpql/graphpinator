@@ -74,6 +74,7 @@ final class Starship extends Type
         private LengthUnitType $lengthUnit,
     )
     {
+        parent::__construct();
     }
   
     public function validateNonNullValue(mixed $rawValue) : bool
@@ -122,17 +123,18 @@ The `validateNonNullValue` function allows the programmer to check if the parent
 In order to make Type implement interface, pass `InterfaceSet` to parent constructor.
 
 ```php
-public function __construct(\Graphpinator\Type\InterfaceType $interfaceType)
+public function __construct(
+    \App\Type\MyInterface $interfaceType, // descendant of Graphpinator\Typesystem\InterfaceType
 {
-    parent::__construct(new \Graphpinator\Utils\InterfaceSet([$interfaceType]));
+    parent::__construct(new \Graphpinator\Typesystem\InterfaceSet([$interfaceType]));
 }
 ```
 
-Validation against interface contract is done right after lazy-loading of fields.
+The contract of the interface must be satisfied, the variance rules apply on both argument types and field result types. Validation against interface contract is done right after lazy-loading of fields.
 
 ### Interface
 
-> \Graphpinator\Type\InterfaceType
+> \Graphpinator\Typesystem\InterfaceType
 
 ```graphql
 interface Character {
@@ -146,54 +148,59 @@ interface Character {
 ```php
 <?php declare(strict_types = 1);
 
-use Graphpinator\Field\Field;
-use Graphpinator\Type\Container\Container;
+namespace App\Type;
 
-class Character extends \Graphpinator\Type\InterfaceType
+use App\Type\Episode;
+use Graphpinator\Typesystem\Attribute\Description;
+use Graphpinator\Typesystem\Container;
+use Graphpinator\Typesystem\Field\Field;
+use Graphpinator\Typesystem\Field\FieldSet;
+use Graphpinator\Typesystem\InterfaceType;
+
+#[Description('My Chanracter interface')]
+final class Character extends \Graphpinator\Typesystem\InterfaceType
 {
   protected const NAME = 'Character';
   
-  private \Graphpinator\Type\EnumType $episode;
-  private \Graphpinator\Type\Type $character;
-  
-  public function __construct(\Graphpinator\Type\EnumType $episode, \Graphpinator\Type\Type $character)
+  public function __construct(
+      private Episode $episode,
+  )
   {
-    $this->episode = $episode;
-    $this->character = $character;
+      parent::__construct();
   }
   
-  protected function getFieldDefinition() : \Graphpinator\Field\FieldSet
+  protected function getFieldDefinition() : FieldSet
   {
-      return new \Graphpinator\Field\FieldSet([
-          new Field(
-            'id', 
-            Container::ID()->notNull(), 
+      return new FieldSet([
+          Field::create(
+              'id', 
+              Container::ID()->notNull(), 
           ),
-          new Field(
-            'name', 
-            Container::String()->notNull(), 
+          Field::create(
+              'name', 
+              Container::String()->notNull(), 
           ),
-          new Field(
-            'friends', 
-            $this->character->list(),
+          Field::create(
+              'friends', 
+              $this->list(), // nullable list with nullable contents
           ),
-          new Field(
-            'appearsIn', 
-            $this->episode->list()->notNull(),
+          Field::create(
+              'appearsIn', 
+              $this->episode->list()->notNull(),  // not-null list with nullable contents
           ),
       ]);
   } 
 }
 ```
 
-Fields are defined using `getFieldDefinition` function using the same concept as for defining Types. The only difference is absence of resolve function, because Interfaces cannot be resolved directly. Field definitions are used to validate contract with Types implementing this interface.
+Fields are defined using `getFieldDefinition` function using the same concept as for defining Types. The only difference is the absence of a resolve function, because Interfaces cannot be resolved directly. Field definitions are used to validate contract with Types implementing this interface.
 
 Interfaces can also implement other interfaces using the same procedure as types - passing `InterfaceSet` into parent constructor.
 In this case the fields from parent interface are automatically included and there is no need to repeat the field definitions in the child, unless you wish to be more specific - but keep in mind that covariance/contravariance rules must be applied.
 
 ### Union
 
-> \Graphpinator\Type\UnionType
+> \Graphpinator\Typesystem\UnionType
 
 ```graphql
 union SearchResult = Human | Droid | Starship
