@@ -27,7 +27,7 @@ In GraPHPinator, types are descendants of the `\Graphpinator\Typesystem\Contract
 
 This hierarchy provides a logical grouping for types. Let's jump into how to define each kind!
 
-## Defining types
+## Creating types
 
 Here, we'll explore examples for defining each type category in GraPHPinator.
 
@@ -319,7 +319,7 @@ final class EmailAddressType extends ScalarType
 
 The `validateNonNullValue` works similarly to that in `Type`. When the function returns `false` an `InvalidValue` exception is thrown. This can be used to restrict the value of this scalar to a valid email address.
 
-This example is taken from the [extra-types package](https://github.com/graphpql/graphpinator-extra-types), which includes some useful types beyond the scope of the official specification.
+This example is taken from the extra-types [package](https://github.com/graphpql/graphpinator-extra-types), which includes some useful types beyond the scope of the official specification.
 
 ### Enum
 
@@ -457,7 +457,79 @@ When a value is omitted by the GraphQL request, the value will not be set into t
 
 ## Creating schema
 
-In order to execute any query using GraPHPinator, you are expected to create instance of `\Graphpinator\Type\Schema`.
+A schema serves as the orchestrator of all components within a GraphQL API. It encompasses a registry of recognized types and directives and specifies the root types responsible for handling `query`, `mutation`, and `subscription` requests.
+
+### Type container
+
+> \Graphpinator\Typesystem\Container
+
+The type container serves as a repository for all known types and directives within a schema.
+Each type class must be a singletos and must be registered within the container.
+An included basic implementation, `\Graphpinator\SimpleContainer`, facilitates this by accepting arrays of types and directives as arguments.
+However, it's recommended to populate these arrays through a dependency injection (DI) solution.
+
+> Further details regarding DI configuration should be accessible within the adapter package.
+> There are currently packages available for [Symfony](https://github.com/graphpql/graphpinator-symfony) and [Nette](https://github.com/graphpql/graphpinator-nette) frameworks.
+
+Scalar types and directives specified by the GraphQL specification are automatically bundled within the container and need not be registered alongside custom types. 
+The abstract `\Graphpinator\Typesystem\Container` provides static shortcuts to allow quick access to built-in types:
+
+ - `Container::Int()`
+ - `Container::Float()`
+ - `Container::String()`
+ - `Container::Boolean()`
+ - `Container::ID()`
+ - `Container::directiveSkip()`
+ - `Container::directiveInclude()`
+ - `Container::directiveDeprecated()`
+ - `Container::directiveSpecifiedBy()`
+ - `Container::directiveOneOf()`
+
+By leveraging these shortcuts, developers can efficiently access both custom and predefined types within their GraphQL schema.
+
+### Schema
+
+> \Graphpinator\Typesystem\Schema
+
+The `Schema` is a simple object with a `Type container` which identifies the root types. This entity is the final step whilst declaring a schema.
+An instance of a `Schema` may be used to execute requests against or render a GraphQL type language documentation of you service.
+
+```graphql
+# My StarWars schema
+schema {
+  query: Query
+}
+```
+```php
+
+```
+```php
+<?php declare(strict_types = 1);
+
+namespace App;
+
+use Graphpinator\Typesystem\Schema;
+
+final class StarWarsSchema extends Schema
+{
+    public function __construct(Container $container)
+    {
+        parent::__construct($container, $container->getType('Query'));
+
+        $this->setDescription('My StarWars schema');
+    }
+}
+```
+
+In the example above, we created a simple query type and a schema service, which sets the `query` root typ to our `Query` `Type`.
+It is not required to create a named class for your `Schema`; you may create a instance of the `Graphpinator\Typesystem\Schema` directly. 
+
+```php
+$container = new \Graphpinator\SimpleContainer([new \App\Type\Query()], []);
+$schema = new \Graphpinator\Typesystem\Schema($container, $container->getType('query'));
+```
+
+While it's not mandatory to create a named class for your `Schema`, doing so can make organization easier, especially as your application grows to support multiple schemas.
 
 ## Directives
 
