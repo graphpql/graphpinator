@@ -13,7 +13,7 @@ All the necessary information is presented on [the official website](http://grap
 This library aims at the [latest draft of the GraphQL specification](http://spec.graphql.org/draft/).
 The current version supports all the features and is ready to be used in real-world applications.
 
-Known incompatibilities can be found in [issues with "Spec incompatibility" label](https://github.com/infinityloop-dev/graphpinator/issues?q=is%3Aopen+is%3Aissue+label%3A%22Ctg+-+Spec+incompatibility%22). Those deviations from specification should not affect your application in any way, but are listed anyway for full transparency.
+Known incompatibilities can be found in [issues with "Spec incompatibility" label](https://github.com/graphpql/graphpinator/issues?q=is%3Aopen+is%3Aissue+label%3A%22Ctg+-+Spec+incompatibility%22). Those deviations from specification should not affect your application in any way, but are listed anyway for full transparency.
 
 ## Table of contents:
 
@@ -23,9 +23,9 @@ This section includes some general information about the library and how to use 
 
 > If you prefer to read less text and more code - check out the Examples
 
-- [Schema definition and typesystem](https://github.com/infinityloop-dev/graphpinator/blob/master/docs/DefiningSchema.md)
+- [Schema definition and typesystem](/docs/typesystem.md)
 - Request execution
-- [How does this lib work internally](https://github.com/infinityloop-dev/graphpinator/blob/master/docs/UnderTheHood.md)
+- [How does this lib work internally](/docs/UnderTheHood.md)
 
 ### Addons
 
@@ -45,13 +45,13 @@ Information about internal components, which may be used as standalone tools.
 
 ## Examples:
 
-1. [Hello World](https://github.com/infinityloop-dev/graphpinator/blob/master/docs/examples/HelloWorld.md)
-2. [Union](https://github.com/infinityloop-dev/graphpinator/blob/master/docs/examples/Union.md)
-3. [Interface](https://github.com/infinityloop-dev/graphpinator/blob/master/docs/examples/Interface.md)
-4. [Enum](https://github.com/infinityloop-dev/graphpinator/blob/master/docs/examples/Enum.md)
-5. [Arguments](https://github.com/infinityloop-dev/graphpinator/blob/master/docs/examples/Arguments.md)
-6. [Input](https://github.com/infinityloop-dev/graphpinator/blob/master/docs/examples/Input.md)
-7. [Deprecated](https://github.com/infinityloop-dev/graphpinator/blob/master/docs/examples/Deprecated.md)
-8. [Constraints](https://github.com/infinityloop-dev/graphpinator/blob/master/docs/examples/Constraints.md)
+1. [Hello World](/docs/examples/HelloWorld.md)
+2. [Union](/docs/examples/Union.md)
+3. [Interface](/docs/examples/Interface.md)
+4. [Enum](/docs/examples/Enum.md)
+5. [Arguments](/docs/examples/Arguments.md)
+6. [Input](/docs/examples/Input.md)
+7. [Deprecated](/docs/examples/Deprecated.md)
+8. [Constraints](/examples/Constraints.md)
 9. Addon types
 10. Upload
