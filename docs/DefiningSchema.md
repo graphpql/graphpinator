@@ -110,17 +110,24 @@ final class Starship extends Type
 }
 ```
 
-Fields are defined using `getFieldDefinition` function. This is (apart from secondary performance advantages) done because of a unavoidable cyclic dependency across fields. Fields are therefore loaded lazily using this method, instead of passing `FieldSet` directly to constructor. 
+Fields are defined using the `getFieldDefinition` function. 
+This is done, apart from potential performance benefits, due to an unavoidable cyclic dependency across fields. 
+Therefore, fields are loaded lazily using this method instead of passing FieldSet directly to the constructor.
 
-The resolve function always recives at least one parameter - the value from a parent resolver (or a `null` if this is a first level resolver). Additional parameter is passed for each of the fields arguments. In the example above, the `length` field has an argument `unit` which is of the `LengthUnit` enum type, so the resolve function recieves an additional parameter `$unit` of the `LengthUnit` native enum type.
+The resolve function always receives at least one parameter - the value from a parent resolver (or null if this is a first-level resolver). 
+Additional parameters are passed for each of the field's arguments. 
+In the example above, the `length` field has an argument `unit` of the `LengthUnit` enum type, so the resolve function receives an additional parameter `$unit` of the `LengthUnit` native enum type.
 
-> GraphQL specification allows field arguments and input fields to be ommited and have an empty value (not a `null` but unspecified). This functionality is deliberatly not implemented for a field arguments to leverage PHP type safety. It works as expected for the input fields.
+> The GraphQL specification allows field arguments and input fields to be omitted and have an empty value (not `null` but unspecified).
+> This functionality is deliberately not implemented for field arguments to leverage PHP type safety. It works as expected for input fields.
 
-The `validateNonNullValue` function allows the programmer to check if the parent resolver passed a correct value for this type. The argument is any value resolved from parent resolver, except `null` which has a special meaning for the GraphQL. When the function returns `false` an `InvalidValue` is thrown.
+The `validateNonNullValue` function allows the programmer to check if the parent resolver passed a correct value for this type. 
+The argument is any value resolved from the parent resolver, except `null`, which has a special meaning in GraphQL. 
+When the function returns `false`, an `InvalidValue` exception is thrown.
 
 #### Implementing interface
 
-In order to make Type implement interface, pass `InterfaceSet` to parent constructor.
+To make a `Type` implement an interface, pass an `InterfaceSet` to the parent constructor.
 
 ```php
 public function __construct(
@@ -130,7 +137,7 @@ public function __construct(
 }
 ```
 
-The contract of the interface must be satisfied, the variance rules apply on both argument types and field result types. Validation against interface contract is done right after lazy-loading of fields.
+The contract of the interface must be satisfied; variance rules apply to both argument types and field result types. Validation against the interface contract is done right after lazy-loading of fields.
 
 ### Interface
 
@@ -208,14 +215,20 @@ final class Character extends InterfaceType
 }
 ```
 
-Fields are defined using `getFieldDefinition` function using the same concept as for defining `Type`. The only difference is the absence of a resolve function, because Interfaces cannot be resolved directly. Field definitions are used to validate contract with Types implementing this interface.
+Fields are defined using `getFieldDefinition` function, following the same concept as defining `Type`. 
+The difference lies in the absence of a resolve function because interfaces cannot be resolved directly. Field definitions are used to validate the contract with types implementing this interface.
 
-Additionally, the `createResolvedValue` function must be implemented to decide which concrete type the resolved value belongs to. The argument is any value resolved from parent resolver, except `null` which has a special meaning for the GraphQL. The result of this method is a structure of the concrete type and the undelying value which will be passed into it. 
+Additionally, the `createResolvedValue` function must be implemented to determine which concrete type the resolved value belongs to. 
+The argument is any value resolved from the parent resolver, except `null`, which has a special meaning in GraphQL. 
+The result of this method is a structure of the concrete type and the underlying value which will be passed into it.
 
-This may cause trouble as the cyclic dependency appears, the contrete types need the interface in order to implement it and the interface need the conrete types in order to resolve the value. This is a common scenario in the GraphQL, as the types reference each other and can resolve in cycles. In this example we worked around it by passing an accessor as a constructor dependency instead of the types directly. The implementation of the accessor depends on which framework and/or DI solution you use.
+This may pose a challenge as cyclic dependencies appear; the concrete types need the interface to implement it, and the interface needs the concrete types to resolve the value. 
+This is a common scenario in GraphQL, as types reference each other and can result in cycles. In this example, we worked around it by passing an accessor as a constructor dependency instead of the types directly. 
+The implementation of the accessor depends on which framework and/or DI solution you use.
 
-Interfaces can also implement other interfaces using the same procedure as types - passing `InterfaceSet` into parent constructor.
-In this case the fields from parent interface are automatically included and there is no need to repeat the field definitions in the child, unless you wish to be more specific - but keep in mind that covariance/contravariance rules must be applied.
+Interfaces can also implement other interfaces using the same procedure as types, by passing an `InterfaceSet` into the parent constructor.
+In this case, the fields from the parent interface are automatically included, and there is no need to repeat the field definitions in the child unless you wish to be more specific. 
+However, keep in mind that covariance/contravariance rules must be applied.
 
 ### Union
 
@@ -266,7 +279,7 @@ final class SearchResult extends UnionType
 }
 ```
 
-In similar fashion as for the `Interface`, the `createResolvedValue` function must be implemented to decide which type the resolved value belongs to.
+Similarly to `Interface`, the `createResolvedValue` function must be implemented to determine which type the resolved value belongs to.
 
 ### Scalar
 
@@ -304,9 +317,9 @@ final class EmailAddressType extends ScalarType
 }
 ```
 
-The `validateNonNullValue` works the same way as in `Type` - when the function returns `false` an `InvalidValue` is thrown. This can be used to restrict the value of this scalar to a valid email address.
+The `validateNonNullValue` works similarly to that in `Type`. When the function returns `false` an `InvalidValue` exception is thrown. This can be used to restrict the value of this scalar to a valid email address.
 
-This example is taken from the [extra-types package](https://github.com/graphpql/graphpinator-extra-types) which includes some useful types out of the scope of the official spceficition.
+This example is taken from the [extra-types package](https://github.com/graphpql/graphpinator-extra-types), which includes some useful types beyond the scope of the official specification.
 
 ### Enum
 
@@ -357,9 +370,10 @@ enum Episode : string
 }
 ```
 
-The enums are created by extending the `EnumType` and passing and `EnumItemsSet` to the parent constructor. This sounds like too much, but it can be easily automated using PHP native enums (it must be string backed) and the `fromEnum` shortcut function.
+The enums are created by extending the `EnumType` and passing and `EnumItemsSet` to the parent constructor. 
+While this may seem verbose, it can be easily automated using PHP native enums (backed by string) and the `fromEnum` shortcut function.and the `fromEnum` shortcut function.
 
-The `Description` attribute can be also added to each enum case.
+The `Description` attribute can also be added to each enum case for additional documentation.
 
 ### Input
 
@@ -427,16 +441,19 @@ final class ReviewInputDto
 
 ```
 
-Input fields are defined using `getFieldDefinition` function using the same concept as for defining `Type`, but now we create instances of an `Argument`. The default value can be set to each argument using a `setDefaultValue` function. 
+Input fields are defined using the `getFieldDefinition` function similarly to defining `Type`, but now we create instances of an `Argument`. 
+The default value can be set to each argument using a `setDefaultValue` function. 
 
-When an input type is used as a field argument then the `\stdClass` value is provided to the resolver. This can be changed using an `DATA_CLASS` contant where a classname of desired DTO can be placed. The DTO may declare the properties with names and types corresponding to the declaration of an input type. 
+When an input type is used as a field argument, the `\stdClass` value is provided to the resolver. 
+This can be changed using an `DATA_CLASS` constant, where the classname of the desired DTO can be placed. 
+The DTO may declare properties with names and types corresponding to the declaration of an input type.
 
 > The properties must be `public` and must not be `readonly` because GraPHPinator hydrates the properties one by one and not by any constructor.
 
-When a value is ommited by the GraphQL request, the value will not be set into the DTO. This has varied concequeces depending on the implementation of the DTO.
-  - When a `DATA_CLASS` is not overwritten - the ommited property does not exist in the hydrated `\stdClass` instance.
-  - When a `DATA_CLASS` is overwritten and the property is not typed - the ommited property exist in the hydrated DTO instance and has a `null` value, as PHP makes `null` the default for properties without a type.
-  - When a `DATA_CLASS` is overwritten and the property is typed - the ommited property exist in the hydrated DTO instance and has a value of `unset`, as is PHP behaviour on typed properties.
+When a value is omitted by the GraphQL request, the value will not be set into the DTO. This has varied consequences depending on the implementation of the DTO:
+  - When a `DATA_CLASS` is not overwritten, the ommited property does not exist in the hydrated `\stdClass` instance.
+  - When a `DATA_CLASS` is overwritten and the property is not typed, the ommited property exist in the hydrated DTO instance and has a `null` value, as PHP makes `null` the default for properties without a type.
+  - When a `DATA_CLASS` is overwritten and the property is typed, the ommited property exist in the hydrated DTO instance with an `unset` value, following PHP's behavior for typed properties.
 
 ## Creating schema
 
