@@ -371,7 +371,7 @@ enum Episode : string
 ```
 
 The enums are created by extending the `EnumType` and passing and `EnumItemsSet` to the parent constructor. 
-While this may seem verbose, it can be easily automated using PHP native enums (backed by string) and the `fromEnum` shortcut function.and the `fromEnum` shortcut function.
+While this may seem verbose, it can be easily automated using PHP native enums (backed by string) and the `fromEnum` shortcut function.
 
 The `Description` attribute can also be added to each enum case for additional documentation.
 
