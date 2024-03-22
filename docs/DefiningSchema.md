@@ -42,13 +42,13 @@ Lets jump stright into examples for each kind.
 > \Graphpinator\Typesystem\Type
 
 ```graphql
+# My Starship type
 type Starship {
   id: ID!
   name: String!
   length(unit: LengthUnit! = METER): Float
 }
 ```
-
 ```php
 <?php declare(strict_types = 1);
 
@@ -137,6 +137,7 @@ The contract of the interface must be satisfied, the variance rules apply on bot
 > \Graphpinator\Typesystem\InterfaceType
 
 ```graphql
+# My Character interface
 interface Character {
   id: ID!
   name: String!
@@ -144,7 +145,6 @@ interface Character {
   appearsIn: [Episode]!
 }
 ```
-
 ```php
 <?php declare(strict_types = 1);
 
@@ -219,9 +219,9 @@ In this case the fields from parent interface are automatically included and the
 > \Graphpinator\Typesystem\UnionType
 
 ```graphql
+# My SearchResult union
 union SearchResult = Human | Droid | Starship
 ```
-
 ```php
 <?php declare(strict_types = 1);
 
@@ -266,6 +266,44 @@ final class SearchResult extends UnionType
 In similar fashion as for the `Interface`, the `createResolvedValue` function must be implemented to decide which type the resolved value belongs to.
 
 ### Scalar
+
+> \Graphpinator\Typesystem\ScalarType
+
+```graphql
+# EmailAddress type - string which contains valid email address.
+scalar EmailAddress @specifiedBy(url: "https://datatracker.ietf.org/doc/html/rfc5322#section-3.4.1")
+```
+```php
+<?php declare(strict_types = 1);
+
+namespace App\Type;
+
+use Graphpinator\Typesystem\Attribute\Description;
+use Graphpinator\Typesystem\ScalarType;
+
+#[Desctiption('EmailAddress type - string which contains valid email address.')]
+final class EmailAddressType extends ScalarType
+{
+    protected const NAME = 'EmailAddress';
+
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->setSpecifiedBy('https://datatracker.ietf.org/doc/html/rfc5322#section-3.4.1');
+    }
+
+    public function validateNonNullValue(mixed $rawValue) : bool
+    {
+        return \is_string($rawValue)
+            && (bool) \filter_var($rawValue, \FILTER_VALIDATE_EMAIL);
+    }
+}
+```
+
+The `validateNonNullValue` works the same way as in `Type` - when the function returns `false` an `InvalidValue` is thrown. This can be used to restrict the value of this scalar to a valid email address.
+
+This example is taken from the [extra-types package](https://github.com/graphpql/graphpinator-extra-types) which includes some useful types out of the scope of the official spceficition.
 
 ### Enum
 
