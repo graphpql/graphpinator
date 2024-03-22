@@ -10,8 +10,6 @@ In GraphQL, the Schema is the heart of your API. It describes the operations you
 
 This section describes internal architecture of the type system, feel free to skip to next section.
 
-### Modifer & Named types
-
 In GraPHPinator, types are descendants of the `\Graphpinator\Typesystem\Contract\Type` interface. They can be categorized into two main groups:
 
 - Modifier types are the well known `NotNullType` and `ListType`
