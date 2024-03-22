@@ -23,32 +23,11 @@ This section includes some general information about the library and how to use 
 
 > If you prefer to read less text and more code - check out the Examples
 
-- [Schema definition](https://github.com/infinityloop-dev/graphpinator/blob/master/docs/DefiningSchema.md)
+- [Schema definition and typesystem](https://github.com/infinityloop-dev/graphpinator/blob/master/docs/DefiningSchema.md)
 - Request execution
 - [How does this lib work internally](https://github.com/infinityloop-dev/graphpinator/blob/master/docs/UnderTheHood.md)
 
-### Type system
-
-This section includes detailed information about how this library represents the GraphQL typesystem.
-
-#### GraphQL type abstractions:
-
-- Type
-- Union
-- Interface
-- Enum
-- Input
-- List & NotNull
-- Directive
-- Schema
-
-#### Other abstractions:
-
-- Field
-- Argument
-- Type Container
-
-#### Addons
+### Addons
 
 Information about unofficial extensions this library provides.
 
