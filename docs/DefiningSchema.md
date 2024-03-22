@@ -114,7 +114,11 @@ final class Starship extends Type
 }
 ```
 
-Fields are defined using `getFieldDefinition` function. This is (apart from secondary performance advantages) done because of a possible cyclic dependency across fields. Fields are therefore loaded lazily using this method, instead of passing FieldSet directly to constructor.
+Fields are defined using `getFieldDefinition` function. This is (apart from secondary performance advantages) done because of a unavoidable cyclic dependency across fields. Fields are therefore loaded lazily using this method, instead of passing `FieldSet` directly to constructor. 
+
+The resolve function always recives at least one parameter - the value from a parent resolver (or a `null` if this is a first level resolver). Additional parameter is passed for each of the fields arguments. In the example above, the `length` field has an argument `unit` which is of the `LengthUnit` enum type, so the resolve function recieves an additional parameter `$unit` of the `LengthUnit` native enum type.
+
+> GraphQL specification allows field arguments and input fields to be ommited and have an empty value (not a `null` but unspecified). This functionality is deliberatly not implemented for a field arguments to leverage PHP type safety. It works as expected for the input fields.
 
 The `validateNonNullValue` function allows the programmer to check if the parent resolver passed a correct value for this type. The argument is any value resolved from parent resolver, except `null` which has a special meaning for the GraphQL. When the function returns `false` an `InvalidValue` is thrown.
 
@@ -363,7 +367,84 @@ The `Description` attribute can be also added to each enum case.
 
 ### Input
 
+> \Graphpinator\Typesystem\InputType
+
+```graphql
+# My ReviewInput input
+input ReviewInput {
+  # Required
+  stars: Int!
+  commentary: String = null
+  email: EmailAddress = null
+}
+```
+```php
+<?php declare(strict_types = 1);
+
+namespace App\Type;
+
+use App\Dto\ReviewInput;
+use App\Type\EmailAddressType;
+use Graphpinator\Typesystem\Argument\Argument;
+use Graphpinator\Typesystem\Argument\ArgumentSet;
+use Graphpinator\Typesystem\Attribute\Description;
+use Graphpinator\Typesystem\Container;
+use Graphpinator\Typesystem\InputType;
+
+#[Description('My ReviewInput input')]
+final class ReviewInput extends InputType
+{
+    protected const string NAME = 'ReviewInput';
+    protected const string DATA_CLASS = ReviewInputDto::class;
+
+    public function __construct(
+        private EmailAddressType $emailAddressType,
+    )
+    {
+        parent::__construct();
+    }
+
+    protected function getFieldDefinition() : ArgumentSet
+    {
+        return new ArgumentSet([
+            Argument::create('stars', Container::Int()->notNull())
+                ->setDescription('Required'),
+            Argument::create('commentary', Container::String())
+                ->setDefaultValue(null),
+            Argument::create('email', $this->emailAddressType)
+                ->setDefaultValue(null),
+        ]);
+    }
+}
+```
+```php
+<?php declare(strict_types = 1);
+
+namespace App\Dto;
+
+final class ReviewInputDto
+{
+    public int $stars;
+    public string $commentary;
+    public string $email;
+}
+
+```
+
+Input fields are defined using `getFieldDefinition` function using the same concept as for defining `Type`, but now we create instances of an `Argument`. The default value can be set to each argument using a `setDefaultValue` function. 
+
+When an input type is used as a field argument then the `\stdClass` value is provided to the resolver. This can be changed using an `DATA_CLASS` contant where a classname of desired DTO can be placed. The DTO may declare the properties with names and types corresponding to the declaration of an input type. 
+
+> The properties must be `public` and must not be `readonly` because GraPHPinator hydrates the properties one by one and not by any constructor.
+
+When a value is ommited by the GraphQL request, the value will not be set into the DTO. This has varied concequeces depending on the implementation of the DTO.
+  - When a `DATA_CLASS` is not overwritten - the ommited property does not exist in the hydrated `\stdClass` instance.
+  - When a `DATA_CLASS` is overwritten and the property is not typed - the ommited property exist in the hydrated DTO instance and has a `null` value, as PHP makes `null` the default for properties without a type.
+  - When a `DATA_CLASS` is overwritten and the property is typed - the ommited property exist in the hydrated DTO instance and has a value of `unset`, as is PHP behaviour on typed properties.
 
 ## Creating schema
 
 In order to execute any query using GraPHPinator, you are expected to create instance of `\Graphpinator\Type\Schema`.
+
+## Directives
+
