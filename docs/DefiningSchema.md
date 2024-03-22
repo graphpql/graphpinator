@@ -142,7 +142,7 @@ interface Character {
   id: ID!
   name: String!
   friends: [Character]
-  appearsIn: [Episode]!
+  appearsIn: [Episode!]!
 }
 ```
 ```php
@@ -186,11 +186,14 @@ final class Character extends InterfaceType
             ),
             Field::create(
                 'friends', 
-                $this->list(), // nullable list with nullable contents
+                $this->list(),
             ),
             Field::create(
                 'appearsIn', 
-                $this->episode->list()->notNull(),  // not-null list with nullable contents
+                // $this->episode->list(), // nullable list with nullable contents
+                // $this->episode->notNull()->list(), // nullable list with not-null contents
+                // $this->episode->list()->notNull(), // not-null list with nullable contents
+                $this->episode->notNullList(), // not-null list with not-null contents
             ),
         ]);
     }
@@ -306,6 +309,57 @@ The `validateNonNullValue` works the same way as in `Type` - when the function r
 This example is taken from the [extra-types package](https://github.com/graphpql/graphpinator-extra-types) which includes some useful types out of the scope of the official spceficition.
 
 ### Enum
+
+> \Graphpinator\Typesystem\EnumType
+
+```graphql
+# My Episode enum
+enum Episode {
+  NEWHOPE
+  EMPIRE
+  # <3
+  JEDI
+}
+```
+```php
+<?php declare(strict_types = 1);
+
+namespace App\Type;
+
+use App\Enum\Episode as EpisodeEnum;
+use Graphpinator\Typesystem\Attribute\Description;
+use Graphpinator\Typesystem\EnumType;
+
+#[Description('My Episode enum')]
+final class Episode extends EnumType
+{
+    protected const string NAME = 'Episode';
+
+    public function __construct()
+    {
+        parent::__construct(self::fromEnum(EpisodeEnum::class));
+    }
+}
+```
+```php
+<?php declare(strict_types = 1);
+
+namespace App\Enum;
+
+use Graphpinator\Typesystem\Attribute\Description;
+
+enum Episode : string
+{
+    case NEWHOPE = 'NEWHOPE';
+    case EMPIRE = 'EMPIRE';
+    #[Description('<3')]
+    case JEDI = 'JEDI';
+}
+```
+
+The enums are created by extending the `EnumType` and passing and `EnumItemsSet` to the parent constructor. This sounds like too much, but it can be easily automated using PHP native enums (it must be string backed) and the `fromEnum` shortcut function.
+
+The `Description` attribute can be also added to each enum case.
 
 ### Input
 
