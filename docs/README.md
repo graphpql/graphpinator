@@ -23,9 +23,9 @@ This section includes some general information about the library and how to use 
 
 > If you prefer to read less text and more code - check out the Examples
 
-- [Schema definition and typesystem](/docs/typesystem.md)
+- [Schema definition and typesystem](typesystem.md)
 - Request execution
-- [How does this lib work internally](/docs/UnderTheHood.md)
+- [How does this lib work internally](UnderTheHood.md)
 
 ### Addons
 
@@ -45,13 +45,13 @@ Information about internal components, which may be used as standalone tools.
 
 ## Examples:
 
-1. [Hello World](/docs/examples/HelloWorld.md)
-2. [Union](/docs/examples/Union.md)
-3. [Interface](/docs/examples/Interface.md)
-4. [Enum](/docs/examples/Enum.md)
-5. [Arguments](/docs/examples/Arguments.md)
-6. [Input](/docs/examples/Input.md)
-7. [Deprecated](/docs/examples/Deprecated.md)
-8. [Constraints](/examples/Constraints.md)
+1. [Hello World](examples/HelloWorld.md)
+2. [Union](examples/Union.md)
+3. [Interface](examples/Interface.md)
+4. [Enum](examples/Enum.md)
+5. [Arguments](examples/Arguments.md)
+6. [Input](examples/Input.md)
+7. [Deprecated](examples/Deprecated.md)
+8. [Constraints](examples/Constraints.md)
 9. Addon types
 10. Upload
