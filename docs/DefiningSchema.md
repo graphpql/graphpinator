@@ -459,19 +459,123 @@ When a value is omitted by the GraphQL request, the value will not be set into t
 
 A schema serves as the orchestrator of all components within a GraphQL API. It encompasses a registry of recognized types and directives and specifies the root types responsible for handling `query`, `mutation`, and `subscription` requests.
 
+### Root types
+
+In GraPHPinator, root types are standard object types, with the distinction that the parent value is always `null`.
+
+```php
+<?php declare(strict_types = 1);
+
+namespace App\Type;
+
+use App\Dto\DroidDto;
+use App\Dto\StarshipDto;
+use App\Dto\ReviewInputDto;
+use App\Query\ThirdField;
+use App\Type\ReviewInput;
+use App\Type\SearchResult;
+use Graphpinator\Typesystem\Attribute\Description;
+use Graphpinator\Typesystem\Container;
+use Graphpinator\Typesystem\Field\ResolvableField;
+use Graphpinator\Typesystem\Field\ResolvableFieldSet;
+use Graphpinator\Typesystem\Type;
+
+#[Description('My Query type')]
+final class Query extends Type
+{
+    protected const NAME = 'Query';
+
+    public function __construct(
+        private SearchResult $searchResult,
+        private ReviewInput $reviewInput,
+        private ThirdField $thirdField,
+        private DatabaseHandler $databaseHandler,
+    )
+    {
+        parent::__construct();
+    }
+
+    public function validateNonNullValue(mixed $rawValue) : bool
+    {
+        return true;
+    }
+
+    protected function getFieldDefinition() : ResolvableFieldSet
+    {
+        return new ResolvableFieldSet([
+            ResolvableField::create(
+                'search',
+                $this->searchResult->notNullList(),
+                function (null $parent) : array {
+                    // the return type for a list do not have to an array, any iterable is accepted
+                    return [
+                        new DroidDto(),
+                        new StarshipDto(),
+                    ];
+                },
+            ),
+            // this operation is included in the query type for the sake of simplicity, although it should be within a mutation
+            ResolvableField::create(
+                'postReview',
+                Container::Boolean()->notNull(),
+                function (null $parent, ReviewInputDto $input) : bool {
+                    $this->databaseHandler->insertReview($input);
+                },
+            )->setArguments(new ArgumentSet([
+                Argument::create('input', $this->reviewInput->notNull()),
+            ])),
+            // another query field as a service to be more organized
+            $this->thirdField,
+        ]);
+    }
+}
+```
+
+As the number of `query` operations grows, the lengh of the file also grows. In order to get more organized it is possible to extend `ResolvableField` and create a separate service for it.
+
+```php
+<?php declare(strict_types = 1);
+
+namespace App\Query;
+
+use App\Dto\Starship as StarshipDto;
+use App\Type\Starshiup;
+use Graphpinator\Typesystem\Argument\Argument;
+use Graphpinator\Typesystem\Argument\ArgumentSet;
+use Graphpinator\Typesystem\Container;
+use Graphpinator\Typesystem\Field\ResolvableField;
+
+final class ThirdField extends ResolvableField
+{
+    public function __construct(Starship $starship)
+    {
+        parent::__construct('thirdField', $starship->notNull(), $this->resolve(...));
+
+        $this->setArguments(new ArgumentSet([
+            Argument::create('id', Container::ID()),
+        ]));
+    }
+
+    private function resolve(null $parent, ?string $id) : StarshipDto
+    {
+        // my logic here, organized in a specialized class
+    }
+}
+```
+
 ### Type container
 
 > \Graphpinator\Typesystem\Container
 
-The type container serves as a repository for all known types and directives within a schema.
-Each type class must be a singletos and must be registered within the container.
+The `Type container` serves as a repository for all known types and directives within a schema.
+Each type class must be a singletos and must be registered within the `Type container`.
 An included basic implementation, `\Graphpinator\SimpleContainer`, facilitates this by accepting arrays of types and directives as arguments.
 However, it's recommended to populate these arrays through a dependency injection (DI) solution.
 
 > Further details regarding DI configuration should be accessible within the adapter package.
 > There are currently packages available for [Symfony](https://github.com/graphpql/graphpinator-symfony) and [Nette](https://github.com/graphpql/graphpinator-nette) frameworks.
 
-Scalar types and directives specified by the GraphQL specification are automatically bundled within the container and need not be registered alongside custom types. 
+Scalar types and directives specified by the GraphQL specification are automatically bundled within the `Type container` and should not be registered alongside custom types. 
 The abstract `\Graphpinator\Typesystem\Container` provides static shortcuts to allow quick access to built-in types:
 
  - `Container::Int()`
@@ -491,7 +595,7 @@ By leveraging these shortcuts, developers can efficiently access both custom and
 
 > \Graphpinator\Typesystem\Schema
 
-The `Schema` is a simple object with a `Type container` which identifies the root types. This entity is the final step whilst declaring a schema.
+The `Schema` is a simple wrapper around a `Type container` which identifies the root types. This entity is the final step whilst declaring a `Schema`.
 An instance of a `Schema` may be used to execute requests against or render a GraphQL type language documentation of you service.
 
 ```graphql
@@ -500,9 +604,7 @@ schema {
   query: Query
 }
 ```
-```php
 
-```
 ```php
 <?php declare(strict_types = 1);
 
@@ -525,7 +627,7 @@ In the example above, we created a simple query type and a schema service, which
 It is not required to create a named class for your `Schema`; you may create a instance of the `Graphpinator\Typesystem\Schema` directly. 
 
 ```php
-$container = new \Graphpinator\SimpleContainer([new \App\Type\Query()], []);
+$container = new \Graphpinator\SimpleContainer([new \App\Type\Query(), /* other types */], [/* custom directives */]);
 $schema = new \Graphpinator\Typesystem\Schema($container, $container->getType('query'));
 ```
 
