@@ -27,7 +27,7 @@ Types can either be Named or Modifiers.
 Named types can either be Abstract or Concrete.
 - Abstract types are `InterfaceType` and `UnionType`
   - descendants of `\Graphpinator\Typesystem\Contract\AbstractType`
-  - implements logic to decide which concrete type it resolved to
+  - implements logic to decide which concrete type to be resolved
 - Concrete types are `Type`, `InputType`, `EnumType` and `ScalarType`
   - descendants of `\Graphpinator\Typesystem\Contract\ConcreteType`
 
@@ -45,57 +45,71 @@ Lets jump stright into examples for each kind.
 type Starship {
   id: ID!
   name: String!
-  length(unit: LengthUnit = METER): Float
+  length(unit: LengthUnit! = METER): Float
 }
 ```
 
 ```php
 <?php declare(strict_types = 1);
 
-use Graphpinator\Normalizer\ArgumentValueSet;
-use Graphpinator\Field\ResolvableField;
-use Graphpinator\Type\Container\Container;
+namespace App\Type;
 
-class Starship extends \Graphpinator\Type\Type
+use App\Dto\StarshipDto;
+use App\Enum\LengthUnit as LengthUnitEnm;
+use App\Type\LengthUnit as LengthUnitType;
+use Graphpinator\Typesystem\Argument\Argument;
+use Graphpinator\Typesystem\Argument\ArgumentSet;
+use Graphpinator\Typesystem\Attribute\Description;
+use Graphpinator\Typesystem\Container;
+use Graphpinator\Typesystem\Field\ResolvableField;
+use Graphpinator\Typesystem\Field\ResolvableFieldSet;
+use Graphpinator\Typesystem\Type;
+
+#[Description('My Starship type')]
+final class Starship extends Type
 {
-  protected const NAME = 'Starship';
+    protected const NAME = 'Starship'; // This is required
   
-  private \Graphpinator\Type\EnumType $lengthUnit;
+    public function __construct(
+        private LengthUnitType $lengthUnit,
+    )
+    {
+    }
   
-  public function __construct(\Graphpinator\Type\EnumType $lengthUnit)
-  {
-    $this->lengthUnit = $lengthUnit;
-  }
-  
-  protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
-  {
-      return new \Graphpinator\Field\ResolvableFieldSet([
-          new ResolvableField(
-            'id', 
-            Container::ID()->notNull(), 
-            function ($parentValue, ArgumentValueSet $arguments) {
-              // resolve function
-            },
-          ),
-          new ResolvableField(
-            'name', 
-            Container::String()->notNull(), 
-            function ($parentValue, ArgumentValuetSet $arguments) {
-              // resolve function
-            },
-          ),
-          new ResolvableField(
-            'length', 
-            Container::Float(), 
-            function ($parentValue, ArgumentValueSet $arguments) {
-              // resolve function
-            },
-            new \Graphpinator\Argument\ArgumentSet([
-              new \Graphpinator\Argument\Argument('unit', $this->lengthUnitType, 'METER'),
-            ])
-          ),
-      ]);
-  } 
+    public function validateNonNullValue(mixed $rawValue) : bool
+    {
+        return $rawValue instanceof StarshipDto;
+    }
+    
+    protected function getFieldDefinition() : ResolvableFieldSet
+    {
+        return new ResolvableFieldSet([
+            ResolvableField::create(
+                'id', 
+                Container::ID()->notNull(), 
+                function (StarshipDto $parentValue) : string|int {
+                    return $startshipDto->id; // or any other resolve function
+                },
+            ),
+            ResolvableField::create(
+                'name', 
+                Container::String()->notNull(), 
+                function (StarshipDto $parentValue) : string {
+                    // resolve function
+                },
+            ),
+            ResolvableField::create(
+                'length', 
+                Container::Float(), 
+                function (StarshipDto $parentValue, LengthUnitEnum $unit) : ?float {
+                    // resolve function
+                },
+            )->setArguments(new ArgumentSet([
+                Argument::create('unit', $this->lengthUnit->notNull())
+                    ->setDefaultValue(LengthUnitEnum::METER),
+            ]))
+        ]);
+    } 
 }
 ```
 
