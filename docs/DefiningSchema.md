@@ -150,6 +150,7 @@ interface Character {
 
 namespace App\Type;
 
+use App\Di\CharacterAccessor;
 use App\Dto\Human as HumanDto;
 use App\Dto\Droid as DroidDto;
 use App\Type\Episode;
