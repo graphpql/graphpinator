@@ -1,4 +1,4 @@
-# Defining Schema
+# Schema and Typesystem
 
 ## Introduction
 
