@@ -157,8 +157,8 @@ use Graphpinator\Typesystem\Field\Field;
 use Graphpinator\Typesystem\Field\FieldSet;
 use Graphpinator\Typesystem\InterfaceType;
 
-#[Description('My Chanracter interface')]
-final class Character extends \Graphpinator\Typesystem\InterfaceType
+#[Description('My Character interface')]
+final class Character extends InterfaceType
 {
   protected const NAME = 'Character';
   
@@ -207,13 +207,25 @@ union SearchResult = Human | Droid | Starship
 ```
 
 ```php
-class SearchResult extends \Graphpinator\Type\UnionType
+<?php declare(strict_types = 1);
+
+namespace App\Type;
+
+use App\Type\Human;
+use App\Type\Droid;
+use App\Type\Starship;
+use Graphpinator\Typesystem\Attribute\Description;
+use Graphpinator\Typesystem\TypeSet;
+use Graphpinator\Typesystem\UnionType;
+
+#[Description('My SearchResult union')]
+final class SearchResult extends UnionType
 {
     protected const NAME = 'SearchResult';
 
-    public function __construct(\Graphpinator\Type\Type $human, \Graphpinator\Type\Type $droid, \Graphpinator\Type\Type $starship)
+    public function __construct(Human $human, Droid $droid, Starship $starship)
     {
-        parent::__construct(new \Graphpinator\Utils\ConcreteSet([$human, $droid, $starship]));
+        parent::__construct(new TypeSet([$human, $droid, $starship]));
     }
 }
 ```
