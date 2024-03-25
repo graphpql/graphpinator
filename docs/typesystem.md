@@ -435,8 +435,8 @@ namespace App\Dto;
 final class ReviewInputDto
 {
     public int $stars;
-    public string $commentary;
-    public string $email;
+    public ?string $commentary;
+    public ?string $email;
 }
 
 ```
@@ -507,7 +507,7 @@ final class Query extends Type
                 'search',
                 $this->searchResult->notNullList(),
                 function (null $parent) : array {
-                    // the return type for a list do not have to an array, any iterable is accepted
+                    // the return type for a list do not have to be an array, any iterable is accepted
                     return [
                         new DroidDto(),
                         new StarshipDto(),
