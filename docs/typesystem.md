@@ -461,7 +461,7 @@ A schema serves as the orchestrator of all components within a GraphQL API. It e
 
 ### Root types
 
-In GraPHPinator, root types are standard object types, with the distinction that the parent value is always `null`.
+The root types are standard object types, which are selected by the schema as entry points. One important consideration with root types is the lack of a parent value, meaning the value passed to the resolvers is always `null`.
 
 ```php
 <?php declare(strict_types = 1);
