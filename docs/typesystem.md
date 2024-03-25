@@ -534,6 +534,7 @@ final class Query extends Type
 ```
 
 As the number of `query` operations grows, the lengh of the file can become unwieldy. To enhance organization, it is possible to extend `ResolvableField` and create a separate service for it.
+This setup is particularly recommended, especially for `mutation` operation, where the number of operations grows quickly along with the required dependencies (such as services, repositories, etc.).
 
 ```php
 <?php declare(strict_types = 1);
