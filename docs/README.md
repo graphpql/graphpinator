@@ -25,7 +25,6 @@ This section includes some general information about the library and how to use 
 
 - [Schema definition and typesystem](typesystem.md)
 - Request execution
-- [How does this lib work internally](UnderTheHood.md)
 
 ### Addons
 
@@ -40,6 +39,7 @@ Information about unofficial extensions this library provides.
 
 Information about internal components, which may be used as standalone tools.
 
+- [How does this lib work internally](UnderTheHood.md)
 - Tokenizer
 - Parser
 
