@@ -4324,16 +4324,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/webthinx/codestyle.git",
-                "reference": "3ba4f0311725c926db1d77079d61f826feb40d08"
+                "reference": "94ec001b17a24e875c89d086a64a2fe9938d4205"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webthinx/codestyle/zipball/3ba4f0311725c926db1d77079d61f826feb40d08",
-                "reference": "3ba4f0311725c926db1d77079d61f826feb40d08",
+                "url": "https://api.github.com/repos/webthinx/codestyle/zipball/94ec001b17a24e875c89d086a64a2fe9938d4205",
+                "reference": "94ec001b17a24e875c89d086a64a2fe9938d4205",
                 "shasum": ""
             },
             "require": {
-                "php": ">=8.3",
+                "php": ">=8.1",
                 "slevomat/coding-standard": "^8.15",
                 "squizlabs/php_codesniffer": "^3.9"
             },
@@ -4356,7 +4356,7 @@
                 "issues": "https://github.com/webthinx/codestyle/issues",
                 "source": "https://github.com/webthinx/codestyle/tree/main"
             },
-            "time": "2024-04-12T12:24:56+00:00"
+            "time": "2024-07-18T08:46:21+00:00"
         }
     ],
     "aliases": [],
