@@ -6,6 +6,7 @@ namespace Graphpinator\Normalizer;
 
 use Graphpinator\Common\Path;
 use Graphpinator\Exception\GraphpinatorBase;
+use Graphpinator\Normalizer\Directive\Directive;
 use Graphpinator\Normalizer\Directive\DirectiveSet;
 use Graphpinator\Normalizer\Exception\DirectiveIncorrectLocation;
 use Graphpinator\Normalizer\Exception\DirectiveIncorrectUsage;
@@ -20,34 +21,44 @@ use Graphpinator\Normalizer\Exception\UnknownDirective;
 use Graphpinator\Normalizer\Exception\UnknownFragment;
 use Graphpinator\Normalizer\Exception\UnknownType;
 use Graphpinator\Normalizer\Exception\VariableTypeInputable;
+use Graphpinator\Normalizer\Operation\Operation;
+use Graphpinator\Normalizer\Operation\OperationSet;
+use Graphpinator\Normalizer\Selection\Field;
+use Graphpinator\Normalizer\Selection\FragmentSpread;
 use Graphpinator\Normalizer\Selection\InlineFragment;
 use Graphpinator\Normalizer\Selection\Selection;
 use Graphpinator\Normalizer\Selection\SelectionSet;
 use Graphpinator\Normalizer\Variable\Variable;
 use Graphpinator\Normalizer\Variable\VariableSet;
-use Graphpinator\Parser\Directive\Directive;
-use Graphpinator\Parser\Field\Field;
-use Graphpinator\Parser\Field\FieldSet;
+use Graphpinator\Parser\Directive\Directive as ParserDirective;
+use Graphpinator\Parser\Directive\DirectiveSet as ParserDirectiveSet;
+use Graphpinator\Parser\Field\Field as ParserField;
+use Graphpinator\Parser\Field\FieldSet as ParserFieldSet;
 use Graphpinator\Parser\Fragment\FragmentSet;
-use Graphpinator\Parser\FragmentSpread\FragmentSpread;
+use Graphpinator\Parser\FragmentSpread\FragmentSpread as ParserFragmentSpread;
 use Graphpinator\Parser\FragmentSpread\InlineFragmentSpread;
 use Graphpinator\Parser\FragmentSpread\NamedFragmentSpread;
-use Graphpinator\Parser\Operation\Operation;
-use Graphpinator\Parser\Operation\OperationSet;
+use Graphpinator\Parser\Operation\Operation as ParserOperation;
+use Graphpinator\Parser\Operation\OperationSet as ParserOperationSet;
 use Graphpinator\Parser\ParsedRequest;
 use Graphpinator\Parser\TypeRef\ListTypeRef;
 use Graphpinator\Parser\TypeRef\NamedTypeRef;
 use Graphpinator\Parser\TypeRef\NotNullRef;
 use Graphpinator\Parser\TypeRef\TypeRef;
-use Graphpinator\Parser\Value\ArgumentValueSet;
+use Graphpinator\Parser\Value\ArgumentValueSet as ParserArgumentValueSet;
 use Graphpinator\Parser\Value\Value;
+use Graphpinator\Parser\Variable\Variable as ParserVariable;
+use Graphpinator\Parser\Variable\VariableSet as ParserVariableSet;
 use Graphpinator\Tokenizer\TokenType;
 use Graphpinator\Typesystem\Argument\ArgumentSet;
 use Graphpinator\Typesystem\Contract\ExecutableDirective;
 use Graphpinator\Typesystem\Contract\Inputable;
 use Graphpinator\Typesystem\Contract\LeafType;
 use Graphpinator\Typesystem\Contract\NamedType;
+use Graphpinator\Typesystem\Contract\Type as TypesystemType;
 use Graphpinator\Typesystem\Contract\TypeConditionable;
+use Graphpinator\Typesystem\Directive as TypesystemDirective;
+use Graphpinator\Typesystem\Field\Field as TypesystemField;
 use Graphpinator\Typesystem\ListType;
 use Graphpinator\Typesystem\Location\ExecutableDirectiveLocation;
 use Graphpinator\Typesystem\Location\FieldLocation;
@@ -57,6 +68,7 @@ use Graphpinator\Typesystem\Schema;
 use Graphpinator\Typesystem\Type;
 use Graphpinator\Typesystem\UnionType;
 use Graphpinator\Value\ArgumentValue;
+use Graphpinator\Value\ArgumentValueSet;
 use Graphpinator\Value\ConvertParserValueVisitor;
 use Graphpinator\Value\ConvertRawValueVisitor;
 
@@ -107,9 +119,7 @@ final class Normalizer
         return false;
     }
 
-    private function normalizeOperationSet(
-        OperationSet $operationSet,
-    ) : \Graphpinator\Normalizer\Operation\OperationSet
+    private function normalizeOperationSet(ParserOperationSet $operationSet,) : OperationSet
     {
         $normalized = [];
 
@@ -119,12 +129,10 @@ final class Normalizer
             $this->path->pop();
         }
 
-        return new \Graphpinator\Normalizer\Operation\OperationSet($normalized);
+        return new OperationSet($normalized);
     }
 
-    private function normalizeOperation(
-        Operation $operation,
-    ) : \Graphpinator\Normalizer\Operation\Operation
+    private function normalizeOperation(ParserOperation $operation) : Operation
     {
         $rootObject = match ($operation->getType()) {
             TokenType::QUERY->value => $this->schema->getQuery(),
@@ -147,7 +155,7 @@ final class Normalizer
 
         $this->scopeStack->pop();
 
-        return new \Graphpinator\Normalizer\Operation\Operation(
+        return new Operation(
             $operation->getType(),
             $operation->getName(),
             $rootObject,
@@ -157,7 +165,7 @@ final class Normalizer
         );
     }
 
-    private function normalizeVariables(\Graphpinator\Parser\Variable\VariableSet $variableSet) : VariableSet
+    private function normalizeVariables(ParserVariableSet $variableSet) : VariableSet
     {
         $normalized = [];
 
@@ -170,7 +178,7 @@ final class Normalizer
         return new VariableSet($normalized);
     }
 
-    private function normalizeVariable(\Graphpinator\Parser\Variable\Variable $variable) : Variable
+    private function normalizeVariable(ParserVariable $variable) : Variable
     {
         $type = $this->normalizeTypeRef($variable->getType());
         $defaultValue = $variable->getDefault();
@@ -200,9 +208,7 @@ final class Normalizer
         return $normalized;
     }
 
-    private function normalizeFieldSet(
-        FieldSet $fieldSet,
-    ) : SelectionSet
+    private function normalizeFieldSet(ParserFieldSet $fieldSet) : SelectionSet
     {
         $normalized = [];
 
@@ -227,9 +233,7 @@ final class Normalizer
         return $result;
     }
 
-    private function normalizeField(
-        Field $field,
-    ) : \Graphpinator\Normalizer\Selection\Field
+    private function normalizeField(ParserField $field) : Field
     {
         $parentType = $this->scopeStack->top();
 
@@ -239,10 +243,10 @@ final class Normalizer
         $this->scopeStack->push($fieldType);
 
         $arguments = $this->normalizeArgumentValueSet($field->getArguments(), $fieldDef->getArguments());
-        $directives = $field->getDirectives() instanceof \Graphpinator\Parser\Directive\DirectiveSet
+        $directives = $field->getDirectives() instanceof ParserDirectiveSet
             ? $this->normalizeDirectiveSet($field->getDirectives(), ExecutableDirectiveLocation::FIELD, $fieldDef)
             : new DirectiveSet();
-        $children = $field->getFields() instanceof FieldSet
+        $children = $field->getFields() instanceof ParserFieldSet
             ? $this->normalizeFieldSet($field->getFields())
             : null;
 
@@ -252,7 +256,7 @@ final class Normalizer
 
         $this->scopeStack->pop();
 
-        return new \Graphpinator\Normalizer\Selection\Field(
+        return new Field(
             $fieldDef,
             $field->getAlias()
                 ?? $fieldDef->getName(),
@@ -263,9 +267,9 @@ final class Normalizer
     }
 
     private function normalizeDirectiveSet(
-        \Graphpinator\Parser\Directive\DirectiveSet $directiveSet,
+        ParserDirectiveSet $directiveSet,
         ExecutableDirectiveLocation $location,
-        \Graphpinator\Typesystem\Field\Field|Variable|null $usage = null,
+        TypesystemField|Variable|null $usage = null,
     ) : DirectiveSet
     {
         $normalized = [];
@@ -297,14 +301,14 @@ final class Normalizer
     }
 
     private function normalizeDirective(
-        Directive $directive,
+        ParserDirective $directive,
         ExecutableDirectiveLocation $location,
-        \Graphpinator\Typesystem\Field\Field|Variable|null $usage = null,
-    ) : \Graphpinator\Normalizer\Directive\Directive
+        TypesystemField|Variable|null $usage = null,
+    ) : Directive
     {
         $directiveDef = $this->schema->getContainer()->getDirective($directive->getName());
 
-        if (!$directiveDef instanceof \Graphpinator\Typesystem\Directive) {
+        if (!$directiveDef instanceof TypesystemDirective) {
             throw new UnknownDirective($directive->getName());
         }
 
@@ -326,15 +330,12 @@ final class Normalizer
             }
         }
 
-        return new \Graphpinator\Normalizer\Directive\Directive($directiveDef, $arguments);
+        return new Directive($directiveDef, $arguments);
     }
 
-    private function normalizeArgumentValueSet(
-        ?ArgumentValueSet $argumentValueSet,
-        ArgumentSet $argumentSet,
-    ) : \Graphpinator\Value\ArgumentValueSet
+    private function normalizeArgumentValueSet(?ParserArgumentValueSet $argumentValueSet, ArgumentSet $argumentSet) : ArgumentValueSet
     {
-        $argumentValueSet ??= new ArgumentValueSet();
+        $argumentValueSet ??= new ParserArgumentValueSet();
         $items = [];
 
         foreach ($argumentValueSet as $value) {
@@ -373,12 +374,10 @@ final class Normalizer
             $this->path->pop();
         }
 
-        return new \Graphpinator\Value\ArgumentValueSet($items);
+        return new ArgumentValueSet($items);
     }
 
-    private function normalizeFragmentSpread(
-        FragmentSpread $fragmentSpread,
-    ) : Selection
+    private function normalizeFragmentSpread(ParserFragmentSpread $fragmentSpread) : Selection
     {
         return match ($fragmentSpread::class) {
             NamedFragmentSpread::class =>
@@ -390,9 +389,7 @@ final class Normalizer
         };
     }
 
-    private function normalizeNamedFragmentSpread(
-        NamedFragmentSpread $fragmentSpread,
-    ) : \Graphpinator\Normalizer\Selection\FragmentSpread
+    private function normalizeNamedFragmentSpread(NamedFragmentSpread $fragmentSpread) : FragmentSpread
     {
         $this->path->add($fragmentSpread->getName() . ' <fragment spread>');
 
@@ -412,12 +409,10 @@ final class Normalizer
             ExecutableDirectiveLocation::FRAGMENT_SPREAD,
         );
 
-        return new \Graphpinator\Normalizer\Selection\FragmentSpread($fragmentSpread->getName(), $fields, $directives, $typeCond);
+        return new FragmentSpread($fragmentSpread->getName(), $fields, $directives, $typeCond);
     }
 
-    private function normalizeInlineFragmentSpread(
-        InlineFragmentSpread $fragmentSpread,
-    ) : InlineFragment
+    private function normalizeInlineFragmentSpread(InlineFragmentSpread $fragmentSpread) : InlineFragment
     {
         $this->path->add('<inline fragment>');
 
@@ -441,9 +436,7 @@ final class Normalizer
         return new InlineFragment($fields, $directives, $typeCond);
     }
 
-    private function normalizeTypeRef(
-        TypeRef $typeRef,
-    ) : \Graphpinator\Typesystem\Contract\Type
+    private function normalizeTypeRef(TypeRef $typeRef) : TypesystemType
     {
         return match ($typeRef::class) {
             NamedTypeRef::class =>

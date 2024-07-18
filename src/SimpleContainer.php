@@ -14,6 +14,7 @@ use Graphpinator\Introspection\Type;
 use Graphpinator\Introspection\TypeKind;
 use Graphpinator\Typesystem\Container;
 use Graphpinator\Typesystem\Contract\NamedType;
+use Graphpinator\Typesystem\Directive as TypesystemDirective;
 
 /**
  * Simple Container implementation
@@ -29,7 +30,7 @@ class SimpleContainer extends Container
      * @phpcs:ignore SlevomatCodingStandard.TypeHints.DisallowArrayTypeHintSyntax.DisallowedArrayTypeHintSyntax
      * @param NamedType[] $types
      * @phpcs:ignore SlevomatCodingStandard.TypeHints.DisallowArrayTypeHintSyntax.DisallowedArrayTypeHintSyntax
-     * @param \Graphpinator\Typesystem\Directive[] $directives
+     * @param TypesystemDirective[] $directives
      */
     public function __construct(array $types, array $directives)
     {
@@ -81,7 +82,7 @@ class SimpleContainer extends Container
             : $this->types;
     }
 
-    public function getDirective(string $name) : ?\Graphpinator\Typesystem\Directive
+    public function getDirective(string $name) : ?TypesystemDirective
     {
         return $this->combinedDirectives[$name]
             ?? null;

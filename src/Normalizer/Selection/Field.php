@@ -6,12 +6,13 @@ namespace Graphpinator\Normalizer\Selection;
 
 use Graphpinator\Normalizer\Directive\DirectiveSet;
 use Graphpinator\Normalizer\VariableValueSet;
+use Graphpinator\Typesystem\Field\Field as TypesystemField;
 use Graphpinator\Value\ArgumentValueSet;
 
 final class Field implements Selection
 {
     public function __construct(
-        private \Graphpinator\Typesystem\Field\Field $field,
+        private TypesystemField $field,
         private string $outputName,
         private ArgumentValueSet $arguments,
         private DirectiveSet $directives,
@@ -20,7 +21,7 @@ final class Field implements Selection
     {
     }
 
-    public function getField() : \Graphpinator\Typesystem\Field\Field
+    public function getField() : TypesystemField
     {
         return $this->field;
     }

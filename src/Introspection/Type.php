@@ -21,11 +21,12 @@ use Graphpinator\Typesystem\InputType;
 use Graphpinator\Typesystem\InterfaceSet;
 use Graphpinator\Typesystem\InterfaceType;
 use Graphpinator\Typesystem\ScalarType;
+use Graphpinator\Typesystem\Type as TypesystemType;
 use Graphpinator\Typesystem\TypeSet;
 use Graphpinator\Typesystem\UnionType;
 
 #[Description('Built-in introspection type')]
-final class Type extends \Graphpinator\Typesystem\Type
+final class Type extends TypesystemType
 {
     protected const NAME = '__Type';
 
@@ -118,7 +119,7 @@ final class Type extends \Graphpinator\Typesystem\Type
                         $subTypes = [];
 
                         foreach ($this->container->getTypes() as $type) {
-                            if ($type instanceof \Graphpinator\Typesystem\Type &&
+                            if ($type instanceof TypesystemType &&
                                 $type->isInstanceOf($definition)) {
                                 $subTypes[] = $type;
                             }

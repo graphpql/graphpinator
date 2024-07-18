@@ -11,6 +11,7 @@ use Graphpinator\Normalizer\Exception\ConflictingFieldArguments;
 use Graphpinator\Normalizer\Exception\ConflictingFieldDirectives;
 use Graphpinator\Normalizer\Exception\ConflictingFieldType;
 use Graphpinator\Normalizer\Selection\SelectionSet;
+use Graphpinator\Normalizer\Selection\Field as NormalizerField;
 use Graphpinator\Normalizer\SelectionSetValidator;
 use Graphpinator\Typesystem\Argument\Argument;
 use Graphpinator\Typesystem\Container;
@@ -29,14 +30,14 @@ final class SelectionSetCanMergeTest extends TestCase
         $field1 = new Field('field1', Container::String());
         $field2 = new Field('field2', Container::Int());
         $set = new SelectionSet([
-            new \Graphpinator\Normalizer\Selection\Field(
+            new NormalizerField(
                 $field1,
                 'someName',
                 new ArgumentValueSet(),
                 new DirectiveSet(),
                 null,
             ),
-            new \Graphpinator\Normalizer\Selection\Field(
+            new NormalizerField(
                 $field2,
                 'someName',
                 new ArgumentValueSet(),
@@ -57,14 +58,14 @@ final class SelectionSetCanMergeTest extends TestCase
         $field2 = new Field('field2', Container::String());
 
         $validator = new SelectionSetValidator(new SelectionSet([
-            new \Graphpinator\Normalizer\Selection\Field(
+            new NormalizerField(
                 $field1,
                 'someName',
                 new ArgumentValueSet(),
                 new DirectiveSet(),
                 null,
             ),
-            new \Graphpinator\Normalizer\Selection\Field(
+            new NormalizerField(
                 $field2,
                 'someName',
                 new ArgumentValueSet(),
@@ -84,7 +85,7 @@ final class SelectionSetCanMergeTest extends TestCase
         $argument = new Argument('argument', Container::String());
 
         $validator = new SelectionSetValidator(new SelectionSet([
-            new \Graphpinator\Normalizer\Selection\Field(
+            new NormalizerField(
                 $field,
                 'someName',
                 new ArgumentValueSet([
@@ -97,7 +98,7 @@ final class SelectionSetCanMergeTest extends TestCase
                 new DirectiveSet(),
                 null,
             ),
-            new \Graphpinator\Normalizer\Selection\Field(
+            new NormalizerField(
                 $field,
                 'someName',
                 new ArgumentValueSet([
@@ -121,7 +122,7 @@ final class SelectionSetCanMergeTest extends TestCase
 
         $field = new Field('field1', Container::String());
         $validator = new SelectionSetValidator(new SelectionSet([
-            new \Graphpinator\Normalizer\Selection\Field(
+            new NormalizerField(
                 $field,
                 'someName',
                 new ArgumentValueSet(),
@@ -139,7 +140,7 @@ final class SelectionSetCanMergeTest extends TestCase
                 ]),
                 null,
             ),
-            new \Graphpinator\Normalizer\Selection\Field(
+            new NormalizerField(
                 $field,
                 'someName',
                 new ArgumentValueSet(),
@@ -168,7 +169,7 @@ final class SelectionSetCanMergeTest extends TestCase
 
         $field = new Field('field1', Container::String());
         $validator = new SelectionSetValidator(new SelectionSet([
-            new \Graphpinator\Normalizer\Selection\Field(
+            new NormalizerField(
                 $field,
                 'someName',
                 new ArgumentValueSet(),
@@ -186,7 +187,7 @@ final class SelectionSetCanMergeTest extends TestCase
                 ]),
                 null,
             ),
-            new \Graphpinator\Normalizer\Selection\Field(
+            new NormalizerField(
                 $field,
                 'someName',
                 new ArgumentValueSet(),
@@ -215,7 +216,7 @@ final class SelectionSetCanMergeTest extends TestCase
 
         $field = new Field('field1', Container::String());
         $validator = new SelectionSetValidator(new SelectionSet([
-            new \Graphpinator\Normalizer\Selection\Field(
+            new NormalizerField(
                 $field,
                 'someName',
                 new ArgumentValueSet(),
@@ -233,7 +234,7 @@ final class SelectionSetCanMergeTest extends TestCase
                 ]),
                 null,
             ),
-            new \Graphpinator\Normalizer\Selection\Field(
+            new NormalizerField(
                 $field,
                 'someName',
                 new ArgumentValueSet(),
@@ -251,7 +252,7 @@ final class SelectionSetCanMergeTest extends TestCase
 
         $field = new Field('field1', Container::String());
         $validator = new SelectionSetValidator(new SelectionSet([
-            new \Graphpinator\Normalizer\Selection\Field(
+            new NormalizerField(
                 $field,
                 'someName',
                 new ArgumentValueSet(),
@@ -279,7 +280,7 @@ final class SelectionSetCanMergeTest extends TestCase
                 ]),
                 null,
             ),
-            new \Graphpinator\Normalizer\Selection\Field(
+            new NormalizerField(
                 $field,
                 'someName',
                 new ArgumentValueSet(),
