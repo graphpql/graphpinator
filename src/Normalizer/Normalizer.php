@@ -400,8 +400,24 @@ final class Normalizer
         $parentType = $this->scopeStack->top();
         \assert($parentType instanceof \Graphpinator\Typesystem\Contract\TypeConditionable);
 
-        if (!$typeCond->isInstanceOf($parentType) && !$parentType->isInstanceOf($typeCond)) {
+        if (!self::typeCanOccur($parentType, $typeCond)) {
             throw new \Graphpinator\Normalizer\Exception\InvalidFragmentType($typeCond->getName(), $this->scopeStack->top()->getName());
         }
+    }
+
+    private static function typeCanOccur(\Graphpinator\Typesystem\Contract\NamedType $parentType, \Graphpinator\Typesystem\Contract\NamedType $typeCond) : bool
+    {
+        // union requires some special handling here to deduce match within all of his types
+        $occurrenceAttempts = $parentType instanceof \Graphpinator\Typesystem\UnionType
+            ? $parentType->getTypes()
+            : [$parentType];
+
+        foreach ($occurrenceAttempts as $type) {
+            if ($typeCond->isInstanceOf($type) || $type->isInstanceOf($typeCond)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
