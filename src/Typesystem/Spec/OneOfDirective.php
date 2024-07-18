@@ -4,20 +4,30 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem\Spec;
 
-use \Graphpinator\Value\ArgumentValueSet;
-use \Graphpinator\Value\InputValue;
+use Graphpinator\Typesystem\Argument\ArgumentSet;
+use Graphpinator\Typesystem\Attribute\Description;
+use Graphpinator\Typesystem\Directive;
+use Graphpinator\Typesystem\Exception\OneOfDirectiveNotSatisfied;
+use Graphpinator\Typesystem\Exception\OneOfInputInvalidFields;
+use Graphpinator\Typesystem\InputType;
+use Graphpinator\Typesystem\Location\InputObjectLocation;
+use Graphpinator\Typesystem\NotNullType;
+use Graphpinator\Value\ArgumentValue;
+use Graphpinator\Value\ArgumentValueSet;
+use Graphpinator\Value\InputValue;
+use Graphpinator\Value\NullValue;
 
-#[\Graphpinator\Typesystem\Attribute\Description('Built-in oneOf directive')]
-final class OneOfDirective extends \Graphpinator\Typesystem\Directive implements \Graphpinator\Typesystem\Location\InputObjectLocation
+#[Description('Built-in oneOf directive')]
+final class OneOfDirective extends Directive implements InputObjectLocation
 {
     protected const NAME = 'oneOf';
 
-    public function validateInputUsage(\Graphpinator\Typesystem\InputType $inputType, ArgumentValueSet $arguments) : bool
+    public function validateInputUsage(InputType $inputType, ArgumentValueSet $arguments) : bool
     {
         foreach ($inputType->getArguments() as $argument) {
-            if ($argument->getType() instanceof \Graphpinator\Typesystem\NotNullType ||
-                $argument->getDefaultValue() instanceof \Graphpinator\Value\ArgumentValue) {
-                throw new \Graphpinator\Typesystem\Exception\OneOfInputInvalidFields();
+            if ($argument->getType() instanceof NotNullType ||
+                $argument->getDefaultValue() instanceof ArgumentValue) {
+                throw new OneOfInputInvalidFields();
             }
         }
 
@@ -29,22 +39,22 @@ final class OneOfDirective extends \Graphpinator\Typesystem\Directive implements
         $currentCount = 0;
 
         foreach ($inputValue as $innerValue) {
-            \assert($innerValue instanceof \Graphpinator\Value\ArgumentValue);
+            \assert($innerValue instanceof ArgumentValue);
 
-            if ($currentCount >= 1 || $innerValue->getValue() instanceof \Graphpinator\Value\NullValue) {
-                throw new \Graphpinator\Typesystem\Exception\OneOfDirectiveNotSatisfied();
+            if ($currentCount >= 1 || $innerValue->getValue() instanceof NullValue) {
+                throw new OneOfDirectiveNotSatisfied();
             }
 
             ++$currentCount;
         }
 
         if ($currentCount !== 1) {
-            throw new \Graphpinator\Typesystem\Exception\OneOfDirectiveNotSatisfied();
+            throw new OneOfDirectiveNotSatisfied();
         }
     }
 
-    protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
+    protected function getFieldDefinition() : ArgumentSet
     {
-        return new \Graphpinator\Typesystem\Argument\ArgumentSet([]);
+        return new ArgumentSet([]);
     }
 }

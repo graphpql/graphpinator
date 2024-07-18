@@ -4,9 +4,12 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem\Contract;
 
+use Graphpinator\Typesystem\Directive;
+use Graphpinator\Typesystem\Schema;
+
 interface EntityVisitor extends NamedTypeVisitor
 {
-    public function visitSchema(\Graphpinator\Typesystem\Schema $schema) : mixed;
+    public function visitSchema(Schema $schema) : mixed;
 
-    public function visitDirective(\Graphpinator\Typesystem\Directive $directive) : mixed;
+    public function visitDirective(Directive $directive) : mixed;
 }

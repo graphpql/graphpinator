@@ -4,22 +4,33 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Feature;
 
-final class MutationTest extends \PHPUnit\Framework\TestCase
+use Graphpinator\Graphpinator;
+use Graphpinator\Request\JsonRequestFactory;
+use Graphpinator\SimpleContainer;
+use Graphpinator\Typesystem\Container;
+use Graphpinator\Typesystem\Field\ResolvableField;
+use Graphpinator\Typesystem\Field\ResolvableFieldSet;
+use Graphpinator\Typesystem\Schema;
+use Graphpinator\Typesystem\Type;
+use Infinityloop\Utils\Json;
+use PHPUnit\Framework\TestCase;
+
+final class MutationTest extends TestCase
 {
     public function testSimple() : void
     {
-        $query = new class extends \Graphpinator\Typesystem\Type {
+        $query = new class extends Type {
             public function validateNonNullValue(mixed $rawValue) : bool
             {
                 return true;
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
+            protected function getFieldDefinition() : ResolvableFieldSet
             {
-                return new \Graphpinator\Typesystem\Field\ResolvableFieldSet();
+                return new ResolvableFieldSet();
             }
         };
-        $mutation = new class extends \Graphpinator\Typesystem\Type {
+        $mutation = new class extends Type {
             private int $order = 0;
 
             public function validateNonNullValue(mixed $rawValue) : bool
@@ -27,12 +38,12 @@ final class MutationTest extends \PHPUnit\Framework\TestCase
                 return true;
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
+            protected function getFieldDefinition() : ResolvableFieldSet
             {
-                return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
-                    \Graphpinator\Typesystem\Field\ResolvableField::create(
+                return new ResolvableFieldSet([
+                    ResolvableField::create(
                         'field',
-                        \Graphpinator\Typesystem\Container::Int()->notNull(),
+                        Container::Int()->notNull(),
                         function ($parent) : int {
                             $result = $this->order;
                             ++$this->order;
@@ -43,22 +54,22 @@ final class MutationTest extends \PHPUnit\Framework\TestCase
                 ]);
             }
         };
-        $container = new \Graphpinator\SimpleContainer([$query], []);
-        $schema = new \Graphpinator\Typesystem\Schema($container, $query, $mutation);
+        $container = new SimpleContainer([$query], []);
+        $schema = new Schema($container, $query, $mutation);
 
-        $graphpinator = new \Graphpinator\Graphpinator($schema);
-        $result = $graphpinator->run(new \Graphpinator\Request\JsonRequestFactory(\Infinityloop\Utils\Json::fromNative((object) [
+        $graphpinator = new Graphpinator($schema);
+        $result = $graphpinator->run(new JsonRequestFactory(Json::fromNative((object) [
              'query' => 'mutation { field, secondField: field, thirdField: field }',
         ])));
         self::assertSame(
-            \Infinityloop\Utils\Json::fromNative((object) ['data' => ['field' => 0, 'secondField' => 1, 'thirdField' => 2]])->toString(),
+            Json::fromNative((object) ['data' => ['field' => 0, 'secondField' => 1, 'thirdField' => 2]])->toString(),
             $result->toString(),
         );
-        $result = $graphpinator->run(new \Graphpinator\Request\JsonRequestFactory(\Infinityloop\Utils\Json::fromNative((object) [
+        $result = $graphpinator->run(new JsonRequestFactory(Json::fromNative((object) [
              'query' => 'mutation { thirdField: field, field, secondField: field }',
         ])));
         self::assertSame(
-            \Infinityloop\Utils\Json::fromNative((object) ['data' => ['thirdField' => 3, 'field' => 4, 'secondField' => 5]])->toString(),
+            Json::fromNative((object) ['data' => ['thirdField' => 3, 'field' => 4, 'secondField' => 5]])->toString(),
             $result->toString(),
         );
     }

@@ -4,12 +4,16 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Introspection;
 
-use \Graphpinator\Typesystem\Container;
-use \Graphpinator\Typesystem\Contract\Directive as DirectiveDef;
-use \Graphpinator\Typesystem\Field\ResolvableField;
+use Graphpinator\Typesystem\Argument\ArgumentSet;
+use Graphpinator\Typesystem\Attribute\Description;
+use Graphpinator\Typesystem\Container;
+use Graphpinator\Typesystem\Contract\Directive as DirectiveDef;
+use Graphpinator\Typesystem\Field\ResolvableField;
+use Graphpinator\Typesystem\Field\ResolvableFieldSet;
+use Graphpinator\Typesystem\Type;
 
-#[\Graphpinator\Typesystem\Attribute\Description('Built-in introspection type')]
-final class Directive extends \Graphpinator\Typesystem\Type
+#[Description('Built-in introspection type')]
+final class Directive extends Type
 {
     protected const NAME = '__Directive';
 
@@ -25,9 +29,9 @@ final class Directive extends \Graphpinator\Typesystem\Type
         return $rawValue instanceof DirectiveDef;
     }
 
-    protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
+    protected function getFieldDefinition() : ResolvableFieldSet
     {
-        return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
+        return new ResolvableFieldSet([
             ResolvableField::create(
                 'name',
                 Container::String()->notNull(),
@@ -52,7 +56,7 @@ final class Directive extends \Graphpinator\Typesystem\Type
             ResolvableField::create(
                 'args',
                 $this->container->getType('__InputValue')->notNullList(),
-                static function (DirectiveDef $directive) : \Graphpinator\Typesystem\Argument\ArgumentSet {
+                static function (DirectiveDef $directive) : ArgumentSet {
                     return $directive->getArguments();
                 },
             ),

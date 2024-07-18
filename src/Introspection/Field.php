@@ -4,13 +4,17 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Introspection;
 
-use \Graphpinator\Typesystem\Argument\ArgumentSet;
-use \Graphpinator\Typesystem\Container;
-use \Graphpinator\Typesystem\Field\Field as FieldDef;
-use \Graphpinator\Typesystem\Field\ResolvableField;
+use Graphpinator\Typesystem\Argument\Argument;
+use Graphpinator\Typesystem\Argument\ArgumentSet;
+use Graphpinator\Typesystem\Attribute\Description;
+use Graphpinator\Typesystem\Container;
+use Graphpinator\Typesystem\Field\Field as FieldDef;
+use Graphpinator\Typesystem\Field\ResolvableField;
+use Graphpinator\Typesystem\Field\ResolvableFieldSet;
+use Graphpinator\Typesystem\Type;
 
-#[\Graphpinator\Typesystem\Attribute\Description('Built-in introspection type')]
-final class Field extends \Graphpinator\Typesystem\Type
+#[Description('Built-in introspection type')]
+final class Field extends Type
 {
     protected const NAME = '__Field';
 
@@ -26,9 +30,9 @@ final class Field extends \Graphpinator\Typesystem\Type
         return $rawValue instanceof FieldDef;
     }
 
-    protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
+    protected function getFieldDefinition() : ResolvableFieldSet
     {
-        return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
+        return new ResolvableFieldSet([
             ResolvableField::create(
                 'name',
                 Container::String()->notNull(),
@@ -64,7 +68,7 @@ final class Field extends \Graphpinator\Typesystem\Type
                     return new ArgumentSet($filtered);
                 },
             )->setArguments(new ArgumentSet([
-                \Graphpinator\Typesystem\Argument\Argument::create('includeDeprecated', Container::Boolean()->notNull())
+                Argument::create('includeDeprecated', Container::Boolean()->notNull())
                     ->setDefaultValue(false),
             ])),
             ResolvableField::create(

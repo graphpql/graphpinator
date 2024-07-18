@@ -4,92 +4,104 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Unit\Normalizer;
 
-final class DuplicateFragmentSpreadModuleTest extends \PHPUnit\Framework\TestCase
+use Graphpinator\Normalizer\Directive\DirectiveSet;
+use Graphpinator\Normalizer\Selection\Field;
+use Graphpinator\Normalizer\Selection\FragmentSpread;
+use Graphpinator\Normalizer\Selection\InlineFragment;
+use Graphpinator\Normalizer\Selection\SelectionSet;
+use Graphpinator\Normalizer\SelectionSetRefiner;
+use Graphpinator\Typesystem\Container;
+use Graphpinator\Typesystem\Field\ResolvableFieldSet;
+use Graphpinator\Typesystem\Type;
+use Graphpinator\Value\ArgumentValueSet;
+use PHPUnit\Framework\TestCase;
+
+final class DuplicateFragmentSpreadModuleTest extends TestCase
 {
     public function testDuplicateFragmentSpread() : void
     {
-        $fragmentSpread = new \Graphpinator\Normalizer\Selection\FragmentSpread(
+        $fragmentSpread = new FragmentSpread(
             'someName',
-            new \Graphpinator\Normalizer\Selection\SelectionSet([
-                new \Graphpinator\Normalizer\Selection\Field(
-                    new \Graphpinator\Typesystem\Field\Field('fieldName', \Graphpinator\Typesystem\Container::String()),
+            new SelectionSet([
+                new Field(
+                    new \Graphpinator\Typesystem\Field\Field('fieldName', Container::String()),
                     'fieldName',
-                    new \Graphpinator\Value\ArgumentValueSet(),
-                    new \Graphpinator\Normalizer\Directive\DirectiveSet(),
+                    new ArgumentValueSet(),
+                    new DirectiveSet(),
                 ),
             ]),
-            new \Graphpinator\Normalizer\Directive\DirectiveSet(),
-            new class extends \Graphpinator\Typesystem\Type {
+            new DirectiveSet(),
+            new class extends Type {
                 public function validateNonNullValue(mixed $rawValue) : bool
                 {
                 }
 
-                protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
+                protected function getFieldDefinition() : ResolvableFieldSet
                 {
                 }
             },
         );
 
-        $set = new \Graphpinator\Normalizer\Selection\SelectionSet([
+        $set = new SelectionSet([
             $fragmentSpread,
             $fragmentSpread,
         ]);
 
-        $refiner = new \Graphpinator\Normalizer\SelectionSetRefiner($set);
+        $refiner = new SelectionSetRefiner($set);
         $refiner->refine();
 
         self::assertCount(1, $set);
-        self::assertInstanceOf(\Graphpinator\Normalizer\Selection\FragmentSpread::class, $set->offsetGet(0));
+        self::assertInstanceOf(FragmentSpread::class, $set->offsetGet(0));
     }
 
     public function testDuplicateInnerFragmentSpread() : void
     {
-        $fragmentSpread = new \Graphpinator\Normalizer\Selection\FragmentSpread(
+        $fragmentSpread = new FragmentSpread(
             'someName',
-            new \Graphpinator\Normalizer\Selection\SelectionSet([
-                new \Graphpinator\Normalizer\Selection\Field(
-                    new \Graphpinator\Typesystem\Field\Field('fieldName', \Graphpinator\Typesystem\Container::String()),
+            new SelectionSet([
+                new Field(
+                    new \Graphpinator\Typesystem\Field\Field('fieldName', Container::String()),
                     'fieldName',
-                    new \Graphpinator\Value\ArgumentValueSet(),
-                    new \Graphpinator\Normalizer\Directive\DirectiveSet(),
+                    new ArgumentValueSet(),
+                    new DirectiveSet(),
                 ),
             ]),
-            new \Graphpinator\Normalizer\Directive\DirectiveSet(),
-            new class extends \Graphpinator\Typesystem\Type {
+            new DirectiveSet(),
+            new class extends Type {
                 public function validateNonNullValue(mixed $rawValue) : bool
                 {
                 }
 
-                protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
+                protected function getFieldDefinition() : ResolvableFieldSet
                 {
                 }
             },
         );
 
-        $set = new \Graphpinator\Normalizer\Selection\SelectionSet([
+        $set = new SelectionSet([
             $fragmentSpread,
-            new \Graphpinator\Normalizer\Selection\InlineFragment(
-                new \Graphpinator\Normalizer\Selection\SelectionSet([
+            new InlineFragment(
+                new SelectionSet([
                     $fragmentSpread,
-                    new \Graphpinator\Normalizer\Selection\Field(
-                        new \Graphpinator\Typesystem\Field\Field('fieldName', \Graphpinator\Typesystem\Container::String()),
+                    new Field(
+                        new \Graphpinator\Typesystem\Field\Field('fieldName', Container::String()),
                         'someField',
-                        new \Graphpinator\Value\ArgumentValueSet(),
-                        new \Graphpinator\Normalizer\Directive\DirectiveSet(),
+                        new ArgumentValueSet(),
+                        new DirectiveSet(),
                     ),
                 ]),
-                new \Graphpinator\Normalizer\Directive\DirectiveSet(),
+                new DirectiveSet(),
                 null,
             ),
         ]);
 
-        $refiner = new \Graphpinator\Normalizer\SelectionSetRefiner($set);
+        $refiner = new SelectionSetRefiner($set);
         $refiner->refine();
 
         self::assertCount(2, $set);
-        self::assertInstanceOf(\Graphpinator\Normalizer\Selection\FragmentSpread::class, $set->offsetGet(0));
-        self::assertInstanceOf(\Graphpinator\Normalizer\Selection\InlineFragment::class, $set->offsetGet(1));
+        self::assertInstanceOf(FragmentSpread::class, $set->offsetGet(0));
+        self::assertInstanceOf(InlineFragment::class, $set->offsetGet(1));
         self::assertCount(1, $set->offsetGet(1)->getSelections());
-        self::assertInstanceOf(\Graphpinator\Normalizer\Selection\Field::class, $set->offsetGet(1)->getSelections()->offsetGet(1));
+        self::assertInstanceOf(Field::class, $set->offsetGet(1)->getSelections()->offsetGet(1));
     }
 }

@@ -4,70 +4,89 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem;
 
-use \Graphpinator\Typesystem\Argument\ArgumentSet;
-use \Graphpinator\Typesystem\Location\ExecutableDirectiveLocation;
-use \Graphpinator\Typesystem\Location\TypeSystemDirectiveLocation;
+use Graphpinator\Typesystem\Argument\ArgumentSet;
+use Graphpinator\Typesystem\Contract\EntityVisitor;
+use Graphpinator\Typesystem\Location\ArgumentDefinitionLocation;
+use Graphpinator\Typesystem\Location\EnumItemLocation;
+use Graphpinator\Typesystem\Location\EnumLocation;
+use Graphpinator\Typesystem\Location\ExecutableDirectiveLocation;
+use Graphpinator\Typesystem\Location\FieldDefinitionLocation;
+use Graphpinator\Typesystem\Location\FieldLocation;
+use Graphpinator\Typesystem\Location\FragmentDefinitionLocation;
+use Graphpinator\Typesystem\Location\FragmentSpreadLocation;
+use Graphpinator\Typesystem\Location\InlineFragmentLocation;
+use Graphpinator\Typesystem\Location\InputObjectLocation;
+use Graphpinator\Typesystem\Location\MutationLocation;
+use Graphpinator\Typesystem\Location\ObjectLocation;
+use Graphpinator\Typesystem\Location\QueryLocation;
+use Graphpinator\Typesystem\Location\ScalarLocation;
+use Graphpinator\Typesystem\Location\SchemaLocation;
+use Graphpinator\Typesystem\Location\SubscriptionLocation;
+use Graphpinator\Typesystem\Location\TypeSystemDirectiveLocation;
+use Graphpinator\Typesystem\Location\UnionLocation;
+use Graphpinator\Typesystem\Location\VariableDefinitionLocation;
+use Graphpinator\Typesystem\Utils\THasDescription;
 
 abstract class Directive implements \Graphpinator\Typesystem\Contract\Directive
 {
-    use \Graphpinator\Typesystem\Utils\THasDescription;
+    use THasDescription;
 
     protected const NAME = '';
     protected const REPEATABLE = false;
     private const INTERFACE_TO_LOCATION = [
         // Typesystem
-        \Graphpinator\Typesystem\Location\SchemaLocation::class => [
+        SchemaLocation::class => [
             TypeSystemDirectiveLocation::SCHEMA,
         ],
-        \Graphpinator\Typesystem\Location\ObjectLocation::class => [
+        ObjectLocation::class => [
             TypeSystemDirectiveLocation::OBJECT,
             TypeSystemDirectiveLocation::INTERFACE,
         ],
-        \Graphpinator\Typesystem\Location\InputObjectLocation::class => [
+        InputObjectLocation::class => [
             TypeSystemDirectiveLocation::INPUT_OBJECT,
         ],
-        \Graphpinator\Typesystem\Location\UnionLocation::class => [
+        UnionLocation::class => [
             TypeSystemDirectiveLocation::UNION,
         ],
-        \Graphpinator\Typesystem\Location\EnumLocation::class => [
+        EnumLocation::class => [
             TypeSystemDirectiveLocation::ENUM,
         ],
-        \Graphpinator\Typesystem\Location\ScalarLocation::class => [
+        ScalarLocation::class => [
             TypeSystemDirectiveLocation::SCALAR,
         ],
-        \Graphpinator\Typesystem\Location\ArgumentDefinitionLocation::class => [
+        ArgumentDefinitionLocation::class => [
             TypeSystemDirectiveLocation::ARGUMENT_DEFINITION,
             TypeSystemDirectiveLocation::INPUT_FIELD_DEFINITION,
         ],
-        \Graphpinator\Typesystem\Location\FieldDefinitionLocation::class => [
+        FieldDefinitionLocation::class => [
             TypeSystemDirectiveLocation::FIELD_DEFINITION,
         ],
-        \Graphpinator\Typesystem\Location\EnumItemLocation::class => [
+        EnumItemLocation::class => [
             TypeSystemDirectiveLocation::ENUM_VALUE,
         ],
         // Executable
-        \Graphpinator\Typesystem\Location\QueryLocation::class => [
+        QueryLocation::class => [
             ExecutableDirectiveLocation::QUERY,
         ],
-        \Graphpinator\Typesystem\Location\MutationLocation::class => [
+        MutationLocation::class => [
             ExecutableDirectiveLocation::MUTATION,
         ],
-        \Graphpinator\Typesystem\Location\SubscriptionLocation::class => [
+        SubscriptionLocation::class => [
             ExecutableDirectiveLocation::SUBSCRIPTION,
         ],
-        \Graphpinator\Typesystem\Location\VariableDefinitionLocation::class => [
+        VariableDefinitionLocation::class => [
             ExecutableDirectiveLocation::VARIABLE_DEFINITION,
         ],
-        \Graphpinator\Typesystem\Location\FragmentDefinitionLocation::class => [
+        FragmentDefinitionLocation::class => [
             ExecutableDirectiveLocation::FRAGMENT_DEFINITION,
         ],
-        \Graphpinator\Typesystem\Location\FieldLocation::class => [
+        FieldLocation::class => [
             ExecutableDirectiveLocation::FIELD,
         ],
-        \Graphpinator\Typesystem\Location\InlineFragmentLocation::class => [
+        InlineFragmentLocation::class => [
             ExecutableDirectiveLocation::INLINE_FRAGMENT,
         ],
-        \Graphpinator\Typesystem\Location\FragmentSpreadLocation::class => [
+        FragmentSpreadLocation::class => [
             ExecutableDirectiveLocation::FRAGMENT_SPREAD,
         ],
     ];
@@ -80,7 +99,7 @@ abstract class Directive implements \Graphpinator\Typesystem\Contract\Directive
     }
 
     /**
-     * @return array<(\Graphpinator\Typesystem\Location\ExecutableDirectiveLocation|\Graphpinator\Typesystem\Location\TypeSystemDirectiveLocation)>
+     * @return array<(ExecutableDirectiveLocation|TypeSystemDirectiveLocation)>
      */
     final public function getLocations() : array
     {
@@ -113,7 +132,7 @@ abstract class Directive implements \Graphpinator\Typesystem\Contract\Directive
         return $this->arguments;
     }
 
-    final public function accept(\Graphpinator\Typesystem\Contract\EntityVisitor $visitor) : mixed
+    final public function accept(EntityVisitor $visitor) : mixed
     {
         return $visitor->visitDirective($this);
     }

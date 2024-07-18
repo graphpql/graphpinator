@@ -4,11 +4,24 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Feature;
 
-final class NativeEnumTest extends \PHPUnit\Framework\TestCase
+use Graphpinator\Graphpinator;
+use Graphpinator\Request\JsonRequestFactory;
+use Graphpinator\SimpleContainer;
+use Graphpinator\Typesystem\Argument\Argument;
+use Graphpinator\Typesystem\Argument\ArgumentSet;
+use Graphpinator\Typesystem\EnumType;
+use Graphpinator\Typesystem\Field\ResolvableField;
+use Graphpinator\Typesystem\Field\ResolvableFieldSet;
+use Graphpinator\Typesystem\Schema;
+use Graphpinator\Typesystem\Type;
+use Infinityloop\Utils\Json;
+use PHPUnit\Framework\TestCase;
+
+final class NativeEnumTest extends TestCase
 {
     public function testSimple() : void
     {
-        $enumType = new class extends \Graphpinator\Typesystem\EnumType {
+        $enumType = new class extends EnumType {
             public function __construct()
             {
                 parent::__construct(self::fromEnum(NativeEnum::class));
@@ -26,9 +39,9 @@ final class NativeEnumTest extends \PHPUnit\Framework\TestCase
         self::assertEquals('XYZ', $items->offsetGet('XYZ')->getName());
         self::assertEquals('Another description for following enum case', $items->offsetGet('XYZ')->getDescription());
 
-        $query = new class ($enumType) extends \Graphpinator\Typesystem\Type {
+        $query = new class ($enumType) extends Type {
             public function __construct(
-                private \Graphpinator\Typesystem\EnumType $enumType,
+                private EnumType $enumType,
             )
             {
                 parent::__construct();
@@ -39,10 +52,10 @@ final class NativeEnumTest extends \PHPUnit\Framework\TestCase
                 return true;
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
+            protected function getFieldDefinition() : ResolvableFieldSet
             {
-                return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
-                    \Graphpinator\Typesystem\Field\ResolvableField::create(
+                return new ResolvableFieldSet([
+                    ResolvableField::create(
                         'field',
                         $this->enumType,
                         static function ($parent, NativeEnum $arg) : NativeEnum {
@@ -52,13 +65,13 @@ final class NativeEnumTest extends \PHPUnit\Framework\TestCase
 
                             return NativeEnum::XYZ;
                         },
-                    )->setArguments(new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                        \Graphpinator\Typesystem\Argument\Argument::create(
+                    )->setArguments(new ArgumentSet([
+                        Argument::create(
                             'arg',
                             $this->enumType,
                         ),
                     ])),
-                    \Graphpinator\Typesystem\Field\ResolvableField::create(
+                    ResolvableField::create(
                         'fieldDefault',
                         $this->enumType,
                         static function ($parent, NativeEnum $arg) : NativeEnum {
@@ -68,8 +81,8 @@ final class NativeEnumTest extends \PHPUnit\Framework\TestCase
 
                             return NativeEnum::XYZ;
                         },
-                    )->setArguments(new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                        \Graphpinator\Typesystem\Argument\Argument::create(
+                    )->setArguments(new ArgumentSet([
+                        Argument::create(
                             'arg',
                             $this->enumType,
                         )->setDefaultValue(NativeEnum::ABC),
@@ -77,23 +90,23 @@ final class NativeEnumTest extends \PHPUnit\Framework\TestCase
                 ]);
             }
         };
-        $container = new \Graphpinator\SimpleContainer([$query, $enumType], []);
-        $schema = new \Graphpinator\Typesystem\Schema($container, $query);
+        $container = new SimpleContainer([$query, $enumType], []);
+        $schema = new Schema($container, $query);
 
-        $graphpinator = new \Graphpinator\Graphpinator($schema);
-        $result = $graphpinator->run(new \Graphpinator\Request\JsonRequestFactory(\Infinityloop\Utils\Json::fromNative((object) [
+        $graphpinator = new Graphpinator($schema);
+        $result = $graphpinator->run(new JsonRequestFactory(Json::fromNative((object) [
              'query' => 'query { field(arg: ABC) }',
         ])));
         self::assertSame(
-            \Infinityloop\Utils\Json::fromNative((object) ['data' => ['field' => 'XYZ']])->toString(),
+            Json::fromNative((object) ['data' => ['field' => 'XYZ']])->toString(),
             $result->toString(),
         );
 
-        $result = $graphpinator->run(new \Graphpinator\Request\JsonRequestFactory(\Infinityloop\Utils\Json::fromNative((object) [
+        $result = $graphpinator->run(new JsonRequestFactory(Json::fromNative((object) [
              'query' => 'query { fieldDefault }',
         ])));
         self::assertSame(
-            \Infinityloop\Utils\Json::fromNative((object) ['data' => ['fieldDefault' => 'XYZ']])->toString(),
+            Json::fromNative((object) ['data' => ['fieldDefault' => 'XYZ']])->toString(),
             $result->toString(),
         );
     }

@@ -4,16 +4,25 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem;
 
-abstract class UnionType extends \Graphpinator\Typesystem\Contract\AbstractType
+use Graphpinator\Typesystem\Contract\AbstractType;
+use Graphpinator\Typesystem\Contract\NamedTypeVisitor;
+use Graphpinator\Typesystem\Contract\Type;
+use Graphpinator\Typesystem\DirectiveUsage\DirectiveUsage;
+use Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet;
+use Graphpinator\Typesystem\Location\UnionLocation;
+use Graphpinator\Typesystem\Utils\THasDirectives;
+use Graphpinator\Typesystem\Utils\TMetaFields;
+
+abstract class UnionType extends AbstractType
 {
-    use \Graphpinator\Typesystem\Utils\TMetaFields;
-    use \Graphpinator\Typesystem\Utils\THasDirectives;
+    use TMetaFields;
+    use THasDirectives;
 
     public function __construct(
         protected TypeSet $types,
     )
     {
-        $this->directiveUsages = new \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet();
+        $this->directiveUsages = new DirectiveUsageSet();
     }
 
     final public function getTypes() : TypeSet
@@ -21,12 +30,12 @@ abstract class UnionType extends \Graphpinator\Typesystem\Contract\AbstractType
         return $this->types;
     }
 
-    final public function isInstanceOf(\Graphpinator\Typesystem\Contract\Type $type) : bool
+    final public function isInstanceOf(Type $type) : bool
     {
         return $type instanceof static;
     }
 
-    final public function isImplementedBy(\Graphpinator\Typesystem\Contract\Type $type) : bool
+    final public function isImplementedBy(Type $type) : bool
     {
         foreach ($this->types as $temp) {
             if ($temp->isInstanceOf($type->getShapingType())) {
@@ -37,17 +46,17 @@ abstract class UnionType extends \Graphpinator\Typesystem\Contract\AbstractType
         return false;
     }
 
-    final public function accept(\Graphpinator\Typesystem\Contract\NamedTypeVisitor $visitor) : mixed
+    final public function accept(NamedTypeVisitor $visitor) : mixed
     {
         return $visitor->visitUnion($this);
     }
 
     final public function addDirective(
-        \Graphpinator\Typesystem\Location\UnionLocation $directive,
+        UnionLocation $directive,
         array $arguments = [],
     ) : static
     {
-        $this->directiveUsages[] = new \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsage($directive, $arguments);
+        $this->directiveUsages[] = new DirectiveUsage($directive, $arguments);
 
         return $this;
     }

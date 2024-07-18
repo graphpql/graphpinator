@@ -4,10 +4,12 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Value;
 
-abstract class ListValue implements \Graphpinator\Value\Value, \IteratorAggregate, \ArrayAccess, \Countable
+use Graphpinator\Typesystem\ListType;
+
+abstract class ListValue implements Value, \IteratorAggregate, \ArrayAccess, \Countable
 {
     public function __construct(
-        protected \Graphpinator\Typesystem\ListType $type,
+        protected ListType $type,
         protected array $value,
     )
     {

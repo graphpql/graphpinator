@@ -4,15 +4,17 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Normalizer;
 
+use Graphpinator\Normalizer\Operation\Operation;
+
 final class FinalizedRequest
 {
     public function __construct(
-        private \Graphpinator\Normalizer\Operation\Operation $operation,
+        private Operation $operation,
     )
     {
     }
 
-    public function getOperation() : \Graphpinator\Normalizer\Operation\Operation
+    public function getOperation() : Operation
     {
         return $this->operation;
     }

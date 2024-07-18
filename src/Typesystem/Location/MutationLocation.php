@@ -4,9 +4,13 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem\Location;
 
-interface MutationLocation extends \Graphpinator\Typesystem\Contract\ExecutableDirective
-{
-    public function resolveMutationBefore(\Graphpinator\Value\ArgumentValueSet $arguments) : void;
+use Graphpinator\Typesystem\Contract\ExecutableDirective;
+use Graphpinator\Value\ArgumentValueSet;
+use Graphpinator\Value\TypeValue;
 
-    public function resolveMutationAfter(\Graphpinator\Value\ArgumentValueSet $arguments, \Graphpinator\Value\TypeValue $typeValue) : void;
+interface MutationLocation extends ExecutableDirective
+{
+    public function resolveMutationBefore(ArgumentValueSet $arguments) : void;
+
+    public function resolveMutationAfter(ArgumentValueSet $arguments, TypeValue $typeValue) : void;
 }

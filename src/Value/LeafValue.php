@@ -4,20 +4,24 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Value;
 
-abstract class LeafValue implements \Graphpinator\Value\InputedValue, \Graphpinator\Value\OutputValue
+use Graphpinator\Exception\Value\InvalidValue;
+use Graphpinator\Normalizer\VariableValueSet;
+use Graphpinator\Typesystem\Contract\LeafType;
+
+abstract class LeafValue implements InputedValue, OutputValue
 {
     public function __construct(
-        protected \Graphpinator\Typesystem\Contract\LeafType $type,
+        protected LeafType $type,
         protected mixed $rawValue,
         bool $inputed,
     )
     {
         if (!$type->validateNonNullValue($rawValue)) {
-            throw new \Graphpinator\Exception\Value\InvalidValue($type->getName(), $rawValue, $inputed);
+            throw new InvalidValue($type->getName(), $rawValue, $inputed);
         }
     }
 
-    public function getType() : \Graphpinator\Typesystem\Contract\LeafType
+    public function getType() : LeafType
     {
         return $this->type;
     }
@@ -27,7 +31,7 @@ abstract class LeafValue implements \Graphpinator\Value\InputedValue, \Graphpina
         return $this->rawValue;
     }
 
-    public function applyVariables(\Graphpinator\Normalizer\VariableValueSet $variables) : void
+    public function applyVariables(VariableValueSet $variables) : void
     {
         // nothing here
     }

@@ -4,24 +4,38 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Feature;
 
-final class InputTypeCoercionTest extends \PHPUnit\Framework\TestCase
+use Graphpinator\Graphpinator;
+use Graphpinator\Request\JsonRequestFactory;
+use Graphpinator\SimpleContainer;
+use Graphpinator\Typesystem\Argument\Argument;
+use Graphpinator\Typesystem\Argument\ArgumentSet;
+use Graphpinator\Typesystem\Container;
+use Graphpinator\Typesystem\Field\ResolvableField;
+use Graphpinator\Typesystem\Field\ResolvableFieldSet;
+use Graphpinator\Typesystem\InputType;
+use Graphpinator\Typesystem\Schema;
+use Graphpinator\Typesystem\Type;
+use Infinityloop\Utils\Json;
+use PHPUnit\Framework\TestCase;
+
+final class InputTypeCoercionTest extends TestCase
 {
-    public static function getSimpleInput() : \Graphpinator\Typesystem\InputType
+    public static function getSimpleInput() : InputType
     {
-        return new class extends \Graphpinator\Typesystem\InputType
+        return new class extends InputType
         {
             protected const NAME = 'SimpleInput';
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
+            protected function getFieldDefinition() : ArgumentSet
             {
-                return new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                    new \Graphpinator\Typesystem\Argument\Argument(
+                return new ArgumentSet([
+                    new Argument(
                         'string',
-                        \Graphpinator\Typesystem\Container::String(),
+                        Container::String(),
                     ),
-                    new \Graphpinator\Typesystem\Argument\Argument(
+                    new Argument(
                         'stringNotNull',
-                        \Graphpinator\Typesystem\Container::String()->notNull(),
+                        Container::String()->notNull(),
                     ),
                 ]);
             }
@@ -51,22 +65,22 @@ final class InputTypeCoercionTest extends \PHPUnit\Framework\TestCase
      */
     public function testInputObject(string $query, string $expected) : void
     {
-        $request = \Infinityloop\Utils\Json::fromNative((object) [
+        $request = Json::fromNative((object) [
             'query' => $query,
         ]);
-        $expected = \Infinityloop\Utils\Json::fromNative((object) [
+        $expected = Json::fromNative((object) [
             'data' => [
                 'field1' => $expected,
             ],
         ]);
 
-        $result = self::getGraphpinator()->run(new \Graphpinator\Request\JsonRequestFactory($request));
+        $result = self::getGraphpinator()->run(new JsonRequestFactory($request));
         self::assertSame($expected->toString(), $result->toString());
     }
 
-    protected static function getGraphpinator() : \Graphpinator\Graphpinator
+    protected static function getGraphpinator() : Graphpinator
     {
-        $query = new class () extends \Graphpinator\Typesystem\Type
+        $query = new class () extends Type
         {
             protected const NAME = 'Query';
 
@@ -80,12 +94,12 @@ final class InputTypeCoercionTest extends \PHPUnit\Framework\TestCase
                 return true;
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
+            protected function getFieldDefinition() : ResolvableFieldSet
             {
-                return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
-                    \Graphpinator\Typesystem\Field\ResolvableField::create(
+                return new ResolvableFieldSet([
+                    ResolvableField::create(
                         'field1',
-                        \Graphpinator\Typesystem\Container::String(),
+                        Container::String(),
                         static function($parent, \stdClass $arg) : string {
                             $first = \property_exists($arg, 'string')
                                 ? $arg->string
@@ -93,19 +107,19 @@ final class InputTypeCoercionTest extends \PHPUnit\Framework\TestCase
 
                             return $first . ' ' . $arg->stringNotNull;
                         },
-                    )->setArguments(new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                        new \Graphpinator\Typesystem\Argument\Argument(
+                    )->setArguments(new ArgumentSet([
+                        new Argument(
                             'arg',
-                            \Graphpinator\Tests\Feature\InputTypeCoercionTest::getSimpleInput(),
+                            InputTypeCoercionTest::getSimpleInput(),
                         ),
                     ])),
                 ]);
             }
         };
 
-        return new \Graphpinator\Graphpinator(
-            new \Graphpinator\Typesystem\Schema(
-                new \Graphpinator\SimpleContainer(['Query' => $query], []),
+        return new Graphpinator(
+            new Schema(
+                new SimpleContainer(['Query' => $query], []),
                 $query,
             ),
         );

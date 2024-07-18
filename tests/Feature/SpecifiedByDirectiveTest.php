@@ -4,24 +4,35 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Feature;
 
-use \Infinityloop\Utils\Json;
+use Graphpinator\Graphpinator;
+use Graphpinator\Request\JsonRequestFactory;
+use Graphpinator\SimpleContainer;
+use Graphpinator\Typesystem\Container;
+use Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet;
+use Graphpinator\Typesystem\Field\ResolvableField;
+use Graphpinator\Typesystem\Field\ResolvableFieldSet;
+use Graphpinator\Typesystem\ScalarType;
+use Graphpinator\Typesystem\Schema;
+use Graphpinator\Typesystem\Type;
+use Infinityloop\Utils\Json;
+use PHPUnit\Framework\TestCase;
 
-final class SpecifiedByDirectiveTest extends \PHPUnit\Framework\TestCase
+final class SpecifiedByDirectiveTest extends TestCase
 {
-    private static ?\Graphpinator\Typesystem\ScalarType $testScalar = null;
+    private static ?ScalarType $testScalar = null;
 
-    public static function createTestScalar() : \Graphpinator\Typesystem\ScalarType
+    public static function createTestScalar() : ScalarType
     {
-        if (self::$testScalar instanceof \Graphpinator\Typesystem\ScalarType) {
+        if (self::$testScalar instanceof ScalarType) {
             return self::$testScalar;
         }
 
-        self::$testScalar = new class extends \Graphpinator\Typesystem\ScalarType {
+        self::$testScalar = new class extends ScalarType {
             protected const NAME = 'TestScalar';
 
             public function __construct()
             {
-                $this->directiveUsages = new \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet();
+                $this->directiveUsages = new DirectiveUsageSet();
 
                 parent::__construct();
             }
@@ -66,33 +77,33 @@ final class SpecifiedByDirectiveTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider typeDataProvider
-     * @param \Infinityloop\Utils\Json $request
-     * @param \Infinityloop\Utils\Json $expected
+     * @param Json $request
+     * @param Json $expected
      */
     public function testSpecifiedByDirective(Json $request, Json $expected) : void
     {
-        $graphpinator = new \Graphpinator\Graphpinator($this->getSchema(), true);
-        $result = $graphpinator->run(new \Graphpinator\Request\JsonRequestFactory($request));
+        $graphpinator = new Graphpinator($this->getSchema(), true);
+        $result = $graphpinator->run(new JsonRequestFactory($request));
 
         self::assertSame($expected->toString(), $result->toString());
     }
 
-    private function getSchema() : \Graphpinator\Typesystem\Schema
+    private function getSchema() : Schema
     {
-        return new \Graphpinator\Typesystem\Schema(
+        return new Schema(
             $this->getContainer(),
             $this->getQuery(),
         );
     }
 
-    private function getContainer() : \Graphpinator\SimpleContainer
+    private function getContainer() : SimpleContainer
     {
-        return new \Graphpinator\SimpleContainer(['TestScalar' => self::createTestScalar()], []);
+        return new SimpleContainer(['TestScalar' => self::createTestScalar()], []);
     }
 
-    private function getQuery() : \Graphpinator\Typesystem\Type
+    private function getQuery() : Type
     {
-        return new class extends \Graphpinator\Typesystem\Type {
+        return new class extends Type {
             protected const NAME = 'Query';
 
             public function validateNonNullValue($rawValue) : bool
@@ -100,12 +111,12 @@ final class SpecifiedByDirectiveTest extends \PHPUnit\Framework\TestCase
                 return true;
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
+            protected function getFieldDefinition() : ResolvableFieldSet
             {
-                return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
-                    new \Graphpinator\Typesystem\Field\ResolvableField(
+                return new ResolvableFieldSet([
+                    new ResolvableField(
                         'field',
-                        \Graphpinator\Typesystem\Container::String(),
+                        Container::String(),
                         static function () : void {
                         },
                     ),

@@ -4,88 +4,97 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Resolver;
 
+use Graphpinator\Normalizer\FinalizedRequest;
+use Graphpinator\Normalizer\Operation\Operation;
+use Graphpinator\Result;
+use Graphpinator\Tokenizer\TokenType;
+use Graphpinator\Typesystem\Location\MutationLocation;
+use Graphpinator\Typesystem\Location\QueryLocation;
+use Graphpinator\Typesystem\Location\SubscriptionLocation;
+use Graphpinator\Value\TypeIntermediateValue;
+
 final class Resolver
 {
-    public function resolve(\Graphpinator\Normalizer\FinalizedRequest $finalizedRequest) : \Graphpinator\Result
+    public function resolve(FinalizedRequest $finalizedRequest) : Result
     {
         $operation = $finalizedRequest->getOperation();
 
         return match ($operation->getType()) {
-            \Graphpinator\Tokenizer\TokenType::QUERY->value => $this->resolveQuery($operation),
-            \Graphpinator\Tokenizer\TokenType::MUTATION->value => $this->resolveMutation($operation),
-            \Graphpinator\Tokenizer\TokenType::SUBSCRIPTION->value => $this->resolveSubscription($operation),
+            TokenType::QUERY->value => $this->resolveQuery($operation),
+            TokenType::MUTATION->value => $this->resolveMutation($operation),
+            TokenType::SUBSCRIPTION->value => $this->resolveSubscription($operation),
         };
     }
 
-    private function resolveQuery(\Graphpinator\Normalizer\Operation\Operation $operation) : \Graphpinator\Result
+    private function resolveQuery(Operation $operation) : Result
     {
         foreach ($operation->getDirectives() as $directive) {
             $directiveDef = $directive->getDirective();
-            \assert($directiveDef instanceof \Graphpinator\Typesystem\Location\QueryLocation);
+            \assert($directiveDef instanceof QueryLocation);
             $directiveDef->resolveQueryBefore($directive->getArguments());
         }
 
-        $resolver = new \Graphpinator\Resolver\ResolveVisitor(
+        $resolver = new ResolveVisitor(
             $operation->getSelections(),
-            new \Graphpinator\Value\TypeIntermediateValue($operation->getRootObject(), null),
+            new TypeIntermediateValue($operation->getRootObject(), null),
         );
 
         $operationValue = $operation->getRootObject()->accept($resolver);
 
         foreach ($operation->getDirectives() as $directive) {
             $directiveDef = $directive->getDirective();
-            \assert($directiveDef instanceof \Graphpinator\Typesystem\Location\QueryLocation);
+            \assert($directiveDef instanceof QueryLocation);
             $directiveDef->resolveQueryAfter($directive->getArguments(), $operationValue);
         }
 
-        return new \Graphpinator\Result($operationValue);
+        return new Result($operationValue);
     }
 
-    private function resolveMutation(\Graphpinator\Normalizer\Operation\Operation $operation) : \Graphpinator\Result
+    private function resolveMutation(Operation $operation) : Result
     {
         foreach ($operation->getDirectives() as $directive) {
             $directiveDef = $directive->getDirective();
-            \assert($directiveDef instanceof \Graphpinator\Typesystem\Location\MutationLocation);
+            \assert($directiveDef instanceof MutationLocation);
             $directiveDef->resolveMutationBefore($directive->getArguments());
         }
 
-        $resolver = new \Graphpinator\Resolver\ResolveVisitor(
+        $resolver = new ResolveVisitor(
             $operation->getSelections(),
-            new \Graphpinator\Value\TypeIntermediateValue($operation->getRootObject(), null),
+            new TypeIntermediateValue($operation->getRootObject(), null),
         );
 
         $operationValue = $operation->getRootObject()->accept($resolver);
 
         foreach ($operation->getDirectives() as $directive) {
             $directiveDef = $directive->getDirective();
-            \assert($directiveDef instanceof \Graphpinator\Typesystem\Location\MutationLocation);
+            \assert($directiveDef instanceof MutationLocation);
             $directiveDef->resolveMutationAfter($directive->getArguments(), $operationValue);
         }
 
-        return new \Graphpinator\Result($operationValue);
+        return new Result($operationValue);
     }
 
-    private function resolveSubscription(\Graphpinator\Normalizer\Operation\Operation $operation) : \Graphpinator\Result
+    private function resolveSubscription(Operation $operation) : Result
     {
         foreach ($operation->getDirectives() as $directive) {
             $directiveDef = $directive->getDirective();
-            \assert($directiveDef instanceof \Graphpinator\Typesystem\Location\SubscriptionLocation);
+            \assert($directiveDef instanceof SubscriptionLocation);
             $directiveDef->resolveSubscriptionBefore($directive->getArguments());
         }
 
-        $resolver = new \Graphpinator\Resolver\ResolveVisitor(
+        $resolver = new ResolveVisitor(
             $operation->getSelections(),
-            new \Graphpinator\Value\TypeIntermediateValue($operation->getRootObject(), null),
+            new TypeIntermediateValue($operation->getRootObject(), null),
         );
 
         $operationValue = $operation->getRootObject()->accept($resolver);
 
         foreach ($operation->getDirectives() as $directive) {
             $directiveDef = $directive->getDirective();
-            \assert($directiveDef instanceof \Graphpinator\Typesystem\Location\SubscriptionLocation);
+            \assert($directiveDef instanceof SubscriptionLocation);
             $directiveDef->resolveSubscriptionAfter($directive->getArguments(), $operationValue);
         }
 
-        return new \Graphpinator\Result($operationValue);
+        return new Result($operationValue);
     }
 }

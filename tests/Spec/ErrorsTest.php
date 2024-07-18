@@ -4,9 +4,20 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Spec;
 
-use \Infinityloop\Utils\Json;
+use Graphpinator\Graphpinator;
+use Graphpinator\Parser\Exception\DuplicateOperation;
+use Graphpinator\Parser\Exception\EmptyRequest;
+use Graphpinator\Parser\Exception\MissingOperation;
+use Graphpinator\Parser\Exception\UnexpectedEnd;
+use Graphpinator\Request\JsonRequestFactory;
+use Graphpinator\Request\PsrRequestFactory;
+use Graphpinator\Tokenizer\Exception\InvalidEllipsis;
+use Graphpinator\Tokenizer\Exception\MissingVariableName;
+use Infinityloop\Utils\Json;
+use PHPUnit\Framework\TestCase;
+use Psr\Http\Message\ServerRequestInterface;
 
-final class ErrorsTest extends \PHPUnit\Framework\TestCase
+final class ErrorsTest extends TestCase
 {
     public static function tokenizerDataProvider() : array
     {
@@ -18,7 +29,7 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
                 Json::fromNative((object) [
                     'errors' => [
                         [
-                            'message' => \Graphpinator\Tokenizer\Exception\MissingVariableName::MESSAGE,
+                            'message' => MissingVariableName::MESSAGE,
                             'locations' => [['line' => 1, 'column' => 18]],
                         ],
                     ],
@@ -31,7 +42,7 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
                 Json::fromNative((object) [
                     'errors' => [
                         [
-                            'message' => \Graphpinator\Tokenizer\Exception\InvalidEllipsis::MESSAGE,
+                            'message' => InvalidEllipsis::MESSAGE,
                             'locations' => [['line' => 1, 'column' => 19]],
                         ],
                     ],
@@ -50,7 +61,7 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
                 Json::fromNative((object) [
                     'errors' => [
                         [
-                            'message' => \Graphpinator\Parser\Exception\EmptyRequest::MESSAGE,
+                            'message' => EmptyRequest::MESSAGE,
                             'locations' => [['line' => 1, 'column' => 1]],
                         ],
                     ],
@@ -63,7 +74,7 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
                 Json::fromNative((object) [
                     'errors' => [
                         [
-                            'message' => \Graphpinator\Parser\Exception\MissingOperation::MESSAGE,
+                            'message' => MissingOperation::MESSAGE,
                             'locations' => [['line' => 1, 'column' => 29]],
                         ],
                     ],
@@ -76,7 +87,7 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
                 Json::fromNative((object) [
                     'errors' => [
                         [
-                            'message' => \Graphpinator\Parser\Exception\UnexpectedEnd::MESSAGE,
+                            'message' => UnexpectedEnd::MESSAGE,
                             'locations' => [['line' => 1, 'column' => 30]],
                         ],
                     ],
@@ -89,7 +100,7 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
                 Json::fromNative((object) [
                     'errors' => [
                         [
-                            'message' => \Graphpinator\Parser\Exception\DuplicateOperation::MESSAGE,
+                            'message' => DuplicateOperation::MESSAGE,
                             'locations' => [['line' => 1, 'column' => 27]],
                         ],
                     ],
@@ -102,7 +113,7 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
                 Json::fromNative((object) [
                     'errors' => [
                         [
-                            'message' => \Graphpinator\Parser\Exception\DuplicateOperation::MESSAGE,
+                            'message' => DuplicateOperation::MESSAGE,
                             'locations' => [['line' => 1, 'column' => 27]],
                         ],
                     ],
@@ -354,20 +365,20 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
      * @dataProvider tokenizerDataProvider
      * @dataProvider parserDataProvider
      * @dataProvider normalizerDataProvider
-     * @param \Infinityloop\Utils\Json $request
-     * @param \Infinityloop\Utils\Json $expected
+     * @param Json $request
+     * @param Json $expected
      */
     public function testSimple(Json $request, Json $expected) : void
     {
-        $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema(), true);
-        $result = $graphpinator->run(new \Graphpinator\Request\JsonRequestFactory($request));
+        $graphpinator = new Graphpinator(TestSchema::getSchema(), true);
+        $result = $graphpinator->run(new JsonRequestFactory($request));
 
         self::assertSame($expected->toString(), $result->toString());
     }
 
     public function testPsrRequestPut() : void
     {
-        $httpRequest = $this->createStub(\Psr\Http\Message\ServerRequestInterface::class);
+        $httpRequest = $this->createStub(ServerRequestInterface::class);
         $httpRequest->method('getMethod')->willReturn('PUT');
 
         $expected = Json::fromNative((object) [
@@ -376,15 +387,15 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
             ],
         ]);
 
-        $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema(), true);
-        $result = $graphpinator->run(new \Graphpinator\Request\PsrRequestFactory($httpRequest));
+        $graphpinator = new Graphpinator(TestSchema::getSchema(), true);
+        $result = $graphpinator->run(new PsrRequestFactory($httpRequest));
 
         self::assertSame($expected->toString(), $result->toString());
     }
 
     public function testPsrRequestMultipartNoOperations() : void
     {
-        $httpRequest = $this->createStub(\Psr\Http\Message\ServerRequestInterface::class);
+        $httpRequest = $this->createStub(ServerRequestInterface::class);
         $httpRequest->method('getParsedBody')->willReturn([]);
         $httpRequest->method('getHeader')->willReturn(['multipart/form-data; boundary=-------9051914041544843365972754266']);
         $httpRequest->method('getMethod')->willReturn('POST');
@@ -395,15 +406,15 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
             ],
         ]);
 
-        $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema(), true);
-        $result = $graphpinator->run(new \Graphpinator\Request\PsrRequestFactory($httpRequest));
+        $graphpinator = new Graphpinator(TestSchema::getSchema(), true);
+        $result = $graphpinator->run(new PsrRequestFactory($httpRequest));
 
         self::assertSame($expected->toString(), $result->toString());
     }
 
     public function testPsrRequestMultipartGet() : void
     {
-        $httpRequest = $this->createStub(\Psr\Http\Message\ServerRequestInterface::class);
+        $httpRequest = $this->createStub(ServerRequestInterface::class);
         $httpRequest->method('getParsedBody')->willReturn(['operations' => '{}']);
         $httpRequest->method('getHeader')->willReturn(['multipart/form-data; boundary=-------9051914041544843365972754266']);
         $httpRequest->method('getMethod')->willReturn('GET');
@@ -414,8 +425,8 @@ final class ErrorsTest extends \PHPUnit\Framework\TestCase
             ],
         ]);
 
-        $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema(), true);
-        $result = $graphpinator->run(new \Graphpinator\Request\PsrRequestFactory($httpRequest));
+        $graphpinator = new Graphpinator(TestSchema::getSchema(), true);
+        $result = $graphpinator->run(new PsrRequestFactory($httpRequest));
 
         self::assertSame($expected->toString(), $result->toString());
     }

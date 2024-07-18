@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Normalizer\Exception;
 
-final class DirectiveIncorrectUsage extends \Graphpinator\Normalizer\Exception\NormalizerError
+final class DirectiveIncorrectUsage extends NormalizerError
 {
     public const MESSAGE = 'Directive "%s" cannot be used on this field, check for additional directive requirements.';
 

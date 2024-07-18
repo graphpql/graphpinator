@@ -4,10 +4,13 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Normalizer;
 
+use Graphpinator\Normalizer\Selection\SelectionSet;
+use Graphpinator\Normalizer\ValidatorModule\ValidateFieldsCanMergeModule;
+
 final class SelectionSetValidator
 {
     public function __construct(
-        private \Graphpinator\Normalizer\Selection\SelectionSet $selections,
+        private SelectionSet $selections,
     )
     {
     }
@@ -15,7 +18,7 @@ final class SelectionSetValidator
     public function validate() : void
     {
         $modules = [
-            new \Graphpinator\Normalizer\ValidatorModule\ValidateFieldsCanMergeModule($this->selections),
+            new ValidateFieldsCanMergeModule($this->selections),
         ];
 
         foreach ($modules as $module) {

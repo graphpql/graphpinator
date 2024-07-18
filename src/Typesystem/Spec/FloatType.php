@@ -4,8 +4,11 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem\Spec;
 
-#[\Graphpinator\Typesystem\Attribute\Description('Float built-in type')]
-final class FloatType extends \Graphpinator\Typesystem\ScalarType
+use Graphpinator\Typesystem\Attribute\Description;
+use Graphpinator\Typesystem\ScalarType;
+
+#[Description('Float built-in type')]
+final class FloatType extends ScalarType
 {
     protected const NAME = 'Float';
 

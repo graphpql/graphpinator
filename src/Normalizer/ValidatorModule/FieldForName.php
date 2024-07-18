@@ -4,11 +4,14 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Normalizer\ValidatorModule;
 
+use Graphpinator\Normalizer\Selection\Field;
+use Graphpinator\Typesystem\Contract\TypeConditionable;
+
 final class FieldForName
 {
     public function __construct(
-        public \Graphpinator\Normalizer\Selection\Field $field,
-        public ?\Graphpinator\Typesystem\Contract\TypeConditionable $fragmentType,
+        public Field $field,
+        public ?TypeConditionable $fragmentType,
     )
     {
     }

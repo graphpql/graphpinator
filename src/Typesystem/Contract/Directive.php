@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem\Contract;
 
+use Graphpinator\Typesystem\Argument\ArgumentSet;
+
 interface Directive extends Entity
 {
     public function getName() : string;
@@ -14,5 +16,5 @@ interface Directive extends Entity
 
     public function getLocations() : array;
 
-    public function getArguments() : \Graphpinator\Typesystem\Argument\ArgumentSet;
+    public function getArguments() : ArgumentSet;
 }

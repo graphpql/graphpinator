@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Normalizer;
 
+use Graphpinator\Value\InputedValue;
+
 final class VariableValueSet
 {
     public function __construct(
@@ -12,7 +14,7 @@ final class VariableValueSet
     {
     }
 
-    public function get(string $offset) : \Graphpinator\Value\InputedValue
+    public function get(string $offset) : InputedValue
     {
         return $this->variables[$offset];
     }

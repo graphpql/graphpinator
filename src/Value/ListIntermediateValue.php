@@ -4,10 +4,12 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Value;
 
-final class ListIntermediateValue implements \Graphpinator\Value\ResolvedValue
+use Graphpinator\Typesystem\ListType;
+
+final class ListIntermediateValue implements ResolvedValue
 {
     public function __construct(
-        private \Graphpinator\Typesystem\ListType $type,
+        private ListType $type,
         private iterable $rawValue,
     )
     {
@@ -18,7 +20,7 @@ final class ListIntermediateValue implements \Graphpinator\Value\ResolvedValue
         return $this->rawValue;
     }
 
-    public function getType() : \Graphpinator\Typesystem\ListType
+    public function getType() : ListType
     {
         return $this->type;
     }

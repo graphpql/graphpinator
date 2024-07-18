@@ -4,13 +4,18 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem\Contract;
 
+use Graphpinator\Typesystem\Argument\Argument;
+use Graphpinator\Typesystem\DirectiveUsage\DirectiveUsage;
+use Graphpinator\Typesystem\EnumItem\EnumItem;
+use Graphpinator\Typesystem\Field\Field;
+
 interface ComponentVisitor extends EntityVisitor
 {
-    public function visitField(\Graphpinator\Typesystem\Field\Field $field) : mixed;
+    public function visitField(Field $field) : mixed;
 
-    public function visitArgument(\Graphpinator\Typesystem\Argument\Argument $argument) : mixed;
+    public function visitArgument(Argument $argument) : mixed;
 
-    public function visitDirectiveUsage(\Graphpinator\Typesystem\DirectiveUsage\DirectiveUsage $directiveUsage) : mixed;
+    public function visitDirectiveUsage(DirectiveUsage $directiveUsage) : mixed;
 
-    public function visitEnumItem(\Graphpinator\Typesystem\EnumItem\EnumItem $enumItem) : mixed;
+    public function visitEnumItem(EnumItem $enumItem) : mixed;
 }

@@ -4,16 +4,19 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Value;
 
-interface InputedValue extends \Graphpinator\Value\Value
+use Graphpinator\Normalizer\VariableValueSet;
+use Graphpinator\Typesystem\Contract\Inputable;
+
+interface InputedValue extends Value
 {
     public function getRawValue(bool $forResolvers = false) : mixed;
 
-    public function getType() : \Graphpinator\Typesystem\Contract\Inputable;
+    public function getType() : Inputable;
 
     /**
      * Function used to replace variable references with concrete values before query execution.
      */
-    public function applyVariables(\Graphpinator\Normalizer\VariableValueSet $variables) : void;
+    public function applyVariables(VariableValueSet $variables) : void;
 
     /**
      * Function used to recursively call resolution of nested non-pure argument directives.

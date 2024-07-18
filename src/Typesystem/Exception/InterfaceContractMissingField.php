@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem\Exception;
 
-final class InterfaceContractMissingField extends \Graphpinator\Typesystem\Exception\TypeError
+final class InterfaceContractMissingField extends TypeError
 {
     public const MESSAGE = 'Type "%s" does not satisfy interface "%s" - missing field "%s".';
 

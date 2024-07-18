@@ -4,10 +4,14 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Value;
 
-final class InputValue implements \Graphpinator\Value\InputedValue, \IteratorAggregate
+use Graphpinator\Normalizer\VariableValueSet;
+use Graphpinator\Typesystem\InputType;
+use Graphpinator\Typesystem\Location\InputObjectLocation;
+
+final class InputValue implements InputedValue, \IteratorAggregate
 {
     public function __construct(
-        private \Graphpinator\Typesystem\InputType $type,
+        private InputType $type,
         private \stdClass $value,
     )
     {
@@ -20,7 +24,7 @@ final class InputValue implements \Graphpinator\Value\InputedValue, \IteratorAgg
             : new \stdClass();
 
         foreach ((array) $this->value as $argumentName => $argumentValue) {
-            \assert($argumentValue instanceof \Graphpinator\Value\ArgumentValue);
+            \assert($argumentValue instanceof ArgumentValue);
 
             $return->{$argumentName} = $argumentValue->getValue()->getRawValue($forResolvers);
         }
@@ -28,7 +32,7 @@ final class InputValue implements \Graphpinator\Value\InputedValue, \IteratorAgg
         return $return;
     }
 
-    public function getType() : \Graphpinator\Typesystem\InputType
+    public function getType() : InputType
     {
         return $this->type;
     }
@@ -38,7 +42,7 @@ final class InputValue implements \Graphpinator\Value\InputedValue, \IteratorAgg
         $component = [];
 
         foreach ((array) $this->value as $argumentName => $argumentValue) {
-            \assert($argumentValue instanceof \Graphpinator\Value\ArgumentValue);
+            \assert($argumentValue instanceof ArgumentValue);
 
             $component[] = $argumentName . ':' . $argumentValue->getValue()->printValue();
         }
@@ -46,17 +50,17 @@ final class InputValue implements \Graphpinator\Value\InputedValue, \IteratorAgg
         return '{' . \implode(',', $component) . '}';
     }
 
-    public function applyVariables(\Graphpinator\Normalizer\VariableValueSet $variables) : void
+    public function applyVariables(VariableValueSet $variables) : void
     {
         foreach ((array) $this->value as $argumentValue) {
-            \assert($argumentValue instanceof \Graphpinator\Value\ArgumentValue);
+            \assert($argumentValue instanceof ArgumentValue);
 
             $argumentValue->applyVariables($variables);
         }
 
         foreach ($this->type->getDirectiveUsages() as $directiveUsage) {
             $directive = $directiveUsage->getDirective();
-            \assert($directive instanceof \Graphpinator\Typesystem\Location\InputObjectLocation);
+            \assert($directive instanceof InputObjectLocation);
             $directive->resolveInputObject($directiveUsage->getArgumentValues(), $this);
         }
     }
@@ -64,7 +68,7 @@ final class InputValue implements \Graphpinator\Value\InputedValue, \IteratorAgg
     public function resolveRemainingDirectives() : void
     {
         foreach ((array) $this->value as $argumentValue) {
-            \assert($argumentValue instanceof \Graphpinator\Value\ArgumentValue);
+            \assert($argumentValue instanceof ArgumentValue);
 
             $argumentValue->resolveNonPureDirectives();
         }
@@ -83,7 +87,7 @@ final class InputValue implements \Graphpinator\Value\InputedValue, \IteratorAgg
         }
 
         foreach ((array) $this->value as $argumentName => $argumentValue) {
-            \assert($argumentValue instanceof \Graphpinator\Value\ArgumentValue);
+            \assert($argumentValue instanceof ArgumentValue);
 
             if (!\property_exists($secondObject, $argumentName) ||
                 !$argumentValue->getValue()->isSame($secondObject->{$argumentName}->getValue())) {
@@ -104,12 +108,12 @@ final class InputValue implements \Graphpinator\Value\InputedValue, \IteratorAgg
         return \property_exists($this->value, $name);
     }
 
-    public function __get(string $name) : \Graphpinator\Value\ArgumentValue
+    public function __get(string $name) : ArgumentValue
     {
         return $this->value->{$name};
     }
 
-    public function __set(string $name, \Graphpinator\Value\ArgumentValue $value) : void
+    public function __set(string $name, ArgumentValue $value) : void
     {
         if ($value->getArgument() !== $this->type->getArguments()[$name]) {
             throw new \Exception();

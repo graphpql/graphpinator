@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Normalizer\Exception;
 
-final class OperationNotSupported extends \Graphpinator\Normalizer\Exception\NormalizerError
+final class OperationNotSupported extends NormalizerError
 {
     public const MESSAGE = 'Operation "%s" is not supported by this service.';
 

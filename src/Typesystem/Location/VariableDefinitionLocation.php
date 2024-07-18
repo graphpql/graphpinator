@@ -4,9 +4,14 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem\Location;
 
-interface VariableDefinitionLocation extends \Graphpinator\Typesystem\Contract\ExecutableDirective
-{
-    public function validateVariableUsage(\Graphpinator\Normalizer\Variable\Variable $variable, \Graphpinator\Value\ArgumentValueSet $arguments) : bool;
+use Graphpinator\Normalizer\Variable\Variable;
+use Graphpinator\Typesystem\Contract\ExecutableDirective;
+use Graphpinator\Value\ArgumentValueSet;
+use Graphpinator\Value\InputedValue;
 
-    public function resolveVariableDefinition(\Graphpinator\Value\ArgumentValueSet $arguments, \Graphpinator\Value\InputedValue $variableValue) : void;
+interface VariableDefinitionLocation extends ExecutableDirective
+{
+    public function validateVariableUsage(Variable $variable, ArgumentValueSet $arguments) : bool;
+
+    public function resolveVariableDefinition(ArgumentValueSet $arguments, InputedValue $variableValue) : void;
 }

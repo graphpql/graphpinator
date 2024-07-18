@@ -4,15 +4,20 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Normalizer\Operation;
 
+use Graphpinator\Normalizer\Directive\DirectiveSet;
+use Graphpinator\Normalizer\Selection\SelectionSet;
+use Graphpinator\Normalizer\Variable\VariableSet;
+use Graphpinator\Typesystem\Type;
+
 final class Operation
 {
     public function __construct(
         private string $type,
         private ?string $name,
-        private \Graphpinator\Typesystem\Type $rootObject,
-        private \Graphpinator\Normalizer\Selection\SelectionSet $children,
-        private \Graphpinator\Normalizer\Variable\VariableSet $variables,
-        private \Graphpinator\Normalizer\Directive\DirectiveSet $directives,
+        private Type $rootObject,
+        private SelectionSet $children,
+        private VariableSet $variables,
+        private DirectiveSet $directives,
     )
     {
     }
@@ -22,22 +27,22 @@ final class Operation
         return $this->type;
     }
 
-    public function getRootObject() : \Graphpinator\Typesystem\Type
+    public function getRootObject() : Type
     {
         return $this->rootObject;
     }
 
-    public function getSelections() : \Graphpinator\Normalizer\Selection\SelectionSet
+    public function getSelections() : SelectionSet
     {
         return $this->children;
     }
 
-    public function getVariables() : \Graphpinator\Normalizer\Variable\VariableSet
+    public function getVariables() : VariableSet
     {
         return $this->variables;
     }
 
-    public function getDirectives() : \Graphpinator\Normalizer\Directive\DirectiveSet
+    public function getDirectives() : DirectiveSet
     {
         return $this->directives;
     }

@@ -4,34 +4,41 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Feature;
 
-final class InterfaceMustDefineOneOrMoreFieldsTest extends \PHPUnit\Framework\TestCase
+use Graphpinator\Typesystem\Exception\InterfaceOrTypeMustDefineOneOrMoreFields;
+use Graphpinator\Typesystem\Field\FieldSet;
+use Graphpinator\Typesystem\InterfaceSet;
+use Graphpinator\Typesystem\InterfaceType;
+use Graphpinator\Value\TypeIntermediateValue;
+use PHPUnit\Framework\TestCase;
+
+final class InterfaceMustDefineOneOrMoreFieldsTest extends TestCase
 {
-    public static function getInterfaceMustDefineOneOrMoreFieldsType() : \Graphpinator\Typesystem\InterfaceType
+    public static function getInterfaceMustDefineOneOrMoreFieldsType() : InterfaceType
     {
-        return new class extends \Graphpinator\Typesystem\InterfaceType {
+        return new class extends InterfaceType {
             protected const NAME = 'InvalidInterfaceType';
 
             public function __construct()
             {
                 parent::__construct(
-                    new \Graphpinator\Typesystem\InterfaceSet([]),
+                    new InterfaceSet([]),
                 );
             }
 
-            public function createResolvedValue($rawValue) : \Graphpinator\Value\TypeIntermediateValue
+            public function createResolvedValue($rawValue) : TypeIntermediateValue
             {
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\FieldSet
+            protected function getFieldDefinition() : FieldSet
             {
-                return new \Graphpinator\Typesystem\Field\FieldSet([]);
+                return new FieldSet([]);
             }
         };
     }
 
     public function testInterfaceMustDefineOneOrMoreFields() : void
     {
-        $this->expectException(\Graphpinator\Typesystem\Exception\InterfaceOrTypeMustDefineOneOrMoreFields::class);
+        $this->expectException(InterfaceOrTypeMustDefineOneOrMoreFields::class);
         $this->expectExceptionMessage('An Object type or interface must define one or more fields.');
 
         self::getInterfaceMustDefineOneOrMoreFieldsType()->getFields();

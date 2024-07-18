@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Normalizer\Exception;
 
-final class UnknownVariable extends \Graphpinator\Normalizer\Exception\NormalizerError
+final class UnknownVariable extends NormalizerError
 {
     public const MESSAGE = 'Unknown variable "%s".';
 

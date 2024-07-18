@@ -4,12 +4,18 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Normalizer\RefinerModule;
 
-final class EmptyFragmentModule implements RefinerModule, \Graphpinator\Normalizer\Selection\SelectionVisitor
+use Graphpinator\Normalizer\Selection\Field;
+use Graphpinator\Normalizer\Selection\FragmentSpread;
+use Graphpinator\Normalizer\Selection\InlineFragment;
+use Graphpinator\Normalizer\Selection\SelectionSet;
+use Graphpinator\Normalizer\Selection\SelectionVisitor;
+
+final class EmptyFragmentModule implements RefinerModule, SelectionVisitor
 {
     private int $index;
 
     public function __construct(
-        private \Graphpinator\Normalizer\Selection\SelectionSet $selections,
+        private SelectionSet $selections,
     )
     {
     }
@@ -22,13 +28,13 @@ final class EmptyFragmentModule implements RefinerModule, \Graphpinator\Normaliz
         }
     }
 
-    public function visitField(\Graphpinator\Normalizer\Selection\Field $field) : mixed
+    public function visitField(Field $field) : mixed
     {
         return null;
     }
 
     public function visitFragmentSpread(
-        \Graphpinator\Normalizer\Selection\FragmentSpread $fragmentSpread,
+        FragmentSpread $fragmentSpread,
     ) : mixed
     {
         $refiner = new self($fragmentSpread->getSelections());
@@ -42,7 +48,7 @@ final class EmptyFragmentModule implements RefinerModule, \Graphpinator\Normaliz
     }
 
     public function visitInlineFragment(
-        \Graphpinator\Normalizer\Selection\InlineFragment $inlineFragment,
+        InlineFragment $inlineFragment,
     ) : mixed
     {
         $refiner = new self($inlineFragment->getSelections());

@@ -4,15 +4,18 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Value;
 
-final class TypeIntermediateValue implements \Graphpinator\Value\ResolvedValue
+use Graphpinator\Exception\Value\InvalidValue;
+use Graphpinator\Typesystem\Type;
+
+final class TypeIntermediateValue implements ResolvedValue
 {
     public function __construct(
-        private \Graphpinator\Typesystem\Type $type,
+        private Type $type,
         private mixed $rawValue,
     )
     {
         if (!$type->validateNonNullValue($rawValue)) {
-            throw new \Graphpinator\Exception\Value\InvalidValue($type->getName(), $rawValue, false);
+            throw new InvalidValue($type->getName(), $rawValue, false);
         }
     }
 
@@ -21,7 +24,7 @@ final class TypeIntermediateValue implements \Graphpinator\Value\ResolvedValue
         return $this->rawValue;
     }
 
-    public function getType() : \Graphpinator\Typesystem\Type
+    public function getType() : Type
     {
         return $this->type;
     }

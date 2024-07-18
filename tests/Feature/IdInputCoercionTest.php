@@ -4,24 +4,38 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Feature;
 
-final class IdInputCoercionTest extends \PHPUnit\Framework\TestCase
+use Graphpinator\Exception\Value\InvalidValue;
+use Graphpinator\Graphpinator;
+use Graphpinator\Request\JsonRequestFactory;
+use Graphpinator\SimpleContainer;
+use Graphpinator\Typesystem\Argument\Argument;
+use Graphpinator\Typesystem\Argument\ArgumentSet;
+use Graphpinator\Typesystem\Container;
+use Graphpinator\Typesystem\Field\ResolvableField;
+use Graphpinator\Typesystem\Field\ResolvableFieldSet;
+use Graphpinator\Typesystem\Schema;
+use Graphpinator\Typesystem\Type;
+use Infinityloop\Utils\Json;
+use PHPUnit\Framework\TestCase;
+
+final class IdInputCoercionTest extends TestCase
 {
     public function testNoCoercion() : void
     {
         $query = $this->getQuery();
-        $graphpinator = new \Graphpinator\Graphpinator(
-            new \Graphpinator\Typesystem\Schema(
-                new \Graphpinator\SimpleContainer([$query], []),
+        $graphpinator = new Graphpinator(
+            new Schema(
+                new SimpleContainer([$query], []),
                 $query,
             ),
         );
 
-        $result = $graphpinator->run(new \Graphpinator\Request\JsonRequestFactory(\Infinityloop\Utils\Json::fromNative((object) [
+        $result = $graphpinator->run(new JsonRequestFactory(Json::fromNative((object) [
             'query' => 'query { field(idArg: "1") }',
         ])));
 
         self::assertSame(
-            \Infinityloop\Utils\Json::fromNative((object) ['data' => ['field' => '1']])->toString(),
+            Json::fromNative((object) ['data' => ['field' => '1']])->toString(),
             $result->toString(),
         );
     }
@@ -29,19 +43,19 @@ final class IdInputCoercionTest extends \PHPUnit\Framework\TestCase
     public function testParserValue() : void
     {
         $query = $this->getQuery();
-        $graphpinator = new \Graphpinator\Graphpinator(
-            new \Graphpinator\Typesystem\Schema(
-                new \Graphpinator\SimpleContainer([$query], []),
+        $graphpinator = new Graphpinator(
+            new Schema(
+                new SimpleContainer([$query], []),
                 $query,
             ),
         );
 
-        $result = $graphpinator->run(new \Graphpinator\Request\JsonRequestFactory(\Infinityloop\Utils\Json::fromNative((object) [
+        $result = $graphpinator->run(new JsonRequestFactory(Json::fromNative((object) [
             'query' => 'query { field(idArg: 1) }',
         ])));
 
         self::assertSame(
-            \Infinityloop\Utils\Json::fromNative((object) ['data' => ['field' => '1']])->toString(),
+            Json::fromNative((object) ['data' => ['field' => '1']])->toString(),
             $result->toString(),
         );
     }
@@ -49,19 +63,19 @@ final class IdInputCoercionTest extends \PHPUnit\Framework\TestCase
     public function testVariableValue() : void
     {
         $query = $this->getQuery();
-        $graphpinator = new \Graphpinator\Graphpinator(
-            new \Graphpinator\Typesystem\Schema(
-                new \Graphpinator\SimpleContainer([$query], []),
+        $graphpinator = new Graphpinator(
+            new Schema(
+                new SimpleContainer([$query], []),
                 $query,
             ),
         );
 
-        $result = $graphpinator->run(new \Graphpinator\Request\JsonRequestFactory(\Infinityloop\Utils\Json::fromNative((object) [
+        $result = $graphpinator->run(new JsonRequestFactory(Json::fromNative((object) [
             'query' => 'query ($var: ID! = 2) { field(idArg: $var) }',
         ])));
 
         self::assertSame(
-            \Infinityloop\Utils\Json::fromNative((object) ['data' => ['field' => '2']])->toString(),
+            Json::fromNative((object) ['data' => ['field' => '2']])->toString(),
             $result->toString(),
         );
     }
@@ -69,43 +83,43 @@ final class IdInputCoercionTest extends \PHPUnit\Framework\TestCase
     public function testDefaultValue() : void
     {
         $query = $this->getQuery(3);
-        $graphpinator = new \Graphpinator\Graphpinator(
-            new \Graphpinator\Typesystem\Schema(
-                new \Graphpinator\SimpleContainer([$query], []),
+        $graphpinator = new Graphpinator(
+            new Schema(
+                new SimpleContainer([$query], []),
                 $query,
             ),
         );
 
-        $result = $graphpinator->run(new \Graphpinator\Request\JsonRequestFactory(\Infinityloop\Utils\Json::fromNative((object) [
+        $result = $graphpinator->run(new JsonRequestFactory(Json::fromNative((object) [
             'query' => 'query { field }',
         ])));
 
         self::assertSame(
-            \Infinityloop\Utils\Json::fromNative((object) ['data' => ['field' => '3']])->toString(),
+            Json::fromNative((object) ['data' => ['field' => '3']])->toString(),
             $result->toString(),
         );
     }
 
     public function testNoAcceptFloat() : void
     {
-        $this->expectException(\Graphpinator\Exception\Value\InvalidValue::class);
+        $this->expectException(InvalidValue::class);
 
         $query = $this->getQuery();
-        $graphpinator = new \Graphpinator\Graphpinator(
-            new \Graphpinator\Typesystem\Schema(
-                new \Graphpinator\SimpleContainer([$query], []),
+        $graphpinator = new Graphpinator(
+            new Schema(
+                new SimpleContainer([$query], []),
                 $query,
             ),
         );
 
-        $graphpinator->run(new \Graphpinator\Request\JsonRequestFactory(\Infinityloop\Utils\Json::fromNative((object) [
+        $graphpinator->run(new JsonRequestFactory(Json::fromNative((object) [
             'query' => 'query { field(idArg: 1.0) }',
         ])));
     }
 
-    public function getQuery(?int $defaultValue = null) : \Graphpinator\Typesystem\Type
+    public function getQuery(?int $defaultValue = null) : Type
     {
-        return new class ($defaultValue) extends \Graphpinator\Typesystem\Type
+        return new class ($defaultValue) extends Type
         {
             protected const NAME = 'Query';
 
@@ -121,25 +135,25 @@ final class IdInputCoercionTest extends \PHPUnit\Framework\TestCase
                 return true;
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
+            protected function getFieldDefinition() : ResolvableFieldSet
             {
-                $argument = \Graphpinator\Typesystem\Argument\Argument::create(
+                $argument = Argument::create(
                     'idArg',
-                    \Graphpinator\Typesystem\Container::Id()->notNull(),
+                    Container::Id()->notNull(),
                 );
 
                 if (\is_int($this->defaultValue)) {
                     $argument->setDefaultValue($this->defaultValue);
                 }
 
-                return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
-                    \Graphpinator\Typesystem\Field\ResolvableField::create(
+                return new ResolvableFieldSet([
+                    ResolvableField::create(
                         'field',
-                        \Graphpinator\Typesystem\Container::Id()->notNull(),
+                        Container::Id()->notNull(),
                         static function ($parent, string $idArg) : string {
                             return $idArg;
                         },
-                    )->setArguments(new \Graphpinator\Typesystem\Argument\ArgumentSet([
+                    )->setArguments(new ArgumentSet([
                         $argument,
                     ])),
                 ]);

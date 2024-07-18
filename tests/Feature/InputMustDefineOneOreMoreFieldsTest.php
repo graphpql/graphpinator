@@ -4,24 +4,29 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Feature;
 
-final class InputMustDefineOneOreMoreFieldsTest extends \PHPUnit\Framework\TestCase
+use Graphpinator\Typesystem\Argument\ArgumentSet;
+use Graphpinator\Typesystem\Exception\InputTypeMustDefineOneOreMoreFields;
+use Graphpinator\Typesystem\InputType;
+use PHPUnit\Framework\TestCase;
+
+final class InputMustDefineOneOreMoreFieldsTest extends TestCase
 {
-    public static function getInputTypeMustDefineOneOreMoreFieldsInputType() : \Graphpinator\Typesystem\InputType
+    public static function getInputTypeMustDefineOneOreMoreFieldsInputType() : InputType
     {
-        return new class extends \Graphpinator\Typesystem\InputType
+        return new class extends InputType
         {
             protected const NAME = 'InvalidInputType';
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
+            protected function getFieldDefinition() : ArgumentSet
             {
-                return new \Graphpinator\Typesystem\Argument\ArgumentSet([]);
+                return new ArgumentSet([]);
             }
         };
     }
 
     public function testInputTypeMustDefineOneOreMoreFields() : void
     {
-        $this->expectException(\Graphpinator\Typesystem\Exception\InputTypeMustDefineOneOreMoreFields::class);
+        $this->expectException(InputTypeMustDefineOneOreMoreFields::class);
         $this->expectExceptionMessage('An Input Object type must define one or more input fields.');
 
         self::getInputTypeMustDefineOneOreMoreFieldsInputType()->getArguments();

@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem\Exception;
 
-final class EnumItemInvalid extends \Graphpinator\Typesystem\Exception\TypeError
+final class EnumItemInvalid extends TypeError
 {
     public const MESSAGE = 'EnumItem "%s" does not satisfy the format required by GraphQL specification.';
 

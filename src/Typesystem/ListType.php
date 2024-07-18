@@ -4,9 +4,13 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem;
 
-final class ListType extends \Graphpinator\Typesystem\Contract\ModifierType
+use Graphpinator\Typesystem\Contract\ModifierType;
+use Graphpinator\Typesystem\Contract\Type;
+use Graphpinator\Typesystem\Contract\TypeVisitor;
+
+final class ListType extends ModifierType
 {
-    public function isInstanceOf(\Graphpinator\Typesystem\Contract\Type $type) : bool
+    public function isInstanceOf(Type $type) : bool
     {
         if ($type instanceof self) {
             return $this->innerType->isInstanceOf($type->getInnerType());
@@ -25,12 +29,12 @@ final class ListType extends \Graphpinator\Typesystem\Contract\ModifierType
         return new NotNullType($this);
     }
 
-    public function getShapingType() : \Graphpinator\Typesystem\Contract\Type
+    public function getShapingType() : Type
     {
         return $this;
     }
 
-    public function accept(\Graphpinator\Typesystem\Contract\TypeVisitor $visitor) : mixed
+    public function accept(TypeVisitor $visitor) : mixed
     {
         return $visitor->visitList($this);
     }

@@ -4,12 +4,24 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem;
 
-use \Graphpinator\Typesystem\Argument\ArgumentSet;
+use Graphpinator\Graphpinator;
+use Graphpinator\Typesystem\Argument\ArgumentSet;
+use Graphpinator\Typesystem\Contract\ConcreteType;
+use Graphpinator\Typesystem\Contract\Inputable;
+use Graphpinator\Typesystem\Contract\NamedTypeVisitor;
+use Graphpinator\Typesystem\DirectiveUsage\DirectiveUsage;
+use Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet;
+use Graphpinator\Typesystem\Exception\DirectiveIncorrectType;
+use Graphpinator\Typesystem\Exception\InputCycle;
+use Graphpinator\Typesystem\Exception\InputTypeMustDefineOneOreMoreFields;
+use Graphpinator\Typesystem\Location\InputObjectLocation;
+use Graphpinator\Typesystem\Spec\OneOfDirective;
+use Graphpinator\Typesystem\Utils\THasDirectives;
 
-abstract class InputType extends \Graphpinator\Typesystem\Contract\ConcreteType implements
-    \Graphpinator\Typesystem\Contract\Inputable
+abstract class InputType extends ConcreteType implements
+    Inputable
 {
-    use \Graphpinator\Typesystem\Utils\THasDirectives;
+    use THasDirectives;
 
     protected const DATA_CLASS = \stdClass::class;
 
@@ -18,7 +30,7 @@ abstract class InputType extends \Graphpinator\Typesystem\Contract\ConcreteType 
 
     public function __construct()
     {
-        $this->directiveUsages = new \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet();
+        $this->directiveUsages = new DirectiveUsageSet();
     }
 
     final public function getArguments() : ArgumentSet
@@ -27,9 +39,9 @@ abstract class InputType extends \Graphpinator\Typesystem\Contract\ConcreteType 
             $this->arguments = $this->getFieldDefinition();
             $this->afterGetFieldDefinition();
 
-            if (\Graphpinator\Graphpinator::$validateSchema) {
+            if (Graphpinator::$validateSchema) {
                 if ($this->arguments->count() === 0) {
-                    throw new \Graphpinator\Typesystem\Exception\InputTypeMustDefineOneOreMoreFields();
+                    throw new InputTypeMustDefineOneOreMoreFields();
                 }
 
                 $this->validateCycles();
@@ -39,7 +51,7 @@ abstract class InputType extends \Graphpinator\Typesystem\Contract\ConcreteType 
         return $this->arguments;
     }
 
-    final public function accept(\Graphpinator\Typesystem\Contract\NamedTypeVisitor $visitor) : mixed
+    final public function accept(NamedTypeVisitor $visitor) : mixed
     {
         return $visitor->visitInput($this);
     }
@@ -50,14 +62,14 @@ abstract class InputType extends \Graphpinator\Typesystem\Contract\ConcreteType 
     }
 
     final public function addDirective(
-        \Graphpinator\Typesystem\Location\InputObjectLocation $directive,
+        InputObjectLocation $directive,
         array $arguments = [],
     ) : static
     {
-        $usage = new \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsage($directive, $arguments);
+        $usage = new DirectiveUsage($directive, $arguments);
 
-        if (\Graphpinator\Graphpinator::$validateSchema && !$directive->validateInputUsage($this, $usage->getArgumentValues())) {
-            throw new \Graphpinator\Typesystem\Exception\DirectiveIncorrectType();
+        if (Graphpinator::$validateSchema && !$directive->validateInputUsage($this, $usage->getArgumentValues())) {
+            throw new DirectiveIncorrectType();
         }
 
         $this->directiveUsages[] = $usage;
@@ -68,7 +80,7 @@ abstract class InputType extends \Graphpinator\Typesystem\Contract\ConcreteType 
     public function isOneOf() : bool
     {
         foreach ($this->getDirectiveUsages() as $directive) {
-            if ($directive->getDirective() instanceof \Graphpinator\Typesystem\Spec\OneOfDirective) {
+            if ($directive->getDirective() instanceof OneOfDirective) {
                 return true;
             }
         }
@@ -94,7 +106,7 @@ abstract class InputType extends \Graphpinator\Typesystem\Contract\ConcreteType 
         }
 
         if (\array_key_exists($this->getName(), $stack)) {
-            throw new \Graphpinator\Typesystem\Exception\InputCycle(\array_keys($stack));
+            throw new InputCycle(\array_keys($stack));
         }
 
         $stack[$this->getName()] = true;

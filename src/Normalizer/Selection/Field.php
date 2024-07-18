@@ -4,14 +4,18 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Normalizer\Selection;
 
+use Graphpinator\Normalizer\Directive\DirectiveSet;
+use Graphpinator\Normalizer\VariableValueSet;
+use Graphpinator\Value\ArgumentValueSet;
+
 final class Field implements Selection
 {
     public function __construct(
         private \Graphpinator\Typesystem\Field\Field $field,
         private string $outputName,
-        private \Graphpinator\Value\ArgumentValueSet $arguments,
-        private \Graphpinator\Normalizer\Directive\DirectiveSet $directives,
-        private ?\Graphpinator\Normalizer\Selection\SelectionSet $children = null,
+        private ArgumentValueSet $arguments,
+        private DirectiveSet $directives,
+        private ?SelectionSet $children = null,
     )
     {
     }
@@ -31,22 +35,22 @@ final class Field implements Selection
         return $this->outputName;
     }
 
-    public function getArguments() : \Graphpinator\Value\ArgumentValueSet
+    public function getArguments() : ArgumentValueSet
     {
         return $this->arguments;
     }
 
-    public function getDirectives() : \Graphpinator\Normalizer\Directive\DirectiveSet
+    public function getDirectives() : DirectiveSet
     {
         return $this->directives;
     }
 
-    public function getSelections() : ?\Graphpinator\Normalizer\Selection\SelectionSet
+    public function getSelections() : ?SelectionSet
     {
         return $this->children;
     }
 
-    public function applyVariables(\Graphpinator\Normalizer\VariableValueSet $variables) : void
+    public function applyVariables(VariableValueSet $variables) : void
     {
         $this->arguments->applyVariables($variables);
         $this->directives->applyVariables($variables);

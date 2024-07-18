@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem\Exception;
 
-final class InterfaceContractFieldTypeMismatch extends \Graphpinator\Typesystem\Exception\TypeError
+final class InterfaceContractFieldTypeMismatch extends TypeError
 {
     public const MESSAGE = 'Type "%s" does not satisfy interface "%s" - field "%s" does not have a compatible type.';
 

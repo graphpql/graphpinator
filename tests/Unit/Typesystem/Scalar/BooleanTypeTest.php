@@ -4,7 +4,13 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Unit\Typesystem\Scalar;
 
-final class BooleanTypeTest extends \PHPUnit\Framework\TestCase
+use Graphpinator\Common\Path;
+use Graphpinator\Exception\Value\InvalidValue;
+use Graphpinator\Typesystem\Spec\BooleanType;
+use Graphpinator\Value\ConvertRawValueVisitor;
+use PHPUnit\Framework\TestCase;
+
+final class BooleanTypeTest extends TestCase
 {
     public static function simpleDataProvider() : array
     {
@@ -31,8 +37,8 @@ final class BooleanTypeTest extends \PHPUnit\Framework\TestCase
      */
     public function testValidateValue($rawValue) : void
     {
-        $bool = new \Graphpinator\Typesystem\Spec\BooleanType();
-        $value = $bool->accept(new \Graphpinator\Value\ConvertRawValueVisitor($rawValue, new \Graphpinator\Common\Path()));
+        $bool = new BooleanType();
+        $value = $bool->accept(new ConvertRawValueVisitor($rawValue, new Path()));
 
         self::assertSame($bool, $value->getType());
         self::assertSame($rawValue, $value->getRawValue());
@@ -44,9 +50,9 @@ final class BooleanTypeTest extends \PHPUnit\Framework\TestCase
      */
     public function testValidateValueInvalid($rawValue) : void
     {
-        $this->expectException(\Graphpinator\Exception\Value\InvalidValue::class);
+        $this->expectException(InvalidValue::class);
 
-        $bool = new \Graphpinator\Typesystem\Spec\BooleanType();
-        $bool->accept(new \Graphpinator\Value\ConvertRawValueVisitor($rawValue, new \Graphpinator\Common\Path()));
+        $bool = new BooleanType();
+        $bool->accept(new ConvertRawValueVisitor($rawValue, new Path()));
     }
 }

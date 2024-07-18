@@ -4,12 +4,13 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem\Contract;
 
-use \Graphpinator\Typesystem\ListType;
-use \Graphpinator\Typesystem\NotNullType;
+use Graphpinator\Typesystem\ListType;
+use Graphpinator\Typesystem\NotNullType;
+use Graphpinator\Typesystem\Utils\THasDescription;
 
 abstract class NamedType implements Type, Entity
 {
-    use \Graphpinator\Typesystem\Utils\THasDescription;
+    use THasDescription;
 
     protected const NAME = '';
 

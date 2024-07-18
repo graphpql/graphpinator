@@ -4,18 +4,28 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem\Spec;
 
-use \Graphpinator\Typesystem\Location\SelectionDirectiveResult;
-use \Graphpinator\Value\ArgumentValueSet;
+use Graphpinator\Typesystem\Argument\Argument;
+use Graphpinator\Typesystem\Argument\ArgumentSet;
+use Graphpinator\Typesystem\Attribute\Description;
+use Graphpinator\Typesystem\Container;
+use Graphpinator\Typesystem\Directive;
+use Graphpinator\Typesystem\Field\Field;
+use Graphpinator\Typesystem\Location\FieldLocation;
+use Graphpinator\Typesystem\Location\FragmentSpreadLocation;
+use Graphpinator\Typesystem\Location\InlineFragmentLocation;
+use Graphpinator\Typesystem\Location\SelectionDirectiveResult;
+use Graphpinator\Value\ArgumentValueSet;
+use Graphpinator\Value\FieldValue;
 
-#[\Graphpinator\Typesystem\Attribute\Description('Built-in include directive')]
-final class IncludeDirective extends \Graphpinator\Typesystem\Directive implements
-    \Graphpinator\Typesystem\Location\FieldLocation,
-    \Graphpinator\Typesystem\Location\InlineFragmentLocation,
-    \Graphpinator\Typesystem\Location\FragmentSpreadLocation
+#[Description('Built-in include directive')]
+final class IncludeDirective extends Directive implements
+    FieldLocation,
+    InlineFragmentLocation,
+    FragmentSpreadLocation
 {
     protected const NAME = 'include';
 
-    public function validateFieldUsage(\Graphpinator\Typesystem\Field\Field $field, ArgumentValueSet $arguments) : bool
+    public function validateFieldUsage(Field $field, ArgumentValueSet $arguments) : bool
     {
         return true;
     }
@@ -27,7 +37,7 @@ final class IncludeDirective extends \Graphpinator\Typesystem\Directive implemen
             : SelectionDirectiveResult::SKIP;
     }
 
-    public function resolveFieldAfter(ArgumentValueSet $arguments, \Graphpinator\Value\FieldValue $fieldValue) : SelectionDirectiveResult
+    public function resolveFieldAfter(ArgumentValueSet $arguments, FieldValue $fieldValue) : SelectionDirectiveResult
     {
         return SelectionDirectiveResult::NONE;
     }
@@ -52,10 +62,10 @@ final class IncludeDirective extends \Graphpinator\Typesystem\Directive implemen
         // nothing here
     }
 
-    protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
+    protected function getFieldDefinition() : ArgumentSet
     {
-        return new \Graphpinator\Typesystem\Argument\ArgumentSet([
-            new \Graphpinator\Typesystem\Argument\Argument('if', \Graphpinator\Typesystem\Container::Boolean()->notNull()),
+        return new ArgumentSet([
+            new Argument('if', Container::Boolean()->notNull()),
         ]);
     }
 }

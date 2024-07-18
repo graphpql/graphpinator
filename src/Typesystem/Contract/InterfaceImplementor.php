@@ -4,6 +4,10 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem\Contract;
 
+use Graphpinator\Typesystem\Field\FieldSet;
+use Graphpinator\Typesystem\InterfaceSet;
+use Graphpinator\Typesystem\InterfaceType;
+
 /**
  * Interface InterfaceImplementor which marks types which can implement interface - currently Type and Interface.
  */
@@ -13,16 +17,16 @@ interface InterfaceImplementor extends Type
     /**
      * Returns fields defined for this type.
      */
-    public function getFields() : \Graphpinator\Typesystem\Field\FieldSet;
+    public function getFields() : FieldSet;
 
     /**
      * Returns interfaces, which this type implements.
      */
-    public function getInterfaces() : \Graphpinator\Typesystem\InterfaceSet;
+    public function getInterfaces() : InterfaceSet;
 
     /**
      * Checks whether this type implements given interface.
-     * @param \Graphpinator\Typesystem\InterfaceType $interface
+     * @param InterfaceType $interface
      */
-    public function implements(\Graphpinator\Typesystem\InterfaceType $interface) : bool;
+    public function implements(InterfaceType $interface) : bool;
 }

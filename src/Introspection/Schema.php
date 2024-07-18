@@ -4,17 +4,20 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Introspection;
 
-use \Graphpinator\Typesystem\Contract\Type;
-use \Graphpinator\Typesystem\Field\ResolvableField;
-use \Graphpinator\Typesystem\Schema as SchemaDef;
+use Graphpinator\Typesystem\Attribute\Description;
+use Graphpinator\Typesystem\Container;
+use Graphpinator\Typesystem\Contract\Type;
+use Graphpinator\Typesystem\Field\ResolvableField;
+use Graphpinator\Typesystem\Field\ResolvableFieldSet;
+use Graphpinator\Typesystem\Schema as SchemaDef;
 
-#[\Graphpinator\Typesystem\Attribute\Description('Built-in introspection type')]
+#[Description('Built-in introspection type')]
 final class Schema extends \Graphpinator\Typesystem\Type
 {
     protected const NAME = '__Schema';
 
     public function __construct(
-        private \Graphpinator\Typesystem\Container $container,
+        private Container $container,
     )
     {
         parent::__construct();
@@ -25,12 +28,12 @@ final class Schema extends \Graphpinator\Typesystem\Type
         return $rawValue instanceof SchemaDef;
     }
 
-    protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
+    protected function getFieldDefinition() : ResolvableFieldSet
     {
-        return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
+        return new ResolvableFieldSet([
             ResolvableField::create(
                 'description',
-                \Graphpinator\Typesystem\Container::String(),
+                Container::String(),
                 static function (SchemaDef $schema) : ?string {
                     return $schema->getDescription();
                 },

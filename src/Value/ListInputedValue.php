@@ -4,7 +4,10 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Value;
 
-final class ListInputedValue extends \Graphpinator\Value\ListValue implements \Graphpinator\Value\InputedValue
+use Graphpinator\Normalizer\VariableValueSet;
+use Graphpinator\Typesystem\ListType;
+
+final class ListInputedValue extends ListValue implements InputedValue
 {
     public function getRawValue(bool $forResolvers = false) : array
     {
@@ -19,7 +22,7 @@ final class ListInputedValue extends \Graphpinator\Value\ListValue implements \G
         return $return;
     }
 
-    public function getType() : \Graphpinator\Typesystem\ListType
+    public function getType() : ListType
     {
         return $this->type;
     }
@@ -37,7 +40,7 @@ final class ListInputedValue extends \Graphpinator\Value\ListValue implements \G
         return '[' . \implode(',', $component) . ']';
     }
 
-    public function applyVariables(\Graphpinator\Normalizer\VariableValueSet $variables) : void
+    public function applyVariables(VariableValueSet $variables) : void
     {
         foreach ($this->value as $value) {
             \assert($value instanceof InputedValue);

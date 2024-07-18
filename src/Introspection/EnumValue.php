@@ -4,12 +4,15 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Introspection;
 
-use \Graphpinator\Typesystem\Container;
-use \Graphpinator\Typesystem\EnumItem\EnumItem;
-use \Graphpinator\Typesystem\Field\ResolvableField;
+use Graphpinator\Typesystem\Attribute\Description;
+use Graphpinator\Typesystem\Container;
+use Graphpinator\Typesystem\EnumItem\EnumItem;
+use Graphpinator\Typesystem\Field\ResolvableField;
+use Graphpinator\Typesystem\Field\ResolvableFieldSet;
+use Graphpinator\Typesystem\Type;
 
-#[\Graphpinator\Typesystem\Attribute\Description('Built-in introspection type')]
-final class EnumValue extends \Graphpinator\Typesystem\Type
+#[Description('Built-in introspection type')]
+final class EnumValue extends Type
 {
     protected const NAME = '__EnumValue';
 
@@ -23,9 +26,9 @@ final class EnumValue extends \Graphpinator\Typesystem\Type
         return $rawValue instanceof EnumItem;
     }
 
-    protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
+    protected function getFieldDefinition() : ResolvableFieldSet
     {
-        return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
+        return new ResolvableFieldSet([
             ResolvableField::create(
                 'name',
                 Container::String()->notNull(),

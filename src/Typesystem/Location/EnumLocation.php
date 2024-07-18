@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem\Location;
 
-interface EnumLocation extends \Graphpinator\Typesystem\Contract\TypeSystemDirective
+use Graphpinator\Typesystem\Contract\TypeSystemDirective;
+
+interface EnumLocation extends TypeSystemDirective
 {
 }

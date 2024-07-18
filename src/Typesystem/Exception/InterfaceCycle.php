@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem\Exception;
 
-final class InterfaceCycle extends \Graphpinator\Typesystem\Exception\TypeError
+final class InterfaceCycle extends TypeError
 {
     public const MESSAGE = 'Interface implement cycle detected (%s).';
 

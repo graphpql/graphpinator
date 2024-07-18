@@ -4,11 +4,14 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Unit\Typesystem\Contract;
 
-final class NamedDefinitionTest extends \PHPUnit\Framework\TestCase
+use Graphpinator\Typesystem\Container;
+use PHPUnit\Framework\TestCase;
+
+final class NamedDefinitionTest extends TestCase
 {
     public function testModifiers() : void
     {
-        $base = \Graphpinator\Typesystem\Container::String();
+        $base = Container::String();
 
         self::assertSame('String', $base->getName());
         self::assertSame('String built-in type', $base->getDescription());

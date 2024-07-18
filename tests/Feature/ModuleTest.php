@@ -4,29 +4,57 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Feature;
 
-final class ModuleTest extends \PHPUnit\Framework\TestCase
+use Graphpinator\Graphpinator;
+use Graphpinator\Module\Module;
+use Graphpinator\Module\ModuleSet;
+use Graphpinator\Normalizer\Directive\DirectiveSet;
+use Graphpinator\Normalizer\FinalizedRequest;
+use Graphpinator\Normalizer\NormalizedRequest;
+use Graphpinator\Normalizer\Selection\SelectionSet;
+use Graphpinator\Normalizer\Variable\VariableSet;
+use Graphpinator\Parser\Field\Field;
+use Graphpinator\Parser\Field\FieldSet;
+use Graphpinator\Parser\Fragment\FragmentSet;
+use Graphpinator\Parser\FragmentSpread\FragmentSpreadSet;
+use Graphpinator\Parser\Operation\Operation;
+use Graphpinator\Parser\Operation\OperationSet;
+use Graphpinator\Parser\ParsedRequest;
+use Graphpinator\Request\JsonRequestFactory;
+use Graphpinator\Request\Request;
+use Graphpinator\Result;
+use Graphpinator\SimpleContainer;
+use Graphpinator\Typesystem\Container;
+use Graphpinator\Typesystem\Field\ResolvableField;
+use Graphpinator\Typesystem\Field\ResolvableFieldSet;
+use Graphpinator\Typesystem\Schema;
+use Graphpinator\Typesystem\Type;
+use Graphpinator\Value\ArgumentValueSet;
+use Infinityloop\Utils\Json;
+use PHPUnit\Framework\TestCase;
+
+final class ModuleTest extends TestCase
 {
     public static function moduleDataProvider() : array
     {
         return [
             [
-                new class implements \Graphpinator\Module\Module {
+                new class implements Module {
                     private \stdClass $counter;
-                    private \Graphpinator\Typesystem\Type $query;
+                    private Type $query;
 
                     public function setCounter(\stdClass $counter) : void
                     {
                         $this->counter = $counter;
                     }
 
-                    public function setQuery(\Graphpinator\Typesystem\Type $type) : void
+                    public function setQuery(Type $type) : void
                     {
                         $this->query = $type;
                     }
 
                     public function processRequest(
-                        \Graphpinator\Request\Request $request,
-                    ) : \Graphpinator\Request\Request
+                        Request $request,
+                    ) : Request
                     {
                         ++$this->counter->count;
 
@@ -34,8 +62,8 @@ final class ModuleTest extends \PHPUnit\Framework\TestCase
                     }
 
                     public function processParsed(
-                        \Graphpinator\Parser\ParsedRequest $request,
-                    ) : \Graphpinator\Parser\ParsedRequest
+                        ParsedRequest $request,
+                    ) : ParsedRequest
                     {
                         $this->counter->count += 2;
 
@@ -43,8 +71,8 @@ final class ModuleTest extends \PHPUnit\Framework\TestCase
                     }
 
                     public function processNormalized(
-                        \Graphpinator\Normalizer\NormalizedRequest $request,
-                    ) : \Graphpinator\Normalizer\NormalizedRequest
+                        NormalizedRequest $request,
+                    ) : NormalizedRequest
                     {
                         $this->counter->count += 4;
 
@@ -52,8 +80,8 @@ final class ModuleTest extends \PHPUnit\Framework\TestCase
                     }
 
                     public function processFinalized(
-                        \Graphpinator\Normalizer\FinalizedRequest $request,
-                    ) : \Graphpinator\Normalizer\FinalizedRequest
+                        FinalizedRequest $request,
+                    ) : FinalizedRequest
                     {
                         $this->counter->count += 8;
 
@@ -61,8 +89,8 @@ final class ModuleTest extends \PHPUnit\Framework\TestCase
                     }
 
                     public function processResult(
-                        \Graphpinator\Result $result,
-                    ) : \Graphpinator\Result
+                        Result $result,
+                    ) : Result
                     {
                         $this->counter->count += 16;
 
@@ -72,46 +100,46 @@ final class ModuleTest extends \PHPUnit\Framework\TestCase
                 31,
             ],
             [
-                new class implements \Graphpinator\Module\Module {
+                new class implements Module {
                     private \stdClass $counter;
-                    private \Graphpinator\Typesystem\Type $query;
+                    private Type $query;
 
                     public function setCounter(\stdClass $counter) : void
                     {
                         $this->counter = $counter;
                     }
 
-                    public function setQuery(\Graphpinator\Typesystem\Type $type) : void
+                    public function setQuery(Type $type) : void
                     {
                         $this->query = $type;
                     }
 
                     public function processRequest(
-                        \Graphpinator\Request\Request $request,
-                    ) : \Graphpinator\Parser\ParsedRequest
+                        Request $request,
+                    ) : ParsedRequest
                     {
                         ++$this->counter->count;
 
-                        return new \Graphpinator\Parser\ParsedRequest(
-                            new \Graphpinator\Parser\Operation\OperationSet([
-                                new \Graphpinator\Parser\Operation\Operation(
+                        return new ParsedRequest(
+                            new OperationSet([
+                                new Operation(
                                     'query',
                                     null,
                                     null,
                                     null,
-                                    new \Graphpinator\Parser\Field\FieldSet(
-                                        [new \Graphpinator\Parser\Field\Field('field')],
-                                        new \Graphpinator\Parser\FragmentSpread\FragmentSpreadSet(),
+                                    new FieldSet(
+                                        [new Field('field')],
+                                        new FragmentSpreadSet(),
                                     ),
                                 ),
                             ]),
-                            new \Graphpinator\Parser\Fragment\FragmentSet(),
+                            new FragmentSet(),
                         );
                     }
 
                     public function processParsed(
-                        \Graphpinator\Parser\ParsedRequest $request,
-                    ) : \Graphpinator\Parser\ParsedRequest
+                        ParsedRequest $request,
+                    ) : ParsedRequest
                     {
                         $this->counter->count += 2;
 
@@ -119,8 +147,8 @@ final class ModuleTest extends \PHPUnit\Framework\TestCase
                     }
 
                     public function processNormalized(
-                        \Graphpinator\Normalizer\NormalizedRequest $request,
-                    ) : \Graphpinator\Normalizer\NormalizedRequest
+                        NormalizedRequest $request,
+                    ) : NormalizedRequest
                     {
                         $this->counter->count += 4;
 
@@ -128,8 +156,8 @@ final class ModuleTest extends \PHPUnit\Framework\TestCase
                     }
 
                     public function processFinalized(
-                        \Graphpinator\Normalizer\FinalizedRequest $request,
-                    ) : \Graphpinator\Normalizer\FinalizedRequest
+                        FinalizedRequest $request,
+                    ) : FinalizedRequest
                     {
                         $this->counter->count += 8;
 
@@ -137,8 +165,8 @@ final class ModuleTest extends \PHPUnit\Framework\TestCase
                     }
 
                     public function processResult(
-                        \Graphpinator\Result $result,
-                    ) : \Graphpinator\Result
+                        Result $result,
+                    ) : Result
                     {
                         $this->counter->count += 16;
 
@@ -148,23 +176,23 @@ final class ModuleTest extends \PHPUnit\Framework\TestCase
                 29,
             ],
             [
-                new class implements \Graphpinator\Module\Module {
+                new class implements Module {
                     private \stdClass $counter;
-                    private \Graphpinator\Typesystem\Type $query;
+                    private Type $query;
 
                     public function setCounter(\stdClass $counter) : void
                     {
                         $this->counter = $counter;
                     }
 
-                    public function setQuery(\Graphpinator\Typesystem\Type $type) : void
+                    public function setQuery(Type $type) : void
                     {
                         $this->query = $type;
                     }
 
                     public function processRequest(
-                        \Graphpinator\Request\Request $request,
-                    ) : \Graphpinator\Request\Request
+                        Request $request,
+                    ) : Request
                     {
                         ++$this->counter->count;
 
@@ -172,35 +200,35 @@ final class ModuleTest extends \PHPUnit\Framework\TestCase
                     }
 
                     public function processParsed(
-                        \Graphpinator\Parser\ParsedRequest $request,
-                    ) : \Graphpinator\Normalizer\NormalizedRequest
+                        ParsedRequest $request,
+                    ) : NormalizedRequest
                     {
                         $this->counter->count += 2;
 
-                        return new \Graphpinator\Normalizer\NormalizedRequest(
+                        return new NormalizedRequest(
                             new \Graphpinator\Normalizer\Operation\OperationSet([
                                 new \Graphpinator\Normalizer\Operation\Operation(
                                     'query',
                                     null,
                                     $this->query,
-                                    new \Graphpinator\Normalizer\Selection\SelectionSet([
+                                    new SelectionSet([
                                         new \Graphpinator\Normalizer\Selection\Field(
                                             $this->query->getFields()['field'],
                                             'field',
-                                            new \Graphpinator\Value\ArgumentValueSet(),
-                                            new \Graphpinator\Normalizer\Directive\DirectiveSet(),
+                                            new ArgumentValueSet(),
+                                            new DirectiveSet(),
                                         ),
                                     ]),
-                                    new \Graphpinator\Normalizer\Variable\VariableSet(),
-                                    new \Graphpinator\Normalizer\Directive\DirectiveSet(),
+                                    new VariableSet(),
+                                    new DirectiveSet(),
                                 ),
                             ]),
                         );
                     }
 
                     public function processNormalized(
-                        \Graphpinator\Normalizer\NormalizedRequest $request,
-                    ) : \Graphpinator\Normalizer\NormalizedRequest
+                        NormalizedRequest $request,
+                    ) : NormalizedRequest
                     {
                         $this->counter->count += 4;
 
@@ -208,8 +236,8 @@ final class ModuleTest extends \PHPUnit\Framework\TestCase
                     }
 
                     public function processFinalized(
-                        \Graphpinator\Normalizer\FinalizedRequest $request,
-                    ) : \Graphpinator\Normalizer\FinalizedRequest
+                        FinalizedRequest $request,
+                    ) : FinalizedRequest
                     {
                         $this->counter->count += 8;
 
@@ -217,8 +245,8 @@ final class ModuleTest extends \PHPUnit\Framework\TestCase
                     }
 
                     public function processResult(
-                        \Graphpinator\Result $result,
-                    ) : \Graphpinator\Result
+                        Result $result,
+                    ) : Result
                     {
                         $this->counter->count += 16;
 
@@ -228,23 +256,23 @@ final class ModuleTest extends \PHPUnit\Framework\TestCase
                 27,
             ],
             [
-                new class implements \Graphpinator\Module\Module {
+                new class implements Module {
                     private \stdClass $counter;
-                    private \Graphpinator\Typesystem\Type $query;
+                    private Type $query;
 
                     public function setCounter(\stdClass $counter) : void
                     {
                         $this->counter = $counter;
                     }
 
-                    public function setQuery(\Graphpinator\Typesystem\Type $type) : void
+                    public function setQuery(Type $type) : void
                     {
                         $this->query = $type;
                     }
 
                     public function processRequest(
-                        \Graphpinator\Request\Request $request,
-                    ) : \Graphpinator\Request\Request
+                        Request $request,
+                    ) : Request
                     {
                         ++$this->counter->count;
 
@@ -252,8 +280,8 @@ final class ModuleTest extends \PHPUnit\Framework\TestCase
                     }
 
                     public function processParsed(
-                        \Graphpinator\Parser\ParsedRequest $request,
-                    ) : \Graphpinator\Parser\ParsedRequest
+                        ParsedRequest $request,
+                    ) : ParsedRequest
                     {
                         $this->counter->count += 2;
 
@@ -261,33 +289,33 @@ final class ModuleTest extends \PHPUnit\Framework\TestCase
                     }
 
                     public function processNormalized(
-                        \Graphpinator\Normalizer\NormalizedRequest $request,
-                    ) : \Graphpinator\Normalizer\FinalizedRequest
+                        NormalizedRequest $request,
+                    ) : FinalizedRequest
                     {
                         $this->counter->count += 4;
 
-                        return new \Graphpinator\Normalizer\FinalizedRequest(
+                        return new FinalizedRequest(
                             new \Graphpinator\Normalizer\Operation\Operation(
                                 'query',
                                 null,
                                 $this->query,
-                                new \Graphpinator\Normalizer\Selection\SelectionSet([
+                                new SelectionSet([
                                     new \Graphpinator\Normalizer\Selection\Field(
                                         $this->query->getFields()['field'],
                                         'field',
-                                        new \Graphpinator\Value\ArgumentValueSet(),
-                                        new \Graphpinator\Normalizer\Directive\DirectiveSet(),
+                                        new ArgumentValueSet(),
+                                        new DirectiveSet(),
                                     ),
                                 ]),
-                                new \Graphpinator\Normalizer\Variable\VariableSet(),
-                                new \Graphpinator\Normalizer\Directive\DirectiveSet(),
+                                new VariableSet(),
+                                new DirectiveSet(),
                             ),
                         );
                     }
 
                     public function processFinalized(
-                        \Graphpinator\Normalizer\FinalizedRequest $request,
-                    ) : \Graphpinator\Normalizer\FinalizedRequest
+                        FinalizedRequest $request,
+                    ) : FinalizedRequest
                     {
                         $this->counter->count += 8;
 
@@ -295,8 +323,8 @@ final class ModuleTest extends \PHPUnit\Framework\TestCase
                     }
 
                     public function processResult(
-                        \Graphpinator\Result $result,
-                    ) : \Graphpinator\Result
+                        Result $result,
+                    ) : Result
                     {
                         $this->counter->count += 16;
 
@@ -311,20 +339,20 @@ final class ModuleTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider moduleDataProvider
      */
-    public function testSimple(\Graphpinator\Module\Module $module, int $expectedCount) : void
+    public function testSimple(Module $module, int $expectedCount) : void
     {
-        $query = new class extends \Graphpinator\Typesystem\Type {
+        $query = new class extends Type {
             public function validateNonNullValue(mixed $rawValue) : bool
             {
                 return true;
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
+            protected function getFieldDefinition() : ResolvableFieldSet
             {
-                return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
-                    \Graphpinator\Typesystem\Field\ResolvableField::create(
+                return new ResolvableFieldSet([
+                    ResolvableField::create(
                         'field',
-                        \Graphpinator\Typesystem\Container::String()->notNull(),
+                        Container::String()->notNull(),
                         static function ($parent) : string {
                             return 'test';
                         },
@@ -332,20 +360,20 @@ final class ModuleTest extends \PHPUnit\Framework\TestCase
                 ]);
             }
         };
-        $container = new \Graphpinator\SimpleContainer([$query], []);
-        $schema = new \Graphpinator\Typesystem\Schema($container, $query);
+        $container = new SimpleContainer([$query], []);
+        $schema = new Schema($container, $query);
 
         $counter = new \stdClass();
         $counter->count = 0;
         $module->setCounter($counter);
         $module->setQuery($query);
 
-        $graphpinator = new \Graphpinator\Graphpinator($schema, false, new \Graphpinator\Module\ModuleSet([$module]));
-        $result = $graphpinator->run(new \Graphpinator\Request\JsonRequestFactory(\Infinityloop\Utils\Json::fromNative((object) [
+        $graphpinator = new Graphpinator($schema, false, new ModuleSet([$module]));
+        $result = $graphpinator->run(new JsonRequestFactory(Json::fromNative((object) [
              'query' => '{ field }',
         ])));
         self::assertSame(
-            \Infinityloop\Utils\Json::fromNative((object) ['data' => ['field' => 'test']])->toString(),
+            Json::fromNative((object) ['data' => ['field' => 'test']])->toString(),
             $result->toString(),
         );
         self::assertSame($expectedCount, $counter->count);

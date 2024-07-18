@@ -4,17 +4,20 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Value;
 
-final class TypeValue implements \Graphpinator\Value\OutputValue
+use Graphpinator\Typesystem\Location\ObjectLocation;
+use Graphpinator\Typesystem\Type;
+
+final class TypeValue implements OutputValue
 {
     public function __construct(
-        private \Graphpinator\Typesystem\Type $type,
+        private Type $type,
         private \stdClass $value,
         private TypeIntermediateValue $intermediateValue,
     )
     {
         foreach ($type->getDirectiveUsages() as $directiveUsage) {
             $directive = $directiveUsage->getDirective();
-            \assert($directive instanceof \Graphpinator\Typesystem\Location\ObjectLocation);
+            \assert($directive instanceof ObjectLocation);
             $directive->resolveObject($directiveUsage->getArgumentValues(), $this);
         }
     }
@@ -24,7 +27,7 @@ final class TypeValue implements \Graphpinator\Value\OutputValue
         return $this->value;
     }
 
-    public function getType() : \Graphpinator\Typesystem\Type
+    public function getType() : Type
     {
         return $this->type;
     }
@@ -39,7 +42,7 @@ final class TypeValue implements \Graphpinator\Value\OutputValue
         return $this->value;
     }
 
-    public function __get(string $name) : \Graphpinator\Value\FieldValue
+    public function __get(string $name) : FieldValue
     {
         return $this->value->{$name};
     }

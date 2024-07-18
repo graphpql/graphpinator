@@ -4,12 +4,16 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Introspection;
 
-use \Graphpinator\Typesystem\Argument\Argument;
-use \Graphpinator\Typesystem\Container;
-use \Graphpinator\Typesystem\Field\ResolvableField;
+use Graphpinator\Typesystem\Argument\Argument;
+use Graphpinator\Typesystem\Attribute\Description;
+use Graphpinator\Typesystem\Container;
+use Graphpinator\Typesystem\Field\ResolvableField;
+use Graphpinator\Typesystem\Field\ResolvableFieldSet;
+use Graphpinator\Typesystem\Type;
+use Graphpinator\Value\ArgumentValue;
 
-#[\Graphpinator\Typesystem\Attribute\Description('Built-in introspection type')]
-final class InputValue extends \Graphpinator\Typesystem\Type
+#[Description('Built-in introspection type')]
+final class InputValue extends Type
 {
     protected const NAME = '__InputValue';
 
@@ -25,9 +29,9 @@ final class InputValue extends \Graphpinator\Typesystem\Type
         return $rawValue instanceof Argument;
     }
 
-    protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
+    protected function getFieldDefinition() : ResolvableFieldSet
     {
-        return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
+        return new ResolvableFieldSet([
             ResolvableField::create(
                 'name',
                 Container::String()->notNull(),
@@ -53,7 +57,7 @@ final class InputValue extends \Graphpinator\Typesystem\Type
                 'defaultValue',
                 Container::String(),
                 static function (Argument $argument) : ?string {
-                    return $argument->getDefaultValue() instanceof \Graphpinator\Value\ArgumentValue
+                    return $argument->getDefaultValue() instanceof ArgumentValue
                         ? $argument->getDefaultValue()->getValue()->printValue()
                         : null;
                 },

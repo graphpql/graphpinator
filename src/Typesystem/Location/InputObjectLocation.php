@@ -4,9 +4,14 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem\Location;
 
-interface InputObjectLocation extends \Graphpinator\Typesystem\Contract\TypeSystemDirective
-{
-    public function validateInputUsage(\Graphpinator\Typesystem\InputType $inputType, \Graphpinator\Value\ArgumentValueSet $arguments) : bool;
+use Graphpinator\Typesystem\Contract\TypeSystemDirective;
+use Graphpinator\Typesystem\InputType;
+use Graphpinator\Value\ArgumentValueSet;
+use Graphpinator\Value\InputValue;
 
-    public function resolveInputObject(\Graphpinator\Value\ArgumentValueSet $arguments, \Graphpinator\Value\InputValue $inputValue) : void;
+interface InputObjectLocation extends TypeSystemDirective
+{
+    public function validateInputUsage(InputType $inputType, ArgumentValueSet $arguments) : bool;
+
+    public function resolveInputObject(ArgumentValueSet $arguments, InputValue $inputValue) : void;
 }

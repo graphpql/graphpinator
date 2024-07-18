@@ -4,7 +4,13 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Unit\Typesystem\Scalar;
 
-final class IntTypeTest extends \PHPUnit\Framework\TestCase
+use Graphpinator\Common\Path;
+use Graphpinator\Exception\Value\InvalidValue;
+use Graphpinator\Typesystem\Spec\IntType;
+use Graphpinator\Value\ConvertRawValueVisitor;
+use PHPUnit\Framework\TestCase;
+
+final class IntTypeTest extends TestCase
 {
     public static function simpleDataProvider() : array
     {
@@ -31,8 +37,8 @@ final class IntTypeTest extends \PHPUnit\Framework\TestCase
      */
     public function testValidateValue($rawValue) : void
     {
-        $int = new \Graphpinator\Typesystem\Spec\IntType();
-        $value = $int->accept(new \Graphpinator\Value\ConvertRawValueVisitor($rawValue, new \Graphpinator\Common\Path()));
+        $int = new IntType();
+        $value = $int->accept(new ConvertRawValueVisitor($rawValue, new Path()));
 
         self::assertSame($int, $value->getType());
         self::assertSame($rawValue, $value->getRawValue());
@@ -44,9 +50,9 @@ final class IntTypeTest extends \PHPUnit\Framework\TestCase
      */
     public function testValidateValueInvalid($rawValue) : void
     {
-        $this->expectException(\Graphpinator\Exception\Value\InvalidValue::class);
+        $this->expectException(InvalidValue::class);
 
-        $int = new \Graphpinator\Typesystem\Spec\IntType();
-        $int->accept(new \Graphpinator\Value\ConvertRawValueVisitor($rawValue, new \Graphpinator\Common\Path()));
+        $int = new IntType();
+        $int->accept(new ConvertRawValueVisitor($rawValue, new Path()));
     }
 }

@@ -4,38 +4,52 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Unit\Typesystem;
 
-final class InterfaceNewOptionalArgumentTest extends \PHPUnit\Framework\TestCase
+use Graphpinator\Typesystem\Argument\Argument;
+use Graphpinator\Typesystem\Argument\ArgumentSet;
+use Graphpinator\Typesystem\Container;
+use Graphpinator\Typesystem\Exception\InterfaceContractNewArgumentWithoutDefault;
+use Graphpinator\Typesystem\Field\Field;
+use Graphpinator\Typesystem\Field\FieldSet;
+use Graphpinator\Typesystem\Field\ResolvableField;
+use Graphpinator\Typesystem\Field\ResolvableFieldSet;
+use Graphpinator\Typesystem\InterfaceSet;
+use Graphpinator\Typesystem\InterfaceType;
+use Graphpinator\Typesystem\Type;
+use Graphpinator\Value\TypeIntermediateValue;
+use PHPUnit\Framework\TestCase;
+
+final class InterfaceNewOptionalArgumentTest extends TestCase
 {
-    public static function createInterface() : \Graphpinator\Typesystem\InterfaceType
+    public static function createInterface() : InterfaceType
     {
-        return new class extends \Graphpinator\Typesystem\InterfaceType {
+        return new class extends InterfaceType {
             protected const NAME = 'SomeInterface';
 
-            public function createResolvedValue($rawValue) : \Graphpinator\Value\TypeIntermediateValue
+            public function createResolvedValue($rawValue) : TypeIntermediateValue
             {
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\FieldSet
+            protected function getFieldDefinition() : FieldSet
             {
-                return new \Graphpinator\Typesystem\Field\FieldSet([
-                    new \Graphpinator\Typesystem\Field\Field(
+                return new FieldSet([
+                    new Field(
                         'field',
-                        \Graphpinator\Typesystem\Container::Int(),
+                        Container::Int(),
                     ),
                 ]);
             }
         };
     }
 
-    public static function createChildType() : \Graphpinator\Typesystem\Type
+    public static function createChildType() : Type
     {
-        return new class extends \Graphpinator\Typesystem\Type {
+        return new class extends Type {
             protected const NAME = 'ChildType';
 
             public function __construct()
             {
                 parent::__construct(
-                    new \Graphpinator\Typesystem\InterfaceSet([InterfaceNewOptionalArgumentTest::createInterface()]),
+                    new InterfaceSet([InterfaceNewOptionalArgumentTest::createInterface()]),
                 );
             }
 
@@ -44,19 +58,19 @@ final class InterfaceNewOptionalArgumentTest extends \PHPUnit\Framework\TestCase
                 return true;
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
+            protected function getFieldDefinition() : ResolvableFieldSet
             {
-                return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
-                    \Graphpinator\Typesystem\Field\ResolvableField::create(
+                return new ResolvableFieldSet([
+                    ResolvableField::create(
                         'field',
-                        \Graphpinator\Typesystem\Container::Int(),
+                        Container::Int(),
                         static function ($parent, $argumentDefaultNull) : void {
                         },
                     )->setArguments(
-                        new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                            \Graphpinator\Typesystem\Argument\Argument::create(
+                        new ArgumentSet([
+                            Argument::create(
                                 'argument',
-                                \Graphpinator\Typesystem\Container::Int(),
+                                Container::Int(),
                             ),
                         ]),
                     ),
@@ -67,7 +81,7 @@ final class InterfaceNewOptionalArgumentTest extends \PHPUnit\Framework\TestCase
 
     public function testAdditionalChildArgumentCannotBeNull() : void
     {
-        $this->expectException(\Graphpinator\Typesystem\Exception\InterfaceContractNewArgumentWithoutDefault::class);
+        $this->expectException(InterfaceContractNewArgumentWithoutDefault::class);
 
         self::createChildType()->getFields();
     }

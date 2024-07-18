@@ -4,14 +4,24 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem\Field;
 
-use \Graphpinator\Typesystem\Argument\ArgumentSet;
-use \Graphpinator\Typesystem\Contract\Outputable;
+use Graphpinator\Graphpinator;
+use Graphpinator\Typesystem\Argument\ArgumentSet;
+use Graphpinator\Typesystem\Contract\Component;
+use Graphpinator\Typesystem\Contract\ComponentVisitor;
+use Graphpinator\Typesystem\Contract\Outputable;
+use Graphpinator\Typesystem\DirectiveUsage\DirectiveUsage;
+use Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet;
+use Graphpinator\Typesystem\Exception\DirectiveIncorrectType;
+use Graphpinator\Typesystem\Location\FieldDefinitionLocation;
+use Graphpinator\Typesystem\Utils\TDeprecatable;
+use Graphpinator\Typesystem\Utils\THasDirectives;
+use Graphpinator\Typesystem\Utils\TOptionalDescription;
 
-class Field implements \Graphpinator\Typesystem\Contract\Component
+class Field implements Component
 {
-    use \Graphpinator\Typesystem\Utils\TOptionalDescription;
-    use \Graphpinator\Typesystem\Utils\THasDirectives;
-    use \Graphpinator\Typesystem\Utils\TDeprecatable;
+    use TOptionalDescription;
+    use THasDirectives;
+    use TDeprecatable;
 
     protected ArgumentSet $arguments;
 
@@ -21,7 +31,7 @@ class Field implements \Graphpinator\Typesystem\Contract\Component
     )
     {
         $this->arguments = new ArgumentSet([]);
-        $this->directiveUsages = new \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet();
+        $this->directiveUsages = new DirectiveUsageSet();
     }
 
     public static function create(string $name, Outputable $type) : self
@@ -51,20 +61,20 @@ class Field implements \Graphpinator\Typesystem\Contract\Component
         return $this;
     }
 
-    final public function accept(\Graphpinator\Typesystem\Contract\ComponentVisitor $visitor) : mixed
+    final public function accept(ComponentVisitor $visitor) : mixed
     {
         return $visitor->visitField($this);
     }
 
     final public function addDirective(
-        \Graphpinator\Typesystem\Location\FieldDefinitionLocation $directive,
+        FieldDefinitionLocation $directive,
         array $arguments = [],
     ) : self
     {
-        $usage = new \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsage($directive, $arguments);
+        $usage = new DirectiveUsage($directive, $arguments);
 
-        if (\Graphpinator\Graphpinator::$validateSchema && !$directive->validateFieldUsage($this, $usage->getArgumentValues())) {
-            throw new \Graphpinator\Typesystem\Exception\DirectiveIncorrectType();
+        if (Graphpinator::$validateSchema && !$directive->validateFieldUsage($this, $usage->getArgumentValues())) {
+            throw new DirectiveIncorrectType();
         }
 
         $this->directiveUsages[] = $usage;

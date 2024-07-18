@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Exception\Value;
 
-final class ValueCannotBeOmitted extends \Graphpinator\Exception\Value\ValueError
+final class ValueCannotBeOmitted extends ValueError
 {
     public const MESSAGE = 'Argument value cannot be omitted.';
 

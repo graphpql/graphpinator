@@ -4,10 +4,13 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Value;
 
-final class NullInputedValue implements \Graphpinator\Value\InputedValue, \Graphpinator\Value\NullValue
+use Graphpinator\Normalizer\VariableValueSet;
+use Graphpinator\Typesystem\Contract\Inputable;
+
+final class NullInputedValue implements InputedValue, NullValue
 {
     public function __construct(
-        private \Graphpinator\Typesystem\Contract\Inputable $type,
+        private Inputable $type,
     )
     {
     }
@@ -17,7 +20,7 @@ final class NullInputedValue implements \Graphpinator\Value\InputedValue, \Graph
         return null;
     }
 
-    public function getType() : \Graphpinator\Typesystem\Contract\Inputable
+    public function getType() : Inputable
     {
         return $this->type;
     }
@@ -27,7 +30,7 @@ final class NullInputedValue implements \Graphpinator\Value\InputedValue, \Graph
         return 'null';
     }
 
-    public function applyVariables(\Graphpinator\Normalizer\VariableValueSet $variables) : void
+    public function applyVariables(VariableValueSet $variables) : void
     {
         // nothing here
     }

@@ -4,12 +4,14 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Normalizer\Operation;
 
+use Infinityloop\Utils\ImplicitObjectMap;
+
 /**
- * @method \Graphpinator\Normalizer\Operation\Operation current() : object
- * @method \Graphpinator\Normalizer\Operation\Operation offsetGet($offset) : object
- * @method \Graphpinator\Normalizer\Operation\Operation getFirst() : object
+ * @method Operation current() : object
+ * @method Operation offsetGet($offset) : object
+ * @method Operation getFirst() : object
  */
-final class OperationSet extends \Infinityloop\Utils\ImplicitObjectMap
+final class OperationSet extends ImplicitObjectMap
 {
     protected const INNER_CLASS = Operation::class;
 

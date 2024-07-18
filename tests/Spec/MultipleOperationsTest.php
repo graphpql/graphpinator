@@ -4,9 +4,12 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Spec;
 
-use \Infinityloop\Utils\Json;
+use Graphpinator\Graphpinator;
+use Graphpinator\Request\JsonRequestFactory;
+use Infinityloop\Utils\Json;
+use PHPUnit\Framework\TestCase;
 
-final class MultipleOperationsTest extends \PHPUnit\Framework\TestCase
+final class MultipleOperationsTest extends TestCase
 {
     public static function requestDataProvider() : array
     {
@@ -46,8 +49,8 @@ final class MultipleOperationsTest extends \PHPUnit\Framework\TestCase
      */
     public function testOperationName(Json $request, Json $expected) : void
     {
-        $graphpinator = new \Graphpinator\Graphpinator(\Graphpinator\Tests\Spec\TestSchema::getSchema());
-        $result = $graphpinator->run(new \Graphpinator\Request\JsonRequestFactory($request));
+        $graphpinator = new Graphpinator(TestSchema::getSchema());
+        $result = $graphpinator->run(new JsonRequestFactory($request));
 
         self::assertSame($expected->toString(), $result->toString());
     }

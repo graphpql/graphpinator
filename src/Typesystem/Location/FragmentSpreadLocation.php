@@ -4,9 +4,12 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem\Location;
 
-interface FragmentSpreadLocation extends \Graphpinator\Typesystem\Contract\ExecutableDirective
-{
-    public function resolveFragmentSpreadBefore(\Graphpinator\Value\ArgumentValueSet $arguments) : SelectionDirectiveResult;
+use Graphpinator\Typesystem\Contract\ExecutableDirective;
+use Graphpinator\Value\ArgumentValueSet;
 
-    public function resolveFragmentSpreadAfter(\Graphpinator\Value\ArgumentValueSet $arguments) : void;
+interface FragmentSpreadLocation extends ExecutableDirective
+{
+    public function resolveFragmentSpreadBefore(ArgumentValueSet $arguments) : SelectionDirectiveResult;
+
+    public function resolveFragmentSpreadAfter(ArgumentValueSet $arguments) : void;
 }

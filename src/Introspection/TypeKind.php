@@ -4,8 +4,11 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Introspection;
 
-#[\Graphpinator\Typesystem\Attribute\Description('Built-in introspection type')]
-final class TypeKind extends \Graphpinator\Typesystem\EnumType
+use Graphpinator\Typesystem\Attribute\Description;
+use Graphpinator\Typesystem\EnumType;
+
+#[Description('Built-in introspection type')]
+final class TypeKind extends EnumType
 {
     public const SCALAR = 'SCALAR';
     public const OBJECT = 'OBJECT';

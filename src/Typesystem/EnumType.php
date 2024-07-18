@@ -4,18 +4,25 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem;
 
-use \Graphpinator\Typesystem\EnumItem\EnumItem;
-use \Graphpinator\Typesystem\EnumItem\EnumItemSet;
+use Graphpinator\Typesystem\Attribute\Description;
+use Graphpinator\Typesystem\Contract\LeafType;
+use Graphpinator\Typesystem\Contract\NamedTypeVisitor;
+use Graphpinator\Typesystem\DirectiveUsage\DirectiveUsage;
+use Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet;
+use Graphpinator\Typesystem\EnumItem\EnumItem;
+use Graphpinator\Typesystem\EnumItem\EnumItemSet;
+use Graphpinator\Typesystem\Location\EnumLocation;
+use Graphpinator\Typesystem\Utils\THasDirectives;
 
-abstract class EnumType extends \Graphpinator\Typesystem\Contract\LeafType
+abstract class EnumType extends LeafType
 {
-    use \Graphpinator\Typesystem\Utils\THasDirectives;
+    use THasDirectives;
 
     public function __construct(
         protected EnumItemSet $options,
     )
     {
-        $this->directiveUsages = new \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet();
+        $this->directiveUsages = new DirectiveUsageSet();
     }
 
     final public static function fromConstants() : EnumItemSet
@@ -46,7 +53,7 @@ abstract class EnumType extends \Graphpinator\Typesystem\Contract\LeafType
 
         foreach ($ref->getCases() as $case) {
             \assert($case instanceof \ReflectionEnumBackedCase);
-            
+
             $values[] = new EnumItem($case->getBackingValue(), self::getItemDescription($case));
         }
 
@@ -63,7 +70,7 @@ abstract class EnumType extends \Graphpinator\Typesystem\Contract\LeafType
         return $this->options->getEnumClass();
     }
 
-    final public function accept(\Graphpinator\Typesystem\Contract\NamedTypeVisitor $visitor) : mixed
+    final public function accept(NamedTypeVisitor $visitor) : mixed
     {
         return $visitor->visitEnum($this);
     }
@@ -74,22 +81,22 @@ abstract class EnumType extends \Graphpinator\Typesystem\Contract\LeafType
     }
 
     final public function addDirective(
-        \Graphpinator\Typesystem\Location\EnumLocation $directive,
+        EnumLocation $directive,
         array $arguments = [],
     ) : static
     {
-        $this->directiveUsages[] = new \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsage($directive, $arguments);
+        $this->directiveUsages[] = new DirectiveUsage($directive, $arguments);
 
         return $this;
     }
 
     private static function getItemDescription(\ReflectionClassConstant|\ReflectionEnumBackedCase $reflection) : ?string
     {
-        $attrs = $reflection->getAttributes(\Graphpinator\Typesystem\Attribute\Description::class);
+        $attrs = $reflection->getAttributes(Description::class);
 
         if (\count($attrs) === 1) {
             $attr = $attrs[0]->newInstance();
-            \assert($attr instanceof \Graphpinator\Typesystem\Attribute\Description);
+            \assert($attr instanceof Description);
 
             return $attr->getValue();
         }

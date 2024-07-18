@@ -4,19 +4,36 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Value;
 
-final class ConvertRawValueVisitor implements \Graphpinator\Typesystem\Contract\TypeVisitor
+use Graphpinator\Common\Path;
+use Graphpinator\Exception\Value\InvalidValue;
+use Graphpinator\Exception\Value\ValueCannotBeNull;
+use Graphpinator\Exception\Value\ValueCannotBeOmitted;
+use Graphpinator\Normalizer\Exception\UnknownArgument;
+use Graphpinator\Typesystem\Argument\ArgumentSet;
+use Graphpinator\Typesystem\Contract\Inputable;
+use Graphpinator\Typesystem\Contract\TypeVisitor;
+use Graphpinator\Typesystem\EnumType;
+use Graphpinator\Typesystem\InputType;
+use Graphpinator\Typesystem\InterfaceType;
+use Graphpinator\Typesystem\ListType;
+use Graphpinator\Typesystem\NotNullType;
+use Graphpinator\Typesystem\ScalarType;
+use Graphpinator\Typesystem\Type;
+use Graphpinator\Typesystem\UnionType;
+
+final class ConvertRawValueVisitor implements TypeVisitor
 {
     public function __construct(
         private mixed $rawValue,
-        private \Graphpinator\Common\Path $path,
+        private Path $path,
     )
     {
     }
 
     public static function convertArgumentSet(
-        \Graphpinator\Typesystem\Argument\ArgumentSet $arguments,
+        ArgumentSet $arguments,
         \stdClass $rawValue,
-        \Graphpinator\Common\Path $path,
+        Path $path,
         bool $canBeOmitted = false,
     ) : \stdClass
     {
@@ -27,7 +44,7 @@ final class ConvertRawValueVisitor implements \Graphpinator\Typesystem\Contract\
                 continue;
             }
 
-            throw new \Graphpinator\Normalizer\Exception\UnknownArgument((string) $name);
+            throw new UnknownArgument((string) $name);
         }
 
         $inner = new \stdClass();
@@ -56,8 +73,8 @@ final class ConvertRawValueVisitor implements \Graphpinator\Typesystem\Contract\
                     $argument->getType()->accept(new self(null, $path)),
                     false,
                 );
-            } elseif ($argument->getType() instanceof \Graphpinator\Typesystem\NotNullType) {
-                throw new \Graphpinator\Exception\Value\ValueCannotBeOmitted();
+            } elseif ($argument->getType() instanceof NotNullType) {
+                throw new ValueCannotBeOmitted();
             }
 
             $path->pop();
@@ -66,73 +83,73 @@ final class ConvertRawValueVisitor implements \Graphpinator\Typesystem\Contract\
         return $inner;
     }
 
-    public function visitType(\Graphpinator\Typesystem\Type $type) : mixed
+    public function visitType(Type $type) : mixed
     {
         throw new \LogicException();
     }
 
-    public function visitInterface(\Graphpinator\Typesystem\InterfaceType $interface) : mixed
+    public function visitInterface(InterfaceType $interface) : mixed
     {
         throw new \LogicException();
     }
 
-    public function visitUnion(\Graphpinator\Typesystem\UnionType $union) : mixed
+    public function visitUnion(UnionType $union) : mixed
     {
         throw new \LogicException();
     }
 
-    public function visitInput(\Graphpinator\Typesystem\InputType $input) : InputedValue
+    public function visitInput(InputType $input) : InputedValue
     {
         if ($this->rawValue === null) {
-            return new \Graphpinator\Value\NullInputedValue($input);
+            return new NullInputedValue($input);
         }
 
         if (!$this->rawValue instanceof \stdClass) {
-            throw new \Graphpinator\Exception\Value\InvalidValue($input->getName(), $this->rawValue, true);
+            throw new InvalidValue($input->getName(), $this->rawValue, true);
         }
 
         return new InputValue($input, self::convertArgumentSet($input->getArguments(), $this->rawValue, $this->path, true));
     }
 
-    public function visitScalar(\Graphpinator\Typesystem\ScalarType $scalar) : InputedValue
+    public function visitScalar(ScalarType $scalar) : InputedValue
     {
         if ($this->rawValue === null) {
-            return new \Graphpinator\Value\NullInputedValue($scalar);
+            return new NullInputedValue($scalar);
         }
 
         $this->rawValue = $scalar->coerceValue($this->rawValue);
 
-        return new \Graphpinator\Value\ScalarValue($scalar, $this->rawValue, true);
+        return new ScalarValue($scalar, $this->rawValue, true);
     }
 
-    public function visitEnum(\Graphpinator\Typesystem\EnumType $enum) : InputedValue
+    public function visitEnum(EnumType $enum) : InputedValue
     {
         if ($this->rawValue === null) {
-            return new \Graphpinator\Value\NullInputedValue($enum);
+            return new NullInputedValue($enum);
         }
 
         if ($this->rawValue instanceof \BackedEnum && \is_string($enum->getEnumClass())) {
-            return new \Graphpinator\Value\EnumValue($enum, $this->rawValue->value, true);
+            return new EnumValue($enum, $this->rawValue->value, true);
         }
 
-        return new \Graphpinator\Value\EnumValue($enum, $this->rawValue, true);
+        return new EnumValue($enum, $this->rawValue, true);
     }
 
-    public function visitNotNull(\Graphpinator\Typesystem\NotNullType $notNull) : InputedValue
+    public function visitNotNull(NotNullType $notNull) : InputedValue
     {
         $value = $notNull->getInnerType()->accept($this);
 
-        if ($value instanceof \Graphpinator\Value\NullValue) {
-            throw new \Graphpinator\Exception\Value\ValueCannotBeNull(true);
+        if ($value instanceof NullValue) {
+            throw new ValueCannotBeNull(true);
         }
 
         return $value;
     }
 
-    public function visitList(\Graphpinator\Typesystem\ListType $list) : InputedValue
+    public function visitList(ListType $list) : InputedValue
     {
         if ($this->rawValue === null) {
-            return new \Graphpinator\Value\NullInputedValue($list);
+            return new NullInputedValue($list);
         }
 
         if (!\is_array($this->rawValue)) {
@@ -140,7 +157,7 @@ final class ConvertRawValueVisitor implements \Graphpinator\Typesystem\Contract\
         }
 
         $innerType = $list->getInnerType();
-        \assert($innerType instanceof \Graphpinator\Typesystem\Contract\Inputable);
+        \assert($innerType instanceof Inputable);
 
         $inner = [];
         $listValue = $this->rawValue;

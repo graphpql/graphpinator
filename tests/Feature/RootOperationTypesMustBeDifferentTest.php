@@ -4,16 +4,25 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Feature;
 
-final class RootOperationTypesMustBeDifferentTest extends \PHPUnit\Framework\TestCase
+use Graphpinator\SimpleContainer;
+use Graphpinator\Typesystem\Container;
+use Graphpinator\Typesystem\Exception\RootOperationTypesMustBeDifferent;
+use Graphpinator\Typesystem\Field\ResolvableField;
+use Graphpinator\Typesystem\Field\ResolvableFieldSet;
+use Graphpinator\Typesystem\Schema;
+use Graphpinator\Typesystem\Type;
+use PHPUnit\Framework\TestCase;
+
+final class RootOperationTypesMustBeDifferentTest extends TestCase
 {
     public function testAllSame() : void
     {
-        $this->expectException(\Graphpinator\Typesystem\Exception\RootOperationTypesMustBeDifferent::class);
+        $this->expectException(RootOperationTypesMustBeDifferent::class);
         $this->expectExceptionMessage('The query, mutation, and subscription root types must all be different types if provided.');
 
         $query = $this->getQuery();
 
-        new \Graphpinator\Typesystem\Schema(
+        new Schema(
             $this->getContainer(),
             $query,
             $query,
@@ -23,10 +32,10 @@ final class RootOperationTypesMustBeDifferentTest extends \PHPUnit\Framework\Tes
 
     public function testQueryMutation() : void
     {
-        $this->expectException(\Graphpinator\Typesystem\Exception\RootOperationTypesMustBeDifferent::class);
+        $this->expectException(RootOperationTypesMustBeDifferent::class);
         $query = $this->getQuery();
 
-        new \Graphpinator\Typesystem\Schema(
+        new Schema(
             $this->getContainer(),
             $query,
             $query,
@@ -36,10 +45,10 @@ final class RootOperationTypesMustBeDifferentTest extends \PHPUnit\Framework\Tes
 
     public function testQuerySubscription() : void
     {
-        $this->expectException(\Graphpinator\Typesystem\Exception\RootOperationTypesMustBeDifferent::class);
+        $this->expectException(RootOperationTypesMustBeDifferent::class);
         $query = $this->getQuery();
 
-        new \Graphpinator\Typesystem\Schema(
+        new Schema(
             $this->getContainer(),
             $query,
             null,
@@ -49,11 +58,11 @@ final class RootOperationTypesMustBeDifferentTest extends \PHPUnit\Framework\Tes
 
     public function testMutationSubscription() : void
     {
-        $this->expectException(\Graphpinator\Typesystem\Exception\RootOperationTypesMustBeDifferent::class);
+        $this->expectException(RootOperationTypesMustBeDifferent::class);
         $query = $this->getQuery();
         $secondQuery = $this->getQuery();
 
-        new \Graphpinator\Typesystem\Schema(
+        new Schema(
             $this->getContainer(),
             $query,
             $secondQuery,
@@ -61,14 +70,14 @@ final class RootOperationTypesMustBeDifferentTest extends \PHPUnit\Framework\Tes
         );
     }
 
-    private function getContainer() : \Graphpinator\SimpleContainer
+    private function getContainer() : SimpleContainer
     {
-        return new \Graphpinator\SimpleContainer(['Query' => $this->getQuery()], []);
+        return new SimpleContainer(['Query' => $this->getQuery()], []);
     }
 
-    private function getQuery() : \Graphpinator\Typesystem\Type
+    private function getQuery() : Type
     {
-        return new class extends \Graphpinator\Typesystem\Type {
+        return new class extends Type {
             protected const NAME = 'Query';
 
             public function validateNonNullValue($rawValue) : bool
@@ -76,12 +85,12 @@ final class RootOperationTypesMustBeDifferentTest extends \PHPUnit\Framework\Tes
                 return true;
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
+            protected function getFieldDefinition() : ResolvableFieldSet
             {
-                return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
-                    new \Graphpinator\Typesystem\Field\ResolvableField(
+                return new ResolvableFieldSet([
+                    new ResolvableField(
                         'field',
-                        \Graphpinator\Typesystem\Container::Int(),
+                        Container::Int(),
                         static function () : int {
                             return 1;
                         },

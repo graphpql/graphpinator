@@ -4,10 +4,21 @@ declare(strict_types = 1);
 
 namespace Graphpinator;
 
+use Graphpinator\Introspection\Directive;
+use Graphpinator\Introspection\DirectiveLocation;
+use Graphpinator\Introspection\EnumValue;
+use Graphpinator\Introspection\Field;
+use Graphpinator\Introspection\InputValue;
+use Graphpinator\Introspection\Schema;
+use Graphpinator\Introspection\Type;
+use Graphpinator\Introspection\TypeKind;
+use Graphpinator\Typesystem\Container;
+use Graphpinator\Typesystem\Contract\NamedType;
+
 /**
  * Simple Container implementation
  */
-class SimpleContainer extends \Graphpinator\Typesystem\Container
+class SimpleContainer extends Container
 {
     protected array $types = [];
     protected array $directives = [];
@@ -16,7 +27,7 @@ class SimpleContainer extends \Graphpinator\Typesystem\Container
 
     /**
      * @phpcs:ignore SlevomatCodingStandard.TypeHints.DisallowArrayTypeHintSyntax.DisallowedArrayTypeHintSyntax
-     * @param \Graphpinator\Typesystem\Contract\NamedType[] $types
+     * @param NamedType[] $types
      * @phpcs:ignore SlevomatCodingStandard.TypeHints.DisallowArrayTypeHintSyntax.DisallowedArrayTypeHintSyntax
      * @param \Graphpinator\Typesystem\Directive[] $directives
      */
@@ -28,14 +39,14 @@ class SimpleContainer extends \Graphpinator\Typesystem\Container
             'Float' => self::Float(),
             'String' => self::String(),
             'Boolean' => self::Boolean(),
-            '__Schema' => new \Graphpinator\Introspection\Schema($this),
-            '__Type' => new \Graphpinator\Introspection\Type($this),
-            '__TypeKind' => new \Graphpinator\Introspection\TypeKind(),
-            '__Field' => new \Graphpinator\Introspection\Field($this),
-            '__EnumValue' => new \Graphpinator\Introspection\EnumValue(),
-            '__InputValue' => new \Graphpinator\Introspection\InputValue($this),
-            '__Directive' => new \Graphpinator\Introspection\Directive($this),
-            '__DirectiveLocation' => new \Graphpinator\Introspection\DirectiveLocation(),
+            '__Schema' => new Schema($this),
+            '__Type' => new Type($this),
+            '__TypeKind' => new TypeKind(),
+            '__Field' => new Field($this),
+            '__EnumValue' => new EnumValue(),
+            '__InputValue' => new InputValue($this),
+            '__Directive' => new Directive($this),
+            '__DirectiveLocation' => new DirectiveLocation(),
         ];
         self::$builtInDirectives = [
             'skip' => self::directiveSkip(),
@@ -57,7 +68,7 @@ class SimpleContainer extends \Graphpinator\Typesystem\Container
         $this->combinedDirectives = \array_merge($this->directives, self::$builtInDirectives);
     }
 
-    public function getType(string $name) : ?\Graphpinator\Typesystem\Contract\NamedType
+    public function getType(string $name) : ?NamedType
     {
         return $this->combinedTypes[$name]
             ?? null;

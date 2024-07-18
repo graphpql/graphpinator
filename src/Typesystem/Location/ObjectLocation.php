@@ -4,9 +4,15 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem\Location;
 
-interface ObjectLocation extends \Graphpinator\Typesystem\Contract\TypeSystemDirective
-{
-    public function validateObjectUsage(\Graphpinator\Typesystem\Type|\Graphpinator\Typesystem\InterfaceType $type, \Graphpinator\Value\ArgumentValueSet $arguments) : bool;
+use Graphpinator\Typesystem\Contract\TypeSystemDirective;
+use Graphpinator\Typesystem\InterfaceType;
+use Graphpinator\Typesystem\Type;
+use Graphpinator\Value\ArgumentValueSet;
+use Graphpinator\Value\TypeValue;
 
-    public function resolveObject(\Graphpinator\Value\ArgumentValueSet $arguments, \Graphpinator\Value\TypeValue $typeValue) : void;
+interface ObjectLocation extends TypeSystemDirective
+{
+    public function validateObjectUsage(Type|InterfaceType $type, ArgumentValueSet $arguments) : bool;
+
+    public function resolveObject(ArgumentValueSet $arguments, TypeValue $typeValue) : void;
 }

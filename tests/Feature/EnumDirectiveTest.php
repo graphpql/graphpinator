@@ -4,11 +4,17 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Feature;
 
-final class EnumDirectiveTest extends \PHPUnit\Framework\TestCase
+use Graphpinator\Typesystem\Argument\ArgumentSet;
+use Graphpinator\Typesystem\Directive;
+use Graphpinator\Typesystem\EnumType;
+use Graphpinator\Typesystem\Location\EnumLocation;
+use PHPUnit\Framework\TestCase;
+
+final class EnumDirectiveTest extends TestCase
 {
     public function testSimple() : void
     {
-        $enum = new class extends \Graphpinator\Typesystem\EnumType {
+        $enum = new class extends EnumType {
             protected const NAME = 'SomeEnum';
 
             public function __construct()
@@ -16,12 +22,12 @@ final class EnumDirectiveTest extends \PHPUnit\Framework\TestCase
                 parent::__construct(self::fromConstants());
             }
         };
-        $directive = new class extends \Graphpinator\Typesystem\Directive implements \Graphpinator\Typesystem\Location\EnumLocation {
+        $directive = new class extends Directive implements EnumLocation {
             protected const NAME = 'SomeEnumDirective';
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
+            protected function getFieldDefinition() : ArgumentSet
             {
-                return new \Graphpinator\Typesystem\Argument\ArgumentSet();
+                return new ArgumentSet();
             }
         };
 

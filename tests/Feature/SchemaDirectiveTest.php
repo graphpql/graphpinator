@@ -4,11 +4,20 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Feature;
 
-final class SchemaDirectiveTest extends \PHPUnit\Framework\TestCase
+use Graphpinator\SimpleContainer;
+use Graphpinator\Typesystem\Argument\ArgumentSet;
+use Graphpinator\Typesystem\Directive;
+use Graphpinator\Typesystem\Field\ResolvableFieldSet;
+use Graphpinator\Typesystem\Location\SchemaLocation;
+use Graphpinator\Typesystem\Schema;
+use Graphpinator\Typesystem\Type;
+use PHPUnit\Framework\TestCase;
+
+final class SchemaDirectiveTest extends TestCase
 {
     public function testSimple() : void
     {
-        $query = new class extends \Graphpinator\Typesystem\Type {
+        $query = new class extends Type {
             protected const NAME = 'Query';
 
             public function validateNonNullValue(mixed $rawValue) : bool
@@ -16,22 +25,22 @@ final class SchemaDirectiveTest extends \PHPUnit\Framework\TestCase
                 return true;
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
+            protected function getFieldDefinition() : ResolvableFieldSet
             {
-                return new \Graphpinator\Typesystem\Field\ResolvableFieldSet();
+                return new ResolvableFieldSet();
             }
         };
-        $directive = new class extends \Graphpinator\Typesystem\Directive implements \Graphpinator\Typesystem\Location\SchemaLocation {
+        $directive = new class extends Directive implements SchemaLocation {
             protected const NAME = 'SomeSchemaDirective';
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
+            protected function getFieldDefinition() : ArgumentSet
             {
-                return new \Graphpinator\Typesystem\Argument\ArgumentSet();
+                return new ArgumentSet();
             }
         };
 
-        $schema = new \Graphpinator\Typesystem\Schema(
-            new \Graphpinator\SimpleContainer([$query], []),
+        $schema = new Schema(
+            new SimpleContainer([$query], []),
             $query,
         );
         $schema->addDirective($directive);

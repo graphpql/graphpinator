@@ -4,38 +4,50 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Feature;
 
-final class InterfaceContractMissingFieldTest extends \PHPUnit\Framework\TestCase
+use Graphpinator\Typesystem\Container;
+use Graphpinator\Typesystem\Exception\InterfaceContractMissingField;
+use Graphpinator\Typesystem\Field\Field;
+use Graphpinator\Typesystem\Field\FieldSet;
+use Graphpinator\Typesystem\Field\ResolvableField;
+use Graphpinator\Typesystem\Field\ResolvableFieldSet;
+use Graphpinator\Typesystem\InterfaceSet;
+use Graphpinator\Typesystem\InterfaceType;
+use Graphpinator\Typesystem\Type;
+use Graphpinator\Value\TypeIntermediateValue;
+use PHPUnit\Framework\TestCase;
+
+final class InterfaceContractMissingFieldTest extends TestCase
 {
-    public static function createMainInterface() : \Graphpinator\Typesystem\InterfaceType
+    public static function createMainInterface() : InterfaceType
     {
-        return new class extends \Graphpinator\Typesystem\InterfaceType {
+        return new class extends InterfaceType {
             protected const NAME = 'Bar';
 
-            public function createResolvedValue($rawValue) : \Graphpinator\Value\TypeIntermediateValue
+            public function createResolvedValue($rawValue) : TypeIntermediateValue
             {
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\FieldSet
+            protected function getFieldDefinition() : FieldSet
             {
-                return new \Graphpinator\Typesystem\Field\FieldSet([
-                    new \Graphpinator\Typesystem\Field\Field(
+                return new FieldSet([
+                    new Field(
                         'field',
-                        \Graphpinator\Typesystem\Container::Int(),
+                        Container::Int(),
                     ),
                 ]);
             }
         };
     }
 
-    public static function getTypeMissingField() : \Graphpinator\Typesystem\Type
+    public static function getTypeMissingField() : Type
     {
-        return new class extends \Graphpinator\Typesystem\Type {
+        return new class extends Type {
             protected const NAME = 'Abc';
 
             public function __construct()
             {
                 parent::__construct(
-                    new \Graphpinator\Typesystem\InterfaceSet([
+                    new InterfaceSet([
                         InterfaceContractMissingFieldTest::createMainInterface(),
                     ]),
                 );
@@ -46,12 +58,12 @@ final class InterfaceContractMissingFieldTest extends \PHPUnit\Framework\TestCas
                 return true;
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
+            protected function getFieldDefinition() : ResolvableFieldSet
             {
-                return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
-                    new \Graphpinator\Typesystem\Field\ResolvableField(
+                return new ResolvableFieldSet([
+                    new ResolvableField(
                         'differentField',
-                        \Graphpinator\Typesystem\Container::Int(),
+                        Container::Int(),
                         static function () : void {
                         },
                     ),
@@ -62,7 +74,7 @@ final class InterfaceContractMissingFieldTest extends \PHPUnit\Framework\TestCas
 
     public function testTypeMissingField() : void
     {
-        $this->expectException(\Graphpinator\Typesystem\Exception\InterfaceContractMissingField::class);
+        $this->expectException(InterfaceContractMissingField::class);
         $this->expectExceptionMessage('Type "Abc" does not satisfy interface "Bar" - missing field "field".');
 
         self::getTypeMissingField()->getFields();

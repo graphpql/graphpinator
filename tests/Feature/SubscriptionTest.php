@@ -4,36 +4,47 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Feature;
 
+use Graphpinator\Graphpinator;
+use Graphpinator\Request\JsonRequestFactory;
+use Graphpinator\SimpleContainer;
+use Graphpinator\Typesystem\Container;
+use Graphpinator\Typesystem\Field\ResolvableField;
+use Graphpinator\Typesystem\Field\ResolvableFieldSet;
+use Graphpinator\Typesystem\Schema;
+use Graphpinator\Typesystem\Type;
+use Infinityloop\Utils\Json;
+use PHPUnit\Framework\TestCase;
+
 /**
  * Adjust to correct subscription behaviour
  */
-final class SubscriptionTest extends \PHPUnit\Framework\TestCase
+final class SubscriptionTest extends TestCase
 {
     public function testSimple() : void
     {
-        $query = new class extends \Graphpinator\Typesystem\Type {
+        $query = new class extends Type {
             public function validateNonNullValue(mixed $rawValue) : bool
             {
                 return true;
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
+            protected function getFieldDefinition() : ResolvableFieldSet
             {
-                return new \Graphpinator\Typesystem\Field\ResolvableFieldSet();
+                return new ResolvableFieldSet();
             }
         };
-        $subscription = new class extends \Graphpinator\Typesystem\Type {
+        $subscription = new class extends Type {
             public function validateNonNullValue(mixed $rawValue) : bool
             {
                 return true;
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
+            protected function getFieldDefinition() : ResolvableFieldSet
             {
-                return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
-                    \Graphpinator\Typesystem\Field\ResolvableField::create(
+                return new ResolvableFieldSet([
+                    ResolvableField::create(
                         'field',
-                        \Graphpinator\Typesystem\Container::Int()->notNull(),
+                        Container::Int()->notNull(),
                         static function ($parent) : int {
                             return 1;
                         },
@@ -41,15 +52,15 @@ final class SubscriptionTest extends \PHPUnit\Framework\TestCase
                 ]);
             }
         };
-        $container = new \Graphpinator\SimpleContainer([$query], []);
-        $schema = new \Graphpinator\Typesystem\Schema($container, $query, null, $subscription);
+        $container = new SimpleContainer([$query], []);
+        $schema = new Schema($container, $query, null, $subscription);
 
-        $graphpinator = new \Graphpinator\Graphpinator($schema);
-        $result = $graphpinator->run(new \Graphpinator\Request\JsonRequestFactory(\Infinityloop\Utils\Json::fromNative((object) [
+        $graphpinator = new Graphpinator($schema);
+        $result = $graphpinator->run(new JsonRequestFactory(Json::fromNative((object) [
              'query' => 'subscription { field }',
         ])));
         self::assertSame(
-            \Infinityloop\Utils\Json::fromNative((object) ['data' => ['field' => 1]])->toString(),
+            Json::fromNative((object) ['data' => ['field' => 1]])->toString(),
             $result->toString(),
         );
     }

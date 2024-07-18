@@ -4,7 +4,9 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem\Utils;
 
-use \Graphpinator\Typesystem\Field\ResolvableFieldSet;
+use Graphpinator\Typesystem\Container;
+use Graphpinator\Typesystem\Field\ResolvableField;
+use Graphpinator\Typesystem\Field\ResolvableFieldSet;
 
 trait TMetaFields
 {
@@ -22,9 +24,9 @@ trait TMetaFields
     private function getMetaFieldDefinition() : ResolvableFieldSet
     {
         return new ResolvableFieldSet([
-            new \Graphpinator\Typesystem\Field\ResolvableField(
+            new ResolvableField(
                 '__typename',
-                \Graphpinator\Typesystem\Container::String()->notNull(),
+                Container::String()->notNull(),
                 function() : string {
                     return $this->getName();
                 },

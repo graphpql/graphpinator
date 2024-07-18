@@ -4,11 +4,20 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem\EnumItem;
 
-final class EnumItem implements \Graphpinator\Typesystem\Contract\Component
+use Graphpinator\Typesystem\Contract\Component;
+use Graphpinator\Typesystem\Contract\ComponentVisitor;
+use Graphpinator\Typesystem\DirectiveUsage\DirectiveUsage;
+use Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet;
+use Graphpinator\Typesystem\Location\EnumItemLocation;
+use Graphpinator\Typesystem\Utils\TDeprecatable;
+use Graphpinator\Typesystem\Utils\THasDirectives;
+use Graphpinator\Typesystem\Utils\TOptionalDescription;
+
+final class EnumItem implements Component
 {
-    use \Graphpinator\Typesystem\Utils\TOptionalDescription;
-    use \Graphpinator\Typesystem\Utils\THasDirectives;
-    use \Graphpinator\Typesystem\Utils\TDeprecatable;
+    use TOptionalDescription;
+    use THasDirectives;
+    use TDeprecatable;
 
     public function __construct(
         private string $name,
@@ -16,7 +25,7 @@ final class EnumItem implements \Graphpinator\Typesystem\Contract\Component
     )
     {
         $this->description = $description;
-        $this->directiveUsages = new \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet();
+        $this->directiveUsages = new DirectiveUsageSet();
     }
 
     public function getName() : string
@@ -24,17 +33,17 @@ final class EnumItem implements \Graphpinator\Typesystem\Contract\Component
         return $this->name;
     }
 
-    public function accept(\Graphpinator\Typesystem\Contract\ComponentVisitor $visitor) : mixed
+    public function accept(ComponentVisitor $visitor) : mixed
     {
         return $visitor->visitEnumItem($this);
     }
 
     public function addDirective(
-        \Graphpinator\Typesystem\Location\EnumItemLocation $directive,
+        EnumItemLocation $directive,
         array $arguments = [],
     ) : self
     {
-        $this->directiveUsages[] = new \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsage($directive, $arguments);
+        $this->directiveUsages[] = new DirectiveUsage($directive, $arguments);
 
         return $this;
     }

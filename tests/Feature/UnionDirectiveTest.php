@@ -4,28 +4,36 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Feature;
 
-final class UnionDirectiveTest extends \PHPUnit\Framework\TestCase
+use Graphpinator\Typesystem\Argument\ArgumentSet;
+use Graphpinator\Typesystem\Directive;
+use Graphpinator\Typesystem\Location\UnionLocation;
+use Graphpinator\Typesystem\TypeSet;
+use Graphpinator\Typesystem\UnionType;
+use Graphpinator\Value\TypeIntermediateValue;
+use PHPUnit\Framework\TestCase;
+
+final class UnionDirectiveTest extends TestCase
 {
     public function testSimple() : void
     {
-        $union = new class extends \Graphpinator\Typesystem\UnionType {
+        $union = new class extends UnionType {
             protected const NAME = 'SomeUnion';
 
             public function __construct()
             {
-                parent::__construct(new \Graphpinator\Typesystem\TypeSet());
+                parent::__construct(new TypeSet());
             }
 
-            public function createResolvedValue(mixed $rawValue) : \Graphpinator\Value\TypeIntermediateValue
+            public function createResolvedValue(mixed $rawValue) : TypeIntermediateValue
             {
             }
         };
-        $directive = new class extends \Graphpinator\Typesystem\Directive implements \Graphpinator\Typesystem\Location\UnionLocation {
+        $directive = new class extends Directive implements UnionLocation {
             protected const NAME = 'SomeUnionDirective';
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
+            protected function getFieldDefinition() : ArgumentSet
             {
-                return new \Graphpinator\Typesystem\Argument\ArgumentSet();
+                return new ArgumentSet();
             }
         };
 

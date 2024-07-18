@@ -4,9 +4,16 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Spec;
 
-use \Infinityloop\Utils\Json;
+use Graphpinator\Exception\Value\InvalidValue;
+use Graphpinator\Exception\Value\ValueCannotBeNull;
+use Graphpinator\Graphpinator;
+use Graphpinator\Normalizer\Exception\UnknownVariable;
+use Graphpinator\Request\Exception\VariablesNotObject;
+use Graphpinator\Request\JsonRequestFactory;
+use Infinityloop\Utils\Json;
+use PHPUnit\Framework\TestCase;
 
-final class InputTest extends \PHPUnit\Framework\TestCase
+final class InputTest extends TestCase
 {
     public static function simpleDataProvider() : array
     {
@@ -260,53 +267,53 @@ final class InputTest extends \PHPUnit\Framework\TestCase
                 Json::fromNative((object) [
                     'query' => 'query queryName ($var1: Int = "123") { fieldAbc { fieldXyz { name } } }',
                 ]),
-                \Graphpinator\Exception\Value\InvalidValue::class,
+                InvalidValue::class,
             ],
             [
                 Json::fromNative((object) [
                     'query' => 'query queryName ($var1: Int = 123) { fieldAbc { fieldXyz { name } } }',
                     'variables' => ['var1' => '123'],
                 ]),
-                \Graphpinator\Request\Exception\VariablesNotObject::class,
+                VariablesNotObject::class,
             ],
             [
                 Json::fromNative((object) [
                     'query' => 'query queryName ($var1: Int!) { fieldAbc { fieldXyz { name } } }',
                 ]),
-                \Graphpinator\Exception\Value\ValueCannotBeNull::class,
+                ValueCannotBeNull::class,
             ],
             [
                 Json::fromNative((object) [
                     'query' => 'query queryName { fieldAbc { fieldXyz(arg1: $varNonExistent) { name } } }',
                 ]),
-                \Graphpinator\Normalizer\Exception\UnknownVariable::class,
+                UnknownVariable::class,
             ],
         ];
     }
 
     /**
      * @dataProvider simpleDataProvider
-     * @param \Infinityloop\Utils\Json $request
-     * @param \Infinityloop\Utils\Json $expected
+     * @param Json $request
+     * @param Json $expected
      */
     public function testSimple(Json $request, Json $expected) : void
     {
-        $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
-        $result = $graphpinator->run(new \Graphpinator\Request\JsonRequestFactory($request));
+        $graphpinator = new Graphpinator(TestSchema::getSchema());
+        $result = $graphpinator->run(new JsonRequestFactory($request));
 
         self::assertSame($expected->toString(), $result->toString());
     }
 
     /**
      * @dataProvider invalidDataProvider
-     * @param \Infinityloop\Utils\Json $request
+     * @param Json $request
      * @param string $exception
      */
     public function testInvalid(Json $request, string $exception) : void
     {
         $this->expectException($exception);
 
-        $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
-        $graphpinator->run(new \Graphpinator\Request\JsonRequestFactory($request));
+        $graphpinator = new Graphpinator(TestSchema::getSchema());
+        $graphpinator->run(new JsonRequestFactory($request));
     }
 }

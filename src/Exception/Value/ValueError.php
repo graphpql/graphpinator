@@ -4,7 +4,9 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Exception\Value;
 
-abstract class ValueError extends \Graphpinator\Exception\GraphpinatorBase
+use Graphpinator\Exception\GraphpinatorBase;
+
+abstract class ValueError extends GraphpinatorBase
 {
     public function __construct(
         protected bool $outputable,

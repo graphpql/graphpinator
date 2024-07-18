@@ -4,14 +4,27 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Introspection;
 
-use \Graphpinator\Typesystem\Argument\Argument;
-use \Graphpinator\Typesystem\Argument\ArgumentSet;
-use \Graphpinator\Typesystem\Container;
-use \Graphpinator\Typesystem\Contract\Type as TypeDef;
-use \Graphpinator\Typesystem\Field\ResolvableField;
-use \Graphpinator\Typesystem\InterfaceSet;
+use Graphpinator\Typesystem\Argument\Argument;
+use Graphpinator\Typesystem\Argument\ArgumentSet;
+use Graphpinator\Typesystem\Attribute\Description;
+use Graphpinator\Typesystem\Container;
+use Graphpinator\Typesystem\Contract\InterfaceImplementor;
+use Graphpinator\Typesystem\Contract\ModifierType;
+use Graphpinator\Typesystem\Contract\NamedType;
+use Graphpinator\Typesystem\Contract\Type as TypeDef;
+use Graphpinator\Typesystem\EnumItem\EnumItemSet;
+use Graphpinator\Typesystem\EnumType;
+use Graphpinator\Typesystem\Field\FieldSet;
+use Graphpinator\Typesystem\Field\ResolvableField;
+use Graphpinator\Typesystem\Field\ResolvableFieldSet;
+use Graphpinator\Typesystem\InputType;
+use Graphpinator\Typesystem\InterfaceSet;
+use Graphpinator\Typesystem\InterfaceType;
+use Graphpinator\Typesystem\ScalarType;
+use Graphpinator\Typesystem\TypeSet;
+use Graphpinator\Typesystem\UnionType;
 
-#[\Graphpinator\Typesystem\Attribute\Description('Built-in introspection type')]
+#[Description('Built-in introspection type')]
 final class Type extends \Graphpinator\Typesystem\Type
 {
     protected const NAME = '__Type';
@@ -28,9 +41,9 @@ final class Type extends \Graphpinator\Typesystem\Type
         return $rawValue instanceof TypeDef;
     }
 
-    protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
+    protected function getFieldDefinition() : ResolvableFieldSet
     {
-        return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
+        return new ResolvableFieldSet([
             ResolvableField::create(
                 'kind',
                 $this->container->getType('__TypeKind')->notNull(),
@@ -42,7 +55,7 @@ final class Type extends \Graphpinator\Typesystem\Type
                 'name',
                 Container::String(),
                 static function (TypeDef $definition) : ?string {
-                    return $definition instanceof \Graphpinator\Typesystem\Contract\NamedType
+                    return $definition instanceof NamedType
                         ? $definition->getName()
                         : null;
                 },
@@ -51,7 +64,7 @@ final class Type extends \Graphpinator\Typesystem\Type
                 'description',
                 Container::String(),
                 static function (TypeDef $definition) : ?string {
-                    return $definition instanceof \Graphpinator\Typesystem\Contract\NamedType
+                    return $definition instanceof NamedType
                         ? $definition->getDescription()
                         : null;
                 },
@@ -59,8 +72,8 @@ final class Type extends \Graphpinator\Typesystem\Type
             ResolvableField::create(
                 'fields',
                 $this->container->getType('__Field')->notNull()->list(),
-                static function (TypeDef $definition, bool $includeDeprecated) : ?\Graphpinator\Typesystem\Field\FieldSet {
-                    if (!$definition instanceof \Graphpinator\Typesystem\Contract\InterfaceImplementor) {
+                static function (TypeDef $definition, bool $includeDeprecated) : ?FieldSet {
+                    if (!$definition instanceof InterfaceImplementor) {
                         return null;
                     }
 
@@ -78,7 +91,7 @@ final class Type extends \Graphpinator\Typesystem\Type
                         $filtered[] = $field;
                     }
 
-                    return new \Graphpinator\Typesystem\Field\FieldSet($filtered);
+                    return new FieldSet($filtered);
                 },
             )->setArguments(new ArgumentSet([
                 Argument::create('includeDeprecated', Container::Boolean()->notNull())
@@ -88,7 +101,7 @@ final class Type extends \Graphpinator\Typesystem\Type
                 'interfaces',
                 $this->notNull()->list(),
                 static function (TypeDef $definition) : ?InterfaceSet {
-                    return $definition instanceof \Graphpinator\Typesystem\Contract\InterfaceImplementor
+                    return $definition instanceof InterfaceImplementor
                         ? self::recursiveGetInterfaces($definition->getInterfaces())
                         : null;
                 },
@@ -96,12 +109,12 @@ final class Type extends \Graphpinator\Typesystem\Type
             ResolvableField::create(
                 'possibleTypes',
                 $this->notNull()->list(),
-                function (TypeDef $definition) : ?\Graphpinator\Typesystem\TypeSet {
-                    if ($definition instanceof \Graphpinator\Typesystem\UnionType) {
+                function (TypeDef $definition) : ?TypeSet {
+                    if ($definition instanceof UnionType) {
                         return $definition->getTypes();
                     }
 
-                    if ($definition instanceof \Graphpinator\Typesystem\InterfaceType) {
+                    if ($definition instanceof InterfaceType) {
                         $subTypes = [];
 
                         foreach ($this->container->getTypes() as $type) {
@@ -111,7 +124,7 @@ final class Type extends \Graphpinator\Typesystem\Type
                             }
                         }
 
-                        return new \Graphpinator\Typesystem\TypeSet($subTypes);
+                        return new TypeSet($subTypes);
                     }
 
                     return null;
@@ -120,8 +133,8 @@ final class Type extends \Graphpinator\Typesystem\Type
             ResolvableField::create(
                 'enumValues',
                 $this->container->getType('__EnumValue')->notNull()->list(),
-                static function (TypeDef $definition, bool $includeDeprecated) : ?\Graphpinator\Typesystem\EnumItem\EnumItemSet {
-                    if (!$definition instanceof \Graphpinator\Typesystem\EnumType) {
+                static function (TypeDef $definition, bool $includeDeprecated) : ?EnumItemSet {
+                    if (!$definition instanceof EnumType) {
                         return null;
                     }
 
@@ -139,7 +152,7 @@ final class Type extends \Graphpinator\Typesystem\Type
                         $filtered[] = $enumItem;
                     }
 
-                    return new \Graphpinator\Typesystem\EnumItem\EnumItemSet($filtered);
+                    return new EnumItemSet($filtered);
                 },
             )->setArguments(new ArgumentSet([
                 Argument::create('includeDeprecated', Container::Boolean()->notNull())
@@ -149,7 +162,7 @@ final class Type extends \Graphpinator\Typesystem\Type
                 'inputFields',
                 $this->container->getType('__InputValue')->notNull()->list(),
                 static function (TypeDef $definition, bool $includeDeprecated) : ?ArgumentSet {
-                    if (!$definition instanceof \Graphpinator\Typesystem\InputType) {
+                    if (!$definition instanceof InputType) {
                         return null;
                     }
 
@@ -177,7 +190,7 @@ final class Type extends \Graphpinator\Typesystem\Type
                 'ofType',
                 $this,
                 static function (TypeDef $definition) : ?TypeDef {
-                    return $definition instanceof \Graphpinator\Typesystem\Contract\ModifierType
+                    return $definition instanceof ModifierType
                         ? $definition->getInnerType()
                         : null;
                 },
@@ -186,7 +199,7 @@ final class Type extends \Graphpinator\Typesystem\Type
                 'specifiedByURL',
                 Container::String(),
                 static function (TypeDef $definition) : ?string {
-                    return $definition instanceof \Graphpinator\Typesystem\ScalarType
+                    return $definition instanceof ScalarType
                         ? $definition->getSpecifiedByUrl()
                         : null;
                 },
@@ -195,7 +208,7 @@ final class Type extends \Graphpinator\Typesystem\Type
                 'isOneOf',
                 Container::Boolean(),
                 static function (TypeDef $definition) : ?bool {
-                    return $definition instanceof \Graphpinator\Typesystem\InputType
+                    return $definition instanceof InputType
                         ? $definition->isOneOf()
                         : null;
                 },

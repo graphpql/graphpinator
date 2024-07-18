@@ -4,11 +4,13 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem\Field;
 
+use Infinityloop\Utils\ImplicitObjectMap;
+
 /**
  * @method Field current() : object
  * @method Field offsetGet($offset) : object
  */
-class FieldSet extends \Infinityloop\Utils\ImplicitObjectMap
+class FieldSet extends ImplicitObjectMap
 {
     protected const INNER_CLASS = Field::class;
 

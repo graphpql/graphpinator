@@ -4,16 +4,18 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem\Utils;
 
+use Graphpinator\Typesystem\Attribute\Description;
+
 trait THasDescription
 {
     final public function getDescription() : ?string
     {
         $ref = new \ReflectionClass($this);
-        $attrs = $ref->getAttributes(\Graphpinator\Typesystem\Attribute\Description::class);
+        $attrs = $ref->getAttributes(Description::class);
 
         if (\count($attrs) === 1) {
             $attr = $attrs[0]->newInstance();
-            \assert($attr instanceof \Graphpinator\Typesystem\Attribute\Description);
+            \assert($attr instanceof Description);
 
             return $attr->getValue();
         }

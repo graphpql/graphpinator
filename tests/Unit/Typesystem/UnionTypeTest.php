@@ -4,33 +4,41 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Unit\Typesystem;
 
-final class UnionTypeTest extends \PHPUnit\Framework\TestCase
+use Graphpinator\Typesystem\Field\ResolvableFieldSet;
+use Graphpinator\Typesystem\NotNullType;
+use Graphpinator\Typesystem\Type;
+use Graphpinator\Typesystem\TypeSet;
+use Graphpinator\Typesystem\UnionType;
+use Graphpinator\Value\TypeIntermediateValue;
+use PHPUnit\Framework\TestCase;
+
+final class UnionTypeTest extends TestCase
 {
-    public static function createTestUnion() : \Graphpinator\Typesystem\UnionType
+    public static function createTestUnion() : UnionType
     {
-        return new class extends \Graphpinator\Typesystem\UnionType {
+        return new class extends UnionType {
             protected const NAME = 'Foo';
 
             public function __construct()
             {
                 parent::__construct(
-                    new \Graphpinator\Typesystem\TypeSet([
+                    new TypeSet([
                         UnionTypeTest::getTestTypeXyz(),
                         UnionTypeTest::getTestTypeZzz(),
                     ]),
                 );
             }
 
-            public function createResolvedValue($rawValue) : \Graphpinator\Value\TypeIntermediateValue
+            public function createResolvedValue($rawValue) : TypeIntermediateValue
             {
-                return new \Graphpinator\Value\TypeIntermediateValue(UnionTypeTest::getTestTypeXyz(), 123);
+                return new TypeIntermediateValue(UnionTypeTest::getTestTypeXyz(), 123);
             }
         };
     }
 
-    public static function getTestTypeAbc() : \Graphpinator\Typesystem\Type
+    public static function getTestTypeAbc() : Type
     {
-        return new class extends \Graphpinator\Typesystem\Type {
+        return new class extends Type {
             protected const NAME = 'Abc';
 
             public function validateNonNullValue($rawValue) : bool
@@ -38,16 +46,16 @@ final class UnionTypeTest extends \PHPUnit\Framework\TestCase
                 return true;
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
+            protected function getFieldDefinition() : ResolvableFieldSet
             {
-                return new \Graphpinator\Typesystem\Field\ResolvableFieldSet();
+                return new ResolvableFieldSet();
             }
         };
     }
 
-    public static function getTestTypeXyz() : \Graphpinator\Typesystem\Type
+    public static function getTestTypeXyz() : Type
     {
-        return new class extends \Graphpinator\Typesystem\Type {
+        return new class extends Type {
             protected const NAME = 'Xyz';
 
             public function validateNonNullValue($rawValue) : bool
@@ -55,16 +63,16 @@ final class UnionTypeTest extends \PHPUnit\Framework\TestCase
                 return true;
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
+            protected function getFieldDefinition() : ResolvableFieldSet
             {
-                return new \Graphpinator\Typesystem\Field\ResolvableFieldSet();
+                return new ResolvableFieldSet();
             }
         };
     }
 
-    public static function getTestTypeZzz() : \Graphpinator\Typesystem\Type
+    public static function getTestTypeZzz() : Type
     {
-        return new class extends \Graphpinator\Typesystem\Type {
+        return new class extends Type {
             protected const NAME = 'Zzz';
 
             public function validateNonNullValue($rawValue) : bool
@@ -72,9 +80,9 @@ final class UnionTypeTest extends \PHPUnit\Framework\TestCase
                 return true;
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
+            protected function getFieldDefinition() : ResolvableFieldSet
             {
-                return new \Graphpinator\Typesystem\Field\ResolvableFieldSet();
+                return new ResolvableFieldSet();
             }
         };
     }
@@ -89,15 +97,15 @@ final class UnionTypeTest extends \PHPUnit\Framework\TestCase
         self::assertSame('Zzz', $union->getTypes()->offsetGet('Zzz')->getName());
 
         self::assertTrue($union->isInstanceOf($union));
-        self::assertFalse($union->isInstanceOf(new \Graphpinator\Typesystem\NotNullType($union)));
-        self::assertTrue((new \Graphpinator\Typesystem\NotNullType($union))->isInstanceOf($union));
+        self::assertFalse($union->isInstanceOf(new NotNullType($union)));
+        self::assertTrue((new NotNullType($union))->isInstanceOf($union));
         self::assertFalse($union->isInstanceOf(self::getTestTypeZzz()));
-        self::assertFalse($union->isInstanceOf(new \Graphpinator\Typesystem\NotNullType(self::getTestTypeZzz())));
+        self::assertFalse($union->isInstanceOf(new NotNullType(self::getTestTypeZzz())));
         self::assertTrue($union->isImplementedBy(self::getTestTypeXyz()));
-        self::assertTrue($union->isImplementedBy(new \Graphpinator\Typesystem\NotNullType(self::getTestTypeXyz())));
+        self::assertTrue($union->isImplementedBy(new NotNullType(self::getTestTypeXyz())));
         self::assertTrue($union->isImplementedBy(self::getTestTypeZzz()));
-        self::assertTrue($union->isImplementedBy(new \Graphpinator\Typesystem\NotNullType(self::getTestTypeZzz())));
+        self::assertTrue($union->isImplementedBy(new NotNullType(self::getTestTypeZzz())));
         self::assertFalse($union->isImplementedBy(self::getTestTypeAbc()));
-        self::assertFalse($union->isImplementedBy(new \Graphpinator\Typesystem\NotNullType(self::getTestTypeAbc())));
+        self::assertFalse($union->isImplementedBy(new NotNullType(self::getTestTypeAbc())));
     }
 }

@@ -4,14 +4,25 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem\Spec;
 
-use \Graphpinator\Value\ArgumentValueSet;
-use \Graphpinator\Value\ResolvedValue;
+use Graphpinator\Typesystem\Argument\Argument;
+use Graphpinator\Typesystem\Argument\ArgumentSet;
+use Graphpinator\Typesystem\Attribute\Description;
+use Graphpinator\Typesystem\Container;
+use Graphpinator\Typesystem\Directive;
+use Graphpinator\Typesystem\Field\Field;
+use Graphpinator\Typesystem\Location\ArgumentDefinitionLocation;
+use Graphpinator\Typesystem\Location\EnumItemLocation;
+use Graphpinator\Typesystem\Location\FieldDefinitionLocation;
+use Graphpinator\Value\ArgumentValue;
+use Graphpinator\Value\ArgumentValueSet;
+use Graphpinator\Value\FieldValue;
+use Graphpinator\Value\ResolvedValue;
 
-#[\Graphpinator\Typesystem\Attribute\Description('Built-in deprecated directive')]
-final class DeprecatedDirective extends \Graphpinator\Typesystem\Directive implements
-    \Graphpinator\Typesystem\Location\FieldDefinitionLocation,
-    \Graphpinator\Typesystem\Location\EnumItemLocation,
-    \Graphpinator\Typesystem\Location\ArgumentDefinitionLocation
+#[Description('Built-in deprecated directive')]
+final class DeprecatedDirective extends Directive implements
+    FieldDefinitionLocation,
+    EnumItemLocation,
+    ArgumentDefinitionLocation
 {
     protected const NAME = 'deprecated';
 
@@ -20,7 +31,7 @@ final class DeprecatedDirective extends \Graphpinator\Typesystem\Directive imple
         return true;
     }
 
-    public function validateFieldUsage(\Graphpinator\Typesystem\Field\Field $field, ArgumentValueSet $arguments) : bool
+    public function validateFieldUsage(Field $field, ArgumentValueSet $arguments) : bool
     {
         return true;
     }
@@ -45,25 +56,25 @@ final class DeprecatedDirective extends \Graphpinator\Typesystem\Directive imple
         // nothing here
     }
 
-    public function resolveFieldDefinitionValue(ArgumentValueSet $arguments, \Graphpinator\Value\FieldValue $fieldValue) : void
+    public function resolveFieldDefinitionValue(ArgumentValueSet $arguments, FieldValue $fieldValue) : void
     {
         // nothing here
     }
 
-    public function validateArgumentUsage(\Graphpinator\Typesystem\Argument\Argument $argument, ArgumentValueSet $arguments) : bool
+    public function validateArgumentUsage(Argument $argument, ArgumentValueSet $arguments) : bool
     {
         return true;
     }
 
-    public function resolveArgumentDefinition(ArgumentValueSet $arguments, \Graphpinator\Value\ArgumentValue $argumentValue) : void
+    public function resolveArgumentDefinition(ArgumentValueSet $arguments, ArgumentValue $argumentValue) : void
     {
         // nothing here
     }
 
-    protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
+    protected function getFieldDefinition() : ArgumentSet
     {
-        return new \Graphpinator\Typesystem\Argument\ArgumentSet([
-            new \Graphpinator\Typesystem\Argument\Argument('reason', \Graphpinator\Typesystem\Container::String()),
+        return new ArgumentSet([
+            new Argument('reason', Container::String()),
         ]);
     }
 }

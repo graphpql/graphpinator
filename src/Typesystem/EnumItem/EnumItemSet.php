@@ -4,11 +4,15 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem\EnumItem;
 
+use Graphpinator\Graphpinator;
+use Graphpinator\Typesystem\Exception\EnumItemInvalid;
+use Infinityloop\Utils\ImplicitObjectMap;
+
 /**
  * @method EnumItem current() : object
  * @method EnumItem offsetGet($offset) : object
  */
-final class EnumItemSet extends \Infinityloop\Utils\ImplicitObjectMap
+final class EnumItemSet extends ImplicitObjectMap
 {
     protected const INNER_CLASS = EnumItem::class;
 
@@ -19,7 +23,7 @@ final class EnumItemSet extends \Infinityloop\Utils\ImplicitObjectMap
     {
         parent::__construct($data);
 
-        if (\Graphpinator\Graphpinator::$validateSchema) {
+        if (Graphpinator::$validateSchema) {
             $this->validateCaseFormat();
         }
     }
@@ -50,7 +54,7 @@ final class EnumItemSet extends \Infinityloop\Utils\ImplicitObjectMap
         foreach ($this as $enumItem) {
             if (\preg_match('/^[a-zA-Z_]+\w*$/', $enumItem->getName()) !== 1 ||
                 \in_array($enumItem->getName(), ['true', 'false', 'null'], true)) {
-                throw new \Graphpinator\Typesystem\Exception\EnumItemInvalid($enumItem->getName());
+                throw new EnumItemInvalid($enumItem->getName());
             }
         }
     }

@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem\Exception;
 
-final class InterfaceContractNewArgumentWithoutDefault extends \Graphpinator\Typesystem\Exception\TypeError
+final class InterfaceContractNewArgumentWithoutDefault extends TypeError
 {
     public const MESSAGE = 'Type "%s" does not satisfy interface "%s" - new argument "%s" on field "%s" does not have default value.';
 

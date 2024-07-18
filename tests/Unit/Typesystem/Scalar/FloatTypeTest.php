@@ -4,7 +4,13 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Unit\Typesystem\Scalar;
 
-final class FloatTypeTest extends \PHPUnit\Framework\TestCase
+use Graphpinator\Common\Path;
+use Graphpinator\Exception\Value\InvalidValue;
+use Graphpinator\Typesystem\Spec\FloatType;
+use Graphpinator\Value\ConvertRawValueVisitor;
+use PHPUnit\Framework\TestCase;
+
+final class FloatTypeTest extends TestCase
 {
     public static function simpleDataProvider() : array
     {
@@ -33,8 +39,8 @@ final class FloatTypeTest extends \PHPUnit\Framework\TestCase
      */
     public function testValidateValue($rawValue, $resultValue) : void
     {
-        $float = new \Graphpinator\Typesystem\Spec\FloatType();
-        $value = $float->accept(new \Graphpinator\Value\ConvertRawValueVisitor($rawValue, new \Graphpinator\Common\Path()));
+        $float = new FloatType();
+        $value = $float->accept(new ConvertRawValueVisitor($rawValue, new Path()));
 
         self::assertSame($float, $value->getType());
         self::assertSame($resultValue, $value->getRawValue());
@@ -46,9 +52,9 @@ final class FloatTypeTest extends \PHPUnit\Framework\TestCase
      */
     public function testValidateValueInvalid($rawValue) : void
     {
-        $this->expectException(\Graphpinator\Exception\Value\InvalidValue::class);
+        $this->expectException(InvalidValue::class);
 
-        $float = new \Graphpinator\Typesystem\Spec\FloatType();
-        $float->accept(new \Graphpinator\Value\ConvertRawValueVisitor($rawValue, new \Graphpinator\Common\Path()));
+        $float = new FloatType();
+        $float->accept(new ConvertRawValueVisitor($rawValue, new Path()));
     }
 }

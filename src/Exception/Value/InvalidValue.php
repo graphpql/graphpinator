@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Exception\Value;
 
-final class InvalidValue extends \Graphpinator\Exception\Value\ValueError
+final class InvalidValue extends ValueError
 {
     public const MESSAGE = 'Invalid value resolved for type "%s" - got %s.';
 

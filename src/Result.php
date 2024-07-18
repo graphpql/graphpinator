@@ -4,7 +4,8 @@ declare(strict_types = 1);
 
 namespace Graphpinator;
 
-use \Graphpinator\Value\TypeValue;
+use Graphpinator\Value\TypeValue;
+use Infinityloop\Utils\Json;
 
 final class Result implements \JsonSerializable
 {
@@ -42,6 +43,6 @@ final class Result implements \JsonSerializable
 
     public function toString() : string
     {
-        return \Infinityloop\Utils\Json::fromNative($this->jsonSerialize())->toString();
+        return Json::fromNative($this->jsonSerialize())->toString();
     }
 }

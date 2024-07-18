@@ -4,17 +4,21 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Normalizer\Variable;
 
+use Graphpinator\Normalizer\Directive\DirectiveSet;
+use Graphpinator\Typesystem\Contract\Inputable;
+use Graphpinator\Value\InputedValue;
+
 final class Variable
 {
-    private \Graphpinator\Normalizer\Directive\DirectiveSet $directives;
+    private DirectiveSet $directives;
 
     public function __construct(
         private string $name,
-        private \Graphpinator\Typesystem\Contract\Inputable $type,
-        private ?\Graphpinator\Value\InputedValue $defaultValue,
+        private Inputable $type,
+        private ?InputedValue $defaultValue,
     )
     {
-        $this->directives = new \Graphpinator\Normalizer\Directive\DirectiveSet();
+        $this->directives = new DirectiveSet();
     }
 
     public function getName() : string
@@ -22,22 +26,22 @@ final class Variable
         return $this->name;
     }
 
-    public function getType() : \Graphpinator\Typesystem\Contract\Inputable
+    public function getType() : Inputable
     {
         return $this->type;
     }
 
-    public function getDefaultValue() : ?\Graphpinator\Value\InputedValue
+    public function getDefaultValue() : ?InputedValue
     {
         return $this->defaultValue;
     }
 
-    public function setDirectives(\Graphpinator\Normalizer\Directive\DirectiveSet $directives) : void
+    public function setDirectives(DirectiveSet $directives) : void
     {
         $this->directives = $directives;
     }
 
-    public function getDirectives() : \Graphpinator\Normalizer\Directive\DirectiveSet
+    public function getDirectives() : DirectiveSet
     {
         return $this->directives;
     }

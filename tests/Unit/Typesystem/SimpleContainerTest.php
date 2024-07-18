@@ -4,11 +4,16 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Unit\Typesystem;
 
-final class SimpleContainerTest extends \PHPUnit\Framework\TestCase
+use Graphpinator\SimpleContainer;
+use Graphpinator\Typesystem\Contract\NamedType;
+use Graphpinator\Typesystem\Directive;
+use PHPUnit\Framework\TestCase;
+
+final class SimpleContainerTest extends TestCase
 {
     public function testSimple() : void
     {
-        $container = new \Graphpinator\SimpleContainer([], []);
+        $container = new SimpleContainer([], []);
 
         self::assertCount(0, $container->getTypes());
         self::assertCount(0, $container->getDirectives());
@@ -28,11 +33,11 @@ final class SimpleContainerTest extends \PHPUnit\Framework\TestCase
              '__Directive',
             '__DirectiveLocation',
                  ] as $typeName) {
-            self::assertInstanceOf(\Graphpinator\Typesystem\Contract\NamedType::class, $container->getType($typeName));
+            self::assertInstanceOf(NamedType::class, $container->getType($typeName));
         }
 
         foreach (['skip', 'include'] as $directiveName) {
-            self::assertInstanceOf(\Graphpinator\Typesystem\Directive::class, $container->getDirective($directiveName));
+            self::assertInstanceOf(Directive::class, $container->getDirective($directiveName));
         }
     }
 }

@@ -4,24 +4,37 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Feature;
 
-final class ListInputCoercionTest extends \PHPUnit\Framework\TestCase
+use Graphpinator\Graphpinator;
+use Graphpinator\Request\JsonRequestFactory;
+use Graphpinator\SimpleContainer;
+use Graphpinator\Typesystem\Argument\Argument;
+use Graphpinator\Typesystem\Argument\ArgumentSet;
+use Graphpinator\Typesystem\Container;
+use Graphpinator\Typesystem\Field\ResolvableField;
+use Graphpinator\Typesystem\Field\ResolvableFieldSet;
+use Graphpinator\Typesystem\Schema;
+use Graphpinator\Typesystem\Type;
+use Infinityloop\Utils\Json;
+use PHPUnit\Framework\TestCase;
+
+final class ListInputCoercionTest extends TestCase
 {
     public function testNoCoercion() : void
     {
         $query = $this->getQuery();
-        $graphpinator = new \Graphpinator\Graphpinator(
-            new \Graphpinator\Typesystem\Schema(
-                new \Graphpinator\SimpleContainer([$query], []),
+        $graphpinator = new Graphpinator(
+            new Schema(
+                new SimpleContainer([$query], []),
                 $query,
             ),
         );
 
-        $result = $graphpinator->run(new \Graphpinator\Request\JsonRequestFactory(\Infinityloop\Utils\Json::fromNative((object) [
+        $result = $graphpinator->run(new JsonRequestFactory(Json::fromNative((object) [
             'query' => 'query { field(listArg: [1, 1, 2, 3]) }',
         ])));
 
         self::assertSame(
-            \Infinityloop\Utils\Json::fromNative((object) ['data' => ['field' => [1, 1, 2, 3]]])->toString(),
+            Json::fromNative((object) ['data' => ['field' => [1, 1, 2, 3]]])->toString(),
             $result->toString(),
         );
     }
@@ -29,19 +42,19 @@ final class ListInputCoercionTest extends \PHPUnit\Framework\TestCase
     public function testParserValue() : void
     {
         $query = $this->getQuery();
-        $graphpinator = new \Graphpinator\Graphpinator(
-            new \Graphpinator\Typesystem\Schema(
-                new \Graphpinator\SimpleContainer([$query], []),
+        $graphpinator = new Graphpinator(
+            new Schema(
+                new SimpleContainer([$query], []),
                 $query,
             ),
         );
 
-        $result = $graphpinator->run(new \Graphpinator\Request\JsonRequestFactory(\Infinityloop\Utils\Json::fromNative((object) [
+        $result = $graphpinator->run(new JsonRequestFactory(Json::fromNative((object) [
             'query' => 'query { field(listArg: 5) }',
         ])));
 
         self::assertSame(
-            \Infinityloop\Utils\Json::fromNative((object) ['data' => ['field' => [5]]])->toString(),
+            Json::fromNative((object) ['data' => ['field' => [5]]])->toString(),
             $result->toString(),
         );
     }
@@ -49,19 +62,19 @@ final class ListInputCoercionTest extends \PHPUnit\Framework\TestCase
     public function testVariableValue() : void
     {
         $query = $this->getQuery();
-        $graphpinator = new \Graphpinator\Graphpinator(
-            new \Graphpinator\Typesystem\Schema(
-                new \Graphpinator\SimpleContainer([$query], []),
+        $graphpinator = new Graphpinator(
+            new Schema(
+                new SimpleContainer([$query], []),
                 $query,
             ),
         );
 
-        $result = $graphpinator->run(new \Graphpinator\Request\JsonRequestFactory(\Infinityloop\Utils\Json::fromNative((object) [
+        $result = $graphpinator->run(new JsonRequestFactory(Json::fromNative((object) [
             'query' => 'query ($var: [Int!]! = 8) { field(listArg: $var) }',
         ])));
 
         self::assertSame(
-            \Infinityloop\Utils\Json::fromNative((object) ['data' => ['field' => [8]]])->toString(),
+            Json::fromNative((object) ['data' => ['field' => [8]]])->toString(),
             $result->toString(),
         );
     }
@@ -69,26 +82,26 @@ final class ListInputCoercionTest extends \PHPUnit\Framework\TestCase
     public function testDefaultValue() : void
     {
         $query = $this->getQuery(12);
-        $graphpinator = new \Graphpinator\Graphpinator(
-            new \Graphpinator\Typesystem\Schema(
-                new \Graphpinator\SimpleContainer([$query], []),
+        $graphpinator = new Graphpinator(
+            new Schema(
+                new SimpleContainer([$query], []),
                 $query,
             ),
         );
 
-        $result = $graphpinator->run(new \Graphpinator\Request\JsonRequestFactory(\Infinityloop\Utils\Json::fromNative((object) [
+        $result = $graphpinator->run(new JsonRequestFactory(Json::fromNative((object) [
             'query' => 'query { field }',
         ])));
 
         self::assertSame(
-            \Infinityloop\Utils\Json::fromNative((object) ['data' => ['field' => [12]]])->toString(),
+            Json::fromNative((object) ['data' => ['field' => [12]]])->toString(),
             $result->toString(),
         );
     }
 
-    public function getQuery(?int $defaultValue = null) : \Graphpinator\Typesystem\Type
+    public function getQuery(?int $defaultValue = null) : Type
     {
-        return new class ($defaultValue) extends \Graphpinator\Typesystem\Type
+        return new class ($defaultValue) extends Type
         {
             protected const NAME = 'Query';
 
@@ -104,25 +117,25 @@ final class ListInputCoercionTest extends \PHPUnit\Framework\TestCase
                 return true;
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
+            protected function getFieldDefinition() : ResolvableFieldSet
             {
-                $argument = \Graphpinator\Typesystem\Argument\Argument::create(
+                $argument = Argument::create(
                     'listArg',
-                    \Graphpinator\Typesystem\Container::Int()->notNullList(),
+                    Container::Int()->notNullList(),
                 );
 
                 if (\is_int($this->defaultValue)) {
                     $argument->setDefaultValue($this->defaultValue);
                 }
 
-                return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
-                    \Graphpinator\Typesystem\Field\ResolvableField::create(
+                return new ResolvableFieldSet([
+                    ResolvableField::create(
                         'field',
-                        \Graphpinator\Typesystem\Container::Int()->notNullList(),
+                        Container::Int()->notNullList(),
                         static function ($parent, array $listArg) : array {
                             return $listArg;
                         },
-                    )->setArguments(new \Graphpinator\Typesystem\Argument\ArgumentSet([
+                    )->setArguments(new ArgumentSet([
                         $argument,
                     ])),
                 ]);

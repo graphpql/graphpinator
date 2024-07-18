@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem\Contract;
 
+use Graphpinator\Typesystem\ListType;
+
 abstract class ModifierType implements Inputable, Outputable
 {
     public function __construct(
@@ -27,8 +29,8 @@ abstract class ModifierType implements Inputable, Outputable
         return $this->innerType->isInputable();
     }
 
-    public function list() : \Graphpinator\Typesystem\ListType
+    public function list() : ListType
     {
-        return new \Graphpinator\Typesystem\ListType($this);
+        return new ListType($this);
     }
 }

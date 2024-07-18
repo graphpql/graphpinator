@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Normalizer\Exception;
 
-final class UnknownType extends \Graphpinator\Normalizer\Exception\NormalizerError
+final class UnknownType extends NormalizerError
 {
     public const MESSAGE = 'Unknown type "%s".';
 

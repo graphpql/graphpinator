@@ -4,8 +4,11 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem\Spec;
 
-#[\Graphpinator\Typesystem\Attribute\Description('Int built-in type (32 bit)')]
-final class IntType extends \Graphpinator\Typesystem\ScalarType
+use Graphpinator\Typesystem\Attribute\Description;
+use Graphpinator\Typesystem\ScalarType;
+
+#[Description('Int built-in type (32 bit)')]
+final class IntType extends ScalarType
 {
     protected const NAME = 'Int';
     private const INT_LIMIT = 2 ** 31;

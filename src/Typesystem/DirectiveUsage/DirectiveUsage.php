@@ -4,31 +4,37 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem\DirectiveUsage;
 
-use \Graphpinator\Value\ArgumentValueSet;
+use Graphpinator\Common\Path;
+use Graphpinator\Typesystem\Contract\Component;
+use Graphpinator\Typesystem\Contract\ComponentVisitor;
+use Graphpinator\Typesystem\Contract\TypeSystemDirective;
+use Graphpinator\Typesystem\Exception\DirectiveUsageArgumentsInvalidMap;
+use Graphpinator\Value\ArgumentValueSet;
+use Graphpinator\Value\ConvertRawValueVisitor;
 
-final class DirectiveUsage implements \Graphpinator\Typesystem\Contract\Component
+final class DirectiveUsage implements Component
 {
     private ArgumentValueSet $argumentValues;
 
     public function __construct(
-        private \Graphpinator\Typesystem\Contract\TypeSystemDirective $directive,
+        private TypeSystemDirective $directive,
         array $arguments,
     )
     {
         if (\count($arguments) > 0 && \array_is_list($arguments)) {
-            throw new \Graphpinator\Typesystem\Exception\DirectiveUsageArgumentsInvalidMap();
+            throw new DirectiveUsageArgumentsInvalidMap();
         }
 
         $this->argumentValues = new ArgumentValueSet(
-            (array) \Graphpinator\Value\ConvertRawValueVisitor::convertArgumentSet(
+            (array) ConvertRawValueVisitor::convertArgumentSet(
                 $directive->getArguments(),
                 (object) $arguments,
-                new \Graphpinator\Common\Path(),
+                new Path(),
             ),
         );
     }
 
-    public function getDirective() : \Graphpinator\Typesystem\Contract\TypeSystemDirective
+    public function getDirective() : TypeSystemDirective
     {
         return $this->directive;
     }
@@ -38,7 +44,7 @@ final class DirectiveUsage implements \Graphpinator\Typesystem\Contract\Componen
         return $this->argumentValues;
     }
 
-    public function accept(\Graphpinator\Typesystem\Contract\ComponentVisitor $visitor) : mixed
+    public function accept(ComponentVisitor $visitor) : mixed
     {
         return $visitor->visitDirectiveUsage($this);
     }

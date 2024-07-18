@@ -4,17 +4,23 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Value;
 
-final class VariableValue implements \Graphpinator\Value\InputedValue
+use Graphpinator\Exception\OperationNotSupported;
+use Graphpinator\Normalizer\Exception\VariableTypeMismatch;
+use Graphpinator\Normalizer\Variable\Variable;
+use Graphpinator\Normalizer\VariableValueSet;
+use Graphpinator\Typesystem\Contract\Inputable;
+
+final class VariableValue implements InputedValue
 {
-    private ?\Graphpinator\Value\InputedValue $value = null;
+    private ?InputedValue $value = null;
 
     public function __construct(
-        private \Graphpinator\Typesystem\Contract\Inputable $type,
-        private \Graphpinator\Normalizer\Variable\Variable $variable,
+        private Inputable $type,
+        private Variable $variable,
     )
     {
         if (!$variable->getType()->isInstanceOf($type)) {
-            throw new \Graphpinator\Normalizer\Exception\VariableTypeMismatch();
+            throw new VariableTypeMismatch();
         }
     }
 
@@ -23,27 +29,27 @@ final class VariableValue implements \Graphpinator\Value\InputedValue
         return $this->value->getRawValue($forResolvers);
     }
 
-    public function getConcreteValue() : \Graphpinator\Value\InputedValue
+    public function getConcreteValue() : InputedValue
     {
         return $this->value;
     }
 
-    public function getVariable() : \Graphpinator\Normalizer\Variable\Variable
+    public function getVariable() : Variable
     {
         return $this->variable;
     }
 
-    public function getType() : \Graphpinator\Typesystem\Contract\Inputable
+    public function getType() : Inputable
     {
         return $this->type;
     }
 
     public function printValue() : string
     {
-        throw new \Graphpinator\Exception\OperationNotSupported();
+        throw new OperationNotSupported();
     }
 
-    public function applyVariables(\Graphpinator\Normalizer\VariableValueSet $variables) : void
+    public function applyVariables(VariableValueSet $variables) : void
     {
         $this->value = $variables->get($this->variable->getName());
     }

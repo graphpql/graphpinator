@@ -4,7 +4,9 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Value;
 
-interface ResolvedValue extends \Graphpinator\Value\Value
+use Graphpinator\Typesystem\Contract\Outputable;
+
+interface ResolvedValue extends Value
 {
-    public function getType() : \Graphpinator\Typesystem\Contract\Outputable;
+    public function getType() : Outputable;
 }

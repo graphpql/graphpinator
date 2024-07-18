@@ -4,13 +4,16 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Value;
 
+use Graphpinator\Normalizer\VariableValueSet;
+use Infinityloop\Utils\ImplicitObjectMap;
+
 /**
- * @method \Graphpinator\Value\ArgumentValue current() : object
- * @method \Graphpinator\Value\ArgumentValue offsetGet($offset) : object
+ * @method ArgumentValue current() : object
+ * @method ArgumentValue offsetGet($offset) : object
  */
-final class ArgumentValueSet extends \Infinityloop\Utils\ImplicitObjectMap
+final class ArgumentValueSet extends ImplicitObjectMap
 {
-    protected const INNER_CLASS = \Graphpinator\Value\ArgumentValue::class;
+    protected const INNER_CLASS = ArgumentValue::class;
 
     public function getValuesForResolver() : array
     {
@@ -23,7 +26,7 @@ final class ArgumentValueSet extends \Infinityloop\Utils\ImplicitObjectMap
         return $return;
     }
 
-    public function applyVariables(\Graphpinator\Normalizer\VariableValueSet $variables) : void
+    public function applyVariables(VariableValueSet $variables) : void
     {
         foreach ($this as $value) {
             $value->applyVariables($variables);

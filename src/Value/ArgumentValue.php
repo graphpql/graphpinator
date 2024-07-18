@@ -4,11 +4,15 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Value;
 
+use Graphpinator\Normalizer\VariableValueSet;
+use Graphpinator\Typesystem\Argument\Argument;
+use Graphpinator\Typesystem\Location\ArgumentDefinitionLocation;
+
 final class ArgumentValue
 {
     public function __construct(
-        private \Graphpinator\Typesystem\Argument\Argument $argument,
-        private \Graphpinator\Value\InputedValue $value,
+        private Argument $argument,
+        private InputedValue $value,
         private bool $hasVariables,
     )
     {
@@ -17,17 +21,17 @@ final class ArgumentValue
         }
     }
 
-    public function getValue() : \Graphpinator\Value\InputedValue
+    public function getValue() : InputedValue
     {
         return $this->value;
     }
 
-    public function getArgument() : \Graphpinator\Typesystem\Argument\Argument
+    public function getArgument() : Argument
     {
         return $this->argument;
     }
 
-    public function applyVariables(\Graphpinator\Normalizer\VariableValueSet $variables) : void
+    public function applyVariables(VariableValueSet $variables) : void
     {
         if ($this->hasVariables) {
             $this->value->applyVariables($variables);
@@ -39,7 +43,7 @@ final class ArgumentValue
     {
         foreach ($this->argument->getDirectiveUsages() as $directiveUsage) {
             $directive = $directiveUsage->getDirective();
-            \assert($directive instanceof \Graphpinator\Typesystem\Location\ArgumentDefinitionLocation);
+            \assert($directive instanceof ArgumentDefinitionLocation);
 
             if ($directive::isPure()) {
                 $directive->resolveArgumentDefinition($directiveUsage->getArgumentValues(), $this);
@@ -53,7 +57,7 @@ final class ArgumentValue
 
         foreach ($this->argument->getDirectiveUsages() as $directiveUsage) {
             $directive = $directiveUsage->getDirective();
-            \assert($directive instanceof \Graphpinator\Typesystem\Location\ArgumentDefinitionLocation);
+            \assert($directive instanceof ArgumentDefinitionLocation);
 
             if (!$directive::isPure()) {
                 $directive->resolveArgumentDefinition($directiveUsage->getArgumentValues(), $this);

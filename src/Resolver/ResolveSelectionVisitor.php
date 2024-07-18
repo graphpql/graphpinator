@@ -4,22 +4,38 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Resolver;
 
-use \Graphpinator\Typesystem\Location\FieldLocation;
-use \Graphpinator\Typesystem\Location\FieldDefinitionLocation;
+use Graphpinator\Normalizer\Selection\Field;
+use Graphpinator\Normalizer\Selection\FragmentSpread;
+use Graphpinator\Normalizer\Selection\InlineFragment;
+use Graphpinator\Normalizer\Selection\SelectionSet;
+use Graphpinator\Normalizer\Selection\SelectionVisitor;
+use Graphpinator\Resolver\Exception\FieldResultTypeMismatch;
+use Graphpinator\Typesystem\Contract\NamedType;
+use Graphpinator\Typesystem\Location\FieldDefinitionLocation;
+use Graphpinator\Typesystem\Location\FieldLocation;
+use Graphpinator\Typesystem\Location\FragmentSpreadLocation;
+use Graphpinator\Typesystem\Location\InlineFragmentLocation;
+use Graphpinator\Typesystem\Location\SelectionDirectiveResult;
+use Graphpinator\Typesystem\Type;
+use Graphpinator\Value\FieldValue;
+use Graphpinator\Value\ListResolvedValue;
+use Graphpinator\Value\NullValue;
+use Graphpinator\Value\ResolvedValue;
+use Graphpinator\Value\TypeValue;
 
-final class ResolveSelectionVisitor implements \Graphpinator\Normalizer\Selection\SelectionVisitor
+final class ResolveSelectionVisitor implements SelectionVisitor
 {
     public function __construct(
-        private \Graphpinator\Value\ResolvedValue $parentResult,
+        private ResolvedValue $parentResult,
         private \stdClass $result,
     )
     {
     }
 
-    public function visitField(\Graphpinator\Normalizer\Selection\Field $field) : mixed
+    public function visitField(Field $field) : mixed
     {
         $type = $this->parentResult->getType();
-        \assert($type instanceof \Graphpinator\Typesystem\Type);
+        \assert($type instanceof Type);
 
         foreach ($field->getDirectives() as $directive) {
             $directiveDef = $directive->getDirective();
@@ -32,9 +48,9 @@ final class ResolveSelectionVisitor implements \Graphpinator\Normalizer\Selectio
 
         if (\property_exists($this->result, $field->getOutputName())) {
             $fieldValue = $this->result->{$field->getOutputName()};
-            \assert($fieldValue instanceof \Graphpinator\Value\FieldValue);
+            \assert($fieldValue instanceof FieldValue);
 
-            if ($field->getSelections() instanceof \Graphpinator\Normalizer\Selection\SelectionSet) {
+            if ($field->getSelections() instanceof SelectionSet) {
                 self::addToResultingSelection($fieldValue->getValue(), $field->getSelections());
             }
 
@@ -74,7 +90,7 @@ final class ResolveSelectionVisitor implements \Graphpinator\Normalizer\Selectio
             $resolvedValue = $fieldDef->getType()->accept(new CreateResolvedValueVisitor($rawValue));
 
             if (!$resolvedValue->getType()->getShapingType()->isInstanceOf($fieldDef->getType()->getShapingType())) {
-                throw new \Graphpinator\Resolver\Exception\FieldResultTypeMismatch();
+                throw new FieldResultTypeMismatch();
             }
 
             foreach ($fieldDef->getDirectiveUsages() as $directiveUsage) {
@@ -84,13 +100,13 @@ final class ResolveSelectionVisitor implements \Graphpinator\Normalizer\Selectio
                 $directive->resolveFieldDefinitionAfter($directiveUsage->getArgumentValues(), $resolvedValue, $arguments);
             }
 
-            $fieldValue = new \Graphpinator\Value\FieldValue($fieldDef, $resolvedValue instanceof \Graphpinator\Value\NullValue
+            $fieldValue = new FieldValue($fieldDef, $resolvedValue instanceof NullValue
                 ? $resolvedValue
                 : $resolvedValue->getType()->accept(new ResolveVisitor($field->getSelections(), $resolvedValue)));
 
             foreach ($field->getDirectives() as $directive) {
                 $directiveDef = $directive->getDirective();
-                \assert($directiveDef instanceof \Graphpinator\Typesystem\Location\FieldLocation);
+                \assert($directiveDef instanceof FieldLocation);
 
                 if (self::shouldSkip($directiveDef->resolveFieldAfter($directive->getArguments(), $fieldValue))) {
                     return null;
@@ -103,7 +119,7 @@ final class ResolveSelectionVisitor implements \Graphpinator\Normalizer\Selectio
         return null;
     }
 
-    public function visitFragmentSpread(\Graphpinator\Normalizer\Selection\FragmentSpread $fragmentSpread) : mixed
+    public function visitFragmentSpread(FragmentSpread $fragmentSpread) : mixed
     {
         if (!$this->parentResult->getType()->isInstanceOf($fragmentSpread->getTypeCondition())) {
             return null;
@@ -111,7 +127,7 @@ final class ResolveSelectionVisitor implements \Graphpinator\Normalizer\Selectio
 
         foreach ($fragmentSpread->getDirectives() as $directive) {
             $directiveDef = $directive->getDirective();
-            \assert($directiveDef instanceof \Graphpinator\Typesystem\Location\FragmentSpreadLocation);
+            \assert($directiveDef instanceof FragmentSpreadLocation);
 
             if (self::shouldSkip($directiveDef->resolveFragmentSpreadBefore($directive->getArguments()))) {
                 return null;
@@ -124,7 +140,7 @@ final class ResolveSelectionVisitor implements \Graphpinator\Normalizer\Selectio
 
         foreach ($fragmentSpread->getDirectives() as $directive) {
             $directiveDef = $directive->getDirective();
-            \assert($directiveDef instanceof \Graphpinator\Typesystem\Location\FragmentSpreadLocation);
+            \assert($directiveDef instanceof FragmentSpreadLocation);
 
             $directiveDef->resolveFragmentSpreadAfter($directive->getArguments());
             // skip is not allowed here due to implementation complexity and rarity of use-cases
@@ -133,16 +149,16 @@ final class ResolveSelectionVisitor implements \Graphpinator\Normalizer\Selectio
         return null;
     }
 
-    public function visitInlineFragment(\Graphpinator\Normalizer\Selection\InlineFragment $inlineFragment) : mixed
+    public function visitInlineFragment(InlineFragment $inlineFragment) : mixed
     {
-        if ($inlineFragment->getTypeCondition() instanceof \Graphpinator\Typesystem\Contract\NamedType &&
+        if ($inlineFragment->getTypeCondition() instanceof NamedType &&
             !$this->parentResult->getType()->isInstanceOf($inlineFragment->getTypeCondition())) {
             return null;
         }
 
         foreach ($inlineFragment->getDirectives() as $directive) {
             $directiveDef = $directive->getDirective();
-            \assert($directiveDef instanceof \Graphpinator\Typesystem\Location\InlineFragmentLocation);
+            \assert($directiveDef instanceof InlineFragmentLocation);
 
             if (self::shouldSkip($directiveDef->resolveInlineFragmentBefore($directive->getArguments()))) {
                 return null;
@@ -155,7 +171,7 @@ final class ResolveSelectionVisitor implements \Graphpinator\Normalizer\Selectio
 
         foreach ($inlineFragment->getDirectives() as $directive) {
             $directiveDef = $directive->getDirective();
-            \assert($directiveDef instanceof \Graphpinator\Typesystem\Location\InlineFragmentLocation);
+            \assert($directiveDef instanceof InlineFragmentLocation);
 
             $directiveDef->resolveInlineFragmentAfter($directive->getArguments());
             // skip is not allowed here due to implementation complexity and rarity of use-cases
@@ -164,17 +180,17 @@ final class ResolveSelectionVisitor implements \Graphpinator\Normalizer\Selectio
         return null;
     }
 
-    private static function shouldSkip(\Graphpinator\Typesystem\Location\SelectionDirectiveResult $directiveResult) : bool
+    private static function shouldSkip(SelectionDirectiveResult $directiveResult) : bool
     {
-        return $directiveResult === \Graphpinator\Typesystem\Location\SelectionDirectiveResult::SKIP;
+        return $directiveResult === SelectionDirectiveResult::SKIP;
     }
 
     private static function addToResultingSelection(
-        \Graphpinator\Value\TypeValue|\Graphpinator\Value\ListResolvedValue $value,
-        \Graphpinator\Normalizer\Selection\SelectionSet $selectionSet,
+        TypeValue|ListResolvedValue $value,
+        SelectionSet $selectionSet,
     ) : void
     {
-        if ($value instanceof \Graphpinator\Value\TypeValue) {
+        if ($value instanceof TypeValue) {
             $resolvedValue = $value->getIntermediateValue();
             $resolvedValue->getType()->accept(new ResolveVisitor($selectionSet, $resolvedValue, $value->getRawValue()));
 

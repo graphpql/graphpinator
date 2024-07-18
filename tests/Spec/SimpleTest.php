@@ -4,9 +4,30 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Spec;
 
-use \Infinityloop\Utils\Json;
+use Graphpinator\Exception\Value\ValueCannotBeNull;
+use Graphpinator\Graphpinator;
+use Graphpinator\Normalizer\Exception\SelectionOnComposite;
+use Graphpinator\Normalizer\Exception\SelectionOnLeaf;
+use Graphpinator\Normalizer\Exception\UnknownField;
+use Graphpinator\Normalizer\Finalizer;
+use Graphpinator\Normalizer\Normalizer;
+use Graphpinator\Parser\Parser;
+use Graphpinator\Request\Exception\OperationNameNotString;
+use Graphpinator\Request\Exception\QueryMissing;
+use Graphpinator\Request\Exception\QueryNotString;
+use Graphpinator\Request\Exception\UnknownKey;
+use Graphpinator\Request\Exception\VariablesNotObject;
+use Graphpinator\Request\JsonRequestFactory;
+use Graphpinator\Request\PsrRequestFactory;
+use Graphpinator\Resolver\Exception\FieldResultTypeMismatch;
+use Graphpinator\Resolver\Resolver;
+use Graphpinator\Source\StringSource;
+use Infinityloop\Utils\Json;
+use PHPUnit\Framework\TestCase;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\StreamInterface;
 
-final class SimpleTest extends \PHPUnit\Framework\TestCase
+final class SimpleTest extends TestCase
 {
     public static function simpleDataProvider() : array
     {
@@ -149,49 +170,49 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
                 Json::fromNative((object) [
                     'query' => 'query queryName { fieldAbc { fieldXyz } }',
                 ]),
-                \Graphpinator\Normalizer\Exception\SelectionOnComposite::class,
+                SelectionOnComposite::class,
             ],
             [
                 Json::fromNative((object) [
                     'query' => 'query queryName { fieldAbc { fieldXyz { nonExisting } } }',
                 ]),
-                \Graphpinator\Normalizer\Exception\UnknownField::class,
+                UnknownField::class,
             ],
             [
                 Json::fromNative((object) [
                     'query' => 'query queryName { fieldAbc { fieldXyz { name { nonExisting } } } }',
                 ]),
-                \Graphpinator\Normalizer\Exception\SelectionOnLeaf::class,
+                SelectionOnLeaf::class,
             ],
             [
                 Json::fromNative((object) [
                     'query' => 'query queryName { fieldInvalidType { __typename } }',
                 ]),
-                \Graphpinator\Resolver\Exception\FieldResultTypeMismatch::class,
+                FieldResultTypeMismatch::class,
             ],
             [
                 Json::fromNative((object) []),
-                \Graphpinator\Request\Exception\QueryMissing::class,
+                QueryMissing::class,
             ],
             [
                 Json::fromNative((object) [
                     'query' => 123,
                 ]),
-                \Graphpinator\Request\Exception\QueryNotString::class,
+                QueryNotString::class,
             ],
             [
                 Json::fromNative((object) [
                     'query' => '',
                     'variables' => 'abc',
                 ]),
-                \Graphpinator\Request\Exception\VariablesNotObject::class,
+                VariablesNotObject::class,
             ],
             [
                 Json::fromNative((object) [
                     'query' => '',
                     'operationName' => 123,
                 ]),
-                \Graphpinator\Request\Exception\OperationNameNotString::class,
+                OperationNameNotString::class,
             ],
             [
                 Json::fromNative((object) [
@@ -199,7 +220,7 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
                     'operationName' => '',
                     'randomKey' => 'randomVal',
                 ]),
-                \Graphpinator\Request\Exception\UnknownKey::class,
+                UnknownKey::class,
             ],
             [
                 Json::fromNative((object) [
@@ -211,36 +232,36 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
                 Json::fromNative((object) [
                     'query' => 'query queryName { fieldRequiredArgumentInvalid { fieldName fieldNumber fieldBool } }',
                 ]),
-                \Graphpinator\Exception\Value\ValueCannotBeNull::class,
+                ValueCannotBeNull::class,
             ],
         ];
     }
 
     /**
      * @dataProvider simpleDataProvider
-     * @param \Infinityloop\Utils\Json $request
-     * @param \Infinityloop\Utils\Json $expected
+     * @param Json $request
+     * @param Json $expected
      */
     public function testSimple(Json $request, Json $expected) : void
     {
-        $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
-        $result = $graphpinator->run(new \Graphpinator\Request\JsonRequestFactory($request));
+        $graphpinator = new Graphpinator(TestSchema::getSchema());
+        $result = $graphpinator->run(new JsonRequestFactory($request));
 
         self::assertSame($expected->toString(), $result->toString());
     }
 
     /**
      * @dataProvider simpleDataProvider
-     * @param \Infinityloop\Utils\Json $request
-     * @param \Infinityloop\Utils\Json $expected
+     * @param Json $request
+     * @param Json $expected
      */
     public function testComponents(Json $request, Json $expected) : void
     {
-        $source = new \Graphpinator\Source\StringSource($request['query']);
-        $parser = new \Graphpinator\Parser\Parser();
-        $normalizer = new \Graphpinator\Normalizer\Normalizer(TestSchema::getSchema());
-        $finalizer = new \Graphpinator\Normalizer\Finalizer();
-        $resolver = new \Graphpinator\Resolver\Resolver();
+        $source = new StringSource($request['query']);
+        $parser = new Parser();
+        $normalizer = new Normalizer(TestSchema::getSchema());
+        $finalizer = new Finalizer();
+        $resolver = new Resolver();
 
         $operationName = $request['operationName']
             ?? null;
@@ -262,68 +283,68 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider simpleDataProvider
-     * @param \Infinityloop\Utils\Json $request
-     * @param \Infinityloop\Utils\Json $expected
+     * @param Json $request
+     * @param Json $expected
      */
     public function testHttpJsonBody(Json $request, Json $expected) : void
     {
-        $stream = $this->createStub(\Psr\Http\Message\StreamInterface::class);
+        $stream = $this->createStub(StreamInterface::class);
         $stream->method('getContents')->willReturn($request->toString());
-        $httpRequest = $this->createStub(\Psr\Http\Message\ServerRequestInterface::class);
+        $httpRequest = $this->createStub(ServerRequestInterface::class);
         $httpRequest->method('getHeader')->willReturn(['application/json']);
         $httpRequest->method('getBody')->willReturn($stream);
         $httpRequest->method('getMethod')->willReturn('GET');
 
-        $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
-        $result = $graphpinator->run(new \Graphpinator\Request\PsrRequestFactory($httpRequest));
+        $graphpinator = new Graphpinator(TestSchema::getSchema());
+        $result = $graphpinator->run(new PsrRequestFactory($httpRequest));
 
         self::assertSame($expected->toString(), $result->toString());
     }
 
     /**
      * @dataProvider simpleDataProvider
-     * @param \Infinityloop\Utils\Json $request
-     * @param \Infinityloop\Utils\Json $expected
+     * @param Json $request
+     * @param Json $expected
      */
     public function testHttpJsonBodyPost(Json $request, Json $expected) : void
     {
-        $stream = $this->createStub(\Psr\Http\Message\StreamInterface::class);
+        $stream = $this->createStub(StreamInterface::class);
         $stream->method('getContents')->willReturn($request->toString());
-        $httpRequest = $this->createStub(\Psr\Http\Message\ServerRequestInterface::class);
+        $httpRequest = $this->createStub(ServerRequestInterface::class);
         $httpRequest->method('getHeader')->willReturn(['application/json']);
         $httpRequest->method('getBody')->willReturn($stream);
         $httpRequest->method('getMethod')->willReturn('POST');
 
-        $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
-        $result = $graphpinator->run(new \Graphpinator\Request\PsrRequestFactory($httpRequest));
+        $graphpinator = new Graphpinator(TestSchema::getSchema());
+        $result = $graphpinator->run(new PsrRequestFactory($httpRequest));
 
         self::assertSame($expected->toString(), $result->toString());
     }
 
     /**
      * @dataProvider simpleDataProvider
-     * @param \Infinityloop\Utils\Json $request
-     * @param \Infinityloop\Utils\Json $expected
+     * @param Json $request
+     * @param Json $expected
      */
     public function testHttpGraphQlBody(Json $request, Json $expected) : void
     {
-        $stream = $this->createStub(\Psr\Http\Message\StreamInterface::class);
+        $stream = $this->createStub(StreamInterface::class);
         $stream->method('getContents')->willReturn($request['query']);
-        $httpRequest = $this->createStub(\Psr\Http\Message\ServerRequestInterface::class);
+        $httpRequest = $this->createStub(ServerRequestInterface::class);
         $httpRequest->method('getHeader')->willReturn(['application/graphql']);
         $httpRequest->method('getBody')->willReturn($stream);
         $httpRequest->method('getMethod')->willReturn('GET');
 
-        $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
-        $result = $graphpinator->run(new \Graphpinator\Request\PsrRequestFactory($httpRequest));
+        $graphpinator = new Graphpinator(TestSchema::getSchema());
+        $result = $graphpinator->run(new PsrRequestFactory($httpRequest));
 
         self::assertSame($expected->toString(), $result->toString());
     }
 
     /**
      * @dataProvider simpleDataProvider
-     * @param \Infinityloop\Utils\Json $request
-     * @param \Infinityloop\Utils\Json $expected
+     * @param Json $request
+     * @param Json $expected
      */
     public function testHttpQueryParams(Json $request, Json $expected) : void
     {
@@ -333,45 +354,45 @@ final class SimpleTest extends \PHPUnit\Framework\TestCase
             $params['variables'] = Json::fromNative($params['variables'])->toString();
         }
 
-        $httpRequest = $this->createStub(\Psr\Http\Message\ServerRequestInterface::class);
+        $httpRequest = $this->createStub(ServerRequestInterface::class);
         $httpRequest->method('getHeader')->willReturn([]);
         $httpRequest->method('getQueryParams')->willReturn((array) $request->toNative());
         $httpRequest->method('getMethod')->willReturn('GET');
 
-        $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
-        $result = $graphpinator->run(new \Graphpinator\Request\PsrRequestFactory($httpRequest));
+        $graphpinator = new Graphpinator(TestSchema::getSchema());
+        $result = $graphpinator->run(new PsrRequestFactory($httpRequest));
 
         self::assertSame($expected->toString(), $result->toString());
     }
 
     /**
      * @dataProvider simpleDataProvider
-     * @param \Infinityloop\Utils\Json $request
-     * @param \Infinityloop\Utils\Json $expected
+     * @param Json $request
+     * @param Json $expected
      */
     public function testHttpMultipartBody(Json $request, Json $expected) : void
     {
-        $httpRequest = $this->createStub(\Psr\Http\Message\ServerRequestInterface::class);
+        $httpRequest = $this->createStub(ServerRequestInterface::class);
         $httpRequest->method('getHeader')->willReturn(['multipart/form-data; boundary=-------9051914041544843365972754266']);
         $httpRequest->method('getMethod')->willReturn('POST');
         $httpRequest->method('getParsedBody')->willReturn(['operations' => $request->toString()]);
 
-        $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
-        $result = $graphpinator->run(new \Graphpinator\Request\PsrRequestFactory($httpRequest));
+        $graphpinator = new Graphpinator(TestSchema::getSchema());
+        $result = $graphpinator->run(new PsrRequestFactory($httpRequest));
 
         self::assertSame($expected->toString(), $result->toString());
     }
 
     /**
      * @dataProvider invalidDataProvider
-     * @param \Infinityloop\Utils\Json $request
+     * @param Json $request
      * @param string $exception
      */
     public function testInvalid(Json $request, string $exception) : void
     {
         $this->expectException($exception);
 
-        $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
-        $graphpinator->run(new \Graphpinator\Request\JsonRequestFactory($request));
+        $graphpinator = new Graphpinator(TestSchema::getSchema());
+        $graphpinator->run(new JsonRequestFactory($request));
     }
 }

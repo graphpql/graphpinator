@@ -4,12 +4,15 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem\Location;
 
-use \Graphpinator\Value\ArgumentValueSet;
-use \Graphpinator\Value\ResolvedValue;
+use Graphpinator\Typesystem\Contract\TypeSystemDirective;
+use Graphpinator\Typesystem\Field\Field;
+use Graphpinator\Value\ArgumentValueSet;
+use Graphpinator\Value\FieldValue;
+use Graphpinator\Value\ResolvedValue;
 
-interface FieldDefinitionLocation extends \Graphpinator\Typesystem\Contract\TypeSystemDirective
+interface FieldDefinitionLocation extends TypeSystemDirective
 {
-    public function validateFieldUsage(\Graphpinator\Typesystem\Field\Field $field, ArgumentValueSet $arguments) : bool;
+    public function validateFieldUsage(Field $field, ArgumentValueSet $arguments) : bool;
 
     public function validateVariance(?ArgumentValueSet $biggerSet, ?ArgumentValueSet $smallerSet) : void;
 
@@ -19,5 +22,5 @@ interface FieldDefinitionLocation extends \Graphpinator\Typesystem\Contract\Type
 
     public function resolveFieldDefinitionAfter(ArgumentValueSet $arguments, ResolvedValue $resolvedValue, ArgumentValueSet $fieldArguments) : void;
 
-    public function resolveFieldDefinitionValue(ArgumentValueSet $arguments, \Graphpinator\Value\FieldValue $fieldValue) : void;
+    public function resolveFieldDefinitionValue(ArgumentValueSet $arguments, FieldValue $fieldValue) : void;
 }

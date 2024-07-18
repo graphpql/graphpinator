@@ -4,18 +4,25 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Feature;
 
-final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
+use Graphpinator\Typesystem\Argument\Argument;
+use Graphpinator\Typesystem\Argument\ArgumentSet;
+use Graphpinator\Typesystem\Container;
+use Graphpinator\Typesystem\Exception\InputCycle;
+use Graphpinator\Typesystem\InputType;
+use PHPUnit\Framework\TestCase;
+
+final class InputTypeCycleTest extends TestCase
 {
-    public static function createNullableType() : \Graphpinator\Typesystem\InputType
+    public static function createNullableType() : InputType
     {
-        return new class extends \Graphpinator\Typesystem\InputType
+        return new class extends InputType
         {
             protected const NAME = 'NullableSelfCycle';
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
+            protected function getFieldDefinition() : ArgumentSet
             {
-                return new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                    \Graphpinator\Typesystem\Argument\Argument::create(
+                return new ArgumentSet([
+                    Argument::create(
                         'cycle',
                         InputTypeCycleTest::createNullableType(),
                     ),
@@ -24,16 +31,16 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    public static function createNullableInNullableListType() : \Graphpinator\Typesystem\InputType
+    public static function createNullableInNullableListType() : InputType
     {
-        return new class extends \Graphpinator\Typesystem\InputType
+        return new class extends InputType
         {
             protected const NAME = 'NullableSelfCycle';
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
+            protected function getFieldDefinition() : ArgumentSet
             {
-                return new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                    \Graphpinator\Typesystem\Argument\Argument::create(
+                return new ArgumentSet([
+                    Argument::create(
                         'cycle',
                         InputTypeCycleTest::createNullableInNullableListType()->list(),
                     ),
@@ -42,16 +49,16 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    public static function createNonNullInNullableListType() : \Graphpinator\Typesystem\InputType
+    public static function createNonNullInNullableListType() : InputType
     {
-        return new class extends \Graphpinator\Typesystem\InputType
+        return new class extends InputType
         {
             protected const NAME = 'NotNullSelfCycle';
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
+            protected function getFieldDefinition() : ArgumentSet
             {
-                return new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                    \Graphpinator\Typesystem\Argument\Argument::create(
+                return new ArgumentSet([
+                    Argument::create(
                         'cycle',
                         InputTypeCycleTest::createNonNullInNullableListType()->list()->notNull(),
                     ),
@@ -60,16 +67,16 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    public static function createNonNullInNonNullListType() : \Graphpinator\Typesystem\InputType
+    public static function createNonNullInNonNullListType() : InputType
     {
-        return new class extends \Graphpinator\Typesystem\InputType
+        return new class extends InputType
         {
             protected const NAME = 'NotNullSelfCycle';
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
+            protected function getFieldDefinition() : ArgumentSet
             {
-                return new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                    \Graphpinator\Typesystem\Argument\Argument::create(
+                return new ArgumentSet([
+                    Argument::create(
                         'cycle',
                         InputTypeCycleTest::createNonNullInNonNullListType()->notNullList(),
                     ),
@@ -78,16 +85,16 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    public static function createNullableInNonNullListType() : \Graphpinator\Typesystem\InputType
+    public static function createNullableInNonNullListType() : InputType
     {
-        return new class extends \Graphpinator\Typesystem\InputType
+        return new class extends InputType
         {
             protected const NAME = 'NullableSelfCycle';
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
+            protected function getFieldDefinition() : ArgumentSet
             {
-                return new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                    \Graphpinator\Typesystem\Argument\Argument::create(
+                return new ArgumentSet([
+                    Argument::create(
                         'cycle',
                         InputTypeCycleTest::createNullableInNonNullListType()->notNull()->list(),
                     ),
@@ -96,16 +103,16 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    public static function createInvalidNonNullType() : \Graphpinator\Typesystem\InputType
+    public static function createInvalidNonNullType() : InputType
     {
-        return new class extends \Graphpinator\Typesystem\InputType
+        return new class extends InputType
         {
             protected const NAME = 'NotNullSelfCycle';
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
+            protected function getFieldDefinition() : ArgumentSet
             {
-                return new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                    \Graphpinator\Typesystem\Argument\Argument::create(
+                return new ArgumentSet([
+                    Argument::create(
                         'cycle',
                         InputTypeCycleTest::createInvalidNonNullType()->notNull(),
                     ),
@@ -114,16 +121,16 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    public static function createNullableAType() : \Graphpinator\Typesystem\InputType
+    public static function createNullableAType() : InputType
     {
-        return new class extends \Graphpinator\Typesystem\InputType
+        return new class extends InputType
         {
             protected const NAME = 'NullableSelfCycleA';
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
+            protected function getFieldDefinition() : ArgumentSet
             {
-                return new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                    \Graphpinator\Typesystem\Argument\Argument::create(
+                return new ArgumentSet([
+                    Argument::create(
                         'cycle',
                         InputTypeCycleTest::createNullableBType(),
                     ),
@@ -132,16 +139,16 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    public static function createNullableBType() : \Graphpinator\Typesystem\InputType
+    public static function createNullableBType() : InputType
     {
-        return new class extends \Graphpinator\Typesystem\InputType
+        return new class extends InputType
         {
             protected const NAME = 'NullableSelfCycleB';
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
+            protected function getFieldDefinition() : ArgumentSet
             {
-                return new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                    \Graphpinator\Typesystem\Argument\Argument::create(
+                return new ArgumentSet([
+                    Argument::create(
                         'cycle',
                         InputTypeCycleTest::createNullableAType(),
                     ),
@@ -150,16 +157,16 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    public static function createNullableInNullableListAType() : \Graphpinator\Typesystem\InputType
+    public static function createNullableInNullableListAType() : InputType
     {
-        return new class extends \Graphpinator\Typesystem\InputType
+        return new class extends InputType
         {
             protected const NAME = 'NullableSelfCycleA';
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
+            protected function getFieldDefinition() : ArgumentSet
             {
-                return new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                    \Graphpinator\Typesystem\Argument\Argument::create(
+                return new ArgumentSet([
+                    Argument::create(
                         'cycle',
                         InputTypeCycleTest::createNullableInNullableListBType()->list(),
                     ),
@@ -168,16 +175,16 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    public static function createNullableInNullableListBType() : \Graphpinator\Typesystem\InputType
+    public static function createNullableInNullableListBType() : InputType
     {
-        return new class extends \Graphpinator\Typesystem\InputType
+        return new class extends InputType
         {
             protected const NAME = 'NullableSelfCycleB';
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
+            protected function getFieldDefinition() : ArgumentSet
             {
-                return new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                    \Graphpinator\Typesystem\Argument\Argument::create(
+                return new ArgumentSet([
+                    Argument::create(
                         'cycle',
                         InputTypeCycleTest::createNullableInNullableListAType()->list(),
                     ),
@@ -186,16 +193,16 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    public static function createNonNullInNullableListAType() : \Graphpinator\Typesystem\InputType
+    public static function createNonNullInNullableListAType() : InputType
     {
-        return new class extends \Graphpinator\Typesystem\InputType
+        return new class extends InputType
         {
             protected const NAME = 'NotNullSelfCycle';
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
+            protected function getFieldDefinition() : ArgumentSet
             {
-                return new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                    \Graphpinator\Typesystem\Argument\Argument::create(
+                return new ArgumentSet([
+                    Argument::create(
                         'cycle',
                         InputTypeCycleTest::createNullableInNullableListCType()->list(),
                     ),
@@ -204,16 +211,16 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    public static function createNullableInNullableListCType() : \Graphpinator\Typesystem\InputType
+    public static function createNullableInNullableListCType() : InputType
     {
-        return new class extends \Graphpinator\Typesystem\InputType
+        return new class extends InputType
         {
             protected const NAME = 'NullableSelfCycle';
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
+            protected function getFieldDefinition() : ArgumentSet
             {
-                return new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                    \Graphpinator\Typesystem\Argument\Argument::create(
+                return new ArgumentSet([
+                    Argument::create(
                         'cycle',
                         InputTypeCycleTest::createNonNullInNullableListAType()->notNull()->list(),
                     ),
@@ -222,16 +229,16 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    public static function createNonNullInNonNullListAType() : \Graphpinator\Typesystem\InputType
+    public static function createNonNullInNonNullListAType() : InputType
     {
-        return new class extends \Graphpinator\Typesystem\InputType
+        return new class extends InputType
         {
             protected const NAME = 'NotNullSelfCycle';
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
+            protected function getFieldDefinition() : ArgumentSet
             {
-                return new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                    \Graphpinator\Typesystem\Argument\Argument::create(
+                return new ArgumentSet([
+                    Argument::create(
                         'cycle',
                         InputTypeCycleTest::createNullableInNullableListDType()->list(),
                     ),
@@ -240,16 +247,16 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    public static function createNullableInNullableListDType() : \Graphpinator\Typesystem\InputType
+    public static function createNullableInNullableListDType() : InputType
     {
-        return new class extends \Graphpinator\Typesystem\InputType
+        return new class extends InputType
         {
             protected const NAME = 'NullableSelfCycle';
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
+            protected function getFieldDefinition() : ArgumentSet
             {
-                return new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                    \Graphpinator\Typesystem\Argument\Argument::create(
+                return new ArgumentSet([
+                    Argument::create(
                         'cycle',
                         InputTypeCycleTest::createNonNullInNonNullListAType()->notNullList(),
                     ),
@@ -258,16 +265,16 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    public static function createNonNullInNonNullListBType() : \Graphpinator\Typesystem\InputType
+    public static function createNonNullInNonNullListBType() : InputType
     {
-        return new class extends \Graphpinator\Typesystem\InputType
+        return new class extends InputType
         {
             protected const NAME = 'NotNullSelfCycleA';
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
+            protected function getFieldDefinition() : ArgumentSet
             {
-                return new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                    \Graphpinator\Typesystem\Argument\Argument::create(
+                return new ArgumentSet([
+                    Argument::create(
                         'cycle',
                         InputTypeCycleTest::createNonNullInNullableListBType()->notNull()->list(),
                     ),
@@ -276,16 +283,16 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    public static function createNonNullInNullableListBType() : \Graphpinator\Typesystem\InputType
+    public static function createNonNullInNullableListBType() : InputType
     {
-        return new class extends \Graphpinator\Typesystem\InputType
+        return new class extends InputType
         {
             protected const NAME = 'NotNullSelfCycleB';
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
+            protected function getFieldDefinition() : ArgumentSet
             {
-                return new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                    \Graphpinator\Typesystem\Argument\Argument::create(
+                return new ArgumentSet([
+                    Argument::create(
                         'cycle',
                         InputTypeCycleTest::createNonNullInNonNullListBType()->notNullList(),
                     ),
@@ -294,16 +301,16 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    public static function createNonNullInNonNullListCType() : \Graphpinator\Typesystem\InputType
+    public static function createNonNullInNonNullListCType() : InputType
     {
-        return new class extends \Graphpinator\Typesystem\InputType
+        return new class extends InputType
         {
             protected const NAME = 'NotNullSelfCycleA';
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
+            protected function getFieldDefinition() : ArgumentSet
             {
-                return new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                    \Graphpinator\Typesystem\Argument\Argument::create(
+                return new ArgumentSet([
+                    Argument::create(
                         'cycle',
                         InputTypeCycleTest::createNonNullInNonNullListDType()->notNullList(),
                     ),
@@ -312,16 +319,16 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    public static function createNonNullInNonNullListDType() : \Graphpinator\Typesystem\InputType
+    public static function createNonNullInNonNullListDType() : InputType
     {
-        return new class extends \Graphpinator\Typesystem\InputType
+        return new class extends InputType
         {
             protected const NAME = 'NotNullSelfCycleB';
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
+            protected function getFieldDefinition() : ArgumentSet
             {
-                return new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                    \Graphpinator\Typesystem\Argument\Argument::create(
+                return new ArgumentSet([
+                    Argument::create(
                         'cycle',
                         InputTypeCycleTest::createNonNullInNonNullListCType()->notNullList(),
                     ),
@@ -330,16 +337,16 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    public static function createNullableCType() : \Graphpinator\Typesystem\InputType
+    public static function createNullableCType() : InputType
     {
-        return new class extends \Graphpinator\Typesystem\InputType
+        return new class extends InputType
         {
             protected const NAME = 'NullableSelfCycle';
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
+            protected function getFieldDefinition() : ArgumentSet
             {
-                return new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                    \Graphpinator\Typesystem\Argument\Argument::create(
+                return new ArgumentSet([
+                    Argument::create(
                         'cycle',
                         InputTypeCycleTest::createNonNullAType(),
                     ),
@@ -348,16 +355,16 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    public static function createNonNullAType() : \Graphpinator\Typesystem\InputType
+    public static function createNonNullAType() : InputType
     {
-        return new class extends \Graphpinator\Typesystem\InputType
+        return new class extends InputType
         {
             protected const NAME = 'NotNullSelfCycle';
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
+            protected function getFieldDefinition() : ArgumentSet
             {
-                return new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                    \Graphpinator\Typesystem\Argument\Argument::create(
+                return new ArgumentSet([
+                    Argument::create(
                         'cycle',
                         InputTypeCycleTest::createNullableCType()->notNull(),
                     ),
@@ -366,16 +373,16 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    public static function createNullableInNullableListEType() : \Graphpinator\Typesystem\InputType
+    public static function createNullableInNullableListEType() : InputType
     {
-        return new class extends \Graphpinator\Typesystem\InputType
+        return new class extends InputType
         {
             protected const NAME = 'NullableSelfCycle';
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
+            protected function getFieldDefinition() : ArgumentSet
             {
-                return new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                    \Graphpinator\Typesystem\Argument\Argument::create(
+                return new ArgumentSet([
+                    Argument::create(
                         'cycle',
                         InputTypeCycleTest::createNonNullBType()->list(),
                     ),
@@ -384,16 +391,16 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    public static function createNonNullBType() : \Graphpinator\Typesystem\InputType
+    public static function createNonNullBType() : InputType
     {
-        return new class extends \Graphpinator\Typesystem\InputType
+        return new class extends InputType
         {
             protected const NAME = 'NotNullSelfCycle';
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
+            protected function getFieldDefinition() : ArgumentSet
             {
-                return new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                    \Graphpinator\Typesystem\Argument\Argument::create(
+                return new ArgumentSet([
+                    Argument::create(
                         'cycle',
                         InputTypeCycleTest::createNullableInNullableListEType()->notNull(),
                     ),
@@ -402,16 +409,16 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    public static function createNonNullInNullableListCType() : \Graphpinator\Typesystem\InputType
+    public static function createNonNullInNullableListCType() : InputType
     {
-        return new class extends \Graphpinator\Typesystem\InputType
+        return new class extends InputType
         {
             protected const NAME = 'NotNullSelfCycleA';
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
+            protected function getFieldDefinition() : ArgumentSet
             {
-                return new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                    \Graphpinator\Typesystem\Argument\Argument::create(
+                return new ArgumentSet([
+                    Argument::create(
                         'cycle',
                         InputTypeCycleTest::createNonNullCType()->notNull()->list(),
                     ),
@@ -420,16 +427,16 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    public static function createNonNullCType() : \Graphpinator\Typesystem\InputType
+    public static function createNonNullCType() : InputType
     {
-        return new class extends \Graphpinator\Typesystem\InputType
+        return new class extends InputType
         {
             protected const NAME = 'NotNullSelfCycleB';
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
+            protected function getFieldDefinition() : ArgumentSet
             {
-                return new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                    \Graphpinator\Typesystem\Argument\Argument::create(
+                return new ArgumentSet([
+                    Argument::create(
                         'cycle',
                         InputTypeCycleTest::createNonNullInNullableListCType()->notNull(),
                     ),
@@ -438,16 +445,16 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    public static function createNonNullInNonNullListEType() : \Graphpinator\Typesystem\InputType
+    public static function createNonNullInNonNullListEType() : InputType
     {
-        return new class extends \Graphpinator\Typesystem\InputType
+        return new class extends InputType
         {
             protected const NAME = 'NotNullSelfCycleA';
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
+            protected function getFieldDefinition() : ArgumentSet
             {
-                return new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                    \Graphpinator\Typesystem\Argument\Argument::create(
+                return new ArgumentSet([
+                    Argument::create(
                         'cycle',
                         InputTypeCycleTest::createNonNullDType()->notNullList(),
                     ),
@@ -456,16 +463,16 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    public static function createNonNullDType() : \Graphpinator\Typesystem\InputType
+    public static function createNonNullDType() : InputType
     {
-        return new class extends \Graphpinator\Typesystem\InputType
+        return new class extends InputType
         {
             protected const NAME = 'NotNullSelfCycleB';
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
+            protected function getFieldDefinition() : ArgumentSet
             {
-                return new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                    \Graphpinator\Typesystem\Argument\Argument::create(
+                return new ArgumentSet([
+                    Argument::create(
                         'cycle',
                         InputTypeCycleTest::createNonNullInNonNullListEType()->notNull(),
                     ),
@@ -474,34 +481,34 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    public static function createSimpleType() : \Graphpinator\Typesystem\InputType
+    public static function createSimpleType() : InputType
     {
-        return new class extends \Graphpinator\Typesystem\InputType
+        return new class extends InputType
         {
             protected const NAME = 'SimpleType';
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
+            protected function getFieldDefinition() : ArgumentSet
             {
-                return new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                    new \Graphpinator\Typesystem\Argument\Argument(
+                return new ArgumentSet([
+                    new Argument(
                         'value',
-                        \Graphpinator\Typesystem\Container::String(),
+                        Container::String(),
                     ),
                 ]);
             }
         };
     }
 
-    public static function createValidationType() : \Graphpinator\Typesystem\InputType
+    public static function createValidationType() : InputType
     {
-        return new class extends \Graphpinator\Typesystem\InputType
+        return new class extends InputType
         {
             protected const NAME = 'ValidationType';
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
+            protected function getFieldDefinition() : ArgumentSet
             {
-                return new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                    \Graphpinator\Typesystem\Argument\Argument::create(
+                return new ArgumentSet([
+                    Argument::create(
                         'arg',
                         InputTypeCycleTest::createSimpleType()->notNull(),
                     )->setDefaultValue((object) ['value' => 'testValue']),
@@ -510,16 +517,16 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    public static function createInvalidNonNullAType() : \Graphpinator\Typesystem\InputType
+    public static function createInvalidNonNullAType() : InputType
     {
-        return new class extends \Graphpinator\Typesystem\InputType
+        return new class extends InputType
         {
             protected const NAME = 'NotNullSelfCycleA';
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
+            protected function getFieldDefinition() : ArgumentSet
             {
-                return new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                    \Graphpinator\Typesystem\Argument\Argument::create(
+                return new ArgumentSet([
+                    Argument::create(
                         'cycle',
                         InputTypeCycleTest::createInvalidNonNullBType()->notNull(),
                     ),
@@ -528,16 +535,16 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    public static function createInvalidNonNullBType() : \Graphpinator\Typesystem\InputType
+    public static function createInvalidNonNullBType() : InputType
     {
-        return new class extends \Graphpinator\Typesystem\InputType
+        return new class extends InputType
         {
             protected const NAME = 'NotNullSelfCycleB';
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
+            protected function getFieldDefinition() : ArgumentSet
             {
-                return new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                    \Graphpinator\Typesystem\Argument\Argument::create(
+                return new ArgumentSet([
+                    Argument::create(
                         'cycle',
                         InputTypeCycleTest::createInvalidNonNullAType()->notNull(),
                     ),
@@ -670,7 +677,7 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
 
     public function testInvalidNonNull() : void
     {
-        $this->expectException(\Graphpinator\Typesystem\Exception\InputCycle::class);
+        $this->expectException(InputCycle::class);
         $this->expectExceptionMessage('Input cycle detected (NotNullSelfCycle).');
 
         self::createInvalidNonNullType()->getArguments();
@@ -678,7 +685,7 @@ final class InputTypeCycleTest extends \PHPUnit\Framework\TestCase
 
     public function testInvalidNonNullOnNonNull() : void
     {
-        $this->expectException(\Graphpinator\Typesystem\Exception\InputCycle::class);
+        $this->expectException(InputCycle::class);
         $this->expectExceptionMessage('Input cycle detected (NotNullSelfCycleA -> NotNullSelfCycleB).');
 
         self::createInvalidNonNullAType()->getArguments();

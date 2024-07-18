@@ -4,12 +4,15 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Request;
 
-use \Infinityloop\Utils\Json;
+use Graphpinator\Request\Exception\InvalidMethod;
+use Graphpinator\Request\Exception\InvalidMultipartRequest;
+use Infinityloop\Utils\Json;
+use Psr\Http\Message\ServerRequestInterface;
 
 final class PsrRequestFactory implements RequestFactory
 {
     public function __construct(
-        private \Psr\Http\Message\ServerRequestInterface $request,
+        private ServerRequestInterface $request,
         private bool $strict = true,
     )
     {
@@ -20,7 +23,7 @@ final class PsrRequestFactory implements RequestFactory
         $method = $this->request->getMethod();
 
         if (!\in_array($method, ['GET', 'POST'], true)) {
-            throw new \Graphpinator\Request\Exception\InvalidMethod();
+            throw new InvalidMethod();
         }
 
         $contentTypes = $this->request->getHeader('Content-Type');
@@ -31,7 +34,7 @@ final class PsrRequestFactory implements RequestFactory
                 return $this->applyJsonFactory(Json::fromString($this->request->getParsedBody()['operations']));
             }
 
-            throw new \Graphpinator\Request\Exception\InvalidMultipartRequest();
+            throw new InvalidMultipartRequest();
         }
 
         switch ($contentType) {

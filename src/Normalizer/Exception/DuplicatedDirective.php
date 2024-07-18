@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Normalizer\Exception;
 
-final class DuplicatedDirective extends \Graphpinator\Normalizer\Exception\NormalizerError
+final class DuplicatedDirective extends NormalizerError
 {
     public const MESSAGE = 'Duplicated directive "%s" which is not repeatable.';
 

@@ -4,7 +4,13 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Unit\Typesystem;
 
-final class EnumTypeTest extends \PHPUnit\Framework\TestCase
+use Graphpinator\Common\Path;
+use Graphpinator\Exception\Value\InvalidValue;
+use Graphpinator\Typesystem\EnumType;
+use Graphpinator\Value\ConvertRawValueVisitor;
+use PHPUnit\Framework\TestCase;
+
+final class EnumTypeTest extends TestCase
 {
     public static function simpleDataProvider() : array
     {
@@ -13,19 +19,6 @@ final class EnumTypeTest extends \PHPUnit\Framework\TestCase
             ['b'],
             [null],
         ];
-    }
-
-    /**
-     * @dataProvider simpleDataProvider
-     * @param string|null $rawValue
-     */
-    public function testValidateValue($rawValue) : void
-    {
-        $enum = $this->createTestEnum();
-        $value = $enum->accept(new \Graphpinator\Value\ConvertRawValueVisitor($rawValue, new \Graphpinator\Common\Path()));
-
-        self::assertSame($enum, $value->getType());
-        self::assertSame($rawValue, $value->getRawValue());
     }
 
     public static function invalidDataProvider() : array
@@ -42,15 +35,28 @@ final class EnumTypeTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
+     * @dataProvider simpleDataProvider
+     * @param string|null $rawValue
+     */
+    public function testValidateValue($rawValue) : void
+    {
+        $enum = $this->createTestEnum();
+        $value = $enum->accept(new ConvertRawValueVisitor($rawValue, new Path()));
+
+        self::assertSame($enum, $value->getType());
+        self::assertSame($rawValue, $value->getRawValue());
+    }
+
+    /**
      * @dataProvider invalidDataProvider
      * @param int|float|string|bool|array $rawValue
      */
     public function testValidateValueInvalid($rawValue) : void
     {
-        $this->expectException(\Graphpinator\Exception\Value\InvalidValue::class);
+        $this->expectException(InvalidValue::class);
 
         $enum = $this->createTestEnum();
-        $enum->accept(new \Graphpinator\Value\ConvertRawValueVisitor($rawValue, new \Graphpinator\Common\Path()));
+        $enum->accept(new ConvertRawValueVisitor($rawValue, new Path()));
     }
 
     public function testGetItems() : void
@@ -78,9 +84,9 @@ final class EnumTypeTest extends \PHPUnit\Framework\TestCase
     }
 
     //@phpcs:disable SlevomatCodingStandard.Classes.UnusedPrivateElements.UnusedConstant
-    protected function createTestEnum() : \Graphpinator\Typesystem\EnumType
+    protected function createTestEnum() : EnumType
     {
-        return new class extends \Graphpinator\Typesystem\EnumType {
+        return new class extends EnumType {
             public const ENUMA = 'a';
             public const ENUMB = 'b';
 

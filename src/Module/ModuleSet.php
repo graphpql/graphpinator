@@ -4,11 +4,13 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Module;
 
+use Infinityloop\Utils\ObjectSet;
+
 /**
- * @method \Graphpinator\Module\Module current() : object
- * @method \Graphpinator\Module\Module offsetGet($offset) : object
+ * @method Module current() : object
+ * @method Module offsetGet($offset) : object
  */
-final class ModuleSet extends \Infinityloop\Utils\ObjectSet
+final class ModuleSet extends ObjectSet
 {
     protected const INNER_CLASS = Module::class;
 }
