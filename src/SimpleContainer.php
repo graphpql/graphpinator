@@ -28,11 +28,11 @@ class SimpleContainer extends Container
 
     /**
      * @phpcs:ignore SlevomatCodingStandard.TypeHints.DisallowArrayTypeHintSyntax.DisallowedArrayTypeHintSyntax
-     * @param NamedType[] $types
+     * @param iterable<NamedType> $types
      * @phpcs:ignore SlevomatCodingStandard.TypeHints.DisallowArrayTypeHintSyntax.DisallowedArrayTypeHintSyntax
-     * @param TypesystemDirective[] $directives
+     * @param iterable<Directive> $directives
      */
-    public function __construct(array $types, array $directives)
+    public function __construct(iterable $types, iterable $directives)
     {
         self::$builtInTypes = [
             'ID' => self::ID(),
