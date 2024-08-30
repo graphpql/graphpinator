@@ -19,6 +19,7 @@ use Graphpinator\Parser\Value\Value;
 use Graphpinator\Parser\Value\ValueVisitor;
 use Graphpinator\Parser\Value\VariableRef;
 use Graphpinator\Typesystem\Contract\Inputable;
+use Graphpinator\Typesystem\EnumType;
 use Graphpinator\Typesystem\InputType;
 use Graphpinator\Typesystem\ListType;
 use Graphpinator\Typesystem\NotNullType;
@@ -40,6 +41,16 @@ final class ConvertParserValueVisitor implements ValueVisitor
 
     public function visitEnumLiteral(EnumLiteral $enumLiteral) : InputedValue
     {
+        if ($this->type instanceof NotNullType) {
+            $this->type = $this->type->getInnerType();
+
+            return $enumLiteral->accept($this);
+        }
+
+        if (!$this->type instanceof EnumType) {
+            throw new InvalidValue($this->type->printName(), $enumLiteral->getRawValue(), true);
+        }
+
         return $this->type->accept(new ConvertRawValueVisitor($enumLiteral->getRawValue(), $this->path));
     }
 
