@@ -96,7 +96,8 @@ final class ConvertParserValueVisitor implements ValueVisitor
 
         $inner = new \stdClass();
 
-        foreach ($this->type->getArguments() as $argument) {
+        // ->toArray() call must be present, otherwise the internal iterator pointer would reset on nested inputs of the same type
+        foreach ($this->type->getArguments()->toArray() as $argument) {
             $this->path->add($argument->getName() . ' <input field>');
 
             if (\property_exists($objectVal->getValue(), $argument->getName())) {
