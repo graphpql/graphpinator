@@ -32,7 +32,10 @@ class SimpleContainer extends Container
      * @phpcs:ignore SlevomatCodingStandard.TypeHints.DisallowArrayTypeHintSyntax.DisallowedArrayTypeHintSyntax
      * @param iterable<Directive> $directives
      */
-    public function __construct(iterable $types, iterable $directives)
+    public function __construct(
+        iterable $types,
+        iterable $directives,
+    )
     {
         self::$builtInTypes = [
             'ID' => self::ID(),

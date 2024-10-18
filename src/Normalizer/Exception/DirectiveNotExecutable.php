@@ -8,7 +8,9 @@ final class DirectiveNotExecutable extends NormalizerError
 {
     public const MESSAGE = 'Directive "%s" is not executable directive.';
 
-    public function __construct(string $name)
+    public function __construct(
+        string $name,
+    )
     {
         parent::__construct([$name]);
     }

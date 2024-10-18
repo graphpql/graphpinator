@@ -8,7 +8,9 @@ final class UnknownDirective extends NormalizerError
 {
     public const MESSAGE = 'Unknown directive "%s".';
 
-    public function __construct(string $name)
+    public function __construct(
+        string $name,
+    )
     {
         parent::__construct([$name]);
     }

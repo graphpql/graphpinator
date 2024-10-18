@@ -89,7 +89,6 @@ final class EnumTypeTest extends TestCase
         return new class extends EnumType {
             public const ENUMA = 'a';
             public const ENUMB = 'b';
-
             protected const NAME = 'abc';
             protected const ENUMC = 'c';
             private const ENUMD = 'd';

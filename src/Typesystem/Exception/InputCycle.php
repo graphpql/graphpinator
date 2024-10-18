@@ -8,7 +8,9 @@ final class InputCycle extends TypeError
 {
     public const MESSAGE = 'Input cycle detected (%s).';
 
-    public function __construct(array $inputCycle)
+    public function __construct(
+        array $inputCycle,
+    )
     {
         parent::__construct([\implode(' -> ', $inputCycle)]);
     }

@@ -16,6 +16,7 @@ use Infinityloop\Utils\ObjectSet;
 final class DirectiveUsageSet extends ObjectSet
 {
     protected const INNER_CLASS = DirectiveUsage::class;
+
     private array $nonRepeatableDirectives = [];
 
     protected function offsetSetImpl($offset, object $object) : void

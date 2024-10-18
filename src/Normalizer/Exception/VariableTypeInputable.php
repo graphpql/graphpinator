@@ -8,7 +8,9 @@ final class VariableTypeInputable extends NormalizerError
 {
     public const MESSAGE = 'Variable "%s" does not have inputable type.';
 
-    public function __construct(string $name)
+    public function __construct(
+        string $name,
+    )
     {
         parent::__construct([$name]);
     }

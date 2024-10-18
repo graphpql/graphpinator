@@ -984,7 +984,6 @@ final class TestSchema
             public const B = 'B';
             public const C = 'C';
             public const D = 'D';
-
             protected const NAME = 'SimpleEnum';
 
             public function __construct()
@@ -1004,7 +1003,6 @@ final class TestSchema
             public const B = 'B';
             /** Third description */
             public const C = 'C';
-
             protected const NAME = 'ArrayEnum';
 
             public function __construct()
@@ -1053,6 +1051,7 @@ final class TestSchema
         {
             protected const NAME = 'testDirective';
             protected const REPEATABLE = true;
+
             public static int $count = 0;
 
             public function validateFieldUsage(

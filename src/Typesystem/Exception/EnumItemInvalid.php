@@ -8,7 +8,9 @@ final class EnumItemInvalid extends TypeError
 {
     public const MESSAGE = 'EnumItem "%s" does not satisfy the format required by GraphQL specification.';
 
-    public function __construct(string $enumItem)
+    public function __construct(
+        string $enumItem,
+    )
     {
         parent::__construct([$enumItem]);
     }

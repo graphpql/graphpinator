@@ -8,7 +8,9 @@ final class UnknownArgument extends NormalizerError
 {
     public const MESSAGE = 'Unknown argument "%s" provided.';
 
-    public function __construct(string $argument)
+    public function __construct(
+        string $argument,
+    )
     {
         parent::__construct([$argument]);
     }

@@ -8,7 +8,9 @@ final class DirectiveIncorrectUsage extends NormalizerError
 {
     public const MESSAGE = 'Directive "%s" cannot be used on this field, check for additional directive requirements.';
 
-    public function __construct(string $name)
+    public function __construct(
+        string $name,
+    )
     {
         parent::__construct([$name]);
     }

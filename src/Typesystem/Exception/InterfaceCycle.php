@@ -8,7 +8,9 @@ final class InterfaceCycle extends TypeError
 {
     public const MESSAGE = 'Interface implement cycle detected (%s).';
 
-    public function __construct(array $interfaceCycle)
+    public function __construct(
+        array $interfaceCycle,
+    )
     {
         parent::__construct([\implode(' -> ', $interfaceCycle)]);
     }

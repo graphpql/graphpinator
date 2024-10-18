@@ -10,7 +10,11 @@ class ResolvableField extends Field
 {
     private \Closure $resolveFn;
 
-    public function __construct(string $name, Outputable $type, callable $resolveFn)
+    public function __construct(
+        string $name,
+        Outputable $type,
+        callable $resolveFn,
+    )
     {
         parent::__construct($name, $type);
         $this->resolveFn = $resolveFn;

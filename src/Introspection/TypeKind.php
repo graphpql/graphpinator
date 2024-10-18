@@ -18,7 +18,6 @@ final class TypeKind extends EnumType
     public const INPUT_OBJECT = 'INPUT_OBJECT';
     public const LIST = 'LIST';
     public const NON_NULL = 'NON_NULL';
-
     protected const NAME = '__TypeKind';
 
     public function __construct()

@@ -8,7 +8,11 @@ final class InterfaceContractFieldTypeMismatch extends TypeError
 {
     public const MESSAGE = 'Type "%s" does not satisfy interface "%s" - field "%s" does not have a compatible type.';
 
-    public function __construct(string $childName, string $interfaceName, string $fieldName)
+    public function __construct(
+        string $childName,
+        string $interfaceName,
+        string $fieldName,
+    )
     {
         parent::__construct([$childName, $interfaceName, $fieldName]);
     }

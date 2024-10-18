@@ -8,7 +8,11 @@ final class InvalidValue extends ValueError
 {
     public const MESSAGE = 'Invalid value resolved for type "%s" - got %s.';
 
-    public function __construct(string $type, mixed $rawValue, bool $outputable)
+    public function __construct(
+        string $type,
+        mixed $rawValue,
+        bool $outputable,
+    )
     {
         parent::__construct($outputable, [$type, $this->printValue($rawValue)]);
     }

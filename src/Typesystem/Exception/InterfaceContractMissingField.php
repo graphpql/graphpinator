@@ -8,7 +8,11 @@ final class InterfaceContractMissingField extends TypeError
 {
     public const MESSAGE = 'Type "%s" does not satisfy interface "%s" - missing field "%s".';
 
-    public function __construct(string $childName, string $interfaceName, string $fieldName)
+    public function __construct(
+        string $childName,
+        string $interfaceName,
+        string $fieldName,
+    )
     {
         parent::__construct([$childName, $interfaceName, $fieldName]);
     }
