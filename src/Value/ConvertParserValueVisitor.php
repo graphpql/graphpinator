@@ -27,9 +27,9 @@ use Graphpinator\Typesystem\NotNullType;
 final class ConvertParserValueVisitor implements ValueVisitor
 {
     public function __construct(
-        private Inputable $type,
-        private ?VariableSet $variableSet,
-        private Path $path,
+        readonly private Inputable $type,
+        readonly private ?VariableSet $variableSet,
+        readonly private Path $path,
     )
     {
     }
@@ -42,9 +42,7 @@ final class ConvertParserValueVisitor implements ValueVisitor
     public function visitEnumLiteral(EnumLiteral $enumLiteral) : InputedValue
     {
         if ($this->type instanceof NotNullType) {
-            $this->type = $this->type->getInnerType();
-
-            return $enumLiteral->accept($this);
+            return $enumLiteral->accept(new self($this->type->getInnerType(), $this->variableSet, $this->path));
         }
 
         if (!$this->type instanceof EnumType) {
@@ -57,37 +55,31 @@ final class ConvertParserValueVisitor implements ValueVisitor
     public function visitListVal(ListVal $listVal) : ListInputedValue
     {
         if ($this->type instanceof NotNullType) {
-            $this->type = $this->type->getInnerType();
-
-            return $listVal->accept($this);
+            return $listVal->accept(new self($this->type->getInnerType(), $this->variableSet, $this->path));
         }
 
         if (!$this->type instanceof ListType) {
             throw new InvalidValue($this->type->printName(), [], true);
         }
 
+        $visitor = new self($this->type->getInnerType(), $this->variableSet, $this->path);
         $inner = [];
-        $listType = $this->type;
-        $this->type = $this->type->getInnerType();
 
         foreach ($listVal->getValue() as $index => $parserValue) {
-            $this->path->add($index . ' <list index>');
             \assert($parserValue instanceof Value);
-            $inner[] = $parserValue->accept($this);
+
+            $this->path->add($index . ' <list index>');
+            $inner[] = $parserValue->accept($visitor);
             $this->path->pop();
         }
 
-        $this->type = $listType;
-
-        return new ListInputedValue($listType, $inner);
+        return new ListInputedValue($this->type, $inner);
     }
 
     public function visitObjectVal(ObjectVal $objectVal) : InputValue
     {
         if ($this->type instanceof NotNullType) {
-            $this->type = $this->type->getInnerType();
-
-            return $objectVal->accept($this);
+            return $objectVal->accept(new self($this->type->getInnerType(), $this->variableSet, $this->path));
         }
 
         if (!$this->type instanceof InputType) {

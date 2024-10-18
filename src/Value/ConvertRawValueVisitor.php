@@ -24,8 +24,8 @@ use Graphpinator\Typesystem\UnionType;
 final class ConvertRawValueVisitor implements TypeVisitor
 {
     public function __construct(
-        private mixed $rawValue,
-        private Path $path,
+        readonly private mixed $rawValue,
+        readonly private Path $path,
     )
     {
     }
@@ -117,9 +117,9 @@ final class ConvertRawValueVisitor implements TypeVisitor
             return new NullInputedValue($scalar);
         }
 
-        $this->rawValue = $scalar->coerceValue($this->rawValue);
+        $coercedValue = $scalar->coerceValue($this->rawValue);
 
-        return new ScalarValue($scalar, $this->rawValue, true);
+        return new ScalarValue($scalar, $coercedValue, true);
     }
 
     public function visitEnum(EnumType $enum) : InputedValue
@@ -152,24 +152,20 @@ final class ConvertRawValueVisitor implements TypeVisitor
             return new NullInputedValue($list);
         }
 
-        if (!\is_array($this->rawValue)) {
-            $this->rawValue = [$this->rawValue];
-        }
+        $coercedValue = \is_array($this->rawValue)
+            ? $this->rawValue
+            : [$this->rawValue];
 
         $innerType = $list->getInnerType();
         \assert($innerType instanceof Inputable);
 
         $inner = [];
-        $listValue = $this->rawValue;
 
-        foreach ($listValue as $index => $rawValue) {
+        foreach ($coercedValue as $index => $rawValue) {
             $this->path->add($index . ' <list index>');
-            $this->rawValue = $rawValue;
-            $inner[] = $innerType->accept($this);
+            $inner[] = $innerType->accept(new self($rawValue, $this->path));
             $this->path->pop();
         }
-
-        $this->rawValue = $listValue;
 
         return new ListInputedValue($list, $inner);
     }
