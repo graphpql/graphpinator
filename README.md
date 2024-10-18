@@ -8,9 +8,9 @@ Feature complete PHP implementation of GraphQL server. Its job is transformation
 
 - Aims to be compliant with the **latest draft of GraphQL specification** and its RFCs.
 - Fully typesafe, and therefore **minimum required PHP version is 8.1**. Sacrifices a tiny bit of convenience for huge amount of clarity and safety - no random configuration `array`s, no mixed types, no variable function arguments - this library doesnt try to save you from verbosity, but makes sure you always know what you've got.
-- Code first.
-- Flexible. Easy to extend with extra functionality using Modules or middleware Directives.
-- Includes some opt-in extensions which are out of scope of official specs:
+- **Code first**.
+- Flexible. Easy to extend with extra functionality using **Modules** or **middleware Directives**.
+- Includes some **opt-in extensions** which are out of scope of official specs:
 
 |Name|Version|Description|
 |---|---|---|
