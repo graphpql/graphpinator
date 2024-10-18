@@ -43,8 +43,8 @@
       "Composer\\Config::disableProcessTimeout",
       "infection -j$(nproc)"
     ],
-    "phpstan": "phpstan analyze --level 2 src",
-    "phpstan-next": "phpstan analyze --level 3 src",
+    "phpstan": "phpstan analyze --level 3 src",
+    "phpstan-next": "phpstan analyze --level 4 src",
     "phpstan-max": "phpstan analyze --level max src",
     "codestyle": "phpcs --extensions=php src tests",
     "codestyle-fix": "phpcbf --extensions=php src tests"
