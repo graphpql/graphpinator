@@ -76,8 +76,8 @@ class SimpleContainer extends Container
         }
 
         if (Graphpinator::$validateSchema &&
-            (\count($typeCount) !== \count($this->types) ||
-            \count($directivesCount) !== \count($this->directives))) {
+            ($typeCount !== \count($this->types) ||
+            $directivesCount !== \count($this->directives))) {
             throw new TypeNamesNotUnique();
         }
 
