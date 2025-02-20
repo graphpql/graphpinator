@@ -12,6 +12,7 @@ use Graphpinator\Typesystem\Contract\EntityVisitor;
 use Graphpinator\Typesystem\DirectiveUsage\DirectiveUsage;
 use Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet;
 use Graphpinator\Typesystem\Exception\RootOperationTypesMustBeDifferent;
+use Graphpinator\Typesystem\Exception\RootOperationTypesMustBeWithinContainer;
 use Graphpinator\Typesystem\Field\ResolvableField;
 use Graphpinator\Typesystem\Location\SchemaLocation;
 use Graphpinator\Typesystem\Utils\THasDirectives;
@@ -34,6 +35,12 @@ class Schema implements Entity
                 self::isSame($query, $subscription) ||
                 self::isSame($mutation, $subscription)) {
                 throw new RootOperationTypesMustBeDifferent();
+            }
+
+            if ($container->getType($query->getName()) !== $query ||
+                ($mutation && $container->getType($mutation->getName()) !== $mutation) ||
+                ($subscription && $container->getType($subscription->getName()) !== $subscription)) {
+                throw new RootOperationTypesMustBeWithinContainer();
             }
         }
 

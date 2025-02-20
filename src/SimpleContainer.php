@@ -15,6 +15,7 @@ use Graphpinator\Introspection\TypeKind;
 use Graphpinator\Typesystem\Container;
 use Graphpinator\Typesystem\Contract\NamedType;
 use Graphpinator\Typesystem\Directive as TypesystemDirective;
+use Graphpinator\Typesystem\Exception\TypeNamesNotUnique;
 
 /**
  * Simple Container implementation
@@ -64,6 +65,8 @@ class SimpleContainer extends Container
             $this->types[$type->getName()] = $type;
         }
 
+        $this->validateTypes($types);
+
         foreach ($directives as $directive) {
             $this->directives[$directive->getName()] = $directive;
         }
@@ -96,5 +99,14 @@ class SimpleContainer extends Container
         return $includeBuiltIn
             ? $this->combinedDirectives
             : $this->directives;
+    }
+
+    private function validateTypes(iterable $types) : void
+    {
+        if (Graphpinator::$validateSchema) {
+            if (\count($types) !== \count($this->types)) {
+                throw new TypeNamesNotUnique();
+            }
+        }
     }
 }
