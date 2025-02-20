@@ -31,17 +31,7 @@ class Schema implements Entity
     )
     {
         if (Graphpinator::$validateSchema) {
-            if (self::isSame($query, $mutation) ||
-                self::isSame($query, $subscription) ||
-                self::isSame($mutation, $subscription)) {
-                throw new RootOperationTypesMustBeDifferent();
-            }
-
-            if ($container->getType($query->getName()) !== $query ||
-                ($mutation && $container->getType($mutation->getName()) !== $mutation) ||
-                ($subscription && $container->getType($subscription->getName()) !== $subscription)) {
-                throw new RootOperationTypesMustBeWithinContainer();
-            }
+            $this->validateSchema($container, $query, $mutation, $subscription);
         }
 
         $this->directiveUsages = new DirectiveUsageSet();
@@ -102,5 +92,25 @@ class Schema implements Entity
     {
         return $lhs === $rhs
             && ($lhs !== null || $rhs !== null);
+    }
+
+    private function validateSchema(
+        Container $container,
+        Type $query,
+        ?Type $mutation = null,
+        ?Type $subscription = null,
+    ) : void
+    {
+        if (self::isSame($query, $mutation) ||
+            self::isSame($query, $subscription) ||
+            self::isSame($mutation, $subscription)) {
+            throw new RootOperationTypesMustBeDifferent();
+        }
+
+        if (!$container->getType($query->getName()) instanceof $query ||
+            ($mutation && !$container->getType($mutation->getName()) instanceof $mutation) ||
+            ($subscription && !$container->getType($subscription->getName()) instanceof $subscription)) {
+            throw new RootOperationTypesMustBeWithinContainer();
+        }
     }
 }

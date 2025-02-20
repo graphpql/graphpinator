@@ -61,14 +61,23 @@ class SimpleContainer extends Container
             'oneOf' => self::directiveOneOf(),
         ];
 
+        $typeCount = 0;
+
         foreach ($types as $type) {
             $this->types[$type->getName()] = $type;
+            $typeCount++;
         }
 
-        $this->validateTypes($types);
+        $directivesCount = 0;
 
         foreach ($directives as $directive) {
             $this->directives[$directive->getName()] = $directive;
+        }
+
+        if (Graphpinator::$validateSchema &&
+            (\count($typeCount) !== \count($this->types) ||
+            \count($directivesCount) !== \count($this->directives))) {
+            throw new TypeNamesNotUnique();
         }
 
         $this->combinedTypes = \array_merge($this->types, self::$builtInTypes);
@@ -99,14 +108,5 @@ class SimpleContainer extends Container
         return $includeBuiltIn
             ? $this->combinedDirectives
             : $this->directives;
-    }
-
-    private function validateTypes(iterable $types) : void
-    {
-        if (Graphpinator::$validateSchema) {
-            if (\count($types) !== \count($this->types)) {
-                throw new TypeNamesNotUnique();
-            }
-        }
     }
 }
