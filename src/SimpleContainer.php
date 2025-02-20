@@ -72,6 +72,7 @@ class SimpleContainer extends Container
 
         foreach ($directives as $directive) {
             $this->directives[$directive->getName()] = $directive;
+            $directivesCount++;
         }
 
         if (Graphpinator::$validateSchema &&
