@@ -31,7 +31,7 @@ class Schema implements Entity
     )
     {
         if (Graphpinator::$validateSchema) {
-            $this->validateSchema($container, $query, $mutation, $subscription);
+            $this->validateSchema();
         }
 
         $this->directiveUsages = new DirectiveUsageSet();
@@ -102,9 +102,9 @@ class Schema implements Entity
             throw new RootOperationTypesMustBeDifferent();
         }
 
-        if ($container->getType($query->getName()) !== $query ||
-            ($mutation instanceof Type && $container->getType($mutation->getName()) !== $mutation) ||
-            ($subscription instanceof Type && $container->getType($subscription->getName()) !== $subscription)) {
+        if ($this->container->getType($this->query->getName()) !== $this->query ||
+            ($this->mutation instanceof Type && $this->container->getType($this->mutation->getName()) !== $this->mutation) ||
+            ($this->subscription instanceof Type && $this->container->getType($this->subscription->getName()) !== $this->subscription)) {
             throw new RootOperationTypesMustBeWithinContainer();
         }
     }
