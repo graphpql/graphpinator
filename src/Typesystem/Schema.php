@@ -94,22 +94,17 @@ class Schema implements Entity
             && ($lhs !== null || $rhs !== null);
     }
 
-    private function validateSchema(
-        Container $container,
-        Type $query,
-        ?Type $mutation = null,
-        ?Type $subscription = null,
-    ) : void
+    private function validateSchema() : void
     {
-        if (self::isSame($query, $mutation) ||
-            self::isSame($query, $subscription) ||
-            self::isSame($mutation, $subscription)) {
+        if (self::isSame($this->query, $this->mutation) ||
+            self::isSame($this->query, $this->subscription) ||
+            self::isSame($this->mutation, $this->subscription)) {
             throw new RootOperationTypesMustBeDifferent();
         }
 
-        if (!$container->getType($query->getName()) instanceof $query ||
-            ($mutation && !$container->getType($mutation->getName()) instanceof $mutation) ||
-            ($subscription && !$container->getType($subscription->getName()) instanceof $subscription)) {
+        if ($container->getType($query->getName()) !== $query ||
+            ($mutation instanceof Type && $container->getType($mutation->getName()) !== $mutation) ||
+            ($subscription instanceof Type && $container->getType($subscription->getName()) !== $subscription)) {
             throw new RootOperationTypesMustBeWithinContainer();
         }
     }
