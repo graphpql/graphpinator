@@ -30,6 +30,8 @@ final class OperationDirectiveTest extends TestCase
         $counter->count = 0;
 
         $query = new class ($counter) extends Type {
+            protected const NAME = 'Query';
+
             public function __construct(
                 private \stdClass $counter,
             )
@@ -56,6 +58,8 @@ final class OperationDirectiveTest extends TestCase
             }
         };
         $mutation = new class ($counter) extends Type {
+            protected const NAME = 'Mutation';
+
             public function __construct(
                 private \stdClass $counter,
             )
@@ -82,6 +86,8 @@ final class OperationDirectiveTest extends TestCase
             }
         };
         $subscription = new class ($counter) extends Type {
+            protected const NAME = 'Subscription';
+
             public function __construct(
                 private \stdClass $counter,
             )
@@ -170,7 +176,7 @@ final class OperationDirectiveTest extends TestCase
                 return new ArgumentSet();
             }
         };
-        $container = new SimpleContainer([$query], [$test]);
+        $container = new SimpleContainer([$query, $mutation, $subscription], [$test]);
         $schema = new Schema($container, $query, $mutation, $subscription);
         $graphpinator = new Graphpinator($schema);
 

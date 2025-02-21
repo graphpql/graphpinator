@@ -98,7 +98,7 @@ final class SpecifiedByDirectiveTest extends TestCase
 
     private function getContainer() : SimpleContainer
     {
-        return new SimpleContainer(['TestScalar' => self::createTestScalar()], []);
+        return new SimpleContainer(['TestScalar' => self::createTestScalar(), $this->getQuery()], []);
     }
 
     private function getQuery() : Type

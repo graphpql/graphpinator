@@ -372,6 +372,7 @@ final class DeprecatedDirectiveTest extends TestCase
         return new SimpleContainer([
             'TestType' => self::createTestType(),
             'TestInputType' => self::createTestInputType(),
+            'Query' => $this->getQuery(),
         ], []);
     }
 
