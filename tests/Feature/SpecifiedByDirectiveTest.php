@@ -20,6 +20,7 @@ use PHPUnit\Framework\TestCase;
 final class SpecifiedByDirectiveTest extends TestCase
 {
     private static ?ScalarType $testScalar = null;
+    private static ?Type $query = null;
 
     public static function createTestScalar() : ScalarType
     {
@@ -103,7 +104,11 @@ final class SpecifiedByDirectiveTest extends TestCase
 
     private function getQuery() : Type
     {
-        return new class extends Type {
+        if (self::$query instanceof Type) {
+            return self::$query;
+        }
+
+        self::$query = new class extends Type {
             protected const NAME = 'Query';
 
             public function validateNonNullValue($rawValue) : bool
@@ -123,5 +128,7 @@ final class SpecifiedByDirectiveTest extends TestCase
                 ]);
             }
         };
+
+        return self::$query;
     }
 }

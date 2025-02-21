@@ -23,6 +23,7 @@ final class DeprecatedDirectiveTest extends TestCase
 {
     private static ?Type $testType = null;
     private static ?InputType $testInputType = null;
+    private static ?Type $query = null;
 
     public static function createTestType() : Type
     {
@@ -378,7 +379,11 @@ final class DeprecatedDirectiveTest extends TestCase
 
     private function getQuery() : Type
     {
-        return new class extends Type {
+        if (self::$query instanceof Type) {
+            return self::$query;
+        }
+
+        self::$query = new class extends Type {
             protected const NAME = 'Query';
 
             public function validateNonNullValue($rawValue) : bool
@@ -398,5 +403,7 @@ final class DeprecatedDirectiveTest extends TestCase
                 ]);
             }
         };
+
+        return self::$query;
     }
 }
