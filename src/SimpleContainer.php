@@ -15,6 +15,7 @@ use Graphpinator\Introspection\TypeKind;
 use Graphpinator\Typesystem\Container;
 use Graphpinator\Typesystem\Contract\NamedType;
 use Graphpinator\Typesystem\Directive as TypesystemDirective;
+use Graphpinator\Typesystem\Exception\DirectiveNamesNotUnique;
 use Graphpinator\Typesystem\Exception\TypeNamesNotUnique;
 
 /**
@@ -65,20 +66,22 @@ class SimpleContainer extends Container
 
         foreach ($types as $type) {
             $this->types[$type->getName()] = $type;
-            $typeCount++;
+            ++$typeCount;
+        }
+
+        if (Graphpinator::$validateSchema && $typeCount !== \count($this->types)) {
+            throw new TypeNamesNotUnique();
         }
 
         $directivesCount = 0;
 
         foreach ($directives as $directive) {
             $this->directives[$directive->getName()] = $directive;
-            $directivesCount++;
+            ++$directivesCount;
         }
 
-        if (Graphpinator::$validateSchema &&
-            ($typeCount !== \count($this->types) ||
-            $directivesCount !== \count($this->directives))) {
-            throw new TypeNamesNotUnique();
+        if (Graphpinator::$validateSchema && $directivesCount !== \count($this->directives)) {
+            throw new DirectiveNamesNotUnique();
         }
 
         $this->combinedTypes = \array_merge($this->types, self::$builtInTypes);
