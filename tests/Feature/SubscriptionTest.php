@@ -23,6 +23,8 @@ final class SubscriptionTest extends TestCase
     public function testSimple() : void
     {
         $query = new class extends Type {
+            protected const NAME = 'Query';
+
             public function validateNonNullValue(mixed $rawValue) : bool
             {
                 return true;
@@ -34,6 +36,8 @@ final class SubscriptionTest extends TestCase
             }
         };
         $subscription = new class extends Type {
+            protected const NAME = 'Subscription';
+
             public function validateNonNullValue(mixed $rawValue) : bool
             {
                 return true;
@@ -52,7 +56,7 @@ final class SubscriptionTest extends TestCase
                 ]);
             }
         };
-        $container = new SimpleContainer([$query], []);
+        $container = new SimpleContainer([$query, $subscription], []);
         $schema = new Schema($container, $query, null, $subscription);
 
         $graphpinator = new Graphpinator($schema);

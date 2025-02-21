@@ -34,6 +34,7 @@ final class TestSchema
 {
     private static array $types = [];
     private static ?Container $container = null;
+    private static ?Type $query = null;
 
     public static function getSchema() : Schema
     {
@@ -134,7 +135,11 @@ final class TestSchema
 
     public static function getQuery() : Type
     {
-        return new class extends Type
+        if (self::$query !== null) {
+            return self::$query;
+        }
+
+        return self::$query = new class extends Type
         {
             protected const NAME = 'Query';
 

@@ -40,6 +40,8 @@ final class NativeEnumTest extends TestCase
         self::assertEquals('Another description for following enum case', $items->offsetGet('XYZ')->getDescription());
 
         $query = new class ($enumType) extends Type {
+            protected const NAME = 'TestEnum';
+
             public function __construct(
                 private EnumType $enumType,
             )

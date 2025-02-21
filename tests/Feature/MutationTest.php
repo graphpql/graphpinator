@@ -20,6 +20,8 @@ final class MutationTest extends TestCase
     public function testSimple() : void
     {
         $query = new class extends Type {
+            protected const NAME = 'Query';
+
             public function validateNonNullValue(mixed $rawValue) : bool
             {
                 return true;
@@ -31,6 +33,8 @@ final class MutationTest extends TestCase
             }
         };
         $mutation = new class extends Type {
+            protected const NAME = 'Mutation';
+
             private int $order = 0;
 
             public function validateNonNullValue(mixed $rawValue) : bool
@@ -54,7 +58,7 @@ final class MutationTest extends TestCase
                 ]);
             }
         };
-        $container = new SimpleContainer([$query], []);
+        $container = new SimpleContainer([$query, $mutation], []);
         $schema = new Schema($container, $query, $mutation);
 
         $graphpinator = new Graphpinator($schema);
