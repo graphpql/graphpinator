@@ -64,11 +64,9 @@ class SimpleContainer extends Container
         $typeCount = 0;
 
         foreach ($types as $type) {
-            var_dump($type->getName());
             $this->types[$type->getName()] = $type;
             $typeCount++;
         }
-//        die();
 
         $directivesCount = 0;
 
@@ -80,8 +78,6 @@ class SimpleContainer extends Container
         if (Graphpinator::$validateSchema &&
             ($typeCount !== \count($this->types) ||
             $directivesCount !== \count($this->directives))) {
-            var_dump($types, $this->types,$directives, $this->directives);
-//            die();
             throw new TypeNamesNotUnique();
         }
 
