@@ -186,10 +186,14 @@ final class ResolveSelectionVisitor implements SelectionVisitor
     }
 
     private static function addToResultingSelection(
-        TypeValue|ListResolvedValue $value,
+        TypeValue|ListResolvedValue|NullValue $value,
         SelectionSet $selectionSet,
     ) : void
     {
+        if ($value instanceof NullValue) {
+            return;
+        }
+
         if ($value instanceof TypeValue) {
             $resolvedValue = $value->getIntermediateValue();
             $resolvedValue->getType()->accept(new ResolveVisitor($selectionSet, $resolvedValue, $value->getRawValue()));
