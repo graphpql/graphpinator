@@ -4,10 +4,10 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Resolver;
 
+use Graphpinator\Enum\OperationType;
 use Graphpinator\Normalizer\FinalizedRequest;
 use Graphpinator\Normalizer\Operation\Operation;
 use Graphpinator\Result;
-use Graphpinator\Tokenizer\TokenType;
 use Graphpinator\Typesystem\Location\MutationLocation;
 use Graphpinator\Typesystem\Location\QueryLocation;
 use Graphpinator\Typesystem\Location\SubscriptionLocation;
@@ -20,9 +20,9 @@ final class Resolver
         $operation = $finalizedRequest->getOperation();
 
         return match ($operation->getType()) {
-            TokenType::QUERY->value => $this->resolveQuery($operation),
-            TokenType::MUTATION->value => $this->resolveMutation($operation),
-            TokenType::SUBSCRIPTION->value => $this->resolveSubscription($operation),
+            OperationType::QUERY => $this->resolveQuery($operation),
+            OperationType::MUTATION => $this->resolveMutation($operation),
+            OperationType::SUBSCRIPTION => $this->resolveSubscription($operation),
         };
     }
 
