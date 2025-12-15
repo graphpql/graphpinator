@@ -8,6 +8,7 @@ use Graphpinator\Typesystem\Argument\Argument;
 use Graphpinator\Typesystem\Argument\ArgumentSet;
 use Graphpinator\Typesystem\Attribute\Description;
 use Graphpinator\Typesystem\Container;
+use Graphpinator\Typesystem\Contract\Type as TypeContract;
 use Graphpinator\Typesystem\Field\Field as FieldDef;
 use Graphpinator\Typesystem\Field\ResolvableField;
 use Graphpinator\Typesystem\Field\ResolvableFieldSet;
@@ -74,7 +75,7 @@ final class Field extends Type
             ResolvableField::create(
                 'type',
                 $this->container->getType('__Type')->notNull(),
-                static function (FieldDef $field) : \Graphpinator\Typesystem\Contract\Type {
+                static function (FieldDef $field) : TypeContract {
                     return $field->getType();
                 },
             ),

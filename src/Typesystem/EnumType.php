@@ -96,7 +96,6 @@ abstract class EnumType extends LeafType
 
         if (\count($attrs) === 1) {
             $attr = $attrs[0]->newInstance();
-            \assert($attr instanceof Description);
 
             return $attr->getValue();
         }

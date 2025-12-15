@@ -8,6 +8,7 @@ use Graphpinator\Normalizer\Exception\FragmentCycle;
 use Graphpinator\Normalizer\Exception\OperationNotSupported;
 use Graphpinator\Normalizer\Exception\UnknownFragment;
 use Graphpinator\Normalizer\Normalizer;
+use Graphpinator\Normalizer\Selection\Field as NormalizerField;
 use Graphpinator\Normalizer\Selection\FragmentSpread;
 use Graphpinator\Normalizer\Selection\InlineFragment;
 use Graphpinator\Parser\Directive\Directive;
@@ -347,7 +348,7 @@ final class NormalizerTest extends TestCase
         self::assertCount(3, $operation->getSelections());
 
         self::assertArrayHasKey(0, $operation->getSelections());
-        self::assertInstanceOf(\Graphpinator\Normalizer\Selection\Field::class, $operation->getSelections()->offsetGet(0));
+        self::assertInstanceOf(NormalizerField::class, $operation->getSelections()->offsetGet(0));
         self::assertSame('fieldAbc', $operation->getSelections()->offsetGet(0)->getName());
         self::assertCount(1, $operation->getSelections()->offsetGet(0)->getDirectives());
         self::assertArrayHasKey(0, $operation->getSelections()->offsetGet(0)->getDirectives());

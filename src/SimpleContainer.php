@@ -29,9 +29,7 @@ class SimpleContainer extends Container
     protected array $combinedDirectives = [];
 
     /**
-     * @phpcs:ignore SlevomatCodingStandard.TypeHints.DisallowArrayTypeHintSyntax.DisallowedArrayTypeHintSyntax
      * @param iterable<NamedType> $types
-     * @phpcs:ignore SlevomatCodingStandard.TypeHints.DisallowArrayTypeHintSyntax.DisallowedArrayTypeHintSyntax
      * @param iterable<Directive> $directives
      */
     public function __construct(

@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Graphpinator\Typesystem;
 
 use Graphpinator\Typesystem\Argument\ArgumentSet;
+use Graphpinator\Typesystem\Contract\Directive as DirectiveContract;
 use Graphpinator\Typesystem\Contract\EntityVisitor;
 use Graphpinator\Typesystem\Location\ArgumentDefinitionLocation;
 use Graphpinator\Typesystem\Location\EnumItemLocation;
@@ -27,7 +28,7 @@ use Graphpinator\Typesystem\Location\UnionLocation;
 use Graphpinator\Typesystem\Location\VariableDefinitionLocation;
 use Graphpinator\Typesystem\Utils\THasDescription;
 
-abstract class Directive implements \Graphpinator\Typesystem\Contract\Directive
+abstract class Directive implements DirectiveContract
 {
     use THasDescription;
 

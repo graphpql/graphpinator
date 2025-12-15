@@ -10,6 +10,9 @@ use Graphpinator\Module\ModuleSet;
 use Graphpinator\Normalizer\Directive\DirectiveSet;
 use Graphpinator\Normalizer\FinalizedRequest;
 use Graphpinator\Normalizer\NormalizedRequest;
+use Graphpinator\Normalizer\Operation\Operation as NormalizerOperation;
+use Graphpinator\Normalizer\Operation\OperationSet as NormalizerOperationSet;
+use Graphpinator\Normalizer\Selection\Field as NormalizerField;
 use Graphpinator\Normalizer\Selection\SelectionSet;
 use Graphpinator\Normalizer\Variable\VariableSet;
 use Graphpinator\Parser\Field\Field;
@@ -206,13 +209,13 @@ final class ModuleTest extends TestCase
                         $this->counter->count += 2;
 
                         return new NormalizedRequest(
-                            new \Graphpinator\Normalizer\Operation\OperationSet([
-                                new \Graphpinator\Normalizer\Operation\Operation(
+                            new NormalizerOperationSet([
+                                new NormalizerOperation(
                                     'query',
                                     null,
                                     $this->query,
                                     new SelectionSet([
-                                        new \Graphpinator\Normalizer\Selection\Field(
+                                        new NormalizerField(
                                             $this->query->getFields()['field'],
                                             'field',
                                             new ArgumentValueSet(),
@@ -295,12 +298,12 @@ final class ModuleTest extends TestCase
                         $this->counter->count += 4;
 
                         return new FinalizedRequest(
-                            new \Graphpinator\Normalizer\Operation\Operation(
+                            new NormalizerOperation(
                                 'query',
                                 null,
                                 $this->query,
                                 new SelectionSet([
-                                    new \Graphpinator\Normalizer\Selection\Field(
+                                    new NormalizerField(
                                         $this->query->getFields()['field'],
                                         'field',
                                         new ArgumentValueSet(),

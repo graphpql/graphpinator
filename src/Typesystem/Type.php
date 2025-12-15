@@ -9,6 +9,7 @@ use Graphpinator\Typesystem\Contract\AbstractType;
 use Graphpinator\Typesystem\Contract\ConcreteType;
 use Graphpinator\Typesystem\Contract\InterfaceImplementor;
 use Graphpinator\Typesystem\Contract\NamedTypeVisitor;
+use Graphpinator\Typesystem\Contract\Type as TypeContract;
 use Graphpinator\Typesystem\Contract\TypeConditionable;
 use Graphpinator\Typesystem\DirectiveUsage\DirectiveUsage;
 use Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet;
@@ -44,7 +45,7 @@ abstract class Type extends ConcreteType implements
         $this->getMetaFields()->offsetSet($field->getName(), $field);
     }
 
-    final public function isInstanceOf(\Graphpinator\Typesystem\Contract\Type $type) : bool
+    final public function isInstanceOf(TypeContract $type) : bool
     {
         if ($type instanceof AbstractType) {
             return $type->isImplementedBy($this);

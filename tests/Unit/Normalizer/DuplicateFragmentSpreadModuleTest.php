@@ -11,6 +11,7 @@ use Graphpinator\Normalizer\Selection\InlineFragment;
 use Graphpinator\Normalizer\Selection\SelectionSet;
 use Graphpinator\Normalizer\SelectionSetRefiner;
 use Graphpinator\Typesystem\Container;
+use Graphpinator\Typesystem\Field\Field as TypesystemField;
 use Graphpinator\Typesystem\Field\ResolvableFieldSet;
 use Graphpinator\Typesystem\Type;
 use Graphpinator\Value\ArgumentValueSet;
@@ -24,7 +25,7 @@ final class DuplicateFragmentSpreadModuleTest extends TestCase
             'someName',
             new SelectionSet([
                 new Field(
-                    new \Graphpinator\Typesystem\Field\Field('fieldName', Container::String()),
+                    new TypesystemField('fieldName', Container::String()),
                     'fieldName',
                     new ArgumentValueSet(),
                     new DirectiveSet(),
@@ -60,7 +61,7 @@ final class DuplicateFragmentSpreadModuleTest extends TestCase
             'someName',
             new SelectionSet([
                 new Field(
-                    new \Graphpinator\Typesystem\Field\Field('fieldName', Container::String()),
+                    new TypesystemField('fieldName', Container::String()),
                     'fieldName',
                     new ArgumentValueSet(),
                     new DirectiveSet(),
@@ -84,7 +85,7 @@ final class DuplicateFragmentSpreadModuleTest extends TestCase
                 new SelectionSet([
                     $fragmentSpread,
                     new Field(
-                        new \Graphpinator\Typesystem\Field\Field('fieldName', Container::String()),
+                        new TypesystemField('fieldName', Container::String()),
                         'someField',
                         new ArgumentValueSet(),
                         new DirectiveSet(),

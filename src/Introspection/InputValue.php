@@ -7,6 +7,7 @@ namespace Graphpinator\Introspection;
 use Graphpinator\Typesystem\Argument\Argument;
 use Graphpinator\Typesystem\Attribute\Description;
 use Graphpinator\Typesystem\Container;
+use Graphpinator\Typesystem\Contract\Type as TypeContract;
 use Graphpinator\Typesystem\Field\ResolvableField;
 use Graphpinator\Typesystem\Field\ResolvableFieldSet;
 use Graphpinator\Typesystem\Type;
@@ -49,7 +50,7 @@ final class InputValue extends Type
             ResolvableField::create(
                 'type',
                 $this->container->getType('__Type')->notNull(),
-                static function (Argument $argument) : \Graphpinator\Typesystem\Contract\Type {
+                static function (Argument $argument) : TypeContract {
                     return $argument->getType();
                 },
             ),

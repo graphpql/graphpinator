@@ -9,6 +9,7 @@ use Graphpinator\Typesystem\Argument\Argument;
 use Graphpinator\Typesystem\Argument\ArgumentSet;
 use Graphpinator\Typesystem\Contract\Entity;
 use Graphpinator\Typesystem\Contract\EntityVisitor;
+use Graphpinator\Typesystem\Contract\Type as TypeContract;
 use Graphpinator\Typesystem\DirectiveUsage\DirectiveUsage;
 use Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet;
 use Graphpinator\Typesystem\Exception\RootOperationTypesMustBeDifferent;
@@ -45,7 +46,7 @@ class Schema implements Entity
         $query->addMetaField(ResolvableField::create(
             '__type',
             $container->getType('__Type'),
-            function($parent, string $name) : ?\Graphpinator\Typesystem\Contract\Type {
+            function($parent, string $name) : ?TypeContract {
                 return $this->container->getType($name);
             },
         )->setArguments(new ArgumentSet([

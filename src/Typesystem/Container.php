@@ -51,7 +51,7 @@ abstract class Container
     /**
      * Built-in Int type.
      */
-    public static function Int() : IntType
+    public static function Int() : IntType // @phpcs:ignore
     {
         if (!\array_key_exists('Int', self::$builtInTypes)) {
             self::$builtInTypes['Int'] = new IntType();
@@ -63,7 +63,7 @@ abstract class Container
     /**
      * Built-in Float type.
      */
-    public static function Float() : FloatType
+    public static function Float() : FloatType // @phpcs:ignore
     {
         if (!\array_key_exists('Float', self::$builtInTypes)) {
             self::$builtInTypes['Float'] = new FloatType();
@@ -75,7 +75,7 @@ abstract class Container
     /**
      * Built-in String type.
      */
-    public static function String() : StringType
+    public static function String() : StringType // @phpcs:ignore
     {
         if (!\array_key_exists('String', self::$builtInTypes)) {
             self::$builtInTypes['String'] = new StringType();
@@ -87,7 +87,7 @@ abstract class Container
     /**
      * Built-in Boolean type.
      */
-    public static function Boolean() : BooleanType
+    public static function Boolean() : BooleanType // @phpcs:ignore
     {
         if (!\array_key_exists('Boolean', self::$builtInTypes)) {
             self::$builtInTypes['Boolean'] = new BooleanType();
@@ -99,7 +99,7 @@ abstract class Container
     /**
      * Built-in ID type.
      */
-    public static function ID() : IdType
+    public static function ID() : IdType // @phpcs:ignore
     {
         if (!\array_key_exists('ID', self::$builtInTypes)) {
             self::$builtInTypes['ID'] = new IdType();

@@ -6,13 +6,13 @@ namespace Graphpinator\Introspection;
 
 use Graphpinator\Typesystem\Attribute\Description;
 use Graphpinator\Typesystem\Container;
-use Graphpinator\Typesystem\Contract\Type;
 use Graphpinator\Typesystem\Field\ResolvableField;
 use Graphpinator\Typesystem\Field\ResolvableFieldSet;
 use Graphpinator\Typesystem\Schema as SchemaDef;
+use Graphpinator\Typesystem\Type;
 
 #[Description('Built-in introspection type')]
-final class Schema extends \Graphpinator\Typesystem\Type
+final class Schema extends Type
 {
     protected const NAME = '__Schema';
 
