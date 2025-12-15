@@ -63,7 +63,7 @@ class Schema implements Entity
         return $this->query;
     }
 
-    final  public function getMutation() : ?Type
+    final public function getMutation() : ?Type
     {
         return $this->mutation;
     }
