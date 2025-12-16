@@ -31,25 +31,25 @@ final class FragmentCycleValidator
 
     private function validateFragment(Fragment $fragment) : void
     {
-        if (\array_key_exists($fragment->getName(), $this->validated)) {
+        if (\array_key_exists($fragment->name, $this->validated)) {
             return;
         }
 
-        if (\array_key_exists($fragment->getName(), $this->stack)) {
+        if (\array_key_exists($fragment->name, $this->stack)) {
             throw new FragmentCycle();
         }
 
-        $this->stack[$fragment->getName()] = true;
-        $this->validateFieldSet($fragment->getFields());
-        unset($this->stack[$fragment->getName()]);
-        $this->validated[$fragment->getName()] = true;
+        $this->stack[$fragment->name] = true;
+        $this->validateFieldSet($fragment->fields);
+        unset($this->stack[$fragment->name]);
+        $this->validated[$fragment->name] = true;
     }
 
     private function validateFieldSet(FieldSet $fieldSet) : void
     {
         foreach ($fieldSet as $field) {
-            if ($field->getFields() instanceof FieldSet) {
-                $this->validateFieldSet($field->getFields());
+            if ($field->children instanceof FieldSet) {
+                $this->validateFieldSet($field->children);
             }
         }
 
@@ -58,11 +58,11 @@ final class FragmentCycleValidator
                 continue;
             }
 
-            if (!$this->fragmentSet->offsetExists($spread->getName())) {
-                throw new UnknownFragment($spread->getName());
+            if (!$this->fragmentSet->offsetExists($spread->name)) {
+                throw new UnknownFragment($spread->name);
             }
 
-            $this->validateFragment($this->fragmentSet->offsetGet($spread->getName()));
+            $this->validateFragment($this->fragmentSet->offsetGet($spread->name));
         }
     }
 }

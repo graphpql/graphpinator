@@ -40,6 +40,7 @@ use Graphpinator\Parser\FragmentSpread\InlineFragmentSpread;
 use Graphpinator\Parser\FragmentSpread\NamedFragmentSpread;
 use Graphpinator\Parser\Operation\Operation as ParserOperation;
 use Graphpinator\Parser\Operation\OperationSet as ParserOperationSet;
+use Graphpinator\Parser\OperationType;
 use Graphpinator\Parser\ParsedRequest;
 use Graphpinator\Parser\TypeRef\ListTypeRef;
 use Graphpinator\Parser\TypeRef\NamedTypeRef;
@@ -49,7 +50,6 @@ use Graphpinator\Parser\Value\ArgumentValueSet as ParserArgumentValueSet;
 use Graphpinator\Parser\Value\Value;
 use Graphpinator\Parser\Variable\Variable as ParserVariable;
 use Graphpinator\Parser\Variable\VariableSet as ParserVariableSet;
-use Graphpinator\Tokenizer\TokenType;
 use Graphpinator\Typesystem\Argument\ArgumentSet;
 use Graphpinator\Typesystem\Contract\ExecutableDirective;
 use Graphpinator\Typesystem\Contract\Inputable;
@@ -87,16 +87,16 @@ final class Normalizer
 
     public function normalize(ParsedRequest $parsedRequest) : NormalizedRequest
     {
-        $fragmentCycleValidator = new FragmentCycleValidator($parsedRequest->getFragments());
+        $fragmentCycleValidator = new FragmentCycleValidator($parsedRequest->fragments);
         $fragmentCycleValidator->validate();
 
         $this->path = new Path();
         $this->scopeStack = new \SplStack();
-        $this->fragmentDefinitions = $parsedRequest->getFragments();
+        $this->fragmentDefinitions = $parsedRequest->fragments;
 
         try {
             return new NormalizedRequest(
-                $this->normalizeOperationSet($parsedRequest->getOperations()),
+                $this->normalizeOperationSet($parsedRequest->operations),
             );
         } catch (GraphpinatorBase $e) {
             throw $e->setPath($this->path);
@@ -119,12 +119,12 @@ final class Normalizer
         return false;
     }
 
-    private function normalizeOperationSet(ParserOperationSet $operationSet,) : OperationSet
+    private function normalizeOperationSet(ParserOperationSet $operationSet) : OperationSet
     {
         $normalized = [];
 
         foreach ($operationSet as $operation) {
-            $this->path->add($operation->getName() . ' <operation>');
+            $this->path->add($this->getOperationPath($operation));
             $normalized[] = $this->normalizeOperation($operation);
             $this->path->pop();
         }
@@ -134,30 +134,30 @@ final class Normalizer
 
     private function normalizeOperation(ParserOperation $operation) : Operation
     {
-        $rootObject = match ($operation->getType()) {
-            TokenType::QUERY->value => $this->schema->getQuery(),
-            TokenType::MUTATION->value => $this->schema->getMutation(),
-            TokenType::SUBSCRIPTION->value => $this->schema->getSubscription(),
+        $rootObject = match ($operation->type) {
+            OperationType::QUERY => $this->schema->getQuery(),
+            OperationType::MUTATION => $this->schema->getMutation(),
+            OperationType::SUBSCRIPTION => $this->schema->getSubscription(),
         };
 
         if (!$rootObject instanceof Type) {
-            throw new OperationNotSupported($operation->getType());
+            throw new OperationNotSupported($operation->type);
         }
 
         $this->scopeStack->push($rootObject);
 
-        $this->variableSet = $this->normalizeVariables($operation->getVariables());
-        $children = $this->normalizeFieldSet($operation->getFields());
+        $this->variableSet = $this->normalizeVariables($operation->variables);
+        $children = $this->normalizeFieldSet($operation->children);
         $directives = $this->normalizeDirectiveSet(
-            $operation->getDirectives(),
-            ExecutableDirectiveLocation::from(\strtoupper($operation->getType())),
+            $operation->directives,
+            ExecutableDirectiveLocation::from(\strtoupper($operation->type->value)),
         );
 
         $this->scopeStack->pop();
 
         return new Operation(
-            $operation->getType(),
-            $operation->getName(),
+            $operation->type,
+            $operation->name,
             $rootObject,
             $children,
             $this->variableSet,
@@ -170,7 +170,7 @@ final class Normalizer
         $normalized = [];
 
         foreach ($variableSet as $variable) {
-            $this->path->add($variable->getName() . ' <variable>');
+            $this->path->add($variable->name . ' <variable>');
             $normalized[] = $this->normalizeVariable($variable);
             $this->path->pop();
         }
@@ -180,17 +180,17 @@ final class Normalizer
 
     private function normalizeVariable(ParserVariable $variable) : Variable
     {
-        $type = $this->normalizeTypeRef($variable->getType());
-        $defaultValue = $variable->getDefault();
+        $type = $this->normalizeTypeRef($variable->type);
+        $defaultValue = $variable->default;
 
         if (!$type->isInputable()) {
-            throw new VariableTypeInputable($variable->getName());
+            throw new VariableTypeInputable($variable->name);
         }
 
         \assert($type instanceof Inputable);
 
         $normalized = new Variable(
-            $variable->getName(),
+            $variable->name,
             $type,
             $defaultValue instanceof Value
                 ? $defaultValue->accept(new ConvertParserValueVisitor($type, null, $this->path))
@@ -199,7 +199,7 @@ final class Normalizer
 
         $normalized->setDirectives(
             $this->normalizeDirectiveSet(
-                $variable->getDirectives(),
+                $variable->directives,
                 ExecutableDirectiveLocation::VARIABLE_DEFINITION,
                 $normalized,
             ),
@@ -213,7 +213,7 @@ final class Normalizer
         $normalized = [];
 
         foreach ($fieldSet as $field) {
-            $this->path->add($field->getName() . ' <field>');
+            $this->path->add($field->name . ' <field>');
             $normalized[] = $this->normalizeField($field);
             $this->path->pop();
         }
@@ -237,17 +237,17 @@ final class Normalizer
     {
         $parentType = $this->scopeStack->top();
 
-        $fieldDef = $parentType->accept(new GetFieldVisitor($field->getName()));
+        $fieldDef = $parentType->accept(new GetFieldVisitor($field->name));
         $fieldType = $fieldDef->getType()->getNamedType();
 
         $this->scopeStack->push($fieldType);
 
-        $arguments = $this->normalizeArgumentValueSet($field->getArguments(), $fieldDef->getArguments());
-        $directives = $field->getDirectives() instanceof ParserDirectiveSet
-            ? $this->normalizeDirectiveSet($field->getDirectives(), ExecutableDirectiveLocation::FIELD, $fieldDef)
+        $arguments = $this->normalizeArgumentValueSet($field->arguments, $fieldDef->getArguments());
+        $directives = $field->directives instanceof ParserDirectiveSet
+            ? $this->normalizeDirectiveSet($field->directives, ExecutableDirectiveLocation::FIELD, $fieldDef)
             : new DirectiveSet();
-        $children = $field->getFields() instanceof ParserFieldSet
-            ? $this->normalizeFieldSet($field->getFields())
+        $children = $field->children instanceof ParserFieldSet
+            ? $this->normalizeFieldSet($field->children)
             : null;
 
         if ($children === null && !$fieldType instanceof LeafType) {
@@ -258,7 +258,7 @@ final class Normalizer
 
         return new Field(
             $fieldDef,
-            $field->getAlias()
+            $field->alias
                 ?? $fieldDef->getName(),
             $arguments,
             $directives,
@@ -276,7 +276,7 @@ final class Normalizer
         $directiveTypes = [];
 
         foreach ($directiveSet as $directive) {
-            $this->path->add($directive->getName() . ' <directive>');
+            $this->path->add($directive->name . ' <directive>');
             $normalizedDirective = $this->normalizeDirective($directive, $location, $usage);
             $directiveDef = $normalizedDirective->getDirective();
 
@@ -306,27 +306,27 @@ final class Normalizer
         TypesystemField|Variable|null $usage = null,
     ) : Directive
     {
-        $directiveDef = $this->schema->getContainer()->getDirective($directive->getName());
+        $directiveDef = $this->schema->getContainer()->getDirective($directive->name);
 
         if (!$directiveDef instanceof TypesystemDirective) {
-            throw new UnknownDirective($directive->getName());
+            throw new UnknownDirective($directive->name);
         }
 
         if (!$directiveDef instanceof ExecutableDirective) {
-            throw new DirectiveNotExecutable($directive->getName());
+            throw new DirectiveNotExecutable($directive->name);
         }
 
         if (!\in_array($location, $directiveDef->getLocations(), true)) {
-            throw new DirectiveIncorrectLocation($directive->getName());
+            throw new DirectiveIncorrectLocation($directive->name);
         }
 
-        $arguments = $this->normalizeArgumentValueSet($directive->getArguments(), $directiveDef->getArguments());
+        $arguments = $this->normalizeArgumentValueSet($directive->arguments, $directiveDef->getArguments());
 
         if ($location === ExecutableDirectiveLocation::FIELD) {
             \assert($directiveDef instanceof FieldLocation);
 
             if (!$directiveDef->validateFieldUsage($usage, $arguments)) {
-                throw new DirectiveIncorrectUsage($directive->getName());
+                throw new DirectiveIncorrectUsage($directive->name);
             }
         }
 
@@ -338,9 +338,9 @@ final class Normalizer
         $argumentValueSet ??= new ParserArgumentValueSet();
         $items = [];
 
-        foreach ($argumentValueSet as $value) {
-            if (!$argumentSet->offsetExists($value->getName())) {
-                throw new UnknownArgument($value->getName());
+        foreach ($argumentValueSet as $argumentValue) {
+            if (!$argumentSet->offsetExists($argumentValue->name)) {
+                throw new UnknownArgument($argumentValue->name);
             }
         }
 
@@ -348,7 +348,7 @@ final class Normalizer
             $this->path->add($argument->getName() . ' <argument>');
 
             if ($argumentValueSet->offsetExists($argument->getName())) {
-                $result = $argumentValueSet->offsetGet($argument->getName())->getValue()->accept(
+                $result = $argumentValueSet->offsetGet($argument->getName())->value->accept(
                     new ConvertParserValueVisitor(
                         $argument->getType(),
                         $this->variableSet
@@ -391,33 +391,33 @@ final class Normalizer
 
     private function normalizeNamedFragmentSpread(NamedFragmentSpread $fragmentSpread) : FragmentSpread
     {
-        $this->path->add($fragmentSpread->getName() . ' <fragment spread>');
+        $this->path->add($fragmentSpread->name . ' <fragment spread>');
 
-        if (!$this->fragmentDefinitions->offsetExists($fragmentSpread->getName())) {
-            throw new UnknownFragment($fragmentSpread->getName());
+        if (!$this->fragmentDefinitions->offsetExists($fragmentSpread->name)) {
+            throw new UnknownFragment($fragmentSpread->name);
         }
 
-        $fragment = $this->fragmentDefinitions->offsetGet($fragmentSpread->getName());
-        $typeCond = $this->normalizeTypeRef($fragment->getTypeCond());
+        $fragment = $this->fragmentDefinitions->offsetGet($fragmentSpread->name);
+        $typeCond = $this->normalizeTypeRef($fragment->typeCond);
 
         $this->validateTypeCondition($typeCond);
         $this->scopeStack->push($typeCond);
 
-        $fields = $this->normalizeFieldSet($fragment->getFields());
+        $fields = $this->normalizeFieldSet($fragment->fields);
         $directives = $this->normalizeDirectiveSet(
-            $fragmentSpread->getDirectives(),
+            $fragmentSpread->directives,
             ExecutableDirectiveLocation::FRAGMENT_SPREAD,
         );
 
-        return new FragmentSpread($fragmentSpread->getName(), $fields, $directives, $typeCond);
+        return new FragmentSpread($fragmentSpread->name, $fields, $directives, $typeCond);
     }
 
     private function normalizeInlineFragmentSpread(InlineFragmentSpread $fragmentSpread) : InlineFragment
     {
         $this->path->add('<inline fragment>');
 
-        $typeCond = $fragmentSpread->getTypeCond() instanceof NamedTypeRef
-            ? $this->normalizeTypeRef($fragmentSpread->getTypeCond())
+        $typeCond = $fragmentSpread->typeCond instanceof NamedTypeRef
+            ? $this->normalizeTypeRef($fragmentSpread->typeCond)
             : null;
 
         if ($typeCond instanceof NamedType) {
@@ -427,9 +427,9 @@ final class Normalizer
             $this->scopeStack->push($this->scopeStack->top());
         }
 
-        $fields = $this->normalizeFieldSet($fragmentSpread->getFields());
+        $fields = $this->normalizeFieldSet($fragmentSpread->fields);
         $directives = $this->normalizeDirectiveSet(
-            $fragmentSpread->getDirectives(),
+            $fragmentSpread->directives,
             ExecutableDirectiveLocation::INLINE_FRAGMENT,
         );
 
@@ -440,12 +440,12 @@ final class Normalizer
     {
         return match ($typeRef::class) {
             NamedTypeRef::class =>
-                $this->schema->getContainer()->getType($typeRef->getName())
-                    ?? throw new UnknownType($typeRef->getName()),
+                $this->schema->getContainer()->getType($typeRef->name)
+                    ?? throw new UnknownType($typeRef->name),
             ListTypeRef::class =>
-                new ListType($this->normalizeTypeRef($typeRef->getInnerRef())),
+                new ListType($this->normalizeTypeRef($typeRef->innerRef)),
             NotNullRef::class =>
-                new NotNullType($this->normalizeTypeRef($typeRef->getInnerRef())),
+                new NotNullType($this->normalizeTypeRef($typeRef->innerRef)),
             default =>
                 throw new \LogicException(),
         };
@@ -463,5 +463,12 @@ final class Normalizer
         if (!self::typeCanOccur($parentType, $typeCond)) {
             throw new InvalidFragmentType($typeCond->getName(), $this->scopeStack->top()->getName());
         }
+    }
+
+    private function getOperationPath(ParserOperation $operation) : string
+    {
+        return \is_string($operation->name)
+            ? $operation->name . ' <operation>'
+            : '<shorthand operation>';
     }
 }

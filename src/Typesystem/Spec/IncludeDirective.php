@@ -34,7 +34,7 @@ final class IncludeDirective extends Directive implements
     #[\Override]
     public function resolveFieldBefore(ArgumentValueSet $arguments) : SelectionDirectiveResult
     {
-        return $arguments->offsetGet('if')->getValue()->getRawValue()
+        return $arguments->offsetGet('if')->getValue()->getRawValue() === true
             ? SelectionDirectiveResult::NONE
             : SelectionDirectiveResult::SKIP;
     }

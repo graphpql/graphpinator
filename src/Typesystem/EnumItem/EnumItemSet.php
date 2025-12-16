@@ -53,8 +53,10 @@ final class EnumItemSet extends ImplicitObjectMap
     private function validateCaseFormat() : void
     {
         foreach ($this as $enumItem) {
-            if (\preg_match('/^[a-zA-Z_]+\w*$/', $enumItem->getName()) !== 1 ||
-                \in_array($enumItem->getName(), ['true', 'false', 'null'], true)) {
+            $nameLexicallyInvalid = \preg_match('/^[a-zA-Z_]+\w*$/', $enumItem->getName()) !== 1; // @phpstan-ignore theCodingMachineSafe.function
+            $nameKeyword = \in_array($enumItem->getName(), ['true', 'false', 'null'], true);
+
+            if ($nameLexicallyInvalid || $nameKeyword) {
                 throw new EnumItemInvalid($enumItem->getName());
             }
         }

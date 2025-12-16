@@ -34,7 +34,7 @@ final class SkipDirective extends Directive implements
     #[\Override]
     public function resolveFieldBefore(ArgumentValueSet $arguments) : SelectionDirectiveResult
     {
-        return $arguments->offsetGet('if')->getValue()->getRawValue()
+        return $arguments->offsetGet('if')->getValue()->getRawValue() === true
             ? SelectionDirectiveResult::SKIP
             : SelectionDirectiveResult::NONE;
     }

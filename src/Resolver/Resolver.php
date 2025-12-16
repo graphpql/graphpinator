@@ -4,9 +4,9 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Resolver;
 
-use Graphpinator\Enum\OperationType;
 use Graphpinator\Normalizer\FinalizedRequest;
 use Graphpinator\Normalizer\Operation\Operation;
+use Graphpinator\Parser\OperationType;
 use Graphpinator\Result;
 use Graphpinator\Typesystem\Location\MutationLocation;
 use Graphpinator\Typesystem\Location\QueryLocation;

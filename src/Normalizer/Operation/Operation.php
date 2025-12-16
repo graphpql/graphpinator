@@ -4,10 +4,10 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Normalizer\Operation;
 
-use Graphpinator\Enum\OperationType;
 use Graphpinator\Normalizer\Directive\DirectiveSet;
 use Graphpinator\Normalizer\Selection\SelectionSet;
 use Graphpinator\Normalizer\Variable\VariableSet;
+use Graphpinator\Parser\OperationType;
 use Graphpinator\Typesystem\Type;
 
 final class Operation
