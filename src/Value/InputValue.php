@@ -27,7 +27,8 @@ final class InputValue implements InputedValue, \IteratorAggregate
         foreach ((array) $this->value as $argumentName => $argumentValue) {
             \assert($argumentValue instanceof ArgumentValue);
 
-            $return->{$argumentName} = $argumentValue->getValue()->getRawValue($forResolvers);
+            // use separate hydrator?
+            $return->{$argumentName} = $argumentValue->getValue()->getRawValue($forResolvers); // @phpstan-ignore property.dynamicName
         }
 
         return $return;

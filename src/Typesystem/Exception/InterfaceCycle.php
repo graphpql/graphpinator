@@ -8,6 +8,9 @@ final class InterfaceCycle extends TypeError
 {
     public const MESSAGE = 'Interface implement cycle detected (%s).';
 
+    /**
+     * @param list<string> $interfaceCycle
+     */
     public function __construct(
         array $interfaceCycle,
     )

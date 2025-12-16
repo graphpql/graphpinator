@@ -105,6 +105,9 @@ abstract class InputType extends ConcreteType implements
     {
     }
 
+    /**
+     * @param array<string, true> $stack
+     */
     private function validateCycles(array $stack = []) : void
     {
         if ($this->cycleValidated) {

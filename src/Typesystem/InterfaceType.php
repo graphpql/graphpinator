@@ -110,6 +110,9 @@ abstract class InterfaceType extends AbstractType implements
     #[\Override]
     abstract protected function getFieldDefinition() : FieldSet;
 
+    /**
+     * @param array<string, true> $stack
+     */
     private function validateCycles(array $stack = []) : void
     {
         if ($this->cycleValidated) {

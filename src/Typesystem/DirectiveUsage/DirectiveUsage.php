@@ -16,6 +16,11 @@ final class DirectiveUsage implements Component
 {
     private ArgumentValueSet $argumentValues;
 
+    /**
+     * @param TypeSystemDirective $directive
+     * @phpcs:ignore
+     * @param array<string, mixed> $arguments
+     */
     public function __construct(
         private TypeSystemDirective $directive,
         array $arguments,

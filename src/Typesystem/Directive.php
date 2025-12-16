@@ -101,7 +101,7 @@ abstract class Directive implements DirectiveContract
     }
 
     /**
-     * @return array<(ExecutableDirectiveLocation|TypeSystemDirectiveLocation)>
+     * @return list<(ExecutableDirectiveLocation|TypeSystemDirectiveLocation)>
      */
     #[\Override]
     final public function getLocations() : array

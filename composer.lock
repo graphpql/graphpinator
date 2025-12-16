@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a8351db297b88c491d2dafc9f2b4b202",
+    "content-hash": "879e1ec3082c744c760e3bfbeeb6eaf9",
     "packages": [
         {
             "name": "infinityloop-dev/graphpinator-common",
@@ -4820,7 +4820,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=8.1",
+        "php": ">=8.2",
         "ext-json": "*"
     },
     "platform-dev": {},

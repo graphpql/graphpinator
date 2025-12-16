@@ -9,7 +9,7 @@ use Graphpinator\Typesystem\InterfaceSet;
 use Graphpinator\Typesystem\InterfaceType;
 
 /**
- * Interface InterfaceImplementor which marks types which can implement interface - currently Type and Interface.
+ * Interface InterfaceImplementor, which marks types which can implement interface - currently Type and Interface.
  */
 //@phpcs:ignore SlevomatCodingStandard.Classes.SuperfluousInterfaceNaming.SuperfluousPrefix
 interface InterfaceImplementor extends Type

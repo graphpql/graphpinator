@@ -16,6 +16,10 @@ final class EnumItemSet extends ImplicitObjectMap
 {
     protected const INNER_CLASS = EnumItem::class;
 
+    /**
+     * @param list<EnumItem> $data
+     * @param ?string $enumClass
+     */
     public function __construct(
         array $data = [],
         private ?string $enumClass = null,
@@ -33,6 +37,9 @@ final class EnumItemSet extends ImplicitObjectMap
         return $this->enumClass;
     }
 
+    /**
+     * @return list<string>
+     */
     public function getArray() : array
     {
         $return = [];
