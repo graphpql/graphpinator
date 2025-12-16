@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace GraphQL\Typesystem\Visitor;
 
+use Graphpinator\Typesystem\Contract\NamedType;
 use Graphpinator\Typesystem\Contract\TypeVisitor;
 use Graphpinator\Typesystem\EnumType;
 use Graphpinator\Typesystem\InputType;
@@ -15,54 +16,54 @@ use Graphpinator\Typesystem\Type;
 use Graphpinator\Typesystem\UnionType;
 
 /**
- * @implements TypeVisitor<bool>
+ * @implements TypeVisitor<NamedType>
  */
-final readonly class IsOutputableVisitor implements TypeVisitor
+final readonly class GetNamedTypeVisitor implements TypeVisitor
 {
     #[\Override]
-    public function visitType(Type $type) : true
+    public function visitType(Type $type) : Type
     {
-        return true;
+        return $type;
     }
 
     #[\Override]
-    public function visitInterface(InterfaceType $interface) : true
+    public function visitInterface(InterfaceType $interface) : InterfaceType
     {
-        return true;
+        return $interface;
     }
 
     #[\Override]
-    public function visitUnion(UnionType $union) : true
+    public function visitUnion(UnionType $union) : UnionType
     {
-        return true;
+        return $union;
     }
 
     #[\Override]
-    public function visitInput(InputType $input) : false
+    public function visitInput(InputType $input) : InputType
     {
-        return false;
+        return $input;
     }
 
     #[\Override]
-    public function visitScalar(ScalarType $scalar) : true
+    public function visitScalar(ScalarType $scalar) : ScalarType
     {
-        return true;
+        return $scalar;
     }
 
     #[\Override]
-    public function visitEnum(EnumType $enum) : true
+    public function visitEnum(EnumType $enum) : EnumType
     {
-        return true;
+        return $enum;
     }
 
     #[\Override]
-    public function visitNotNull(NotNullType $notNull) : bool
+    public function visitNotNull(NotNullType $notNull) : NamedType
     {
         return $notNull->getInnerType()->accept($this);
     }
 
     #[\Override]
-    public function visitList(ListType $list) : bool
+    public function visitList(ListType $list) : NamedType
     {
         return $list->getInnerType()->accept($this);
     }

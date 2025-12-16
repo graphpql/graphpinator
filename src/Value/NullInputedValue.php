@@ -6,11 +6,12 @@ namespace Graphpinator\Value;
 
 use Graphpinator\Normalizer\VariableValueSet;
 use Graphpinator\Typesystem\Contract\Inputable;
+use Graphpinator\Typesystem\Contract\Type;
 
 final class NullInputedValue implements InputedValue, NullValue
 {
     public function __construct(
-        private Inputable $type,
+        private Type $type,
     )
     {
     }
@@ -22,7 +23,7 @@ final class NullInputedValue implements InputedValue, NullValue
     }
 
     #[\Override]
-    public function getType() : Inputable
+    public function getType() : Type
     {
         return $this->type;
     }

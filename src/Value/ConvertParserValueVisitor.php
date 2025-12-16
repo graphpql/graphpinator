@@ -17,7 +17,7 @@ use Graphpinator\Parser\Value\Literal;
 use Graphpinator\Parser\Value\ObjectVal;
 use Graphpinator\Parser\Value\ValueVisitor;
 use Graphpinator\Parser\Value\VariableRef;
-use Graphpinator\Typesystem\Contract\Inputable;
+use Graphpinator\Typesystem\Contract\Type;
 use Graphpinator\Typesystem\EnumType;
 use Graphpinator\Typesystem\InputType;
 use Graphpinator\Typesystem\ListType;
@@ -26,11 +26,12 @@ use Graphpinator\Typesystem\NotNullType;
 final class ConvertParserValueVisitor implements ValueVisitor
 {
     public function __construct(
-        readonly private Inputable $type,
+        readonly private Type $type,
         readonly private ?VariableSet $variableSet,
         readonly private Path $path,
     )
     {
+        \assert($type->isInputable());
     }
 
     #[\Override]

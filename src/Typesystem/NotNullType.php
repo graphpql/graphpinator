@@ -11,22 +11,6 @@ use Graphpinator\Typesystem\Contract\TypeVisitor;
 final class NotNullType extends ModifierType
 {
     #[\Override]
-    public function isInstanceOf(Type $type) : bool
-    {
-        if ($type instanceof self) {
-            return $this->innerType->isInstanceOf($type->getInnerType());
-        }
-
-        return $this->innerType->isInstanceOf($type);
-    }
-
-    #[\Override]
-    public function printName() : string
-    {
-        return $this->innerType->printName() . '!';
-    }
-
-    #[\Override]
     public function getShapingType() : Type
     {
         return $this->getInnerType()->getShapingType();

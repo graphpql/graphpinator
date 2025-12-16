@@ -10,22 +10,6 @@ use Graphpinator\Typesystem\Contract\TypeVisitor;
 
 final class ListType extends ModifierType
 {
-    #[\Override]
-    public function isInstanceOf(Type $type) : bool
-    {
-        if ($type instanceof self) {
-            return $this->innerType->isInstanceOf($type->getInnerType());
-        }
-
-        return false;
-    }
-
-    #[\Override]
-    public function printName() : string
-    {
-        return '[' . $this->innerType->printName() . ']';
-    }
-
     public function notNull() : NotNullType
     {
         return new NotNullType($this);

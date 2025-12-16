@@ -22,9 +22,7 @@ use Graphpinator\Typesystem\Utils\THasDirectives;
 use Graphpinator\Typesystem\Utils\TInterfaceImplementor;
 use Graphpinator\Typesystem\Utils\TMetaFields;
 
-abstract class Type extends ConcreteType implements
-    TypeConditionable,
-    InterfaceImplementor
+abstract class Type extends ConcreteType implements TypeConditionable, InterfaceImplementor
 {
     use TInterfaceImplementor;
     use TMetaFields;

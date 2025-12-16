@@ -8,7 +8,6 @@ use Graphpinator\Common\Path;
 use Graphpinator\Typesystem\Contract\Component;
 use Graphpinator\Typesystem\Contract\ComponentVisitor;
 use Graphpinator\Typesystem\Contract\TypeSystemDirective;
-use Graphpinator\Typesystem\Exception\DirectiveUsageArgumentsInvalidMap;
 use Graphpinator\Value\ArgumentValueSet;
 use Graphpinator\Value\ConvertRawValueVisitor;
 
@@ -26,10 +25,6 @@ final class DirectiveUsage implements Component
         array $arguments,
     )
     {
-        if (\count($arguments) > 0 && \array_is_list($arguments)) {
-            throw new DirectiveUsageArgumentsInvalidMap();
-        }
-
         $this->argumentValues = new ArgumentValueSet(
             (array) ConvertRawValueVisitor::convertArgumentSet(
                 $directive->getArguments(),

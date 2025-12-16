@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace Graphpinator\Value;
 
 use Graphpinator\Normalizer\VariableValueSet;
-use Graphpinator\Typesystem\Contract\Inputable;
+use Graphpinator\Typesystem\Contract\Type;
 
 interface InputedValue extends Value
 {
@@ -13,7 +13,7 @@ interface InputedValue extends Value
     public function getRawValue(bool $forResolvers = false) : mixed;
 
     #[\Override]
-    public function getType() : Inputable;
+    public function getType() : Type;
 
     /**
      * Function used to replace variable references with concrete values before query execution.

@@ -9,6 +9,7 @@ use Graphpinator\Graphpinator;
 use Graphpinator\Typesystem\Contract\Component;
 use Graphpinator\Typesystem\Contract\ComponentVisitor;
 use Graphpinator\Typesystem\Contract\Inputable;
+use Graphpinator\Typesystem\Contract\Type;
 use Graphpinator\Typesystem\DirectiveUsage\DirectiveUsage;
 use Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet;
 use Graphpinator\Typesystem\Exception\DirectiveIncorrectType;
@@ -35,7 +36,7 @@ final class Argument implements Component
         $this->directiveUsages = new DirectiveUsageSet();
     }
 
-    public static function create(string $name, Inputable $type) : self
+    public static function create(string $name, Type $type) : self
     {
         return new self($name, $type);
     }
@@ -45,7 +46,7 @@ final class Argument implements Component
         return $this->name;
     }
 
-    public function getType() : Inputable
+    public function getType() : Type
     {
         return $this->type;
     }

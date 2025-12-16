@@ -18,8 +18,7 @@ use Graphpinator\Typesystem\Location\InputObjectLocation;
 use Graphpinator\Typesystem\Spec\OneOfDirective;
 use Graphpinator\Typesystem\Utils\THasDirectives;
 
-abstract class InputType extends ConcreteType implements
-    Inputable
+abstract class InputType extends ConcreteType
 {
     use THasDirectives;
 

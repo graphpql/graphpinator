@@ -7,7 +7,7 @@ namespace Graphpinator\Typesystem\Contract;
 use Graphpinator\Value\TypeIntermediateValue;
 
 //@phpcs:ignore SlevomatCodingStandard.Classes.SuperfluousAbstractClassNaming.SuperfluousPrefix
-abstract class AbstractType extends NamedType implements Outputable, TypeConditionable
+abstract class AbstractType extends NamedType implements TypeConditionable
 {
     abstract public function isImplementedBy(Type $type) : bool;
 

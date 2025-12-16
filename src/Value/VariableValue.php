@@ -8,17 +8,19 @@ use Graphpinator\Exception\OperationNotSupported;
 use Graphpinator\Normalizer\Exception\VariableTypeMismatch;
 use Graphpinator\Normalizer\Variable\Variable;
 use Graphpinator\Normalizer\VariableValueSet;
-use Graphpinator\Typesystem\Contract\Inputable;
+use Graphpinator\Typesystem\Contract\Type;
 
 final class VariableValue implements InputedValue
 {
     private ?InputedValue $value = null;
 
     public function __construct(
-        private Inputable $type,
+        private Type $type,
         private Variable $variable,
     )
     {
+        \assert($type->isInputable());
+
         if (!$variable->getType()->isInstanceOf($type)) {
             throw new VariableTypeMismatch();
         }
@@ -41,7 +43,7 @@ final class VariableValue implements InputedValue
     }
 
     #[\Override]
-    public function getType() : Inputable
+    public function getType() : Type
     {
         return $this->type;
     }

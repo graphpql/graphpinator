@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace Graphpinator\Normalizer\Variable;
 
 use Graphpinator\Normalizer\Directive\DirectiveSet;
-use Graphpinator\Typesystem\Contract\Inputable;
+use Graphpinator\Typesystem\Contract\Type;
 use Graphpinator\Value\InputedValue;
 
 final class Variable
@@ -14,7 +14,7 @@ final class Variable
 
     public function __construct(
         private string $name,
-        private Inputable $type,
+        private Type $type,
         private ?InputedValue $defaultValue,
     )
     {
@@ -26,7 +26,7 @@ final class Variable
         return $this->name;
     }
 
-    public function getType() : Inputable
+    public function getType() : Type
     {
         return $this->type;
     }

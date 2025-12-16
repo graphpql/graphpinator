@@ -187,8 +187,6 @@ final class Normalizer
             throw new VariableTypeInputable($variable->name);
         }
 
-        \assert($type instanceof Inputable);
-
         $normalized = new Variable(
             $variable->name,
             $type,
