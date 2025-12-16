@@ -61,11 +61,17 @@ class Field implements Component
         return $this;
     }
 
+    #[\Override]
     final public function accept(ComponentVisitor $visitor) : mixed
     {
         return $visitor->visitField($this);
     }
 
+    /**
+     * @param FieldDefinitionLocation $directive
+     * @phpcs:ignore
+     * @param array<string, mixed> $arguments
+     */
     final public function addDirective(
         FieldDefinitionLocation $directive,
         array $arguments = [],

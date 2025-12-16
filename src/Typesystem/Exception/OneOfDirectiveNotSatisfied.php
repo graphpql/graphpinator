@@ -8,6 +8,7 @@ final class OneOfDirectiveNotSatisfied extends TypeError
 {
     public const MESSAGE = 'Exactly one field must be specified and be not null.';
 
+    #[\Override]
     public function isOutputable() : bool
     {
         return true;

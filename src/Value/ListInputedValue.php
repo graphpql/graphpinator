@@ -9,6 +9,7 @@ use Graphpinator\Typesystem\ListType;
 
 final class ListInputedValue extends ListValue implements InputedValue
 {
+    #[\Override]
     public function getRawValue(bool $forResolvers = false) : array
     {
         $return = [];
@@ -22,11 +23,13 @@ final class ListInputedValue extends ListValue implements InputedValue
         return $return;
     }
 
+    #[\Override]
     public function getType() : ListType
     {
         return $this->type;
     }
 
+    #[\Override]
     public function printValue() : string
     {
         $component = [];
@@ -40,6 +43,7 @@ final class ListInputedValue extends ListValue implements InputedValue
         return '[' . \implode(',', $component) . ']';
     }
 
+    #[\Override]
     public function applyVariables(VariableValueSet $variables) : void
     {
         foreach ($this->value as $value) {
@@ -49,6 +53,7 @@ final class ListInputedValue extends ListValue implements InputedValue
         }
     }
 
+    #[\Override]
     public function resolveRemainingDirectives() : void
     {
         foreach ($this->value as $value) {
@@ -58,6 +63,7 @@ final class ListInputedValue extends ListValue implements InputedValue
         }
     }
 
+    #[\Override]
     public function isSame(Value $compare) : bool
     {
         if (!$compare instanceof self) {

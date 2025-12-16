@@ -25,43 +25,51 @@ final class SkipDirective extends Directive implements
 {
     protected const NAME = 'skip';
 
+    #[\Override]
     public function validateFieldUsage(Field $field, ArgumentValueSet $arguments) : bool
     {
         return true;
     }
 
+    #[\Override]
     public function resolveFieldBefore(ArgumentValueSet $arguments) : SelectionDirectiveResult
     {
-        return $arguments->offsetGet('if')->getValue()->getRawValue()
+        return $arguments->offsetGet('if')->getValue()->getRawValue() === true
             ? SelectionDirectiveResult::SKIP
             : SelectionDirectiveResult::NONE;
     }
 
+    #[\Override]
     public function resolveFieldAfter(ArgumentValueSet $arguments, FieldValue $fieldValue) : SelectionDirectiveResult
     {
         return SelectionDirectiveResult::NONE;
     }
 
+    #[\Override]
     public function resolveFragmentSpreadBefore(ArgumentValueSet $arguments) : SelectionDirectiveResult
     {
         return $this->resolveFieldBefore($arguments);
     }
 
+    #[\Override]
     public function resolveFragmentSpreadAfter(ArgumentValueSet $arguments) : void
     {
         // nothing here
     }
 
+    #[\Override]
     public function resolveInlineFragmentBefore(ArgumentValueSet $arguments) : SelectionDirectiveResult
     {
         return $this->resolveFieldBefore($arguments);
     }
 
+    #[\Override]
     public function resolveInlineFragmentAfter(ArgumentValueSet $arguments) : void
     {
         // nothing here
     }
 
+    #[\Override]
     protected function getFieldDefinition() : ArgumentSet
     {
         return new ArgumentSet([

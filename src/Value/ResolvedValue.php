@@ -8,5 +8,6 @@ use Graphpinator\Typesystem\Contract\Outputable;
 
 interface ResolvedValue extends Value
 {
+    #[\Override]
     public function getType() : Outputable;
 }

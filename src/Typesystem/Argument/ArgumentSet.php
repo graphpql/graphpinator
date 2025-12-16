@@ -22,6 +22,7 @@ final class ArgumentSet extends ImplicitObjectMap
         return $this->defaults;
     }
 
+    #[\Override]
     public function offsetSet($offset, $value) : void
     {
         \assert($value instanceof Argument);
@@ -35,6 +36,7 @@ final class ArgumentSet extends ImplicitObjectMap
         }
     }
 
+    #[\Override]
     protected function getKey(object $object) : string
     {
         \assert($object instanceof Argument);

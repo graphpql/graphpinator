@@ -4,6 +4,14 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem;
 
+use Graphpinator\Introspection\Directive as IntrospectionDirective;
+use Graphpinator\Introspection\DirectiveLocation;
+use Graphpinator\Introspection\EnumValue;
+use Graphpinator\Introspection\Field;
+use Graphpinator\Introspection\InputValue;
+use Graphpinator\Introspection\Schema;
+use Graphpinator\Introspection\Type;
+use Graphpinator\Introspection\TypeKind;
 use Graphpinator\Typesystem\Contract\NamedType;
 use Graphpinator\Typesystem\Spec\BooleanType;
 use Graphpinator\Typesystem\Spec\DeprecatedDirective;
@@ -17,15 +25,41 @@ use Graphpinator\Typesystem\Spec\SpecifiedByDirective;
 use Graphpinator\Typesystem\Spec\StringType;
 
 /**
- * Class Container which is responsible for fetching instances of type classes.
+ * Class Container, which is responsible for fetching instances of type classes.
  */
 abstract class Container
 {
+    /**
+     * @var array{
+     *     ID?: IdType,
+     *     Int?: IntType,
+     *     Float?: FloatType,
+     *     String?: StringType,
+     *     Boolean?: BooleanType,
+     *     __Schema?: Schema,
+     *     __Type?: Type,
+     *     __TypeKind?: TypeKind,
+     *     __Field?: Field,
+     *     __EnumValue?: EnumValue,
+     *     __InputValue?: InputValue,
+     *     __Directive?: IntrospectionDirective,
+     *     __DirectiveLocation?: DirectiveLocation,
+     * }
+     */
     protected static array $builtInTypes = [];
+    /**
+     * @var array{
+     *     skip?: SkipDirective,
+     *     include?: IncludeDirective,
+     *     deprecated?: DeprecatedDirective,
+     *     specifiedBy?: SpecifiedByDirective,
+     *     oneOf?: OneOfDirective,
+     * }
+     */
     protected static array $builtInDirectives = [];
 
     /**
-     * Core function to find type by its name.
+     * Core function to find a type by its name.
      * @param string $name
      */
     abstract public function getType(string $name) : ?NamedType;
@@ -37,7 +71,7 @@ abstract class Container
     abstract public function getTypes(bool $includeBuiltIn = false) : array;
 
     /**
-     * Core function to find directive by its name.
+     * Core function to find a directive by its name.
      * @param string $name
      */
     abstract public function getDirective(string $name) : ?Directive;

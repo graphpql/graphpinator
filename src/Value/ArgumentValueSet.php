@@ -63,6 +63,7 @@ final class ArgumentValueSet extends ImplicitObjectMap
         return true;
     }
 
+    #[\Override]
     protected function getKey(object $object) : string
     {
         \assert($object instanceof ArgumentValue);

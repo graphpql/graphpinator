@@ -51,6 +51,7 @@ abstract class InputType extends ConcreteType implements
         return $this->arguments;
     }
 
+    #[\Override]
     final public function accept(NamedTypeVisitor $visitor) : mixed
     {
         return $visitor->visitInput($this);
@@ -61,6 +62,11 @@ abstract class InputType extends ConcreteType implements
         return static::DATA_CLASS;
     }
 
+    /**
+     * @param InputObjectLocation $directive
+     * @phpcs:ignore
+     * @param array<string, mixed> $arguments
+     */
     final public function addDirective(
         InputObjectLocation $directive,
         array $arguments = [],
@@ -99,6 +105,9 @@ abstract class InputType extends ConcreteType implements
     {
     }
 
+    /**
+     * @param array<string, true> $stack
+     */
     private function validateCycles(array $stack = []) : void
     {
         if ($this->cycleValidated) {

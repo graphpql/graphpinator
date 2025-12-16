@@ -21,11 +21,13 @@ final class EnumValue extends Type
         parent::__construct();
     }
 
+    #[\Override]
     public function validateNonNullValue(mixed $rawValue) : bool
     {
         return $rawValue instanceof EnumItem;
     }
 
+    #[\Override]
     protected function getFieldDefinition() : ResolvableFieldSet
     {
         return new ResolvableFieldSet([

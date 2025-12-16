@@ -45,6 +45,7 @@ abstract class Type extends ConcreteType implements
         $this->getMetaFields()->offsetSet($field->getName(), $field);
     }
 
+    #[\Override]
     final public function isInstanceOf(TypeContract $type) : bool
     {
         if ($type instanceof AbstractType) {
@@ -54,6 +55,7 @@ abstract class Type extends ConcreteType implements
         return parent::isInstanceOf($type);
     }
 
+    #[\Override]
     final public function getFields() : ResolvableFieldSet
     {
         if (!$this->fields instanceof ResolvableFieldSet) {
@@ -75,11 +77,17 @@ abstract class Type extends ConcreteType implements
         return $this->fields;
     }
 
+    #[\Override]
     final public function accept(NamedTypeVisitor $visitor) : mixed
     {
         return $visitor->visitType($this);
     }
 
+    /**
+     * @param ObjectLocation $directive
+     * @phpcs:ignore
+     * @param array<string, mixed> $arguments
+     */
     final public function addDirective(
         ObjectLocation $directive,
         array $arguments = [],
@@ -96,6 +104,7 @@ abstract class Type extends ConcreteType implements
         return $this;
     }
 
+    #[\Override]
     abstract protected function getFieldDefinition() : ResolvableFieldSet;
 
     private function inheritDescriptions() : void

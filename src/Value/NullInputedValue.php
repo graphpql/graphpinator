@@ -15,31 +15,37 @@ final class NullInputedValue implements InputedValue, NullValue
     {
     }
 
+    #[\Override]
     public function getRawValue(bool $forResolvers = false) : ?bool
     {
         return null;
     }
 
+    #[\Override]
     public function getType() : Inputable
     {
         return $this->type;
     }
 
+    #[\Override]
     public function printValue() : string
     {
         return 'null';
     }
 
+    #[\Override]
     public function applyVariables(VariableValueSet $variables) : void
     {
         // nothing here
     }
 
+    #[\Override]
     public function resolveRemainingDirectives() : void
     {
         // nothing here
     }
 
+    #[\Override]
     public function isSame(Value $compare) : bool
     {
         return $compare instanceof self;

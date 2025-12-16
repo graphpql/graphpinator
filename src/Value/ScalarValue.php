@@ -9,6 +9,7 @@ final class ScalarValue extends LeafValue
     private mixed $resolverValue = null;
     private bool $hasResolverValue = false;
 
+    #[\Override]
     public function printValue() : string
     {
         return \json_encode($this->rawValue, \JSON_THROW_ON_ERROR |
@@ -17,6 +18,7 @@ final class ScalarValue extends LeafValue
             \JSON_PRESERVE_ZERO_FRACTION);
     }
 
+    #[\Override]
     public function getRawValue(bool $forResolvers = false) : mixed
     {
         return ($forResolvers && $this->hasResolverValue)

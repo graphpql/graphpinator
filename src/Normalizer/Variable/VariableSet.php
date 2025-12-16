@@ -14,8 +14,11 @@ final class VariableSet extends ImplicitObjectMap
 {
     protected const INNER_CLASS = Variable::class;
 
+    #[\Override]
     protected function getKey(object $object) : string
     {
+        \assert($object instanceof Variable);
+
         return $object->getName();
     }
 }

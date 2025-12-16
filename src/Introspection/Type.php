@@ -37,11 +37,13 @@ final class Type extends TypesystemType
         parent::__construct();
     }
 
+    #[\Override]
     public function validateNonNullValue(mixed $rawValue) : bool
     {
         return $rawValue instanceof TypeDef;
     }
 
+    #[\Override]
     protected function getFieldDefinition() : ResolvableFieldSet
     {
         return new ResolvableFieldSet([

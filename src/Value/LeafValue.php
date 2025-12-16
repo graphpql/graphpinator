@@ -21,26 +21,31 @@ abstract class LeafValue implements InputedValue, OutputValue
         }
     }
 
+    #[\Override]
     public function getType() : LeafType
     {
         return $this->type;
     }
 
+    #[\Override]
     public function jsonSerialize() : string|int|float|bool
     {
         return $this->rawValue;
     }
 
+    #[\Override]
     public function applyVariables(VariableValueSet $variables) : void
     {
         // nothing here
     }
 
+    #[\Override]
     public function resolveRemainingDirectives() : void
     {
         // nothing here
     }
 
+    #[\Override]
     public function isSame(Value $compare) : bool
     {
         return $compare instanceof static

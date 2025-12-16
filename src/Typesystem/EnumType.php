@@ -70,16 +70,23 @@ abstract class EnumType extends LeafType
         return $this->options->getEnumClass();
     }
 
+    #[\Override]
     final public function accept(NamedTypeVisitor $visitor) : mixed
     {
         return $visitor->visitEnum($this);
     }
 
+    #[\Override]
     final public function validateNonNullValue(mixed $rawValue) : bool
     {
         return \is_string($rawValue) && $this->options->offsetExists($rawValue);
     }
 
+    /**
+     * @param EnumLocation $directive
+     * @phpcs:ignore
+     * @param array<string, mixed> $arguments
+     */
     final public function addDirective(
         EnumLocation $directive,
         array $arguments = [],

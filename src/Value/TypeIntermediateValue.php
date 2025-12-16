@@ -19,11 +19,13 @@ final class TypeIntermediateValue implements ResolvedValue
         }
     }
 
+    #[\Override]
     public function getRawValue(bool $forResolvers = false) : mixed
     {
         return $this->rawValue;
     }
 
+    #[\Override]
     public function getType() : Type
     {
         return $this->type;

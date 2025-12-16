@@ -24,7 +24,7 @@ jobs:
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
       with:
-        php-version: '8.4'
+        php-version: '8.5'
         ini-values: zend.assertions=1, assert.exception=1
         coverage: xdebug
       env:
@@ -69,7 +69,7 @@ jobs:
       run: composer validate
 
     - name: Install dependencies
-      run: composer install --prefer-dist --no-progress --no-suggest
+      run: composer update --prefer-dist --no-progress --no-suggest
 
     - name: Tests
       run: composer run-script phpunit-no-coverage
@@ -84,7 +84,7 @@ jobs:
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
       with:
-        php-version: '8.4'
+        php-version: '8.5'
         ini-values: zend.assertions=1, assert.exception=1
         coverage: xdebug
       env:
@@ -108,7 +108,7 @@ jobs:
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
       with:
-        php-version: '8.4'
+        php-version: '8.5'
         ini-values: zend.assertions=1, assert.exception=1
       env:
         update: true
@@ -135,7 +135,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.4'
+          php-version: '8.5'
         env:
           update: true
 
@@ -147,3 +147,25 @@ jobs:
 
       - name: Codestyle
         run: composer run-script codestyle
+
+  dependencies:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.5'
+        env:
+          update: true
+
+      - name: Validate composer.json and composer.lock
+        run: composer validate
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress --no-suggest
+
+      - name: Dependencies
+        run: composer run-script dependencies

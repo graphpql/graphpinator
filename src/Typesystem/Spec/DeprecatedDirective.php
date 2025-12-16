@@ -26,51 +26,61 @@ final class DeprecatedDirective extends Directive implements
 {
     protected const NAME = 'deprecated';
 
+    #[\Override]
     public static function isPure() : bool
     {
         return true;
     }
 
+    #[\Override]
     public function validateFieldUsage(Field $field, ArgumentValueSet $arguments) : bool
     {
         return true;
     }
 
+    #[\Override]
     public function validateVariance(?ArgumentValueSet $biggerSet, ?ArgumentValueSet $smallerSet) : void
     {
         // nothing here
     }
 
+    #[\Override]
     public function resolveFieldDefinitionStart(ArgumentValueSet $arguments, ResolvedValue $parentValue) : void
     {
         // nothing here
     }
 
+    #[\Override]
     public function resolveFieldDefinitionBefore(ArgumentValueSet $arguments, ResolvedValue $parentValue, ArgumentValueSet $fieldArguments) : void
     {
         // nothing here
     }
 
+    #[\Override]
     public function resolveFieldDefinitionAfter(ArgumentValueSet $arguments, ResolvedValue $resolvedValue, ArgumentValueSet $fieldArguments) : void
     {
         // nothing here
     }
 
+    #[\Override]
     public function resolveFieldDefinitionValue(ArgumentValueSet $arguments, FieldValue $fieldValue) : void
     {
         // nothing here
     }
 
+    #[\Override]
     public function validateArgumentUsage(Argument $argument, ArgumentValueSet $arguments) : bool
     {
         return true;
     }
 
+    #[\Override]
     public function resolveArgumentDefinition(ArgumentValueSet $arguments, ArgumentValue $argumentValue) : void
     {
         // nothing here
     }
 
+    #[\Override]
     protected function getFieldDefinition() : ArgumentSet
     {
         return new ArgumentSet([

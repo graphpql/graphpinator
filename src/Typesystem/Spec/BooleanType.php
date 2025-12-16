@@ -12,6 +12,7 @@ final class BooleanType extends ScalarType
 {
     protected const NAME = 'Boolean';
 
+    #[\Override]
     public function validateNonNullValue(mixed $rawValue) : bool
     {
         return \is_bool($rawValue);

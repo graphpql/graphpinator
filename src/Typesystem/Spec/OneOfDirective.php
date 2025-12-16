@@ -22,6 +22,7 @@ final class OneOfDirective extends Directive implements InputObjectLocation
 {
     protected const NAME = 'oneOf';
 
+    #[\Override]
     public function validateInputUsage(InputType $inputType, ArgumentValueSet $arguments) : bool
     {
         foreach ($inputType->getArguments() as $argument) {
@@ -34,6 +35,7 @@ final class OneOfDirective extends Directive implements InputObjectLocation
         return true;
     }
 
+    #[\Override]
     public function resolveInputObject(ArgumentValueSet $arguments, InputValue $inputValue) : void
     {
         $currentCount = 0;
@@ -53,6 +55,7 @@ final class OneOfDirective extends Directive implements InputObjectLocation
         }
     }
 
+    #[\Override]
     protected function getFieldDefinition() : ArgumentSet
     {
         return new ArgumentSet([]);

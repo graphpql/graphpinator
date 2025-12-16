@@ -33,11 +33,17 @@ final class EnumItem implements Component
         return $this->name;
     }
 
+    #[\Override]
     public function accept(ComponentVisitor $visitor) : mixed
     {
         return $visitor->visitEnumItem($this);
     }
 
+    /**
+     * @param EnumItemLocation $directive
+     * @phpcs:ignore
+     * @param array<string, mixed> $arguments
+     */
     public function addDirective(
         EnumItemLocation $directive,
         array $arguments = [],

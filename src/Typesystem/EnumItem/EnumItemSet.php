@@ -16,6 +16,10 @@ final class EnumItemSet extends ImplicitObjectMap
 {
     protected const INNER_CLASS = EnumItem::class;
 
+    /**
+     * @param list<EnumItem> $data
+     * @param ?string $enumClass
+     */
     public function __construct(
         array $data = [],
         private ?string $enumClass = null,
@@ -33,6 +37,9 @@ final class EnumItemSet extends ImplicitObjectMap
         return $this->enumClass;
     }
 
+    /**
+     * @return list<string>
+     */
     public function getArray() : array
     {
         $return = [];
@@ -44,16 +51,21 @@ final class EnumItemSet extends ImplicitObjectMap
         return $return;
     }
 
+    #[\Override]
     protected function getKey(object $object) : string
     {
+        \assert($object instanceof EnumItem);
+
         return $object->getName();
     }
 
     private function validateCaseFormat() : void
     {
         foreach ($this as $enumItem) {
-            if (\preg_match('/^[a-zA-Z_]+\w*$/', $enumItem->getName()) !== 1 ||
-                \in_array($enumItem->getName(), ['true', 'false', 'null'], true)) {
+            $nameLexicallyInvalid = \preg_match('/^[a-zA-Z_]+\w*$/', $enumItem->getName()) !== 1; // @phpstan-ignore theCodingMachineSafe.function
+            $nameKeyword = \in_array($enumItem->getName(), ['true', 'false', 'null'], true);
+
+            if ($nameLexicallyInvalid || $nameKeyword) {
                 throw new EnumItemInvalid($enumItem->getName());
             }
         }

@@ -12,11 +12,13 @@ final class FloatType extends ScalarType
 {
     protected const NAME = 'Float';
 
+    #[\Override]
     public function validateNonNullValue(mixed $rawValue) : bool
     {
         return \is_float($rawValue) && \is_finite($rawValue);
     }
 
+    #[\Override]
     public function coerceValue(mixed $rawValue) : mixed
     {
         return \is_int($rawValue)

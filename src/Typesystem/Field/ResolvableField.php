@@ -20,6 +20,7 @@ class ResolvableField extends Field
         $this->resolveFn = $resolveFn;
     }
 
+    #[\Override]
     public static function create(string $name, Outputable $type, ?callable $resolveFn = null) : self
     {
         return new self($name, $type, $resolveFn);

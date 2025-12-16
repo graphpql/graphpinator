@@ -14,8 +14,10 @@ abstract class NamedType implements Type, Entity
 
     protected const NAME = '';
 
+    #[\Override]
     abstract public function isInstanceOf(Type $type) : bool;
 
+    #[\Override]
     abstract public function accept(NamedTypeVisitor $visitor) : mixed;
 
     final public function getName() : string
@@ -23,21 +25,25 @@ abstract class NamedType implements Type, Entity
         return static::NAME;
     }
 
+    #[\Override]
     final public function printName() : string
     {
         return $this->getName();
     }
 
+    #[\Override]
     final public function getNamedType() : self
     {
         return $this;
     }
 
+    #[\Override]
     final public function getShapingType() : Type
     {
         return $this;
     }
 
+    #[\Override]
     final public function isInputable() : bool
     {
         return $this instanceof Inputable;

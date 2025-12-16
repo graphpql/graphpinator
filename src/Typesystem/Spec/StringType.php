@@ -12,6 +12,7 @@ final class StringType extends ScalarType
 {
     protected const NAME = 'String';
 
+    #[\Override]
     public function validateNonNullValue(mixed $rawValue) : bool
     {
         return \is_string($rawValue);

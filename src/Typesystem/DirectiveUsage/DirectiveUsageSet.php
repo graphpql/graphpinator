@@ -19,6 +19,7 @@ final class DirectiveUsageSet extends ObjectSet
 
     private array $nonRepeatableDirectives = [];
 
+    #[\Override]
     protected function offsetSetImpl($offset, object $object) : void
     {
         \assert($object instanceof DirectiveUsage);

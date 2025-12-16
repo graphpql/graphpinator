@@ -15,11 +15,13 @@ final class ListIntermediateValue implements ResolvedValue
     {
     }
 
+    #[\Override]
     public function getRawValue(bool $forResolvers = false) : iterable
     {
         return $this->rawValue;
     }
 
+    #[\Override]
     public function getType() : ListType
     {
         return $this->type;

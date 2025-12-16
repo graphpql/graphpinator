@@ -51,6 +51,7 @@ final class Field implements Selection
         return $this->children;
     }
 
+    #[\Override]
     public function applyVariables(VariableValueSet $variables) : void
     {
         $this->arguments->applyVariables($variables);
@@ -58,6 +59,7 @@ final class Field implements Selection
         $this->children?->applyVariables($variables);
     }
 
+    #[\Override]
     public function accept(SelectionVisitor $visitor) : mixed
     {
         return $visitor->visitField($this);

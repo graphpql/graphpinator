@@ -26,6 +26,7 @@ final class Result implements \JsonSerializable
         return $this->errors;
     }
 
+    #[\Override]
     public function jsonSerialize() : \stdClass
     {
         $return = new \stdClass();

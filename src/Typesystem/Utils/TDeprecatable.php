@@ -37,7 +37,11 @@ trait TDeprecatable
     {
         foreach ($this->directiveUsages as $directive) {
             if ($directive->getDirective() instanceof DeprecatedDirective) {
-                return $directive->getArgumentValues()->offsetGet('reason')->getValue()->getRawValue();
+                $value = $directive->getArgumentValues()->offsetGet('reason')->getValue()->getRawValue();
+
+                return \is_string($value)
+                    ? $value
+                    : null;
             }
         }
 

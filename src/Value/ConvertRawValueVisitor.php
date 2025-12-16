@@ -83,21 +83,25 @@ final class ConvertRawValueVisitor implements TypeVisitor
         return $inner;
     }
 
+    #[\Override]
     public function visitType(Type $type) : mixed
     {
         throw new \LogicException();
     }
 
+    #[\Override]
     public function visitInterface(InterfaceType $interface) : mixed
     {
         throw new \LogicException();
     }
 
+    #[\Override]
     public function visitUnion(UnionType $union) : mixed
     {
         throw new \LogicException();
     }
 
+    #[\Override]
     public function visitInput(InputType $input) : InputedValue
     {
         if ($this->rawValue === null) {
@@ -111,6 +115,7 @@ final class ConvertRawValueVisitor implements TypeVisitor
         return new InputValue($input, self::convertArgumentSet($input->getArguments(), $this->rawValue, $this->path, true));
     }
 
+    #[\Override]
     public function visitScalar(ScalarType $scalar) : InputedValue
     {
         if ($this->rawValue === null) {
@@ -122,6 +127,7 @@ final class ConvertRawValueVisitor implements TypeVisitor
         return new ScalarValue($scalar, $coercedValue, true);
     }
 
+    #[\Override]
     public function visitEnum(EnumType $enum) : InputedValue
     {
         if ($this->rawValue === null) {
@@ -135,6 +141,7 @@ final class ConvertRawValueVisitor implements TypeVisitor
         return new EnumValue($enum, $this->rawValue, true);
     }
 
+    #[\Override]
     public function visitNotNull(NotNullType $notNull) : InputedValue
     {
         $value = $notNull->getInnerType()->accept($this);
@@ -146,6 +153,7 @@ final class ConvertRawValueVisitor implements TypeVisitor
         return $value;
     }
 
+    #[\Override]
     public function visitList(ListType $list) : InputedValue
     {
         if ($this->rawValue === null) {

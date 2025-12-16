@@ -16,41 +16,49 @@ use Graphpinator\Typesystem\UnionType;
 
 final class TypeKindVisitor implements TypeVisitor
 {
+    #[\Override]
     public function visitType(Type $type) : string
     {
         return TypeKind::OBJECT;
     }
 
+    #[\Override]
     public function visitInterface(InterfaceType $interface) : string
     {
         return TypeKind::INTERFACE;
     }
 
+    #[\Override]
     public function visitUnion(UnionType $union) : string
     {
         return TypeKind::UNION;
     }
 
+    #[\Override]
     public function visitInput(InputType $input) : string
     {
         return TypeKind::INPUT_OBJECT;
     }
 
+    #[\Override]
     public function visitScalar(ScalarType $scalar) : string
     {
         return TypeKind::SCALAR;
     }
 
+    #[\Override]
     public function visitEnum(EnumType $enum) : string
     {
         return TypeKind::ENUM;
     }
 
+    #[\Override]
     public function visitNotNull(NotNullType $notNull) : string
     {
         return TypeKind::NON_NULL;
     }
 
+    #[\Override]
     public function visitList(ListType $list) : string
     {
         return TypeKind::LIST;

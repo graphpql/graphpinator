@@ -74,11 +74,17 @@ class Schema implements Entity
         return $this->subscription;
     }
 
+    #[\Override]
     final public function accept(EntityVisitor $visitor) : mixed
     {
         return $visitor->visitSchema($this);
     }
 
+    /**
+     * @param SchemaLocation $directive
+     * @phpcs:ignore
+     * @param array<string, mixed> $arguments
+     */
     final public function addDirective(
         SchemaLocation $directive,
         array $arguments = [],

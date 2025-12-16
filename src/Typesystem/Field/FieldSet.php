@@ -14,8 +14,11 @@ class FieldSet extends ImplicitObjectMap
 {
     protected const INNER_CLASS = Field::class;
 
+    #[\Override]
     protected function getKey(object $object) : string
     {
+        \assert($object instanceof Field);
+
         return $object->getName();
     }
 }

@@ -15,7 +15,6 @@ use Graphpinator\Parser\Value\EnumLiteral;
 use Graphpinator\Parser\Value\ListVal;
 use Graphpinator\Parser\Value\Literal;
 use Graphpinator\Parser\Value\ObjectVal;
-use Graphpinator\Parser\Value\Value;
 use Graphpinator\Parser\Value\ValueVisitor;
 use Graphpinator\Parser\Value\VariableRef;
 use Graphpinator\Typesystem\Contract\Inputable;
@@ -34,11 +33,13 @@ final class ConvertParserValueVisitor implements ValueVisitor
     {
     }
 
+    #[\Override]
     public function visitLiteral(Literal $literal) : InputedValue
     {
         return $this->type->accept(new ConvertRawValueVisitor($literal->getRawValue(), $this->path));
     }
 
+    #[\Override]
     public function visitEnumLiteral(EnumLiteral $enumLiteral) : InputedValue
     {
         if ($this->type instanceof NotNullType) {
@@ -52,6 +53,7 @@ final class ConvertParserValueVisitor implements ValueVisitor
         return $this->type->accept(new ConvertRawValueVisitor($enumLiteral->getRawValue(), $this->path));
     }
 
+    #[\Override]
     public function visitListVal(ListVal $listVal) : ListInputedValue
     {
         if ($this->type instanceof NotNullType) {
@@ -65,9 +67,7 @@ final class ConvertParserValueVisitor implements ValueVisitor
         $visitor = new self($this->type->getInnerType(), $this->variableSet, $this->path);
         $inner = [];
 
-        foreach ($listVal->getValue() as $index => $parserValue) {
-            \assert($parserValue instanceof Value);
-
+        foreach ($listVal->value as $index => $parserValue) {
             $this->path->add($index . ' <list index>');
             $inner[] = $parserValue->accept($visitor);
             $this->path->pop();
@@ -76,6 +76,7 @@ final class ConvertParserValueVisitor implements ValueVisitor
         return new ListInputedValue($this->type, $inner);
     }
 
+    #[\Override]
     public function visitObjectVal(ObjectVal $objectVal) : InputValue
     {
         if ($this->type instanceof NotNullType) {
@@ -86,7 +87,7 @@ final class ConvertParserValueVisitor implements ValueVisitor
             throw new InvalidValue($this->type->printName(), new \stdClass(), true);
         }
 
-        foreach ((array) $objectVal->getValue() as $name => $temp) {
+        foreach ((array) $objectVal->value as $name => $temp) {
             if ($this->type->getArguments()->offsetExists($name)) {
                 continue;
             }
@@ -100,8 +101,8 @@ final class ConvertParserValueVisitor implements ValueVisitor
         foreach ($this->type->getArguments()->toArray() as $argument) {
             $this->path->add($argument->getName() . ' <input field>');
 
-            if (\property_exists($objectVal->getValue(), $argument->getName())) {
-                $result = $objectVal->getValue()->{$argument->getName()}->accept(
+            if (\property_exists($objectVal->value, $argument->getName())) {
+                $result = $objectVal->value->{$argument->getName()}->accept(
                     new ConvertParserValueVisitor($argument->getType(), $this->variableSet, $this->path),
                 );
 
@@ -125,12 +126,13 @@ final class ConvertParserValueVisitor implements ValueVisitor
         return new InputValue($this->type, $inner);
     }
 
+    #[\Override]
     public function visitVariableRef(VariableRef $variableRef) : VariableValue
     {
         if ($this->variableSet instanceof VariableSet) {
-            return $this->variableSet->offsetExists($variableRef->getVarName())
-                ? new VariableValue($this->type, $this->variableSet->offsetGet($variableRef->getVarName()))
-                : throw new UnknownVariable($variableRef->getVarName());
+            return $this->variableSet->offsetExists($variableRef->varName)
+                ? new VariableValue($this->type, $this->variableSet->offsetGet($variableRef->varName))
+                : throw new UnknownVariable($variableRef->varName);
         }
 
         throw new VariableInConstContext();

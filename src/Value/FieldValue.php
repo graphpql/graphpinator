@@ -21,6 +21,7 @@ final class FieldValue implements \JsonSerializable
         }
     }
 
+    #[\Override]
     public function jsonSerialize() : ResolvedValue
     {
         return $this->value;

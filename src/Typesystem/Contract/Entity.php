@@ -11,5 +11,6 @@ namespace Graphpinator\Typesystem\Contract;
  */
 interface Entity extends Component
 {
+    #[\Override]
     public function accept(EntityVisitor $visitor) : mixed;
 }

@@ -21,6 +21,7 @@ abstract class ScalarType extends LeafType
         $this->directiveUsages = new DirectiveUsageSet();
     }
 
+    #[\Override]
     final public function accept(NamedTypeVisitor $visitor) : mixed
     {
         return $visitor->visitScalar($this);
@@ -31,6 +32,11 @@ abstract class ScalarType extends LeafType
         return $rawValue;
     }
 
+    /**
+     * @param ScalarLocation $directive
+     * @phpcs:ignore
+     * @param array<string, mixed> $arguments
+     */
     final public function addDirective(
         ScalarLocation $directive,
         array $arguments = [],

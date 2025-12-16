@@ -16,6 +16,7 @@ abstract class ValueError extends GraphpinatorBase
         parent::__construct($messageArgs);
     }
 
+    #[\Override]
     public function isOutputable() : bool
     {
         return $this->outputable;

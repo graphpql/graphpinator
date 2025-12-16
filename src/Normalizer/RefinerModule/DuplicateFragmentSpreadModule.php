@@ -21,6 +21,7 @@ final class DuplicateFragmentSpreadModule implements RefinerModule, SelectionVis
     {
     }
 
+    #[\Override]
     public function refine() : void
     {
         $this->visitedFragments = [];
@@ -31,11 +32,13 @@ final class DuplicateFragmentSpreadModule implements RefinerModule, SelectionVis
         }
     }
 
+    #[\Override]
     public function visitField(Field $field) : mixed
     {
         return null;
     }
 
+    #[\Override]
     public function visitFragmentSpread(
         FragmentSpread $fragmentSpread,
     ) : mixed
@@ -52,6 +55,7 @@ final class DuplicateFragmentSpreadModule implements RefinerModule, SelectionVis
         return null;
     }
 
+    #[\Override]
     public function visitInlineFragment(
         InlineFragment $inlineFragment,
     ) : mixed

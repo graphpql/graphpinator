@@ -31,6 +31,7 @@ final class ResolveVisitor implements TypeVisitor
     {
     }
 
+    #[\Override]
     public function visitType(Type $type) : TypeValue
     {
         \assert($this->parentResult instanceof TypeIntermediateValue);
@@ -43,36 +44,43 @@ final class ResolveVisitor implements TypeVisitor
         return new TypeValue($type, $this->result, $this->parentResult);
     }
 
+    #[\Override]
     public function visitInterface(InterfaceType $interface) : mixed
     {
         throw new \LogicException();
     }
 
+    #[\Override]
     public function visitUnion(UnionType $union) : mixed
     {
         throw new \LogicException();
     }
 
+    #[\Override]
     public function visitInput(InputType $input) : mixed
     {
         throw new \LogicException();
     }
 
+    #[\Override]
     public function visitScalar(ScalarType $scalar) : ResolvedValue
     {
         return $this->parentResult;
     }
 
+    #[\Override]
     public function visitEnum(EnumType $enum) : ResolvedValue
     {
         return $this->parentResult;
     }
 
+    #[\Override]
     public function visitNotNull(NotNullType $notNull) : ResolvedValue
     {
         return $notNull->getInnerType()->accept($this);
     }
 
+    #[\Override]
     public function visitList(ListType $list) : ListResolvedValue
     {
         \assert($this->parentResult instanceof ListIntermediateValue);

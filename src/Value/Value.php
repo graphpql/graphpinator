@@ -8,7 +8,7 @@ use Graphpinator\Typesystem\Contract\Type;
 
 interface Value
 {
-    public function getRawValue() : mixed;
+    public function getRawValue() : mixed; // @phpcs:ignore
 
     public function getType() : Type;
 }

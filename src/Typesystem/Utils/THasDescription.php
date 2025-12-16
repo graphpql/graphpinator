@@ -14,11 +14,9 @@ trait THasDescription
         $attrs = $ref->getAttributes(Description::class);
 
         if (\count($attrs) === 1) {
-            $attr = $attrs[0]->newInstance();
-
-            return $attr->getValue();
+            return $attrs[0]->newInstance()->getValue();
         }
 
-        return $ref->getConstant('DESCRIPTION') ?: null;
+        return null;
     }
 }
