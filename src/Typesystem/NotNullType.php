@@ -11,12 +11,6 @@ use Graphpinator\Typesystem\Contract\TypeVisitor;
 final class NotNullType extends ModifierType
 {
     #[\Override]
-    public function getShapingType() : Type
-    {
-        return $this->getInnerType()->getShapingType();
-    }
-
-    #[\Override]
     public function accept(TypeVisitor $visitor) : mixed
     {
         return $visitor->visitNotNull($this);

@@ -21,6 +21,7 @@ use Graphpinator\Parser\Fragment\FragmentSet;
 use Graphpinator\Parser\FragmentSpread\FragmentSpreadSet;
 use Graphpinator\Parser\Operation\Operation;
 use Graphpinator\Parser\Operation\OperationSet;
+use Graphpinator\Parser\OperationType;
 use Graphpinator\Parser\ParsedRequest;
 use Graphpinator\Request\JsonRequestFactory;
 use Graphpinator\Request\Request;
@@ -126,10 +127,7 @@ final class ModuleTest extends TestCase
                         return new ParsedRequest(
                             new OperationSet([
                                 new Operation(
-                                    'query',
-                                    null,
-                                    null,
-                                    null,
+                                    OperationType::QUERY,
                                     new FieldSet(
                                         [new Field('field')],
                                         new FragmentSpreadSet(),
@@ -211,7 +209,7 @@ final class ModuleTest extends TestCase
                         return new NormalizedRequest(
                             new NormalizerOperationSet([
                                 new NormalizerOperation(
-                                    'query',
+                                    OperationType::QUERY,
                                     null,
                                     $this->query,
                                     new SelectionSet([
@@ -299,7 +297,7 @@ final class ModuleTest extends TestCase
 
                         return new FinalizedRequest(
                             new NormalizerOperation(
-                                'query',
+                                OperationType::QUERY,
                                 null,
                                 $this->query,
                                 new SelectionSet([

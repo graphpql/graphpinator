@@ -108,7 +108,7 @@ final class InputValue implements InputedValue, \IteratorAggregate
     #[\Override]
     public function getIterator() : \ArrayIterator
     {
-        return new \ArrayIterator($this->value);
+        return new \ArrayIterator((array) $this->value);
     }
 
     public function __isset(string $name) : bool

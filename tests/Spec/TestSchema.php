@@ -419,7 +419,6 @@ final class TestSchema
         return new class extends Type
         {
             protected const NAME = 'Abc';
-            protected const DESCRIPTION = 'Test Abc description';
 
             public function validateNonNullValue($rawValue) : bool
             {
@@ -479,7 +478,6 @@ final class TestSchema
         return new class extends Type
         {
             protected const NAME = 'Xyz';
-            protected const DESCRIPTION = null;
 
             public function __construct()
             {
@@ -511,7 +509,6 @@ final class TestSchema
         return new class extends Type
         {
             protected const NAME = 'Zzz';
-            protected const DESCRIPTION = null;
 
             public function validateNonNullValue($rawValue) : bool
             {
@@ -538,7 +535,6 @@ final class TestSchema
         return new class extends Type
         {
             protected const NAME = 'FilterInner';
-            protected const DESCRIPTION = null;
 
             public function __construct()
             {
@@ -598,7 +594,6 @@ final class TestSchema
         return new class extends Type
         {
             protected const NAME = 'FilterData';
-            protected const DESCRIPTION = null;
 
             public function __construct()
             {
@@ -720,7 +715,6 @@ final class TestSchema
         return new class extends InterfaceType
         {
             protected const NAME = 'TestInterface';
-            protected const DESCRIPTION = 'TestInterface Description';
 
             public function createResolvedValue($rawValue) : TypeIntermediateValue
             {
@@ -741,7 +735,6 @@ final class TestSchema
         return new class extends InterfaceType
         {
             protected const NAME = 'InterfaceAbc';
-            protected const DESCRIPTION = 'Interface Abc Description';
 
             public function createResolvedValue($rawValue) : TypeIntermediateValue
             {
@@ -765,7 +758,6 @@ final class TestSchema
         return new class extends InterfaceType
         {
             protected const NAME = 'InterfaceEfg';
-            protected const DESCRIPTION = 'Interface Efg Description';
 
             public function __construct()
             {
@@ -796,7 +788,6 @@ final class TestSchema
         return new class extends Type
         {
             protected const NAME = 'InterfaceChildType';
-            protected const DESCRIPTION = null;
 
             public function __construct()
             {
@@ -835,7 +826,6 @@ final class TestSchema
         return new class extends Type
         {
             protected const NAME = 'FragmentTypeA';
-            protected const DESCRIPTION = null;
 
             public function __construct()
             {
@@ -875,7 +865,6 @@ final class TestSchema
         return new class extends Type
         {
             protected const NAME = 'FragmentTypeB';
-            protected const DESCRIPTION = null;
 
             public function __construct()
             {
@@ -1177,7 +1166,6 @@ final class TestSchema
         return new class extends Type
         {
             protected const NAME = 'SimpleType';
-            protected const DESCRIPTION = 'Simple desc';
 
             public function validateNonNullValue($rawValue) : bool
             {
@@ -1236,7 +1224,6 @@ final class TestSchema
         return new class extends Type
         {
             protected const NAME = 'SimpleEmptyTestInput';
-            protected const DESCRIPTION = null;
 
             public function validateNonNullValue($rawValue) : bool
             {

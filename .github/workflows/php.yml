@@ -69,7 +69,7 @@ jobs:
       run: composer validate
 
     - name: Install dependencies
-      run: composer install --prefer-dist --no-progress --no-suggest
+      run: composer update --prefer-dist --no-progress --no-suggest
 
     - name: Tests
       run: composer run-script phpunit-no-coverage
