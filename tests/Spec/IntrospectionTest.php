@@ -65,10 +65,10 @@ final class IntrospectionTest extends TestCase
                         '__schema' => [
                             'types' => [
                                 ['name' => 'Query', 'description' => null],
-                                ['name' => 'Abc', 'description' => 'Test Abc description'],
+                                ['name' => 'Abc', 'description' => null],
                                 ['name' => 'Xyz', 'description' => null],
                                 ['name' => 'Zzz', 'description' => null],
-                                ['name' => 'TestInterface', 'description' => 'TestInterface Description'],
+                                ['name' => 'TestInterface', 'description' => null],
                                 ['name' => 'TestUnion', 'description' => null],
                                 ['name' => 'TestUnionInvalidResolvedType', 'description' => null],
                                 ['name' => 'CompositeInput', 'description' => null],
@@ -81,9 +81,9 @@ final class IntrospectionTest extends TestCase
                                 ['name' => 'ComplexDefaultsInput', 'description' => null],
                                 ['name' => 'NullFieldResolution', 'description' => null],
                                 ['name' => 'NullListResolution', 'description' => null],
-                                ['name' => 'SimpleType', 'description' => 'Simple desc'],
-                                ['name' => 'InterfaceAbc', 'description' => 'Interface Abc Description'],
-                                ['name' => 'InterfaceEfg', 'description' => 'Interface Efg Description'],
+                                ['name' => 'SimpleType', 'description' => null],
+                                ['name' => 'InterfaceAbc', 'description' => null],
+                                ['name' => 'InterfaceEfg', 'description' => null],
                                 ['name' => 'FragmentTypeA', 'description' => null],
                                 ['name' => 'FragmentTypeB', 'description' => null],
                                 ['name' => 'SimpleEmptyTestInput', 'description' => null],
@@ -215,7 +215,7 @@ final class IntrospectionTest extends TestCase
                         '__type' => [
                             'kind' => 'OBJECT',
                             'name' => 'Abc',
-                            'description' => 'Test Abc description',
+                            'description' => null,
                             'fields' => [['name' => 'fieldXyz']],
                             'interfaces' => [],
                             'possibleTypes' => null,
@@ -305,7 +305,7 @@ final class IntrospectionTest extends TestCase
                         '__type' => [
                             'kind' => 'INTERFACE',
                             'name' => 'TestInterface',
-                            'description' => 'TestInterface Description',
+                            'description' => null,
                             'fields' => [['name' => 'name']],
                             'interfaces' => [],
                             'possibleTypes' => [['name' => 'Xyz']],
@@ -745,7 +745,7 @@ final class IntrospectionTest extends TestCase
                 '__type' => [
                     'kind' => 'OBJECT',
                     'name' => 'Abc',
-                    'description' => 'Test Abc description',
+                    'description' => null,
                     'fields' => [],
                     'interfaces' => [],
                     'possibleTypes' => null,

@@ -22,6 +22,7 @@ use Graphpinator\Parser\FragmentSpread\InlineFragmentSpread;
 use Graphpinator\Parser\FragmentSpread\NamedFragmentSpread;
 use Graphpinator\Parser\Operation\Operation;
 use Graphpinator\Parser\Operation\OperationSet;
+use Graphpinator\Parser\OperationType;
 use Graphpinator\Parser\ParsedRequest;
 use Graphpinator\Parser\TypeRef\ListTypeRef;
 use Graphpinator\Parser\TypeRef\NamedTypeRef;
@@ -48,10 +49,7 @@ final class NormalizerTest extends TestCase
                 new ParsedRequest(
                     new OperationSet([
                         new Operation(
-                            TokenType::MUTATION->value,
-                            null,
-                            null,
-                            null,
+                            OperationType::MUTATION,
                             new FieldSet([], new FragmentSpreadSet()),
                         ),
                     ]),
@@ -63,10 +61,7 @@ final class NormalizerTest extends TestCase
                 new ParsedRequest(
                     new OperationSet([
                         new Operation(
-                            TokenType::SUBSCRIPTION->value,
-                            null,
-                            null,
-                            null,
+                            OperationType::SUBSCRIPTION,
                             new FieldSet([], new FragmentSpreadSet()),
                         ),
                     ]),
@@ -78,10 +73,7 @@ final class NormalizerTest extends TestCase
                 new ParsedRequest(
                     new OperationSet([
                         new Operation(
-                            TokenType::QUERY->value,
-                            null,
-                            null,
-                            null,
+                            OperationType::QUERY,
                             new FieldSet([], new FragmentSpreadSet([
                                 new NamedFragmentSpread('fragmentName'),
                             ])),
@@ -95,10 +87,7 @@ final class NormalizerTest extends TestCase
                 new ParsedRequest(
                     new OperationSet([
                         new Operation(
-                            TokenType::QUERY->value,
-                            null,
-                            null,
-                            null,
+                            OperationType::QUERY,
                             new FieldSet([], new FragmentSpreadSet()),
                         ),
                     ]),
@@ -151,10 +140,7 @@ final class NormalizerTest extends TestCase
                 new ParsedRequest(
                     new OperationSet([
                         new Operation(
-                            TokenType::QUERY->value,
-                            null,
-                            null,
-                            null,
+                            OperationType::QUERY,
                             new FieldSet([], new FragmentSpreadSet()),
                         ),
                     ]),
@@ -191,10 +177,7 @@ final class NormalizerTest extends TestCase
                 new ParsedRequest(
                     new OperationSet([
                         new Operation(
-                            TokenType::QUERY->value,
-                            null,
-                            null,
-                            null,
+                            OperationType::QUERY,
                             new FieldSet([], new FragmentSpreadSet()),
                         ),
                     ]),
@@ -233,7 +216,8 @@ final class NormalizerTest extends TestCase
         $parseResult = new ParsedRequest(
             new OperationSet([
                 new Operation(
-                    TokenType::QUERY->value,
+                    OperationType::QUERY,
+                    new FieldSet([], new FragmentSpreadSet()),
                     'operationName',
                     new VariableSet([
                         new Variable(
@@ -250,7 +234,6 @@ final class NormalizerTest extends TestCase
                         ),
                     ]),
                     new DirectiveSet(),
-                    new FieldSet([], new FragmentSpreadSet()),
                 ),
             ]),
             new FragmentSet(),
@@ -278,10 +261,7 @@ final class NormalizerTest extends TestCase
         $parseResult = new ParsedRequest(
             new OperationSet([
                 new Operation(
-                    TokenType::QUERY->value,
-                    'operationName',
-                    null,
-                    null,
+                    OperationType::QUERY,
                     new FieldSet([
                         new Field(
                             'fieldAbc',
@@ -327,6 +307,7 @@ final class NormalizerTest extends TestCase
                             ]),
                         ),
                     ])),
+                    'operationName',
                 ),
             ]),
             new FragmentSet([

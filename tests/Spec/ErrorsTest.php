@@ -141,7 +141,7 @@ final class ErrorsTest extends TestCase
                 Json::fromNative((object) [
                     'errors' => [[
                         'message' => 'Unknown directive "blaDirective".',
-                        'path' => [' <operation>', 'fieldAbc <field>', 'blaDirective <directive>'],
+                        'path' => ['<shorthand operation>', 'fieldAbc <field>', 'blaDirective <directive>'],
                     ],
                     ],
                 ]),
@@ -153,7 +153,7 @@ final class ErrorsTest extends TestCase
                 Json::fromNative((object) [
                     'errors' => [[
                         'message' => 'Unknown type "BlaType".',
-                        'path' => [' <operation>', 'fieldAbc <field>', '<inline fragment>'],
+                        'path' => ['<shorthand operation>', 'fieldAbc <field>', '<inline fragment>'],
                     ],
                     ],
                 ]),
@@ -165,7 +165,7 @@ final class ErrorsTest extends TestCase
                 Json::fromNative((object) [
                     'errors' => [[
                         'message' => 'Fragment type condition must be outputable composite type.',
-                        'path' => [' <operation>', 'fieldAbc <field>', '<inline fragment>'],
+                        'path' => ['<shorthand operation>', 'fieldAbc <field>', '<inline fragment>'],
                     ],
                     ],
                 ]),
@@ -177,7 +177,7 @@ final class ErrorsTest extends TestCase
                 Json::fromNative((object) [
                     'errors' => [[
                         'message' => 'Fragment type condition must be outputable composite type.',
-                        'path' => [' <operation>', 'fieldAbc <field>', 'fragmentName <fragment spread>'],
+                        'path' => ['<shorthand operation>', 'fieldAbc <field>', 'fragmentName <fragment spread>'],
                     ],
                     ],
                 ]),
@@ -189,7 +189,7 @@ final class ErrorsTest extends TestCase
                 Json::fromNative((object) [
                     'errors' => [[
                         'message' => 'Fragment type condition must be outputable composite type.',
-                        'path' => [' <operation>', 'fieldAbc <field>', '<inline fragment>'],
+                        'path' => ['<shorthand operation>', 'fieldAbc <field>', '<inline fragment>'],
                     ],
                     ],
                 ]),
@@ -201,7 +201,7 @@ final class ErrorsTest extends TestCase
                 Json::fromNative((object) [
                     'errors' => [[
                         'message' => 'Unknown argument "if" provided.',
-                        'path' => [' <operation>', 'fieldAbc <field>', 'fieldXyz <field>', 'testDirective <directive>'],
+                        'path' => ['<shorthand operation>', 'fieldAbc <field>', 'fieldXyz <field>', 'testDirective <directive>'],
                     ],
                     ],
                 ]),
@@ -213,7 +213,7 @@ final class ErrorsTest extends TestCase
                 Json::fromNative((object) [
                     'errors' => [[
                         'message' => 'Unknown field "notDefinedField" requested for type "SimpleType".',
-                        'path' => [' <operation>', 'fieldInvalidInput <field>', 'notDefinedField <field>'],
+                        'path' => ['<shorthand operation>', 'fieldInvalidInput <field>', 'notDefinedField <field>'],
                     ],
                     ],
                 ]),
@@ -353,7 +353,7 @@ final class ErrorsTest extends TestCase
                 Json::fromNative((object) [
                     'errors' => [[
                         'message' => 'Invalid fragment type condition. ("InterfaceEfg" is not instance of "Xyz").',
-                        'path' => [' <operation>', 'fieldUnion <field>', '<inline fragment>', 'fieldXyz <field>', '<inline fragment>'],
+                        'path' => ['<shorthand operation>', 'fieldUnion <field>', '<inline fragment>', 'fieldXyz <field>', '<inline fragment>'],
                     ],
                     ],
                 ]),
