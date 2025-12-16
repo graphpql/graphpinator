@@ -28,6 +28,7 @@ final class ValidateFieldsCanMergeModule implements ValidatorModule, SelectionVi
     {
     }
 
+    #[\Override]
     public function validate() : void
     {
         $this->fieldsForName = [];
@@ -38,6 +39,7 @@ final class ValidateFieldsCanMergeModule implements ValidatorModule, SelectionVi
         }
     }
 
+    #[\Override]
     public function visitField(Field $field) : mixed
     {
         if (\array_key_exists($field->getOutputName(), $this->fieldsForName)) {
@@ -65,6 +67,7 @@ final class ValidateFieldsCanMergeModule implements ValidatorModule, SelectionVi
         return null;
     }
 
+    #[\Override]
     public function visitFragmentSpread(
         FragmentSpread $fragmentSpread,
     ) : mixed
@@ -74,6 +77,7 @@ final class ValidateFieldsCanMergeModule implements ValidatorModule, SelectionVi
         return null;
     }
 
+    #[\Override]
     public function visitInlineFragment(
         InlineFragment $inlineFragment,
     ) : mixed

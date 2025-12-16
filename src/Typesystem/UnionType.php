@@ -30,11 +30,13 @@ abstract class UnionType extends AbstractType
         return $this->types;
     }
 
+    #[\Override]
     final public function isInstanceOf(Type $type) : bool
     {
         return $type instanceof static;
     }
 
+    #[\Override]
     final public function isImplementedBy(Type $type) : bool
     {
         foreach ($this->types as $temp) {
@@ -46,6 +48,7 @@ abstract class UnionType extends AbstractType
         return false;
     }
 
+    #[\Override]
     final public function accept(NamedTypeVisitor $visitor) : mixed
     {
         return $visitor->visitUnion($this);

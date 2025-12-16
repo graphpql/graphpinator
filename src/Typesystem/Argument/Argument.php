@@ -66,6 +66,7 @@ final class Argument implements Component
         return $this;
     }
 
+    #[\Override]
     public function accept(ComponentVisitor $visitor) : mixed
     {
         return $visitor->visitArgument($this);

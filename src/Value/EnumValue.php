@@ -8,11 +8,13 @@ use Graphpinator\Typesystem\EnumType;
 
 final class EnumValue extends LeafValue
 {
+    #[\Override]
     public function printValue() : string
     {
         return $this->rawValue;
     }
 
+    #[\Override]
     public function getRawValue(bool $forResolvers = false) : string|object
     {
         \assert($this->type instanceof EnumType);

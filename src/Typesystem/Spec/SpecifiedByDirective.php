@@ -16,6 +16,7 @@ final class SpecifiedByDirective extends Directive implements ScalarLocation
 {
     protected const NAME = 'specifiedBy';
 
+    #[\Override]
     protected function getFieldDefinition() : ArgumentSet
     {
         return new ArgumentSet([

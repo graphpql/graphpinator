@@ -34,11 +34,13 @@ final class ConvertParserValueVisitor implements ValueVisitor
     {
     }
 
+    #[\Override]
     public function visitLiteral(Literal $literal) : InputedValue
     {
         return $this->type->accept(new ConvertRawValueVisitor($literal->getRawValue(), $this->path));
     }
 
+    #[\Override]
     public function visitEnumLiteral(EnumLiteral $enumLiteral) : InputedValue
     {
         if ($this->type instanceof NotNullType) {
@@ -52,6 +54,7 @@ final class ConvertParserValueVisitor implements ValueVisitor
         return $this->type->accept(new ConvertRawValueVisitor($enumLiteral->getRawValue(), $this->path));
     }
 
+    #[\Override]
     public function visitListVal(ListVal $listVal) : ListInputedValue
     {
         if ($this->type instanceof NotNullType) {
@@ -76,6 +79,7 @@ final class ConvertParserValueVisitor implements ValueVisitor
         return new ListInputedValue($this->type, $inner);
     }
 
+    #[\Override]
     public function visitObjectVal(ObjectVal $objectVal) : InputValue
     {
         if ($this->type instanceof NotNullType) {
@@ -125,6 +129,7 @@ final class ConvertParserValueVisitor implements ValueVisitor
         return new InputValue($this->type, $inner);
     }
 
+    #[\Override]
     public function visitVariableRef(VariableRef $variableRef) : VariableValue
     {
         if ($this->variableSet instanceof VariableSet) {

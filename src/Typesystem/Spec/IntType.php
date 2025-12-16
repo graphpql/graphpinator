@@ -13,6 +13,7 @@ final class IntType extends ScalarType
     protected const NAME = 'Int';
     private const INT_LIMIT = 2 ** 31;
 
+    #[\Override]
     public function validateNonNullValue(mixed $rawValue) : bool
     {
         return \is_int($rawValue)

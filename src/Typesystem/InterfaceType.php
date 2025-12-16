@@ -37,12 +37,14 @@ abstract class InterfaceType extends AbstractType implements
         $this->directiveUsages = new DirectiveUsageSet();
     }
 
+    #[\Override]
     final public function isInstanceOf(Type $type) : bool
     {
         return $type instanceof static
             || ($type instanceof self && $this->implements($type));
     }
 
+    #[\Override]
     final public function isImplementedBy(Type $type) : bool
     {
         if ($type instanceof NotNullType) {
@@ -53,6 +55,7 @@ abstract class InterfaceType extends AbstractType implements
             && $type->implements($this);
     }
 
+    #[\Override]
     final public function getFields() : FieldSet
     {
         if (!$this->fields instanceof FieldSet) {
@@ -77,6 +80,7 @@ abstract class InterfaceType extends AbstractType implements
         return $this->fields;
     }
 
+    #[\Override]
     final public function accept(NamedTypeVisitor $visitor) : mixed
     {
         return $visitor->visitInterface($this);
@@ -98,6 +102,7 @@ abstract class InterfaceType extends AbstractType implements
         return $this;
     }
 
+    #[\Override]
     abstract protected function getFieldDefinition() : FieldSet;
 
     private function validateCycles(array $stack = []) : void

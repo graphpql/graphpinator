@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a182b6fa66d932cf97aaa45a45d03b2d",
+    "content-hash": "a8351db297b88c491d2dafc9f2b4b202",
     "packages": [
         {
             "name": "infinityloop-dev/graphpinator-common",
@@ -57,29 +57,29 @@
         },
         {
             "name": "infinityloop-dev/graphpinator-parser",
-            "version": "v1.2",
+            "version": "v2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/graphpql/graphpinator-parser.git",
-                "reference": "760e1473312c2933ffee68fccef2b96c902597b6"
+                "reference": "95f03d4ca204e769f31e5c0a50a4bc246848386e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/graphpql/graphpinator-parser/zipball/760e1473312c2933ffee68fccef2b96c902597b6",
-                "reference": "760e1473312c2933ffee68fccef2b96c902597b6",
+                "url": "https://api.github.com/repos/graphpql/graphpinator-parser/zipball/95f03d4ca204e769f31e5c0a50a4bc246848386e",
+                "reference": "95f03d4ca204e769f31e5c0a50a4bc246848386e",
                 "shasum": ""
             },
             "require": {
                 "infinityloop-dev/graphpinator-common": "^2.0",
-                "infinityloop-dev/graphpinator-tokenizer": "^1.2",
+                "infinityloop-dev/graphpinator-tokenizer": "^1.3",
                 "infinityloop-dev/utils": "^2.0",
-                "php": ">=8.0"
+                "php": ">=8.2"
             },
             "require-dev": {
-                "infection/infection": "^0.27",
-                "infinityloop-dev/coding-standard": "^0.2",
+                "infection/infection": "^0.29",
                 "phpstan/phpstan": "^1.10",
-                "phpunit/phpunit": "^10.4"
+                "phpunit/phpunit": "^10.4",
+                "webthinx/codestyle": "^1.1"
             },
             "type": "library",
             "autoload": {
@@ -102,22 +102,22 @@
             "homepage": "https://github.com/graphpql",
             "support": {
                 "issues": "https://github.com/graphpql/graphpinator-parser/issues",
-                "source": "https://github.com/graphpql/graphpinator-parser/tree/v1.2"
+                "source": "https://github.com/graphpql/graphpinator-parser/tree/v2.0"
             },
-            "time": "2023-11-10T14:47:00+00:00"
+            "time": "2025-12-16T16:25:53+00:00"
         },
         {
             "name": "infinityloop-dev/graphpinator-source",
-            "version": "v1.1",
+            "version": "v1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/graphpql/graphpinator-source.git",
-                "reference": "d0a2429560f3e110d03e2ff0c123373a1b779be2"
+                "reference": "657532e333ca5b567611c1e12581f563544c15f1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/graphpql/graphpinator-source/zipball/d0a2429560f3e110d03e2ff0c123373a1b779be2",
-                "reference": "d0a2429560f3e110d03e2ff0c123373a1b779be2",
+                "url": "https://api.github.com/repos/graphpql/graphpinator-source/zipball/657532e333ca5b567611c1e12581f563544c15f1",
+                "reference": "657532e333ca5b567611c1e12581f563544c15f1",
                 "shasum": ""
             },
             "require": {
@@ -126,9 +126,9 @@
             },
             "require-dev": {
                 "infection/infection": "^0.27",
-                "infinityloop-dev/coding-standard": "^0.2",
                 "phpstan/phpstan": "^1.10",
-                "phpunit/phpunit": "^10.2"
+                "phpunit/phpunit": "^10.2",
+                "webthinx/codestyle": "^1.1"
             },
             "type": "library",
             "autoload": {
@@ -151,22 +151,22 @@
             "homepage": "https://www.infinityloop.dev/",
             "support": {
                 "issues": "https://github.com/graphpql/graphpinator-source/issues",
-                "source": "https://github.com/graphpql/graphpinator-source/tree/v1.1"
+                "source": "https://github.com/graphpql/graphpinator-source/tree/v1.2"
             },
-            "time": "2023-11-10T13:14:05+00:00"
+            "time": "2025-12-16T12:54:19+00:00"
         },
         {
             "name": "infinityloop-dev/graphpinator-tokenizer",
-            "version": "v1.2",
+            "version": "v1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/graphpql/graphpinator-tokenizer.git",
-                "reference": "20af497ce3fd89b43bfbe993107c4b481576cb3d"
+                "reference": "315ebecf3aa6199960883e36e7d9b49011a9e611"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/graphpql/graphpinator-tokenizer/zipball/20af497ce3fd89b43bfbe993107c4b481576cb3d",
-                "reference": "20af497ce3fd89b43bfbe993107c4b481576cb3d",
+                "url": "https://api.github.com/repos/graphpql/graphpinator-tokenizer/zipball/315ebecf3aa6199960883e36e7d9b49011a9e611",
+                "reference": "315ebecf3aa6199960883e36e7d9b49011a9e611",
                 "shasum": ""
             },
             "require": {
@@ -175,10 +175,10 @@
                 "php": ">=8.1"
             },
             "require-dev": {
-                "infection/infection": "^0.27",
-                "infinityloop-dev/coding-standard": "^0.2",
+                "infection/infection": "^0.29",
                 "phpstan/phpstan": "^1.10",
-                "phpunit/phpunit": "^10.4"
+                "phpunit/phpunit": "^10.4",
+                "webthinx/codestyle": "^1.1"
             },
             "type": "library",
             "autoload": {
@@ -198,12 +198,12 @@
                 }
             ],
             "description": "Tokenizer subproject for GraPHPinator: GraphQL server implementation for PHP.",
-            "homepage": "https://www.infinityloop.dev/",
+            "homepage": "https://github.com/graphpql/",
             "support": {
                 "issues": "https://github.com/graphpql/graphpinator-tokenizer/issues",
-                "source": "https://github.com/graphpql/graphpinator-tokenizer/tree/v1.2"
+                "source": "https://github.com/graphpql/graphpinator-tokenizer/tree/v1.3"
             },
-            "time": "2023-11-10T13:55:56+00:00"
+            "time": "2025-12-16T13:16:48+00:00"
         },
         {
             "name": "infinityloop-dev/utils",
@@ -1569,6 +1569,54 @@
             "time": "2022-02-21T01:04:05+00:00"
         },
         {
+            "name": "phpstan/extension-installer",
+            "version": "1.4.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phpstan/extension-installer.git",
+                "reference": "85e90b3942d06b2326fba0403ec24fe912372936"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phpstan/extension-installer/zipball/85e90b3942d06b2326fba0403ec24fe912372936",
+                "reference": "85e90b3942d06b2326fba0403ec24fe912372936",
+                "shasum": ""
+            },
+            "require": {
+                "composer-plugin-api": "^2.0",
+                "php": "^7.2 || ^8.0",
+                "phpstan/phpstan": "^1.9.0 || ^2.0"
+            },
+            "require-dev": {
+                "composer/composer": "^2.0",
+                "php-parallel-lint/php-parallel-lint": "^1.2.0",
+                "phpstan/phpstan-strict-rules": "^0.11 || ^0.12 || ^1.0"
+            },
+            "type": "composer-plugin",
+            "extra": {
+                "class": "PHPStan\\ExtensionInstaller\\Plugin"
+            },
+            "autoload": {
+                "psr-4": {
+                    "PHPStan\\ExtensionInstaller\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Composer plugin for automatic installation of PHPStan extensions",
+            "keywords": [
+                "dev",
+                "static analysis"
+            ],
+            "support": {
+                "issues": "https://github.com/phpstan/extension-installer/issues",
+                "source": "https://github.com/phpstan/extension-installer/tree/1.4.3"
+            },
+            "time": "2024-09-04T20:21:43+00:00"
+        },
+        {
             "name": "phpstan/phpdoc-parser",
             "version": "2.3.0",
             "source": {
@@ -1667,6 +1715,101 @@
                 }
             ],
             "time": "2025-12-05T10:24:31+00:00"
+        },
+        {
+            "name": "phpstan/phpstan-deprecation-rules",
+            "version": "2.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phpstan/phpstan-deprecation-rules.git",
+                "reference": "468e02c9176891cc901143da118f09dc9505fc2f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phpstan/phpstan-deprecation-rules/zipball/468e02c9176891cc901143da118f09dc9505fc2f",
+                "reference": "468e02c9176891cc901143da118f09dc9505fc2f",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.4 || ^8.0",
+                "phpstan/phpstan": "^2.1.15"
+            },
+            "require-dev": {
+                "php-parallel-lint/php-parallel-lint": "^1.2",
+                "phpstan/phpstan-phpunit": "^2.0",
+                "phpunit/phpunit": "^9.6"
+            },
+            "type": "phpstan-extension",
+            "extra": {
+                "phpstan": {
+                    "includes": [
+                        "rules.neon"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "PHPStan\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "PHPStan rules for detecting usage of deprecated classes, methods, properties, constants and traits.",
+            "support": {
+                "issues": "https://github.com/phpstan/phpstan-deprecation-rules/issues",
+                "source": "https://github.com/phpstan/phpstan-deprecation-rules/tree/2.0.3"
+            },
+            "time": "2025-05-14T10:56:57+00:00"
+        },
+        {
+            "name": "phpstan/phpstan-strict-rules",
+            "version": "2.0.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phpstan/phpstan-strict-rules.git",
+                "reference": "d6211c46213d4181054b3d77b10a5c5cb0d59538"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phpstan/phpstan-strict-rules/zipball/d6211c46213d4181054b3d77b10a5c5cb0d59538",
+                "reference": "d6211c46213d4181054b3d77b10a5c5cb0d59538",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.4 || ^8.0",
+                "phpstan/phpstan": "^2.1.29"
+            },
+            "require-dev": {
+                "php-parallel-lint/php-parallel-lint": "^1.2",
+                "phpstan/phpstan-deprecation-rules": "^2.0",
+                "phpstan/phpstan-phpunit": "^2.0",
+                "phpunit/phpunit": "^9.6"
+            },
+            "type": "phpstan-extension",
+            "extra": {
+                "phpstan": {
+                    "includes": [
+                        "rules.neon"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "PHPStan\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Extra strict and opinionated rules for PHPStan",
+            "support": {
+                "issues": "https://github.com/phpstan/phpstan-strict-rules/issues",
+                "source": "https://github.com/phpstan/phpstan-strict-rules/tree/2.0.7"
+            },
+            "time": "2025-09-26T11:19:08+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -3237,6 +3380,72 @@
             "time": "2023-02-07T11:34:05+00:00"
         },
         {
+            "name": "shipmonk/composer-dependency-analyser",
+            "version": "1.8.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/shipmonk-rnd/composer-dependency-analyser.git",
+                "reference": "975e5873b519d5180b1017a5dfb43d80781abd45"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/shipmonk-rnd/composer-dependency-analyser/zipball/975e5873b519d5180b1017a5dfb43d80781abd45",
+                "reference": "975e5873b519d5180b1017a5dfb43d80781abd45",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "ext-tokenizer": "*",
+                "php": "^7.2 || ^8.0"
+            },
+            "require-dev": {
+                "editorconfig-checker/editorconfig-checker": "^10.7.0",
+                "ergebnis/composer-normalize": "^2.19.0",
+                "ext-dom": "*",
+                "ext-libxml": "*",
+                "phpcompatibility/php-compatibility": "^9.3.5",
+                "phpstan/phpstan": "^1.12.26",
+                "phpstan/phpstan-phpunit": "^1.4.2",
+                "phpstan/phpstan-strict-rules": "^1.6.2",
+                "phpunit/phpunit": "^8.5.42 || ^9.6.23",
+                "shipmonk/name-collision-detector": "^2.1.1",
+                "slevomat/coding-standard": "^8.15.0"
+            },
+            "bin": [
+                "bin/composer-dependency-analyser"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "ShipMonk\\ComposerDependencyAnalyser\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Fast detection of composer dependency issues (dead dependencies, shadow dependencies, misplaced dependencies)",
+            "keywords": [
+                "analyser",
+                "composer",
+                "composer dependency",
+                "dead code",
+                "dead dependency",
+                "detector",
+                "dev",
+                "misplaced dependency",
+                "shadow dependency",
+                "static analysis",
+                "unused code",
+                "unused dependency"
+            ],
+            "support": {
+                "issues": "https://github.com/shipmonk-rnd/composer-dependency-analyser/issues",
+                "source": "https://github.com/shipmonk-rnd/composer-dependency-analyser/tree/1.8.4"
+            },
+            "time": "2025-11-25T14:38:16+00:00"
+        },
+        {
             "name": "slevomat/coding-standard",
             "version": "8.25.1",
             "source": {
@@ -4261,6 +4470,64 @@
             "time": "2025-12-01T09:13:36+00:00"
         },
         {
+            "name": "thecodingmachine/phpstan-safe-rule",
+            "version": "v1.4.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thecodingmachine/phpstan-safe-rule.git",
+                "reference": "5c804889253ce9498ef185e108e9f94b6023208e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thecodingmachine/phpstan-safe-rule/zipball/5c804889253ce9498ef185e108e9f94b6023208e",
+                "reference": "5c804889253ce9498ef185e108e9f94b6023208e",
+                "shasum": ""
+            },
+            "require": {
+                "nikic/php-parser": "^5",
+                "php": "^8.1",
+                "phpstan/phpstan": "^2.1.11",
+                "thecodingmachine/safe": "^1.2 || ^2.0 || ^3.0"
+            },
+            "require-dev": {
+                "php-coveralls/php-coveralls": "^2.1",
+                "phpunit/phpunit": "^10.4",
+                "squizlabs/php_codesniffer": "^3.4"
+            },
+            "type": "phpstan-extension",
+            "extra": {
+                "phpstan": {
+                    "includes": [
+                        "phpstan-safe-rule.neon"
+                    ]
+                },
+                "branch-alias": {
+                    "dev-master": "2.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "TheCodingMachine\\Safe\\PHPStan\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "David Négrier",
+                    "email": "d.negrier@thecodingmachine.com"
+                }
+            ],
+            "description": "A PHPStan rule to detect safety issues. Must be used in conjunction with thecodingmachine/safe",
+            "support": {
+                "issues": "https://github.com/thecodingmachine/phpstan-safe-rule/issues",
+                "source": "https://github.com/thecodingmachine/phpstan-safe-rule/tree/v1.4.3"
+            },
+            "time": "2025-11-21T09:41:49+00:00"
+        },
+        {
             "name": "thecodingmachine/safe",
             "version": "v3.3.0",
             "source": {
@@ -4509,7 +4776,7 @@
         },
         {
             "name": "webthinx/codestyle",
-            "version": "dev-main",
+            "version": "v1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webthinx/codestyle.git",
@@ -4526,7 +4793,6 @@
                 "slevomat/coding-standard": "^8.15",
                 "squizlabs/php_codesniffer": "^4.0"
             },
-            "default-branch": true,
             "type": "library",
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -4550,15 +4816,13 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "webthinx/codestyle": 20
-    },
+    "stability-flags": {},
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
         "php": ">=8.1",
         "ext-json": "*"
     },
-    "platform-dev": [],
-    "plugin-api-version": "2.2.0"
+    "platform-dev": {},
+    "plugin-api-version": "2.9.0"
 }

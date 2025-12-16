@@ -12,11 +12,13 @@ final class IdType extends ScalarType
 {
     protected const NAME = 'ID';
 
+    #[\Override]
     public function validateNonNullValue(mixed $rawValue) : bool
     {
         return \is_string($rawValue);
     }
 
+    #[\Override]
     public function coerceValue(mixed $rawValue) : mixed
     {
         return \is_int($rawValue)

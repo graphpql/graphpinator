@@ -22,11 +22,13 @@ final class TypeValue implements OutputValue
         }
     }
 
+    #[\Override]
     public function getRawValue() : \stdClass
     {
         return $this->value;
     }
 
+    #[\Override]
     public function getType() : Type
     {
         return $this->type;
@@ -37,6 +39,7 @@ final class TypeValue implements OutputValue
         return $this->intermediateValue;
     }
 
+    #[\Override]
     public function jsonSerialize() : \stdClass
     {
         return $this->value;

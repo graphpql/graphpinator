@@ -61,6 +61,7 @@ class Field implements Component
         return $this;
     }
 
+    #[\Override]
     final public function accept(ComponentVisitor $visitor) : mixed
     {
         return $visitor->visitField($this);

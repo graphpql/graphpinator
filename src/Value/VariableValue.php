@@ -24,6 +24,7 @@ final class VariableValue implements InputedValue
         }
     }
 
+    #[\Override]
     public function getRawValue(bool $forResolvers = false) : mixed
     {
         return $this->value->getRawValue($forResolvers);
@@ -39,26 +40,31 @@ final class VariableValue implements InputedValue
         return $this->variable;
     }
 
+    #[\Override]
     public function getType() : Inputable
     {
         return $this->type;
     }
 
+    #[\Override]
     public function printValue() : string
     {
         throw new OperationNotSupported();
     }
 
+    #[\Override]
     public function applyVariables(VariableValueSet $variables) : void
     {
         $this->value = $variables->get($this->variable->getName());
     }
 
+    #[\Override]
     public function resolveRemainingDirectives() : void
     {
         $this->value->resolveRemainingDirectives();
     }
 
+    #[\Override]
     public function isSame(Value $compare) : bool
     {
         return $compare instanceof self

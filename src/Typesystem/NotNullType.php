@@ -10,6 +10,7 @@ use Graphpinator\Typesystem\Contract\TypeVisitor;
 
 final class NotNullType extends ModifierType
 {
+    #[\Override]
     public function isInstanceOf(Type $type) : bool
     {
         if ($type instanceof self) {
@@ -19,16 +20,19 @@ final class NotNullType extends ModifierType
         return $this->innerType->isInstanceOf($type);
     }
 
+    #[\Override]
     public function printName() : string
     {
         return $this->innerType->printName() . '!';
     }
 
+    #[\Override]
     public function getShapingType() : Type
     {
         return $this->getInnerType()->getShapingType();
     }
 
+    #[\Override]
     public function accept(TypeVisitor $visitor) : mixed
     {
         return $visitor->visitNotNull($this);

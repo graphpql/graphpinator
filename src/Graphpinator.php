@@ -118,6 +118,7 @@ final class Graphpinator implements LoggerAwareInterface
         }
     }
 
+    #[\Override]
     public function setLogger(LoggerInterface $logger) : void
     {
         $this->logger = $logger;

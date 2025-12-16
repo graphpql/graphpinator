@@ -44,6 +44,7 @@ final class DirectiveUsage implements Component
         return $this->argumentValues;
     }
 
+    #[\Override]
     public function accept(ComponentVisitor $visitor) : mixed
     {
         return $visitor->visitDirectiveUsage($this);

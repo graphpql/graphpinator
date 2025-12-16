@@ -21,6 +21,7 @@ abstract class ScalarType extends LeafType
         $this->directiveUsages = new DirectiveUsageSet();
     }
 
+    #[\Override]
     final public function accept(NamedTypeVisitor $visitor) : mixed
     {
         return $visitor->visitScalar($this);

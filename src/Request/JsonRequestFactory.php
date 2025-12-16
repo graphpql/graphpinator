@@ -29,6 +29,7 @@ final class JsonRequestFactory implements RequestFactory
         return new self(Json::fromString($json), $strict);
     }
 
+    #[\Override]
     public function create() : Request
     {
         if (!isset($this->json[self::QUERY])) {

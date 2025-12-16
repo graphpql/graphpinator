@@ -19,11 +19,13 @@ abstract class ModifierType implements Inputable, Outputable
         return $this->innerType;
     }
 
+    #[\Override]
     public function getNamedType() : NamedType
     {
         return $this->innerType->getNamedType();
     }
 
+    #[\Override]
     public function isInputable() : bool
     {
         return $this->innerType->isInputable();

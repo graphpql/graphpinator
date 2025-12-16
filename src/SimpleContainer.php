@@ -86,12 +86,14 @@ class SimpleContainer extends Container
         $this->combinedDirectives = \array_merge($this->directives, self::$builtInDirectives);
     }
 
+    #[\Override]
     public function getType(string $name) : ?NamedType
     {
         return $this->combinedTypes[$name]
             ?? null;
     }
 
+    #[\Override]
     public function getTypes(bool $includeBuiltIn = false) : array
     {
         return $includeBuiltIn
@@ -99,12 +101,14 @@ class SimpleContainer extends Container
             : $this->types;
     }
 
+    #[\Override]
     public function getDirective(string $name) : ?TypesystemDirective
     {
         return $this->combinedDirectives[$name]
             ?? null;
     }
 
+    #[\Override]
     public function getDirectives(bool $includeBuiltIn = false) : array
     {
         return $includeBuiltIn

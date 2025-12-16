@@ -22,6 +22,7 @@ final class DuplicateFieldModule implements RefinerModule, SelectionVisitor
     {
     }
 
+    #[\Override]
     public function refine() : void
     {
         $this->fieldForName = [];
@@ -32,6 +33,7 @@ final class DuplicateFieldModule implements RefinerModule, SelectionVisitor
         }
     }
 
+    #[\Override]
     public function visitField(Field $field) : mixed
     {
         if (!\array_key_exists($field->getOutputName(), $this->fieldForName)) {
@@ -56,6 +58,7 @@ final class DuplicateFieldModule implements RefinerModule, SelectionVisitor
         return null;
     }
 
+    #[\Override]
     public function visitFragmentSpread(
         FragmentSpread $fragmentSpread,
     ) : mixed
@@ -63,6 +66,7 @@ final class DuplicateFieldModule implements RefinerModule, SelectionVisitor
         return null;
     }
 
+    #[\Override]
     public function visitInlineFragment(
         InlineFragment $inlineFragment,
     ) : mixed

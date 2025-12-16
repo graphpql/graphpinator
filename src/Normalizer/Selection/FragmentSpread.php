@@ -39,11 +39,13 @@ final class FragmentSpread implements Selection
         return $this->directives;
     }
 
+    #[\Override]
     public function applyVariables(VariableValueSet $variables) : void
     {
         $this->children->applyVariables($variables);
     }
 
+    #[\Override]
     public function accept(SelectionVisitor $visitor) : mixed
     {
         return $visitor->visitFragmentSpread($this);

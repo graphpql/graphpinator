@@ -17,6 +17,7 @@ final class InputValue implements InputedValue, \IteratorAggregate
     {
     }
 
+    #[\Override]
     public function getRawValue(bool $forResolvers = false) : object
     {
         $return = $forResolvers === true
@@ -32,11 +33,13 @@ final class InputValue implements InputedValue, \IteratorAggregate
         return $return;
     }
 
+    #[\Override]
     public function getType() : InputType
     {
         return $this->type;
     }
 
+    #[\Override]
     public function printValue() : string
     {
         $component = [];
@@ -50,6 +53,7 @@ final class InputValue implements InputedValue, \IteratorAggregate
         return '{' . \implode(',', $component) . '}';
     }
 
+    #[\Override]
     public function applyVariables(VariableValueSet $variables) : void
     {
         foreach ((array) $this->value as $argumentValue) {
@@ -65,6 +69,7 @@ final class InputValue implements InputedValue, \IteratorAggregate
         }
     }
 
+    #[\Override]
     public function resolveRemainingDirectives() : void
     {
         foreach ((array) $this->value as $argumentValue) {
@@ -74,6 +79,7 @@ final class InputValue implements InputedValue, \IteratorAggregate
         }
     }
 
+    #[\Override]
     public function isSame(Value $compare) : bool
     {
         if (!$compare instanceof self) {
@@ -98,6 +104,7 @@ final class InputValue implements InputedValue, \IteratorAggregate
         return true;
     }
 
+    #[\Override]
     public function getIterator() : \ArrayIterator
     {
         return new \ArrayIterator($this->value);

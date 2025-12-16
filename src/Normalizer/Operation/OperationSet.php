@@ -15,6 +15,7 @@ final class OperationSet extends ImplicitObjectMap
 {
     protected const INNER_CLASS = Operation::class;
 
+    #[\Override]
     protected function getKey(object $object) : string
     {
         \assert($object instanceof Operation);

@@ -51,6 +51,7 @@ abstract class InputType extends ConcreteType implements
         return $this->arguments;
     }
 
+    #[\Override]
     final public function accept(NamedTypeVisitor $visitor) : mixed
     {
         return $visitor->visitInput($this);

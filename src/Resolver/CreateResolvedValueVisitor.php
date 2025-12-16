@@ -29,6 +29,7 @@ final class CreateResolvedValueVisitor implements TypeVisitor
     {
     }
 
+    #[\Override]
     public function visitType(Type $type) : ResolvedValue
     {
         if ($this->rawValue === null) {
@@ -38,6 +39,7 @@ final class CreateResolvedValueVisitor implements TypeVisitor
         return new TypeIntermediateValue($type, $this->rawValue);
     }
 
+    #[\Override]
     public function visitInterface(InterfaceType $interface) : ResolvedValue
     {
         if ($this->rawValue === null) {
@@ -47,6 +49,7 @@ final class CreateResolvedValueVisitor implements TypeVisitor
         return $interface->createResolvedValue($this->rawValue);
     }
 
+    #[\Override]
     public function visitUnion(UnionType $union) : ResolvedValue
     {
         if ($this->rawValue === null) {
@@ -56,11 +59,13 @@ final class CreateResolvedValueVisitor implements TypeVisitor
         return $union->createResolvedValue($this->rawValue);
     }
 
+    #[\Override]
     public function visitInput(InputType $input) : mixed
     {
         throw new \LogicException();
     }
 
+    #[\Override]
     public function visitScalar(ScalarType $scalar) : ResolvedValue
     {
         if ($this->rawValue === null) {
@@ -70,6 +75,7 @@ final class CreateResolvedValueVisitor implements TypeVisitor
         return new ScalarValue($scalar, $this->rawValue, false);
     }
 
+    #[\Override]
     public function visitEnum(EnumType $enum) : ResolvedValue
     {
         if ($this->rawValue === null) {
@@ -83,6 +89,7 @@ final class CreateResolvedValueVisitor implements TypeVisitor
         return new ScalarValue($enum, $this->rawValue, false);
     }
 
+    #[\Override]
     public function visitNotNull(NotNullType $notNull) : ResolvedValue
     {
         $value = $notNull->getInnerType()->accept($this);
@@ -94,6 +101,7 @@ final class CreateResolvedValueVisitor implements TypeVisitor
         return $value;
     }
 
+    #[\Override]
     public function visitList(ListType $list) : ResolvedValue
     {
         if (\is_iterable($this->rawValue)) {

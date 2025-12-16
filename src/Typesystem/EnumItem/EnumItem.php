@@ -33,6 +33,7 @@ final class EnumItem implements Component
         return $this->name;
     }
 
+    #[\Override]
     public function accept(ComponentVisitor $visitor) : mixed
     {
         return $visitor->visitEnumItem($this);

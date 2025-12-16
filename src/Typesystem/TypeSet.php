@@ -16,6 +16,7 @@ final class TypeSet extends ImplicitObjectMap
 {
     protected const INNER_CLASS = Type::class;
 
+    #[\Override]
     protected function getKey(object $object) : string
     {
         return $object->getName();

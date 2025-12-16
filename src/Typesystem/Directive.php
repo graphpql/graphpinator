@@ -94,6 +94,7 @@ abstract class Directive implements DirectiveContract
 
     protected ?ArgumentSet $arguments = null;
 
+    #[\Override]
     final public function getName() : string
     {
         return static::NAME;
@@ -102,6 +103,7 @@ abstract class Directive implements DirectiveContract
     /**
      * @return array<(ExecutableDirectiveLocation|TypeSystemDirectiveLocation)>
      */
+    #[\Override]
     final public function getLocations() : array
     {
         $locations = [];
@@ -118,11 +120,13 @@ abstract class Directive implements DirectiveContract
         return $locations;
     }
 
+    #[\Override]
     final public function isRepeatable() : bool
     {
         return static::REPEATABLE;
     }
 
+    #[\Override]
     final public function getArguments() : ArgumentSet
     {
         if (!$this->arguments instanceof ArgumentSet) {
@@ -133,6 +137,7 @@ abstract class Directive implements DirectiveContract
         return $this->arguments;
     }
 
+    #[\Override]
     final public function accept(EntityVisitor $visitor) : mixed
     {
         return $visitor->visitDirective($this);

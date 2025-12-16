@@ -20,6 +20,7 @@ final class EmptyFragmentModule implements RefinerModule, SelectionVisitor
     {
     }
 
+    #[\Override]
     public function refine() : void
     {
         foreach ($this->selections as $index => $selection) {
@@ -28,11 +29,13 @@ final class EmptyFragmentModule implements RefinerModule, SelectionVisitor
         }
     }
 
+    #[\Override]
     public function visitField(Field $field) : mixed
     {
         return null;
     }
 
+    #[\Override]
     public function visitFragmentSpread(
         FragmentSpread $fragmentSpread,
     ) : mixed
@@ -47,6 +50,7 @@ final class EmptyFragmentModule implements RefinerModule, SelectionVisitor
         return null;
     }
 
+    #[\Override]
     public function visitInlineFragment(
         InlineFragment $inlineFragment,
     ) : mixed

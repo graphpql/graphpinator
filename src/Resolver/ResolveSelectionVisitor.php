@@ -32,6 +32,7 @@ final class ResolveSelectionVisitor implements SelectionVisitor
     {
     }
 
+    #[\Override]
     public function visitField(Field $field) : mixed
     {
         $type = $this->parentResult->getType();
@@ -119,6 +120,7 @@ final class ResolveSelectionVisitor implements SelectionVisitor
         return null;
     }
 
+    #[\Override]
     public function visitFragmentSpread(FragmentSpread $fragmentSpread) : mixed
     {
         if (!$this->parentResult->getType()->isInstanceOf($fragmentSpread->getTypeCondition())) {
@@ -149,6 +151,7 @@ final class ResolveSelectionVisitor implements SelectionVisitor
         return null;
     }
 
+    #[\Override]
     public function visitInlineFragment(InlineFragment $inlineFragment) : mixed
     {
         if ($inlineFragment->getTypeCondition() instanceof NamedType &&

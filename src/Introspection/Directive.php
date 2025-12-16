@@ -24,11 +24,13 @@ final class Directive extends Type
         parent::__construct();
     }
 
+    #[\Override]
     public function validateNonNullValue(mixed $rawValue) : bool
     {
         return $rawValue instanceof DirectiveDef;
     }
 
+    #[\Override]
     protected function getFieldDefinition() : ResolvableFieldSet
     {
         return new ResolvableFieldSet([

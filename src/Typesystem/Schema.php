@@ -74,6 +74,7 @@ class Schema implements Entity
         return $this->subscription;
     }
 
+    #[\Override]
     final public function accept(EntityVisitor $visitor) : mixed
     {
         return $visitor->visitSchema($this);

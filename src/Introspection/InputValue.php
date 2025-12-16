@@ -25,11 +25,13 @@ final class InputValue extends Type
         parent::__construct();
     }
 
+    #[\Override]
     public function validateNonNullValue(mixed $rawValue) : bool
     {
         return $rawValue instanceof Argument;
     }
 
+    #[\Override]
     protected function getFieldDefinition() : ResolvableFieldSet
     {
         return new ResolvableFieldSet([

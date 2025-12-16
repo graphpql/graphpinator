@@ -24,6 +24,7 @@ final class GetFieldVisitor implements NamedTypeVisitor
     {
     }
 
+    #[\Override]
     public function visitType(Type $type) : Field
     {
         return $type->getMetaFields()[$this->name]
@@ -31,6 +32,7 @@ final class GetFieldVisitor implements NamedTypeVisitor
             ?? throw new UnknownField($this->name, $type->getName());
     }
 
+    #[\Override]
     public function visitInterface(InterfaceType $interface) : Field
     {
         return $interface->getMetaFields()[$this->name]
@@ -38,22 +40,26 @@ final class GetFieldVisitor implements NamedTypeVisitor
             ?? throw new UnknownField($this->name, $interface->getName());
     }
 
+    #[\Override]
     public function visitUnion(UnionType $union) : Field
     {
         return $union->getMetaFields()[$this->name]
             ?? throw new SelectionOnUnion();
     }
 
+    #[\Override]
     public function visitInput(InputType $input) : mixed
     {
         throw new \LogicException();
     }
 
+    #[\Override]
     public function visitScalar(ScalarType $scalar) : Field
     {
         throw new SelectionOnLeaf();
     }
 
+    #[\Override]
     public function visitEnum(EnumType $enum) : Field
     {
         throw new SelectionOnLeaf();

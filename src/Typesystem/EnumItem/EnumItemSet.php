@@ -44,6 +44,7 @@ final class EnumItemSet extends ImplicitObjectMap
         return $return;
     }
 
+    #[\Override]
     protected function getKey(object $object) : string
     {
         return $object->getName();

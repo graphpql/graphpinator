@@ -9,8 +9,10 @@ use Graphpinator\Typesystem\Contract\Inputable;
 
 interface InputedValue extends Value
 {
+    #[\Override]
     public function getRawValue(bool $forResolvers = false) : mixed;
 
+    #[\Override]
     public function getType() : Inputable;
 
     /**

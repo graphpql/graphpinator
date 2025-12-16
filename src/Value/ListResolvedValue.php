@@ -8,6 +8,7 @@ use Graphpinator\Typesystem\ListType;
 
 final class ListResolvedValue extends ListValue implements OutputValue
 {
+    #[\Override]
     public function getRawValue() : array
     {
         $return = [];
@@ -21,11 +22,13 @@ final class ListResolvedValue extends ListValue implements OutputValue
         return $return;
     }
 
+    #[\Override]
     public function getType() : ListType
     {
         return $this->type;
     }
 
+    #[\Override]
     public function jsonSerialize() : array
     {
         return \array_values($this->value);

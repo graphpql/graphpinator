@@ -8,6 +8,7 @@ use Graphpinator\Exception\GraphpinatorBase;
 
 abstract class RequestError extends GraphpinatorBase
 {
+    #[\Override]
     public function isOutputable() : bool
     {
         return true;
