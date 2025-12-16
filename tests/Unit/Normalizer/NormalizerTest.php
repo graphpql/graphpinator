@@ -33,7 +33,6 @@ use Graphpinator\Parser\Value\Literal;
 use Graphpinator\Parser\Variable\Variable;
 use Graphpinator\Parser\Variable\VariableSet;
 use Graphpinator\Tests\Spec\TestSchema;
-use Graphpinator\Tokenizer\TokenType;
 use Graphpinator\Typesystem\ListType;
 use Graphpinator\Typesystem\NotNullType;
 use Graphpinator\Typesystem\Spec\IncludeDirective;

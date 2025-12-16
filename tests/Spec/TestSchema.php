@@ -7,7 +7,6 @@ namespace Graphpinator\Tests\Spec;
 use Graphpinator\SimpleContainer;
 use Graphpinator\Typesystem\Argument\Argument;
 use Graphpinator\Typesystem\Argument\ArgumentSet;
-use Graphpinator\Typesystem\Attribute\Description;
 use Graphpinator\Typesystem\Container;
 use Graphpinator\Typesystem\Directive;
 use Graphpinator\Typesystem\EnumItem\EnumItem;
