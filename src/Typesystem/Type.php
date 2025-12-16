@@ -83,6 +83,11 @@ abstract class Type extends ConcreteType implements
         return $visitor->visitType($this);
     }
 
+    /**
+     * @param ObjectLocation $directive
+     * @phpcs:ignore
+     * @param array<string, mixed> $arguments
+     */
     final public function addDirective(
         ObjectLocation $directive,
         array $arguments = [],

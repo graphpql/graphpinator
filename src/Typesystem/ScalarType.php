@@ -32,6 +32,11 @@ abstract class ScalarType extends LeafType
         return $rawValue;
     }
 
+    /**
+     * @param ScalarLocation $directive
+     * @phpcs:ignore
+     * @param array<string, mixed> $arguments
+     */
     final public function addDirective(
         ScalarLocation $directive,
         array $arguments = [],

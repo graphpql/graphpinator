@@ -15,7 +15,6 @@ use Graphpinator\Parser\Value\EnumLiteral;
 use Graphpinator\Parser\Value\ListVal;
 use Graphpinator\Parser\Value\Literal;
 use Graphpinator\Parser\Value\ObjectVal;
-use Graphpinator\Parser\Value\Value;
 use Graphpinator\Parser\Value\ValueVisitor;
 use Graphpinator\Parser\Value\VariableRef;
 use Graphpinator\Typesystem\Contract\Inputable;

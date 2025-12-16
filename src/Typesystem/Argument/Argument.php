@@ -72,6 +72,11 @@ final class Argument implements Component
         return $visitor->visitArgument($this);
     }
 
+    /**
+     * @param ArgumentDefinitionLocation $directive
+     * @phpcs:ignore
+     * @param array<string, mixed> $arguments
+     */
     public function addDirective(
         ArgumentDefinitionLocation $directive,
         array $arguments = [],

@@ -17,6 +17,8 @@ class FieldSet extends ImplicitObjectMap
     #[\Override]
     protected function getKey(object $object) : string
     {
+        \assert($object instanceof Field);
+
         return $object->getName();
     }
 }

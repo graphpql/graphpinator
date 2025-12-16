@@ -54,6 +54,11 @@ abstract class UnionType extends AbstractType
         return $visitor->visitUnion($this);
     }
 
+    /**
+     * @param UnionLocation $directive
+     * @phpcs:ignore
+     * @param array<string, mixed> $arguments
+     */
     final public function addDirective(
         UnionLocation $directive,
         array $arguments = [],

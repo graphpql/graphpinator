@@ -86,6 +86,11 @@ abstract class InterfaceType extends AbstractType implements
         return $visitor->visitInterface($this);
     }
 
+    /**
+     * @param ObjectLocation $directive
+     * @phpcs:ignore
+     * @param array<string, mixed> $arguments
+     */
     final public function addDirective(
         ObjectLocation $directive,
         array $arguments = [],

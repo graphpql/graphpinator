@@ -7,7 +7,7 @@ namespace Graphpinator\Typesystem;
 use Infinityloop\Utils\ImplicitObjectMap;
 
 /**
- * Class TypeSet which is type safe container for ConcreteTypes.
+ * Class TypeSet, which is type safe container for ConcreteTypes.
  *
  * @method Type current() : object
  * @method Type offsetGet($offset) : object
@@ -19,6 +19,8 @@ final class TypeSet extends ImplicitObjectMap
     #[\Override]
     protected function getKey(object $object) : string
     {
+        \assert($object instanceof Type);
+
         return $object->getName();
     }
 }

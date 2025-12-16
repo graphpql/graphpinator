@@ -67,6 +67,11 @@ class Field implements Component
         return $visitor->visitField($this);
     }
 
+    /**
+     * @param FieldDefinitionLocation $directive
+     * @phpcs:ignore
+     * @param array<string, mixed> $arguments
+     */
     final public function addDirective(
         FieldDefinitionLocation $directive,
         array $arguments = [],

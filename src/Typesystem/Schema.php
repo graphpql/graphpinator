@@ -80,6 +80,11 @@ class Schema implements Entity
         return $visitor->visitSchema($this);
     }
 
+    /**
+     * @param SchemaLocation $directive
+     * @phpcs:ignore
+     * @param array<string, mixed> $arguments
+     */
     final public function addDirective(
         SchemaLocation $directive,
         array $arguments = [],

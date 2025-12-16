@@ -62,6 +62,11 @@ abstract class InputType extends ConcreteType implements
         return static::DATA_CLASS;
     }
 
+    /**
+     * @param InputObjectLocation $directive
+     * @phpcs:ignore
+     * @param array<string, mixed> $arguments
+     */
     final public function addDirective(
         InputObjectLocation $directive,
         array $arguments = [],
