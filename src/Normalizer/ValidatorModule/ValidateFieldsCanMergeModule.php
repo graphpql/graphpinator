@@ -15,6 +15,7 @@ use Graphpinator\Normalizer\Selection\SelectionSet;
 use Graphpinator\Normalizer\Selection\SelectionVisitor;
 use Graphpinator\Typesystem\Contract\TypeConditionable;
 use Graphpinator\Typesystem\Type;
+use Graphpinator\Typesystem\Visitor\IsInstanceOfVisitor;
 
 final class ValidateFieldsCanMergeModule implements ValidatorModule, SelectionVisitor
 {
@@ -94,8 +95,8 @@ final class ValidateFieldsCanMergeModule implements ValidatorModule, SelectionVi
     {
         return $typeA === null
             || $typeB === null
-            || $typeA->isInstanceOf($typeB) // one is instanceof other
-            || $typeB->isInstanceOf($typeA)
+            || $typeA->accept(new IsInstanceOfVisitor($typeB)) // one is instanceof other
+            || $typeB->accept(new IsInstanceOfVisitor($typeA))
             || !($typeA instanceof Type) // one is not an object type (final typesystem object)
             || !($typeB instanceof Type);
     }
@@ -127,8 +128,8 @@ final class ValidateFieldsCanMergeModule implements ValidatorModule, SelectionVi
         $conflictReturnType = $conflict->getField()->getType();
 
         /** Fields must have same response shape (return type) */
-        if (!$fieldReturnType->isInstanceOf($conflictReturnType) ||
-            !$conflictReturnType->isInstanceOf($fieldReturnType)) {
+        if (!$fieldReturnType->accept(new IsInstanceOfVisitor($conflictReturnType)) ||
+            !$conflictReturnType->accept(new IsInstanceOfVisitor($fieldReturnType))) {
             throw new ConflictingFieldType();
         }
     }
@@ -142,8 +143,8 @@ final class ValidateFieldsCanMergeModule implements ValidatorModule, SelectionVi
         $conflictReturnType = $conflict->getField()->getType();
 
         /** Fields must have same response shape (return type) */
-        if (!$fieldReturnType->isInstanceOf($conflictReturnType) ||
-            !$conflictReturnType->isInstanceOf($fieldReturnType)) {
+        if (!$fieldReturnType->accept(new IsInstanceOfVisitor($conflictReturnType)) ||
+            !$conflictReturnType->accept(new IsInstanceOfVisitor($fieldReturnType))) {
             throw new ConflictingFieldType();
         }
 

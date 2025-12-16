@@ -4,10 +4,10 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Value;
 
-use Graphpinator\Typesystem\Contract\Outputable;
+use Graphpinator\Typesystem\Contract\Type;
 
 interface ResolvedValue extends Value
 {
     #[\Override]
-    public function getType() : Outputable;
+    public function getType() : Type;
 }

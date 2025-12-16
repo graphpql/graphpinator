@@ -7,6 +7,7 @@ namespace Graphpinator\Resolver;
 use Graphpinator\Normalizer\FinalizedRequest;
 use Graphpinator\Normalizer\Operation\Operation;
 use Graphpinator\Parser\OperationType;
+use Graphpinator\Resolver\Visitor\ResolveVisitor;
 use Graphpinator\Result;
 use Graphpinator\Typesystem\Location\MutationLocation;
 use Graphpinator\Typesystem\Location\QueryLocation;

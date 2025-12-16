@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Resolver;
+namespace Graphpinator\Resolver\Visitor;
 
 use Graphpinator\Exception\Value\ValueCannotBeNull;
 use Graphpinator\Typesystem\Contract\TypeVisitor;
@@ -21,6 +21,9 @@ use Graphpinator\Value\ResolvedValue;
 use Graphpinator\Value\ScalarValue;
 use Graphpinator\Value\TypeIntermediateValue;
 
+/**
+ * @implements TypeVisitor<ResolvedValue>
+ */
 final class CreateResolvedValueVisitor implements TypeVisitor
 {
     public function __construct(

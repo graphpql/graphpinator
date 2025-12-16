@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace GraphQL\Typesystem\Visitor;
+namespace Graphpinator\Typesystem\Visitor;
 
 use Graphpinator\Typesystem\Contract\TypeVisitor;
 use Graphpinator\Typesystem\EnumType;

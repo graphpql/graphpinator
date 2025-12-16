@@ -148,7 +148,7 @@ abstract class Directive implements DirectiveContract
     /**
      * This function serves to prevent infinite cycles.
      *
-     * It doesn't have to be used at all, unless directive have arguments with directive cycles.
+     * It doesn't have to be used at all unless the directive has arguments with directive cycles.
      * E.g. IntConstraintDirective::oneOf -> ListConstraintDirective::minItems -> IntConstraintDirective::oneOf.
      */
     protected function afterGetFieldDefinition() : void

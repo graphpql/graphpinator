@@ -8,7 +8,7 @@ use Graphpinator\Graphpinator;
 use Graphpinator\Typesystem\Argument\ArgumentSet;
 use Graphpinator\Typesystem\Contract\Component;
 use Graphpinator\Typesystem\Contract\ComponentVisitor;
-use Graphpinator\Typesystem\Contract\Outputable;
+use Graphpinator\Typesystem\Contract\Type;
 use Graphpinator\Typesystem\DirectiveUsage\DirectiveUsage;
 use Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet;
 use Graphpinator\Typesystem\Exception\DirectiveIncorrectType;
@@ -27,14 +27,14 @@ class Field implements Component
 
     public function __construct(
         protected string $name,
-        protected Outputable $type,
+        protected Type $type,
     )
     {
         $this->arguments = new ArgumentSet([]);
         $this->directiveUsages = new DirectiveUsageSet();
     }
 
-    public static function create(string $name, Outputable $type) : self
+    public static function create(string $name, Type $type) : self
     {
         return new self($name, $type);
     }
@@ -44,7 +44,7 @@ class Field implements Component
         return $this->name;
     }
 
-    final public function getType() : Outputable
+    final public function getType() : Type
     {
         return $this->type;
     }

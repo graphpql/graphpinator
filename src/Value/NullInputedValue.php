@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace Graphpinator\Value;
 
 use Graphpinator\Normalizer\VariableValueSet;
-use Graphpinator\Typesystem\Contract\Inputable;
 use Graphpinator\Typesystem\Contract\Type;
 
 final class NullInputedValue implements InputedValue, NullValue

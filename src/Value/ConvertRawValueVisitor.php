@@ -10,7 +10,6 @@ use Graphpinator\Exception\Value\ValueCannotBeNull;
 use Graphpinator\Exception\Value\ValueCannotBeOmitted;
 use Graphpinator\Normalizer\Exception\UnknownArgument;
 use Graphpinator\Typesystem\Argument\ArgumentSet;
-use Graphpinator\Typesystem\Contract\Inputable;
 use Graphpinator\Typesystem\Contract\TypeVisitor;
 use Graphpinator\Typesystem\EnumType;
 use Graphpinator\Typesystem\InputType;
@@ -20,6 +19,7 @@ use Graphpinator\Typesystem\NotNullType;
 use Graphpinator\Typesystem\ScalarType;
 use Graphpinator\Typesystem\Type;
 use Graphpinator\Typesystem\UnionType;
+use Graphpinator\Typesystem\Visitor\IsInputableVisitor;
 
 final class ConvertRawValueVisitor implements TypeVisitor
 {
@@ -165,7 +165,7 @@ final class ConvertRawValueVisitor implements TypeVisitor
             : [$this->rawValue];
 
         $innerType = $list->getInnerType();
-        \assert($innerType instanceof Inputable);
+        \assert($innerType->accept(new IsInputableVisitor()));
 
         $inner = [];
 

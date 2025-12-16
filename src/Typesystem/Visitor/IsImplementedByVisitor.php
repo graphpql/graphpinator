@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem\Visitor;
 
+use Graphpinator\Typesystem\Contract\InterfaceImplementor;
 use Graphpinator\Typesystem\Contract\Type as TypeContract;
 use Graphpinator\Typesystem\Contract\TypeVisitor;
 use Graphpinator\Typesystem\EnumType;
@@ -16,39 +17,37 @@ use Graphpinator\Typesystem\Type;
 use Graphpinator\Typesystem\UnionType;
 
 /**
- * Compares whether visited type is instanceof typeToCompare, including variance.
- * - Int! is instanceof Int!
- * - Int is instanceof Int
- * - Int! is instanceof Int -> as it is a subset
- * - Int is NOT instanceof Int!
- * - UnionType is NOT instanceof UnionTypeItem
- *
  * @implements TypeVisitor<bool>
  */
-final readonly class IsInstanceOfVisitor implements TypeVisitor
+final readonly class IsImplementedByVisitor implements TypeVisitor
 {
+    private TypeContract $typeToCompare;
+
     public function __construct(
-        private TypeContract $typeToCompare,
+        TypeContract $typeToCompare,
     )
     {
+        $this->typeToCompare = $typeToCompare->accept(new GetShapingTypeVisitor());
     }
 
     #[\Override]
     public function visitType(Type $type) : bool
     {
-        return $this->typeToCompare->accept(new IsImplementedByVisitor($type));
+        return $type::class === $this->typeToCompare::class;
     }
 
     #[\Override]
     public function visitInterface(InterfaceType $interface) : bool
     {
-        return $this->typeToCompare->accept(new IsImplementedByVisitor($interface));
+        return $interface::class === $this->typeToCompare::class
+            || ($this->typeToCompare instanceof InterfaceImplementor && $this->typeToCompare->implements($interface));
     }
 
     #[\Override]
     public function visitUnion(UnionType $union) : bool
     {
-        return $union::class === $this->typeToCompare::class;
+        return $union::class === $this->typeToCompare::class
+            || $this->isOneOfUnionTypes($union);
     }
 
     #[\Override]
@@ -72,9 +71,7 @@ final readonly class IsInstanceOfVisitor implements TypeVisitor
     #[\Override]
     public function visitNotNull(NotNullType $notNull) : bool
     {
-        return $this->typeToCompare instanceof NotNullType
-            ? $notNull->getInnerType()->accept(new self($this->typeToCompare->getInnerType()))
-            : $notNull->getInnerType()->accept($this);
+        return $notNull->getInnerType()->accept($this);
     }
 
     #[\Override]
@@ -83,5 +80,16 @@ final readonly class IsInstanceOfVisitor implements TypeVisitor
         return $this->typeToCompare instanceof ListType
             ? $list->getInnerType()->accept(new self($this->typeToCompare->getInnerType()))
             : false;
+    }
+
+    private function isOneOfUnionTypes(UnionType $union) : bool
+    {
+        foreach ($union->getTypes() as $unionItem) {
+            if ($unionItem->accept(new IsInstanceOfVisitor($this->typeToCompare))) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

@@ -9,6 +9,8 @@ use Graphpinator\Normalizer\Exception\VariableTypeMismatch;
 use Graphpinator\Normalizer\Variable\Variable;
 use Graphpinator\Normalizer\VariableValueSet;
 use Graphpinator\Typesystem\Contract\Type;
+use Graphpinator\Typesystem\Visitor\IsInputableVisitor;
+use Graphpinator\Typesystem\Visitor\IsInstanceOfVisitor;
 
 final class VariableValue implements InputedValue
 {
@@ -19,9 +21,10 @@ final class VariableValue implements InputedValue
         private Variable $variable,
     )
     {
-        \assert($type->isInputable());
+        $isInputable = $this->type->accept(new IsInputableVisitor());
+        $isCompatible = $variable->getType()->accept(new IsInstanceOfVisitor($type));
 
-        if (!$variable->getType()->isInstanceOf($type)) {
+        if (!$isInputable || !$isCompatible) {
             throw new VariableTypeMismatch();
         }
     }

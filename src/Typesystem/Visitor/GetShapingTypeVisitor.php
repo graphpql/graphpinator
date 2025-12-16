@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace GraphQL\Typesystem\Visitor;
+namespace Graphpinator\Typesystem\Visitor;
 
 use Graphpinator\Typesystem\Contract\Type as TypeContract;
 use Graphpinator\Typesystem\Contract\TypeVisitor;

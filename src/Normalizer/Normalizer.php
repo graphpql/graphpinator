@@ -20,7 +20,6 @@ use Graphpinator\Normalizer\Exception\UnknownArgument;
 use Graphpinator\Normalizer\Exception\UnknownDirective;
 use Graphpinator\Normalizer\Exception\UnknownFragment;
 use Graphpinator\Normalizer\Exception\UnknownType;
-use Graphpinator\Normalizer\Exception\VariableTypeInputable;
 use Graphpinator\Normalizer\Operation\Operation;
 use Graphpinator\Normalizer\Operation\OperationSet;
 use Graphpinator\Normalizer\Selection\Field;
@@ -30,6 +29,7 @@ use Graphpinator\Normalizer\Selection\Selection;
 use Graphpinator\Normalizer\Selection\SelectionSet;
 use Graphpinator\Normalizer\Variable\Variable;
 use Graphpinator\Normalizer\Variable\VariableSet;
+use Graphpinator\Normalizer\Visitor\GetFieldVisitor;
 use Graphpinator\Parser\Directive\Directive as ParserDirective;
 use Graphpinator\Parser\Directive\DirectiveSet as ParserDirectiveSet;
 use Graphpinator\Parser\Field\Field as ParserField;
@@ -52,7 +52,6 @@ use Graphpinator\Parser\Variable\Variable as ParserVariable;
 use Graphpinator\Parser\Variable\VariableSet as ParserVariableSet;
 use Graphpinator\Typesystem\Argument\ArgumentSet;
 use Graphpinator\Typesystem\Contract\ExecutableDirective;
-use Graphpinator\Typesystem\Contract\Inputable;
 use Graphpinator\Typesystem\Contract\LeafType;
 use Graphpinator\Typesystem\Contract\NamedType;
 use Graphpinator\Typesystem\Contract\Type as TypesystemType;
@@ -67,6 +66,8 @@ use Graphpinator\Typesystem\NotNullType;
 use Graphpinator\Typesystem\Schema;
 use Graphpinator\Typesystem\Type;
 use Graphpinator\Typesystem\UnionType;
+use Graphpinator\Typesystem\Visitor\GetNamedTypeVisitor;
+use Graphpinator\Typesystem\Visitor\IsInstanceOfVisitor;
 use Graphpinator\Value\ArgumentValue;
 use Graphpinator\Value\ArgumentValueSet;
 use Graphpinator\Value\ConvertParserValueVisitor;
@@ -111,7 +112,7 @@ final class Normalizer
             : [$parentType];
 
         foreach ($occurrenceAttempts as $type) {
-            if ($typeCond->isInstanceOf($type) || $type->isInstanceOf($typeCond)) {
+            if ($typeCond->accept(new IsInstanceOfVisitor($type)) || $type->accept(new IsInstanceOfVisitor($typeCond))) {
                 return true;
             }
         }
@@ -182,11 +183,6 @@ final class Normalizer
     {
         $type = $this->normalizeTypeRef($variable->type);
         $defaultValue = $variable->default;
-
-        if (!$type->isInputable()) {
-            throw new VariableTypeInputable($variable->name);
-        }
-
         $normalized = new Variable(
             $variable->name,
             $type,
@@ -236,7 +232,7 @@ final class Normalizer
         $parentType = $this->scopeStack->top();
 
         $fieldDef = $parentType->accept(new GetFieldVisitor($field->name));
-        $fieldType = $fieldDef->getType()->getNamedType();
+        $fieldType = $fieldDef->getType()->accept(new GetNamedTypeVisitor());
 
         $this->scopeStack->push($fieldType);
 

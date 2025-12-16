@@ -22,16 +22,18 @@ use Graphpinator\Typesystem\EnumType;
 use Graphpinator\Typesystem\InputType;
 use Graphpinator\Typesystem\ListType;
 use Graphpinator\Typesystem\NotNullType;
+use Graphpinator\Typesystem\Visitor\IsInputableVisitor;
+use Graphpinator\Typesystem\Visitor\PrintNameVisitor;
 
-final class ConvertParserValueVisitor implements ValueVisitor
+final readonly class ConvertParserValueVisitor implements ValueVisitor
 {
     public function __construct(
-        readonly private Type $type,
-        readonly private ?VariableSet $variableSet,
-        readonly private Path $path,
+        private Type $type,
+        private ?VariableSet $variableSet,
+        private Path $path,
     )
     {
-        \assert($type->isInputable());
+        \assert($type->accept(new IsInputableVisitor()));
     }
 
     #[\Override]
@@ -48,7 +50,7 @@ final class ConvertParserValueVisitor implements ValueVisitor
         }
 
         if (!$this->type instanceof EnumType) {
-            throw new InvalidValue($this->type->printName(), $enumLiteral->getRawValue(), true);
+            throw new InvalidValue($this->type->accept(new PrintNameVisitor()), $enumLiteral->getRawValue(), true);
         }
 
         return $this->type->accept(new ConvertRawValueVisitor($enumLiteral->getRawValue(), $this->path));
@@ -62,7 +64,7 @@ final class ConvertParserValueVisitor implements ValueVisitor
         }
 
         if (!$this->type instanceof ListType) {
-            throw new InvalidValue($this->type->printName(), [], true);
+            throw new InvalidValue($this->type->accept(new PrintNameVisitor()), [], true);
         }
 
         $visitor = new self($this->type->getInnerType(), $this->variableSet, $this->path);
@@ -85,7 +87,7 @@ final class ConvertParserValueVisitor implements ValueVisitor
         }
 
         if (!$this->type instanceof InputType) {
-            throw new InvalidValue($this->type->printName(), new \stdClass(), true);
+            throw new InvalidValue($this->type->accept(new PrintNameVisitor()), new \stdClass(), true);
         }
 
         foreach ((array) $objectVal->value as $name => $temp) {

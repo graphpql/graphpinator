@@ -18,6 +18,8 @@ use Graphpinator\Typesystem\InterfaceSet;
 use Graphpinator\Typesystem\InterfaceType;
 use Graphpinator\Typesystem\NotNullType;
 use Graphpinator\Typesystem\Type;
+use Graphpinator\Typesystem\Visitor\IsImplementedByVisitor;
+use Graphpinator\Typesystem\Visitor\IsInstanceOfVisitor;
 use Graphpinator\Value\TypeIntermediateValue;
 use PHPUnit\Framework\TestCase;
 
@@ -517,26 +519,26 @@ final class InterfaceTypeTest extends TestCase
         self::assertArrayHasKey('Bar', $interface->getInterfaces());
         self::assertSame('Bar', $interface->getInterfaces()->offsetGet('Bar')->getName());
 
-        self::assertTrue($interface->isInstanceOf($interface));
-        self::assertFalse($interface->isInstanceOf(new NotNullType($interface)));
-        self::assertTrue((new NotNullType($interface))->isInstanceOf($interface));
-        self::assertTrue($interface->isInstanceOf($parentInterface));
-        self::assertFalse($interface->isInstanceOf(new NotNullType($parentInterface)));
-        self::assertTrue((new NotNullType($interface))->isInstanceOf($parentInterface));
-        self::assertFalse($parentInterface->isInstanceOf($interface));
-        self::assertFalse($parentInterface->isInstanceOf(new NotNullType($interface)));
-        self::assertFalse($interface->isImplementedBy(self::getTypeWithoutInterface()));
-        self::assertFalse($interface->isImplementedBy(new NotNullType(self::getTypeWithoutInterface())));
-        self::assertFalse($parentInterface->isImplementedBy(self::getTypeWithoutInterface()));
-        self::assertFalse($parentInterface->isImplementedBy(new NotNullType(self::getTypeWithoutInterface())));
-        self::assertTrue($interface->isImplementedBy(self::getTypeImplementingInterface()));
-        self::assertTrue($interface->isImplementedBy(new NotNullType(self::getTypeImplementingInterface())));
-        self::assertTrue($parentInterface->isImplementedBy(self::getTypeImplementingInterface()));
-        self::assertTrue($parentInterface->isImplementedBy(new NotNullType(self::getTypeImplementingInterface())));
-        self::assertFalse($interface->isImplementedBy(self::getTypeImplementingParentInterface()));
-        self::assertFalse($interface->isImplementedBy(new NotNullType(self::getTypeImplementingParentInterface())));
-        self::assertTrue($parentInterface->isImplementedBy(self::getTypeImplementingParentInterface()));
-        self::assertTrue($parentInterface->isImplementedBy(new NotNullType(self::getTypeImplementingParentInterface())));
+        self::assertTrue($interface->accept(new IsInstanceOfVisitor($interface)));
+        self::assertFalse($interface->accept(new IsInstanceOfVisitor(new NotNullType($interface))));
+        self::assertTrue((new NotNullType($interface))->accept(new IsInstanceOfVisitor($interface)));
+        self::assertTrue($interface->accept(new IsInstanceOfVisitor($parentInterface)));
+        self::assertFalse($interface->accept(new IsInstanceOfVisitor(new NotNullType($parentInterface))));
+        self::assertTrue((new NotNullType($interface))->accept(new IsInstanceOfVisitor($parentInterface)));
+        self::assertFalse($parentInterface->accept(new IsInstanceOfVisitor($interface)));
+        self::assertFalse($parentInterface->accept(new IsInstanceOfVisitor(new NotNullType($interface))));
+        self::assertFalse($interface->accept(new IsImplementedByVisitor(self::getTypeWithoutInterface())));
+        self::assertFalse($interface->accept(new IsImplementedByVisitor(new NotNullType(self::getTypeWithoutInterface()))));
+        self::assertFalse($parentInterface->accept(new IsImplementedByVisitor(self::getTypeWithoutInterface())));
+        self::assertFalse($parentInterface->accept(new IsImplementedByVisitor(new NotNullType(self::getTypeWithoutInterface()))));
+        self::assertTrue($interface->accept(new IsImplementedByVisitor(self::getTypeImplementingInterface())));
+        self::assertTrue($interface->accept(new IsImplementedByVisitor(new NotNullType(self::getTypeImplementingInterface()))));
+        self::assertTrue($parentInterface->accept(new IsImplementedByVisitor(self::getTypeImplementingInterface())));
+        self::assertTrue($parentInterface->accept(new IsImplementedByVisitor(new NotNullType(self::getTypeImplementingInterface()))));
+        self::assertFalse($interface->accept(new IsImplementedByVisitor(self::getTypeImplementingParentInterface())));
+        self::assertFalse($interface->accept(new IsImplementedByVisitor(new NotNullType(self::getTypeImplementingParentInterface()))));
+        self::assertTrue($parentInterface->accept(new IsImplementedByVisitor(self::getTypeImplementingParentInterface())));
+        self::assertTrue($parentInterface->accept(new IsImplementedByVisitor(new NotNullType(self::getTypeImplementingParentInterface()))));
     }
 
     public function testIncompatibleFieldType() : void

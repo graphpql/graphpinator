@@ -24,6 +24,7 @@ use Graphpinator\Typesystem\ScalarType;
 use Graphpinator\Typesystem\Type as TypesystemType;
 use Graphpinator\Typesystem\TypeSet;
 use Graphpinator\Typesystem\UnionType;
+use Graphpinator\Typesystem\Visitor\IsInstanceOfVisitor;
 
 #[Description('Built-in introspection type')]
 final class Type extends TypesystemType
@@ -121,8 +122,7 @@ final class Type extends TypesystemType
                         $subTypes = [];
 
                         foreach ($this->container->getTypes() as $type) {
-                            if ($type instanceof TypesystemType &&
-                                $type->isInstanceOf($definition)) {
+                            if ($type instanceof TypesystemType && $type->accept(new IsInstanceOfVisitor($definition))) {
                                 $subTypes[] = $type;
                             }
                         }

@@ -8,7 +8,6 @@ use Graphpinator\Common\Path;
 use Graphpinator\Graphpinator;
 use Graphpinator\Typesystem\Contract\Component;
 use Graphpinator\Typesystem\Contract\ComponentVisitor;
-use Graphpinator\Typesystem\Contract\Inputable;
 use Graphpinator\Typesystem\Contract\Type;
 use Graphpinator\Typesystem\DirectiveUsage\DirectiveUsage;
 use Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet;
@@ -30,7 +29,7 @@ final class Argument implements Component
 
     public function __construct(
         private string $name,
-        private Inputable $type,
+        private Type $type,
     )
     {
         $this->directiveUsages = new DirectiveUsageSet();

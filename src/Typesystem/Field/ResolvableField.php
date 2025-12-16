@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem\Field;
 
-use Graphpinator\Typesystem\Contract\Outputable;
+use Graphpinator\Typesystem\Contract\Type;
 
 class ResolvableField extends Field
 {
@@ -12,7 +12,7 @@ class ResolvableField extends Field
 
     public function __construct(
         string $name,
-        Outputable $type,
+        Type $type,
         callable $resolveFn,
     )
     {
@@ -21,7 +21,7 @@ class ResolvableField extends Field
     }
 
     #[\Override]
-    public static function create(string $name, Outputable $type, ?callable $resolveFn = null) : self
+    public static function create(string $name, Type $type, ?callable $resolveFn = null) : self
     {
         return new self($name, $type, $resolveFn);
     }

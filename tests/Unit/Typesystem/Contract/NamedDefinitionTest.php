@@ -5,6 +5,9 @@ declare(strict_types = 1);
 namespace Graphpinator\Tests\Unit\Typesystem\Contract;
 
 use Graphpinator\Typesystem\Container;
+use Graphpinator\Typesystem\Visitor\GetNamedTypeVisitor;
+use Graphpinator\Typesystem\Visitor\IsInputableVisitor;
+use Graphpinator\Typesystem\Visitor\IsOutputableVisitor;
 use PHPUnit\Framework\TestCase;
 
 final class NamedDefinitionTest extends TestCase
@@ -20,9 +23,11 @@ final class NamedDefinitionTest extends TestCase
         self::assertSame($base, $base->list()->getInnerType());
         self::assertSame($base, $base->notNullList()->getInnerType()->getInnerType()->getInnerType());
         self::assertSame($base, $base->notNull()->list()->notNull()->getInnerType()->getInnerType()->getInnerType());
-        self::assertSame($base, $base->notNullList()->getNamedType());
+        self::assertSame($base, $base->notNullList()->accept(new GetNamedTypeVisitor()));
 
-        self::assertTrue($base->isInputable());
-        self::assertTrue($base->notNull()->isInputable());
+        self::assertTrue($base->accept(new IsInputableVisitor()));
+        self::assertTrue($base->accept(new IsOutputableVisitor()));
+        self::assertTrue($base->notNull()->accept(new IsInputableVisitor()));
+        self::assertTrue($base->notNull()->accept(new IsOutputableVisitor()));
     }
 }

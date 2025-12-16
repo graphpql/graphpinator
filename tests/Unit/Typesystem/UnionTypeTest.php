@@ -9,6 +9,7 @@ use Graphpinator\Typesystem\NotNullType;
 use Graphpinator\Typesystem\Type;
 use Graphpinator\Typesystem\TypeSet;
 use Graphpinator\Typesystem\UnionType;
+use Graphpinator\Typesystem\Visitor\IsInstanceOfVisitor;
 use Graphpinator\Value\TypeIntermediateValue;
 use PHPUnit\Framework\TestCase;
 
@@ -96,16 +97,16 @@ final class UnionTypeTest extends TestCase
         self::assertArrayHasKey('Zzz', $union->getTypes());
         self::assertSame('Zzz', $union->getTypes()->offsetGet('Zzz')->getName());
 
-        self::assertTrue($union->isInstanceOf($union));
-        self::assertFalse($union->isInstanceOf(new NotNullType($union)));
-        self::assertTrue((new NotNullType($union))->isInstanceOf($union));
-        self::assertFalse($union->isInstanceOf(self::getTestTypeZzz()));
-        self::assertFalse($union->isInstanceOf(new NotNullType(self::getTestTypeZzz())));
-        self::assertTrue($union->isImplementedBy(self::getTestTypeXyz()));
-        self::assertTrue($union->isImplementedBy(new NotNullType(self::getTestTypeXyz())));
-        self::assertTrue($union->isImplementedBy(self::getTestTypeZzz()));
-        self::assertTrue($union->isImplementedBy(new NotNullType(self::getTestTypeZzz())));
-        self::assertFalse($union->isImplementedBy(self::getTestTypeAbc()));
-        self::assertFalse($union->isImplementedBy(new NotNullType(self::getTestTypeAbc())));
+        self::assertTrue($union->accept(new IsInstanceOfVisitor($union)));
+        self::assertFalse($union->accept(new IsInstanceOfVisitor(new NotNullType($union))));
+        self::assertTrue((new NotNullType($union))->accept(new IsInstanceOfVisitor($union)));
+        self::assertFalse($union->accept(new IsInstanceOfVisitor(self::getTestTypeZzz())));
+        self::assertFalse($union->accept(new IsInstanceOfVisitor(new NotNullType(self::getTestTypeZzz()))));
+        self::assertTrue($union->accept(new IsInstanceOfVisitor(self::getTestTypeXyz())));
+        self::assertTrue($union->accept(new IsInstanceOfVisitor(new NotNullType(self::getTestTypeXyz()))));
+        self::assertTrue($union->accept(new IsInstanceOfVisitor(self::getTestTypeZzz())));
+        self::assertTrue($union->accept(new IsInstanceOfVisitor(new NotNullType(self::getTestTypeZzz()))));
+        self::assertFalse($union->accept(new IsInstanceOfVisitor(self::getTestTypeAbc())));
+        self::assertFalse($union->accept(new IsInstanceOfVisitor(new NotNullType(self::getTestTypeAbc()))));
     }
 }

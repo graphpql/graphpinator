@@ -5,11 +5,9 @@ declare(strict_types = 1);
 namespace Graphpinator\Typesystem;
 
 use Graphpinator\Graphpinator;
-use Graphpinator\Typesystem\Contract\AbstractType;
-use Graphpinator\Typesystem\Contract\ConcreteType;
 use Graphpinator\Typesystem\Contract\InterfaceImplementor;
+use Graphpinator\Typesystem\Contract\NamedType;
 use Graphpinator\Typesystem\Contract\NamedTypeVisitor;
-use Graphpinator\Typesystem\Contract\Type as TypeContract;
 use Graphpinator\Typesystem\Contract\TypeConditionable;
 use Graphpinator\Typesystem\DirectiveUsage\DirectiveUsage;
 use Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet;
@@ -22,7 +20,7 @@ use Graphpinator\Typesystem\Utils\THasDirectives;
 use Graphpinator\Typesystem\Utils\TInterfaceImplementor;
 use Graphpinator\Typesystem\Utils\TMetaFields;
 
-abstract class Type extends ConcreteType implements TypeConditionable, InterfaceImplementor
+abstract class Type extends NamedType implements TypeConditionable, InterfaceImplementor
 {
     use TInterfaceImplementor;
     use TMetaFields;
@@ -41,16 +39,6 @@ abstract class Type extends ConcreteType implements TypeConditionable, Interface
     final public function addMetaField(ResolvableField $field) : void
     {
         $this->getMetaFields()->offsetSet($field->getName(), $field);
-    }
-
-    #[\Override]
-    final public function isInstanceOf(TypeContract $type) : bool
-    {
-        if ($type instanceof AbstractType) {
-            return $type->isImplementedBy($this);
-        }
-
-        return parent::isInstanceOf($type);
     }
 
     #[\Override]
