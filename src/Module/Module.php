@@ -8,7 +8,7 @@ use Graphpinator\Normalizer\FinalizedRequest;
 use Graphpinator\Normalizer\NormalizedRequest;
 use Graphpinator\Parser\ParsedRequest;
 use Graphpinator\Request\Request;
-use Graphpinator\Result;
+use Graphpinator\Resolver\Result;
 
 interface Module
 {

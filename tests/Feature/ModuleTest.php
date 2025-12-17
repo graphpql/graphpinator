@@ -25,7 +25,7 @@ use Graphpinator\Parser\OperationType;
 use Graphpinator\Parser\ParsedRequest;
 use Graphpinator\Request\JsonRequestFactory;
 use Graphpinator\Request\Request;
-use Graphpinator\Result;
+use Graphpinator\Resolver\Result;
 use Graphpinator\SimpleContainer;
 use Graphpinator\Typesystem\Container;
 use Graphpinator\Typesystem\Field\ResolvableField;

@@ -4,8 +4,6 @@ declare(strict_types = 1);
 
 namespace Graphpinator;
 
-use Graphpinator\Common\Location;
-use Graphpinator\Common\Path;
 use Graphpinator\Exception\ClientAware;
 use Graphpinator\Module\ModuleSet;
 use Graphpinator\Normalizer\Finalizer;
@@ -15,7 +13,10 @@ use Graphpinator\Parser\ParsedRequest;
 use Graphpinator\Parser\Parser;
 use Graphpinator\Request\Request;
 use Graphpinator\Request\RequestFactory;
+use Graphpinator\Resolver\ErrorHandlingMode;
+use Graphpinator\Resolver\ExceptionHandler;
 use Graphpinator\Resolver\Resolver;
+use Graphpinator\Resolver\Result;
 use Graphpinator\Source\StringSource;
 use Graphpinator\Typesystem\Schema;
 use Psr\Log\LogLevel;
@@ -29,7 +30,7 @@ final class Graphpinator implements LoggerAwareInterface
      * Whether Graphpinator should perform schema integrity checks. Disable in production to avoid unnecessary overhead.
      */
     public static bool $validateSchema = true;
-    private ErrorHandlingMode $errorHandlingMode;
+    private ExceptionHandler $exceptionHandler;
     private Parser $parser;
     private Normalizer $normalizer;
     private Finalizer $finalizer;
@@ -42,9 +43,7 @@ final class Graphpinator implements LoggerAwareInterface
         private LoggerInterface $logger = new NullLogger(),
     )
     {
-        $this->errorHandlingMode = $errorHandlingMode instanceof ErrorHandlingMode
-            ? $errorHandlingMode
-            : ErrorHandlingMode::fromBool($errorHandlingMode);
+        $this->exceptionHandler = new ExceptionHandler($errorHandlingMode);
         $this->parser = new Parser();
         $this->normalizer = new Normalizer($schema);
         $this->finalizer = new Finalizer();
@@ -109,12 +108,7 @@ final class Graphpinator implements LoggerAwareInterface
         } catch (\Throwable $exception) {
             $this->logger->log(self::getLogLevel($exception), self::getLogMessage($exception));
 
-            return match ($this->errorHandlingMode) {
-                ErrorHandlingMode::ALL => $this->handleAll($exception),
-                ErrorHandlingMode::OUTPUTABLE => $this->handleOutputable($exception),
-                ErrorHandlingMode::CLIENT_AWARE => $this->handleClientAware($exception),
-                ErrorHandlingMode::NONE => $this->handleNone($exception),
-            };
+            return $this->exceptionHandler->handle($exception);
         }
     }
 
@@ -138,65 +132,5 @@ final class Graphpinator implements LoggerAwareInterface
         }
 
         return LogLevel::EMERGENCY;
-    }
-
-    private static function serializeError(ClientAware $exception) : array
-    {
-        if (!$exception->isOutputable()) {
-            return self::notOutputableResponse();
-        }
-
-        $result = [
-            'message' => $exception->getMessage(),
-        ];
-
-        if ($exception->getLocation() instanceof Location) {
-            $result['locations'] = [$exception->getLocation()];
-        }
-
-        if ($exception->getPath() instanceof Path) {
-            $result['path'] = $exception->getPath();
-        }
-
-        if (\is_array($exception->getExtensions())) {
-            $result['extensions'] = $exception->getExtensions();
-        }
-
-        return $result;
-    }
-
-    private static function notOutputableResponse() : array
-    {
-        return [
-            'message' => 'Server responded with unknown error.',
-        ];
-    }
-
-    private function handleAll(\Throwable $exception) : Result
-    {
-        return new Result(null, [
-            $exception instanceof ClientAware
-                ? self::serializeError($exception)
-                : self::notOutputableResponse(),
-        ]);
-    }
-
-    private function handleOutputable(\Throwable $exception) : Result
-    {
-        return $exception instanceof ClientAware && $exception->isOutputable()
-            ? new Result(null, [self::serializeError($exception)])
-            : throw $exception;
-    }
-
-    private function handleClientAware(\Throwable $exception) : Result
-    {
-        return $exception instanceof ClientAware
-            ? new Result(null, [self::serializeError($exception)])
-            : throw $exception;
-    }
-
-    private function handleNone(\Throwable $exception) : never
-    {
-        throw $exception;
     }
 }

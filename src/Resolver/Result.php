@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator;
+namespace Graphpinator\Resolver;
 
 use Graphpinator\Value\TypeValue;
 use Infinityloop\Utils\Json;
