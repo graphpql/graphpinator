@@ -22,16 +22,17 @@
     "psr/log": "^3.0"
   },
   "require-dev": {
-    "phpunit/phpunit": "^10.4",
+    "guzzlehttp/psr7": "^2.8",
     "infection/infection": "^0.29",
     "infinityloop-dev/graphpinator-tokenizer": "^1.3",
-    "phpstan/phpstan": "^2.0",
-    "thecodingmachine/phpstan-safe-rule": "^1.4",
-    "phpstan/phpstan-strict-rules": "^2.0",
-    "phpstan/phpstan-deprecation-rules": "^2.0",
-    "webthinx/codestyle": "^1.1",
     "phpstan/extension-installer": "^1.4",
-    "shipmonk/composer-dependency-analyser": "^1.8"
+    "phpstan/phpstan": "^2.0",
+    "phpstan/phpstan-deprecation-rules": "^2.0",
+    "phpstan/phpstan-strict-rules": "^2.0",
+    "phpunit/phpunit": "^10.4",
+    "shipmonk/composer-dependency-analyser": "^1.8",
+    "thecodingmachine/phpstan-safe-rule": "^1.4",
+    "webthinx/codestyle": "^1.1"
   },
   "suggest": {
     "infinityloop-dev/graphpinator-nette": "Adapters for Nette framework.",
