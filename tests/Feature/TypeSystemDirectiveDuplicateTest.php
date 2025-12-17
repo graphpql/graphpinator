@@ -44,7 +44,12 @@ final class TypeSystemDirectiveDuplicateTest extends TestCase
                 $this->setSpecifiedBy('invalid.invalid.invalid');
             }
 
-            public function validateNonNullValue(mixed $rawValue) : bool
+            public function validateAndCoerceInput(mixed $rawValue) : mixed
+            {
+                return true;
+            }
+
+            public function coerceOutput(mixed $rawValue) : string|int|float|bool
             {
                 return true;
             }

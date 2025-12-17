@@ -1032,7 +1032,12 @@ final class TestSchema
         {
             protected const NAME = 'TestScalar';
 
-            public function validateNonNullValue($rawValue) : bool
+            public function validateAndCoerceInput(mixed $rawValue) : mixed
+            {
+                return true;
+            }
+
+            public function coerceOutput(mixed $rawValue) : string|int|float|bool
             {
                 return true;
             }

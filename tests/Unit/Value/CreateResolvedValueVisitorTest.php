@@ -137,7 +137,7 @@ final class CreateResolvedValueVisitorTest extends TestCase
         $result = self::$enum->accept($visitor);
 
         self::assertInstanceOf(EnumValue::class, $result);
-        self::assertSame('OBJECT', $result->getRawValue());
+        self::assertSame(TypeSystemDirectiveLocation::OBJECT, $result->getRawValue());
     }
 
     public function testEnumWithNull() : void
@@ -154,7 +154,7 @@ final class CreateResolvedValueVisitorTest extends TestCase
         $result = self::$enum->accept($visitor);
 
         self::assertInstanceOf(EnumValue::class, $result);
-        self::assertSame('INPUT_OBJECT', $result->getRawValue());
+        self::assertSame(TypeSystemDirectiveLocation::INPUT_OBJECT, $result->getRawValue());
     }
 
     public function testInterfaceWithValue() : void

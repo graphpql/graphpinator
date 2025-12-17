@@ -9,5 +9,4 @@ namespace Graphpinator\Typesystem\Contract;
  */
 interface TypeConditionable extends Type
 {
-    public function getName() : string;
 }

@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Graphpinator\Typesystem;
 
 use Graphpinator\Typesystem\Contract\LeafType;
+use Graphpinator\Typesystem\Contract\NamedType;
 use Graphpinator\Typesystem\Contract\NamedTypeVisitor;
 use Graphpinator\Typesystem\DirectiveUsage\DirectiveUsage;
 use Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet;
@@ -12,7 +13,11 @@ use Graphpinator\Typesystem\Location\ScalarLocation;
 use Graphpinator\Typesystem\Spec\SpecifiedByDirective;
 use Graphpinator\Typesystem\Utils\THasDirectives;
 
-abstract class ScalarType extends LeafType
+/**
+ * @phpcs:ignore
+ * @template T of mixed
+ */
+abstract class ScalarType extends NamedType implements LeafType
 {
     use THasDirectives;
 
@@ -27,10 +32,17 @@ abstract class ScalarType extends LeafType
         return $visitor->visitScalar($this);
     }
 
-    public function coerceValue(mixed $rawValue) : mixed
-    {
-        return $rawValue;
-    }
+    /**
+     * @phpcs:ignore
+     * @param mixed $rawValue
+     * @return ?T
+     */
+    abstract public function validateAndCoerceInput(mixed $rawValue) : mixed;
+
+    /**
+     * @param T $rawValue
+     */
+    abstract public function coerceOutput(mixed $rawValue) : string|int|float|bool;
 
     /**
      * @param ScalarLocation $directive

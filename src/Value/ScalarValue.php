@@ -4,18 +4,24 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Value;
 
-final class ScalarValue extends LeafValue
+use Graphpinator\Normalizer\VariableValueSet;
+use Graphpinator\Typesystem\ScalarType;
+use Graphpinator\Value\Exception\InvalidValue;
+
+final class ScalarValue implements InputedValue, OutputValue
 {
+    private mixed $rawValue;
     private mixed $resolverValue = null;
     private bool $hasResolverValue = false;
 
-    #[\Override]
-    public function printValue() : string
+    public function __construct(
+        private ScalarType $type,
+        mixed $rawValue,
+        bool $inputed,
+    )
     {
-        return \json_encode($this->rawValue, \JSON_THROW_ON_ERROR |
-            \JSON_UNESCAPED_UNICODE |
-            \JSON_UNESCAPED_SLASHES |
-            \JSON_PRESERVE_ZERO_FRACTION);
+        $this->rawValue = $type->validateAndCoerceInput($rawValue)
+            ?? throw new InvalidValue($type, $rawValue, $inputed);
     }
 
     #[\Override]
@@ -24,6 +30,46 @@ final class ScalarValue extends LeafValue
         return ($forResolvers && $this->hasResolverValue)
             ? $this->resolverValue
             : $this->rawValue;
+    }
+
+    #[\Override]
+    public function getType() : ScalarType
+    {
+        return $this->type;
+    }
+
+    #[\Override]
+    public function jsonSerialize() : string|int|float|bool
+    {
+        return $this->type->coerceOutput($this->rawValue);
+    }
+
+    #[\Override]
+    public function printValue() : string
+    {
+        return \json_encode($this->jsonSerialize(), \JSON_THROW_ON_ERROR |
+            \JSON_UNESCAPED_UNICODE |
+            \JSON_UNESCAPED_SLASHES |
+            \JSON_PRESERVE_ZERO_FRACTION);
+    }
+
+    #[\Override]
+    public function applyVariables(VariableValueSet $variables) : void
+    {
+        // nothing here
+    }
+
+    #[\Override]
+    public function resolveRemainingDirectives() : void
+    {
+        // nothing here
+    }
+
+    #[\Override]
+    public function isSame(Value $compare) : bool
+    {
+        return $compare instanceof self
+            && $this->rawValue === $compare->getRawValue();
     }
 
     public function setResolverValue(mixed $value) : void

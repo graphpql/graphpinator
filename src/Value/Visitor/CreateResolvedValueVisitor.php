@@ -74,15 +74,9 @@ final class CreateResolvedValueVisitor implements TypeVisitor
     #[\Override]
     public function visitEnum(EnumType $enum) : ResolvedValue
     {
-        if ($this->rawValue === null) {
-            return new NullValue($enum);
-        }
-
-        if (\is_object($this->rawValue)) {
-            $this->rawValue = $this->rawValue->value;
-        }
-
-        return new EnumValue($enum, $this->rawValue, false);
+        return $this->rawValue === null
+            ? new NullValue($enum)
+            : new EnumValue($enum, $this->rawValue, false);
     }
 
     #[\Override]

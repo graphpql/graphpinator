@@ -28,6 +28,9 @@ use Graphpinator\Value\ListInputedValue;
 use Graphpinator\Value\NullValue;
 use Graphpinator\Value\ScalarValue;
 
+/**
+ * @implements TypeVisitor<InputedValue>
+ */
 final readonly class ConvertRawValueVisitor implements TypeVisitor
 {
     public function __construct(
@@ -125,39 +128,25 @@ final readonly class ConvertRawValueVisitor implements TypeVisitor
     #[\Override]
     public function visitScalar(ScalarType $scalar) : InputedValue
     {
-        if ($this->rawValue === null) {
-            return new NullValue($scalar);
-        }
-
-        $coercedValue = $scalar->coerceValue($this->rawValue);
-
-        return new ScalarValue($scalar, $coercedValue, true);
+        return $this->rawValue === null
+            ? new NullValue($scalar)
+            : new ScalarValue($scalar, $this->rawValue, true);
     }
 
     #[\Override]
     public function visitEnum(EnumType $enum) : InputedValue
     {
-        if ($this->rawValue === null) {
-            return new NullValue($enum);
-        }
-
-        if ($this->rawValue instanceof \BackedEnum && \is_string($enum->getEnumClass())) {
-            return new EnumValue($enum, $this->rawValue->value, true);
-        }
-
-        return new EnumValue($enum, $this->rawValue, true);
+        return $this->rawValue === null
+            ? new NullValue($enum)
+            : new EnumValue($enum, $this->rawValue, true);
     }
 
     #[\Override]
     public function visitNotNull(NotNullType $notNull) : InputedValue
     {
-        $value = $notNull->getInnerType()->accept($this);
-
-        if ($value instanceof NullValue) {
-            throw new ValueCannotBeNull(true);
-        }
-
-        return $value;
+        return $this->rawValue === null
+            ? throw new ValueCannotBeNull(true)
+            : $notNull->getInnerType()->accept($this);
     }
 
     #[\Override]

@@ -82,7 +82,12 @@ final class PrintNameVisitorTest extends TestCase
         self::$scalar = new class extends ScalarType {
             protected const NAME = 'CustomScalar';
 
-            public function validateNonNullValue(mixed $rawValue) : bool
+            public function validateAndCoerceInput(mixed $rawValue) : mixed
+            {
+                return true;
+            }
+
+            public function coerceOutput(mixed $rawValue) : string|int|float|bool
             {
                 return true;
             }

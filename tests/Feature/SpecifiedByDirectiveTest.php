@@ -43,7 +43,12 @@ final class SpecifiedByDirectiveTest extends TestCase
                 $this->setSpecifiedBy('test.test.test');
             }
 
-            public function validateNonNullValue(mixed $rawValue) : bool
+            public function validateAndCoerceInput(mixed $rawValue) : mixed
+            {
+                return true;
+            }
+
+            public function coerceOutput(mixed $rawValue) : string|int|float|bool
             {
                 return true;
             }

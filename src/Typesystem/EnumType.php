@@ -6,6 +6,7 @@ namespace Graphpinator\Typesystem;
 
 use Graphpinator\Typesystem\Attribute\Description;
 use Graphpinator\Typesystem\Contract\LeafType;
+use Graphpinator\Typesystem\Contract\NamedType;
 use Graphpinator\Typesystem\Contract\NamedTypeVisitor;
 use Graphpinator\Typesystem\DirectiveUsage\DirectiveUsage;
 use Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet;
@@ -14,7 +15,7 @@ use Graphpinator\Typesystem\EnumItem\EnumItemSet;
 use Graphpinator\Typesystem\Location\EnumLocation;
 use Graphpinator\Typesystem\Utils\THasDirectives;
 
-abstract class EnumType extends LeafType
+abstract class EnumType extends NamedType implements LeafType
 {
     use THasDirectives;
 
@@ -76,12 +77,6 @@ abstract class EnumType extends LeafType
         return $visitor->visitEnum($this);
     }
 
-    #[\Override]
-    final public function validateNonNullValue(mixed $rawValue) : bool
-    {
-        return \is_string($rawValue) && $this->options->offsetExists($rawValue);
-    }
-
     /**
      * @param EnumLocation $directive
      * @phpcs:ignore
@@ -102,15 +97,7 @@ abstract class EnumType extends LeafType
         $attrs = $reflection->getAttributes(Description::class);
 
         if (\count($attrs) === 1) {
-            $attr = $attrs[0]->newInstance();
-
-            return $attr->getValue();
-        }
-
-        $comment = $reflection->getDocComment();
-
-        if ($comment) {
-            return \trim($comment, '/* ');
+            return $attrs[0]->newInstance()->getValue();
         }
 
         return null;
