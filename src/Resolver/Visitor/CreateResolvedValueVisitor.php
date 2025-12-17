@@ -15,7 +15,6 @@ use Graphpinator\Typesystem\Type;
 use Graphpinator\Typesystem\UnionType;
 use Graphpinator\Value\Exception\ValueCannotBeNull;
 use Graphpinator\Value\ListIntermediateValue;
-use Graphpinator\Value\NullResolvedValue;
 use Graphpinator\Value\NullValue;
 use Graphpinator\Value\ResolvedValue;
 use Graphpinator\Value\ScalarValue;
@@ -36,7 +35,7 @@ final class CreateResolvedValueVisitor implements TypeVisitor
     public function visitType(Type $type) : ResolvedValue
     {
         if ($this->rawValue === null) {
-            return new NullResolvedValue($type);
+            return new NullValue($type);
         }
 
         return new TypeIntermediateValue($type, $this->rawValue);
@@ -46,7 +45,7 @@ final class CreateResolvedValueVisitor implements TypeVisitor
     public function visitInterface(InterfaceType $interface) : ResolvedValue
     {
         if ($this->rawValue === null) {
-            return new NullResolvedValue($interface);
+            return new NullValue($interface);
         }
 
         return $interface->createResolvedValue($this->rawValue);
@@ -56,7 +55,7 @@ final class CreateResolvedValueVisitor implements TypeVisitor
     public function visitUnion(UnionType $union) : ResolvedValue
     {
         if ($this->rawValue === null) {
-            return new NullResolvedValue($union);
+            return new NullValue($union);
         }
 
         return $union->createResolvedValue($this->rawValue);
@@ -72,7 +71,7 @@ final class CreateResolvedValueVisitor implements TypeVisitor
     public function visitScalar(ScalarType $scalar) : ResolvedValue
     {
         if ($this->rawValue === null) {
-            return new NullResolvedValue($scalar);
+            return new NullValue($scalar);
         }
 
         return new ScalarValue($scalar, $this->rawValue, false);
@@ -82,7 +81,7 @@ final class CreateResolvedValueVisitor implements TypeVisitor
     public function visitEnum(EnumType $enum) : ResolvedValue
     {
         if ($this->rawValue === null) {
-            return new NullResolvedValue($enum);
+            return new NullValue($enum);
         }
 
         if (\is_object($this->rawValue)) {
@@ -111,6 +110,6 @@ final class CreateResolvedValueVisitor implements TypeVisitor
             return new ListIntermediateValue($list, $this->rawValue);
         }
 
-        return new NullResolvedValue($list);
+        return new NullValue($list);
     }
 }

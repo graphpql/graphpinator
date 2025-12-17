@@ -12,8 +12,8 @@ use Graphpinator\Typesystem\Container;
 use Graphpinator\Typesystem\Exception\OneOfDirectiveNotSatisfied;
 use Graphpinator\Typesystem\Exception\OneOfInputInvalidFields;
 use Graphpinator\Typesystem\InputType;
-use Graphpinator\Value\ConvertRawValueVisitor;
 use Graphpinator\Value\InputValue;
+use Graphpinator\Value\Visitor\ConvertRawValueVisitor;
 use PHPUnit\Framework\TestCase;
 
 final class OneOfDirectiveTest extends TestCase

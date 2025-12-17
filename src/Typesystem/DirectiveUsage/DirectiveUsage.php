@@ -9,7 +9,7 @@ use Graphpinator\Typesystem\Contract\Component;
 use Graphpinator\Typesystem\Contract\ComponentVisitor;
 use Graphpinator\Typesystem\Contract\TypeSystemDirective;
 use Graphpinator\Value\ArgumentValueSet;
-use Graphpinator\Value\ConvertRawValueVisitor;
+use Graphpinator\Value\Visitor\ConvertRawValueVisitor;
 
 final class DirectiveUsage implements Component
 {

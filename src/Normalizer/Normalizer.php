@@ -70,8 +70,8 @@ use Graphpinator\Typesystem\Visitor\GetNamedTypeVisitor;
 use Graphpinator\Typesystem\Visitor\IsInstanceOfVisitor;
 use Graphpinator\Value\ArgumentValue;
 use Graphpinator\Value\ArgumentValueSet;
-use Graphpinator\Value\ConvertParserValueVisitor;
-use Graphpinator\Value\ConvertRawValueVisitor;
+use Graphpinator\Value\Visitor\ConvertParserValueVisitor;
+use Graphpinator\Value\Visitor\ConvertRawValueVisitor;
 
 final class Normalizer
 {

@@ -9,9 +9,9 @@ use Graphpinator\Normalizer\Directive\DirectiveSet;
 use Graphpinator\Normalizer\Variable\Variable;
 use Graphpinator\Tests\Spec\TestSchema;
 use Graphpinator\Typesystem\Spec\StringType;
-use Graphpinator\Value\ConvertRawValueVisitor;
 use Graphpinator\Value\InputedValue;
 use Graphpinator\Value\VariableValue;
+use Graphpinator\Value\Visitor\ConvertRawValueVisitor;
 use PHPUnit\Framework\TestCase;
 
 final class IsSameTest extends TestCase

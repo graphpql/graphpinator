@@ -20,7 +20,7 @@ use Graphpinator\Typesystem\Utils\TOptionalDescription;
 use Graphpinator\Typesystem\Visitor\IsInputableVisitor;
 use Graphpinator\Typesystem\Visitor\PrintNameVisitor;
 use Graphpinator\Value\ArgumentValue;
-use Graphpinator\Value\ConvertRawValueVisitor;
+use Graphpinator\Value\Visitor\ConvertRawValueVisitor;
 
 final class Argument implements Component
 {

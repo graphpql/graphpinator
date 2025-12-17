@@ -45,19 +45,19 @@ final class ResolveVisitor implements TypeVisitor
     }
 
     #[\Override]
-    public function visitInterface(InterfaceType $interface) : mixed
+    public function visitInterface(InterfaceType $interface) : never
     {
         throw new \LogicException();
     }
 
     #[\Override]
-    public function visitUnion(UnionType $union) : mixed
+    public function visitUnion(UnionType $union) : never
     {
         throw new \LogicException();
     }
 
     #[\Override]
-    public function visitInput(InputType $input) : mixed
+    public function visitInput(InputType $input) : never
     {
         throw new \LogicException();
     }

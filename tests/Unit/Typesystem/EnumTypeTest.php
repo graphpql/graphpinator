@@ -6,8 +6,8 @@ namespace Graphpinator\Tests\Unit\Typesystem;
 
 use Graphpinator\Common\Path;
 use Graphpinator\Typesystem\EnumType;
-use Graphpinator\Value\ConvertRawValueVisitor;
 use Graphpinator\Value\Exception\InvalidValue;
+use Graphpinator\Value\Visitor\ConvertRawValueVisitor;
 use PHPUnit\Framework\TestCase;
 
 final class EnumTypeTest extends TestCase

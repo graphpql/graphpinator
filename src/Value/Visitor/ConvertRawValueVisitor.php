@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Value;
+namespace Graphpinator\Value\Visitor;
 
 use Graphpinator\Common\Path;
 use Graphpinator\Normalizer\Exception\UnknownArgument;
@@ -17,15 +17,22 @@ use Graphpinator\Typesystem\ScalarType;
 use Graphpinator\Typesystem\Type;
 use Graphpinator\Typesystem\UnionType;
 use Graphpinator\Typesystem\Visitor\IsInputableVisitor;
+use Graphpinator\Value\ArgumentValue;
+use Graphpinator\Value\EnumValue;
 use Graphpinator\Value\Exception\InvalidValue;
 use Graphpinator\Value\Exception\ValueCannotBeNull;
 use Graphpinator\Value\Exception\ValueCannotBeOmitted;
+use Graphpinator\Value\InputValue;
+use Graphpinator\Value\InputedValue;
+use Graphpinator\Value\ListInputedValue;
+use Graphpinator\Value\NullValue;
+use Graphpinator\Value\ScalarValue;
 
-final class ConvertRawValueVisitor implements TypeVisitor
+final readonly class ConvertRawValueVisitor implements TypeVisitor
 {
     public function __construct(
-        readonly private mixed $rawValue,
-        readonly private Path $path,
+        private mixed $rawValue,
+        private Path $path,
     )
     {
     }
@@ -105,7 +112,7 @@ final class ConvertRawValueVisitor implements TypeVisitor
     public function visitInput(InputType $input) : InputedValue
     {
         if ($this->rawValue === null) {
-            return new NullInputedValue($input);
+            return new NullValue($input);
         }
 
         if (!$this->rawValue instanceof \stdClass) {
@@ -119,7 +126,7 @@ final class ConvertRawValueVisitor implements TypeVisitor
     public function visitScalar(ScalarType $scalar) : InputedValue
     {
         if ($this->rawValue === null) {
-            return new NullInputedValue($scalar);
+            return new NullValue($scalar);
         }
 
         $coercedValue = $scalar->coerceValue($this->rawValue);
@@ -131,7 +138,7 @@ final class ConvertRawValueVisitor implements TypeVisitor
     public function visitEnum(EnumType $enum) : InputedValue
     {
         if ($this->rawValue === null) {
-            return new NullInputedValue($enum);
+            return new NullValue($enum);
         }
 
         if ($this->rawValue instanceof \BackedEnum && \is_string($enum->getEnumClass())) {
@@ -157,7 +164,7 @@ final class ConvertRawValueVisitor implements TypeVisitor
     public function visitList(ListType $list) : InputedValue
     {
         if ($this->rawValue === null) {
-            return new NullInputedValue($list);
+            return new NullValue($list);
         }
 
         $coercedValue = \is_array($this->rawValue)

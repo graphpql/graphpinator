@@ -6,8 +6,8 @@ namespace Graphpinator\Tests\Unit\Typesystem\Scalar;
 
 use Graphpinator\Common\Path;
 use Graphpinator\Typesystem\Spec\IntType;
-use Graphpinator\Value\ConvertRawValueVisitor;
 use Graphpinator\Value\Exception\InvalidValue;
+use Graphpinator\Value\Visitor\ConvertRawValueVisitor;
 use PHPUnit\Framework\TestCase;
 
 final class IntTypeTest extends TestCase

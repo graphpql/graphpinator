@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Value;
+namespace Graphpinator\Value\Visitor;
 
 use Graphpinator\Common\Path;
 use Graphpinator\Normalizer\Exception\UnknownArgument;
@@ -22,8 +22,13 @@ use Graphpinator\Typesystem\ListType;
 use Graphpinator\Typesystem\NotNullType;
 use Graphpinator\Typesystem\Visitor\IsInputableVisitor;
 use Graphpinator\Typesystem\Visitor\PrintNameVisitor;
+use Graphpinator\Value\ArgumentValue;
 use Graphpinator\Value\Exception\InvalidValue;
 use Graphpinator\Value\Exception\ValueCannotBeNull;
+use Graphpinator\Value\InputValue;
+use Graphpinator\Value\InputedValue;
+use Graphpinator\Value\ListInputedValue;
+use Graphpinator\Value\VariableValue;
 
 final readonly class ConvertParserValueVisitor implements ValueVisitor
 {

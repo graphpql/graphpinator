@@ -9,8 +9,8 @@ use Graphpinator\Exception\GraphpinatorBase;
 use Graphpinator\Normalizer\Operation\Operation;
 use Graphpinator\Normalizer\Variable\Variable;
 use Graphpinator\Typesystem\Location\VariableDefinitionLocation;
-use Graphpinator\Value\ConvertRawValueVisitor;
 use Graphpinator\Value\InputedValue;
+use Graphpinator\Value\Visitor\ConvertRawValueVisitor;
 
 final class Finalizer
 {
