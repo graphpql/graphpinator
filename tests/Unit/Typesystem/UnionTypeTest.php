@@ -102,10 +102,10 @@ final class UnionTypeTest extends TestCase
         self::assertTrue((new NotNullType($union))->accept(new IsInstanceOfVisitor($union)));
         self::assertFalse($union->accept(new IsInstanceOfVisitor(self::getTestTypeZzz())));
         self::assertFalse($union->accept(new IsInstanceOfVisitor(new NotNullType(self::getTestTypeZzz()))));
-        self::assertTrue($union->accept(new IsInstanceOfVisitor(self::getTestTypeXyz())));
-        self::assertTrue($union->accept(new IsInstanceOfVisitor(new NotNullType(self::getTestTypeXyz()))));
-        self::assertTrue($union->accept(new IsInstanceOfVisitor(self::getTestTypeZzz())));
-        self::assertTrue($union->accept(new IsInstanceOfVisitor(new NotNullType(self::getTestTypeZzz()))));
+        self::assertFalse($union->accept(new IsInstanceOfVisitor(self::getTestTypeXyz())));
+        self::assertFalse($union->accept(new IsInstanceOfVisitor(new NotNullType(self::getTestTypeXyz()))));
+        self::assertFalse($union->accept(new IsInstanceOfVisitor(self::getTestTypeZzz())));
+        self::assertFalse($union->accept(new IsInstanceOfVisitor(new NotNullType(self::getTestTypeZzz()))));
         self::assertFalse($union->accept(new IsInstanceOfVisitor(self::getTestTypeAbc())));
         self::assertFalse($union->accept(new IsInstanceOfVisitor(new NotNullType(self::getTestTypeAbc()))));
     }

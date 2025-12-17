@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem\Visitor;
 
+use Graphpinator\Typesystem\Contract\AbstractType;
 use Graphpinator\Typesystem\Contract\Type as TypeContract;
 use Graphpinator\Typesystem\Contract\TypeVisitor;
 use Graphpinator\Typesystem\EnumType;
@@ -36,13 +37,15 @@ final readonly class IsInstanceOfVisitor implements TypeVisitor
     #[\Override]
     public function visitType(Type $type) : bool
     {
-        return $this->typeToCompare->accept(new IsImplementedByVisitor($type));
+        return $type::class === $this->typeToCompare::class
+            || ($this->typeToCompare instanceof AbstractType && $this->typeToCompare->accept(new IsImplementedByVisitor($type)));
     }
 
     #[\Override]
     public function visitInterface(InterfaceType $interface) : bool
     {
-        return $this->typeToCompare->accept(new IsImplementedByVisitor($interface));
+        return $interface::class === $this->typeToCompare::class
+            || ($this->typeToCompare instanceof AbstractType && $this->typeToCompare->accept(new IsImplementedByVisitor($interface)));
     }
 
     #[\Override]
