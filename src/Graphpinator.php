@@ -19,6 +19,7 @@ use Graphpinator\Resolver\Resolver;
 use Graphpinator\Resolver\Result;
 use Graphpinator\Source\StringSource;
 use Graphpinator\Typesystem\Schema;
+use Graphpinator\Typesystem\Visitor\ValidateIntegrityVisitor;
 use Psr\Log\LogLevel;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
@@ -27,7 +28,7 @@ use Psr\Log\NullLogger;
 final class Graphpinator implements LoggerAwareInterface
 {
     /**
-     * Whether Graphpinator should perform schema integrity checks. Disable in production to avoid unnecessary overhead.
+     * Whether Graphpinator should perform schema integrity checks. Can be disabled in production to avoid unnecessary overhead.
      */
     public static bool $validateSchema = true;
     private ExceptionHandler $exceptionHandler;
@@ -37,7 +38,7 @@ final class Graphpinator implements LoggerAwareInterface
     private Resolver $resolver;
 
     public function __construct(
-        Schema $schema,
+        private Schema $schema,
         bool|ErrorHandlingMode $errorHandlingMode = ErrorHandlingMode::NONE,
         private ModuleSet $modules = new ModuleSet([]),
         private LoggerInterface $logger = new NullLogger(),
@@ -45,13 +46,17 @@ final class Graphpinator implements LoggerAwareInterface
     {
         $this->exceptionHandler = new ExceptionHandler($errorHandlingMode);
         $this->parser = new Parser();
-        $this->normalizer = new Normalizer($schema);
+        $this->normalizer = new Normalizer($this->schema);
         $this->finalizer = new Finalizer();
         $this->resolver = new Resolver();
     }
 
     public function run(RequestFactory $requestFactory) : Result
     {
+        if (self::$validateSchema) {
+            $this->schema->accept(new ValidateIntegrityVisitor());
+        }
+
         try {
             $request = $requestFactory->create();
             $result = $request;

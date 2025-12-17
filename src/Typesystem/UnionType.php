@@ -40,10 +40,7 @@ abstract class UnionType extends AbstractType
      * @phpcs:ignore
      * @param array<string, mixed> $arguments
      */
-    final public function addDirective(
-        UnionLocation $directive,
-        array $arguments = [],
-    ) : static
+    final public function addDirective(UnionLocation $directive, array $arguments = []) : static
     {
         $this->directiveUsages[] = new DirectiveUsage($directive, $arguments);
 

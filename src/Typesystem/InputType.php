@@ -4,15 +4,11 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem;
 
-use Graphpinator\Graphpinator;
 use Graphpinator\Typesystem\Argument\ArgumentSet;
 use Graphpinator\Typesystem\Contract\NamedType;
 use Graphpinator\Typesystem\Contract\NamedTypeVisitor;
 use Graphpinator\Typesystem\DirectiveUsage\DirectiveUsage;
 use Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet;
-use Graphpinator\Typesystem\Exception\DirectiveIncorrectType;
-use Graphpinator\Typesystem\Exception\InputCycle;
-use Graphpinator\Typesystem\Exception\InputTypeMustDefineOneOreMoreFields;
 use Graphpinator\Typesystem\Location\InputObjectLocation;
 use Graphpinator\Typesystem\Spec\OneOfDirective;
 use Graphpinator\Typesystem\Utils\THasDirectives;
@@ -24,7 +20,6 @@ abstract class InputType extends NamedType
     protected const DATA_CLASS = \stdClass::class;
 
     protected ?ArgumentSet $arguments = null;
-    private bool $cycleValidated = false;
 
     public function __construct()
     {
@@ -36,14 +31,6 @@ abstract class InputType extends NamedType
         if (!$this->arguments instanceof ArgumentSet) {
             $this->arguments = $this->getFieldDefinition();
             $this->afterGetFieldDefinition();
-
-            if (Graphpinator::$validateSchema) {
-                if ($this->arguments->count() === 0) {
-                    throw new InputTypeMustDefineOneOreMoreFields();
-                }
-
-                $this->validateCycles();
-            }
         }
 
         return $this->arguments;
@@ -65,18 +52,9 @@ abstract class InputType extends NamedType
      * @phpcs:ignore
      * @param array<string, mixed> $arguments
      */
-    final public function addDirective(
-        InputObjectLocation $directive,
-        array $arguments = [],
-    ) : static
+    final public function addDirective(InputObjectLocation $directive, array $arguments = []) : static
     {
-        $usage = new DirectiveUsage($directive, $arguments);
-
-        if (Graphpinator::$validateSchema && !$directive->validateInputUsage($this, $usage->getArgumentValues())) {
-            throw new DirectiveIncorrectType();
-        }
-
-        $this->directiveUsages[] = $usage;
+        $this->directiveUsages[] = new DirectiveUsage($directive, $arguments);
 
         return $this;
     }
@@ -101,44 +79,5 @@ abstract class InputType extends NamedType
      */
     protected function afterGetFieldDefinition() : void
     {
-    }
-
-    /**
-     * @param array<string, true> $stack
-     */
-    private function validateCycles(array $stack = []) : void
-    {
-        if ($this->cycleValidated) {
-            return;
-        }
-
-        if (\array_key_exists($this->getName(), $stack)) {
-            throw new InputCycle(\array_keys($stack));
-        }
-
-        $stack[$this->getName()] = true;
-
-        foreach ($this->arguments as $argumentContract) {
-            $type = $argumentContract->getType();
-
-            if (!$type instanceof NotNullType) {
-                continue;
-            }
-
-            $type = $type->getInnerType();
-
-            if (!$type instanceof self) {
-                continue;
-            }
-
-            if ($type->arguments === null) {
-                $type->arguments = $type->getFieldDefinition();
-            }
-
-            $type->validateCycles($stack);
-        }
-
-        unset($stack[$this->getName()]);
-        $this->cycleValidated = true;
     }
 }

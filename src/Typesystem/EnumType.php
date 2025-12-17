@@ -82,10 +82,7 @@ abstract class EnumType extends NamedType implements LeafType
      * @phpcs:ignore
      * @param array<string, mixed> $arguments
      */
-    final public function addDirective(
-        EnumLocation $directive,
-        array $arguments = [],
-    ) : static
+    final public function addDirective(EnumLocation $directive, array $arguments = []) : static
     {
         $this->directiveUsages[] = new DirectiveUsage($directive, $arguments);
 
