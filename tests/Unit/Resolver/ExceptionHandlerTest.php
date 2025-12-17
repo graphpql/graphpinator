@@ -126,10 +126,10 @@ final class ExceptionHandlerTest extends TestCase
 
     public function testOutputableModeWithNotOutputableException() : void
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('Not outputable');
 
-        $exception = new class ('Not outputable') extends \Exception implements ClientAware {
+        $exception = new class ('Not outputable') extends \RuntimeException implements ClientAware {
             public function isOutputable() : bool
             {
                 return false;
@@ -166,7 +166,7 @@ final class ExceptionHandlerTest extends TestCase
 
     public function testClientAwareModeWithClientAware() : void
     {
-        $exception = new class ('Client aware message') extends \Exception implements ClientAware {
+        $exception = new class ('Client aware message') extends \RuntimeException implements ClientAware {
             public function isOutputable() : bool
             {
                 return true;
@@ -215,9 +215,9 @@ final class ExceptionHandlerTest extends TestCase
 
     public function testNoneModeThrowsClientAware() : void
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(\RuntimeException::class);
 
-        $exception = new class ('Test') extends \Exception implements ClientAware {
+        $exception = new class ('Test') extends \RuntimeException implements ClientAware {
             public function isOutputable() : bool
             {
                 return true;

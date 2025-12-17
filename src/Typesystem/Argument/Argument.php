@@ -35,7 +35,7 @@ final class Argument implements Component
         private Type $type,
     )
     {
-        if (!$this->type->accept(new IsInputableVisitor())) {
+        if (Graphpinator::$validateSchema && !$this->type->accept(new IsInputableVisitor())) {
             throw new ArgumentInvalidTypeUsage($this->name, $this->type->accept(new PrintNameVisitor()));
         }
 

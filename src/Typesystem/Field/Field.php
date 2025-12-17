@@ -33,7 +33,7 @@ class Field implements Component
         protected Type $type,
     )
     {
-        if (!$this->type->accept(new IsOutputableVisitor())) {
+        if (Graphpinator::$validateSchema && !$this->type->accept(new IsOutputableVisitor())) {
             throw new FieldInvalidTypeUsage($this->name, $this->type->accept(new PrintNameVisitor()));
         }
 
