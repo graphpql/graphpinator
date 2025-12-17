@@ -17,7 +17,7 @@ abstract class LeafValue implements InputedValue, OutputValue
     )
     {
         if (!$type->validateNonNullValue($rawValue)) {
-            throw new InvalidValue($type->getName(), $rawValue, $inputed);
+            throw new InvalidValue($type, $rawValue, $inputed);
         }
     }
 

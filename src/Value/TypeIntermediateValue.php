@@ -15,7 +15,7 @@ final class TypeIntermediateValue implements ResolvedValue
     )
     {
         if (!$type->validateNonNullValue($rawValue)) {
-            throw new InvalidValue($type->getName(), $rawValue, false);
+            throw new InvalidValue($type, $rawValue, false);
         }
     }
 

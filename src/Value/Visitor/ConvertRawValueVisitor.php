@@ -116,7 +116,7 @@ final readonly class ConvertRawValueVisitor implements TypeVisitor
         }
 
         if (!$this->rawValue instanceof \stdClass) {
-            throw new InvalidValue($input->getName(), $this->rawValue, true);
+            throw new InvalidValue($input, $this->rawValue, true);
         }
 
         return new InputValue($input, self::convertArgumentSet($input->getArguments(), $this->rawValue, $this->path, true));

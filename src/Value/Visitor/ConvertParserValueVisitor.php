@@ -55,7 +55,7 @@ final readonly class ConvertParserValueVisitor implements ValueVisitor
         }
 
         if (!$this->type instanceof EnumType) {
-            throw new InvalidValue($this->type->accept(new PrintNameVisitor()), $enumLiteral->getRawValue(), true);
+            throw new InvalidValue($this->type, $enumLiteral->getRawValue(), true);
         }
 
         return $this->type->accept(new ConvertRawValueVisitor($enumLiteral->getRawValue(), $this->path));
@@ -69,7 +69,7 @@ final readonly class ConvertParserValueVisitor implements ValueVisitor
         }
 
         if (!$this->type instanceof ListType) {
-            throw new InvalidValue($this->type->accept(new PrintNameVisitor()), [], true);
+            throw new InvalidValue($this->type, [], true);
         }
 
         $visitor = new self($this->type->getInnerType(), $this->variableSet, $this->path);
@@ -92,7 +92,7 @@ final readonly class ConvertParserValueVisitor implements ValueVisitor
         }
 
         if (!$this->type instanceof InputType) {
-            throw new InvalidValue($this->type->accept(new PrintNameVisitor()), new \stdClass(), true);
+            throw new InvalidValue($this->type, new \stdClass(), true);
         }
 
         foreach ((array) $objectVal->value as $name => $temp) {
