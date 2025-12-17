@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem\Exception;
 
-final class InputCycle extends TypeError
+final class InputCycleDetected extends TypeError
 {
     public const MESSAGE = 'Input cycle detected (%s).';
 

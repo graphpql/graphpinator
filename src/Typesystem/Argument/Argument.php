@@ -5,20 +5,15 @@ declare(strict_types = 1);
 namespace Graphpinator\Typesystem\Argument;
 
 use Graphpinator\Common\Path;
-use Graphpinator\Graphpinator;
 use Graphpinator\Typesystem\Contract\Component;
 use Graphpinator\Typesystem\Contract\ComponentVisitor;
 use Graphpinator\Typesystem\Contract\Type;
 use Graphpinator\Typesystem\DirectiveUsage\DirectiveUsage;
 use Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet;
-use Graphpinator\Typesystem\Exception\ArgumentInvalidTypeUsage;
-use Graphpinator\Typesystem\Exception\DirectiveIncorrectType;
 use Graphpinator\Typesystem\Location\ArgumentDefinitionLocation;
 use Graphpinator\Typesystem\Utils\TDeprecatable;
 use Graphpinator\Typesystem\Utils\THasDirectives;
 use Graphpinator\Typesystem\Utils\TOptionalDescription;
-use Graphpinator\Typesystem\Visitor\IsInputableVisitor;
-use Graphpinator\Typesystem\Visitor\PrintNameVisitor;
 use Graphpinator\Value\ArgumentValue;
 use Graphpinator\Value\Visitor\ConvertRawValueVisitor;
 
@@ -35,10 +30,6 @@ final class Argument implements Component
         private Type $type,
     )
     {
-        if (Graphpinator::$validateSchema && !$this->type->accept(new IsInputableVisitor())) {
-            throw new ArgumentInvalidTypeUsage($this->name, $this->type->accept(new PrintNameVisitor()));
-        }
-
         $this->directiveUsages = new DirectiveUsageSet();
     }
 
@@ -84,18 +75,9 @@ final class Argument implements Component
      * @phpcs:ignore
      * @param array<string, mixed> $arguments
      */
-    public function addDirective(
-        ArgumentDefinitionLocation $directive,
-        array $arguments = [],
-    ) : self
+    public function addDirective(ArgumentDefinitionLocation $directive, array $arguments = []) : self
     {
-        $usage = new DirectiveUsage($directive, $arguments);
-
-        if (Graphpinator::$validateSchema && !$directive->validateArgumentUsage($this, $usage->getArgumentValues())) {
-            throw new DirectiveIncorrectType();
-        }
-
-        $this->directiveUsages[] = $usage;
+        $this->directiveUsages[] = new DirectiveUsage($directive, $arguments);
 
         return $this;
     }

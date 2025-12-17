@@ -4,15 +4,12 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem;
 
-use Graphpinator\Graphpinator;
 use Graphpinator\Typesystem\Contract\InterfaceImplementor;
 use Graphpinator\Typesystem\Contract\NamedType;
 use Graphpinator\Typesystem\Contract\NamedTypeVisitor;
 use Graphpinator\Typesystem\Contract\TypeConditionable;
 use Graphpinator\Typesystem\DirectiveUsage\DirectiveUsage;
 use Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet;
-use Graphpinator\Typesystem\Exception\DirectiveIncorrectType;
-use Graphpinator\Typesystem\Exception\InterfaceOrTypeMustDefineOneOrMoreFields;
 use Graphpinator\Typesystem\Field\ResolvableField;
 use Graphpinator\Typesystem\Field\ResolvableFieldSet;
 use Graphpinator\Typesystem\Location\ObjectLocation;
@@ -46,15 +43,6 @@ abstract class Type extends NamedType implements TypeConditionable, InterfaceImp
     {
         if (!$this->fields instanceof ResolvableFieldSet) {
             $this->fields = $this->getFieldDefinition();
-
-            if (Graphpinator::$validateSchema) {
-                if ($this->fields->count() === 0) {
-                    throw new InterfaceOrTypeMustDefineOneOrMoreFields();
-                }
-
-                $this->validateInterfaceContract();
-            }
-
             $this->inheritDescriptions();
         }
 
@@ -74,23 +62,13 @@ abstract class Type extends NamedType implements TypeConditionable, InterfaceImp
      * @phpcs:ignore
      * @param array<string, mixed> $arguments
      */
-    final public function addDirective(
-        ObjectLocation $directive,
-        array $arguments = [],
-    ) : static
+    final public function addDirective(ObjectLocation $directive, array $arguments = []) : static
     {
-        $usage = new DirectiveUsage($directive, $arguments);
-
-        if (Graphpinator::$validateSchema && !$directive->validateObjectUsage($this, $usage->getArgumentValues())) {
-            throw new DirectiveIncorrectType();
-        }
-
-        $this->directiveUsages[] = $usage;
+        $this->directiveUsages[] = new DirectiveUsage($directive, $arguments);
 
         return $this;
     }
 
-    #[\Override]
     abstract protected function getFieldDefinition() : ResolvableFieldSet;
 
     private function inheritDescriptions() : void

@@ -49,10 +49,7 @@ abstract class ScalarType extends NamedType implements LeafType
      * @phpcs:ignore
      * @param array<string, mixed> $arguments
      */
-    final public function addDirective(
-        ScalarLocation $directive,
-        array $arguments = [],
-    ) : static
+    final public function addDirective(ScalarLocation $directive, array $arguments = []) : static
     {
         $this->directiveUsages[] = new DirectiveUsage($directive, $arguments);
 

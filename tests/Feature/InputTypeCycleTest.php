@@ -7,7 +7,7 @@ namespace Graphpinator\Tests\Feature;
 use Graphpinator\Typesystem\Argument\Argument;
 use Graphpinator\Typesystem\Argument\ArgumentSet;
 use Graphpinator\Typesystem\Container;
-use Graphpinator\Typesystem\Exception\InputCycle;
+use Graphpinator\Typesystem\Exception\InputCycleDetected;
 use Graphpinator\Typesystem\InputType;
 use PHPUnit\Framework\TestCase;
 
@@ -677,7 +677,7 @@ final class InputTypeCycleTest extends TestCase
 
     public function testInvalidNonNull() : void
     {
-        $this->expectException(InputCycle::class);
+        $this->expectException(InputCycleDetected::class);
         $this->expectExceptionMessage('Input cycle detected (NotNullSelfCycle).');
 
         self::createInvalidNonNullType()->getArguments();
@@ -685,7 +685,7 @@ final class InputTypeCycleTest extends TestCase
 
     public function testInvalidNonNullOnNonNull() : void
     {
-        $this->expectException(InputCycle::class);
+        $this->expectException(InputCycleDetected::class);
         $this->expectExceptionMessage('Input cycle detected (NotNullSelfCycleA -> NotNullSelfCycleB).');
 
         self::createInvalidNonNullAType()->getArguments();

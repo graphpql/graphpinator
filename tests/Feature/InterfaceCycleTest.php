@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace Graphpinator\Tests\Feature;
 
 use Graphpinator\Typesystem\Container;
-use Graphpinator\Typesystem\Exception\InterfaceCycle;
+use Graphpinator\Typesystem\Exception\InterfaceCycleDetected;
 use Graphpinator\Typesystem\Field\Field;
 use Graphpinator\Typesystem\Field\FieldSet;
 use Graphpinator\Typesystem\InterfaceType;
@@ -141,7 +141,7 @@ final class InterfaceCycleTest extends TestCase
         self::$interfaceB = null;
         self::$interfaceC = null;
 
-        $this->expectException(InterfaceCycle::class);
+        $this->expectException(InterfaceCycleDetected::class);
         $this->expectExceptionMessage('Interface implement cycle detected (BInterface -> InterfaceA -> CInterface).');
 
         self::getInterfaceA()->getFields();
@@ -153,7 +153,7 @@ final class InterfaceCycleTest extends TestCase
         self::$interfaceB = null;
         self::$interfaceC = null;
 
-        $this->expectException(InterfaceCycle::class);
+        $this->expectException(InterfaceCycleDetected::class);
         $this->expectExceptionMessage('Interface implement cycle detected (CInterface -> BInterface -> InterfaceA).');
 
         self::getInterfaceB()->getFields();
@@ -165,7 +165,7 @@ final class InterfaceCycleTest extends TestCase
         self::$interfaceB = null;
         self::$interfaceC = null;
 
-        $this->expectException(InterfaceCycle::class);
+        $this->expectException(InterfaceCycleDetected::class);
         $this->expectExceptionMessage('Interface implement cycle detected (InterfaceA -> CInterface -> BInterface).');
 
         self::getInterfaceC()->getFields();

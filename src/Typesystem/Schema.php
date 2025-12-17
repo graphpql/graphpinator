@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem;
 
-use Graphpinator\Graphpinator;
 use Graphpinator\Typesystem\Argument\Argument;
 use Graphpinator\Typesystem\Argument\ArgumentSet;
 use Graphpinator\Typesystem\Contract\Entity;
@@ -12,8 +11,6 @@ use Graphpinator\Typesystem\Contract\EntityVisitor;
 use Graphpinator\Typesystem\Contract\Type as TypeContract;
 use Graphpinator\Typesystem\DirectiveUsage\DirectiveUsage;
 use Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet;
-use Graphpinator\Typesystem\Exception\RootOperationTypesMustBeDifferent;
-use Graphpinator\Typesystem\Exception\RootOperationTypesMustBeWithinContainer;
 use Graphpinator\Typesystem\Field\ResolvableField;
 use Graphpinator\Typesystem\Location\SchemaLocation;
 use Graphpinator\Typesystem\Utils\THasDirectives;
@@ -31,10 +28,6 @@ class Schema implements Entity
         private ?Type $subscription = null,
     )
     {
-        if (Graphpinator::$validateSchema) {
-            $this->validateSchema();
-        }
-
         $this->directiveUsages = new DirectiveUsageSet();
         $query->addMetaField(ResolvableField::create(
             '__schema',
@@ -85,34 +78,10 @@ class Schema implements Entity
      * @phpcs:ignore
      * @param array<string, mixed> $arguments
      */
-    final public function addDirective(
-        SchemaLocation $directive,
-        array $arguments = [],
-    ) : self
+    final public function addDirective(SchemaLocation $directive, array $arguments = []) : self
     {
         $this->directiveUsages[] = new DirectiveUsage($directive, $arguments);
 
         return $this;
-    }
-
-    private static function isSame(?Type $lhs, ?Type $rhs) : bool
-    {
-        return $lhs === $rhs
-            && ($lhs !== null || $rhs !== null);
-    }
-
-    private function validateSchema() : void
-    {
-        if (self::isSame($this->query, $this->mutation) ||
-            self::isSame($this->query, $this->subscription) ||
-            self::isSame($this->mutation, $this->subscription)) {
-            throw new RootOperationTypesMustBeDifferent();
-        }
-
-        if ($this->container->getType($this->query->getName()) !== $this->query ||
-            ($this->mutation instanceof Type && $this->container->getType($this->mutation->getName()) !== $this->mutation) ||
-            ($this->subscription instanceof Type && $this->container->getType($this->subscription->getName()) !== $this->subscription)) {
-            throw new RootOperationTypesMustBeWithinContainer();
-        }
     }
 }

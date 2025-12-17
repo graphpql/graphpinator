@@ -44,10 +44,7 @@ final class EnumItem implements Component
      * @phpcs:ignore
      * @param array<string, mixed> $arguments
      */
-    public function addDirective(
-        EnumItemLocation $directive,
-        array $arguments = [],
-    ) : self
+    public function addDirective(EnumItemLocation $directive, array $arguments = []) : self
     {
         $this->directiveUsages[] = new DirectiveUsage($directive, $arguments);
 
