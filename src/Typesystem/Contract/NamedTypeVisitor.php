@@ -6,31 +6,19 @@ namespace Graphpinator\Typesystem\Contract;
 
 use Graphpinator\Typesystem\EnumType;
 use Graphpinator\Typesystem\InputType;
-use Graphpinator\Typesystem\InterfaceType;
 use Graphpinator\Typesystem\ScalarType;
 use Graphpinator\Typesystem\Type;
-use Graphpinator\Typesystem\UnionType;
 
 /**
- * @phpcs:ignore
- * @template T of mixed
+ * @template T
+ * @template-extends AbstractTypeVisitor<T>
  */
-interface NamedTypeVisitor
+interface NamedTypeVisitor extends AbstractTypeVisitor
 {
     /**
      * @return T
      */
     public function visitType(Type $type) : mixed;
-
-    /**
-     * @return T
-     */
-    public function visitInterface(InterfaceType $interface) : mixed;
-
-    /**
-     * @return T
-     */
-    public function visitUnion(UnionType $union) : mixed;
 
     /**
      * @return T

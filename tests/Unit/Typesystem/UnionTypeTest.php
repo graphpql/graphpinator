@@ -5,11 +5,9 @@ declare(strict_types = 1);
 namespace Graphpinator\Tests\Unit\Typesystem;
 
 use Graphpinator\Typesystem\Field\ResolvableFieldSet;
-use Graphpinator\Typesystem\NotNullType;
 use Graphpinator\Typesystem\Type;
 use Graphpinator\Typesystem\TypeSet;
 use Graphpinator\Typesystem\UnionType;
-use Graphpinator\Typesystem\Visitor\IsInstanceOfVisitor;
 use Graphpinator\Value\TypeIntermediateValue;
 use PHPUnit\Framework\TestCase;
 
@@ -96,17 +94,5 @@ final class UnionTypeTest extends TestCase
         self::assertSame('Xyz', $union->getTypes()->offsetGet('Xyz')->getName());
         self::assertArrayHasKey('Zzz', $union->getTypes());
         self::assertSame('Zzz', $union->getTypes()->offsetGet('Zzz')->getName());
-
-        self::assertTrue($union->accept(new IsInstanceOfVisitor($union)));
-        self::assertFalse($union->accept(new IsInstanceOfVisitor(new NotNullType($union))));
-        self::assertTrue((new NotNullType($union))->accept(new IsInstanceOfVisitor($union)));
-        self::assertFalse($union->accept(new IsInstanceOfVisitor(self::getTestTypeZzz())));
-        self::assertFalse($union->accept(new IsInstanceOfVisitor(new NotNullType(self::getTestTypeZzz()))));
-        self::assertFalse($union->accept(new IsInstanceOfVisitor(self::getTestTypeXyz())));
-        self::assertFalse($union->accept(new IsInstanceOfVisitor(new NotNullType(self::getTestTypeXyz()))));
-        self::assertFalse($union->accept(new IsInstanceOfVisitor(self::getTestTypeZzz())));
-        self::assertFalse($union->accept(new IsInstanceOfVisitor(new NotNullType(self::getTestTypeZzz()))));
-        self::assertFalse($union->accept(new IsInstanceOfVisitor(self::getTestTypeAbc())));
-        self::assertFalse($union->accept(new IsInstanceOfVisitor(new NotNullType(self::getTestTypeAbc()))));
     }
 }

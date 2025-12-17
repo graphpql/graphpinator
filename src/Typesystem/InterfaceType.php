@@ -6,6 +6,7 @@ namespace Graphpinator\Typesystem;
 
 use Graphpinator\Graphpinator;
 use Graphpinator\Typesystem\Contract\AbstractType;
+use Graphpinator\Typesystem\Contract\AbstractTypeVisitor;
 use Graphpinator\Typesystem\Contract\InterfaceImplementor;
 use Graphpinator\Typesystem\Contract\NamedTypeVisitor;
 use Graphpinator\Typesystem\DirectiveUsage\DirectiveUsage;
@@ -61,7 +62,7 @@ abstract class InterfaceType extends AbstractType implements InterfaceImplemento
     }
 
     #[\Override]
-    final public function accept(NamedTypeVisitor $visitor) : mixed
+    final public function accept(AbstractTypeVisitor $visitor) : mixed
     {
         return $visitor->visitInterface($this);
     }

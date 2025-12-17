@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Graphpinator\Typesystem;
 
 use Graphpinator\Typesystem\Contract\AbstractType;
+use Graphpinator\Typesystem\Contract\AbstractTypeVisitor;
 use Graphpinator\Typesystem\Contract\NamedTypeVisitor;
 use Graphpinator\Typesystem\DirectiveUsage\DirectiveUsage;
 use Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet;
@@ -30,7 +31,7 @@ abstract class UnionType extends AbstractType
     }
 
     #[\Override]
-    final public function accept(NamedTypeVisitor $visitor) : mixed
+    final public function accept(AbstractTypeVisitor $visitor) : mixed
     {
         return $visitor->visitUnion($this);
     }
