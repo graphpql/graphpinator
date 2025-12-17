@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Value;
 
-use Graphpinator\Exception\OperationNotSupported;
 use Graphpinator\Normalizer\Exception\VariableTypeMismatch;
 use Graphpinator\Normalizer\Variable\Variable;
 use Graphpinator\Normalizer\VariableValueSet;
@@ -54,7 +53,7 @@ final class VariableValue implements InputedValue
     #[\Override]
     public function printValue() : string
     {
-        throw new OperationNotSupported();
+        throw new \RuntimeException('Not implemented');
     }
 
     #[\Override]

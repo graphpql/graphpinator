@@ -7,6 +7,7 @@ namespace Graphpinator\Typesystem\Contract;
 interface Type
 {
     /**
+     * @phpcs:ignore
      * @template T of mixed
      * @param TypeVisitor<T> $visitor
      * @return T

@@ -7,23 +7,13 @@ namespace Graphpinator;
 use Graphpinator\Value\TypeValue;
 use Infinityloop\Utils\Json;
 
-final class Result implements \JsonSerializable
+final readonly class Result implements \JsonSerializable
 {
     public function __construct(
-        private ?TypeValue $data = null,
-        private ?array $errors = null,
+        public ?TypeValue $data = null,
+        public ?array $errors = null,
     )
     {
-    }
-
-    public function getData() : ?TypeValue
-    {
-        return $this->data;
-    }
-
-    public function getErrors() : ?array
-    {
-        return $this->errors;
     }
 
     #[\Override]

@@ -76,6 +76,7 @@ use Graphpinator\Value\ConvertRawValueVisitor;
 final class Normalizer
 {
     private Path $path;
+    /** @var \SplStack<NamedType> */
     private \SplStack $scopeStack;
     private FragmentSet $fragmentDefinitions;
     private VariableSet $variableSet;
@@ -392,7 +393,7 @@ final class Normalizer
         }
 
         $fragment = $this->fragmentDefinitions->offsetGet($fragmentSpread->name);
-        $typeCond = $this->normalizeTypeRef($fragment->typeCond);
+        $typeCond = $this->normalizeNamedTypeRef($fragment->typeCond);
 
         $this->validateTypeCondition($typeCond);
         $this->scopeStack->push($typeCond);
@@ -411,7 +412,7 @@ final class Normalizer
         $this->path->add('<inline fragment>');
 
         $typeCond = $fragmentSpread->typeCond instanceof NamedTypeRef
-            ? $this->normalizeTypeRef($fragmentSpread->typeCond)
+            ? $this->normalizeNamedTypeRef($fragmentSpread->typeCond)
             : null;
 
         if ($typeCond instanceof NamedType) {
@@ -434,8 +435,7 @@ final class Normalizer
     {
         return match ($typeRef::class) {
             NamedTypeRef::class =>
-                $this->schema->getContainer()->getType($typeRef->name)
-                    ?? throw new UnknownType($typeRef->name),
+                $this->normalizeNamedTypeRef($typeRef),
             ListTypeRef::class =>
                 new ListType($this->normalizeTypeRef($typeRef->innerRef)),
             NotNullRef::class =>
@@ -445,6 +445,12 @@ final class Normalizer
         };
     }
 
+    private function normalizeNamedTypeRef(NamedTypeRef $namedTypeRef) : NamedType
+    {
+        return $this->schema->getContainer()->getType($namedTypeRef->name)
+            ?? throw new UnknownType($namedTypeRef->name);
+    }
+
     private function validateTypeCondition(NamedType $typeCond) : void
     {
         if (!$typeCond instanceof TypeConditionable) {
@@ -452,7 +458,6 @@ final class Normalizer
         }
 
         $parentType = $this->scopeStack->top();
-        \assert($parentType instanceof TypeConditionable);
 
         if (!self::typeCanOccur($parentType, $typeCond)) {
             throw new InvalidFragmentType($typeCond->getName(), $this->scopeStack->top()->getName());

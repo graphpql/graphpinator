@@ -5,8 +5,6 @@ declare(strict_types = 1);
 namespace Graphpinator\Value;
 
 use Graphpinator\Common\Path;
-use Graphpinator\Exception\Value\InvalidValue;
-use Graphpinator\Exception\Value\ValueCannotBeNull;
 use Graphpinator\Normalizer\Exception\UnknownArgument;
 use Graphpinator\Normalizer\Exception\UnknownVariable;
 use Graphpinator\Normalizer\Exception\VariableInConstContext;
@@ -24,6 +22,8 @@ use Graphpinator\Typesystem\ListType;
 use Graphpinator\Typesystem\NotNullType;
 use Graphpinator\Typesystem\Visitor\IsInputableVisitor;
 use Graphpinator\Typesystem\Visitor\PrintNameVisitor;
+use Graphpinator\Value\Exception\InvalidValue;
+use Graphpinator\Value\Exception\ValueCannotBeNull;
 
 final readonly class ConvertParserValueVisitor implements ValueVisitor
 {

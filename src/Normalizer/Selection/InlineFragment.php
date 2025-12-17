@@ -6,14 +6,14 @@ namespace Graphpinator\Normalizer\Selection;
 
 use Graphpinator\Normalizer\Directive\DirectiveSet;
 use Graphpinator\Normalizer\VariableValueSet;
-use Graphpinator\Typesystem\Contract\TypeConditionable;
+use Graphpinator\Typesystem\Contract\NamedType;
 
 final class InlineFragment implements Selection
 {
     public function __construct(
         private SelectionSet $children,
         private DirectiveSet $directives,
-        private ?TypeConditionable $typeCondition,
+        private ?NamedType $typeCondition,
     )
     {
     }
@@ -23,7 +23,7 @@ final class InlineFragment implements Selection
         return $this->children;
     }
 
-    public function getTypeCondition() : ?TypeConditionable
+    public function getTypeCondition() : ?NamedType
     {
         return $this->typeCondition;
     }

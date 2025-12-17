@@ -511,7 +511,6 @@ final class InterfaceTypeTest extends TestCase
     public function testSimple() : void
     {
         $interface = self::createInterface();
-        $parentInterface = self::createParentInterface();
 
         self::assertArrayHasKey('Bar', $interface->getInterfaces());
         self::assertSame('Bar', $interface->getInterfaces()->offsetGet('Bar')->getName());

@@ -1334,7 +1334,7 @@ final class TestSchema
                     )->setArguments(new ArgumentSet([
                         Argument::create(
                             'nullInterface',
-                            TestSchema::getInterface()->list(),
+                            Container::String()->list(),
                         )->setDefaultValue(null),
                     ])),
                     ResolvableField::create(
@@ -1346,7 +1346,7 @@ final class TestSchema
                     )->setArguments(new ArgumentSet([
                         Argument::create(
                             'nullUnion',
-                            TestSchema::getUnion()->list(),
+                            Container::String()->list(),
                         )->setDefaultValue(null),
                     ])),
                 ]);

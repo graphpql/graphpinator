@@ -4,8 +4,8 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Value;
 
-use Graphpinator\Exception\Value\InvalidValue;
 use Graphpinator\Typesystem\Type;
+use Graphpinator\Value\Exception\InvalidValue;
 
 final class TypeIntermediateValue implements ResolvedValue
 {

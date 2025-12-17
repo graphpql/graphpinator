@@ -6,7 +6,6 @@ namespace Graphpinator\Typesystem;
 
 use Graphpinator\Typesystem\Contract\AbstractType;
 use Graphpinator\Typesystem\Contract\AbstractTypeVisitor;
-use Graphpinator\Typesystem\Contract\NamedTypeVisitor;
 use Graphpinator\Typesystem\DirectiveUsage\DirectiveUsage;
 use Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet;
 use Graphpinator\Typesystem\Location\UnionLocation;

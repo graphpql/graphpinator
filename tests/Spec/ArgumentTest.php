@@ -4,11 +4,11 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Spec;
 
-use Graphpinator\Exception\Value\InvalidValue;
 use Graphpinator\Graphpinator;
 use Graphpinator\Normalizer\Exception\UnknownArgument;
 use Graphpinator\Parser\Exception\DuplicateArgument;
 use Graphpinator\Request\JsonRequestFactory;
+use Graphpinator\Value\Exception\InvalidValue;
 use Infinityloop\Utils\Json;
 use PHPUnit\Framework\TestCase;
 
@@ -121,7 +121,7 @@ final class ArgumentTest extends TestCase
         $result = $graphpinator->run(new JsonRequestFactory($request));
 
         self::assertSame($expected->toString(), $result->toString());
-        self::assertNull($result->getErrors());
+        self::assertNull($result->errors);
     }
 
     /**

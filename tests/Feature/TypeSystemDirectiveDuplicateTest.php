@@ -4,12 +4,12 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Feature;
 
-use Graphpinator\Exception\DuplicateNonRepeatableDirective;
 use Graphpinator\Graphpinator;
 use Graphpinator\Request\JsonRequestFactory;
 use Graphpinator\SimpleContainer;
 use Graphpinator\Typesystem\Container;
 use Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet;
+use Graphpinator\Typesystem\Exception\DuplicateNonRepeatableDirective;
 use Graphpinator\Typesystem\Field\ResolvableField;
 use Graphpinator\Typesystem\Field\ResolvableFieldSet;
 use Graphpinator\Typesystem\ScalarType;

@@ -13,14 +13,14 @@ use Graphpinator\Normalizer\Selection\FragmentSpread;
 use Graphpinator\Normalizer\Selection\InlineFragment;
 use Graphpinator\Normalizer\Selection\SelectionSet;
 use Graphpinator\Normalizer\Selection\SelectionVisitor;
-use Graphpinator\Typesystem\Contract\TypeConditionable;
+use Graphpinator\Typesystem\Contract\NamedType;
 use Graphpinator\Typesystem\Type;
 use Graphpinator\Typesystem\Visitor\IsInstanceOfVisitor;
 
 final class ValidateFieldsCanMergeModule implements ValidatorModule, SelectionVisitor
 {
     private array $fieldsForName;
-    private ?TypeConditionable $contextType;
+    private ?NamedType $contextType;
 
     public function __construct(
         private SelectionSet $selections,
@@ -69,9 +69,7 @@ final class ValidateFieldsCanMergeModule implements ValidatorModule, SelectionVi
     }
 
     #[\Override]
-    public function visitFragmentSpread(
-        FragmentSpread $fragmentSpread,
-    ) : mixed
+    public function visitFragmentSpread(FragmentSpread $fragmentSpread) : mixed
     {
         $this->processFragment($fragmentSpread);
 
@@ -79,19 +77,14 @@ final class ValidateFieldsCanMergeModule implements ValidatorModule, SelectionVi
     }
 
     #[\Override]
-    public function visitInlineFragment(
-        InlineFragment $inlineFragment,
-    ) : mixed
+    public function visitInlineFragment(InlineFragment $inlineFragment) : mixed
     {
         $this->processFragment($inlineFragment);
 
         return null;
     }
 
-    private static function canOccurTogether(
-        ?TypeConditionable $typeA,
-        ?TypeConditionable $typeB,
-    ) : bool
+    private static function canOccurTogether(?NamedType $typeA, ?NamedType $typeB) : bool
     {
         return $typeA === null
             || $typeB === null
@@ -101,9 +94,7 @@ final class ValidateFieldsCanMergeModule implements ValidatorModule, SelectionVi
             || !($typeB instanceof Type);
     }
 
-    private function processFragment(
-        InlineFragment|FragmentSpread $fragment,
-    ) : void
+    private function processFragment(InlineFragment|FragmentSpread $fragment) : void
     {
         $oldSelections = $this->selections;
         $this->selections = $fragment->getSelections();
@@ -142,23 +133,23 @@ final class ValidateFieldsCanMergeModule implements ValidatorModule, SelectionVi
         $fieldReturnType = $field->getField()->getType();
         $conflictReturnType = $conflict->getField()->getType();
 
-        /** Fields must have same response shape (return type) */
+        // Fields must have same response shape (return type)
         if (!$fieldReturnType->accept(new IsInstanceOfVisitor($conflictReturnType)) ||
             !$conflictReturnType->accept(new IsInstanceOfVisitor($fieldReturnType))) {
             throw new ConflictingFieldType();
         }
 
-        /** Fields have same alias, but refer to a different field */
+        // Fields have same alias, but refer to a different field
         if ($field->getName() !== $conflict->getName()) {
             throw new ConflictingFieldAlias();
         }
 
-        /** Fields have different arguments */
+        // Fields have different arguments
         if (!$field->getArguments()->isSame($conflict->getArguments())) {
             throw new ConflictingFieldArguments();
         }
 
-        /** Fields have different directives */
+        // Fields have different directives
         if (!$field->getDirectives()->isSame($conflict->getDirectives())) {
             throw new ConflictingFieldDirectives();
         }
@@ -170,7 +161,7 @@ final class ValidateFieldsCanMergeModule implements ValidatorModule, SelectionVi
         bool $identity,
     ) : void
     {
-        /** Fields are composite -> validate combined inner fields */
+        // Fields are composite -> validate combined inner fields
         if (!$conflict->getSelections() instanceof SelectionSet) {
             return;
         }

@@ -5,9 +5,6 @@ declare(strict_types = 1);
 namespace Graphpinator\Value;
 
 use Graphpinator\Common\Path;
-use Graphpinator\Exception\Value\InvalidValue;
-use Graphpinator\Exception\Value\ValueCannotBeNull;
-use Graphpinator\Exception\Value\ValueCannotBeOmitted;
 use Graphpinator\Normalizer\Exception\UnknownArgument;
 use Graphpinator\Typesystem\Argument\ArgumentSet;
 use Graphpinator\Typesystem\Contract\TypeVisitor;
@@ -20,6 +17,9 @@ use Graphpinator\Typesystem\ScalarType;
 use Graphpinator\Typesystem\Type;
 use Graphpinator\Typesystem\UnionType;
 use Graphpinator\Typesystem\Visitor\IsInputableVisitor;
+use Graphpinator\Value\Exception\InvalidValue;
+use Graphpinator\Value\Exception\ValueCannotBeNull;
+use Graphpinator\Value\Exception\ValueCannotBeOmitted;
 
 final class ConvertRawValueVisitor implements TypeVisitor
 {

@@ -6,7 +6,7 @@ namespace Graphpinator\Normalizer\Selection;
 
 use Graphpinator\Normalizer\Directive\DirectiveSet;
 use Graphpinator\Normalizer\VariableValueSet;
-use Graphpinator\Typesystem\Contract\TypeConditionable;
+use Graphpinator\Typesystem\Contract\NamedType;
 
 final class FragmentSpread implements Selection
 {
@@ -14,7 +14,7 @@ final class FragmentSpread implements Selection
         private string $name,
         private SelectionSet $children,
         private DirectiveSet $directives,
-        private TypeConditionable $typeCondition,
+        private NamedType $typeCondition,
     )
     {
     }
@@ -29,7 +29,7 @@ final class FragmentSpread implements Selection
         return $this->children;
     }
 
-    public function getTypeCondition() : TypeConditionable
+    public function getTypeCondition() : NamedType
     {
         return $this->typeCondition;
     }

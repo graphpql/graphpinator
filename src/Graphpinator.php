@@ -57,7 +57,7 @@ final class Graphpinator implements LoggerAwareInterface
             $request = $requestFactory->create();
             $result = $request;
 
-            $this->logger->debug($request->getQuery());
+            $this->logger->debug($request->query);
 
             foreach ($this->modules as $module) {
                 $result = $module->processRequest($request);
@@ -68,7 +68,7 @@ final class Graphpinator implements LoggerAwareInterface
             }
 
             if ($result instanceof Request) {
-                $result = $this->parser->parse(new StringSource($request->getQuery()));
+                $result = $this->parser->parse(new StringSource($request->query));
 
                 foreach ($this->modules as $module) {
                     $result = $module->processParsed($result);
@@ -92,7 +92,7 @@ final class Graphpinator implements LoggerAwareInterface
             }
 
             if ($result instanceof NormalizedRequest) {
-                $result = $this->finalizer->finalize($result, $request->getVariables(), $request->getOperationName());
+                $result = $this->finalizer->finalize($result, $request->variables, $request->operationName);
 
                 foreach ($this->modules as $module) {
                     $result = $module->processFinalized($result);

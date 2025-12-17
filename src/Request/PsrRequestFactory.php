@@ -9,7 +9,7 @@ use Graphpinator\Request\Exception\InvalidMultipartRequest;
 use Infinityloop\Utils\Json;
 use Psr\Http\Message\ServerRequestInterface;
 
-final class PsrRequestFactory implements RequestFactory
+final readonly class PsrRequestFactory implements RequestFactory
 {
     public function __construct(
         private ServerRequestInterface $request,

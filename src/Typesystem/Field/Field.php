@@ -12,10 +12,13 @@ use Graphpinator\Typesystem\Contract\Type;
 use Graphpinator\Typesystem\DirectiveUsage\DirectiveUsage;
 use Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet;
 use Graphpinator\Typesystem\Exception\DirectiveIncorrectType;
+use Graphpinator\Typesystem\Exception\FieldInvalidTypeUsage;
 use Graphpinator\Typesystem\Location\FieldDefinitionLocation;
 use Graphpinator\Typesystem\Utils\TDeprecatable;
 use Graphpinator\Typesystem\Utils\THasDirectives;
 use Graphpinator\Typesystem\Utils\TOptionalDescription;
+use Graphpinator\Typesystem\Visitor\IsOutputableVisitor;
+use Graphpinator\Typesystem\Visitor\PrintNameVisitor;
 
 class Field implements Component
 {
@@ -30,6 +33,10 @@ class Field implements Component
         protected Type $type,
     )
     {
+        if (!$this->type->accept(new IsOutputableVisitor())) {
+            throw new FieldInvalidTypeUsage($this->name, $this->type->accept(new PrintNameVisitor()));
+        }
+
         $this->arguments = new ArgumentSet([]);
         $this->directiveUsages = new DirectiveUsageSet();
     }

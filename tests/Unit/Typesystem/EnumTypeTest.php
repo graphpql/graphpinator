@@ -5,9 +5,9 @@ declare(strict_types = 1);
 namespace Graphpinator\Tests\Unit\Typesystem;
 
 use Graphpinator\Common\Path;
-use Graphpinator\Exception\Value\InvalidValue;
 use Graphpinator\Typesystem\EnumType;
 use Graphpinator\Value\ConvertRawValueVisitor;
+use Graphpinator\Value\Exception\InvalidValue;
 use PHPUnit\Framework\TestCase;
 
 final class EnumTypeTest extends TestCase

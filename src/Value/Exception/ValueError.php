@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Exception\Value;
+namespace Graphpinator\Value\Exception;
 
 use Graphpinator\Exception\GraphpinatorBase;
 

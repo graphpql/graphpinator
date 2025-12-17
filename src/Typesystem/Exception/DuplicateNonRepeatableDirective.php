@@ -2,7 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Exception;
+namespace Graphpinator\Typesystem\Exception;
+
+use Graphpinator\Exception\GraphpinatorBase;
 
 final class DuplicateNonRepeatableDirective extends GraphpinatorBase
 {
