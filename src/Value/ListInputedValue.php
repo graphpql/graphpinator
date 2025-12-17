@@ -24,12 +24,6 @@ final class ListInputedValue extends ListValue implements InputedValue
     }
 
     #[\Override]
-    public function getType() : ListType
-    {
-        return $this->type;
-    }
-
-    #[\Override]
     public function printValue() : string
     {
         $component = [];
