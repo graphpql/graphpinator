@@ -51,9 +51,9 @@ final class GetFieldVisitor implements NamedTypeVisitor
     }
 
     #[\Override]
-    public function visitInput(InputType $input) : mixed
+    public function visitInput(InputType $input) : never
     {
-        throw new \LogicException();
+        throw new \LogicException(); // @codeCoverageIgnore
     }
 
     #[\Override]
