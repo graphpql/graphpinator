@@ -4,9 +4,9 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Value;
 
-use Graphpinator\Exception\Value\InvalidValue;
 use Graphpinator\Normalizer\VariableValueSet;
 use Graphpinator\Typesystem\Contract\LeafType;
+use Graphpinator\Value\Exception\InvalidValue;
 
 abstract class LeafValue implements InputedValue, OutputValue
 {

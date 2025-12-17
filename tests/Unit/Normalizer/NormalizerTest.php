@@ -37,6 +37,7 @@ use Graphpinator\Typesystem\ListType;
 use Graphpinator\Typesystem\NotNullType;
 use Graphpinator\Typesystem\Spec\IncludeDirective;
 use Graphpinator\Typesystem\Spec\SkipDirective;
+use Graphpinator\Typesystem\Visitor\GetNamedTypeVisitor;
 use PHPUnit\Framework\TestCase;
 
 final class NormalizerTest extends TestCase
@@ -247,12 +248,12 @@ final class NormalizerTest extends TestCase
         self::assertSame('varName', $operation->getVariables()->offsetGet('varName')->getName());
         self::assertNull($operation->getVariables()->offsetGet('varName')->getDefaultValue());
         self::assertInstanceOf(NotNullType::class, $operation->getVariables()->offsetGet('varName')->getType());
-        self::assertSame('String', $operation->getVariables()->offsetGet('varName')->getType()->getNamedType()->getName());
+        self::assertSame('String', $operation->getVariables()->offsetGet('varName')->getType()->accept(new GetNamedTypeVisitor())->getName());
         self::assertArrayHasKey('varNameList', $operation->getVariables());
         self::assertSame('varNameList', $operation->getVariables()->offsetGet('varNameList')->getName());
         self::assertNull($operation->getVariables()->offsetGet('varNameList')->getDefaultValue());
         self::assertInstanceOf(ListType::class, $operation->getVariables()->offsetGet('varNameList')->getType());
-        self::assertSame('String', $operation->getVariables()->offsetGet('varNameList')->getType()->getNamedType()->getName());
+        self::assertSame('String', $operation->getVariables()->offsetGet('varNameList')->getType()->accept(new GetNamedTypeVisitor())->getName());
     }
 
     public function testDirectiveReferences() : void

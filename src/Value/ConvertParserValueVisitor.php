@@ -5,8 +5,6 @@ declare(strict_types = 1);
 namespace Graphpinator\Value;
 
 use Graphpinator\Common\Path;
-use Graphpinator\Exception\Value\InvalidValue;
-use Graphpinator\Exception\Value\ValueCannotBeNull;
 use Graphpinator\Normalizer\Exception\UnknownArgument;
 use Graphpinator\Normalizer\Exception\UnknownVariable;
 use Graphpinator\Normalizer\Exception\VariableInConstContext;
@@ -17,20 +15,25 @@ use Graphpinator\Parser\Value\Literal;
 use Graphpinator\Parser\Value\ObjectVal;
 use Graphpinator\Parser\Value\ValueVisitor;
 use Graphpinator\Parser\Value\VariableRef;
-use Graphpinator\Typesystem\Contract\Inputable;
+use Graphpinator\Typesystem\Contract\Type;
 use Graphpinator\Typesystem\EnumType;
 use Graphpinator\Typesystem\InputType;
 use Graphpinator\Typesystem\ListType;
 use Graphpinator\Typesystem\NotNullType;
+use Graphpinator\Typesystem\Visitor\IsInputableVisitor;
+use Graphpinator\Typesystem\Visitor\PrintNameVisitor;
+use Graphpinator\Value\Exception\InvalidValue;
+use Graphpinator\Value\Exception\ValueCannotBeNull;
 
-final class ConvertParserValueVisitor implements ValueVisitor
+final readonly class ConvertParserValueVisitor implements ValueVisitor
 {
     public function __construct(
-        readonly private Inputable $type,
-        readonly private ?VariableSet $variableSet,
-        readonly private Path $path,
+        private Type $type,
+        private ?VariableSet $variableSet,
+        private Path $path,
     )
     {
+        \assert($type->accept(new IsInputableVisitor()));
     }
 
     #[\Override]
@@ -47,7 +50,7 @@ final class ConvertParserValueVisitor implements ValueVisitor
         }
 
         if (!$this->type instanceof EnumType) {
-            throw new InvalidValue($this->type->printName(), $enumLiteral->getRawValue(), true);
+            throw new InvalidValue($this->type->accept(new PrintNameVisitor()), $enumLiteral->getRawValue(), true);
         }
 
         return $this->type->accept(new ConvertRawValueVisitor($enumLiteral->getRawValue(), $this->path));
@@ -61,7 +64,7 @@ final class ConvertParserValueVisitor implements ValueVisitor
         }
 
         if (!$this->type instanceof ListType) {
-            throw new InvalidValue($this->type->printName(), [], true);
+            throw new InvalidValue($this->type->accept(new PrintNameVisitor()), [], true);
         }
 
         $visitor = new self($this->type->getInnerType(), $this->variableSet, $this->path);
@@ -84,7 +87,7 @@ final class ConvertParserValueVisitor implements ValueVisitor
         }
 
         if (!$this->type instanceof InputType) {
-            throw new InvalidValue($this->type->printName(), new \stdClass(), true);
+            throw new InvalidValue($this->type->accept(new PrintNameVisitor()), new \stdClass(), true);
         }
 
         foreach ((array) $objectVal->value as $name => $temp) {

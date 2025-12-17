@@ -7,7 +7,7 @@ namespace Graphpinator\Typesystem\Contract;
 /**
  * Interface Entity
  *
- * Entity is a first class citizen in typesystem, currently Schema, Type definition and Directive definition.
+ * Entity is a first-class citizen in typesystem, currently Schema, Type definition and Directive definition.
  */
 interface Entity extends Component
 {

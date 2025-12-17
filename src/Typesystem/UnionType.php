@@ -5,8 +5,7 @@ declare(strict_types = 1);
 namespace Graphpinator\Typesystem;
 
 use Graphpinator\Typesystem\Contract\AbstractType;
-use Graphpinator\Typesystem\Contract\NamedTypeVisitor;
-use Graphpinator\Typesystem\Contract\Type;
+use Graphpinator\Typesystem\Contract\AbstractTypeVisitor;
 use Graphpinator\Typesystem\DirectiveUsage\DirectiveUsage;
 use Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet;
 use Graphpinator\Typesystem\Location\UnionLocation;
@@ -31,25 +30,7 @@ abstract class UnionType extends AbstractType
     }
 
     #[\Override]
-    final public function isInstanceOf(Type $type) : bool
-    {
-        return $type instanceof static;
-    }
-
-    #[\Override]
-    final public function isImplementedBy(Type $type) : bool
-    {
-        foreach ($this->types as $temp) {
-            if ($temp->isInstanceOf($type->getShapingType())) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    #[\Override]
-    final public function accept(NamedTypeVisitor $visitor) : mixed
+    final public function accept(AbstractTypeVisitor $visitor) : mixed
     {
         return $visitor->visitUnion($this);
     }

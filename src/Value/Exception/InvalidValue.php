@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Exception\Value;
+namespace Graphpinator\Value\Exception;
 
 final class InvalidValue extends ValueError
 {

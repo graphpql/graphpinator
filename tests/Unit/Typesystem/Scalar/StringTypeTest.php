@@ -5,9 +5,9 @@ declare(strict_types = 1);
 namespace Graphpinator\Tests\Unit\Typesystem\Scalar;
 
 use Graphpinator\Common\Path;
-use Graphpinator\Exception\Value\InvalidValue;
 use Graphpinator\Typesystem\Spec\StringType;
 use Graphpinator\Value\ConvertRawValueVisitor;
+use Graphpinator\Value\Exception\InvalidValue;
 use PHPUnit\Framework\TestCase;
 
 final class StringTypeTest extends TestCase

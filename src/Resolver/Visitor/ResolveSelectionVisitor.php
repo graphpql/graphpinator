@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Resolver;
+namespace Graphpinator\Resolver\Visitor;
 
 use Graphpinator\Normalizer\Selection\Field;
 use Graphpinator\Normalizer\Selection\FragmentSpread;
@@ -17,6 +17,8 @@ use Graphpinator\Typesystem\Location\FragmentSpreadLocation;
 use Graphpinator\Typesystem\Location\InlineFragmentLocation;
 use Graphpinator\Typesystem\Location\SelectionDirectiveResult;
 use Graphpinator\Typesystem\Type;
+use Graphpinator\Typesystem\Visitor\GetShapingTypeVisitor;
+use Graphpinator\Typesystem\Visitor\IsInstanceOfVisitor;
 use Graphpinator\Value\FieldValue;
 use Graphpinator\Value\ListResolvedValue;
 use Graphpinator\Value\NullValue;
@@ -90,7 +92,10 @@ final class ResolveSelectionVisitor implements SelectionVisitor
             $rawValue = \call_user_func_array($fieldDef->getResolveFunction(), $rawArguments);
             $resolvedValue = $fieldDef->getType()->accept(new CreateResolvedValueVisitor($rawValue));
 
-            if (!$resolvedValue->getType()->getShapingType()->isInstanceOf($fieldDef->getType()->getShapingType())) {
+            $resolvedShape = $resolvedValue->getType()->accept(new GetShapingTypeVisitor());
+            $definitionShape = $fieldDef->getType()->accept(new GetShapingTypeVisitor());
+
+            if (!$resolvedShape->accept(new IsInstanceOfVisitor($definitionShape))) {
                 throw new FieldResultTypeMismatch();
             }
 
@@ -123,7 +128,7 @@ final class ResolveSelectionVisitor implements SelectionVisitor
     #[\Override]
     public function visitFragmentSpread(FragmentSpread $fragmentSpread) : mixed
     {
-        if (!$this->parentResult->getType()->isInstanceOf($fragmentSpread->getTypeCondition())) {
+        if (!$this->parentResult->getType()->accept(new IsInstanceOfVisitor($fragmentSpread->getTypeCondition()))) {
             return null;
         }
 
@@ -155,7 +160,7 @@ final class ResolveSelectionVisitor implements SelectionVisitor
     public function visitInlineFragment(InlineFragment $inlineFragment) : mixed
     {
         if ($inlineFragment->getTypeCondition() instanceof NamedType &&
-            !$this->parentResult->getType()->isInstanceOf($inlineFragment->getTypeCondition())) {
+            !$this->parentResult->getType()->accept(new IsInstanceOfVisitor($inlineFragment->getTypeCondition()))) {
             return null;
         }
 

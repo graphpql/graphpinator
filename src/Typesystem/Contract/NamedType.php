@@ -14,39 +14,17 @@ abstract class NamedType implements Type, Entity
 
     protected const NAME = '';
 
-    #[\Override]
-    abstract public function isInstanceOf(Type $type) : bool;
-
+    /**
+     * @template T of mixed
+     * @param NamedTypeVisitor<T> $visitor
+     * @return T
+     */
     #[\Override]
     abstract public function accept(NamedTypeVisitor $visitor) : mixed;
 
     final public function getName() : string
     {
         return static::NAME;
-    }
-
-    #[\Override]
-    final public function printName() : string
-    {
-        return $this->getName();
-    }
-
-    #[\Override]
-    final public function getNamedType() : self
-    {
-        return $this;
-    }
-
-    #[\Override]
-    final public function getShapingType() : Type
-    {
-        return $this;
-    }
-
-    #[\Override]
-    final public function isInputable() : bool
-    {
-        return $this instanceof Inputable;
     }
 
     final public function notNull() : NotNullType

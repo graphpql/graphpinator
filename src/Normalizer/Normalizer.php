@@ -20,7 +20,6 @@ use Graphpinator\Normalizer\Exception\UnknownArgument;
 use Graphpinator\Normalizer\Exception\UnknownDirective;
 use Graphpinator\Normalizer\Exception\UnknownFragment;
 use Graphpinator\Normalizer\Exception\UnknownType;
-use Graphpinator\Normalizer\Exception\VariableTypeInputable;
 use Graphpinator\Normalizer\Operation\Operation;
 use Graphpinator\Normalizer\Operation\OperationSet;
 use Graphpinator\Normalizer\Selection\Field;
@@ -30,6 +29,7 @@ use Graphpinator\Normalizer\Selection\Selection;
 use Graphpinator\Normalizer\Selection\SelectionSet;
 use Graphpinator\Normalizer\Variable\Variable;
 use Graphpinator\Normalizer\Variable\VariableSet;
+use Graphpinator\Normalizer\Visitor\GetFieldVisitor;
 use Graphpinator\Parser\Directive\Directive as ParserDirective;
 use Graphpinator\Parser\Directive\DirectiveSet as ParserDirectiveSet;
 use Graphpinator\Parser\Field\Field as ParserField;
@@ -52,7 +52,6 @@ use Graphpinator\Parser\Variable\Variable as ParserVariable;
 use Graphpinator\Parser\Variable\VariableSet as ParserVariableSet;
 use Graphpinator\Typesystem\Argument\ArgumentSet;
 use Graphpinator\Typesystem\Contract\ExecutableDirective;
-use Graphpinator\Typesystem\Contract\Inputable;
 use Graphpinator\Typesystem\Contract\LeafType;
 use Graphpinator\Typesystem\Contract\NamedType;
 use Graphpinator\Typesystem\Contract\Type as TypesystemType;
@@ -67,6 +66,8 @@ use Graphpinator\Typesystem\NotNullType;
 use Graphpinator\Typesystem\Schema;
 use Graphpinator\Typesystem\Type;
 use Graphpinator\Typesystem\UnionType;
+use Graphpinator\Typesystem\Visitor\GetNamedTypeVisitor;
+use Graphpinator\Typesystem\Visitor\IsInstanceOfVisitor;
 use Graphpinator\Value\ArgumentValue;
 use Graphpinator\Value\ArgumentValueSet;
 use Graphpinator\Value\ConvertParserValueVisitor;
@@ -75,6 +76,7 @@ use Graphpinator\Value\ConvertRawValueVisitor;
 final class Normalizer
 {
     private Path $path;
+    /** @var \SplStack<NamedType> */
     private \SplStack $scopeStack;
     private FragmentSet $fragmentDefinitions;
     private VariableSet $variableSet;
@@ -111,7 +113,7 @@ final class Normalizer
             : [$parentType];
 
         foreach ($occurrenceAttempts as $type) {
-            if ($typeCond->isInstanceOf($type) || $type->isInstanceOf($typeCond)) {
+            if ($typeCond->accept(new IsInstanceOfVisitor($type)) || $type->accept(new IsInstanceOfVisitor($typeCond))) {
                 return true;
             }
         }
@@ -182,13 +184,6 @@ final class Normalizer
     {
         $type = $this->normalizeTypeRef($variable->type);
         $defaultValue = $variable->default;
-
-        if (!$type->isInputable()) {
-            throw new VariableTypeInputable($variable->name);
-        }
-
-        \assert($type instanceof Inputable);
-
         $normalized = new Variable(
             $variable->name,
             $type,
@@ -238,7 +233,7 @@ final class Normalizer
         $parentType = $this->scopeStack->top();
 
         $fieldDef = $parentType->accept(new GetFieldVisitor($field->name));
-        $fieldType = $fieldDef->getType()->getNamedType();
+        $fieldType = $fieldDef->getType()->accept(new GetNamedTypeVisitor());
 
         $this->scopeStack->push($fieldType);
 
@@ -398,7 +393,7 @@ final class Normalizer
         }
 
         $fragment = $this->fragmentDefinitions->offsetGet($fragmentSpread->name);
-        $typeCond = $this->normalizeTypeRef($fragment->typeCond);
+        $typeCond = $this->normalizeNamedTypeRef($fragment->typeCond);
 
         $this->validateTypeCondition($typeCond);
         $this->scopeStack->push($typeCond);
@@ -417,7 +412,7 @@ final class Normalizer
         $this->path->add('<inline fragment>');
 
         $typeCond = $fragmentSpread->typeCond instanceof NamedTypeRef
-            ? $this->normalizeTypeRef($fragmentSpread->typeCond)
+            ? $this->normalizeNamedTypeRef($fragmentSpread->typeCond)
             : null;
 
         if ($typeCond instanceof NamedType) {
@@ -440,8 +435,7 @@ final class Normalizer
     {
         return match ($typeRef::class) {
             NamedTypeRef::class =>
-                $this->schema->getContainer()->getType($typeRef->name)
-                    ?? throw new UnknownType($typeRef->name),
+                $this->normalizeNamedTypeRef($typeRef),
             ListTypeRef::class =>
                 new ListType($this->normalizeTypeRef($typeRef->innerRef)),
             NotNullRef::class =>
@@ -451,6 +445,12 @@ final class Normalizer
         };
     }
 
+    private function normalizeNamedTypeRef(NamedTypeRef $namedTypeRef) : NamedType
+    {
+        return $this->schema->getContainer()->getType($namedTypeRef->name)
+            ?? throw new UnknownType($namedTypeRef->name);
+    }
+
     private function validateTypeCondition(NamedType $typeCond) : void
     {
         if (!$typeCond instanceof TypeConditionable) {
@@ -458,7 +458,6 @@ final class Normalizer
         }
 
         $parentType = $this->scopeStack->top();
-        \assert($parentType instanceof TypeConditionable);
 
         if (!self::typeCanOccur($parentType, $typeCond)) {
             throw new InvalidFragmentType($typeCond->getName(), $this->scopeStack->top()->getName());

@@ -4,12 +4,12 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Spec;
 
-use Graphpinator\Exception\Value\InvalidValue;
-use Graphpinator\Exception\Value\ValueCannotBeNull;
 use Graphpinator\Graphpinator;
 use Graphpinator\Normalizer\Exception\UnknownVariable;
 use Graphpinator\Request\Exception\VariablesNotObject;
 use Graphpinator\Request\JsonRequestFactory;
+use Graphpinator\Value\Exception\InvalidValue;
+use Graphpinator\Value\Exception\ValueCannotBeNull;
 use Infinityloop\Utils\Json;
 use PHPUnit\Framework\TestCase;
 

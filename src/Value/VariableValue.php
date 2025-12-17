@@ -4,22 +4,26 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Value;
 
-use Graphpinator\Exception\OperationNotSupported;
 use Graphpinator\Normalizer\Exception\VariableTypeMismatch;
 use Graphpinator\Normalizer\Variable\Variable;
 use Graphpinator\Normalizer\VariableValueSet;
-use Graphpinator\Typesystem\Contract\Inputable;
+use Graphpinator\Typesystem\Contract\Type;
+use Graphpinator\Typesystem\Visitor\IsInputableVisitor;
+use Graphpinator\Typesystem\Visitor\IsInstanceOfVisitor;
 
 final class VariableValue implements InputedValue
 {
     private ?InputedValue $value = null;
 
     public function __construct(
-        private Inputable $type,
+        private Type $type,
         private Variable $variable,
     )
     {
-        if (!$variable->getType()->isInstanceOf($type)) {
+        $isInputable = $this->type->accept(new IsInputableVisitor());
+        $isCompatible = $variable->getType()->accept(new IsInstanceOfVisitor($type));
+
+        if (!$isInputable || !$isCompatible) {
             throw new VariableTypeMismatch();
         }
     }
@@ -41,7 +45,7 @@ final class VariableValue implements InputedValue
     }
 
     #[\Override]
-    public function getType() : Inputable
+    public function getType() : Type
     {
         return $this->type;
     }
@@ -49,7 +53,7 @@ final class VariableValue implements InputedValue
     #[\Override]
     public function printValue() : string
     {
-        throw new OperationNotSupported();
+        throw new \RuntimeException('Not implemented');
     }
 
     #[\Override]

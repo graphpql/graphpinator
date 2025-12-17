@@ -11,7 +11,7 @@ use Graphpinator\Request\Exception\UnknownKey;
 use Graphpinator\Request\Exception\VariablesNotObject;
 use Infinityloop\Utils\Json;
 
-final class JsonRequestFactory implements RequestFactory
+final readonly class JsonRequestFactory implements RequestFactory
 {
     public const QUERY = 'query';
     public const VARIABLES = 'variables';

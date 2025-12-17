@@ -6,8 +6,7 @@ namespace Graphpinator\Typesystem;
 
 use Graphpinator\Graphpinator;
 use Graphpinator\Typesystem\Argument\ArgumentSet;
-use Graphpinator\Typesystem\Contract\ConcreteType;
-use Graphpinator\Typesystem\Contract\Inputable;
+use Graphpinator\Typesystem\Contract\NamedType;
 use Graphpinator\Typesystem\Contract\NamedTypeVisitor;
 use Graphpinator\Typesystem\DirectiveUsage\DirectiveUsage;
 use Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet;
@@ -18,8 +17,7 @@ use Graphpinator\Typesystem\Location\InputObjectLocation;
 use Graphpinator\Typesystem\Spec\OneOfDirective;
 use Graphpinator\Typesystem\Utils\THasDirectives;
 
-abstract class InputType extends ConcreteType implements
-    Inputable
+abstract class InputType extends NamedType
 {
     use THasDirectives;
 

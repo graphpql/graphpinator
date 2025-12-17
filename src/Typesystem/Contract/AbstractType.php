@@ -7,9 +7,15 @@ namespace Graphpinator\Typesystem\Contract;
 use Graphpinator\Value\TypeIntermediateValue;
 
 //@phpcs:ignore SlevomatCodingStandard.Classes.SuperfluousAbstractClassNaming.SuperfluousPrefix
-abstract class AbstractType extends NamedType implements Outputable, TypeConditionable
+abstract class AbstractType extends NamedType implements TypeConditionable
 {
-    abstract public function isImplementedBy(Type $type) : bool;
+    /**
+     * @template T of mixed
+     * @param AbstractTypeVisitor<T> $visitor
+     * @return T
+     */
+    #[\Override]
+    abstract public function accept(AbstractTypeVisitor $visitor) : mixed;
 
     abstract public function createResolvedValue(mixed $rawValue) : TypeIntermediateValue;
 }

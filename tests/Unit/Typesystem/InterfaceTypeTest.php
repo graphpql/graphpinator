@@ -16,7 +16,6 @@ use Graphpinator\Typesystem\Field\ResolvableField;
 use Graphpinator\Typesystem\Field\ResolvableFieldSet;
 use Graphpinator\Typesystem\InterfaceSet;
 use Graphpinator\Typesystem\InterfaceType;
-use Graphpinator\Typesystem\NotNullType;
 use Graphpinator\Typesystem\Type;
 use Graphpinator\Value\TypeIntermediateValue;
 use PHPUnit\Framework\TestCase;
@@ -512,31 +511,9 @@ final class InterfaceTypeTest extends TestCase
     public function testSimple() : void
     {
         $interface = self::createInterface();
-        $parentInterface = self::createParentInterface();
 
         self::assertArrayHasKey('Bar', $interface->getInterfaces());
         self::assertSame('Bar', $interface->getInterfaces()->offsetGet('Bar')->getName());
-
-        self::assertTrue($interface->isInstanceOf($interface));
-        self::assertFalse($interface->isInstanceOf(new NotNullType($interface)));
-        self::assertTrue((new NotNullType($interface))->isInstanceOf($interface));
-        self::assertTrue($interface->isInstanceOf($parentInterface));
-        self::assertFalse($interface->isInstanceOf(new NotNullType($parentInterface)));
-        self::assertTrue((new NotNullType($interface))->isInstanceOf($parentInterface));
-        self::assertFalse($parentInterface->isInstanceOf($interface));
-        self::assertFalse($parentInterface->isInstanceOf(new NotNullType($interface)));
-        self::assertFalse($interface->isImplementedBy(self::getTypeWithoutInterface()));
-        self::assertFalse($interface->isImplementedBy(new NotNullType(self::getTypeWithoutInterface())));
-        self::assertFalse($parentInterface->isImplementedBy(self::getTypeWithoutInterface()));
-        self::assertFalse($parentInterface->isImplementedBy(new NotNullType(self::getTypeWithoutInterface())));
-        self::assertTrue($interface->isImplementedBy(self::getTypeImplementingInterface()));
-        self::assertTrue($interface->isImplementedBy(new NotNullType(self::getTypeImplementingInterface())));
-        self::assertTrue($parentInterface->isImplementedBy(self::getTypeImplementingInterface()));
-        self::assertTrue($parentInterface->isImplementedBy(new NotNullType(self::getTypeImplementingInterface())));
-        self::assertFalse($interface->isImplementedBy(self::getTypeImplementingParentInterface()));
-        self::assertFalse($interface->isImplementedBy(new NotNullType(self::getTypeImplementingParentInterface())));
-        self::assertTrue($parentInterface->isImplementedBy(self::getTypeImplementingParentInterface()));
-        self::assertTrue($parentInterface->isImplementedBy(new NotNullType(self::getTypeImplementingParentInterface())));
     }
 
     public function testIncompatibleFieldType() : void

@@ -4,12 +4,12 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Value;
 
-use Graphpinator\Typesystem\Contract\Outputable;
+use Graphpinator\Typesystem\Contract\Type;
 
 final class NullResolvedValue implements OutputValue, NullValue
 {
     public function __construct(
-        private Outputable $type,
+        private Type $type,
     )
     {
     }
@@ -21,7 +21,7 @@ final class NullResolvedValue implements OutputValue, NullValue
     }
 
     #[\Override]
-    public function getType() : Outputable
+    public function getType() : Type
     {
         return $this->type;
     }

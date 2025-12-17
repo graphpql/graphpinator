@@ -2,9 +2,8 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Resolver;
+namespace Graphpinator\Resolver\Visitor;
 
-use Graphpinator\Exception\Value\ValueCannotBeNull;
 use Graphpinator\Typesystem\Contract\TypeVisitor;
 use Graphpinator\Typesystem\EnumType;
 use Graphpinator\Typesystem\InputType;
@@ -14,6 +13,7 @@ use Graphpinator\Typesystem\NotNullType;
 use Graphpinator\Typesystem\ScalarType;
 use Graphpinator\Typesystem\Type;
 use Graphpinator\Typesystem\UnionType;
+use Graphpinator\Value\Exception\ValueCannotBeNull;
 use Graphpinator\Value\ListIntermediateValue;
 use Graphpinator\Value\NullResolvedValue;
 use Graphpinator\Value\NullValue;
@@ -21,6 +21,9 @@ use Graphpinator\Value\ResolvedValue;
 use Graphpinator\Value\ScalarValue;
 use Graphpinator\Value\TypeIntermediateValue;
 
+/**
+ * @implements TypeVisitor<ResolvedValue>
+ */
 final class CreateResolvedValueVisitor implements TypeVisitor
 {
     public function __construct(

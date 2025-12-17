@@ -19,6 +19,7 @@ use Graphpinator\Typesystem\InterfaceSet;
 use Graphpinator\Typesystem\InterfaceType;
 use Graphpinator\Typesystem\Location\ArgumentDefinitionLocation;
 use Graphpinator\Typesystem\Location\FieldDefinitionLocation;
+use Graphpinator\Typesystem\Visitor\IsInstanceOfVisitor;
 
 /**
  * Trait TInterfaceImplementor which is implementation of InterfaceImplementor interface.
@@ -77,7 +78,7 @@ trait TInterfaceImplementor
 
                 $field = $this->getFields()->offsetGet($fieldContract->getName());
 
-                if (!$field->getType()->isInstanceOf($fieldContract->getType())) {
+                if (!$field->getType()->accept(new IsInstanceOfVisitor($fieldContract->getType()))) {
                     throw new InterfaceContractFieldTypeMismatch(
                         $this->getName(),
                         $interface->getName(),
@@ -110,7 +111,7 @@ trait TInterfaceImplementor
 
                     $argument = $field->getArguments()->offsetGet($argumentContract->getName());
 
-                    if (!$argumentContract->getType()->isInstanceOf($argument->getType())) {
+                    if (!$argumentContract->getType()->accept(new IsInstanceOfVisitor($argument->getType()))) {
                         throw new InterfaceContractArgumentTypeMismatch(
                             $this->getName(),
                             $interface->getName(),

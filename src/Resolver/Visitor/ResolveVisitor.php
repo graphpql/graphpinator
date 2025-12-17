@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Resolver;
+namespace Graphpinator\Resolver\Visitor;
 
 use Graphpinator\Normalizer\Selection\SelectionSet;
 use Graphpinator\Typesystem\Contract\TypeVisitor;

@@ -6,9 +6,8 @@ namespace Graphpinator\Typesystem;
 
 use Graphpinator\Graphpinator;
 use Graphpinator\Typesystem\Contract\AbstractType;
+use Graphpinator\Typesystem\Contract\AbstractTypeVisitor;
 use Graphpinator\Typesystem\Contract\InterfaceImplementor;
-use Graphpinator\Typesystem\Contract\NamedTypeVisitor;
-use Graphpinator\Typesystem\Contract\Type;
 use Graphpinator\Typesystem\DirectiveUsage\DirectiveUsage;
 use Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet;
 use Graphpinator\Typesystem\Exception\DirectiveIncorrectType;
@@ -20,8 +19,7 @@ use Graphpinator\Typesystem\Utils\THasDirectives;
 use Graphpinator\Typesystem\Utils\TInterfaceImplementor;
 use Graphpinator\Typesystem\Utils\TMetaFields;
 
-abstract class InterfaceType extends AbstractType implements
-    InterfaceImplementor
+abstract class InterfaceType extends AbstractType implements InterfaceImplementor
 {
     use TInterfaceImplementor;
     use TMetaFields;
@@ -35,24 +33,6 @@ abstract class InterfaceType extends AbstractType implements
     {
         $this->implements = $implements;
         $this->directiveUsages = new DirectiveUsageSet();
-    }
-
-    #[\Override]
-    final public function isInstanceOf(Type $type) : bool
-    {
-        return $type instanceof static
-            || ($type instanceof self && $this->implements($type));
-    }
-
-    #[\Override]
-    final public function isImplementedBy(Type $type) : bool
-    {
-        if ($type instanceof NotNullType) {
-            return $this->isImplementedBy($type->getInnerType());
-        }
-
-        return $type instanceof InterfaceImplementor
-            && $type->implements($this);
     }
 
     #[\Override]
@@ -81,7 +61,7 @@ abstract class InterfaceType extends AbstractType implements
     }
 
     #[\Override]
-    final public function accept(NamedTypeVisitor $visitor) : mixed
+    final public function accept(AbstractTypeVisitor $visitor) : mixed
     {
         return $visitor->visitInterface($this);
     }

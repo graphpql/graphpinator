@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace Graphpinator\Tests\Unit\Typesystem;
 
 use Graphpinator\Typesystem\Field\ResolvableFieldSet;
-use Graphpinator\Typesystem\NotNullType;
 use Graphpinator\Typesystem\Type;
 use Graphpinator\Typesystem\TypeSet;
 use Graphpinator\Typesystem\UnionType;
@@ -95,17 +94,5 @@ final class UnionTypeTest extends TestCase
         self::assertSame('Xyz', $union->getTypes()->offsetGet('Xyz')->getName());
         self::assertArrayHasKey('Zzz', $union->getTypes());
         self::assertSame('Zzz', $union->getTypes()->offsetGet('Zzz')->getName());
-
-        self::assertTrue($union->isInstanceOf($union));
-        self::assertFalse($union->isInstanceOf(new NotNullType($union)));
-        self::assertTrue((new NotNullType($union))->isInstanceOf($union));
-        self::assertFalse($union->isInstanceOf(self::getTestTypeZzz()));
-        self::assertFalse($union->isInstanceOf(new NotNullType(self::getTestTypeZzz())));
-        self::assertTrue($union->isImplementedBy(self::getTestTypeXyz()));
-        self::assertTrue($union->isImplementedBy(new NotNullType(self::getTestTypeXyz())));
-        self::assertTrue($union->isImplementedBy(self::getTestTypeZzz()));
-        self::assertTrue($union->isImplementedBy(new NotNullType(self::getTestTypeZzz())));
-        self::assertFalse($union->isImplementedBy(self::getTestTypeAbc()));
-        self::assertFalse($union->isImplementedBy(new NotNullType(self::getTestTypeAbc())));
     }
 }

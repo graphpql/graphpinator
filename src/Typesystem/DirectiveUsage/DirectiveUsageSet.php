@@ -4,9 +4,9 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem\DirectiveUsage;
 
-use Graphpinator\Exception\DuplicateNonRepeatableDirective;
 use Graphpinator\Graphpinator;
 use Graphpinator\Typesystem\Contract\TypeSystemDirective;
+use Graphpinator\Typesystem\Exception\DuplicateNonRepeatableDirective;
 use Infinityloop\Utils\ObjectSet;
 
 /**

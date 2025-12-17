@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Spec;
 
-use Graphpinator\Exception\Value\ValueCannotBeNull;
 use Graphpinator\Graphpinator;
 use Graphpinator\Normalizer\Exception\SelectionOnComposite;
 use Graphpinator\Normalizer\Exception\SelectionOnLeaf;
@@ -22,6 +21,7 @@ use Graphpinator\Request\PsrRequestFactory;
 use Graphpinator\Resolver\Exception\FieldResultTypeMismatch;
 use Graphpinator\Resolver\Resolver;
 use Graphpinator\Source\StringSource;
+use Graphpinator\Value\Exception\ValueCannotBeNull;
 use Infinityloop\Utils\Json;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;

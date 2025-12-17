@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Normalizer;
+namespace Graphpinator\Normalizer\Visitor;
 
 use Graphpinator\Normalizer\Exception\SelectionOnLeaf;
 use Graphpinator\Normalizer\Exception\SelectionOnUnion;
@@ -16,6 +16,9 @@ use Graphpinator\Typesystem\ScalarType;
 use Graphpinator\Typesystem\Type;
 use Graphpinator\Typesystem\UnionType;
 
+/**
+ * @implements NamedTypeVisitor<Field>
+ */
 final class GetFieldVisitor implements NamedTypeVisitor
 {
     public function __construct(

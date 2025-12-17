@@ -14,6 +14,9 @@ use Graphpinator\Typesystem\ScalarType;
 use Graphpinator\Typesystem\Type;
 use Graphpinator\Typesystem\UnionType;
 
+/**
+ * @implements TypeVisitor<string>
+ */
 final class TypeKindVisitor implements TypeVisitor
 {
     #[\Override]

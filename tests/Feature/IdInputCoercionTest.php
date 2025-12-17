@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Feature;
 
-use Graphpinator\Exception\Value\InvalidValue;
 use Graphpinator\Graphpinator;
 use Graphpinator\Request\JsonRequestFactory;
 use Graphpinator\SimpleContainer;
@@ -15,6 +14,7 @@ use Graphpinator\Typesystem\Field\ResolvableField;
 use Graphpinator\Typesystem\Field\ResolvableFieldSet;
 use Graphpinator\Typesystem\Schema;
 use Graphpinator\Typesystem\Type;
+use Graphpinator\Value\Exception\InvalidValue;
 use Infinityloop\Utils\Json;
 use PHPUnit\Framework\TestCase;
 

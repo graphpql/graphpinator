@@ -8,14 +8,17 @@ use Graphpinator\Common\Path;
 use Graphpinator\Graphpinator;
 use Graphpinator\Typesystem\Contract\Component;
 use Graphpinator\Typesystem\Contract\ComponentVisitor;
-use Graphpinator\Typesystem\Contract\Inputable;
+use Graphpinator\Typesystem\Contract\Type;
 use Graphpinator\Typesystem\DirectiveUsage\DirectiveUsage;
 use Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet;
+use Graphpinator\Typesystem\Exception\ArgumentInvalidTypeUsage;
 use Graphpinator\Typesystem\Exception\DirectiveIncorrectType;
 use Graphpinator\Typesystem\Location\ArgumentDefinitionLocation;
 use Graphpinator\Typesystem\Utils\TDeprecatable;
 use Graphpinator\Typesystem\Utils\THasDirectives;
 use Graphpinator\Typesystem\Utils\TOptionalDescription;
+use Graphpinator\Typesystem\Visitor\IsInputableVisitor;
+use Graphpinator\Typesystem\Visitor\PrintNameVisitor;
 use Graphpinator\Value\ArgumentValue;
 use Graphpinator\Value\ConvertRawValueVisitor;
 
@@ -29,13 +32,17 @@ final class Argument implements Component
 
     public function __construct(
         private string $name,
-        private Inputable $type,
+        private Type $type,
     )
     {
+        if (!$this->type->accept(new IsInputableVisitor())) {
+            throw new ArgumentInvalidTypeUsage($this->name, $this->type->accept(new PrintNameVisitor()));
+        }
+
         $this->directiveUsages = new DirectiveUsageSet();
     }
 
-    public static function create(string $name, Inputable $type) : self
+    public static function create(string $name, Type $type) : self
     {
         return new self($name, $type);
     }
@@ -45,7 +52,7 @@ final class Argument implements Component
         return $this->name;
     }
 
-    public function getType() : Inputable
+    public function getType() : Type
     {
         return $this->type;
     }
