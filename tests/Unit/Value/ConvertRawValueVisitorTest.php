@@ -27,10 +27,10 @@ use PHPUnit\Framework\TestCase;
 
 final class ConvertRawValueVisitorTest extends TestCase
 {
+    public static ?InputType $input = null;
     private static ?ScalarType $stringType = null;
     private static ?ScalarType $intType = null;
     private static ?EnumType $enum = null;
-    public static ?InputType $input = null;
 
     public static function setUpBeforeClass() : void
     {

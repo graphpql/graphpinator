@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Tests\Unit\Value;
 
-use Graphpinator\ErrorHandlingMode;
 use Graphpinator\Typesystem\Container;
 use Graphpinator\Typesystem\EnumType;
 use Graphpinator\Typesystem\Field\FieldSet;
