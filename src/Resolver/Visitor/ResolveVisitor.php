@@ -20,6 +20,7 @@ use Graphpinator\Value\NullValue;
 use Graphpinator\Value\ResolvedValue;
 use Graphpinator\Value\TypeIntermediateValue;
 use Graphpinator\Value\TypeValue;
+use Graphpinator\Value\Visitor\CreateResolvedValueVisitor;
 
 final class ResolveVisitor implements TypeVisitor
 {
@@ -47,19 +48,19 @@ final class ResolveVisitor implements TypeVisitor
     #[\Override]
     public function visitInterface(InterfaceType $interface) : never
     {
-        throw new \LogicException();
+        throw new \LogicException(); // @codeCoverageIgnore
     }
 
     #[\Override]
     public function visitUnion(UnionType $union) : never
     {
-        throw new \LogicException();
+        throw new \LogicException(); // @codeCoverageIgnore
     }
 
     #[\Override]
     public function visitInput(InputType $input) : never
     {
-        throw new \LogicException();
+        throw new \LogicException(); // @codeCoverageIgnore
     }
 
     #[\Override]

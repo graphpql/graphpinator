@@ -91,21 +91,21 @@ final readonly class ConvertRawValueVisitor implements TypeVisitor
     }
 
     #[\Override]
-    public function visitType(Type $type) : mixed
+    public function visitType(Type $type) : never
     {
-        throw new \LogicException();
+        throw new \LogicException(); // @codeCoverageIgnore
     }
 
     #[\Override]
-    public function visitInterface(InterfaceType $interface) : mixed
+    public function visitInterface(InterfaceType $interface) : never
     {
-        throw new \LogicException();
+        throw new \LogicException(); // @codeCoverageIgnore
     }
 
     #[\Override]
-    public function visitUnion(UnionType $union) : mixed
+    public function visitUnion(UnionType $union) : never
     {
-        throw new \LogicException();
+        throw new \LogicException(); // @codeCoverageIgnore
     }
 
     #[\Override]

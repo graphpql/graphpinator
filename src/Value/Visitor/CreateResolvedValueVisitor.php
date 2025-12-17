@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Resolver\Visitor;
+namespace Graphpinator\Value\Visitor;
 
 use Graphpinator\Typesystem\Contract\TypeVisitor;
 use Graphpinator\Typesystem\EnumType;
@@ -58,9 +58,9 @@ final class CreateResolvedValueVisitor implements TypeVisitor
     }
 
     #[\Override]
-    public function visitInput(InputType $input) : mixed
+    public function visitInput(InputType $input) : never
     {
-        throw new \LogicException();
+        throw new \LogicException(); // @codeCoverageIgnore
     }
 
     #[\Override]

@@ -24,6 +24,7 @@ use Graphpinator\Value\ListResolvedValue;
 use Graphpinator\Value\NullValue;
 use Graphpinator\Value\ResolvedValue;
 use Graphpinator\Value\TypeValue;
+use Graphpinator\Value\Visitor\CreateResolvedValueVisitor;
 
 final class ResolveSelectionVisitor implements SelectionVisitor
 {
