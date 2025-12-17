@@ -31,6 +31,7 @@ use Graphpinator\Typesystem\Exception\InterfaceDirectivesNotPreserved;
 use Graphpinator\Typesystem\Exception\InterfaceOrTypeMustDefineOneOrMoreFields;
 use Graphpinator\Typesystem\Exception\RootOperationTypesMustBeDifferent;
 use Graphpinator\Typesystem\Exception\RootOperationTypesMustBeWithinContainer;
+use Graphpinator\Typesystem\Exception\UnionTypeMustDefineOneOrMoreTypes;
 use Graphpinator\Typesystem\Exception\VarianceError;
 use Graphpinator\Typesystem\Field\Field;
 use Graphpinator\Typesystem\InputType;
@@ -43,6 +44,7 @@ use Graphpinator\Typesystem\Location\InputObjectLocation;
 use Graphpinator\Typesystem\Location\ObjectLocation;
 use Graphpinator\Typesystem\Location\ScalarLocation;
 use Graphpinator\Typesystem\Location\SchemaLocation;
+use Graphpinator\Typesystem\Location\UnionLocation;
 use Graphpinator\Typesystem\NotNullType;
 use Graphpinator\Typesystem\ScalarType;
 use Graphpinator\Typesystem\Schema;
@@ -116,6 +118,21 @@ final readonly class ValidateIntegrityVisitor implements ComponentVisitor
     #[\Override]
     public function visitUnion(UnionType $union) : null
     {
+        if ($union->getTypes()->count() === 0) {
+            throw new UnionTypeMustDefineOneOrMoreTypes();
+        }
+
+        foreach ($union->getDirectiveUsages() as $usage) {
+            $usage->accept($this);
+            $directive = $usage->getDirective();
+
+            if (!$directive instanceof UnionLocation) {
+                throw new DirectiveIncorrectType();
+            }
+        }
+
+        self::validateDirectiveRepeatability($union->getDirectiveUsages());
+
         return null;
     }
 
@@ -444,14 +461,9 @@ final readonly class ValidateIntegrityVisitor implements ComponentVisitor
     /**
      * @param InputType $input
      * @param array<string, true> $stack
-     * @param array<string, true> $validated
      */
-    private static function validateInputCycles(InputType $input, array $stack = [], array &$validated = []) : void
+    private static function validateInputCycles(InputType $input, array $stack = []) : void
     {
-        if (\array_key_exists($input->getName(), $validated)) {
-            return;
-        }
-
         if (\array_key_exists($input->getName(), $stack)) {
             throw new InputCycleDetected(\array_keys($stack));
         }
@@ -471,11 +483,10 @@ final readonly class ValidateIntegrityVisitor implements ComponentVisitor
                 continue;
             }
 
-            self::validateInputCycles($argumentType, $stack, $validated);
+            self::validateInputCycles($argumentType, $stack);
         }
 
         unset($stack[$input->getName()]);
-        $validated[$input->getName()] = true;
     }
 
     /**

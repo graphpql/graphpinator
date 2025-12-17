@@ -75,6 +75,10 @@ abstract class Type extends NamedType implements TypeConditionable, InterfaceImp
     {
         foreach ($this->implements as $interfaceType) {
             foreach ($interfaceType->getFields() as $interfaceField) {
+                if (!$this->fields->offsetExists($interfaceField->getName())) {
+                    continue;
+                }
+
                 $currentField = $this->fields[$interfaceField->getName()];
 
                 if ($currentField->getDescription() === null && $interfaceField->getDescription() !== null) {
@@ -82,6 +86,10 @@ abstract class Type extends NamedType implements TypeConditionable, InterfaceImp
                 }
 
                 foreach ($interfaceField->getArguments() as $interfaceArgument) {
+                    if (!$currentField->getArguments()->offsetExists($interfaceArgument->getName())) {
+                        continue;
+                    }
+
                     $currentArgument = $currentField->getArguments()[$interfaceArgument->getName()];
 
                     if ($currentArgument->getDescription() === null && $interfaceArgument->getDescription() !== null) {

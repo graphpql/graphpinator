@@ -29,7 +29,9 @@ final class MutationTest extends TestCase
 
             protected function getFieldDefinition() : ResolvableFieldSet
             {
-                return new ResolvableFieldSet();
+                return new ResolvableFieldSet([
+                    ResolvableField::create('dummy', Container::String(), \random_bytes(...)),
+                ]);
             }
         };
         $mutation = new class extends Type {

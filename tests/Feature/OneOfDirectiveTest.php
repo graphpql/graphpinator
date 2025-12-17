@@ -12,6 +12,7 @@ use Graphpinator\Typesystem\Container;
 use Graphpinator\Typesystem\Exception\OneOfDirectiveNotSatisfied;
 use Graphpinator\Typesystem\Exception\OneOfInputInvalidFields;
 use Graphpinator\Typesystem\InputType;
+use Graphpinator\Typesystem\Visitor\ValidateIntegrityVisitor;
 use Graphpinator\Value\InputValue;
 use Graphpinator\Value\Visitor\ConvertRawValueVisitor;
 use PHPUnit\Framework\TestCase;
@@ -101,14 +102,14 @@ final class OneOfDirectiveTest extends TestCase
     {
         $this->expectException(OneOfInputInvalidFields::class);
 
-        self::createInputWithDefaults()->getArguments();
+        self::createInputWithDefaults()->accept(new ValidateIntegrityVisitor());
     }
 
     public function testOneOfWithNotNull() : void
     {
         $this->expectException(OneOfInputInvalidFields::class);
 
-        self::createInputWithNotNull()->getArguments();
+        self::createInputWithNotNull()->accept(new ValidateIntegrityVisitor());
     }
 
     /**
