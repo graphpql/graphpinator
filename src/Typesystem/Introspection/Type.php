@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Introspection;
+namespace Graphpinator\Typesystem\Introspection;
 
 use Graphpinator\Typesystem\Argument\Argument;
 use Graphpinator\Typesystem\Argument\ArgumentSet;
@@ -25,6 +25,7 @@ use Graphpinator\Typesystem\Type as TypesystemType;
 use Graphpinator\Typesystem\TypeSet;
 use Graphpinator\Typesystem\UnionType;
 use Graphpinator\Typesystem\Visitor\IsInstanceOfVisitor;
+use Graphpinator\Typesystem\Visitor\TypeKindVisitor;
 
 #[Description('Built-in introspection type')]
 final class Type extends TypesystemType

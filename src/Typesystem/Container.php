@@ -4,15 +4,15 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Typesystem;
 
-use Graphpinator\Introspection\Directive as IntrospectionDirective;
-use Graphpinator\Introspection\DirectiveLocation;
-use Graphpinator\Introspection\EnumValue;
-use Graphpinator\Introspection\Field;
-use Graphpinator\Introspection\InputValue;
-use Graphpinator\Introspection\Schema;
-use Graphpinator\Introspection\Type;
-use Graphpinator\Introspection\TypeKind;
 use Graphpinator\Typesystem\Contract\NamedType;
+use Graphpinator\Typesystem\Introspection\Directive as IntrospectionDirective;
+use Graphpinator\Typesystem\Introspection\DirectiveLocation;
+use Graphpinator\Typesystem\Introspection\EnumValue;
+use Graphpinator\Typesystem\Introspection\Field;
+use Graphpinator\Typesystem\Introspection\InputValue;
+use Graphpinator\Typesystem\Introspection\Schema;
+use Graphpinator\Typesystem\Introspection\Type;
+use Graphpinator\Typesystem\Introspection\TypeKind;
 use Graphpinator\Typesystem\Spec\BooleanType;
 use Graphpinator\Typesystem\Spec\DeprecatedDirective;
 use Graphpinator\Typesystem\Spec\FloatType;

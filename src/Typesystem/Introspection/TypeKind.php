@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Introspection;
+namespace Graphpinator\Typesystem\Introspection;
 
 use Graphpinator\Typesystem\Attribute\Description;
 use Graphpinator\Typesystem\EnumType;

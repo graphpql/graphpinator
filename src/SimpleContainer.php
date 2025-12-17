@@ -4,19 +4,19 @@ declare(strict_types = 1);
 
 namespace Graphpinator;
 
-use Graphpinator\Introspection\Directive;
-use Graphpinator\Introspection\DirectiveLocation;
-use Graphpinator\Introspection\EnumValue;
-use Graphpinator\Introspection\Field;
-use Graphpinator\Introspection\InputValue;
-use Graphpinator\Introspection\Schema;
-use Graphpinator\Introspection\Type;
-use Graphpinator\Introspection\TypeKind;
 use Graphpinator\Typesystem\Container;
 use Graphpinator\Typesystem\Contract\NamedType;
 use Graphpinator\Typesystem\Directive as TypesystemDirective;
 use Graphpinator\Typesystem\Exception\DirectiveNamesNotUnique;
 use Graphpinator\Typesystem\Exception\TypeNamesNotUnique;
+use Graphpinator\Typesystem\Introspection\Directive;
+use Graphpinator\Typesystem\Introspection\DirectiveLocation;
+use Graphpinator\Typesystem\Introspection\EnumValue;
+use Graphpinator\Typesystem\Introspection\Field;
+use Graphpinator\Typesystem\Introspection\InputValue;
+use Graphpinator\Typesystem\Introspection\Schema;
+use Graphpinator\Typesystem\Introspection\Type;
+use Graphpinator\Typesystem\Introspection\TypeKind;
 
 /**
  * Simple Container implementation

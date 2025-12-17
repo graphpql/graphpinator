@@ -28,7 +28,7 @@ final readonly class NullValue implements InputedValue, OutputValue
     }
 
     #[\Override]
-    public function jsonSerialize() : ?bool
+    public function jsonSerialize() : null
     {
         return null;
     }

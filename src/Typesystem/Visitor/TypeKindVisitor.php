@@ -2,12 +2,13 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Introspection;
+namespace Graphpinator\Typesystem\Visitor;
 
 use Graphpinator\Typesystem\Contract\TypeVisitor;
 use Graphpinator\Typesystem\EnumType;
 use Graphpinator\Typesystem\InputType;
 use Graphpinator\Typesystem\InterfaceType;
+use Graphpinator\Typesystem\Introspection\TypeKind;
 use Graphpinator\Typesystem\ListType;
 use Graphpinator\Typesystem\NotNullType;
 use Graphpinator\Typesystem\ScalarType;
