@@ -5,24 +5,9 @@ declare(strict_types = 1);
 namespace Graphpinator\Value;
 
 use Graphpinator\Normalizer\VariableValueSet;
-use Graphpinator\Typesystem\ListType;
 
 final class ListInputedValue extends ListValue implements InputedValue
 {
-    #[\Override]
-    public function getRawValue(bool $forResolvers = false) : array
-    {
-        $return = [];
-
-        foreach ($this->value as $listItem) {
-            \assert($listItem instanceof InputedValue);
-
-            $return[] = $listItem->getRawValue($forResolvers);
-        }
-
-        return $return;
-    }
-
     #[\Override]
     public function printValue() : string
     {
