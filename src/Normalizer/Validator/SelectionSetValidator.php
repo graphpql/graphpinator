@@ -2,10 +2,10 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Normalizer;
+namespace Graphpinator\Normalizer\Validator;
 
 use Graphpinator\Normalizer\Selection\SelectionSet;
-use Graphpinator\Normalizer\ValidatorModule\ValidateFieldsCanMergeModule;
+use Graphpinator\Normalizer\Validator\Module\ValidateFieldsCanMergeModule;
 
 final class SelectionSetValidator
 {

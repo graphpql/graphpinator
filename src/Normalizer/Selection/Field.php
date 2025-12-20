@@ -5,58 +5,24 @@ declare(strict_types = 1);
 namespace Graphpinator\Normalizer\Selection;
 
 use Graphpinator\Normalizer\Directive\DirectiveSet;
-use Graphpinator\Normalizer\VariableValueSet;
 use Graphpinator\Typesystem\Field\Field as TypesystemField;
 use Graphpinator\Value\ArgumentValueSet;
 
-final class Field implements Selection
+final readonly class Field implements Selection
 {
     public function __construct(
-        private TypesystemField $field,
-        private string $outputName,
-        private ArgumentValueSet $arguments,
-        private DirectiveSet $directives,
-        private ?SelectionSet $children = null,
+        public TypesystemField $field,
+        public string $outputName,
+        public ArgumentValueSet $arguments,
+        public DirectiveSet $directives,
+        public ?SelectionSet $children = null,
     )
     {
-    }
-
-    public function getField() : TypesystemField
-    {
-        return $this->field;
     }
 
     public function getName() : string
     {
         return $this->field->getName();
-    }
-
-    public function getOutputName() : string
-    {
-        return $this->outputName;
-    }
-
-    public function getArguments() : ArgumentValueSet
-    {
-        return $this->arguments;
-    }
-
-    public function getDirectives() : DirectiveSet
-    {
-        return $this->directives;
-    }
-
-    public function getSelections() : ?SelectionSet
-    {
-        return $this->children;
-    }
-
-    #[\Override]
-    public function applyVariables(VariableValueSet $variables) : void
-    {
-        $this->arguments->applyVariables($variables);
-        $this->directives->applyVariables($variables);
-        $this->children?->applyVariables($variables);
     }
 
     #[\Override]

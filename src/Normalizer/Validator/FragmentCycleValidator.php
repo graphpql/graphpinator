@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Normalizer;
+namespace Graphpinator\Normalizer\Validator;
 
 use Graphpinator\Normalizer\Exception\FragmentCycle;
 use Graphpinator\Normalizer\Exception\UnknownFragment;

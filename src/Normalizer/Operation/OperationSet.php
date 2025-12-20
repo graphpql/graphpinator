@@ -20,7 +20,7 @@ final class OperationSet extends ImplicitObjectMap
     {
         \assert($object instanceof Operation);
 
-        return $object->getName()
+        return $object->name
             ?? '';
     }
 }

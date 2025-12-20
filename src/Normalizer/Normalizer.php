@@ -22,11 +22,14 @@ use Graphpinator\Normalizer\Exception\UnknownFragment;
 use Graphpinator\Normalizer\Exception\UnknownType;
 use Graphpinator\Normalizer\Operation\Operation;
 use Graphpinator\Normalizer\Operation\OperationSet;
+use Graphpinator\Normalizer\Refiner\SelectionSetRefiner;
 use Graphpinator\Normalizer\Selection\Field;
 use Graphpinator\Normalizer\Selection\FragmentSpread;
 use Graphpinator\Normalizer\Selection\InlineFragment;
 use Graphpinator\Normalizer\Selection\Selection;
 use Graphpinator\Normalizer\Selection\SelectionSet;
+use Graphpinator\Normalizer\Validator\FragmentCycleValidator;
+use Graphpinator\Normalizer\Validator\SelectionSetValidator;
 use Graphpinator\Normalizer\Variable\Variable;
 use Graphpinator\Normalizer\Variable\VariableSet;
 use Graphpinator\Normalizer\Visitor\GetFieldVisitor;
@@ -192,13 +195,11 @@ final class Normalizer
                 : null,
         );
 
-        $normalized->setDirectives(
-            $this->normalizeDirectiveSet(
-                $variable->directives,
-                ExecutableDirectiveLocation::VARIABLE_DEFINITION,
-                $normalized,
-            ),
-        );
+        $normalized->directives->merge($this->normalizeDirectiveSet(
+            $variable->directives,
+            ExecutableDirectiveLocation::VARIABLE_DEFINITION,
+            $normalized,
+        ));
 
         return $normalized;
     }
@@ -273,7 +274,7 @@ final class Normalizer
         foreach ($directiveSet as $directive) {
             $this->path->add($directive->name . ' <directive>');
             $normalizedDirective = $this->normalizeDirective($directive, $location, $usage);
-            $directiveDef = $normalizedDirective->getDirective();
+            $directiveDef = $normalizedDirective->directive;
 
             if (!$directiveDef->isRepeatable()) {
                 if (\array_key_exists($directiveDef->getName(), $directiveTypes)) {
@@ -285,7 +286,7 @@ final class Normalizer
 
             if ($usage instanceof Variable) {
                 \assert($directiveDef instanceof VariableDefinitionLocation);
-                $directiveDef->validateVariableUsage($usage, $normalizedDirective->getArguments());
+                $directiveDef->validateVariableUsage($usage, $normalizedDirective->arguments);
             }
 
             $normalized[] = $normalizedDirective;

@@ -10,46 +10,16 @@ use Graphpinator\Normalizer\Variable\VariableSet;
 use Graphpinator\Parser\OperationType;
 use Graphpinator\Typesystem\Type;
 
-final class Operation
+final readonly class Operation
 {
     public function __construct(
-        private OperationType $type,
-        private ?string $name,
-        private Type $rootObject,
-        private SelectionSet $children,
-        private VariableSet $variables,
-        private DirectiveSet $directives,
+        public OperationType $type,
+        public ?string $name,
+        public Type $rootObject,
+        public SelectionSet $children,
+        public VariableSet $variables,
+        public DirectiveSet $directives,
     )
     {
-    }
-
-    public function getType() : OperationType
-    {
-        return $this->type;
-    }
-
-    public function getRootObject() : Type
-    {
-        return $this->rootObject;
-    }
-
-    public function getSelections() : SelectionSet
-    {
-        return $this->children;
-    }
-
-    public function getVariables() : VariableSet
-    {
-        return $this->variables;
-    }
-
-    public function getDirectives() : DirectiveSet
-    {
-        return $this->directives;
-    }
-
-    public function getName() : ?string
-    {
-        return $this->name;
     }
 }

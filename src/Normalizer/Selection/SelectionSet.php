@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Graphpinator\Normalizer\Selection;
 
 use Graphpinator\Normalizer\VariableValueSet;
+use Graphpinator\Normalizer\Visitor\ApplyVariablesVisitor;
 use Infinityloop\Utils\ObjectSet;
 
 /**
@@ -17,8 +18,10 @@ final class SelectionSet extends ObjectSet
 
     public function applyVariables(VariableValueSet $variables) : void
     {
+        $visitor = new ApplyVariablesVisitor($variables);
+
         foreach ($this as $field) {
-            $field->applyVariables($variables);
+            $field->accept($visitor);
         }
     }
 }

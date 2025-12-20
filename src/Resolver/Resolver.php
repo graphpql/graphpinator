@@ -17,9 +17,9 @@ final class Resolver
 {
     public function resolve(FinalizedRequest $finalizedRequest) : Result
     {
-        $operation = $finalizedRequest->getOperation();
+        $operation = $finalizedRequest->operation;
 
-        return match ($operation->getType()) {
+        return match ($operation->type) {
             OperationType::QUERY => $this->resolveQuery($operation),
             OperationType::MUTATION => $this->resolveMutation($operation),
             OperationType::SUBSCRIPTION => $this->resolveSubscription($operation),
@@ -28,23 +28,23 @@ final class Resolver
 
     private function resolveQuery(Operation $operation) : Result
     {
-        foreach ($operation->getDirectives() as $directive) {
-            $directiveDef = $directive->getDirective();
+        foreach ($operation->directives as $directive) {
+            $directiveDef = $directive->directive;
             \assert($directiveDef instanceof QueryLocation);
-            $directiveDef->resolveQueryBefore($directive->getArguments());
+            $directiveDef->resolveQueryBefore($directive->arguments);
         }
 
         $resolver = new ResolveVisitor(
-            $operation->getSelections(),
-            new TypeIntermediateValue($operation->getRootObject(), null),
+            $operation->children,
+            new TypeIntermediateValue($operation->rootObject, null),
         );
 
-        $operationValue = $operation->getRootObject()->accept($resolver);
+        $operationValue = $operation->rootObject->accept($resolver);
 
-        foreach ($operation->getDirectives() as $directive) {
-            $directiveDef = $directive->getDirective();
+        foreach ($operation->directives as $directive) {
+            $directiveDef = $directive->directive;
             \assert($directiveDef instanceof QueryLocation);
-            $directiveDef->resolveQueryAfter($directive->getArguments(), $operationValue);
+            $directiveDef->resolveQueryAfter($directive->arguments, $operationValue);
         }
 
         return new Result($operationValue);
@@ -52,23 +52,19 @@ final class Resolver
 
     private function resolveMutation(Operation $operation) : Result
     {
-        foreach ($operation->getDirectives() as $directive) {
-            $directiveDef = $directive->getDirective();
+        foreach ($operation->directives as $directive) {
+            $directiveDef = $directive->directive;
             \assert($directiveDef instanceof MutationLocation);
-            $directiveDef->resolveMutationBefore($directive->getArguments());
+            $directiveDef->resolveMutationBefore($directive->arguments);
         }
 
-        $resolver = new ResolveVisitor(
-            $operation->getSelections(),
-            new TypeIntermediateValue($operation->getRootObject(), null),
-        );
+        $resolver = new ResolveVisitor($operation->children, new TypeIntermediateValue($operation->rootObject, null));
+        $operationValue = $operation->rootObject->accept($resolver);
 
-        $operationValue = $operation->getRootObject()->accept($resolver);
-
-        foreach ($operation->getDirectives() as $directive) {
-            $directiveDef = $directive->getDirective();
+        foreach ($operation->directives as $directive) {
+            $directiveDef = $directive->directive;
             \assert($directiveDef instanceof MutationLocation);
-            $directiveDef->resolveMutationAfter($directive->getArguments(), $operationValue);
+            $directiveDef->resolveMutationAfter($directive->arguments, $operationValue);
         }
 
         return new Result($operationValue);
@@ -76,23 +72,23 @@ final class Resolver
 
     private function resolveSubscription(Operation $operation) : Result
     {
-        foreach ($operation->getDirectives() as $directive) {
-            $directiveDef = $directive->getDirective();
+        foreach ($operation->directives as $directive) {
+            $directiveDef = $directive->directive;
             \assert($directiveDef instanceof SubscriptionLocation);
-            $directiveDef->resolveSubscriptionBefore($directive->getArguments());
+            $directiveDef->resolveSubscriptionBefore($directive->arguments);
         }
 
         $resolver = new ResolveVisitor(
-            $operation->getSelections(),
-            new TypeIntermediateValue($operation->getRootObject(), null),
+            $operation->children,
+            new TypeIntermediateValue($operation->rootObject, null),
         );
 
-        $operationValue = $operation->getRootObject()->accept($resolver);
+        $operationValue = $operation->rootObject->accept($resolver);
 
-        foreach ($operation->getDirectives() as $directive) {
-            $directiveDef = $directive->getDirective();
+        foreach ($operation->directives as $directive) {
+            $directiveDef = $directive->directive;
             \assert($directiveDef instanceof SubscriptionLocation);
-            $directiveDef->resolveSubscriptionAfter($directive->getArguments(), $operationValue);
+            $directiveDef->resolveSubscriptionAfter($directive->arguments, $operationValue);
         }
 
         return new Result($operationValue);

@@ -12,7 +12,7 @@ use Graphpinator\Normalizer\Exception\ConflictingFieldDirectives;
 use Graphpinator\Normalizer\Exception\ConflictingFieldType;
 use Graphpinator\Normalizer\Selection\Field as NormalizerField;
 use Graphpinator\Normalizer\Selection\SelectionSet;
-use Graphpinator\Normalizer\SelectionSetValidator;
+use Graphpinator\Normalizer\Validator\SelectionSetValidator;
 use Graphpinator\Typesystem\Argument\Argument;
 use Graphpinator\Typesystem\Container;
 use Graphpinator\Typesystem\Field\Field;

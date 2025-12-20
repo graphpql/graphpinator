@@ -2,11 +2,11 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Normalizer;
+namespace Graphpinator\Normalizer\Refiner;
 
-use Graphpinator\Normalizer\RefinerModule\DuplicateFieldModule;
-use Graphpinator\Normalizer\RefinerModule\DuplicateFragmentSpreadModule;
-use Graphpinator\Normalizer\RefinerModule\EmptyFragmentModule;
+use Graphpinator\Normalizer\Refiner\Module\DuplicateFieldModule;
+use Graphpinator\Normalizer\Refiner\Module\DuplicateFragmentSpreadModule;
+use Graphpinator\Normalizer\Refiner\Module\EmptyFragmentModule;
 use Graphpinator\Normalizer\Selection\SelectionSet;
 
 final class SelectionSetRefiner

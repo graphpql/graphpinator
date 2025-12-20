@@ -21,7 +21,7 @@ final class VariableValue implements InputedValue
     )
     {
         $isInputable = $this->type->accept(new IsInputableVisitor());
-        $isCompatible = $variable->getType()->accept(new IsInstanceOfVisitor($type));
+        $isCompatible = $variable->type->accept(new IsInstanceOfVisitor($type));
 
         if (!$isInputable || !$isCompatible) {
             throw new VariableTypeMismatch();
@@ -59,7 +59,7 @@ final class VariableValue implements InputedValue
     #[\Override]
     public function applyVariables(VariableValueSet $variables) : void
     {
-        $this->value = $variables->get($this->variable->getName());
+        $this->value = $variables->get($this->variable->name);
     }
 
     #[\Override]
@@ -72,6 +72,6 @@ final class VariableValue implements InputedValue
     public function isSame(Value $compare) : bool
     {
         return $compare instanceof self
-            && $compare->variable->getName() === $this->variable->getName();
+            && $compare->variable->name === $this->variable->name;
     }
 }

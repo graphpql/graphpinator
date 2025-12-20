@@ -19,7 +19,7 @@ use Graphpinator\Typesystem\UnionType;
 /**
  * @implements NamedTypeVisitor<Field>
  */
-final class GetFieldVisitor implements NamedTypeVisitor
+final readonly class GetFieldVisitor implements NamedTypeVisitor
 {
     public function __construct(
         private string $name,

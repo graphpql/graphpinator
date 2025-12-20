@@ -36,33 +36,33 @@ final class ResolveSelectionVisitor implements SelectionVisitor
     }
 
     #[\Override]
-    public function visitField(Field $field) : mixed
+    public function visitField(Field $field) : null
     {
         $type = $this->parentResult->getType();
         \assert($type instanceof Type);
 
-        foreach ($field->getDirectives() as $directive) {
-            $directiveDef = $directive->getDirective();
+        foreach ($field->directives as $directive) {
+            $directiveDef = $directive->directive;
             \assert($directiveDef instanceof FieldLocation);
 
-            if (self::shouldSkip($directiveDef->resolveFieldBefore($directive->getArguments()))) {
+            if (self::shouldSkip($directiveDef->resolveFieldBefore($directive->arguments))) {
                 return null;
             }
         }
 
-        if (\property_exists($this->result, $field->getOutputName())) {
-            $fieldValue = $this->result->{$field->getOutputName()};
+        if (\property_exists($this->result, $field->outputName)) {
+            $fieldValue = $this->result->{$field->outputName};
             \assert($fieldValue instanceof FieldValue);
 
-            if ($field->getSelections() instanceof SelectionSet) {
-                self::addToResultingSelection($fieldValue->getValue(), $field->getSelections());
+            if ($field->children instanceof SelectionSet) {
+                self::addToResultingSelection($fieldValue->getValue(), $field->children);
             }
 
-            foreach ($field->getDirectives() as $directiveUsage) {
-                $directive = $directiveUsage->getDirective();
+            foreach ($field->directives as $directiveUsage) {
+                $directive = $directiveUsage->directive;
                 \assert($directive instanceof FieldLocation);
 
-                $directive->resolveFieldAfter($directiveUsage->getArguments(), $fieldValue);
+                $directive->resolveFieldAfter($directiveUsage->arguments, $fieldValue);
             }
         } else {
             $fieldDef = $type->getMetaFields()[$field->getName()]
@@ -75,7 +75,7 @@ final class ResolveSelectionVisitor implements SelectionVisitor
                 $directive->resolveFieldDefinitionStart($directiveUsage->getArgumentValues(), $this->parentResult);
             }
 
-            $arguments = $field->getArguments();
+            $arguments = $field->arguments;
 
             foreach ($arguments as $argumentValue) {
                 $argumentValue->resolveNonPureDirectives();
@@ -109,48 +109,48 @@ final class ResolveSelectionVisitor implements SelectionVisitor
 
             $fieldValue = new FieldValue($fieldDef, $resolvedValue instanceof NullValue
                 ? $resolvedValue
-                : $resolvedValue->getType()->accept(new ResolveVisitor($field->getSelections(), $resolvedValue)));
+                : $resolvedValue->getType()->accept(new ResolveVisitor($field->children, $resolvedValue)));
 
-            foreach ($field->getDirectives() as $directive) {
-                $directiveDef = $directive->getDirective();
+            foreach ($field->directives as $directive) {
+                $directiveDef = $directive->directive;
                 \assert($directiveDef instanceof FieldLocation);
 
-                if (self::shouldSkip($directiveDef->resolveFieldAfter($directive->getArguments(), $fieldValue))) {
+                if (self::shouldSkip($directiveDef->resolveFieldAfter($directive->arguments, $fieldValue))) {
                     return null;
                 }
             }
 
-            $this->result->{$field->getOutputName()} = $fieldValue;
+            $this->result->{$field->outputName} = $fieldValue;
         }
 
         return null;
     }
 
     #[\Override]
-    public function visitFragmentSpread(FragmentSpread $fragmentSpread) : mixed
+    public function visitFragmentSpread(FragmentSpread $fragmentSpread) : null
     {
-        if (!$this->parentResult->getType()->accept(new IsInstanceOfVisitor($fragmentSpread->getTypeCondition()))) {
+        if (!$this->parentResult->getType()->accept(new IsInstanceOfVisitor($fragmentSpread->typeCondition))) {
             return null;
         }
 
-        foreach ($fragmentSpread->getDirectives() as $directive) {
-            $directiveDef = $directive->getDirective();
+        foreach ($fragmentSpread->directives as $directive) {
+            $directiveDef = $directive->directive;
             \assert($directiveDef instanceof FragmentSpreadLocation);
 
-            if (self::shouldSkip($directiveDef->resolveFragmentSpreadBefore($directive->getArguments()))) {
+            if (self::shouldSkip($directiveDef->resolveFragmentSpreadBefore($directive->arguments))) {
                 return null;
             }
         }
 
-        foreach ($fragmentSpread->getSelections() as $selection) {
+        foreach ($fragmentSpread->children as $selection) {
             $selection->accept(new ResolveSelectionVisitor($this->parentResult, $this->result));
         }
 
-        foreach ($fragmentSpread->getDirectives() as $directive) {
-            $directiveDef = $directive->getDirective();
+        foreach ($fragmentSpread->directives as $directive) {
+            $directiveDef = $directive->directive;
             \assert($directiveDef instanceof FragmentSpreadLocation);
 
-            $directiveDef->resolveFragmentSpreadAfter($directive->getArguments());
+            $directiveDef->resolveFragmentSpreadAfter($directive->arguments);
             // skip is not allowed here due to implementation complexity and rarity of use-cases
         }
 
@@ -158,31 +158,31 @@ final class ResolveSelectionVisitor implements SelectionVisitor
     }
 
     #[\Override]
-    public function visitInlineFragment(InlineFragment $inlineFragment) : mixed
+    public function visitInlineFragment(InlineFragment $inlineFragment) : null
     {
-        if ($inlineFragment->getTypeCondition() instanceof NamedType &&
-            !$this->parentResult->getType()->accept(new IsInstanceOfVisitor($inlineFragment->getTypeCondition()))) {
+        if ($inlineFragment->typeCondition instanceof NamedType &&
+            !$this->parentResult->getType()->accept(new IsInstanceOfVisitor($inlineFragment->typeCondition))) {
             return null;
         }
 
-        foreach ($inlineFragment->getDirectives() as $directive) {
-            $directiveDef = $directive->getDirective();
+        foreach ($inlineFragment->directives as $directive) {
+            $directiveDef = $directive->directive;
             \assert($directiveDef instanceof InlineFragmentLocation);
 
-            if (self::shouldSkip($directiveDef->resolveInlineFragmentBefore($directive->getArguments()))) {
+            if (self::shouldSkip($directiveDef->resolveInlineFragmentBefore($directive->arguments))) {
                 return null;
             }
         }
 
-        foreach ($inlineFragment->getSelections() as $selection) {
+        foreach ($inlineFragment->children as $selection) {
             $selection->accept(new ResolveSelectionVisitor($this->parentResult, $this->result));
         }
 
-        foreach ($inlineFragment->getDirectives() as $directive) {
-            $directiveDef = $directive->getDirective();
+        foreach ($inlineFragment->directives as $directive) {
+            $directiveDef = $directive->directive;
             \assert($directiveDef instanceof InlineFragmentLocation);
 
-            $directiveDef->resolveInlineFragmentAfter($directive->getArguments());
+            $directiveDef->resolveInlineFragmentAfter($directive->arguments);
             // skip is not allowed here due to implementation complexity and rarity of use-cases
         }
 

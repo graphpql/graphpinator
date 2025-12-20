@@ -5,11 +5,11 @@ declare(strict_types = 1);
 namespace Graphpinator\Tests\Unit\Normalizer;
 
 use Graphpinator\Normalizer\Directive\DirectiveSet;
+use Graphpinator\Normalizer\Refiner\SelectionSetRefiner;
 use Graphpinator\Normalizer\Selection\Field;
 use Graphpinator\Normalizer\Selection\FragmentSpread;
 use Graphpinator\Normalizer\Selection\InlineFragment;
 use Graphpinator\Normalizer\Selection\SelectionSet;
-use Graphpinator\Normalizer\SelectionSetRefiner;
 use Graphpinator\Typesystem\Container;
 use Graphpinator\Typesystem\Field\Field as TypesystemField;
 use Graphpinator\Typesystem\Field\ResolvableFieldSet;
@@ -102,7 +102,7 @@ final class DuplicateFragmentSpreadModuleTest extends TestCase
         self::assertCount(2, $set);
         self::assertInstanceOf(FragmentSpread::class, $set->offsetGet(0));
         self::assertInstanceOf(InlineFragment::class, $set->offsetGet(1));
-        self::assertCount(1, $set->offsetGet(1)->getSelections());
-        self::assertInstanceOf(Field::class, $set->offsetGet(1)->getSelections()->offsetGet(1));
+        self::assertCount(1, $set->offsetGet(1)->children);
+        self::assertInstanceOf(Field::class, $set->offsetGet(1)->children->offsetGet(1));
     }
 }

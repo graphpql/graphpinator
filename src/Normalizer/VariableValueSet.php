@@ -6,7 +6,7 @@ namespace Graphpinator\Normalizer;
 
 use Graphpinator\Value\InputedValue;
 
-final class VariableValueSet
+final readonly class VariableValueSet
 {
     public function __construct(
         private array $variables,

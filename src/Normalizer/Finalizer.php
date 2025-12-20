@@ -22,7 +22,7 @@ final class Finalizer
 
         try {
             $operation = $this->selectOperation($normalizedRequest, $operationName);
-            $this->path->add($operation->getName() . ' <operation>');
+            $this->path->add($operation->name . ' <operation>');
             $this->applyVariables($operation, $variables);
         } catch (GraphpinatorBase $e) {
             throw $e->setPath($this->path);
@@ -34,29 +34,29 @@ final class Finalizer
     private function selectOperation(NormalizedRequest $normalizedRequest, ?string $operationName) : Operation
     {
         return $operationName === null
-            ? $normalizedRequest->getOperations()->getFirst()
-            : $normalizedRequest->getOperations()->offsetGet($operationName);
+            ? $normalizedRequest->operations->getFirst()
+            : $normalizedRequest->operations->offsetGet($operationName);
     }
 
     private function applyVariables(Operation $operation, \stdClass $variables) : void
     {
         $normalized = [];
 
-        foreach ($operation->getVariables() as $variable) {
-            $this->path->add($variable->getName() . ' <variable>');
+        foreach ($operation->variables as $variable) {
+            $this->path->add($variable->name . ' <variable>');
             $value = $this->normalizeVariableValue($variable, $variables);
 
-            foreach ($variable->getDirectives() as $directive) {
-                $directiveDef = $directive->getDirective();
+            foreach ($variable->directives as $directive) {
+                $directiveDef = $directive->directive;
                 \assert($directiveDef instanceof VariableDefinitionLocation);
-                $directiveDef->resolveVariableDefinition($directive->getArguments(), $value);
+                $directiveDef->resolveVariableDefinition($directive->arguments, $value);
             }
 
-            $normalized[$variable->getName()] = $value;
+            $normalized[$variable->name] = $value;
             $this->path->pop();
         }
 
-        $operation->getSelections()->applyVariables(new VariableValueSet($normalized));
+        $operation->children->applyVariables(new VariableValueSet($normalized));
     }
 
     private function normalizeVariableValue(
@@ -64,14 +64,14 @@ final class Finalizer
         \stdClass $variables,
     ) : InputedValue
     {
-        if (isset($variables->{$variable->getName()})) {
-            return $variable->getType()->accept(new ConvertRawValueVisitor($variables->{$variable->getName()}, $this->path));
+        if (isset($variables->{$variable->name})) {
+            return $variable->type->accept(new ConvertRawValueVisitor($variables->{$variable->name}, $this->path));
         }
 
-        if ($variable->getDefaultValue() instanceof InputedValue) {
-            return $variable->getDefaultValue();
+        if ($variable->defaultValue instanceof InputedValue) {
+            return $variable->defaultValue;
         }
 
-        return $variable->getType()->accept(new ConvertRawValueVisitor(null, $this->path));
+        return $variable->type->accept(new ConvertRawValueVisitor(null, $this->path));
     }
 }

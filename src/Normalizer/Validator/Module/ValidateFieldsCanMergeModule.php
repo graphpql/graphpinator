@@ -2,8 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Normalizer\ValidatorModule;
+namespace Graphpinator\Normalizer\Validator\Module;
 
+use Graphpinator\Normalizer\Directive\DirectiveSet;
 use Graphpinator\Normalizer\Exception\ConflictingFieldAlias;
 use Graphpinator\Normalizer\Exception\ConflictingFieldArguments;
 use Graphpinator\Normalizer\Exception\ConflictingFieldDirectives;
@@ -41,10 +42,10 @@ final class ValidateFieldsCanMergeModule implements ValidatorModule, SelectionVi
     }
 
     #[\Override]
-    public function visitField(Field $field) : mixed
+    public function visitField(Field $field) : null
     {
-        if (\array_key_exists($field->getOutputName(), $this->fieldsForName)) {
-            foreach ($this->fieldsForName[$field->getOutputName()] as $fieldForName) {
+        if (\array_key_exists($field->outputName, $this->fieldsForName)) {
+            foreach ($this->fieldsForName[$field->outputName] as $fieldForName) {
                 \assert($fieldForName instanceof FieldForName);
 
                 $canOccurTogether = false;
@@ -61,7 +62,7 @@ final class ValidateFieldsCanMergeModule implements ValidatorModule, SelectionVi
             return null;
         }
 
-        $this->fieldsForName[$field->getOutputName()] = [
+        $this->fieldsForName[$field->outputName] = [
             new FieldForName($field, $this->contextType),
         ];
 
@@ -69,7 +70,7 @@ final class ValidateFieldsCanMergeModule implements ValidatorModule, SelectionVi
     }
 
     #[\Override]
-    public function visitFragmentSpread(FragmentSpread $fragmentSpread) : mixed
+    public function visitFragmentSpread(FragmentSpread $fragmentSpread) : null
     {
         $this->processFragment($fragmentSpread);
 
@@ -77,7 +78,7 @@ final class ValidateFieldsCanMergeModule implements ValidatorModule, SelectionVi
     }
 
     #[\Override]
-    public function visitInlineFragment(InlineFragment $inlineFragment) : mixed
+    public function visitInlineFragment(InlineFragment $inlineFragment) : null
     {
         $this->processFragment($inlineFragment);
 
@@ -97,12 +98,12 @@ final class ValidateFieldsCanMergeModule implements ValidatorModule, SelectionVi
     private function processFragment(InlineFragment|FragmentSpread $fragment) : void
     {
         $oldSelections = $this->selections;
-        $this->selections = $fragment->getSelections();
+        $this->selections = $fragment->children;
         $oldContextType = $this->contextType;
-        $this->contextType = $fragment->getTypeCondition()
+        $this->contextType = $fragment->typeCondition
             ?? $this->contextType;
 
-        foreach ($fragment->getSelections() as $selection) {
+        foreach ($fragment->children as $selection) {
             $selection->accept($this);
         }
 
@@ -110,13 +111,10 @@ final class ValidateFieldsCanMergeModule implements ValidatorModule, SelectionVi
         $this->contextType = $oldContextType;
     }
 
-    private function validateResponseShape(
-        Field $field,
-        Field $conflict,
-    ) : void
+    private function validateResponseShape(Field $field, Field $conflict) : void
     {
-        $fieldReturnType = $field->getField()->getType();
-        $conflictReturnType = $conflict->getField()->getType();
+        $fieldReturnType = $field->field->getType();
+        $conflictReturnType = $conflict->field->getType();
 
         /** Fields must have same response shape (return type) */
         if (!$fieldReturnType->accept(new IsInstanceOfVisitor($conflictReturnType)) ||
@@ -125,13 +123,10 @@ final class ValidateFieldsCanMergeModule implements ValidatorModule, SelectionVi
         }
     }
 
-    private function validateIdentity(
-        Field $field,
-        Field $conflict,
-    ) : void
+    private function validateIdentity(Field $field, Field $conflict) : void
     {
-        $fieldReturnType = $field->getField()->getType();
-        $conflictReturnType = $conflict->getField()->getType();
+        $fieldReturnType = $field->field->getType();
+        $conflictReturnType = $conflict->field->getType();
 
         // Fields must have same response shape (return type)
         if (!$fieldReturnType->accept(new IsInstanceOfVisitor($conflictReturnType)) ||
@@ -145,29 +140,45 @@ final class ValidateFieldsCanMergeModule implements ValidatorModule, SelectionVi
         }
 
         // Fields have different arguments
-        if (!$field->getArguments()->isSame($conflict->getArguments())) {
+        if (!$field->arguments->isSame($conflict->arguments)) {
             throw new ConflictingFieldArguments();
         }
 
         // Fields have different directives
-        if (!$field->getDirectives()->isSame($conflict->getDirectives())) {
+        if (!self::isDirectiveSetSame($field->directives, $conflict->directives)) {
             throw new ConflictingFieldDirectives();
         }
     }
 
-    private function validateInnerFields(
-        Field $field,
-        Field $conflict,
-        bool $identity,
-    ) : void
+    private function validateInnerFields(Field $field, Field $conflict, bool $identity) : void
     {
         // Fields are composite -> validate combined inner fields
-        if (!$conflict->getSelections() instanceof SelectionSet) {
+        if (!$conflict->children instanceof SelectionSet) {
             return;
         }
 
-        $mergedSet = (clone $conflict->getSelections())->merge($field->getSelections());
+        $mergedSet = (clone $conflict->children)->merge($field->children);
         $refiner = new self($mergedSet, $identity);
         $refiner->validate();
+    }
+
+    private static function isDirectiveSetSame(DirectiveSet $lhs, DirectiveSet $rhs) : bool
+    {
+        if ($rhs->count() !== $lhs->count()) {
+            return false;
+        }
+
+        foreach ($rhs as $index => $compareItem) {
+            $thisItem = $lhs->offsetGet($index);
+
+            if ($thisItem->directive->getName() === $compareItem->directive->getName() &&
+                $thisItem->arguments->isSame($compareItem->arguments)) {
+                continue;
+            }
+
+            return false;
+        }
+
+        return true;
     }
 }

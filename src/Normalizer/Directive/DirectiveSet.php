@@ -21,24 +21,4 @@ final class DirectiveSet extends ObjectSet
             $directive->applyVariables($variables);
         }
     }
-
-    public function isSame(self $compare) : bool
-    {
-        if ($compare->count() !== $this->count()) {
-            return false;
-        }
-
-        foreach ($compare as $index => $compareItem) {
-            $thisItem = $this->offsetGet($index);
-
-            if ($thisItem->getDirective()->getName() === $compareItem->getDirective()->getName() &&
-                $thisItem->getArguments()->isSame($compareItem->getArguments())) {
-                continue;
-            }
-
-            return false;
-        }
-
-        return true;
-    }
 }

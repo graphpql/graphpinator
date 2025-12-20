@@ -8,28 +8,16 @@ use Graphpinator\Normalizer\VariableValueSet;
 use Graphpinator\Typesystem\Contract\ExecutableDirective;
 use Graphpinator\Value\ArgumentValueSet;
 
-final class Directive
+final readonly class Directive
 {
     public function __construct(
-        private ExecutableDirective $directive,
-        private ArgumentValueSet $arguments,
+        public ExecutableDirective $directive,
+        public ArgumentValueSet $arguments,
     )
     {
     }
 
-    public function getDirective() : ExecutableDirective
-    {
-        return $this->directive;
-    }
-
-    public function getArguments() : ArgumentValueSet
-    {
-        return $this->arguments;
-    }
-
-    public function applyVariables(
-        VariableValueSet $variables,
-    ) : void
+    public function applyVariables(VariableValueSet $variables) : void
     {
         $this->arguments->applyVariables($variables);
     }

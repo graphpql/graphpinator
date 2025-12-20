@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Normalizer\RefinerModule;
+namespace Graphpinator\Normalizer\Refiner\Module;
 
 use Graphpinator\Normalizer\Selection\Field;
 use Graphpinator\Normalizer\Selection\FragmentSpread;
@@ -30,20 +30,18 @@ final class EmptyFragmentModule implements RefinerModule, SelectionVisitor
     }
 
     #[\Override]
-    public function visitField(Field $field) : mixed
+    public function visitField(Field $field) : null
     {
         return null;
     }
 
     #[\Override]
-    public function visitFragmentSpread(
-        FragmentSpread $fragmentSpread,
-    ) : mixed
+    public function visitFragmentSpread(FragmentSpread $fragmentSpread) : null
     {
-        $refiner = new self($fragmentSpread->getSelections());
+        $refiner = new self($fragmentSpread->children);
         $refiner->refine();
 
-        if ($fragmentSpread->getSelections()->count() === 0) {
+        if ($fragmentSpread->children->count() === 0) {
             $this->selections->offsetUnset($this->index);
         }
 
@@ -51,14 +49,12 @@ final class EmptyFragmentModule implements RefinerModule, SelectionVisitor
     }
 
     #[\Override]
-    public function visitInlineFragment(
-        InlineFragment $inlineFragment,
-    ) : mixed
+    public function visitInlineFragment(InlineFragment $inlineFragment) : null
     {
-        $refiner = new self($inlineFragment->getSelections());
+        $refiner = new self($inlineFragment->children);
         $refiner->refine();
 
-        if ($inlineFragment->getSelections()->count() === 0) {
+        if ($inlineFragment->children->count() === 0) {
             $this->selections->offsetUnset($this->index);
         }
 

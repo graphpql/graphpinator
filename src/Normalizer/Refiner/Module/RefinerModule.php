@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Normalizer\RefinerModule;
+namespace Graphpinator\Normalizer\Refiner\Module;
 
 interface RefinerModule
 {

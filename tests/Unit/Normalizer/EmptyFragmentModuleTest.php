@@ -5,10 +5,10 @@ declare(strict_types = 1);
 namespace Graphpinator\Tests\Unit\Normalizer;
 
 use Graphpinator\Normalizer\Directive\DirectiveSet;
+use Graphpinator\Normalizer\Refiner\SelectionSetRefiner;
 use Graphpinator\Normalizer\Selection\FragmentSpread;
 use Graphpinator\Normalizer\Selection\InlineFragment;
 use Graphpinator\Normalizer\Selection\SelectionSet;
-use Graphpinator\Normalizer\SelectionSetRefiner;
 use Graphpinator\Typesystem\Field\ResolvableFieldSet;
 use Graphpinator\Typesystem\Type;
 use PHPUnit\Framework\TestCase;

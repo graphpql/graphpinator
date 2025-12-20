@@ -5,9 +5,9 @@ declare(strict_types = 1);
 namespace Graphpinator\Tests\Unit\Normalizer;
 
 use Graphpinator\Normalizer\Directive\DirectiveSet;
+use Graphpinator\Normalizer\Refiner\SelectionSetRefiner;
 use Graphpinator\Normalizer\Selection\Field as NormalizerField;
 use Graphpinator\Normalizer\Selection\SelectionSet;
-use Graphpinator\Normalizer\SelectionSetRefiner;
 use Graphpinator\Typesystem\Container;
 use Graphpinator\Typesystem\Field\Field;
 use Graphpinator\Value\ArgumentValueSet;
@@ -111,6 +111,6 @@ final class DuplicateFieldModuleTest extends TestCase
 
         self::assertCount(1, $set);
         self::assertInstanceOf(NormalizerField::class, $set->offsetGet(0));
-        self::assertCount(2, $set->offsetGet(0)->getSelections());
+        self::assertCount(2, $set->offsetGet(0)->children);
     }
 }

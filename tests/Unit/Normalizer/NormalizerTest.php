@@ -240,20 +240,20 @@ final class NormalizerTest extends TestCase
         );
 
         $normalizer = new Normalizer(TestSchema::getSchema());
-        $operation = $normalizer->normalize($parseResult)->getOperations()->current();
+        $operation = $normalizer->normalize($parseResult)->operations->current();
 
-        self::assertCount(0, $operation->getSelections());
-        self::assertCount(2, $operation->getVariables());
-        self::assertArrayHasKey('varName', $operation->getVariables());
-        self::assertSame('varName', $operation->getVariables()->offsetGet('varName')->getName());
-        self::assertNull($operation->getVariables()->offsetGet('varName')->getDefaultValue());
-        self::assertInstanceOf(NotNullType::class, $operation->getVariables()->offsetGet('varName')->getType());
-        self::assertSame('String', $operation->getVariables()->offsetGet('varName')->getType()->accept(new GetNamedTypeVisitor())->getName());
-        self::assertArrayHasKey('varNameList', $operation->getVariables());
-        self::assertSame('varNameList', $operation->getVariables()->offsetGet('varNameList')->getName());
-        self::assertNull($operation->getVariables()->offsetGet('varNameList')->getDefaultValue());
-        self::assertInstanceOf(ListType::class, $operation->getVariables()->offsetGet('varNameList')->getType());
-        self::assertSame('String', $operation->getVariables()->offsetGet('varNameList')->getType()->accept(new GetNamedTypeVisitor())->getName());
+        self::assertCount(0, $operation->children);
+        self::assertCount(2, $operation->variables);
+        self::assertArrayHasKey('varName', $operation->variables);
+        self::assertSame('varName', $operation->variables->offsetGet('varName')->name);
+        self::assertNull($operation->variables->offsetGet('varName')->defaultValue);
+        self::assertInstanceOf(NotNullType::class, $operation->variables->offsetGet('varName')->type);
+        self::assertSame('String', $operation->variables->offsetGet('varName')->type->accept(new GetNamedTypeVisitor())->getName());
+        self::assertArrayHasKey('varNameList', $operation->variables);
+        self::assertSame('varNameList', $operation->variables->offsetGet('varNameList')->name);
+        self::assertNull($operation->variables->offsetGet('varNameList')->defaultValue);
+        self::assertInstanceOf(ListType::class, $operation->variables->offsetGet('varNameList')->type);
+        self::assertSame('String', $operation->variables->offsetGet('varNameList')->type->accept(new GetNamedTypeVisitor())->getName());
     }
 
     public function testDirectiveReferences() : void
@@ -323,39 +323,39 @@ final class NormalizerTest extends TestCase
         );
 
         $normalizer = new Normalizer(TestSchema::getSchema());
-        $operation = $normalizer->normalize($parseResult)->getOperations()->current();
+        $operation = $normalizer->normalize($parseResult)->operations->current();
 
-        self::assertCount(0, $operation->getVariables());
-        self::assertCount(3, $operation->getSelections());
+        self::assertCount(0, $operation->variables);
+        self::assertCount(3, $operation->children);
 
-        self::assertArrayHasKey(0, $operation->getSelections());
-        self::assertInstanceOf(NormalizerField::class, $operation->getSelections()->offsetGet(0));
-        self::assertSame('fieldAbc', $operation->getSelections()->offsetGet(0)->getName());
-        self::assertCount(1, $operation->getSelections()->offsetGet(0)->getDirectives());
-        self::assertArrayHasKey(0, $operation->getSelections()->offsetGet(0)->getDirectives());
+        self::assertArrayHasKey(0, $operation->children);
+        self::assertInstanceOf(NormalizerField::class, $operation->children->offsetGet(0));
+        self::assertSame('fieldAbc', $operation->children->offsetGet(0)->getName());
+        self::assertCount(1, $operation->children->offsetGet(0)->directives);
+        self::assertArrayHasKey(0, $operation->children->offsetGet(0)->directives);
         self::assertInstanceOf(
             SkipDirective::class,
-            $operation->getSelections()->offsetGet(0)->getDirectives()->offsetGet(0)->getDirective(),
+            $operation->children->offsetGet(0)->directives->offsetGet(0)->directive,
         );
 
-        self::assertArrayHasKey(1, $operation->getSelections());
-        self::assertInstanceOf(InlineFragment::class, $operation->getSelections()->offsetGet(1));
-        self::assertSame('fieldListInt', $operation->getSelections()->offsetGet(1)->getSelections()->offsetGet(0)->getName());
-        self::assertCount(1, $operation->getSelections()->offsetGet(1)->getDirectives());
-        self::assertArrayHasKey(0, $operation->getSelections()->offsetGet(1)->getDirectives());
+        self::assertArrayHasKey(1, $operation->children);
+        self::assertInstanceOf(InlineFragment::class, $operation->children->offsetGet(1));
+        self::assertSame('fieldListInt', $operation->children->offsetGet(1)->children->offsetGet(0)->getName());
+        self::assertCount(1, $operation->children->offsetGet(1)->directives);
+        self::assertArrayHasKey(0, $operation->children->offsetGet(1)->directives);
         self::assertInstanceOf(
             SkipDirective::class,
-            $operation->getSelections()->offsetGet(1)->getDirectives()->offsetGet(0)->getDirective(),
+            $operation->children->offsetGet(1)->directives->offsetGet(0)->directive,
         );
 
-        self::assertArrayHasKey(2, $operation->getSelections());
-        self::assertInstanceOf(FragmentSpread::class, $operation->getSelections()->offsetGet(2));
-        self::assertSame('fieldList', $operation->getSelections()->offsetGet(2)->getSelections()->offsetGet(0)->getName());
-        self::assertCount(1, $operation->getSelections()->offsetGet(2)->getDirectives());
-        self::assertArrayHasKey(0, $operation->getSelections()->offsetGet(2)->getDirectives());
+        self::assertArrayHasKey(2, $operation->children);
+        self::assertInstanceOf(FragmentSpread::class, $operation->children->offsetGet(2));
+        self::assertSame('fieldList', $operation->children->offsetGet(2)->children->offsetGet(0)->getName());
+        self::assertCount(1, $operation->children->offsetGet(2)->directives);
+        self::assertArrayHasKey(0, $operation->children->offsetGet(2)->directives);
         self::assertInstanceOf(
             IncludeDirective::class,
-            $operation->getSelections()->offsetGet(2)->getDirectives()->offsetGet(0)->getDirective(),
+            $operation->children->offsetGet(2)->directives->offsetGet(0)->directive,
         );
     }
 
@@ -369,6 +369,6 @@ final class NormalizerTest extends TestCase
         $this->expectException($exception);
 
         $normalizer = new Normalizer(TestSchema::getSchema());
-        $normalizer->normalize($parseResult)->getOperations()->current();
+        $normalizer->normalize($parseResult)->operations->current();
     }
 }

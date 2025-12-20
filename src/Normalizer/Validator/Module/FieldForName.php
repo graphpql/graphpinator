@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Normalizer\ValidatorModule;
+namespace Graphpinator\Normalizer\Validator\Module;
 
 use Graphpinator\Normalizer\Selection\Field;
 use Graphpinator\Typesystem\Contract\NamedType;

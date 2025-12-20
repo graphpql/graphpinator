@@ -19,6 +19,6 @@ final class VariableSet extends ImplicitObjectMap
     {
         \assert($object instanceof Variable);
 
-        return $object->getName();
+        return $object->name;
     }
 }

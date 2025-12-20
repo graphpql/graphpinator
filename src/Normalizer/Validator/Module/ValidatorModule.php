@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Normalizer\ValidatorModule;
+namespace Graphpinator\Normalizer\Validator\Module;
 
 interface ValidatorModule
 {

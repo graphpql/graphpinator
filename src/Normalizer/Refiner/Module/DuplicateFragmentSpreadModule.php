@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Normalizer\RefinerModule;
+namespace Graphpinator\Normalizer\Refiner\Module;
 
 use Graphpinator\Normalizer\Selection\Field;
 use Graphpinator\Normalizer\Selection\FragmentSpread;
@@ -33,18 +33,16 @@ final class DuplicateFragmentSpreadModule implements RefinerModule, SelectionVis
     }
 
     #[\Override]
-    public function visitField(Field $field) : mixed
+    public function visitField(Field $field) : null
     {
         return null;
     }
 
     #[\Override]
-    public function visitFragmentSpread(
-        FragmentSpread $fragmentSpread,
-    ) : mixed
+    public function visitFragmentSpread(FragmentSpread $fragmentSpread) : null
     {
-        if (!\array_key_exists($fragmentSpread->getName(), $this->visitedFragments)) {
-            $this->visitedFragments[$fragmentSpread->getName()] = true;
+        if (!\array_key_exists($fragmentSpread->name, $this->visitedFragments)) {
+            $this->visitedFragments[$fragmentSpread->name] = true;
 
             return null;
         }
@@ -56,16 +54,14 @@ final class DuplicateFragmentSpreadModule implements RefinerModule, SelectionVis
     }
 
     #[\Override]
-    public function visitInlineFragment(
-        InlineFragment $inlineFragment,
-    ) : mixed
+    public function visitInlineFragment(InlineFragment $inlineFragment) : null
     {
         $oldSelections = $this->selections;
         $oldIndex = $this->index;
 
-        $this->selections = $inlineFragment->getSelections();
+        $this->selections = $inlineFragment->children;
 
-        foreach ($inlineFragment->getSelections() as $index => $selection) {
+        foreach ($inlineFragment->children as $index => $selection) {
             $this->index = $index;
             $selection->accept($this);
         }
