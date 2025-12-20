@@ -8,10 +8,12 @@ use Graphpinator\SimpleContainer;
 use Graphpinator\Typesystem\Argument\Argument;
 use Graphpinator\Typesystem\Argument\ArgumentSet;
 use Graphpinator\Typesystem\Container;
+use Graphpinator\Typesystem\Directive;
 use Graphpinator\Typesystem\EnumItem\EnumItem;
 use Graphpinator\Typesystem\EnumItem\EnumItemSet;
 use Graphpinator\Typesystem\EnumType;
 use Graphpinator\Typesystem\Exception\ArgumentInvalidTypeUsage;
+use Graphpinator\Typesystem\Exception\DirectiveIncorrectType;
 use Graphpinator\Typesystem\Exception\DuplicateNonRepeatableDirective;
 use Graphpinator\Typesystem\Exception\EnumItemInvalid;
 use Graphpinator\Typesystem\Exception\FieldInvalidTypeUsage;
@@ -36,6 +38,7 @@ use Graphpinator\Typesystem\Field\ResolvableFieldSet;
 use Graphpinator\Typesystem\InputType;
 use Graphpinator\Typesystem\InterfaceSet;
 use Graphpinator\Typesystem\InterfaceType;
+use Graphpinator\Typesystem\Location\ObjectLocation;
 use Graphpinator\Typesystem\NotNullType;
 use Graphpinator\Typesystem\ScalarType;
 use Graphpinator\Typesystem\Schema;
@@ -43,6 +46,8 @@ use Graphpinator\Typesystem\Type;
 use Graphpinator\Typesystem\TypeSet;
 use Graphpinator\Typesystem\UnionType;
 use Graphpinator\Typesystem\Visitor\ValidateIntegrityVisitor;
+use Graphpinator\Value\ArgumentValueSet;
+use Graphpinator\Value\TypeValue;
 use PHPUnit\Framework\TestCase;
 
 final class ValidateIntegrityVisitorTest extends TestCase
@@ -1010,5 +1015,113 @@ final class ValidateIntegrityVisitorTest extends TestCase
 
         $result = $field->accept(new ValidateIntegrityVisitor());
         self::assertNull($result);
+    }
+
+    public function testTypeWithValidDirective() : void
+    {
+        $directive = new class extends Directive implements ObjectLocation {
+            protected const NAME = 'testDirective';
+
+            #[\Override]
+            public function validateObjectUsage(Type|InterfaceType $type, ArgumentValueSet $arguments) : bool
+            {
+                return true;
+            }
+
+            #[\Override]
+            public function resolveObject(ArgumentValueSet $arguments, TypeValue $typeValue) : void
+            {
+            }
+
+            #[\Override]
+            protected function getFieldDefinition() : ArgumentSet
+            {
+                return new ArgumentSet([]);
+            }
+        };
+
+        $type = new class ($directive) extends Type {
+            protected const NAME = 'TestType';
+
+            public function __construct(
+                ObjectLocation $directive,
+            )
+            {
+                parent::__construct();
+                $this->addDirective($directive);
+            }
+
+            #[\Override]
+            public function validateNonNullValue($rawValue) : bool
+            {
+                return true;
+            }
+
+            #[\Override]
+            protected function getFieldDefinition() : ResolvableFieldSet
+            {
+                return new ResolvableFieldSet([
+                    new ResolvableField('field', Container::String(), static fn() => 'value'),
+                ]);
+            }
+        };
+
+        $type->accept(new ValidateIntegrityVisitor());
+
+        $this->expectNotToPerformAssertions();
+    }
+
+    public function testTypeWithInvalidDirective() : void
+    {
+        $directive = new class extends Directive implements ObjectLocation {
+            protected const NAME = 'testDirective';
+
+            #[\Override]
+            public function validateObjectUsage(Type|InterfaceType $type, ArgumentValueSet $arguments) : bool
+            {
+                return false;
+            }
+
+            #[\Override]
+            public function resolveObject(ArgumentValueSet $arguments, TypeValue $typeValue) : void
+            {
+            }
+
+            #[\Override]
+            protected function getFieldDefinition() : ArgumentSet
+            {
+                return new ArgumentSet([]);
+            }
+        };
+
+        $type = new class ($directive) extends Type {
+            protected const NAME = 'TestType';
+
+            public function __construct(
+                ObjectLocation $directive,
+            )
+            {
+                parent::__construct();
+                $this->addDirective($directive);
+            }
+
+            #[\Override]
+            public function validateNonNullValue($rawValue) : bool
+            {
+                return true;
+            }
+
+            #[\Override]
+            protected function getFieldDefinition() : ResolvableFieldSet
+            {
+                return new ResolvableFieldSet([
+                    new ResolvableField('field', Container::String(), static fn() => 'value'),
+                ]);
+            }
+        };
+
+        $this->expectException(DirectiveIncorrectType::class);
+        $this->expectExceptionMessage(DirectiveIncorrectType::MESSAGE);
+        $type->accept(new ValidateIntegrityVisitor());
     }
 }

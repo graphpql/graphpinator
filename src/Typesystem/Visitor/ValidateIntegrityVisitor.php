@@ -42,14 +42,9 @@ use Graphpinator\Typesystem\InputType;
 use Graphpinator\Typesystem\InterfaceType;
 use Graphpinator\Typesystem\ListType;
 use Graphpinator\Typesystem\Location\ArgumentDefinitionLocation;
-use Graphpinator\Typesystem\Location\EnumItemLocation;
-use Graphpinator\Typesystem\Location\EnumLocation;
 use Graphpinator\Typesystem\Location\FieldDefinitionLocation;
 use Graphpinator\Typesystem\Location\InputObjectLocation;
 use Graphpinator\Typesystem\Location\ObjectLocation;
-use Graphpinator\Typesystem\Location\ScalarLocation;
-use Graphpinator\Typesystem\Location\SchemaLocation;
-use Graphpinator\Typesystem\Location\UnionLocation;
 use Graphpinator\Typesystem\NotNullType;
 use Graphpinator\Typesystem\ScalarType;
 use Graphpinator\Typesystem\Schema;
@@ -129,11 +124,6 @@ final readonly class ValidateIntegrityVisitor implements ComponentVisitor
 
         foreach ($union->getDirectiveUsages() as $usage) {
             $usage->accept($this);
-            $directive = $usage->getDirective();
-
-            if (!$directive instanceof UnionLocation) {
-                throw new DirectiveIncorrectType();
-            }
         }
 
         self::validateDirectiveRepeatability($union->getDirectiveUsages());
@@ -175,11 +165,6 @@ final readonly class ValidateIntegrityVisitor implements ComponentVisitor
     {
         foreach ($scalar->getDirectiveUsages() as $usage) {
             $usage->accept($this);
-            $directive = $usage->getDirective();
-
-            if (!$directive instanceof ScalarLocation) {
-                throw new DirectiveIncorrectType();
-            }
         }
 
         self::validateDirectiveRepeatability($scalar->getDirectiveUsages());
@@ -196,11 +181,6 @@ final readonly class ValidateIntegrityVisitor implements ComponentVisitor
 
         foreach ($enum->getDirectiveUsages() as $usage) {
             $usage->accept($this);
-            $directive = $usage->getDirective();
-
-            if (!$directive instanceof EnumLocation) {
-                throw new DirectiveIncorrectType();
-            }
         }
 
         self::validateDirectiveRepeatability($enum->getDirectiveUsages());
@@ -276,11 +256,6 @@ final readonly class ValidateIntegrityVisitor implements ComponentVisitor
 
         foreach ($enumItem->getDirectiveUsages() as $usage) {
             $usage->accept($this);
-            $directive = $usage->getDirective();
-
-            if (!$directive instanceof EnumItemLocation) {
-                throw new DirectiveIncorrectType();
-            }
         }
 
         self::validateDirectiveRepeatability($enumItem->getDirectiveUsages());
@@ -312,11 +287,6 @@ final readonly class ValidateIntegrityVisitor implements ComponentVisitor
 
         foreach ($schema->getDirectiveUsages() as $usage) {
             $usage->accept($this);
-            $directive = $usage->getDirective();
-
-            if (!$directive instanceof SchemaLocation) {
-                throw new DirectiveIncorrectType();
-            }
         }
 
         self::validateDirectiveRepeatability($schema->getDirectiveUsages());
