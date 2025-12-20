@@ -27,7 +27,8 @@ final readonly class IsImplementedByVisitor implements AbstractTypeVisitor
     #[\Override]
     public function visitInterface(InterfaceType $interface) : bool
     {
-        return $this->typeToCompare instanceof InterfaceImplementor && $this->typeToCompare->implements($interface);
+        return $this->typeToCompare instanceof InterfaceImplementor
+            && self::implements($this->typeToCompare, $interface);
     }
 
     #[\Override]
@@ -35,6 +36,22 @@ final readonly class IsImplementedByVisitor implements AbstractTypeVisitor
     {
         foreach ($union->getTypes() as $unionItem) {
             if ($unionItem::class === $this->typeToCompare::class) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Checks whether given type implements given interface.
+     * @param InterfaceImplementor $implementor
+     * @param InterfaceType $interface
+     */
+    public static function implements(InterfaceImplementor $implementor, InterfaceType $interface) : bool
+    {
+        foreach ($implementor->getInterfaces() as $temp) {
+            if ($temp::class === $interface::class || self::implements($temp, $interface)) {
                 return true;
             }
         }

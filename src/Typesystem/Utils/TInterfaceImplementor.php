@@ -23,19 +23,4 @@ trait TInterfaceImplementor
     {
         return $this->implements;
     }
-
-    /**
-     * Checks whether this type implements given interface.
-     * @param InterfaceType $interface
-     */
-    public function implements(InterfaceType $interface) : bool
-    {
-        foreach ($this->implements as $temp) {
-            if ($temp::class === $interface::class || $temp->implements($interface)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
 }

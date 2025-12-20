@@ -23,10 +23,4 @@ interface InterfaceImplementor extends Type
      * Returns interfaces, which this type implements.
      */
     public function getInterfaces() : InterfaceSet;
-
-    /**
-     * Checks whether this type implements given interface.
-     * @param InterfaceType $interface
-     */
-    public function implements(InterfaceType $interface) : bool;
 }
