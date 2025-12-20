@@ -154,7 +154,7 @@ final class TestSchema
                     new ResolvableField(
                         'fieldAbc',
                         TestSchema::getTypeAbc(),
-                        static function () : int {
+                        static function () : ?int {
                             return 1;
                         },
                     ),
@@ -168,14 +168,14 @@ final class TestSchema
                     new ResolvableField(
                         'fieldInvalidType',
                         TestSchema::getUnionInvalidResolvedType(),
-                        static function () : string {
+                        static function () : ?string {
                             return 'invalidType';
                         },
                     ),
                     new ResolvableField(
                         'fieldThrow',
                         TestSchema::getTypeAbc(),
-                        static function () : void {
+                        static function () {
                             throw new \Exception('Random exception');
                         },
                     ),
@@ -189,7 +189,7 @@ final class TestSchema
                     new ResolvableField(
                         'fieldListList',
                         Container::String()->list()->list(),
-                        static function () : array {
+                        static function () : ?array {
                             return [
                                 ['testValue11', 'testValue12', 'testValue13'],
                                 ['testValue21', 'testValue22'],
@@ -271,7 +271,7 @@ final class TestSchema
                     new ResolvableField(
                         'fieldObjectList',
                         TestSchema::getTypeXyz()->notNullList(),
-                        static function () {
+                        static function () : array {
                             return [
                                 (object) ['name' => 'testValue1'],
                                 (object) ['name' => 'testValue2'],
@@ -281,7 +281,7 @@ final class TestSchema
                     ),
                     new ResolvableField(
                         'fieldAbstractList',
-                        TestSchema::getUnion()->list(),
+                        TestSchema::getUnion()->list()->notNull(),
                         static function () : array {
                             return [
                                 1,
@@ -293,13 +293,15 @@ final class TestSchema
                     new ResolvableField(
                         'fieldNull',
                         TestSchema::getNullFieldResolution(),
-                        static function () : void {
+                        static function () : null {
+                            return null;
                         },
                     ),
                     new ResolvableField(
                         'fieldNullList',
                         TestSchema::getNullListResolution(),
-                        static function () : void {
+                        static function () : ?array {
+                            return null;
                         },
                     ),
                     new ResolvableField(
@@ -334,7 +336,7 @@ final class TestSchema
                     new ResolvableField(
                         'fieldInvalidInput',
                         TestSchema::getSimpleType(),
-                        static function () : array {
+                        static function () {
                             return [
                                 'name' => 'testName',
                                 'number' => 123,
@@ -345,14 +347,14 @@ final class TestSchema
                     ),
                     new ResolvableField(
                         'fieldEmptyObject',
-                        TestSchema::getSimpleEmptyTestInput(),
+                        TestSchema::getSimpleEmptyTestInput()->notNull(),
                         static function () : \stdClass {
                             return new \stdClass();
                         },
                     ),
                     new ResolvableField(
                         'fieldFragment',
-                        TestSchema::getInterfaceAbc(),
+                        TestSchema::getInterfaceAbc()->notNull(),
                         static function () : \stdClass {
                             return new \stdClass();
                         },
@@ -389,7 +391,7 @@ final class TestSchema
                     ResolvableField::create(
                         'fieldRequiredArgumentInvalid',
                         TestSchema::getSimpleType(),
-                        static function ($parent, $name) : void {
+                        static function ($parent, $name) {
                         },
                     )->setArguments(new ArgumentSet([
                         new Argument(
@@ -1267,8 +1269,8 @@ final class TestSchema
                     ResolvableField::create(
                         'stringType',
                         Container::String()->notNull(),
-                        static function ($parent, $string) {
-                            return $string;
+                        static function ($parent, $nullString) {
+                            return $nullString;
                         },
                     )->setArguments(new ArgumentSet([
                         Argument::create(
@@ -1321,8 +1323,8 @@ final class TestSchema
                     ResolvableField::create(
                         'stringListType',
                         Container::String()->notNullList(),
-                        static function ($parent, $string) {
-                            return $string;
+                        static function ($parent, $nullString) {
+                            return $nullString;
                         },
                     )->setArguments(new ArgumentSet([
                         Argument::create(

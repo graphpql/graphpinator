@@ -127,7 +127,8 @@ final class SpecifiedByDirectiveTest extends TestCase
                     new ResolvableField(
                         'field',
                         Container::String(),
-                        static function () : void {
+                        static function () : ?string {
+                            return null;
                         },
                     ),
                 ]);

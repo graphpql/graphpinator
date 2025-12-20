@@ -19,6 +19,9 @@ use Graphpinator\Typesystem\Exception\DuplicateNonRepeatableDirective;
 use Graphpinator\Typesystem\Exception\EnumItemInvalid;
 use Graphpinator\Typesystem\Exception\FieldDirectiveNotCovariant;
 use Graphpinator\Typesystem\Exception\FieldInvalidTypeUsage;
+use Graphpinator\Typesystem\Exception\FieldResolverNotIterable;
+use Graphpinator\Typesystem\Exception\FieldResolverNullabilityMismatch;
+use Graphpinator\Typesystem\Exception\FieldResolverVoidReturnType;
 use Graphpinator\Typesystem\Exception\InputCycleDetected;
 use Graphpinator\Typesystem\Exception\InputTypeMustDefineOneOreMoreFields;
 use Graphpinator\Typesystem\Exception\InterfaceContractArgumentTypeMismatch;
@@ -34,8 +37,10 @@ use Graphpinator\Typesystem\Exception\RootOperationTypesMustBeWithinContainer;
 use Graphpinator\Typesystem\Exception\UnionTypeMustDefineOneOrMoreTypes;
 use Graphpinator\Typesystem\Exception\VarianceError;
 use Graphpinator\Typesystem\Field\Field;
+use Graphpinator\Typesystem\Field\ResolvableField;
 use Graphpinator\Typesystem\InputType;
 use Graphpinator\Typesystem\InterfaceType;
+use Graphpinator\Typesystem\ListType;
 use Graphpinator\Typesystem\Location\ArgumentDefinitionLocation;
 use Graphpinator\Typesystem\Location\EnumItemLocation;
 use Graphpinator\Typesystem\Location\EnumLocation;
@@ -208,6 +213,14 @@ final readonly class ValidateIntegrityVisitor implements ComponentVisitor
     {
         if (!$field->getType()->accept(new IsOutputableVisitor())) {
             throw new FieldInvalidTypeUsage($field->getName(), $field->getType()->accept(new PrintNameVisitor()));
+        }
+
+        foreach ($field->getArguments() as $argument) {
+            $argument->accept($this);
+        }
+
+        if ($field instanceof ResolvableField) {
+            self::validateFieldResolverFunction($field);
         }
 
         foreach ($field->getDirectiveUsages() as $usage) {
@@ -440,6 +453,7 @@ final readonly class ValidateIntegrityVisitor implements ComponentVisitor
 
         foreach ($biggerSet as $usage) {
             $directive = $usage->getDirective();
+            \assert($directive instanceof FieldDefinitionLocation || $directive instanceof ArgumentDefinitionLocation);
 
             if ($smallerSet->offsetExists($childIndex) && $directive instanceof ($smallerSet->offsetGet($childIndex)->getDirective())) {
                 $directive->validateVariance($usage->getArgumentValues(), $smallerSet->offsetGet($childIndex)->getArgumentValues());
@@ -532,5 +546,74 @@ final readonly class ValidateIntegrityVisitor implements ComponentVisitor
         foreach ($container->getDirectives() as $directive) {
             $directive->accept($this);
         }
+    }
+
+    private static function validateFieldResolverFunction(ResolvableField $field) : void
+    {
+        $functionReturnType = (new \ReflectionFunction($field->getResolveFunction()))->getReturnType();
+
+        if (!$functionReturnType instanceof \ReflectionType) {
+            return; // the return type is not present -> skip validation
+        }
+
+        if ($functionReturnType instanceof \ReflectionNamedType) {
+            if ($functionReturnType->getName() === 'void') {
+                throw new FieldResolverVoidReturnType($field->getName());
+            }
+
+            if ($functionReturnType->getName() === 'never') {
+                return;
+            }
+        }
+
+        $fieldType = $field->getType();
+        $isFieldNotNull = $fieldType instanceof NotNullType;
+
+        if ($functionReturnType->allowsNull() === $isFieldNotNull) {
+            throw new FieldResolverNullabilityMismatch($field->getName());
+        }
+
+        $shapingType = $fieldType->accept(new GetShapingTypeVisitor());
+
+        if ($shapingType instanceof ListType && !self::isReturnTypeIterable($functionReturnType)) {
+            throw new FieldResolverNotIterable($field->getName());
+        }
+    }
+
+    private static function isReturnTypeIterable(\ReflectionType $type) : bool
+    {
+        if ($type instanceof \ReflectionNamedType) {
+            $typeName = $type->getName();
+
+            return $typeName === 'array'
+                || $typeName === 'iterable'
+                || \is_a($typeName, \Traversable::class, true);
+        }
+
+        if ($type instanceof \ReflectionUnionType) {
+            foreach ($type->getTypes() as $subType) {
+                if ($subType instanceof \ReflectionNamedType && $subType->getName() === 'null') {
+                    continue;
+                }
+
+                if (!self::isReturnTypeIterable($subType)) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        if ($type instanceof \ReflectionIntersectionType) {
+            foreach ($type->getTypes() as $subType) {
+                if (self::isReturnTypeIterable($subType)) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        return false;
     }
 }

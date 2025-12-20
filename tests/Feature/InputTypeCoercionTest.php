@@ -99,7 +99,7 @@ final class InputTypeCoercionTest extends TestCase
                 return new ResolvableFieldSet([
                     ResolvableField::create(
                         'field1',
-                        Container::String(),
+                        Container::String()->notNull(),
                         static function($parent, \stdClass $arg) : string {
                             $first = \property_exists($arg, 'string')
                                 ? $arg->string

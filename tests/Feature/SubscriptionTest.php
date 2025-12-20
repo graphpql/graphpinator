@@ -33,7 +33,7 @@ final class SubscriptionTest extends TestCase
             protected function getFieldDefinition() : ResolvableFieldSet
             {
                 return new ResolvableFieldSet([
-                    ResolvableField::create('dummy', Container::String(), \random_bytes(...)),
+                    ResolvableField::create('dummy', Container::String()->notNull(), \random_bytes(...)),
                 ]);
             }
         };

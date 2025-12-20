@@ -121,7 +121,7 @@ final class InputObjectRepresentationTest extends TestCase
                 return new ResolvableFieldSet([
                     ResolvableField::create(
                         'field1',
-                        Container::Int(),
+                        Container::Int()->notNull(),
                         static function($parent, InputObject $arg) : int {
                             \assert($arg->simpleInput2 instanceof InputObject2);
                             \assert($arg->simpleInput3 instanceof \stdClass);

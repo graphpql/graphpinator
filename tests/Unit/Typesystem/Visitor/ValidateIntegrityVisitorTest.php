@@ -15,6 +15,8 @@ use Graphpinator\Typesystem\Exception\ArgumentInvalidTypeUsage;
 use Graphpinator\Typesystem\Exception\DuplicateNonRepeatableDirective;
 use Graphpinator\Typesystem\Exception\EnumItemInvalid;
 use Graphpinator\Typesystem\Exception\FieldInvalidTypeUsage;
+use Graphpinator\Typesystem\Exception\FieldResolverNotIterable;
+use Graphpinator\Typesystem\Exception\FieldResolverNullabilityMismatch;
 use Graphpinator\Typesystem\Exception\InputCycleDetected;
 use Graphpinator\Typesystem\Exception\InputTypeMustDefineOneOreMoreFields;
 use Graphpinator\Typesystem\Exception\InterfaceContractArgumentTypeMismatch;
@@ -440,7 +442,7 @@ final class ValidateIntegrityVisitorTest extends TestCase
         };
 
         $result = $type->accept(new ValidateIntegrityVisitor());
-        $this->assertNull($result);
+        self::assertNull($result);
     }
 
     public function testValidInterface() : void
@@ -462,7 +464,7 @@ final class ValidateIntegrityVisitorTest extends TestCase
         };
 
         $result = $interface->accept(new ValidateIntegrityVisitor());
-        $this->assertNull($result);
+        self::assertNull($result);
     }
 
     public function testValidInput() : void
@@ -484,7 +486,7 @@ final class ValidateIntegrityVisitorTest extends TestCase
         };
 
         $result = $input->accept(new ValidateIntegrityVisitor());
-        $this->assertNull($result);
+        self::assertNull($result);
     }
 
     public function testValidScalar() : void
@@ -504,7 +506,7 @@ final class ValidateIntegrityVisitorTest extends TestCase
         };
 
         $result = $scalar->accept(new ValidateIntegrityVisitor());
-        $this->assertNull($result);
+        self::assertNull($result);
     }
 
     public function testValidEnum() : void
@@ -522,7 +524,7 @@ final class ValidateIntegrityVisitorTest extends TestCase
         };
 
         $result = $enum->accept(new ValidateIntegrityVisitor());
-        $this->assertNull($result);
+        self::assertNull($result);
     }
 
     public function testValidUnion() : void
@@ -560,7 +562,7 @@ final class ValidateIntegrityVisitorTest extends TestCase
         };
 
         $result = $union->accept(new ValidateIntegrityVisitor());
-        $this->assertNull($result);
+        self::assertNull($result);
     }
 
     public function testValidInterfaceImplementation() : void
@@ -611,7 +613,7 @@ final class ValidateIntegrityVisitorTest extends TestCase
         };
 
         $result = $type->accept(new ValidateIntegrityVisitor());
-        $this->assertNull($result);
+        self::assertNull($result);
     }
 
     public function testFieldInvalidTypeUsage() : void
@@ -842,5 +844,171 @@ final class ValidateIntegrityVisitorTest extends TestCase
 
         $this->expectException(DuplicateNonRepeatableDirective::class);
         $type->accept(new ValidateIntegrityVisitor());
+    }
+
+    public function testFieldResolverNullabilityMismatchNotNullFieldNullableReturn() : void
+    {
+        $field = new ResolvableField(
+            'testField',
+            Container::String()->notNull(),
+            static fn() : ?string => null,
+        );
+
+        $this->expectException(FieldResolverNullabilityMismatch::class);
+        $field->accept(new ValidateIntegrityVisitor());
+    }
+
+    public function testFieldResolverNullabilityMismatchNullableFieldNotNullReturn() : void
+    {
+        $field = new ResolvableField(
+            'testField',
+            Container::String(),
+            static fn() : string => 'value',
+        );
+
+        $this->expectException(FieldResolverNullabilityMismatch::class);
+        $field->accept(new ValidateIntegrityVisitor());
+    }
+
+    public function testFieldResolverNotIterable() : void
+    {
+        $field = new ResolvableField(
+            'testField',
+            Container::String()->list(),
+            static fn() : ?string => 'not-iterable',
+        );
+
+        $this->expectException(FieldResolverNotIterable::class);
+        $field->accept(new ValidateIntegrityVisitor());
+    }
+
+    public function testFieldResolverNotIterableInNotNull() : void
+    {
+        $field = new ResolvableField(
+            'testField',
+            Container::String()->list()->notNull(),
+            static fn() : int => 123,
+        );
+
+        $this->expectException(FieldResolverNotIterable::class);
+        $field->accept(new ValidateIntegrityVisitor());
+    }
+
+    public function testFieldResolverIterableArray() : void
+    {
+        $field = new ResolvableField(
+            'testField',
+            Container::String()->list(),
+            static fn() : ?array => ['value'],
+        );
+
+        $result = $field->accept(new ValidateIntegrityVisitor());
+        self::assertNull($result);
+    }
+
+    public function testFieldResolverIterableIterable() : void
+    {
+        $field = new ResolvableField(
+            'testField',
+            Container::String()->list(),
+            static fn() : ?iterable => ['value'],
+        );
+
+        $result = $field->accept(new ValidateIntegrityVisitor());
+        self::assertNull($result);
+    }
+
+    public function testFieldResolverUnionTypeAllIterable() : void
+    {
+        $field = new ResolvableField(
+            'testField',
+            Container::String()->list(),
+            static fn() : array|\ArrayIterator|null => ['value'],
+        );
+
+        $result = $field->accept(new ValidateIntegrityVisitor());
+        self::assertNull($result);
+    }
+
+    public function testFieldResolverUnionTypeNotAllIterable() : void
+    {
+        $field = new ResolvableField(
+            'testField',
+            Container::String()->list(),
+            static fn() : array|string|null => ['value'],
+        );
+
+        $this->expectException(FieldResolverNotIterable::class);
+        $field->accept(new ValidateIntegrityVisitor());
+    }
+
+    public function testFieldResolverIntersectionTypeOneIterable() : void
+    {
+        $field = new ResolvableField(
+            'testField',
+            Container::String()->list(),
+            static fn() : (\Countable&\Iterator)|null => new \ArrayIterator([]),
+        );
+
+        $result = $field->accept(new ValidateIntegrityVisitor());
+        self::assertNull($result);
+    }
+
+    public function testFieldResolverIntersectionTypeNoneIterable() : void
+    {
+        $field = new ResolvableField(
+            'testField',
+            Container::String()->list(),
+            static fn() : (\Countable&\Stringable)|null => new class implements \Countable, \Stringable {
+                public function count() : int
+                {
+                    return 0;
+                }
+
+                public function __toString() : string
+                {
+                    return '';
+                }
+            },
+        );
+
+        $this->expectException(FieldResolverNotIterable::class);
+        $field->accept(new ValidateIntegrityVisitor());
+    }
+
+    public function testFieldResolverNoReturnType() : void
+    {
+        $field = new ResolvableField(
+            'testField',
+            Container::String()->notNull(),
+            static fn() => 'value',
+        );
+
+        $result = $field->accept(new ValidateIntegrityVisitor());
+        self::assertNull($result);
+    }
+
+    public function testFieldResolverValidNullable() : void
+    {
+        $field = new ResolvableField(
+            'testField',
+            Container::String(),
+            static fn() : ?string => null,
+        );
+
+        $result = $field->accept(new ValidateIntegrityVisitor());
+        self::assertNull($result);
+    }
+
+    public function testFieldResolverValidNotNull() : void
+    {
+        $field = new ResolvableField(
+            'testField',
+            Container::String()->notNull(),
+            static fn() : string => 'value',
+        );
+
+        $result = $field->accept(new ValidateIntegrityVisitor());
+        self::assertNull($result);
     }
 }

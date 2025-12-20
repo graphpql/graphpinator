@@ -40,14 +40,14 @@ final class SingleExecutionTest extends TestCase
                 return new ResolvableFieldSet([
                     ResolvableField::create(
                         'firstField',
-                        Container::Int(),
+                        Container::Int()->notNull(),
                         static function($parent) : int {
                             return 123;
                         },
                     ),
                     ResolvableField::create(
                         'secondField',
-                        Container::Int(),
+                        Container::Int()->notNull(),
                         static function($parent) : int {
                             return 456;
                         },

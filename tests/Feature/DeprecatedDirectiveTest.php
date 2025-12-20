@@ -57,7 +57,7 @@ final class DeprecatedDirectiveTest extends TestCase
                     ResolvableField::create(
                         'testFieldDeprecatedNull',
                         Container::String(),
-                        static function () : string {
+                        static function () : ?string {
                             return 'test';
                         },
                     )->setDeprecated(
@@ -69,7 +69,7 @@ final class DeprecatedDirectiveTest extends TestCase
                     ])),
                     ResolvableField::create(
                         'testFieldDeprecatedNotNull',
-                        Container::String(),
+                        Container::String()->notNull(),
                         static function () : string {
                             return 'test';
                         },
@@ -397,7 +397,8 @@ final class DeprecatedDirectiveTest extends TestCase
                     new ResolvableField(
                         'field',
                         Container::String(),
-                        static function () : void {
+                        static function () : ?string {
+                            return null;
                         },
                     ),
                 ]);

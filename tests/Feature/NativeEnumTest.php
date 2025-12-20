@@ -59,7 +59,7 @@ final class NativeEnumTest extends TestCase
                 return new ResolvableFieldSet([
                     ResolvableField::create(
                         'field',
-                        $this->enumType,
+                        $this->enumType->notNull(),
                         static function ($parent, NativeEnum $arg) : NativeEnum {
                             if ($arg !== NativeEnum::ABC) {
                                 throw new \RuntimeException();
@@ -75,7 +75,7 @@ final class NativeEnumTest extends TestCase
                     ])),
                     ResolvableField::create(
                         'fieldDefault',
-                        $this->enumType,
+                        $this->enumType->notNull(),
                         static function ($parent, NativeEnum $arg) : NativeEnum {
                             if ($arg !== NativeEnum::ABC) {
                                 throw new \RuntimeException();
