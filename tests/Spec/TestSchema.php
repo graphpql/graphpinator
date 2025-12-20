@@ -175,7 +175,7 @@ final class TestSchema
                     new ResolvableField(
                         'fieldThrow',
                         TestSchema::getTypeAbc(),
-                        static function () {
+                        static function () : never {
                             throw new \Exception('Random exception');
                         },
                     ),
@@ -391,7 +391,8 @@ final class TestSchema
                     ResolvableField::create(
                         'fieldRequiredArgumentInvalid',
                         TestSchema::getSimpleType(),
-                        static function ($parent, $name) {
+                        static function ($parent, $name) : null {
+                            return null;
                         },
                     )->setArguments(new ArgumentSet([
                         new Argument(

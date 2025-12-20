@@ -6,7 +6,6 @@ namespace Graphpinator\Typesystem\Contract;
 
 use Graphpinator\Typesystem\Field\FieldSet;
 use Graphpinator\Typesystem\InterfaceSet;
-use Graphpinator\Typesystem\InterfaceType;
 
 /**
  * Interface InterfaceImplementor, which marks types which can implement interface - currently Type and Interface.

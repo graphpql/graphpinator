@@ -6,7 +6,6 @@ namespace Graphpinator\Typesystem\Utils;
 
 use Graphpinator\Typesystem\Field\FieldSet;
 use Graphpinator\Typesystem\InterfaceSet;
-use Graphpinator\Typesystem\InterfaceType;
 
 /**
  * Trait TInterfaceImplementor which is implementation of InterfaceImplementor interface.
