@@ -309,15 +309,137 @@ final class EmailAddressType extends ScalarType
         $this->setSpecifiedBy('https://datatracker.ietf.org/doc/html/rfc5322#section-3.4.1');
     }
 
-    public function validateNonNullValue(mixed $rawValue) : bool
+    public function validateAndCoerceInput(mixed $rawValue) : mixed
     {
-        return \is_string($rawValue)
-            && (bool) \filter_var($rawValue, \FILTER_VALIDATE_EMAIL);
+        if (\is_string($rawValue) && \filter_var($rawValue, \FILTER_VALIDATE_EMAIL)) {
+            return $rawValue;
+        }
+
+        return null; // invalid value - exception will be thrown
+    }
+
+    public function coerceOutput(mixed $rawValue) : string
+    {
+        return $rawValue;
     }
 }
 ```
 
-The `validateNonNullValue` works similarly to that in `Type`. When the function returns `false` an `InvalidValue` exception is thrown. This can be used to restrict the value of this scalar to a valid email address.
+#### Version 2.0 Changes
+
+In version 2.0, the scalar type coercion mechanism has been significantly changed:
+
+- The `validateNonNullValue` method has been **removed**.
+- Custom scalar types must now implement two new methods:
+  - `validateAndCoerceInput(mixed $rawValue) : mixed` - Validates and coerces input values (from GraphQL queries/variables). Returns `null` if the value is invalid, or the coerced value if valid.
+  - `coerceOutput(mixed $rawValue) : string|int|float|bool` - Coerces output values (to be serialized in responses) to a JSON-serializable primitive type.
+
+This change provides more control over input/output transformations and aligns with the GraphQL specification's distinction between input and output coercion.
+
+#### Working with Objects - Advanced Scalar Coercion
+
+One of the key advantages of the new scalar type system is the ability to convert scalar values into PHP objects, allowing you to work with strongly-typed objects throughout your application instead of primitive strings or integers.
+
+**Example: DateTime Scalar Type**
+
+A common use case is converting ISO 8601 date-time strings into `\DateTimeImmutable` objects:
+
+```php
+<?php declare(strict_types = 1);
+
+namespace App\Type;
+
+use Graphpinator\Typesystem\Attribute\Description;
+use Graphpinator\Typesystem\ScalarType;
+
+#[Description('DateTime type - string which contains valid date in ISO8601 format')]
+final class DateTimeType extends ScalarType
+{
+    protected const NAME = 'DateTime';
+
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->setSpecifiedBy('https://datatracker.ietf.org/doc/html/rfc3339#section-5.6');
+    }
+
+    public function validateAndCoerceInput(mixed $rawValue) : ?\DateTimeImmutable
+    {
+        if (!\is_string($rawValue)) {
+            return null;
+        }
+
+        try {
+            $dateTime = new \DateTimeImmutable($rawValue);
+
+            // Validate it's in the expected format
+            if ($dateTime->format(\DateTimeInterface::ATOM) === $rawValue) {
+                return $dateTime; // Return DateTimeImmutable object
+            }
+
+            return null;
+        } catch (\Exception $e) {
+            return null; // Invalid date string
+        }
+    }
+
+    public function coerceOutput(mixed $rawValue) : string
+    {
+        \assert($rawValue instanceof \DateTimeImmutable);
+
+        return $rawValue->format(\DateTimeInterface::ATOM);
+    }
+}
+```
+
+Now in your resolvers, you work directly with `\DateTimeImmutable` objects:
+
+```php
+ResolvableField::create(
+    'createdAt',
+    $dateTimeType->notNull(),
+    function (ArticleDto $article) : \DateTimeImmutable {
+        return $article->createdAt; // Returns DateTimeImmutable object
+    },
+)
+
+// In mutations with DateTime arguments
+ResolvableField::create(
+    'scheduleArticle',
+    Container::Boolean()->notNull(),
+    function (null $parent, \DateTimeImmutable $publishAt) : bool {
+        // $publishAt is already a DateTimeImmutable object!
+        return $this->scheduler->schedule($publishAt);
+    },
+)->setArguments(new ArgumentSet([
+    Argument::create('publishAt', $dateTimeType->notNull()),
+]))
+```
+
+**Benefits of Object Coercion:**
+- **Type Safety**: Work with strongly-typed objects instead of strings
+- **Validation**: Input validation happens once at the GraphQL layer
+- **Consistency**: Automatic formatting for output
+- **Developer Experience**: IDE autocomplete and type checking
+
+**More Examples in Extra Types Package**
+
+The [graphpinator-extra-types](https://github.com/graphpql/graphpinator-extra-types) package includes many ready-to-use scalar types with object coercion:
+
+- `DateTimeType` - Converts to `\DateTimeImmutable` (ISO 8601 with timezone)
+- `DateType` - Converts to `\DateTimeImmutable` (date only)
+- `TimeType` - Converts to `\DateTimeImmutable` (time only)
+- `EmailAddressType` - Validates email addresses
+- `UrlType` - Validates URLs
+- `UUIDType` - Validates UUIDs
+- `JsonType` - Parses and validates JSON
+- And many more...
+
+Install it with:
+```bash
+composer require infinityloop-dev/graphpinator-extra-types
+```
 
 This example is taken from the extra-types [package](https://github.com/graphpql/graphpinator-extra-types), which includes some useful types beyond the scope of the official specification.
 
@@ -638,6 +760,133 @@ $schema = new \Graphpinator\Typesystem\Schema($container, $container->getType('q
 ```
 
 While it's not mandatory to create a named class for your `Schema`, doing so can make organization easier, especially as your application grows to support multiple schemas.
+
+## Schema Validation
+
+Version 2.0 introduces enhanced schema validation capabilities. The schema validation now performs additional integrity checks to ensure type safety at the schema level:
+
+### Field Resolver Return Type Validation
+
+When defining resolvable fields, GraPHPinator now validates that the PHP return type of your resolver functions matches the declared GraphQL field type:
+
+- **NotNull validation**: If a field is declared as `notNull()`, the resolver function's return type must not allow `null`.
+- **List validation**: If a field returns a list type, the resolver function must return an iterable type (`array`, `iterable`, or `\Traversable`).
+
+```php
+// ✅ Correct - return type matches field type
+ResolvableField::create(
+    'name',
+    Container::String()->notNull(),
+    function (UserDto $user) : string {  // return type doesn't allow null
+        return $user->name;
+    },
+)
+
+// ❌ Incorrect - return type mismatch
+ResolvableField::create(
+    'name',
+    Container::String()->notNull(),
+    function (UserDto $user) : ?string {  // return type allows null, but field is notNull
+        return $user->name;
+    },
+)
+
+// ✅ Correct - list field with iterable return
+ResolvableField::create(
+    'friends',
+    $characterType->notNullList(),
+    function (UserDto $user) : array {  // array is iterable
+        return $user->friends;
+    },
+)
+```
+
+This validation happens during schema initialization and helps catch type mismatches early, before any queries are executed. Violations will throw appropriate exceptions such as `FieldResolverNullabilityMismatch` or `FieldResolverNotIterable`.
+
+> Note: This validation requires your resolver functions to have PHP return type declarations. If no return type is present, the validation is skipped.
+
+## Performance Best Practices
+
+When working with GraPHPinator, consider these performance optimization strategies:
+
+### Lazy Field Loading
+
+Fields are defined using the `getFieldDefinition()` method instead of being passed directly to the constructor. This lazy-loading approach provides:
+- **Performance benefits**: Fields are only loaded when needed
+- **Cyclic dependency resolution**: Types can reference each other without initialization order issues
+
+### Resolver Function Optimization
+
+- Keep resolver functions focused and lightweight
+- Use dependency injection to pass services to field resolvers
+- Return iterables (not just arrays) for list fields - generators can improve memory efficiency
+
+### Type Container and Singletons
+
+All types must be registered as singletons within the Type Container. Use a dependency injection solution to manage type instantiation and avoid creating duplicate type instances.
+
+## Error Handling
+
+GraPHPinator provides structured error handling throughout the schema definition and execution:
+
+### Schema-Level Errors
+
+Errors during schema construction throw specific exceptions:
+- `InterfaceOrTypeMustDefineOneOrMoreFields` - Type or interface has no fields
+- `InterfaceContractMissingField` - Type doesn't implement required interface field
+- `FieldResolverNullabilityMismatch` - Resolver return type doesn't match field nullability
+- `InputCycleDetected` - Circular reference in input types
+- And many more...
+
+### Runtime Errors
+
+During query execution, errors are caught and returned in the response's `errors` array according to the GraphQL specification. The `Graphpinator` class can be configured to catch exceptions:
+
+```php
+$graphpinator = new \Graphpinator\Graphpinator(
+    $schema,
+    true, // catchExceptions - whether to catch and format exceptions in response
+);
+```
+
+## Advanced Type System Features
+
+### Modifier Type Shortcuts
+
+The library provides convenient shortcuts for creating modifier types:
+
+```php
+// Creating NotNull types
+$type->notNull()                    // NotNullType wrapping $type
+
+// Creating List types
+$type->list()                       // ListType with nullable items
+$type->notNull()->list()            // ListType with non-null items
+$type->list()->notNull()            // Non-null ListType with nullable items
+$type->notNullList()                // Non-null ListType with non-null items (shortcut)
+```
+
+### Type Validation Methods
+
+Types implement validation at different stages:
+
+1. **Schema validation** - Performed once during schema initialization
+   - Structure validation (fields, arguments, interfaces)
+   - Type compatibility checks
+   - Resolver signature validation
+
+2. **Value validation** - Performed during query execution
+   - `validateNonNullValue()` for Type - validates resolved parent value
+   - `validateAndCoerceInput()` for ScalarType - validates and coerces input values
+
+### Interface Implementation Contract
+
+When a type implements an interface, it must satisfy variance rules:
+
+- **Field types**: Covariant - implementing type can return more specific type
+- **Argument types**: Contravariant - implementing type can accept more general type
+- **Directives**: Must be preserved with exact same configuration
+- **New arguments**: Can only be added if they have default values
 
 ## Directives
 

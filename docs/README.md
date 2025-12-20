@@ -1,12 +1,35 @@
 # Documentation
 
-Hello! 
+Hello!
 
 We are happy you consider using this library.
 
-This documentation relates to the GraPHPinator project - the PHP implementation of GraphQL server. 
+This documentation relates to the GraPHPinator project - the PHP implementation of GraphQL server.
 Before you continue, make sure to understand the concepts of GraphQL and its purpose.
 All the necessary information is presented on [the official website](http://graphql.org/learn/).
+
+## Version 2.0 Breaking Changes
+
+Version 2.0 introduces several important changes. Please review these if you are upgrading from an earlier version:
+
+### Requirements
+- **Minimum PHP version is now 8.2** (previously 8.1)
+
+### Scalar Type Coercion
+- Custom scalar types must implement new methods:
+  - `validateAndCoerceInput(mixed $rawValue) : mixed` - replaces the old `validateNonNullValue` method for input validation
+  - `coerceOutput(mixed $rawValue) : string|int|float|bool` - new method for output coercion
+- The old `validateNonNullValue` method has been removed
+
+### Enhanced Schema Validation
+- Schema validation now checks resolver function return types against field type definitions
+- NotNull fields require non-nullable return types
+- List fields require iterable return types
+
+### Namespace Changes
+Some classes have been moved to different namespaces. Please check your imports if you encounter class-not-found errors after upgrading.
+
+**For detailed migration instructions, see the [Migration Guide](migration-v2.md).**
 
 ## Compliance status
 
@@ -24,6 +47,12 @@ This section includes some general information about the library and how to use 
 > If you prefer to read less text and more code - check out the Examples
 
 - [Schema definition and typesystem](typesystem.md)
+  - Creating types (Type, Interface, Union, Scalar, Enum, Input)
+  - Schema validation and integrity checks
+  - Field resolver validation
+  - Performance best practices
+  - Error handling
+  - Advanced type system features
 - Request execution
 
 ### Addons
@@ -34,6 +63,8 @@ Information about unofficial extensions this library provides.
 - Constraint directives
 - Modules
   - Upload
+  - Query cost
+  - Persisted queries
 
 ### Utilities
 
