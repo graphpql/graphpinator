@@ -23,7 +23,7 @@
   },
   "require-dev": {
     "guzzlehttp/psr7": "^2.8",
-    "infection/infection": "^0.29",
+    "infection/infection": "^0.29 || ^0.31",
     "infinityloop-dev/graphpinator-tokenizer": "^1.3",
     "phpstan/extension-installer": "^1.4",
     "phpstan/phpstan": "^2.0",
