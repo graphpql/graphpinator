@@ -13,10 +13,10 @@ use Graphpinator\Value\Contract\Value;
 /**
  * @implements \IteratorAggregate<Value>
  */
-final readonly class ListValue implements InputedValue, OutputValue, \IteratorAggregate
+final class ListValue implements InputedValue, OutputValue, \IteratorAggregate
 {
     public function __construct(
-        public ListType $type,
+        public readonly ListType $type,
         /** @var list<Value> */
         public array $value,
     )
