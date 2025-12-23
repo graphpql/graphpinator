@@ -8,12 +8,12 @@ use Graphpinator\Typesystem\Location\ObjectLocation;
 use Graphpinator\Typesystem\Type;
 use Graphpinator\Value\Contract\OutputValue;
 
-final class TypeValue implements OutputValue
+final readonly class TypeValue implements OutputValue
 {
     public function __construct(
-        private Type $type,
-        private \stdClass $value,
-        private TypeIntermediateValue $intermediateValue,
+        public Type $type,
+        public \stdClass $value,
+        public TypeIntermediateValue $intermediateValue,
     )
     {
         foreach ($type->getDirectiveUsages() as $directiveUsage) {
@@ -35,24 +35,9 @@ final class TypeValue implements OutputValue
         return $this->type;
     }
 
-    public function getIntermediateValue() : TypeIntermediateValue
-    {
-        return $this->intermediateValue;
-    }
-
     #[\Override]
     public function jsonSerialize() : \stdClass
     {
         return $this->value;
-    }
-
-    public function __get(string $name) : FieldValue
-    {
-        return $this->value->{$name};
-    }
-
-    public function __isset(string $name) : bool
-    {
-        return \property_exists($this->value, $name);
     }
 }

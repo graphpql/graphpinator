@@ -25,7 +25,7 @@ use Graphpinator\Value\TypeIntermediateValue;
 /**
  * @implements TypeVisitor<Value>
  */
-final class CreateResolvedValueVisitor implements TypeVisitor
+final readonly class CreateResolvedValueVisitor implements TypeVisitor
 {
     public function __construct(
         private mixed $rawValue,

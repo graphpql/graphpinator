@@ -89,7 +89,7 @@ final readonly class IsValueSameVisitor implements InputedValueVisitor
             \assert($argumentValue instanceof ArgumentValue);
 
             if (!\property_exists($secondObject, $argumentName) ||
-                !$argumentValue->getValue()->accept(new self($secondObject->{$argumentName}->getValue()))) {
+                !$argumentValue->value->accept(new self($secondObject->{$argumentName}->value))) {
                 return false;
             }
         }
@@ -101,6 +101,6 @@ final readonly class IsValueSameVisitor implements InputedValueVisitor
     public function visitVariable(VariableValue $variableValue) : bool
     {
         return $this->compare instanceof VariableValue
-            && $this->compare->getVariable()->name === $variableValue->getVariable()->name;
+            && $this->compare->variable->name === $variableValue->variable->name;
     }
 }

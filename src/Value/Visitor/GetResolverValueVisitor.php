@@ -60,7 +60,7 @@ final readonly class GetResolverValueVisitor implements InputedValueVisitor
 
         foreach ($inputValue as $argumentName => $argumentValue) {
             // use separate hydrator?
-            $return->{$argumentName} = $argumentValue->getValue()->accept($this); // @phpstan-ignore property.dynamicName
+            $return->{$argumentName} = $argumentValue->value->accept($this); // @phpstan-ignore property.dynamicName
         }
 
         return $return;

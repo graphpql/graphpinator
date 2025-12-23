@@ -32,7 +32,7 @@ final readonly class InputValue implements InputedValue, \IteratorAggregate
         $return = new \stdClass();
 
         foreach ($this as $argumentName => $argumentValue) {
-            $return->{$argumentName} = $argumentValue->getValue()->getRawValue();
+            $return->{$argumentName} = $argumentValue->value->getRawValue();
         }
 
         return $return;

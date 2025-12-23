@@ -59,7 +59,7 @@ final readonly class PrintValueVisitor implements InputedValueVisitor
         $component = [];
 
         foreach ($inputValue as $argumentName => $argumentValue) {
-            $component[] = $argumentName . ':' . $argumentValue->getValue()->accept($this);
+            $component[] = $argumentName . ':' . $argumentValue->value->accept($this);
         }
 
         return '{' . \implode(',', $component) . '}';

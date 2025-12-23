@@ -22,7 +22,7 @@ final class ArgumentValueSet extends ImplicitObjectMap
         $return = [];
 
         foreach ($this as $name => $argumentValue) {
-            $return[$name] = $argumentValue->getValue()->accept(new GetResolverValueVisitor());
+            $return[$name] = $argumentValue->value->accept(new GetResolverValueVisitor());
         }
 
         return $return;
@@ -38,15 +38,15 @@ final class ArgumentValueSet extends ImplicitObjectMap
     public function isSame(self $compare) : bool
     {
         foreach ($compare as $lhs) {
-            if ($this->offsetExists($lhs->getArgument()->getName())) {
-                if ($lhs->getValue()->accept(new IsValueSameVisitor($this->offsetGet($lhs->getArgument()->getName())->getValue()))) {
+            if ($this->offsetExists($lhs->argument->getName())) {
+                if ($lhs->value->accept(new IsValueSameVisitor($this->offsetGet($lhs->argument->getName())->value))) {
                     continue;
                 }
 
                 return false;
             }
 
-            if ($lhs->getValue()->accept(new IsValueSameVisitor($lhs->getArgument()->getDefaultValue()?->getValue()))) {
+            if ($lhs->value->accept(new IsValueSameVisitor($lhs->argument->getDefaultValue()?->value))) {
                 continue;
             }
 
@@ -54,8 +54,8 @@ final class ArgumentValueSet extends ImplicitObjectMap
         }
 
         foreach ($this as $lhs) {
-            if ($compare->offsetExists($lhs->getArgument()->getName()) ||
-                $lhs->getValue()->accept(new IsValueSameVisitor($lhs->getArgument()->getDefaultValue()?->getValue()))) {
+            if ($compare->offsetExists($lhs->argument->getName()) ||
+                $lhs->value->accept(new IsValueSameVisitor($lhs->argument->getDefaultValue()?->value))) {
                 continue;
             }
 
@@ -70,6 +70,6 @@ final class ArgumentValueSet extends ImplicitObjectMap
     {
         \assert($object instanceof ArgumentValue);
 
-        return $object->getArgument()->getName();
+        return $object->argument->getName();
     }
 }

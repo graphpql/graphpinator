@@ -8,7 +8,7 @@ use Graphpinator\Typesystem\Type;
 use Graphpinator\Value\Contract\Value;
 use Graphpinator\Value\Exception\InvalidValue;
 
-final class TypeIntermediateValue implements Value
+final readonly class TypeIntermediateValue implements Value
 {
     public function __construct(
         private Type $type,

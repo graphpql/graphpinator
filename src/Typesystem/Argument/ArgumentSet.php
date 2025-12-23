@@ -32,7 +32,7 @@ final class ArgumentSet extends ImplicitObjectMap
         $defaultValue = $value->getDefaultValue();
 
         if ($defaultValue instanceof ArgumentValue) {
-            $this->defaults[$value->getName()] = $defaultValue->getValue()->getRawValue();
+            $this->defaults[$value->getName()] = $defaultValue->value->getRawValue();
         }
     }
 

@@ -11,27 +11,17 @@ use Graphpinator\Value\Contract\InputedValue;
 use Graphpinator\Value\Visitor\ApplyVariablesVisitor;
 use Graphpinator\Value\Visitor\ResolveNonPureDirectivesVisitor;
 
-final class ArgumentValue
+final readonly class ArgumentValue
 {
     public function __construct(
-        private Argument $argument,
-        private InputedValue $value,
-        private bool $hasVariables,
+        public Argument $argument,
+        public InputedValue $value,
+        public bool $hasVariables,
     )
     {
         if (!$this->hasVariables) {
             $this->resolvePureDirectives();
         }
-    }
-
-    public function getValue() : InputedValue
-    {
-        return $this->value;
-    }
-
-    public function getArgument() : Argument
-    {
-        return $this->argument;
     }
 
     public function applyVariables(VariableValueSet $variables) : void

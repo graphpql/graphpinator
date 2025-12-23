@@ -62,7 +62,7 @@ final class InputValue extends Type
                 Container::String(),
                 static function (Argument $argument) : ?string {
                     return $argument->getDefaultValue() instanceof ArgumentValue
-                        ? $argument->getDefaultValue()->getValue()->accept(new PrintValueVisitor())
+                        ? $argument->getDefaultValue()->value->accept(new PrintValueVisitor())
                         : null;
                 },
             ),

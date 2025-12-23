@@ -18,8 +18,8 @@ final class VariableValue implements InputedValue
     private ?InputedValue $value = null;
 
     public function __construct(
-        private Type $type,
-        private Variable $variable,
+        public readonly Type $type,
+        public readonly Variable $variable,
     )
     {
         $isInputable = $this->type->accept(new IsInputableVisitor());
@@ -42,6 +42,12 @@ final class VariableValue implements InputedValue
         return $this->value->getRawValue();
     }
 
+    #[\Override]
+    public function getType() : Type
+    {
+        return $this->type;
+    }
+
     public function setVariableValue(VariableValueSet $variables) : void
     {
         $this->value = $variables->get($this->variable->name);
@@ -50,16 +56,5 @@ final class VariableValue implements InputedValue
     public function getConcreteValue() : InputedValue
     {
         return $this->value;
-    }
-
-    public function getVariable() : Variable
-    {
-        return $this->variable;
-    }
-
-    #[\Override]
-    public function getType() : Type
-    {
-        return $this->type;
     }
 }

@@ -41,7 +41,7 @@ final class OneOfDirective extends Directive implements InputObjectLocation
         $currentCount = 0;
 
         foreach ($inputValue as $innerValue) {
-            if ($currentCount >= 1 || $innerValue->getValue() instanceof NullValue) {
+            if ($currentCount >= 1 || $innerValue->value instanceof NullValue) {
                 throw new OneOfDirectiveNotSatisfied();
             }
 

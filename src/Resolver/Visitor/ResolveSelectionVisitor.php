@@ -204,7 +204,7 @@ final class ResolveSelectionVisitor implements SelectionVisitor
         }
 
         if ($value instanceof TypeValue) {
-            $resolvedValue = $value->getIntermediateValue();
+            $resolvedValue = $value->intermediateValue;
             $resolvedValue->getType()->accept(new ResolveVisitor($selectionSet, $resolvedValue, $value->getRawValue()));
 
             return;

@@ -70,7 +70,7 @@ abstract class ScalarType extends NamedType implements LeafType
     {
         foreach ($this->getDirectiveUsages() as $directive) {
             if ($directive->getDirective() instanceof SpecifiedByDirective) {
-                return $directive->getArgumentValues()->offsetGet('url')->getValue()->getRawValue();
+                return $directive->getArgumentValues()->offsetGet('url')->value->getRawValue();
             }
         }
 
