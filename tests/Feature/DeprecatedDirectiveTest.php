@@ -17,6 +17,7 @@ use Graphpinator\Typesystem\InputType;
 use Graphpinator\Typesystem\Schema;
 use Graphpinator\Typesystem\Type;
 use Infinityloop\Utils\Json;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 final class DeprecatedDirectiveTest extends TestCase
@@ -334,11 +335,7 @@ final class DeprecatedDirectiveTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider fieldsDataProvider
-     * @param Json $request
-     * @param Json $expected
-     */
+    #[DataProvider('fieldsDataProvider')]
     public function testFieldsDeprecated(Json $request, Json $expected) : void
     {
         $graphpinator = new Graphpinator($this->getSchema(), true);
@@ -347,11 +344,7 @@ final class DeprecatedDirectiveTest extends TestCase
         self::assertSame($expected->toString(), $result->toString());
     }
 
-    /**
-     * @dataProvider inputFieldsDataProvider
-     * @param Json $request
-     * @param Json $expected
-     */
+    #[DataProvider('inputFieldsDataProvider')]
     public function testInputFieldsDeprecated(Json $request, Json $expected) : void
     {
         $graphpinator = new Graphpinator($this->getSchema(), true);

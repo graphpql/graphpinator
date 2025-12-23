@@ -19,17 +19,17 @@ use Graphpinator\Typesystem\Location\SelectionDirectiveResult;
 use Graphpinator\Typesystem\Type;
 use Graphpinator\Typesystem\Visitor\GetShapingTypeVisitor;
 use Graphpinator\Typesystem\Visitor\IsInstanceOfVisitor;
+use Graphpinator\Value\Contract\Value;
 use Graphpinator\Value\FieldValue;
-use Graphpinator\Value\ListResolvedValue;
+use Graphpinator\Value\ListValue;
 use Graphpinator\Value\NullValue;
-use Graphpinator\Value\ResolvedValue;
 use Graphpinator\Value\TypeValue;
 use Graphpinator\Value\Visitor\CreateResolvedValueVisitor;
 
 final class ResolveSelectionVisitor implements SelectionVisitor
 {
     public function __construct(
-        private ResolvedValue $parentResult,
+        private Value $parentResult,
         private \stdClass $result,
     )
     {
@@ -55,7 +55,7 @@ final class ResolveSelectionVisitor implements SelectionVisitor
             \assert($fieldValue instanceof FieldValue);
 
             if ($field->children instanceof SelectionSet) {
-                self::addToResultingSelection($fieldValue->getValue(), $field->children);
+                self::addToResultingSelection($fieldValue->value, $field->children);
             }
 
             foreach ($field->directives as $directiveUsage) {
@@ -195,7 +195,7 @@ final class ResolveSelectionVisitor implements SelectionVisitor
     }
 
     private static function addToResultingSelection(
-        TypeValue|ListResolvedValue|NullValue $value,
+        TypeValue|ListValue|NullValue $value,
         SelectionSet $selectionSet,
     ) : void
     {

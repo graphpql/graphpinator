@@ -12,6 +12,7 @@ use Graphpinator\Typesystem\Field\ResolvableField;
 use Graphpinator\Typesystem\Field\ResolvableFieldSet;
 use Graphpinator\Typesystem\Type;
 use Graphpinator\Value\ArgumentValue;
+use Graphpinator\Value\Visitor\PrintValueVisitor;
 
 #[Description('Built-in introspection type')]
 final class InputValue extends Type
@@ -61,7 +62,7 @@ final class InputValue extends Type
                 Container::String(),
                 static function (Argument $argument) : ?string {
                     return $argument->getDefaultValue() instanceof ArgumentValue
-                        ? $argument->getDefaultValue()->getValue()->printValue()
+                        ? $argument->getDefaultValue()->getValue()->accept(new PrintValueVisitor())
                         : null;
                 },
             ),

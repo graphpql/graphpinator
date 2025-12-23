@@ -23,6 +23,7 @@ use Graphpinator\Resolver\Resolver;
 use Graphpinator\Source\StringSource;
 use Graphpinator\Value\Exception\ValueCannotBeNull;
 use Infinityloop\Utils\Json;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamInterface;
@@ -237,11 +238,7 @@ final class SimpleTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider simpleDataProvider
-     * @param Json $request
-     * @param Json $expected
-     */
+    #[DataProvider('simpleDataProvider')]
     public function testSimple(Json $request, Json $expected) : void
     {
         $graphpinator = new Graphpinator(TestSchema::getSchema());
@@ -250,11 +247,7 @@ final class SimpleTest extends TestCase
         self::assertSame($expected->toString(), $result->toString());
     }
 
-    /**
-     * @dataProvider simpleDataProvider
-     * @param Json $request
-     * @param Json $expected
-     */
+    #[DataProvider('simpleDataProvider')]
     public function testComponents(Json $request, Json $expected) : void
     {
         $source = new StringSource($request['query']);
@@ -281,11 +274,7 @@ final class SimpleTest extends TestCase
         self::assertSame($expected->toString(), $result->toString());
     }
 
-    /**
-     * @dataProvider simpleDataProvider
-     * @param Json $request
-     * @param Json $expected
-     */
+    #[DataProvider('simpleDataProvider')]
     public function testHttpJsonBody(Json $request, Json $expected) : void
     {
         $stream = $this->createStub(StreamInterface::class);
@@ -301,11 +290,7 @@ final class SimpleTest extends TestCase
         self::assertSame($expected->toString(), $result->toString());
     }
 
-    /**
-     * @dataProvider simpleDataProvider
-     * @param Json $request
-     * @param Json $expected
-     */
+    #[DataProvider('simpleDataProvider')]
     public function testHttpJsonBodyPost(Json $request, Json $expected) : void
     {
         $stream = $this->createStub(StreamInterface::class);
@@ -321,11 +306,7 @@ final class SimpleTest extends TestCase
         self::assertSame($expected->toString(), $result->toString());
     }
 
-    /**
-     * @dataProvider simpleDataProvider
-     * @param Json $request
-     * @param Json $expected
-     */
+    #[DataProvider('simpleDataProvider')]
     public function testHttpGraphQlBody(Json $request, Json $expected) : void
     {
         $stream = $this->createStub(StreamInterface::class);
@@ -341,11 +322,7 @@ final class SimpleTest extends TestCase
         self::assertSame($expected->toString(), $result->toString());
     }
 
-    /**
-     * @dataProvider simpleDataProvider
-     * @param Json $request
-     * @param Json $expected
-     */
+    #[DataProvider('simpleDataProvider')]
     public function testHttpQueryParams(Json $request, Json $expected) : void
     {
         $params = (array) $request->toNative();
@@ -365,11 +342,7 @@ final class SimpleTest extends TestCase
         self::assertSame($expected->toString(), $result->toString());
     }
 
-    /**
-     * @dataProvider simpleDataProvider
-     * @param Json $request
-     * @param Json $expected
-     */
+    #[DataProvider('simpleDataProvider')]
     public function testHttpMultipartBody(Json $request, Json $expected) : void
     {
         $httpRequest = $this->createStub(ServerRequestInterface::class);
@@ -383,11 +356,7 @@ final class SimpleTest extends TestCase
         self::assertSame($expected->toString(), $result->toString());
     }
 
-    /**
-     * @dataProvider invalidDataProvider
-     * @param Json $request
-     * @param string $exception
-     */
+    #[DataProvider('invalidDataProvider')]
     public function testInvalid(Json $request, string $exception) : void
     {
         $this->expectException($exception);

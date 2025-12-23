@@ -15,8 +15,8 @@ use Graphpinator\Typesystem\Location\EnumItemLocation;
 use Graphpinator\Typesystem\Location\FieldDefinitionLocation;
 use Graphpinator\Value\ArgumentValue;
 use Graphpinator\Value\ArgumentValueSet;
+use Graphpinator\Value\Contract\Value;
 use Graphpinator\Value\FieldValue;
-use Graphpinator\Value\ResolvedValue;
 
 #[Description('Built-in deprecated directive')]
 final class DeprecatedDirective extends Directive implements
@@ -45,19 +45,19 @@ final class DeprecatedDirective extends Directive implements
     }
 
     #[\Override]
-    public function resolveFieldDefinitionStart(ArgumentValueSet $arguments, ResolvedValue $parentValue) : void
+    public function resolveFieldDefinitionStart(ArgumentValueSet $arguments, Value $parentValue) : void
     {
         // nothing here
     }
 
     #[\Override]
-    public function resolveFieldDefinitionBefore(ArgumentValueSet $arguments, ResolvedValue $parentValue, ArgumentValueSet $fieldArguments) : void
+    public function resolveFieldDefinitionBefore(ArgumentValueSet $arguments, Value $parentValue, ArgumentValueSet $fieldArguments) : void
     {
         // nothing here
     }
 
     #[\Override]
-    public function resolveFieldDefinitionAfter(ArgumentValueSet $arguments, ResolvedValue $resolvedValue, ArgumentValueSet $fieldArguments) : void
+    public function resolveFieldDefinitionAfter(ArgumentValueSet $arguments, Value $resolvedValue, ArgumentValueSet $fieldArguments) : void
     {
         // nothing here
     }

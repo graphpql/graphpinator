@@ -4,8 +4,10 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Value;
 
-use Graphpinator\Normalizer\VariableValueSet;
 use Graphpinator\Typesystem\Contract\Type;
+use Graphpinator\Value\Contract\InputedValue;
+use Graphpinator\Value\Contract\InputedValueVisitor;
+use Graphpinator\Value\Contract\OutputValue;
 
 final readonly class NullValue implements InputedValue, OutputValue
 {
@@ -13,6 +15,12 @@ final readonly class NullValue implements InputedValue, OutputValue
         private Type $type,
     )
     {
+    }
+
+    #[\Override]
+    public function accept(InputedValueVisitor $visitor) : mixed
+    {
+        return $visitor->visitNull($this);
     }
 
     #[\Override]
@@ -31,29 +39,5 @@ final readonly class NullValue implements InputedValue, OutputValue
     public function jsonSerialize() : null
     {
         return null;
-    }
-
-    #[\Override]
-    public function printValue() : string
-    {
-        return 'null';
-    }
-
-    #[\Override]
-    public function applyVariables(VariableValueSet $variables) : void
-    {
-        // nothing here
-    }
-
-    #[\Override]
-    public function resolveRemainingDirectives() : void
-    {
-        // nothing here
-    }
-
-    #[\Override]
-    public function isSame(Value $compare) : bool
-    {
-        return $compare instanceof self;
     }
 }

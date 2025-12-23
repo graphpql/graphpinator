@@ -8,6 +8,7 @@ use Graphpinator\Common\Path;
 use Graphpinator\Typesystem\Spec\StringType;
 use Graphpinator\Value\Exception\InvalidValue;
 use Graphpinator\Value\Visitor\ConvertRawValueVisitor;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 final class StringTypeTest extends TestCase
@@ -31,10 +32,7 @@ final class StringTypeTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider simpleDataProvider
-     * @param string|null $rawValue
-     */
+    #[DataProvider('simpleDataProvider')]
     public function testValidateValue($rawValue) : void
     {
         $string = new StringType();
@@ -44,10 +42,7 @@ final class StringTypeTest extends TestCase
         self::assertSame($rawValue, $value->getRawValue());
     }
 
-    /**
-     * @dataProvider invalidDataProvider
-     * @param int|float|bool|array $rawValue
-     */
+    #[DataProvider('invalidDataProvider')]
     public function testValidateValueInvalid($rawValue) : void
     {
         $this->expectException(InvalidValue::class);

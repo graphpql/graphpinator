@@ -7,6 +7,7 @@ namespace Graphpinator\Tests\Spec;
 use Graphpinator\Graphpinator;
 use Graphpinator\Request\JsonRequestFactory;
 use Infinityloop\Utils\Json;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 final class IntrospectionTest extends TestCase
@@ -685,11 +686,7 @@ final class IntrospectionTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider typenameDataProvider
-     * @param Json $request
-     * @param Json $expected
-     */
+    #[DataProvider('typenameDataProvider')]
     public function testTypename(Json $request, Json $expected) : void
     {
         $graphpinator = new Graphpinator(TestSchema::getSchema());
@@ -698,11 +695,7 @@ final class IntrospectionTest extends TestCase
         self::assertSame($expected->toString(), $result->toString());
     }
 
-    /**
-     * @dataProvider schemaDataProvider
-     * @param Json $request
-     * @param Json $expected
-     */
+    #[DataProvider('schemaDataProvider')]
     public function testSchema(Json $request, Json $expected) : void
     {
         $schema = TestSchema::getSchema();
@@ -713,11 +706,7 @@ final class IntrospectionTest extends TestCase
         self::assertSame($expected->toString(), $result->toString());
     }
 
-    /**
-     * @dataProvider typeDataProvider
-     * @param Json $request
-     * @param Json $expected
-     */
+    #[DataProvider('typeDataProvider')]
     public function testType(Json $request, Json $expected) : void
     {
         $graphpinator = new Graphpinator(TestSchema::getSchema());

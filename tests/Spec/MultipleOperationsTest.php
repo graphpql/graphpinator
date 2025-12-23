@@ -7,6 +7,7 @@ namespace Graphpinator\Tests\Spec;
 use Graphpinator\Graphpinator;
 use Graphpinator\Request\JsonRequestFactory;
 use Infinityloop\Utils\Json;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 final class MultipleOperationsTest extends TestCase
@@ -42,11 +43,7 @@ final class MultipleOperationsTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider requestDataProvider
-     * @param string $request
-     * @param string $expected
-     */
+    #[DataProvider('requestDataProvider')]
     public function testOperationName(Json $request, Json $expected) : void
     {
         $graphpinator = new Graphpinator(TestSchema::getSchema());

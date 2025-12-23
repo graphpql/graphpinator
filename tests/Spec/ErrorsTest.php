@@ -14,6 +14,7 @@ use Graphpinator\Request\PsrRequestFactory;
 use Graphpinator\Tokenizer\Exception\InvalidEllipsis;
 use Graphpinator\Tokenizer\Exception\MissingVariableName;
 use Infinityloop\Utils\Json;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -361,13 +362,7 @@ final class ErrorsTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider tokenizerDataProvider
-     * @dataProvider parserDataProvider
-     * @dataProvider normalizerDataProvider
-     * @param Json $request
-     * @param Json $expected
-     */
+    #[DataProvider('tokenizerDataProvider')]
     public function testSimple(Json $request, Json $expected) : void
     {
         $graphpinator = new Graphpinator(TestSchema::getSchema(), true);

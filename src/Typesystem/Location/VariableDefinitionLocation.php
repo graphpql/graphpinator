@@ -7,7 +7,7 @@ namespace Graphpinator\Typesystem\Location;
 use Graphpinator\Normalizer\Variable\Variable;
 use Graphpinator\Typesystem\Contract\ExecutableDirective;
 use Graphpinator\Value\ArgumentValueSet;
-use Graphpinator\Value\InputedValue;
+use Graphpinator\Value\Contract\InputedValue;
 
 interface VariableDefinitionLocation extends ExecutableDirective
 {

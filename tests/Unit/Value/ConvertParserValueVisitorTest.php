@@ -29,7 +29,7 @@ use Graphpinator\Value\EnumValue;
 use Graphpinator\Value\Exception\InvalidValue;
 use Graphpinator\Value\Exception\ValueCannotBeNull;
 use Graphpinator\Value\InputValue;
-use Graphpinator\Value\ListInputedValue;
+use Graphpinator\Value\ListValue;
 use Graphpinator\Value\NullValue;
 use Graphpinator\Value\ScalarValue;
 use Graphpinator\Value\VariableValue;
@@ -141,7 +141,7 @@ final class ConvertParserValueVisitorTest extends TestCase
         $visitor = new ConvertParserValueVisitor(new ListType(Container::Int()), null, new Path());
         $result = $listVal->accept($visitor);
 
-        self::assertInstanceOf(ListInputedValue::class, $result);
+        self::assertInstanceOf(ListValue::class, $result);
         self::assertCount(3, $result->getRawValue());
     }
 
@@ -152,7 +152,7 @@ final class ConvertParserValueVisitorTest extends TestCase
         $visitor = new ConvertParserValueVisitor($notNull, null, new Path());
         $result = $listVal->accept($visitor);
 
-        self::assertInstanceOf(ListInputedValue::class, $result);
+        self::assertInstanceOf(ListValue::class, $result);
     }
 
     public function testListValInvalidType() : void
@@ -271,7 +271,7 @@ final class ConvertParserValueVisitorTest extends TestCase
         $visitor = new ConvertParserValueVisitor($nestedList, null, new Path());
         $result = $listVal->accept($visitor);
 
-        self::assertInstanceOf(ListInputedValue::class, $result);
+        self::assertInstanceOf(ListValue::class, $result);
         self::assertCount(2, $result->getRawValue());
     }
 

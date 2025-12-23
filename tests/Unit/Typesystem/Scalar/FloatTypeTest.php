@@ -8,6 +8,7 @@ use Graphpinator\Common\Path;
 use Graphpinator\Typesystem\Spec\FloatType;
 use Graphpinator\Value\Exception\InvalidValue;
 use Graphpinator\Value\Visitor\ConvertRawValueVisitor;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 final class FloatTypeTest extends TestCase
@@ -32,11 +33,7 @@ final class FloatTypeTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider simpleDataProvider
-     * @param float|null $rawValue
-     * @param float|null $resultValue
-     */
+    #[DataProvider('simpleDataProvider')]
     public function testValidateValue($rawValue, $resultValue) : void
     {
         $float = new FloatType();
@@ -46,10 +43,7 @@ final class FloatTypeTest extends TestCase
         self::assertSame($resultValue, $value->getRawValue());
     }
 
-    /**
-     * @dataProvider invalidDataProvider
-     * @param int|bool|string|array $rawValue
-     */
+    #[DataProvider('invalidDataProvider')]
     public function testValidateValueInvalid($rawValue) : void
     {
         $this->expectException(InvalidValue::class);

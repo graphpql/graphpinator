@@ -8,6 +8,7 @@ use Graphpinator\Common\Path;
 use Graphpinator\Typesystem\Spec\IdType;
 use Graphpinator\Value\Exception\InvalidValue;
 use Graphpinator\Value\Visitor\ConvertRawValueVisitor;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 final class IDTypeTest extends TestCase
@@ -30,11 +31,7 @@ final class IDTypeTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider simpleDataProvider
-     * @param int|string|null $rawValue
-     * @param ?string $resultValue
-     */
+    #[DataProvider('simpleDataProvider')]
     public function testValidateValue(string|int|null $rawValue, ?string $resultValue) : void
     {
         $id = new IdType();
@@ -44,10 +41,7 @@ final class IDTypeTest extends TestCase
         self::assertSame($resultValue, $value->getRawValue());
     }
 
-    /**
-     * @dataProvider invalidDataProvider
-     * @param float|bool|array $rawValue
-     */
+    #[DataProvider('invalidDataProvider')]
     public function testValidateValueInvalid($rawValue) : void
     {
         $this->expectException(InvalidValue::class);

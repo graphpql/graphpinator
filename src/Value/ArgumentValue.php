@@ -7,6 +7,9 @@ namespace Graphpinator\Value;
 use Graphpinator\Normalizer\VariableValueSet;
 use Graphpinator\Typesystem\Argument\Argument;
 use Graphpinator\Typesystem\Location\ArgumentDefinitionLocation;
+use Graphpinator\Value\Contract\InputedValue;
+use Graphpinator\Value\Visitor\ApplyVariablesVisitor;
+use Graphpinator\Value\Visitor\ResolveNonPureDirectivesVisitor;
 
 final class ArgumentValue
 {
@@ -34,7 +37,7 @@ final class ArgumentValue
     public function applyVariables(VariableValueSet $variables) : void
     {
         if ($this->hasVariables) {
-            $this->value->applyVariables($variables);
+            $this->value->accept(new ApplyVariablesVisitor($variables));
             $this->resolvePureDirectives();
         }
     }
@@ -53,7 +56,7 @@ final class ArgumentValue
 
     public function resolveNonPureDirectives() : void
     {
-        $this->value->resolveRemainingDirectives();
+        $this->value->accept(new ResolveNonPureDirectivesVisitor());
 
         foreach ($this->argument->getDirectiveUsages() as $directiveUsage) {
             $directive = $directiveUsage->getDirective();

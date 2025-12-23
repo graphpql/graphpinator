@@ -13,17 +13,17 @@ use Graphpinator\Typesystem\NotNullType;
 use Graphpinator\Typesystem\ScalarType;
 use Graphpinator\Typesystem\Type;
 use Graphpinator\Typesystem\UnionType;
+use Graphpinator\Value\Contract\Value;
 use Graphpinator\Value\EnumValue;
 use Graphpinator\Value\Exception\InvalidValue;
 use Graphpinator\Value\Exception\ValueCannotBeNull;
 use Graphpinator\Value\ListIntermediateValue;
 use Graphpinator\Value\NullValue;
-use Graphpinator\Value\ResolvedValue;
 use Graphpinator\Value\ScalarValue;
 use Graphpinator\Value\TypeIntermediateValue;
 
 /**
- * @implements TypeVisitor<ResolvedValue>
+ * @implements TypeVisitor<Value>
  */
 final class CreateResolvedValueVisitor implements TypeVisitor
 {
@@ -34,7 +34,7 @@ final class CreateResolvedValueVisitor implements TypeVisitor
     }
 
     #[\Override]
-    public function visitType(Type $type) : ResolvedValue
+    public function visitType(Type $type) : NullValue|TypeIntermediateValue
     {
         return $this->rawValue === null
             ? new NullValue($type)
@@ -42,7 +42,7 @@ final class CreateResolvedValueVisitor implements TypeVisitor
     }
 
     #[\Override]
-    public function visitInterface(InterfaceType $interface) : ResolvedValue
+    public function visitInterface(InterfaceType $interface) : NullValue|TypeIntermediateValue
     {
         return $this->rawValue === null
             ? new NullValue($interface)
@@ -50,7 +50,7 @@ final class CreateResolvedValueVisitor implements TypeVisitor
     }
 
     #[\Override]
-    public function visitUnion(UnionType $union) : ResolvedValue
+    public function visitUnion(UnionType $union) : NullValue|TypeIntermediateValue
     {
         return $this->rawValue === null
             ? new NullValue($union)
@@ -64,7 +64,7 @@ final class CreateResolvedValueVisitor implements TypeVisitor
     }
 
     #[\Override]
-    public function visitScalar(ScalarType $scalar) : ResolvedValue
+    public function visitScalar(ScalarType $scalar) : NullValue|ScalarValue
     {
         return $this->rawValue === null
             ? new NullValue($scalar)
@@ -72,7 +72,7 @@ final class CreateResolvedValueVisitor implements TypeVisitor
     }
 
     #[\Override]
-    public function visitEnum(EnumType $enum) : ResolvedValue
+    public function visitEnum(EnumType $enum) : NullValue|EnumValue
     {
         return $this->rawValue === null
             ? new NullValue($enum)
@@ -80,7 +80,7 @@ final class CreateResolvedValueVisitor implements TypeVisitor
     }
 
     #[\Override]
-    public function visitNotNull(NotNullType $notNull) : ResolvedValue
+    public function visitNotNull(NotNullType $notNull) : Value
     {
         return $this->rawValue === null
             ? throw new ValueCannotBeNull(false)
@@ -88,7 +88,7 @@ final class CreateResolvedValueVisitor implements TypeVisitor
     }
 
     #[\Override]
-    public function visitList(ListType $list) : ResolvedValue
+    public function visitList(ListType $list) : NullValue|ListIntermediateValue
     {
         if ($this->rawValue === null) {
             return new NullValue($list);

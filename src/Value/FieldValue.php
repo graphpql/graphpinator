@@ -6,12 +6,13 @@ namespace Graphpinator\Value;
 
 use Graphpinator\Typesystem\Field\Field;
 use Graphpinator\Typesystem\Location\FieldDefinitionLocation;
+use Graphpinator\Value\Contract\OutputValue;
 
-final class FieldValue implements \JsonSerializable
+final readonly class FieldValue implements \JsonSerializable
 {
     public function __construct(
-        private Field $field,
-        private ResolvedValue $value,
+        public Field $field,
+        public OutputValue $value,
     )
     {
         foreach ($field->getDirectiveUsages() as $directiveUsage) {
@@ -22,17 +23,7 @@ final class FieldValue implements \JsonSerializable
     }
 
     #[\Override]
-    public function jsonSerialize() : ResolvedValue
-    {
-        return $this->value;
-    }
-
-    public function getField() : Field
-    {
-        return $this->field;
-    }
-
-    public function getValue() : ResolvedValue
+    public function jsonSerialize() : OutputValue
     {
         return $this->value;
     }

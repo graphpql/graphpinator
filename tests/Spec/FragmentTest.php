@@ -12,6 +12,7 @@ use Graphpinator\Normalizer\Exception\InvalidFragmentType;
 use Graphpinator\Normalizer\Exception\UnknownFragment;
 use Graphpinator\Request\JsonRequestFactory;
 use Infinityloop\Utils\Json;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 final class FragmentTest extends TestCase
@@ -302,11 +303,7 @@ final class FragmentTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider simpleDataProvider
-     * @param Json $request
-     * @param Json $expected
-     */
+    #[DataProvider('simpleDataProvider')]
     public function testSimple(Json $request, Json $expected) : void
     {
         $graphpinator = new Graphpinator(TestSchema::getSchema());
@@ -315,11 +312,7 @@ final class FragmentTest extends TestCase
         self::assertSame($expected->toString(), $result->toString());
     }
 
-    /**
-     * @dataProvider fieldSelectionMergingDataProvider
-     * @param Json $request
-     * @param Json $expected
-     */
+    #[DataProvider('fieldSelectionMergingDataProvider')]
     public function testFieldSelectionMerging(Json $request, Json $expected) : void
     {
         $graphpinator = new Graphpinator(TestSchema::getSchema());
@@ -328,11 +321,7 @@ final class FragmentTest extends TestCase
         self::assertSame($expected->toString(), $result->toString());
     }
 
-    /**
-     * @dataProvider invalidDataProvider
-     * @param Json $request
-     * @param string $exception
-     */
+    #[DataProvider('invalidDataProvider')]
     public function testInvalid(Json $request, string $exception) : void
     {
         $this->expectException($exception);

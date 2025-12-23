@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Normalizer;
 
-use Graphpinator\Value\InputedValue;
+use Graphpinator\Value\Contract\InputedValue;
 
 final readonly class VariableValueSet
 {

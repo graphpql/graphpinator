@@ -4,31 +4,35 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Value;
 
-use Graphpinator\Normalizer\VariableValueSet;
 use Graphpinator\Typesystem\InputType;
-use Graphpinator\Typesystem\Location\InputObjectLocation;
+use Graphpinator\Value\Contract\InputedValue;
+use Graphpinator\Value\Contract\InputedValueVisitor;
 
-final class InputValue implements InputedValue, \IteratorAggregate
+/**
+ * @implements \IteratorAggregate<ArgumentValue>
+ */
+final readonly class InputValue implements InputedValue, \IteratorAggregate
 {
     public function __construct(
-        private InputType $type,
-        private \stdClass $value,
+        public InputType $type,
+        public \stdClass $value,
     )
     {
     }
 
     #[\Override]
-    public function getRawValue(bool $forResolvers = false) : object
+    public function accept(InputedValueVisitor $visitor) : mixed
     {
-        $return = $forResolvers === true
-            ? new ($this->getType()->getDataClass())()
-            : new \stdClass();
+        return $visitor->visitInput($this);
+    }
 
-        foreach ((array) $this->value as $argumentName => $argumentValue) {
-            \assert($argumentValue instanceof ArgumentValue);
+    #[\Override]
+    public function getRawValue() : object
+    {
+        $return = new \stdClass();
 
-            // use separate hydrator?
-            $return->{$argumentName} = $argumentValue->getValue()->getRawValue($forResolvers); // @phpstan-ignore property.dynamicName
+        foreach ($this as $argumentName => $argumentValue) {
+            $return->{$argumentName} = $argumentValue->getValue()->getRawValue();
         }
 
         return $return;
@@ -40,93 +44,12 @@ final class InputValue implements InputedValue, \IteratorAggregate
         return $this->type;
     }
 
-    #[\Override]
-    public function printValue() : string
-    {
-        $component = [];
-
-        foreach ((array) $this->value as $argumentName => $argumentValue) {
-            \assert($argumentValue instanceof ArgumentValue);
-
-            $component[] = $argumentName . ':' . $argumentValue->getValue()->printValue();
-        }
-
-        return '{' . \implode(',', $component) . '}';
-    }
-
-    #[\Override]
-    public function applyVariables(VariableValueSet $variables) : void
-    {
-        foreach ((array) $this->value as $argumentValue) {
-            \assert($argumentValue instanceof ArgumentValue);
-
-            $argumentValue->applyVariables($variables);
-        }
-
-        foreach ($this->type->getDirectiveUsages() as $directiveUsage) {
-            $directive = $directiveUsage->getDirective();
-            \assert($directive instanceof InputObjectLocation);
-            $directive->resolveInputObject($directiveUsage->getArgumentValues(), $this);
-        }
-    }
-
-    #[\Override]
-    public function resolveRemainingDirectives() : void
-    {
-        foreach ((array) $this->value as $argumentValue) {
-            \assert($argumentValue instanceof ArgumentValue);
-
-            $argumentValue->resolveNonPureDirectives();
-        }
-    }
-
-    #[\Override]
-    public function isSame(Value $compare) : bool
-    {
-        if (!$compare instanceof self) {
-            return false;
-        }
-
-        $secondObject = $compare->value;
-
-        if (\count((array) $secondObject) !== \count((array) $this->value)) {
-            return false;
-        }
-
-        foreach ((array) $this->value as $argumentName => $argumentValue) {
-            \assert($argumentValue instanceof ArgumentValue);
-
-            if (!\property_exists($secondObject, $argumentName) ||
-                !$argumentValue->getValue()->isSame($secondObject->{$argumentName}->getValue())) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
+    /**
+     * @return \ArrayIterator<ArgumentValue>
+     */
     #[\Override]
     public function getIterator() : \ArrayIterator
     {
         return new \ArrayIterator((array) $this->value);
-    }
-
-    public function __isset(string $name) : bool
-    {
-        return \property_exists($this->value, $name);
-    }
-
-    public function __get(string $name) : ArgumentValue
-    {
-        return $this->value->{$name};
-    }
-
-    public function __set(string $name, ArgumentValue $value) : void
-    {
-        if ($value->getArgument() !== $this->type->getArguments()[$name]) {
-            throw new \Exception();
-        }
-
-        $this->value->{$name} = $value;
     }
 }

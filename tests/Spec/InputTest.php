@@ -11,6 +11,7 @@ use Graphpinator\Request\JsonRequestFactory;
 use Graphpinator\Value\Exception\InvalidValue;
 use Graphpinator\Value\Exception\ValueCannotBeNull;
 use Infinityloop\Utils\Json;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 final class InputTest extends TestCase
@@ -291,11 +292,7 @@ final class InputTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider simpleDataProvider
-     * @param Json $request
-     * @param Json $expected
-     */
+    #[DataProvider('simpleDataProvider')]
     public function testSimple(Json $request, Json $expected) : void
     {
         $graphpinator = new Graphpinator(TestSchema::getSchema());
@@ -304,11 +301,7 @@ final class InputTest extends TestCase
         self::assertSame($expected->toString(), $result->toString());
     }
 
-    /**
-     * @dataProvider invalidDataProvider
-     * @param Json $request
-     * @param string $exception
-     */
+    #[DataProvider('invalidDataProvider')]
     public function testInvalid(Json $request, string $exception) : void
     {
         $this->expectException($exception);

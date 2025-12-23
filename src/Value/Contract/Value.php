@@ -2,12 +2,13 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Value;
+namespace Graphpinator\Value\Contract;
 
 use Graphpinator\Typesystem\Contract\Type;
 
-interface ResolvedValue extends Value
+interface Value
 {
-    #[\Override]
+    public function getRawValue() : mixed; // @phpcs:ignore
+
     public function getType() : Type;
 }

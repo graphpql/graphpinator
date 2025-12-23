@@ -14,19 +14,25 @@ use Graphpinator\Typesystem\NotNullType;
 use Graphpinator\Typesystem\ScalarType;
 use Graphpinator\Typesystem\Type;
 use Graphpinator\Typesystem\UnionType;
+use Graphpinator\Value\Contract\OutputValue;
+use Graphpinator\Value\Contract\Value;
+use Graphpinator\Value\EnumValue;
 use Graphpinator\Value\ListIntermediateValue;
-use Graphpinator\Value\ListResolvedValue;
+use Graphpinator\Value\ListValue;
 use Graphpinator\Value\NullValue;
-use Graphpinator\Value\ResolvedValue;
+use Graphpinator\Value\ScalarValue;
 use Graphpinator\Value\TypeIntermediateValue;
 use Graphpinator\Value\TypeValue;
 use Graphpinator\Value\Visitor\CreateResolvedValueVisitor;
 
+/**
+ * @implements TypeVisitor<OutputValue>
+ */
 final class ResolveVisitor implements TypeVisitor
 {
     public function __construct(
         private ?SelectionSet $selectionSet,
-        private ResolvedValue $parentResult,
+        private Value $parentResult,
         private \stdClass $result = new \stdClass(),
     )
     {
@@ -64,25 +70,31 @@ final class ResolveVisitor implements TypeVisitor
     }
 
     #[\Override]
-    public function visitScalar(ScalarType $scalar) : ResolvedValue
+    public function visitScalar(ScalarType $scalar) : ScalarValue
     {
+        \assert($this->parentResult instanceof ScalarValue);
+        \assert($this->selectionSet === null);
+
         return $this->parentResult;
     }
 
     #[\Override]
-    public function visitEnum(EnumType $enum) : ResolvedValue
+    public function visitEnum(EnumType $enum) : EnumValue
     {
+        \assert($this->parentResult instanceof EnumValue);
+        \assert($this->selectionSet === null);
+
         return $this->parentResult;
     }
 
     #[\Override]
-    public function visitNotNull(NotNullType $notNull) : ResolvedValue
+    public function visitNotNull(NotNullType $notNull) : OutputValue
     {
         return $notNull->getInnerType()->accept($this);
     }
 
     #[\Override]
-    public function visitList(ListType $list) : ListResolvedValue
+    public function visitList(ListType $list) : ListValue
     {
         \assert($this->parentResult instanceof ListIntermediateValue);
 
@@ -95,6 +107,6 @@ final class ResolveVisitor implements TypeVisitor
                 : $value->getType()->accept(new self($this->selectionSet, $value));
         }
 
-        return new ListResolvedValue($list, $result);
+        return new ListValue($list, $result);
     }
 }

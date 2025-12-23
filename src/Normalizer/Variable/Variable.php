@@ -8,7 +8,7 @@ use Graphpinator\Normalizer\Directive\DirectiveSet;
 use Graphpinator\Normalizer\Exception\VariableTypeInputable;
 use Graphpinator\Typesystem\Contract\Type;
 use Graphpinator\Typesystem\Visitor\IsInputableVisitor;
-use Graphpinator\Value\InputedValue;
+use Graphpinator\Value\Contract\InputedValue;
 
 final readonly class Variable
 {

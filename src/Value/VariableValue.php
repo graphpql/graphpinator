@@ -10,6 +10,8 @@ use Graphpinator\Normalizer\VariableValueSet;
 use Graphpinator\Typesystem\Contract\Type;
 use Graphpinator\Typesystem\Visitor\IsInputableVisitor;
 use Graphpinator\Typesystem\Visitor\IsInstanceOfVisitor;
+use Graphpinator\Value\Contract\InputedValue;
+use Graphpinator\Value\Contract\InputedValueVisitor;
 
 final class VariableValue implements InputedValue
 {
@@ -29,9 +31,20 @@ final class VariableValue implements InputedValue
     }
 
     #[\Override]
-    public function getRawValue(bool $forResolvers = false) : mixed
+    public function accept(InputedValueVisitor $visitor) : mixed
     {
-        return $this->value->getRawValue($forResolvers);
+        return $visitor->visitVariable($this);
+    }
+
+    #[\Override]
+    public function getRawValue() : mixed
+    {
+        return $this->value->getRawValue();
+    }
+
+    public function setVariableValue(VariableValueSet $variables) : void
+    {
+        $this->value = $variables->get($this->variable->name);
     }
 
     public function getConcreteValue() : InputedValue
@@ -48,30 +61,5 @@ final class VariableValue implements InputedValue
     public function getType() : Type
     {
         return $this->type;
-    }
-
-    #[\Override]
-    public function printValue() : string
-    {
-        throw new \RuntimeException('Not implemented');
-    }
-
-    #[\Override]
-    public function applyVariables(VariableValueSet $variables) : void
-    {
-        $this->value = $variables->get($this->variable->name);
-    }
-
-    #[\Override]
-    public function resolveRemainingDirectives() : void
-    {
-        $this->value->resolveRemainingDirectives();
-    }
-
-    #[\Override]
-    public function isSame(Value $compare) : bool
-    {
-        return $compare instanceof self
-            && $compare->variable->name === $this->variable->name;
     }
 }

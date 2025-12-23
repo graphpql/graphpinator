@@ -34,6 +34,7 @@ use Graphpinator\Typesystem\Schema;
 use Graphpinator\Typesystem\Type;
 use Graphpinator\Value\ArgumentValueSet;
 use Infinityloop\Utils\Json;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 final class ModuleTest extends TestCase
@@ -337,9 +338,7 @@ final class ModuleTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider moduleDataProvider
-     */
+    #[DataProvider('moduleDataProvider')]
     public function testSimple(Module $module, int $expectedCount) : void
     {
         $query = new class extends Type {

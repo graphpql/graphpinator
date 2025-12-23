@@ -5,14 +5,28 @@ declare(strict_types = 1);
 namespace Graphpinator\Value;
 
 use Graphpinator\Typesystem\ListType;
+use Graphpinator\Value\Contract\InputedValue;
+use Graphpinator\Value\Contract\InputedValueVisitor;
+use Graphpinator\Value\Contract\OutputValue;
+use Graphpinator\Value\Contract\Value;
 
-abstract class ListValue implements Value, \IteratorAggregate
+/**
+ * @implements \IteratorAggregate<Value>
+ */
+final readonly class ListValue implements InputedValue, OutputValue, \IteratorAggregate
 {
     public function __construct(
-        protected ListType $type,
-        protected array $value,
+        public ListType $type,
+        /** @var list<Value> */
+        public array $value,
     )
     {
+    }
+
+    #[\Override]
+    public function accept(InputedValueVisitor $visitor) : mixed
+    {
+        return $visitor->visitList($this);
     }
 
     #[\Override]
@@ -22,20 +36,29 @@ abstract class ListValue implements Value, \IteratorAggregate
     }
 
     #[\Override]
-    public function getRawValue(bool $forResolvers = false) : array
+    public function getRawValue() : array
     {
         $return = [];
 
         foreach ($this->value as $listItem) {
-            $return[] = $listItem->getRawValue($forResolvers);
+            $return[] = $listItem->getRawValue();
         }
 
         return $return;
     }
 
+    /**
+     * @return \ArrayIterator<Value>
+     */
     #[\Override]
     public function getIterator() : \ArrayIterator
     {
         return new \ArrayIterator($this->value);
+    }
+
+    #[\Override]
+    public function jsonSerialize() : array
+    {
+        return $this->value;
     }
 }

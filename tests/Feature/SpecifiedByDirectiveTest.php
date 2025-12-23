@@ -15,6 +15,7 @@ use Graphpinator\Typesystem\ScalarType;
 use Graphpinator\Typesystem\Schema;
 use Graphpinator\Typesystem\Type;
 use Infinityloop\Utils\Json;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 final class SpecifiedByDirectiveTest extends TestCase
@@ -81,11 +82,7 @@ final class SpecifiedByDirectiveTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider typeDataProvider
-     * @param Json $request
-     * @param Json $expected
-     */
+    #[DataProvider('typeDataProvider')]
     public function testSpecifiedByDirective(Json $request, Json $expected) : void
     {
         $graphpinator = new Graphpinator($this->getSchema(), true);

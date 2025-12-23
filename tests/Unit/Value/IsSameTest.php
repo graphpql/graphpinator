@@ -9,9 +9,11 @@ use Graphpinator\Normalizer\Directive\DirectiveSet;
 use Graphpinator\Normalizer\Variable\Variable;
 use Graphpinator\Tests\Spec\TestSchema;
 use Graphpinator\Typesystem\Spec\StringType;
-use Graphpinator\Value\InputedValue;
+use Graphpinator\Value\Contract\InputedValue;
 use Graphpinator\Value\VariableValue;
 use Graphpinator\Value\Visitor\ConvertRawValueVisitor;
+use Graphpinator\Value\Visitor\IsValueSameVisitor;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 final class IsSameTest extends TestCase
@@ -191,14 +193,9 @@ final class IsSameTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider simpleDataProvider
-     * @param InputedValue $lhs
-     * @param InputedValue $rhs
-     * @param bool $result
-     */
+    #[DataProvider('simpleDataProvider')]
     public function testSimple(InputedValue $lhs, InputedValue $rhs, bool $result) : void
     {
-        self::assertSame($result, $lhs->isSame($rhs));
+        self::assertSame($result, $lhs->accept(new IsValueSameVisitor($rhs)));
     }
 }

@@ -6,6 +6,7 @@ namespace Graphpinator\Value;
 
 use Graphpinator\Typesystem\Location\ObjectLocation;
 use Graphpinator\Typesystem\Type;
+use Graphpinator\Value\Contract\OutputValue;
 
 final class TypeValue implements OutputValue
 {

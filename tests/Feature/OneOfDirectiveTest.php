@@ -14,7 +14,9 @@ use Graphpinator\Typesystem\Exception\OneOfInputInvalidFields;
 use Graphpinator\Typesystem\InputType;
 use Graphpinator\Typesystem\Visitor\ValidateIntegrityVisitor;
 use Graphpinator\Value\InputValue;
+use Graphpinator\Value\Visitor\ApplyVariablesVisitor;
 use Graphpinator\Value\Visitor\ConvertRawValueVisitor;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 final class OneOfDirectiveTest extends TestCase
@@ -112,16 +114,14 @@ final class OneOfDirectiveTest extends TestCase
         self::createInputWithNotNull()->accept(new ValidateIntegrityVisitor());
     }
 
-    /**
-     * @dataProvider invalidValueDataProvider
-     */
+    #[DataProvider('invalidValueDataProvider')]
     public function testCreateValueInvalid(\stdClass $rawValue, string $exception) : void
     {
         $this->expectException($exception);
 
         $value = self::createInput()->accept(new ConvertRawValueVisitor($rawValue, new Path()));
         \assert($value instanceof InputValue);
-        $value->applyVariables(new VariableValueSet([]));
+        $value->accept(new ApplyVariablesVisitor(new VariableValueSet([])));
     }
 
     public function testCreateValue() : void
@@ -131,14 +131,14 @@ final class OneOfDirectiveTest extends TestCase
 
         $value = self::createInput()->accept(new ConvertRawValueVisitor($rawValueOne, new Path()));
         \assert($value instanceof InputValue);
-        $value->applyVariables(new VariableValueSet([]));
+        $value->accept(new ApplyVariablesVisitor(new VariableValueSet([])));
 
         self::assertEquals($value->getRawValue(true), $rawValueOne);
         self::assertNotEquals($value->getRawValue(true), $rawValueTwo);
 
         $value = self::createInput()->accept(new ConvertRawValueVisitor($rawValueTwo, new Path()));
         \assert($value instanceof InputValue);
-        $value->applyVariables(new VariableValueSet([]));
+        $value->accept(new ApplyVariablesVisitor(new VariableValueSet([])));
 
         self::assertEquals($value->getRawValue(true), $rawValueTwo);
         self::assertNotEquals($value->getRawValue(true), $rawValueOne);

@@ -5,6 +5,8 @@ declare(strict_types = 1);
 namespace Graphpinator\Value;
 
 use Graphpinator\Normalizer\VariableValueSet;
+use Graphpinator\Value\Visitor\GetResolverValueVisitor;
+use Graphpinator\Value\Visitor\IsValueSameVisitor;
 use Infinityloop\Utils\ImplicitObjectMap;
 
 /**
@@ -20,7 +22,7 @@ final class ArgumentValueSet extends ImplicitObjectMap
         $return = [];
 
         foreach ($this as $name => $argumentValue) {
-            $return[$name] = $argumentValue->getValue()->getRawValue(true);
+            $return[$name] = $argumentValue->getValue()->accept(new GetResolverValueVisitor());
         }
 
         return $return;
@@ -37,14 +39,14 @@ final class ArgumentValueSet extends ImplicitObjectMap
     {
         foreach ($compare as $lhs) {
             if ($this->offsetExists($lhs->getArgument()->getName())) {
-                if ($lhs->getValue()->isSame($this->offsetGet($lhs->getArgument()->getName())->getValue())) {
+                if ($lhs->getValue()->accept(new IsValueSameVisitor($this->offsetGet($lhs->getArgument()->getName())->getValue()))) {
                     continue;
                 }
 
                 return false;
             }
 
-            if ($lhs->getValue()->isSame($lhs->getArgument()->getDefaultValue()?->getValue())) {
+            if ($lhs->getValue()->accept(new IsValueSameVisitor($lhs->getArgument()->getDefaultValue()?->getValue()))) {
                 continue;
             }
 
@@ -53,7 +55,7 @@ final class ArgumentValueSet extends ImplicitObjectMap
 
         foreach ($this as $lhs) {
             if ($compare->offsetExists($lhs->getArgument()->getName()) ||
-                $lhs->getValue()->isSame($lhs->getArgument()->getDefaultValue()?->getValue())) {
+                $lhs->getValue()->accept(new IsValueSameVisitor($lhs->getArgument()->getDefaultValue()?->getValue()))) {
                 continue;
             }
 

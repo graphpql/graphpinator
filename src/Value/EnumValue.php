@@ -4,8 +4,10 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Value;
 
-use Graphpinator\Normalizer\VariableValueSet;
 use Graphpinator\Typesystem\EnumType;
+use Graphpinator\Value\Contract\InputedValue;
+use Graphpinator\Value\Contract\InputedValueVisitor;
+use Graphpinator\Value\Contract\OutputValue;
 use Graphpinator\Value\Exception\InvalidValue;
 
 final readonly class EnumValue implements InputedValue, OutputValue
@@ -22,7 +24,13 @@ final readonly class EnumValue implements InputedValue, OutputValue
     }
 
     #[\Override]
-    public function getRawValue(bool $forResolvers = false) : string|\BackedEnum
+    public function accept(InputedValueVisitor $visitor) : mixed
+    {
+        return $visitor->visitEnum($this);
+    }
+
+    #[\Override]
+    public function getRawValue() : string|\BackedEnum
     {
         return $this->rawValue;
     }
@@ -37,31 +45,6 @@ final readonly class EnumValue implements InputedValue, OutputValue
     public function jsonSerialize() : string
     {
         return self::coerceOutput($this->rawValue);
-    }
-
-    #[\Override]
-    public function printValue() : string
-    {
-        return self::coerceOutput($this->rawValue);
-    }
-
-    #[\Override]
-    public function applyVariables(VariableValueSet $variables) : void
-    {
-        // nothing here
-    }
-
-    #[\Override]
-    public function resolveRemainingDirectives() : void
-    {
-        // nothing here
-    }
-
-    #[\Override]
-    public function isSame(Value $compare) : bool
-    {
-        return $compare instanceof self
-            && $this->rawValue === $compare->getRawValue();
     }
 
     private static function coerceInput(EnumType $type, mixed $rawValue, bool $inputed) : string|\BackedEnum

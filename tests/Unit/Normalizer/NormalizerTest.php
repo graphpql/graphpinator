@@ -38,6 +38,7 @@ use Graphpinator\Typesystem\NotNullType;
 use Graphpinator\Typesystem\Spec\IncludeDirective;
 use Graphpinator\Typesystem\Spec\SkipDirective;
 use Graphpinator\Typesystem\Visitor\GetNamedTypeVisitor;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 final class NormalizerTest extends TestCase
@@ -359,11 +360,7 @@ final class NormalizerTest extends TestCase
         );
     }
 
-    /**
-     * @dataProvider invalidDataProvider
-     * @param ParsedRequest $parseResult
-     * @param string $exception
-     */
+    #[DataProvider('invalidDataProvider')]
     public function testInvalid(ParsedRequest $parseResult, string $exception) : void
     {
         $this->expectException($exception);

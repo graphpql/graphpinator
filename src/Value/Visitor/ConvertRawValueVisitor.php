@@ -18,13 +18,13 @@ use Graphpinator\Typesystem\Type;
 use Graphpinator\Typesystem\UnionType;
 use Graphpinator\Typesystem\Visitor\IsInputableVisitor;
 use Graphpinator\Value\ArgumentValue;
+use Graphpinator\Value\Contract\InputedValue;
 use Graphpinator\Value\EnumValue;
 use Graphpinator\Value\Exception\InvalidValue;
 use Graphpinator\Value\Exception\ValueCannotBeNull;
 use Graphpinator\Value\Exception\ValueCannotBeOmitted;
 use Graphpinator\Value\InputValue;
-use Graphpinator\Value\InputedValue;
-use Graphpinator\Value\ListInputedValue;
+use Graphpinator\Value\ListValue;
 use Graphpinator\Value\NullValue;
 use Graphpinator\Value\ScalarValue;
 
@@ -171,7 +171,7 @@ final readonly class ConvertRawValueVisitor implements TypeVisitor
             $this->path->pop();
         }
 
-        return new ListInputedValue($list, $inner);
+        return new ListValue($list, $inner);
     }
 
     private static function mergeRaw(\stdClass $core, \stdClass $supplement) : \stdClass

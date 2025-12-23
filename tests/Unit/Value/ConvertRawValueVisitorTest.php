@@ -19,7 +19,7 @@ use Graphpinator\Value\EnumValue;
 use Graphpinator\Value\Exception\InvalidValue;
 use Graphpinator\Value\Exception\ValueCannotBeNull;
 use Graphpinator\Value\InputValue;
-use Graphpinator\Value\ListInputedValue;
+use Graphpinator\Value\ListValue;
 use Graphpinator\Value\NullValue;
 use Graphpinator\Value\ScalarValue;
 use Graphpinator\Value\Visitor\ConvertRawValueVisitor;
@@ -152,7 +152,7 @@ final class ConvertRawValueVisitorTest extends TestCase
         $visitor = new ConvertRawValueVisitor([1, 2, 3], new Path());
         $result = $list->accept($visitor);
 
-        self::assertInstanceOf(ListInputedValue::class, $result);
+        self::assertInstanceOf(ListValue::class, $result);
         self::assertCount(3, $result->getRawValue());
     }
 
@@ -162,7 +162,7 @@ final class ConvertRawValueVisitorTest extends TestCase
         $visitor = new ConvertRawValueVisitor(123, new Path());
         $result = $list->accept($visitor);
 
-        self::assertInstanceOf(ListInputedValue::class, $result);
+        self::assertInstanceOf(ListValue::class, $result);
         self::assertCount(1, $result->getRawValue());
     }
 
@@ -181,7 +181,7 @@ final class ConvertRawValueVisitorTest extends TestCase
         $visitor = new ConvertRawValueVisitor([[1, 2], [3, 4]], new Path());
         $result = $list->accept($visitor);
 
-        self::assertInstanceOf(ListInputedValue::class, $result);
+        self::assertInstanceOf(ListValue::class, $result);
         self::assertCount(2, $result->getRawValue());
     }
 
@@ -191,7 +191,7 @@ final class ConvertRawValueVisitorTest extends TestCase
         $visitor = new ConvertRawValueVisitor([1, 2, 3], new Path());
         $result = $notNullList->accept($visitor);
 
-        self::assertInstanceOf(ListInputedValue::class, $result);
+        self::assertInstanceOf(ListValue::class, $result);
     }
 
     public function testNotNullListWithNull() : void
@@ -209,7 +209,7 @@ final class ConvertRawValueVisitorTest extends TestCase
         $visitor = new ConvertRawValueVisitor([1, 2, 3], new Path());
         $result = $listOfNotNull->accept($visitor);
 
-        self::assertInstanceOf(ListInputedValue::class, $result);
+        self::assertInstanceOf(ListValue::class, $result);
     }
 
     public function testListOfNotNullWithNullItem() : void

@@ -16,6 +16,7 @@ use Graphpinator\Typesystem\InputType;
 use Graphpinator\Typesystem\Schema;
 use Graphpinator\Typesystem\Type;
 use Infinityloop\Utils\Json;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 final class InputTypeCoercionTest extends TestCase
@@ -60,9 +61,7 @@ final class InputTypeCoercionTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider inputObjectDataProvider
-     */
+    #[DataProvider('inputObjectDataProvider')]
     public function testInputObject(string $query, string $expected) : void
     {
         $request = Json::fromNative((object) [

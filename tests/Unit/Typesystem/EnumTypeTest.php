@@ -8,6 +8,7 @@ use Graphpinator\Common\Path;
 use Graphpinator\Typesystem\EnumType;
 use Graphpinator\Value\Exception\InvalidValue;
 use Graphpinator\Value\Visitor\ConvertRawValueVisitor;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 final class EnumTypeTest extends TestCase
@@ -34,10 +35,7 @@ final class EnumTypeTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider simpleDataProvider
-     * @param string|null $rawValue
-     */
+    #[DataProvider('simpleDataProvider')]
     public function testValidateValue($rawValue) : void
     {
         $enum = $this->createTestEnum();
@@ -47,10 +45,7 @@ final class EnumTypeTest extends TestCase
         self::assertSame($rawValue, $value->getRawValue());
     }
 
-    /**
-     * @dataProvider invalidDataProvider
-     * @param int|float|string|bool|array $rawValue
-     */
+    #[DataProvider('invalidDataProvider')]
     public function testValidateValueInvalid($rawValue) : void
     {
         $this->expectException(InvalidValue::class);

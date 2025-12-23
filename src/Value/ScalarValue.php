@@ -4,8 +4,10 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Value;
 
-use Graphpinator\Normalizer\VariableValueSet;
 use Graphpinator\Typesystem\ScalarType;
+use Graphpinator\Value\Contract\InputedValue;
+use Graphpinator\Value\Contract\InputedValueVisitor;
+use Graphpinator\Value\Contract\OutputValue;
 use Graphpinator\Value\Exception\InvalidValue;
 
 final class ScalarValue implements InputedValue, OutputValue
@@ -25,11 +27,15 @@ final class ScalarValue implements InputedValue, OutputValue
     }
 
     #[\Override]
-    public function getRawValue(bool $forResolvers = false) : mixed
+    public function accept(InputedValueVisitor $visitor) : mixed
     {
-        return ($forResolvers && $this->hasResolverValue)
-            ? $this->resolverValue
-            : $this->rawValue;
+        return $visitor->visitScalar($this);
+    }
+
+    #[\Override]
+    public function getRawValue() : mixed
+    {
+        return $this->rawValue;
     }
 
     #[\Override]
@@ -42,34 +48,6 @@ final class ScalarValue implements InputedValue, OutputValue
     public function jsonSerialize() : string|int|float|bool
     {
         return $this->type->coerceOutput($this->rawValue);
-    }
-
-    #[\Override]
-    public function printValue() : string
-    {
-        return \json_encode($this->jsonSerialize(), \JSON_THROW_ON_ERROR |
-            \JSON_UNESCAPED_UNICODE |
-            \JSON_UNESCAPED_SLASHES |
-            \JSON_PRESERVE_ZERO_FRACTION);
-    }
-
-    #[\Override]
-    public function applyVariables(VariableValueSet $variables) : void
-    {
-        // nothing here
-    }
-
-    #[\Override]
-    public function resolveRemainingDirectives() : void
-    {
-        // nothing here
-    }
-
-    #[\Override]
-    public function isSame(Value $compare) : bool
-    {
-        return $compare instanceof self
-            && $this->rawValue === $compare->getRawValue();
     }
 
     public function setResolverValue(mixed $value) : void

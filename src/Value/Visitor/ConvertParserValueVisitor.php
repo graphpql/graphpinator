@@ -22,11 +22,11 @@ use Graphpinator\Typesystem\ListType;
 use Graphpinator\Typesystem\NotNullType;
 use Graphpinator\Typesystem\Visitor\IsInputableVisitor;
 use Graphpinator\Value\ArgumentValue;
+use Graphpinator\Value\Contract\InputedValue;
 use Graphpinator\Value\Exception\InvalidValue;
 use Graphpinator\Value\Exception\ValueCannotBeNull;
 use Graphpinator\Value\InputValue;
-use Graphpinator\Value\InputedValue;
-use Graphpinator\Value\ListInputedValue;
+use Graphpinator\Value\ListValue;
 use Graphpinator\Value\VariableValue;
 
 final readonly class ConvertParserValueVisitor implements ValueVisitor
@@ -61,7 +61,7 @@ final readonly class ConvertParserValueVisitor implements ValueVisitor
     }
 
     #[\Override]
-    public function visitListVal(ListVal $listVal) : ListInputedValue
+    public function visitListVal(ListVal $listVal) : ListValue
     {
         if ($this->type instanceof NotNullType) {
             return $listVal->accept(new self($this->type->getInnerType(), $this->variableSet, $this->path));
@@ -80,7 +80,7 @@ final readonly class ConvertParserValueVisitor implements ValueVisitor
             $this->path->pop();
         }
 
-        return new ListInputedValue($this->type, $inner);
+        return new ListValue($this->type, $inner);
     }
 
     #[\Override]
