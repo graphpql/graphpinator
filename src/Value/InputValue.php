@@ -15,6 +15,7 @@ final readonly class InputValue implements InputedValue, \IteratorAggregate
 {
     public function __construct(
         public InputType $type,
+        /** @var \stdClass{...ArgumentValue} */
         public \stdClass $value,
     )
     {

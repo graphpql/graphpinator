@@ -12,6 +12,7 @@ final readonly class TypeValue implements OutputValue
 {
     public function __construct(
         public Type $type,
+        /** @var \stdClass{...FieldValue} */
         public \stdClass $value,
         public TypeIntermediateValue $intermediateValue,
     )
