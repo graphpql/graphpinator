@@ -22,8 +22,10 @@ final class ScalarValue implements InputedValue, OutputValue
         bool $inputed,
     )
     {
-        $this->rawValue = $type->validateAndCoerceInput($rawValue)
-            ?? throw new InvalidValue($type, $rawValue, $inputed);
+        $this->rawValue = $inputed
+            ? $type->validateAndCoerceInput($rawValue)
+                ?? throw new InvalidValue($type, $rawValue, true)
+            : $rawValue;
     }
 
     #[\Override]
