@@ -6,6 +6,7 @@ namespace Graphpinator\Tests\Spec;
 
 use Graphpinator\Graphpinator;
 use Graphpinator\Request\JsonRequestFactory;
+use Graphpinator\Typesystem\Spec\DeprecatedDirective;
 use Infinityloop\Utils\Json;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -446,7 +447,7 @@ final class IntrospectionTest extends TestCase
                                     'name' => 'B',
                                     'description' => null,
                                     'isDeprecated' => true,
-                                    'deprecationReason' => null,
+                                    'deprecationReason' => DeprecatedDirective::DEFAULT_MESSAGE,
                                 ],
                                 [
                                     'name' => 'C',
@@ -566,7 +567,7 @@ final class IntrospectionTest extends TestCase
                                     'name' => 'fieldXyz',
                                     'description' => null,
                                     'isDeprecated' => true,
-                                    'deprecationReason' => null,
+                                    'deprecationReason' => DeprecatedDirective::DEFAULT_MESSAGE,
                                     'type' => ['name' => 'Xyz'],
                                     'args' => [
                                         [
@@ -833,7 +834,7 @@ final class IntrospectionTest extends TestCase
                             'name' => 'B',
                             'description' => null,
                             'isDeprecated' => true,
-                            'deprecationReason' => null,
+                            'deprecationReason' => DeprecatedDirective::DEFAULT_MESSAGE,
                         ],
                         [
                             'name' => 'C',

@@ -6,6 +6,7 @@ namespace Graphpinator\Tests\Unit\Typesystem;
 
 use Graphpinator\Common\Path;
 use Graphpinator\Typesystem\EnumType;
+use Graphpinator\Typesystem\Spec\DeprecatedDirective;
 use Graphpinator\Value\Exception\InvalidValue;
 use Graphpinator\Value\Visitor\ConvertRawValueVisitor;
 use PHPUnit\Framework\Attributes\DataProvider;

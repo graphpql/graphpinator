@@ -12,7 +12,7 @@ use Graphpinator\Typesystem\Spec\DeprecatedDirective;
  */
 trait TDeprecatable
 {
-    public function setDeprecated(?string $reason = null) : self
+    public function setDeprecated(string $reason = DeprecatedDirective::DEFAULT_MESSAGE) : self
     {
         $this->addDirective(
             Container::directiveDeprecated(),
@@ -41,7 +41,7 @@ trait TDeprecatable
 
                 return \is_string($value)
                     ? $value
-                    : null;
+                    : DeprecatedDirective::DEFAULT_MESSAGE;
             }
         }
 

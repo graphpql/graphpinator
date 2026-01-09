@@ -28,6 +28,7 @@ use Graphpinator\Typesystem\Exception\InterfaceContractMissingField;
 use Graphpinator\Typesystem\Exception\InterfaceContractNewArgumentWithoutDefault;
 use Graphpinator\Typesystem\Exception\InterfaceCycleDetected;
 use Graphpinator\Typesystem\Exception\InterfaceOrTypeMustDefineOneOrMoreFields;
+use Graphpinator\Typesystem\Exception\NameMustNotStartWithDoubleUnderscore;
 use Graphpinator\Typesystem\Exception\RootOperationTypesMustBeDifferent;
 use Graphpinator\Typesystem\Exception\RootOperationTypesMustBeWithinContainer;
 use Graphpinator\Typesystem\Exception\UnionTypeMustDefineOneOrMoreTypes;

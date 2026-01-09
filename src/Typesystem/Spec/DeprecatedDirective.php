@@ -25,6 +25,7 @@ final class DeprecatedDirective extends Directive implements
     EnumItemLocation,
     ArgumentDefinitionLocation
 {
+    public const DEFAULT_MESSAGE = 'No longer supported';
     protected const NAME = 'deprecated';
 
     #[\Override]
@@ -90,7 +91,7 @@ final class DeprecatedDirective extends Directive implements
     {
         return new ArgumentSet([
             Argument::create('reason', Container::String()->notNull())
-                ->setDefaultValue('No longer supported'),
+                ->setDefaultValue(self::DEFAULT_MESSAGE),
         ]);
     }
 }

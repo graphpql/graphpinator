@@ -15,6 +15,7 @@ use Graphpinator\Typesystem\Field\ResolvableField;
 use Graphpinator\Typesystem\Field\ResolvableFieldSet;
 use Graphpinator\Typesystem\InputType;
 use Graphpinator\Typesystem\Schema;
+use Graphpinator\Typesystem\Spec\DeprecatedDirective;
 use Graphpinator\Typesystem\Type;
 use Infinityloop\Utils\Json;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -160,11 +161,11 @@ final class DeprecatedDirectiveTest extends TestCase
                             'fields' => [
                                 [
                                     'isDeprecated' => true,
-                                    'deprecationReason' => null,
+                                    'deprecationReason' => DeprecatedDirective::DEFAULT_MESSAGE,
                                     'args' => [
                                         [
                                             'isDeprecated' => true,
-                                            'deprecationReason' => null,
+                                            'deprecationReason' => DeprecatedDirective::DEFAULT_MESSAGE,
                                         ],
                                     ],
                                 ],
@@ -237,7 +238,7 @@ final class DeprecatedDirectiveTest extends TestCase
                             'fields' => [
                                 [
                                     'isDeprecated' => true,
-                                    'deprecationReason' => null,
+                                    'deprecationReason' => DeprecatedDirective::DEFAULT_MESSAGE,
                                     'args' => [],
                                 ],
                                 [
@@ -302,7 +303,7 @@ final class DeprecatedDirectiveTest extends TestCase
                             'inputFields' => [
                                 [
                                     'isDeprecated' => true,
-                                    'deprecationReason' => null,
+                                    'deprecationReason' => DeprecatedDirective::DEFAULT_MESSAGE,
                                 ],
                                 [
                                     'isDeprecated' => true,
