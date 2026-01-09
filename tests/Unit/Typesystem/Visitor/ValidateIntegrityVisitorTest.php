@@ -12,6 +12,7 @@ use Graphpinator\Typesystem\Directive;
 use Graphpinator\Typesystem\EnumItem\EnumItem;
 use Graphpinator\Typesystem\EnumItem\EnumItemSet;
 use Graphpinator\Typesystem\EnumType;
+use Graphpinator\Typesystem\Exception\ArgumentDefaultValueCycleDetected;
 use Graphpinator\Typesystem\Exception\ArgumentInvalidTypeUsage;
 use Graphpinator\Typesystem\Exception\DirectiveIncorrectType;
 use Graphpinator\Typesystem\Exception\DuplicateNonRepeatableDirective;
@@ -1404,5 +1405,48 @@ final class ValidateIntegrityVisitorTest extends TestCase
 
         $this->expectException(NameMustNotStartWithDoubleUnderscore::class);
         $directive->accept(new ValidateIntegrityVisitor());
+    }
+
+    public function testArgumentDefaultValueCycleDetected() : void
+    {
+        $inputA = new class extends InputType {
+            protected const NAME = 'InputA';
+
+            public InputType|null $inputB = null;
+
+            #[\Override]
+            protected function getFieldDefinition() : ArgumentSet
+            {
+                return new ArgumentSet([
+                    Argument::create('field', $this->inputB)
+                        ->setDefaultValue(new \stdClass()),
+                ]);
+            }
+        };
+
+        $inputB = new class ($inputA) extends InputType {
+            protected const NAME = 'InputB';
+
+            public function __construct(
+                private InputType $inputA,
+            )
+            {
+                parent::__construct();
+            }
+
+            #[\Override]
+            protected function getFieldDefinition() : ArgumentSet
+            {
+                return new ArgumentSet([
+                    Argument::create('field', $this->inputA)
+                        ->setDefaultValue(new \stdClass()),
+                ]);
+            }
+        };
+
+        $inputA->inputB = $inputB;
+
+        $this->expectException(ArgumentDefaultValueCycleDetected::class);
+        $inputA->accept(new ValidateIntegrityVisitor());
     }
 }

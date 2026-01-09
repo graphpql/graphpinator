@@ -9,6 +9,7 @@ use Graphpinator\Typesystem\Contract\NamedType;
 use Graphpinator\Typesystem\Contract\NamedTypeVisitor;
 use Graphpinator\Typesystem\DirectiveUsage\DirectiveUsage;
 use Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet;
+use Graphpinator\Typesystem\Exception\ArgumentDefaultValueCycleDetected;
 use Graphpinator\Typesystem\Location\InputObjectLocation;
 use Graphpinator\Typesystem\Spec\OneOfDirective;
 use Graphpinator\Typesystem\Utils\THasDirectives;
@@ -20,6 +21,7 @@ abstract class InputType extends NamedType
     protected const DATA_CLASS = \stdClass::class;
 
     protected ?ArgumentSet $arguments = null;
+    private bool $isLoadingArguments = false;
 
     public function __construct()
     {
@@ -29,6 +31,11 @@ abstract class InputType extends NamedType
     final public function getArguments() : ArgumentSet
     {
         if (!$this->arguments instanceof ArgumentSet) {
+            if ($this->isLoadingArguments) {
+                throw new ArgumentDefaultValueCycleDetected($this->getName());
+            }
+
+            $this->isLoadingArguments = true;
             $this->arguments = $this->getFieldDefinition();
             $this->afterGetFieldDefinition();
         }
