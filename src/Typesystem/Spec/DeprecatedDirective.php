@@ -13,6 +13,7 @@ use Graphpinator\Typesystem\Field\Field;
 use Graphpinator\Typesystem\Location\ArgumentDefinitionLocation;
 use Graphpinator\Typesystem\Location\EnumItemLocation;
 use Graphpinator\Typesystem\Location\FieldDefinitionLocation;
+use Graphpinator\Typesystem\NotNullType;
 use Graphpinator\Value\ArgumentValue;
 use Graphpinator\Value\ArgumentValueSet;
 use Graphpinator\Value\Contract\Value;
@@ -71,6 +72,10 @@ final class DeprecatedDirective extends Directive implements
     #[\Override]
     public function validateArgumentUsage(Argument $argument, ArgumentValueSet $arguments) : bool
     {
+        if ($argument->getType() instanceof NotNullType) {
+            return $argument->getDefaultValue() instanceof ArgumentValue;
+        }
+
         return true;
     }
 
@@ -84,7 +89,8 @@ final class DeprecatedDirective extends Directive implements
     protected function getFieldDefinition() : ArgumentSet
     {
         return new ArgumentSet([
-            new Argument('reason', Container::String()),
+            Argument::create('reason', Container::String()->notNull())
+                ->setDefaultValue('No longer supported'),
         ]);
     }
 }
