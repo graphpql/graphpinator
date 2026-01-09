@@ -1330,4 +1330,78 @@ final class ValidateIntegrityVisitorTest extends TestCase
         $this->expectExceptionMessage(DirectiveIncorrectType::MESSAGE);
         $type->accept(new ValidateIntegrityVisitor());
     }
+
+    public function testDeprecatedDirectiveOnRequiredArgumentWithoutDefault() : void
+    {
+        $argument = Argument::create('name', Container::String()->notNull());
+        $argument->addDirective(Container::directiveDeprecated(), ['reason' => 'Use newName instead']);
+
+        $this->expectException(DirectiveIncorrectType::class);
+        $argument->accept(new ValidateIntegrityVisitor());
+    }
+
+    public function testDeprecatedDirectiveOnRequiredArgumentWithDefault() : void
+    {
+        $argument = Argument::create('name', Container::String()->notNull())
+            ->setDefaultValue('defaultValue');
+        $argument->addDirective(Container::directiveDeprecated(), ['reason' => 'Use newName instead']);
+
+        $result = $argument->accept(new ValidateIntegrityVisitor());
+        self::assertNull($result);
+    }
+
+    public function testDeprecatedDirectiveOnOptionalArgument() : void
+    {
+        $argument = Argument::create('name', Container::String());
+        $argument->addDirective(Container::directiveDeprecated(), ['reason' => 'Use newName instead']);
+
+        $result = $argument->accept(new ValidateIntegrityVisitor());
+        self::assertNull($result);
+    }
+
+    public function testFieldNameStartsWithDoubleUnderscore() : void
+    {
+        $type = new class extends Type {
+            protected const NAME = 'TestType';
+
+            public function validateNonNullValue($rawValue) : bool
+            {
+                return true;
+            }
+
+            protected function getFieldDefinition() : ResolvableFieldSet
+            {
+                return new ResolvableFieldSet([
+                    new ResolvableField('__invalidField', Container::String(), static fn() => 'value'),
+                ]);
+            }
+        };
+
+        $this->expectException(NameMustNotStartWithDoubleUnderscore::class);
+        $type->accept(new ValidateIntegrityVisitor());
+    }
+
+    public function testArgumentNameStartsWithDoubleUnderscore() : void
+    {
+        $argument = Argument::create('__invalidArg', Container::String());
+
+        $this->expectException(NameMustNotStartWithDoubleUnderscore::class);
+        $argument->accept(new ValidateIntegrityVisitor());
+    }
+
+    public function testDirectiveNameStartsWithDoubleUnderscore() : void
+    {
+        $directive = new class extends Directive {
+            protected const NAME = '__invalidDirective';
+
+            #[\Override]
+            protected function getFieldDefinition() : ArgumentSet
+            {
+                return new ArgumentSet([]);
+            }
+        };
+
+        $this->expectException(NameMustNotStartWithDoubleUnderscore::class);
+        $directive->accept(new ValidateIntegrityVisitor());
+    }
 }
