@@ -7,6 +7,7 @@ namespace Graphpinator\Typesystem\Visitor;
 use Graphpinator\Typesystem\Argument\Argument;
 use Graphpinator\Typesystem\Container;
 use Graphpinator\Typesystem\Contract\ComponentVisitor;
+use Graphpinator\Typesystem\Contract\Directive as DirectiveContract;
 use Graphpinator\Typesystem\Directive;
 use Graphpinator\Typesystem\DirectiveUsage\DirectiveUsage;
 use Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet;
@@ -14,6 +15,7 @@ use Graphpinator\Typesystem\EnumItem\EnumItem;
 use Graphpinator\Typesystem\EnumType;
 use Graphpinator\Typesystem\Exception\ArgumentDirectiveNotContravariant;
 use Graphpinator\Typesystem\Exception\ArgumentInvalidTypeUsage;
+use Graphpinator\Typesystem\Exception\DirectiveCycleDetected;
 use Graphpinator\Typesystem\Exception\DirectiveIncorrectType;
 use Graphpinator\Typesystem\Exception\DuplicateNonRepeatableDirective;
 use Graphpinator\Typesystem\Exception\EnumItemInvalid;
@@ -310,6 +312,12 @@ final readonly class ValidateIntegrityVisitor implements ComponentVisitor
             throw new NameMustNotStartWithDoubleUnderscore($directive->getName());
         }
 
+        foreach ($directive->getArguments() as $argument) {
+            $argument->accept($this);
+        }
+
+        self::validateDirectiveCycles($directive);
+
         return null;
     }
 
@@ -598,5 +606,54 @@ final readonly class ValidateIntegrityVisitor implements ComponentVisitor
         }
 
         return false;
+    }
+
+    /**
+     * @param DirectiveContract $directive
+     * @param array<string, true> $stack
+     */
+    private static function validateDirectiveCycles(DirectiveContract $directive, array $stack = []) : void
+    {
+        if (\array_key_exists($directive->getName(), $stack)) {
+            throw new DirectiveCycleDetected(\array_keys($stack));
+        }
+
+        $stack[$directive->getName()] = true;
+
+        foreach ($directive->getArguments() as $argument) {
+            self::validateDirectiveCyclesInArgument($argument, $stack);
+        }
+
+        unset($stack[$directive->getName()]);
+    }
+
+    /**
+     * @param Argument $argument
+     * @param array<string, true> $stack
+     * @param array<string, true> $visitedInputTypes
+     */
+    private static function validateDirectiveCyclesInArgument(Argument $argument, array $stack, array $visitedInputTypes = []) : void
+    {
+        foreach ($argument->getDirectiveUsages() as $usage) {
+            self::validateDirectiveCycles($usage->getDirective(), $stack);
+        }
+
+        $argumentType = $argument->getType()->accept(new GetNamedTypeVisitor());
+
+        if (!$argumentType instanceof InputType) {
+            return;
+        }
+
+        // Prevent infinite recursion when traversing InputType
+        if (\array_key_exists($argumentType->getName(), $visitedInputTypes)) {
+            return;
+        }
+
+        $visitedInputTypes[$argumentType->getName()] = true;
+
+        // Check directives and arguments within the InputType
+        foreach ($argumentType->getArguments() as $nestedArgument) {
+            self::validateDirectiveCyclesInArgument($nestedArgument, $stack, $visitedInputTypes);
+        }
     }
 }

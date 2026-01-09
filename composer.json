@@ -23,7 +23,7 @@
   },
   "require-dev": {
     "guzzlehttp/psr7": "^2.8",
-    "infection/infection": "^0.29 || ^0.31",
+    "infection/infection": "^0.31 || ^0.32",
     "infinityloop-dev/graphpinator-tokenizer": "^1.3",
     "phpstan/extension-installer": "^1.4",
     "phpstan/phpstan": "^2.0",
@@ -51,8 +51,8 @@
       "Composer\\Config::disableProcessTimeout",
       "infection -j$(nproc)"
     ],
-    "phpstan": "phpstan analyze --level 4 src",
-    "phpstan-next": "phpstan analyze --level 5 src",
+    "phpstan": "phpstan analyze --level 5 src",
+    "phpstan-next": "phpstan analyze --level 6 src",
     "phpstan-max": "phpstan analyze --level max src",
     "codestyle": "phpcs --extensions=php src tests",
     "codestyle-fix": "phpcbf --extensions=php src tests",

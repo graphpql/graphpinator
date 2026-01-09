@@ -14,6 +14,7 @@ use Graphpinator\Typesystem\EnumItem\EnumItemSet;
 use Graphpinator\Typesystem\EnumType;
 use Graphpinator\Typesystem\Exception\ArgumentDefaultValueCycleDetected;
 use Graphpinator\Typesystem\Exception\ArgumentInvalidTypeUsage;
+use Graphpinator\Typesystem\Exception\DirectiveCycleDetected;
 use Graphpinator\Typesystem\Exception\DirectiveIncorrectType;
 use Graphpinator\Typesystem\Exception\DuplicateNonRepeatableDirective;
 use Graphpinator\Typesystem\Exception\EnumItemInvalid;
@@ -40,6 +41,7 @@ use Graphpinator\Typesystem\Field\ResolvableFieldSet;
 use Graphpinator\Typesystem\InputType;
 use Graphpinator\Typesystem\InterfaceSet;
 use Graphpinator\Typesystem\InterfaceType;
+use Graphpinator\Typesystem\Location\ArgumentDefinitionLocation;
 use Graphpinator\Typesystem\Location\InputObjectLocation;
 use Graphpinator\Typesystem\Location\ObjectLocation;
 use Graphpinator\Typesystem\NotNullType;
@@ -49,6 +51,7 @@ use Graphpinator\Typesystem\Type;
 use Graphpinator\Typesystem\TypeSet;
 use Graphpinator\Typesystem\UnionType;
 use Graphpinator\Typesystem\Visitor\ValidateIntegrityVisitor;
+use Graphpinator\Value\ArgumentValue;
 use Graphpinator\Value\ArgumentValueSet;
 use Graphpinator\Value\InputValue;
 use Graphpinator\Value\TypeValue;
@@ -1448,5 +1451,462 @@ final class ValidateIntegrityVisitorTest extends TestCase
 
         $this->expectException(ArgumentDefaultValueCycleDetected::class);
         $inputA->accept(new ValidateIntegrityVisitor());
+    }
+
+    public function testDirectiveCycleDetectedSimple() : void
+    {
+        $directiveA = new class extends Directive implements ArgumentDefinitionLocation {
+            protected const NAME = 'DirectiveA';
+
+            public Directive|null $directiveB = null;
+
+            #[\Override]
+            public static function isPure() : bool
+            {
+                return true;
+            }
+
+            #[\Override]
+            public function validateArgumentUsage(Argument $argument, ArgumentValueSet $arguments) : bool
+            {
+                return true;
+            }
+
+            #[\Override]
+            public function validateVariance(?ArgumentValueSet $biggerSet, ?ArgumentValueSet $smallerSet) : void
+            {
+            }
+
+            #[\Override]
+            public function resolveArgumentDefinition(ArgumentValueSet $arguments, ArgumentValue $argumentValue) : void
+            {
+            }
+
+            #[\Override]
+            protected function getFieldDefinition() : ArgumentSet
+            {
+                return new ArgumentSet([
+                    new Argument('arg', Container::String()),
+                ]);
+            }
+
+            #[\Override]
+            protected function afterGetFieldDefinition() : void
+            {
+                if ($this->directiveB !== null) {
+                    $arg = new Argument('arg', Container::String());
+                    $arg->addDirective($this->directiveB);
+                    $this->arguments = new ArgumentSet([$arg]);
+                }
+            }
+        };
+
+        $directiveB = new class ($directiveA) extends Directive implements ArgumentDefinitionLocation {
+            protected const NAME = 'DirectiveB';
+
+            public function __construct(
+                private Directive $directiveA,
+            )
+            {
+            }
+
+            #[\Override]
+            public static function isPure() : bool
+            {
+                return true;
+            }
+
+            #[\Override]
+            public function validateArgumentUsage(Argument $argument, ArgumentValueSet $arguments) : bool
+            {
+                return true;
+            }
+
+            #[\Override]
+            public function validateVariance(?ArgumentValueSet $biggerSet, ?ArgumentValueSet $smallerSet) : void
+            {
+            }
+
+            #[\Override]
+            public function resolveArgumentDefinition(ArgumentValueSet $arguments, ArgumentValue $argumentValue) : void
+            {
+            }
+
+            #[\Override]
+            protected function getFieldDefinition() : ArgumentSet
+            {
+                return new ArgumentSet([
+                    new Argument('arg', Container::String()),
+                ]);
+            }
+
+            #[\Override]
+            protected function afterGetFieldDefinition() : void
+            {
+                $arg = new Argument('arg', Container::String());
+                $arg->addDirective($this->directiveA);
+                $this->arguments = new ArgumentSet([$arg]);
+            }
+        };
+
+        $directiveA->directiveB = $directiveB;
+
+        $this->expectException(DirectiveCycleDetected::class);
+        $directiveA->accept(new ValidateIntegrityVisitor());
+    }
+
+    /**
+     * DirectiveA -> DirectiveB -> DirectiveC -> DirectiveA
+     */
+    public function testDirectiveCycleDetectedThreeDirectives() : void
+    {
+        $directiveA = new class extends Directive implements ArgumentDefinitionLocation {
+            protected const NAME = 'DirectiveA';
+
+            public Directive|null $directiveC = null;
+
+            #[\Override]
+            public static function isPure() : bool
+            {
+                return true;
+            }
+
+            #[\Override]
+            public function validateArgumentUsage(Argument $argument, ArgumentValueSet $arguments) : bool
+            {
+                return true;
+            }
+
+            #[\Override]
+            public function validateVariance(?ArgumentValueSet $biggerSet, ?ArgumentValueSet $smallerSet) : void
+            {
+            }
+
+            #[\Override]
+            public function resolveArgumentDefinition(ArgumentValueSet $arguments, ArgumentValue $argumentValue) : void
+            {
+            }
+
+            #[\Override]
+            protected function getFieldDefinition() : ArgumentSet
+            {
+                return new ArgumentSet([]);
+            }
+
+            #[\Override]
+            protected function afterGetFieldDefinition() : void
+            {
+                if ($this->directiveC !== null) {
+                    $arg = new Argument('arg', Container::String());
+                    $arg->addDirective($this->directiveC);
+                    $this->arguments = new ArgumentSet([$arg]);
+                }
+            }
+        };
+
+        $directiveB = new class extends Directive implements ArgumentDefinitionLocation {
+            protected const NAME = 'DirectiveB';
+
+            public Directive|null $directiveA = null;
+
+            #[\Override]
+            public static function isPure() : bool
+            {
+                return true;
+            }
+
+            #[\Override]
+            public function validateArgumentUsage(Argument $argument, ArgumentValueSet $arguments) : bool
+            {
+                return true;
+            }
+
+            #[\Override]
+            public function validateVariance(?ArgumentValueSet $biggerSet, ?ArgumentValueSet $smallerSet) : void
+            {
+            }
+
+            #[\Override]
+            public function resolveArgumentDefinition(ArgumentValueSet $arguments, ArgumentValue $argumentValue) : void
+            {
+            }
+
+            #[\Override]
+            protected function getFieldDefinition() : ArgumentSet
+            {
+                return new ArgumentSet([]);
+            }
+
+            #[\Override]
+            protected function afterGetFieldDefinition() : void
+            {
+                if ($this->directiveA !== null) {
+                    $arg = new Argument('arg', Container::String());
+                    $arg->addDirective($this->directiveA);
+                    $this->arguments = new ArgumentSet([$arg]);
+                }
+            }
+        };
+
+        $directiveC = new class ($directiveB) extends Directive implements ArgumentDefinitionLocation {
+            protected const NAME = 'DirectiveC';
+
+            public function __construct(
+                private Directive $directiveB,
+            )
+            {
+            }
+
+            #[\Override]
+            public static function isPure() : bool
+            {
+                return true;
+            }
+
+            #[\Override]
+            public function validateArgumentUsage(Argument $argument, ArgumentValueSet $arguments) : bool
+            {
+                return true;
+            }
+
+            #[\Override]
+            public function validateVariance(?ArgumentValueSet $biggerSet, ?ArgumentValueSet $smallerSet) : void
+            {
+            }
+
+            #[\Override]
+            public function resolveArgumentDefinition(ArgumentValueSet $arguments, ArgumentValue $argumentValue) : void
+            {
+            }
+
+            #[\Override]
+            protected function getFieldDefinition() : ArgumentSet
+            {
+                $arg = new Argument('arg', Container::String());
+                $arg->addDirective($this->directiveB);
+
+                return new ArgumentSet([$arg]);
+            }
+        };
+
+        $directiveA->directiveC = $directiveC;
+        $directiveB->directiveA = $directiveA;
+
+        $this->expectException(DirectiveCycleDetected::class);
+        $directiveA->accept(new ValidateIntegrityVisitor());
+    }
+
+    /**
+     * DirectiveA has an argument of InputType that has DirectiveB, which references DirectiveA
+     */
+    public function testDirectiveCycleDetectedViaInputType() : void
+    {
+        $directiveA = new class extends Directive implements ArgumentDefinitionLocation {
+            protected const NAME = 'DirectiveAViaInput';
+
+            public InputType|null $input = null;
+
+            #[\Override]
+            public static function isPure() : bool
+            {
+                return true;
+            }
+
+            #[\Override]
+            public function validateArgumentUsage(Argument $argument, ArgumentValueSet $arguments) : bool
+            {
+                return true;
+            }
+
+            #[\Override]
+            public function validateVariance(?ArgumentValueSet $biggerSet, ?ArgumentValueSet $smallerSet) : void
+            {
+            }
+
+            #[\Override]
+            public function resolveArgumentDefinition(ArgumentValueSet $arguments, ArgumentValue $argumentValue) : void
+            {
+            }
+
+            #[\Override]
+            protected function getFieldDefinition() : ArgumentSet
+            {
+                return new ArgumentSet([
+                    new Argument('arg', Container::String()),
+                ]);
+            }
+
+            #[\Override]
+            protected function afterGetFieldDefinition() : void
+            {
+                if ($this->input !== null) {
+                    $this->arguments = new ArgumentSet([
+                        new Argument('inputArg', $this->input),
+                    ]);
+                }
+            }
+        };
+
+        $directiveB = new class ($directiveA) extends Directive implements ArgumentDefinitionLocation {
+            protected const NAME = 'DirectiveBViaInput';
+
+            public function __construct(
+                private Directive $directiveA,
+            )
+            {
+            }
+
+            #[\Override]
+            public static function isPure() : bool
+            {
+                return true;
+            }
+
+            #[\Override]
+            public function validateArgumentUsage(Argument $argument, ArgumentValueSet $arguments) : bool
+            {
+                return true;
+            }
+
+            #[\Override]
+            public function validateVariance(?ArgumentValueSet $biggerSet, ?ArgumentValueSet $smallerSet) : void
+            {
+            }
+
+            #[\Override]
+            public function resolveArgumentDefinition(ArgumentValueSet $arguments, ArgumentValue $argumentValue) : void
+            {
+            }
+
+            #[\Override]
+            protected function getFieldDefinition() : ArgumentSet
+            {
+                return new ArgumentSet([
+                    new Argument('arg', Container::String()),
+                ]);
+            }
+
+            #[\Override]
+            protected function afterGetFieldDefinition() : void
+            {
+                $arg = new Argument('arg', Container::String());
+                $arg->addDirective($this->directiveA);
+                $this->arguments = new ArgumentSet([$arg]);
+            }
+        };
+
+        $input = new class ($directiveB) extends InputType {
+            protected const NAME = 'InputWithDirective';
+
+            public function __construct(
+                private Directive $directiveB,
+            )
+            {
+                parent::__construct();
+            }
+
+            public function validateAndCoerceInput(mixed $rawValue) : mixed
+            {
+                return $rawValue;
+            }
+
+            #[\Override]
+            protected function getFieldDefinition() : ArgumentSet
+            {
+                $arg = new Argument('field', Container::String());
+                $arg->addDirective($this->directiveB);
+
+                return new ArgumentSet([$arg]);
+            }
+        };
+
+        $directiveA->input = $input;
+
+        $this->expectException(DirectiveCycleDetected::class);
+        $directiveA->accept(new ValidateIntegrityVisitor());
+    }
+
+    /**
+     * DirectiveA uses DirectiveB, but DirectiveB doesn't reference back
+     */
+    public function testDirectiveNoCycleValid() : void
+    {
+        $directiveB = new class extends Directive implements ArgumentDefinitionLocation {
+            protected const NAME = 'DirectiveBNoRef';
+
+            #[\Override]
+            public static function isPure() : bool
+            {
+                return true;
+            }
+
+            #[\Override]
+            public function validateArgumentUsage(Argument $argument, ArgumentValueSet $arguments) : bool
+            {
+                return true;
+            }
+
+            #[\Override]
+            public function validateVariance(?ArgumentValueSet $biggerSet, ?ArgumentValueSet $smallerSet) : void
+            {
+            }
+
+            #[\Override]
+            public function resolveArgumentDefinition(ArgumentValueSet $arguments, ArgumentValue $argumentValue) : void
+            {
+            }
+
+            #[\Override]
+            protected function getFieldDefinition() : ArgumentSet
+            {
+                return new ArgumentSet([
+                    new Argument('arg', Container::String()),
+                ]);
+            }
+        };
+
+        $directiveA = new class ($directiveB) extends Directive implements ArgumentDefinitionLocation {
+            protected const NAME = 'DirectiveAWithB';
+
+            public function __construct(
+                private Directive $directiveB,
+            )
+            {
+            }
+
+            #[\Override]
+            public static function isPure() : bool
+            {
+                return true;
+            }
+
+            #[\Override]
+            public function validateArgumentUsage(Argument $argument, ArgumentValueSet $arguments) : bool
+            {
+                return true;
+            }
+
+            #[\Override]
+            public function validateVariance(?ArgumentValueSet $biggerSet, ?ArgumentValueSet $smallerSet) : void
+            {
+            }
+
+            #[\Override]
+            public function resolveArgumentDefinition(ArgumentValueSet $arguments, ArgumentValue $argumentValue) : void
+            {
+            }
+
+            #[\Override]
+            protected function getFieldDefinition() : ArgumentSet
+            {
+                $arg = new Argument('arg', Container::String());
+                $arg->addDirective($this->directiveB);
+
+                return new ArgumentSet([$arg]);
+            }
+        };
+
+        $result = $directiveA->accept(new ValidateIntegrityVisitor());
+        self::assertNull($result);
     }
 }

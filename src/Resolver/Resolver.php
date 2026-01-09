@@ -12,6 +12,7 @@ use Graphpinator\Typesystem\Location\MutationLocation;
 use Graphpinator\Typesystem\Location\QueryLocation;
 use Graphpinator\Typesystem\Location\SubscriptionLocation;
 use Graphpinator\Value\TypeIntermediateValue;
+use Graphpinator\Value\TypeValue;
 
 final class Resolver
 {
@@ -34,12 +35,9 @@ final class Resolver
             $directiveDef->resolveQueryBefore($directive->arguments);
         }
 
-        $resolver = new ResolveVisitor(
-            $operation->children,
-            new TypeIntermediateValue($operation->rootObject, null),
-        );
-
+        $resolver = new ResolveVisitor($operation->children, new TypeIntermediateValue($operation->rootObject, null));
         $operationValue = $operation->rootObject->accept($resolver);
+        \assert($operationValue instanceof TypeValue); // result of query type resolution
 
         foreach ($operation->directives as $directive) {
             $directiveDef = $directive->directive;
@@ -60,6 +58,7 @@ final class Resolver
 
         $resolver = new ResolveVisitor($operation->children, new TypeIntermediateValue($operation->rootObject, null));
         $operationValue = $operation->rootObject->accept($resolver);
+        \assert($operationValue instanceof TypeValue);
 
         foreach ($operation->directives as $directive) {
             $directiveDef = $directive->directive;
@@ -78,12 +77,9 @@ final class Resolver
             $directiveDef->resolveSubscriptionBefore($directive->arguments);
         }
 
-        $resolver = new ResolveVisitor(
-            $operation->children,
-            new TypeIntermediateValue($operation->rootObject, null),
-        );
-
+        $resolver = new ResolveVisitor($operation->children, new TypeIntermediateValue($operation->rootObject, null));
         $operationValue = $operation->rootObject->accept($resolver);
+        \assert($operationValue instanceof TypeValue);
 
         foreach ($operation->directives as $directive) {
             $directiveDef = $directive->directive;

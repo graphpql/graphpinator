@@ -54,7 +54,7 @@ final class ResolveSelectionVisitor implements SelectionVisitor
             $fieldValue = $this->result->{$field->outputName};
             \assert($fieldValue instanceof FieldValue);
 
-            if ($field->children instanceof SelectionSet) {
+            if ($field->children instanceof SelectionSet && $fieldValue->value instanceof TypeValue) {
                 self::addToResultingSelection($fieldValue->value, $field->children);
             }
 
@@ -194,10 +194,7 @@ final class ResolveSelectionVisitor implements SelectionVisitor
         return $directiveResult === SelectionDirectiveResult::SKIP;
     }
 
-    private static function addToResultingSelection(
-        TypeValue|ListValue|NullValue $value,
-        SelectionSet $selectionSet,
-    ) : void
+    private static function addToResultingSelection(TypeValue|ListValue|NullValue $value, SelectionSet $selectionSet) : void
     {
         if ($value instanceof NullValue) {
             return;
@@ -211,6 +208,7 @@ final class ResolveSelectionVisitor implements SelectionVisitor
         }
 
         foreach ($value as $innerValue) {
+            \assert($innerValue instanceof TypeValue || $innerValue instanceof ListValue || $innerValue instanceof NullValue);
             self::addToResultingSelection($innerValue, $selectionSet);
         }
     }
