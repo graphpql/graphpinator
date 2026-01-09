@@ -32,6 +32,7 @@ use Graphpinator\Typesystem\Exception\InterfaceContractNewArgumentWithoutDefault
 use Graphpinator\Typesystem\Exception\InterfaceCycleDetected;
 use Graphpinator\Typesystem\Exception\InterfaceDirectivesNotPreserved;
 use Graphpinator\Typesystem\Exception\InterfaceOrTypeMustDefineOneOrMoreFields;
+use Graphpinator\Typesystem\Exception\NameMustNotStartWithDoubleUnderscore;
 use Graphpinator\Typesystem\Exception\RootOperationTypesMustBeDifferent;
 use Graphpinator\Typesystem\Exception\RootOperationTypesMustBeWithinContainer;
 use Graphpinator\Typesystem\Exception\UnionTypeMustDefineOneOrMoreTypes;
@@ -191,6 +192,10 @@ final readonly class ValidateIntegrityVisitor implements ComponentVisitor
     #[\Override]
     public function visitField(Field $field) : null
     {
+        if (\str_starts_with($field->getName(), '__')) {
+            throw new NameMustNotStartWithDoubleUnderscore($field->getName());
+        }
+
         if (!$field->getType()->accept(new IsOutputableVisitor())) {
             throw new FieldInvalidTypeUsage($field->getName(), $field->getType()->accept(new PrintNameVisitor()));
         }
@@ -220,6 +225,10 @@ final readonly class ValidateIntegrityVisitor implements ComponentVisitor
     #[\Override]
     public function visitArgument(Argument $argument) : null
     {
+        if (\str_starts_with($argument->getName(), '__')) {
+            throw new NameMustNotStartWithDoubleUnderscore($argument->getName());
+        }
+
         if (!$argument->getType()->accept(new IsInputableVisitor())) {
             throw new ArgumentInvalidTypeUsage($argument->getName(), $argument->getType()->accept(new PrintNameVisitor()));
         }
@@ -297,6 +306,10 @@ final readonly class ValidateIntegrityVisitor implements ComponentVisitor
     #[\Override]
     public function visitDirective(Directive $directive) : null
     {
+        if (\str_starts_with($directive->getName(), '__')) {
+            throw new NameMustNotStartWithDoubleUnderscore($directive->getName());
+        }
+
         return null;
     }
 
